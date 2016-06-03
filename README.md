@@ -1,2 +1,2 @@
 # collectionsonline
-Collections Online front-end
+Collections Online
