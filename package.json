@@ -8,11 +8,12 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "istanbul": "^0.4.3",
     "semistandard": "^8.0.0",
     "tape": "^4.5.1"
   },
   "scripts": {
-    "test": "npm run lint && tape test/*.js",
+    "test": "npm run lint && istanbul cover tape test/*.js",
     "lint": "semistandard"
   },
   "repository": {
