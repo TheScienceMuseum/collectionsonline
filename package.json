@@ -1,0 +1,26 @@
+{
+  "name": "collectionsonline",
+  "version": "1.0.0",
+  "description": "Science Museum Group : Collections Online",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "tape": "^4.5.1"
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheScienceMuseum/collectionsonline.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TheScienceMuseum/collectionsonline/issues"
+  },
+  "homepage": "https://github.com/TheScienceMuseum/collectionsonline"
+}
