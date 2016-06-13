@@ -4,14 +4,14 @@
   "description": "Science Museum Group : Collections Online",
   "main": "index.js",
   "directories": {
-    "test": "./node_modules/tape/bin/tape ./test/*.js"
+    "test": "test"
   },
   "dependencies": {},
   "devDependencies": {
     "tape": "^4.5.1"
   },
   "scripts": {
-    "test": "node test/*.js"
+    "test": "tape test/*.js"
   },
   "repository": {
     "type": "git",
