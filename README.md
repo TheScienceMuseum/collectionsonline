@@ -1,4 +1,4 @@
-# Science Museum Group: Collections Online
+# Science Museum Group: Collections Online [![Build Status](https://travis-ci.org/TheScienceMuseum/collectionsonline.svg?branch=master)](https://travis-ci.org/TheScienceMuseum/collectionsonline)
 
 ## Getting started
 
