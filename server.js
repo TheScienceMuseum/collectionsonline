@@ -9,7 +9,7 @@ server.connection({
 
 server.route(routes);
 
-server.register(require('inert'), function (err) {
+server.register([require('inert'), require('hapi-negotiator')], function (err) {
   if (err) {
     console.error('Failed to load plugin:', err);
   }
