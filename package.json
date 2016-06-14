@@ -8,14 +8,37 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "autoprefixer": "^6.3.6",
+    "browserify": "^13.0.1",
+    "codecov": "^1.0.1",
+    "cssnano": "^3.7.0",
     "istanbul": "^0.4.3",
+    "node-sass": "^3.7.0",
+    "nodemon": "^1.9.2",
+    "npm-run-all": "^2.1.2",
+    "postcss-cli": "^2.5.2",
     "pre-commit": "^1.1.3",
     "semistandard": "^8.0.0",
-    "tape": "^4.5.1"
+    "tape": "^4.5.1",
+    "uglify-js": "^2.6.2",
+    "watchify": "^3.7.0"
   },
   "scripts": {
-    "test": "npm run lint && istanbul cover tape test/*.js",
-    "lint": "semistandard"
+    "postinstall": "run-s build minify",
+    "start": "node index.js",
+    "test": "run-s test:*",
+    "test:lint": "semistandard",
+    "test:unit": "istanbul cover tape test/*.js",
+    "build": "run-p build:*",
+    "build:js": "browserify ./index.js -o public/bundle.js",
+    "build:css": "node-sass ./*.scss public/bundle.css",
+    "minify": "run-p minify:*",
+    "minify:js": "uglifyjs public/bundle.js -o public/bundle.js",
+    "minify:css": "postcss -u cssnano -i public/bundle.css -o public/bundle.css",
+    "watch": "npm-run-all build --parallel watch:*",
+    "watch:js": "watchify ./index.js -o public/bundle.js",
+    "watch:css": "nodemon -e scss -x 'npm run build:css'",
+    "watch:server": "nodemon --watch . --ignore node_modules/ --ignore public/ -e js -x 'npm start'"
   },
   "repository": {
     "type": "git",
