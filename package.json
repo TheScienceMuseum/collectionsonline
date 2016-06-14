@@ -23,8 +23,21 @@
     "watchify": "^3.7.0"
   },
   "scripts": {
-    "test": "npm run lint && istanbul cover tape test/*.js",
-    "lint": "semistandard"
+    "postinstall": "run-s build minify",
+    "start": "node index.js",
+    "test": "run-s test:*",
+    "test:lint": "semistandard",
+    "test:unit": "istanbul cover tape test/*.js",
+    "build": "run-p build:*",
+    "build:js": "browserify ./index.js -o public/bundle.js",
+    "build:css": "node-sass ./*.scss public/bundle.css",
+    "minify": "run-p minify:*",
+    "minify:js": "uglifyjs public/bundle.js -o public/bundle.js",
+    "minify:css": "postcss -u cssnano -i public/bundle.css -o public/bundle.css",
+    "watch": "npm-run-all build --parallel watch:*",
+    "watch:js": "watchify ./index.js -o public/bundle.js",
+    "watch:css": "nodemon -e scss -x 'npm run build:css'",
+    "watch:server": "nodemon --watch . --ignore node_modules/ --ignore public/ -e js -x 'npm start'"
   },
   "repository": {
     "type": "git",
