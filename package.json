@@ -7,10 +7,10 @@
     "test": "test"
   },
   "dependencies": {
-    "content-type": "^1.0.2",
     "hapi": "^13.4.1",
     "hapi-negotiator": "^2.0.1",
-    "inert": "^4.0.0"
+    "inert": "^4.0.0",
+    "rc": "^1.1.6"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
