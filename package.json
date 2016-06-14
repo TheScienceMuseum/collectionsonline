@@ -6,7 +6,10 @@
   "directories": {
     "test": "test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "hapi": "^13.4.1",
+    "inert": "^4.0.0"
+  },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
     "browserify": "^13.0.1",
@@ -25,7 +28,7 @@
   },
   "scripts": {
     "postinstall": "run-s build minify",
-    "start": "node index.js",
+    "start": "node server.js",
     "test": "run-s test:*",
     "test:lint": "semistandard",
     "test:unit": "istanbul cover tape test/*.js",
