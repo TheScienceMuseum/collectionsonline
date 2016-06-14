@@ -1,4 +1,6 @@
-# Science Museum Group: Collections Online [![Build Status](https://travis-ci.org/TheScienceMuseum/collectionsonline.svg?branch=master)](https://travis-ci.org/TheScienceMuseum/collectionsonline)
+[![Build Status](https://travis-ci.org/TheScienceMuseum/collectionsonline.svg?branch=master)](https://travis-ci.org/TheScienceMuseum/collectionsonline) [![Dependency Status](https://david-dm.org/TheScienceMuseum/collectionsonline.svg)](https://david-dm.org/TheScienceMuseum/collectionsonline)
+
+# Science Museum Group: Collections Online
 
 ## Getting started
 
