@@ -8,9 +8,19 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "autoprefixer": "^6.3.6",
+    "browserify": "^13.0.1",
+    "codecov": "^1.0.1",
+    "cssnano": "^3.7.0",
     "istanbul": "^0.4.3",
+    "node-sass": "^3.7.0",
+    "nodemon": "^1.9.2",
+    "npm-run-all": "^2.1.2",
+    "postcss-cli": "^2.5.2",
     "semistandard": "^8.0.0",
-    "tape": "^4.5.1"
+    "tape": "^4.5.1",
+    "uglify-js": "^2.6.2",
+    "watchify": "^3.7.0"
   },
   "scripts": {
     "test": "npm run lint && istanbul cover tape test/*.js",
