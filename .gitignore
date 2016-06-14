@@ -34,3 +34,6 @@ node_modules
 
 public/bundle.js
 public/bundle.css
+
+# Project configuration
+.corc
