@@ -12,6 +12,7 @@ testWithServer('Request for HTML Content', (t, server) => {
   server.inject(htmlRequest, (res) => {
     t.ok(res.payload.toLowerCase().indexOf('<!doctype html>') > -1, 'HTML request should respond with HTML');
     t.ok(res.headers['content-type'].indexOf('text/html') > -1, 'Response header should be text/html');
+    t.end();
   });
 });
 
@@ -31,6 +32,7 @@ testWithServer('Request for JSONAPI Content', (t, server) => {
   server.inject(jsonRequest, (res) => {
     t.equal(res.payload, '"{"response": "JSONAPI"}"', 'JSONAPI request should respond with JSONAPI data');
     t.ok(res.headers['content-type'].indexOf('application/vnd.api+json') > -1, 'JSONAPI response header should be application/vnd.api+json');
+    t.end();
   });
 });
 
@@ -50,6 +52,7 @@ testWithServer('Request for JSONAPI Content with parameters', (t, server) => {
 
   server.inject(badJSONRequest, (res) => {
     t.equal(res.statusCode, 406, 'One JSONAPI request with parameter should return 406');
+    t.end();
   });
 });
 
@@ -63,5 +66,6 @@ testWithServer('Request with multiple instances of JSONAPI media type, one witho
   };
   server.inject(acceptableJSONRequest, (res) => {
     t.equal(res.statusCode, 200, 'At least one JSONAPI without parameters should work');
+    t.end();
   });
 });
