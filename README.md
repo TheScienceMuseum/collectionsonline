@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/TheScienceMuseum/collectionsonline.svg?branch=master)](https://travis-ci.org/TheScienceMuseum/collectionsonline) [![Dependency Status](https://david-dm.org/TheScienceMuseum/collectionsonline.svg)](https://david-dm.org/TheScienceMuseum/collectionsonline)
+[![Build Status](https://travis-ci.org/TheScienceMuseum/collectionsonline.svg?branch=master)](https://travis-ci.org/TheScienceMuseum/collectionsonline) [![Dependency Status](https://david-dm.org/TheScienceMuseum/collectionsonline.svg)](https://david-dm.org/TheScienceMuseum/collectionsonline) [![Coverage Status](https://img.shields.io/codecov/c/github/TheScienceMuseum/collectionsonline.svg?maxAge=2592000)](https://codecov.io/gh/TheScienceMuseum/collectionsonline)
 
 # Science Museum Group: Collections Online
 
