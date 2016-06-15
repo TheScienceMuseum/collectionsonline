@@ -8,15 +8,8 @@ module.exports = (description, cb) => {
       throw err;
     }
 
-    server.start(() => {
-      if (err) {
-        throw err;
-      }
-
-      tape(description, (t) => {
-        cb(t, server);
-        server.stop();
-      });
+    tape(description, (t) => {
+      cb(t, server);
     });
   });
 };
