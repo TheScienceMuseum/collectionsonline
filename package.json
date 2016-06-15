@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "hapi": "^13.4.1",
+    "hapi-negotiator": "^2.0.1",
     "inert": "^4.0.0",
     "rc": "^1.1.6"
   },
@@ -29,7 +30,7 @@
   },
   "scripts": {
     "postinstall": "run-s build minify",
-    "start": "node server.js",
+    "start": "node bin/server.js",
     "test": "run-s test:*",
     "test:lint": "semistandard",
     "test:unit": "istanbul cover tape 'test/*.js'",
