@@ -1,21 +1,6 @@
-const test = require('tape');
-const Hapi = require('hapi');
-const server = new Hapi.Server();
-const routes = require('../routes');
+const testWithServer = require('./helpers/test-with-server');
 
-server.connection({
-  port: process.env.TESTPORT || '8080'
-});
-
-server.route(routes);
-
-server.register(require('hapi-negotiator'), (err) => {
-  if (err) {
-    console.error('Failed to load plugin:', err);
-  }
-});
-
-test('Request for HTML Content', (t) => {
+testWithServer('Request for HTML Content', (t, server) => {
   t.plan(2);
 
   const htmlRequest = {
@@ -27,10 +12,11 @@ test('Request for HTML Content', (t) => {
   server.inject(htmlRequest, (res) => {
     t.ok(res.payload.toLowerCase().indexOf('<!doctype html>') > -1, 'HTML request should respond with HTML');
     t.ok(res.headers['content-type'].indexOf('text/html') > -1, 'Response header should be text/html');
+    t.end();
   });
 });
 
-test('Request for JSONAPI Content', (t) => {
+testWithServer('Request for JSONAPI Content', (t, server) => {
   // http://jsonapi.org/format/#content-negotiation-servers
   //
   // Servers MUST send all JSON API data in response documents with the header
@@ -46,10 +32,11 @@ test('Request for JSONAPI Content', (t) => {
   server.inject(jsonRequest, (res) => {
     t.equal(res.payload, '"{"response": "JSONAPI"}"', 'JSONAPI request should respond with JSONAPI data');
     t.ok(res.headers['content-type'].indexOf('application/vnd.api+json') > -1, 'JSONAPI response header should be application/vnd.api+json');
+    t.end();
   });
 });
 
-test('Request for JSONAPI Content with parameters', (t) => {
+testWithServer('Request for JSONAPI Content with parameters', (t, server) => {
   // http://jsonapi.org/format/#content-negotiation-servers
   //
   // Servers MUST respond with a 406 Not Acceptable status code if a request’s
@@ -65,10 +52,11 @@ test('Request for JSONAPI Content with parameters', (t) => {
 
   server.inject(badJSONRequest, (res) => {
     t.equal(res.statusCode, 406, 'One JSONAPI request with parameter should return 406');
+    t.end();
   });
 });
 
-test('Request with multiple instances of JSONAPI media type, one without parameters', (t) => {
+testWithServer('Request with multiple instances of JSONAPI media type, one without parameters', (t, server) => {
   t.plan(1);
 
   const acceptableJSONRequest = {
@@ -78,5 +66,6 @@ test('Request with multiple instances of JSONAPI media type, one without paramet
   };
   server.inject(acceptableJSONRequest, (res) => {
     t.equal(res.statusCode, 200, 'At least one JSONAPI without parameters should work');
+    t.end();
   });
 });

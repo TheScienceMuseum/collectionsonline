@@ -1,24 +1,19 @@
-var Hapi = require('hapi');
-var routes = require('./routes.js');
-const config = require('./config');
+const Hapi = require('hapi');
+const routes = require('./routes');
 
-var server = new Hapi.Server();
+module.exports = (config, cb) => {
+  const server = new Hapi.Server();
 
-server.connection({
-  port: config.port
-});
+  server.connection({
+    port: config.port
+  });
 
-server.route(routes);
+  server.route(routes);
 
-server.register([require('inert'), require('hapi-negotiator')], function (err) {
-  if (err) {
-    console.error('Failed to load plugin:', err);
-  }
-});
-
-server.start(function (err) {
-  if (err) {
-    throw new Error(err);
-  }
-  console.log(server.info.uri);
-});
+  server.register([require('inert'), require('hapi-negotiator')], (err) => {
+    if (err) {
+      return cb(err);
+    }
+    cb(null, server);
+  });
+};

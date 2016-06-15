@@ -30,7 +30,7 @@
   },
   "scripts": {
     "postinstall": "run-s build minify",
-    "start": "node server.js",
+    "start": "node bin/server.js",
     "test": "run-s test:*",
     "test:lint": "semistandard",
     "test:unit": "istanbul cover tape test/*.js",
