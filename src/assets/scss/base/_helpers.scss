@@ -1,0 +1,62 @@
+//-----------------------------------------------------------------------------
+// HELPERS
+// mixins, functions and other settings 
+//-----------------------------------------------------------------------------
+
+$timing-defaults: 0.25s ease-out;
+
+// http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/
+@mixin vertical-align {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+@mixin text-link {
+	color: $c-blue;
+	border-bottom: 1px solid transparent;
+	transition: color $timing-defaults, border-color $timing-defaults;
+	&:hover {
+		color: mix($c-cyan, $c-blue);
+		border-color: mix($c-cyan, $c-blue);
+	}
+}
+
+@mixin icon-before($icon, $size:1rem){
+	position: relative;
+	&:before {
+		content: ' ';
+		display: block;
+		height: $size;
+		width: $size;
+		background-image: url(/assets/icons/#{$icon}.svg);
+		background-size: $size $size;
+	}
+
+}
+
+@mixin icon-bullet($icon, $size:0.75rem, $left: 0){
+	position: relative;
+	padding-left: $size * 4/3 + $left;
+	&:before {
+		content: ' ';
+		display: block;
+		position: absolute;
+		left: 0 + $left;
+		top: -$size/5;
+		bottom: 0;
+		margin: auto; // top, bottom, height, auto = vertical align!
+		height: $size;
+		width: $size;
+		background-image: url(/assets/icons/#{$icon}.svg);
+		background-size: $size $size;
+	}
+
+}
+
+
+
+@mixin small-caps {
+	font-size: 75%;
+	text-transform: uppercase;
+}

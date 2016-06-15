@@ -1,0 +1,148 @@
+//-----------------------------------------------------------------------------
+// slick component.
+// this was based on the one in bower, but now customised.
+//-----------------------------------------------------------------------------
+
+@charset "UTF-8";
+
+// Default Variables
+
+$slick-font-path: "/assets/fonts/" !default;
+$slick-font-family: "slick" !default;
+$slick-loader-path: "./" !default;
+$slick-arrow-color: white !default;
+$slick-dot-color: grey(50) !default;
+$slick-dot-color-active: $slick-dot-color !default;
+$slick-prev-character: "←" !default;
+$slick-next-character: "→" !default;
+$slick-dot-character: "•" !default;
+$slick-dot-size: 6px !default;
+$slick-opacity-default: 0.7 !default;
+$slick-opacity-on-hover: 1 !default;
+$slick-opacity-not-active: 0.25 !default;
+
+@function slick-image-url($url) {
+    @if function-exists(image-url) {
+        @return image-url($url);
+    }
+    @else {
+        @return url($slick-loader-path + $url);
+    }
+}
+
+@function slick-font-url($url) {
+    @if function-exists(font-url) {
+        @return font-url($url);
+    }
+    @else {
+        @return url($slick-font-path + $url);
+    }
+}
+
+/* Slider */
+
+.slick-list {
+    .slick-loading & {
+        background: #fff slick-image-url("ajax-loader.gif") center center no-repeat;
+    }
+}
+
+/* Arrows */
+
+.slick-prev,
+.slick-next {
+    position: absolute;
+    display: block;
+    z-index: 1;
+    height: 56px;
+    width: 56px;
+    line-height: 0px;
+    font-size: 0px;
+    cursor: pointer;
+    background: transparent;
+    color: transparent;
+    top: 50%;
+    margin-top: -10px\9; /*lte IE 8*/
+    -webkit-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    padding: 0;
+    border: none;
+    outline: none;
+    opacity: $slick-opacity-default;
+    &:hover, &:focus {
+        outline: none;
+        background: transparent;
+        color: transparent;
+		opacity: $slick-opacity-on-hover;
+    }
+    &.slick-disabled {
+        opacity: $slick-opacity-not-active;
+    }
+}
+
+.slick-prev {
+    left: 25px;
+}
+
+.slick-next {
+    right: 25px;
+}
+
+/* Dots */
+
+.slick-slider {
+    margin-bottom: 0;
+}
+
+.slick-dots {
+    position: absolute;
+    bottom: -45px;
+    list-style: none;
+    display: block;
+    text-align: center;
+    padding: 0;
+    width: 100%;
+    li {
+        position: relative;
+        display: inline-block;
+        height: 16px;
+        width: 15px;
+        margin: 0 1px 0 0;
+        padding: 0;
+        cursor: pointer;
+        button {
+            border: 0;
+            background: $slick-dot-color;
+            display: block;
+            height: 16px;
+            width: 15px;
+            outline: none;
+            line-height: 0px;
+            font-size: 0px;
+            color: transparent;
+            padding: 0;
+            cursor: pointer;
+            &:hover, &:focus {
+                outline: none;
+				opacity: $slick-opacity-on-hover;
+            }
+        }
+        &.slick-active button {
+            color: $slick-dot-color-active;
+            opacity: $slick-opacity-default;
+        }
+    }
+}
+
+//https://github.com/kenwheeler/slick/issues/158
+.slick-slider .slick-slide {
+    display: none;
+}
+ .slick-slider .slick-slide:first-child{
+    display: block;
+}
+.slick-initialized.slick-slider .slick-slide,
+.slick-initialized.slick-slider .slick-slide:first-child{
+    display: block;
+}

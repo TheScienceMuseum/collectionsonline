@@ -45,6 +45,11 @@
     "watch:css": "nodemon -e scss -x 'npm run build:css'",
     "watch:server": "nodemon --watch . --ignore node_modules/ --ignore public/ -e js -x 'npm start'"
   },
+  "semistandard": {
+    "ignore": [
+      "src/**/*.js"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/TheScienceMuseum/collectionsonline.git"

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
+    <title>tree-item</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="tree-item" fill="#000000">
+            <path d="M12,6 C8.694,6 6,8.694 6,12 C6,15.306 8.694,18 12,18 C15.306,18 18,15.306 18,12 C18,8.694 15.306,6 12,6 L12,6 Z M12,16 C9.795,16 8,14.205 8,12 C8,9.795 9.795,8 12,8 C14.205,8 16,9.795 16,12 C16,14.205 14.205,16 12,16 L12,16 Z" id="Shape"></path>
+        </g>
+    </g>
+</svg>

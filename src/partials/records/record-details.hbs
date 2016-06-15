@@ -1,0 +1,26 @@
+<section class="record-details">
+	<div class="row">
+		<div class="columns medium-8">
+			<h2>Details</h2>
+	
+			{{#each details}}
+				<dl class="record-details__dl">
+					<dt>{{ this.key }}:</dt>
+					<dd>
+						{{#if link}}<a href="#" title="[link to filtered search results]" class="searchlink">{{/if}}
+							{{{ this.value }}}
+						{{#if link}}</a>{{/if}}
+					</dd>
+				</dl>
+			{{/each}}		
+
+      {{#unlesspage 'person'}}
+        {{> panel-taxonomy }}
+      {{/unlesspage}}   
+      		
+		</div>
+		<div class="columns medium-4">
+			{{> panel-cite }}
+		</div>
+	</div>
+</section>

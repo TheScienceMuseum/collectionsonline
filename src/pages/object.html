@@ -1,0 +1,121 @@
+---
+type: object
+title: Difference Engine No 1 (object type?)
+fact:
+  1:
+    key: (Maker Relationship) ie. Invented by / Made By
+    value: Charles Babbage
+    link: person.html
+  2:
+    key: Place made
+    value: London, England in 1850
+slides:
+  - 121689_3.png
+  - 121690_3.png
+  - 121691_3.png
+  - Difference_engine_Scheutz.jpg
+  - 121692_3.png
+  - 121695_3.png
+  - 121697_3.png
+  - 10303371_3.jpg
+  - 10303373_3.jpg
+  - 10303374_3.jpg
+  - 10303375_3.jpg
+  - 10306385_3.jpg
+
+details:
+  -
+    key: Makers 
+    value: <a href="#">Charles Babbage</a>, <a href="#">Ada Lovelace</a>
+  -
+    key: Category
+    value: 'Computing and Data Processing'
+    link: '#'
+  -
+    key: Type
+    value: <a href="#">Calculator</a>, <a href="#">Computer</a>
+  -
+    key: Materials
+    value: <a href="#">Wood</a>, <a href="#">Iron</a>, <a href="#">steel</a>, <a href="#">bronze</a>
+  -
+    key: Measurements
+    value: 2800mm x 3000mm
+  -
+    key: Accesion number
+    value: "1258-6"
+  -
+    key: Status
+    value: Permanent collection
+  -
+    key: Credit
+    value: Board of trustees of the British Library
+  #-
+  #  key: Record completeness
+  #  value: '<div class="completeness large-6 medium-9" title="completeness: mostly there"><div style="width:60%">completeness: mostly there</div></div>'
+
+
+---
+
+{{> global-header}}
+{{> search-main reduced="reduced"}}
+
+<div class="page" role="main">
+
+	{{> record-top Xclass="record-top--dark" }}
+
+	<div class="record-imgpanel">
+		<div class="row columns record-imgpanel__slickthumbs"><!-- thumbnav gets appended in here --></div>
+		<div class="record-imgpanel__slickwrap">
+			<div class="record-imgpanel__slick">
+				{{#each slides}}
+					<div data-thumb="/assets/img/example/babbage/{{ this }}"><img src="/assets/img/example/babbage/{{ this }}" class="pic" /></div>
+				{{/each}}
+			</div>
+		</div>
+		
+		{{> record-imgpanel__controlbar}}
+	</div>
+
+	<section class="white">
+		<div class="row">
+			<div class="columns medium-8">
+			
+				<p class="record-description">This is the main description text.</p>
+				<div class="record-longdesc">
+				
+					<p>Difference Engine No 2 designed from 1847-1849 by British computing pioneer Charles Babbage (1791-1871), which excludes printing mechanism. Size 2.1m high, 3.4m long, 0.5m wide. The engine was built by the Science Museum and the main part was completed in June 1991 for the bicentennial year of Babbage's birth. The printing mechanism was completed in 2000. Doron Swade, senior curator of computing and IT, oversaw its construction. Babbage conceived the engine to calculate a series of numerical values and automatically print the results. Difference Engine No 2 was never constructed in his lifetime.</p>
+					<p>This is the long description text. {{lorem count="5"}}</p>
+					
+				
+				</div>
+			
+			</div>
+			<div class="columns medium-4">
+		
+				{{> ondisplay }}
+								
+				{{> record-related-people }}
+
+			<div class="panel panel__text">
+				<h4>Related articles</h4>
+				<ul class="related-article">
+					<li><a href="#">The history of computers</a></li>
+					<li><a href="#">Early computers</a></li>
+					<li><a href="#">History of Ada lovelace</a></li>
+				</ul>
+			</div>
+						
+				{{!-- {{> panel-taxonomy}} moved lower to record-details. but panels could also be used here. --}}
+						
+			</div>
+		</div>
+	</section>
+
+	{{> record-details }}
+
+	{{> record-related-results }}
+
+</div>
+
+{{> global-footer }}
+

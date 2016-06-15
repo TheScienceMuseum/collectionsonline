@@ -1,0 +1,20 @@
+			{{#each searchresults}}
+				<div class="searchresults__column">
+					<a href="{{ this.type }}.html">
+						<div class="resultcard {{#if type}}resultcard--{{ this.type }}{{/if}}">
+							<figure class="resultcard__figure">
+								{{#if figure}}<img src="{{ this.figure }}" /> {{/if}}
+								{{#unless figure}}{{#if figcaption}}<figcaption role="presentation">{{ this.figcaption }}</figcaption>{{/if}}{{/unless}}
+							</figure>
+							<div class="resultcard__info">
+								<h4 class="resultcard__title">
+									{{> icon i=this.type }}
+									{{#if ondisplay}}{{> icon i="room" size="16" }}{{/if}}
+									{{ this.title }}
+								</h4>
+								<p class="resultcard__description">{{{ this.description }}}</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			{{/each}}

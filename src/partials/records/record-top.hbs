@@ -1,0 +1,13 @@
+	<section class="record-top {{class}}">
+		<div class="row">
+		  <div class="large-12 columns">
+			<h1 class="record-top__title">{{> icon i=type}} {{title}}</h1>
+			{{#each fact}}
+				<dl class="record-top__dl">
+					<dt>{{ this.key }}:</dt>
+					<dd><a href="{{#if this.link }}{{this.link}}{{/if}}{{#unless this.link }}#{{/unless}}" title="[link to filtered search results]" class="searchlink">{{ this.value }}</a></dd>
+				</dl>
+			{{/each}}		
+		  </div>
+		</div> 
+	</section>
