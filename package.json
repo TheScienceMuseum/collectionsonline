@@ -32,7 +32,7 @@
     "start": "node server.js",
     "test": "run-s test:*",
     "test:lint": "semistandard",
-    "test:unit": "istanbul cover tape test/*.js",
+    "test:unit": "istanbul cover tape 'test/*.js'",
     "build": "run-p build:*",
     "build:js": "browserify ./client.js -o public/bundle.js",
     "build:css": "node-sass ./*.scss public/bundle.css",
