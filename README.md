@@ -20,3 +20,27 @@ Or use `npm run watch` to rebuild and restart the server as you edit things.
 ├── routes      # API routes
 └── test        # Unit and integration tests
 ```
+
+## Collections
+
+### Index types
+
+The following main 3 document types are available in the index:
+
+* Agent
+* Object
+* Archive
+
+Other document types:
+
+* Event
+* Place
+* Term
+
+### Display names
+
+The name of the index types isn't always obvious to the public so on the site they are mapped as follows:
+
+* People => Agent
+* Objects => Object
+* Documents => Archive
