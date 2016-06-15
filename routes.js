@@ -9,7 +9,7 @@ module.exports = [
         'hapi-negotiator': {
           mediaTypes: {
             'text/html': function (req, reply) {
-              reply('<h1>HTML Response</h1>').header('content-type', 'text/html');
+              reply('<!doctype html><html><h1>HTML Response</h1><html>').header('content-type', 'text/html');
             },
             'application/vnd.api+json': function (req, reply) {
               reply('"{"response": "JSONAPI"}"').header('content-type', 'application/vnd.api+json');

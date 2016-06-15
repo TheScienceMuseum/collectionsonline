@@ -1,7 +1,7 @@
-var test = require('tape');
-var Hapi = require('hapi');
-var server = new Hapi.Server();
-var routes = require('../routes.js');
+const test = require('tape');
+const Hapi = require('hapi');
+const server = new Hapi.Server();
+const routes = require('../routes');
 
 server.connection({
   port: process.env.TESTPORT || '8080'
@@ -9,53 +9,74 @@ server.connection({
 
 server.route(routes);
 
-server.register(require('hapi-negotiator'), function (err) {
+server.register(require('hapi-negotiator'), (err) => {
   if (err) {
     console.error('Failed to load plugin:', err);
   }
 });
 
-test('Content Negotiation', function (t) {
-  var htmlRequest = {
+test('Request for HTML Content', (t) => {
+  t.plan(2);
+
+  const htmlRequest = {
     method: 'GET',
     url: '/',
     headers: {'Accept': 'text/html'}
   };
 
-  var jsonRequest = {
+  server.inject(htmlRequest, (res) => {
+    t.ok(res.payload.toLowerCase().indexOf('<!doctype html>') > -1, 'HTML request should respond with HTML');
+    t.ok(res.headers['content-type'].indexOf('text/html') > -1, 'Response header should be text/html');
+  });
+});
+
+test('Request for JSONAPI Content', (t) => {
+  // http://jsonapi.org/format/#content-negotiation-servers
+  //
+  // Servers MUST send all JSON API data in response documents with the header
+  // `Content-Type: application/vnd.api+json` without any media type parameters.
+  t.plan(2);
+
+  const jsonRequest = {
     method: 'GET',
     url: '/',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
-  var badJSONRequest = {
+  server.inject(jsonRequest, (res) => {
+    t.equal(res.payload, '"{"response": "JSONAPI"}"', 'JSONAPI request should respond with JSONAPI data');
+    t.ok(res.headers['content-type'].indexOf('application/vnd.api+json') > -1, 'JSONAPI response header should be application/vnd.api+json');
+  });
+});
+
+test('Request for JSONAPI Content with parameters', (t) => {
+  // http://jsonapi.org/format/#content-negotiation-servers
+  //
+  // Servers MUST respond with a 406 Not Acceptable status code if a request’s
+  // Accept header contains the JSON API media type and all instances of that
+  // media type are modified with media type parameters.
+  t.plan(1);
+
+  const badJSONRequest = {
     method: 'GET',
     url: '/',
     headers: {'Accept': 'application/vnd.api+json; charset=utf-8'}
   };
 
-  var acceptableJSONRequest = {
+  server.inject(badJSONRequest, (res) => {
+    t.equal(res.statusCode, 406, 'One JSONAPI request with parameter should return 406');
+  });
+});
+
+test('Request with multiple instances of JSONAPI media type, one without parameters', (t) => {
+  t.plan(1);
+
+  const acceptableJSONRequest = {
     method: 'GET',
     url: '/',
     headers: {'Accept': 'application/vnd.api+json; charset=utf-8, application/vnd.api+json'}
   };
-
-  server.inject(htmlRequest, function (res) {
-    t.equal(res.payload, '<h1>HTML Response</h1>', 'HTML request correct');
-    t.ok(res.headers['content-type'].indexOf('text/html') > -1, 'HTML response header is correct');
-  });
-
-  server.inject(jsonRequest, function (res) {
-    t.equal(res.payload, '"{"response": "JSONAPI"}"', 'JSONAPI request correct');
-    t.ok(res.headers['content-type'].indexOf('application/vnd.api+json') > -1, 'JSONAPI response header is correct');
-  });
-
-  server.inject(badJSONRequest, function (res) {
-    t.equal(res.statusCode, 406, 'JSONAPI request with parameter is not acceptable');
-  });
-
-  server.inject(acceptableJSONRequest, function (res) {
-    t.equal(res.statusCode, 200, 'One JSONAPI without parameters should work');
-    t.end();
+  server.inject(acceptableJSONRequest, (res) => {
+    t.equal(res.statusCode, 200, 'At least one JSONAPI without parameters should work');
   });
 });
