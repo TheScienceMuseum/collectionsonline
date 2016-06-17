@@ -3,6 +3,8 @@ const Boom = require('boom');
 // Heavily based on the excellent https://github.com/dwyl/hapi-error
 // and https://gist.github.com/wraithgar/231ee3717b4d2da54044
 exports.register = (server, options, next) => {
+  options = options || {};
+
   server.ext('onPreResponse', (request, reply) => {
     // Only interested in errors
     if (!(request.response instanceof Error)) return reply.continue();
