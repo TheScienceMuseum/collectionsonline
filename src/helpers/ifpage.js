@@ -1,7 +1,7 @@
-module.exports = (pageName, context) => {
-  if (context.data.root.page === pageName) {
-    return context.fn(this);
+module.exports = (pageName, options) => {
+  if (options.data.root.page === pageName) {
+    return options.fn(options.data.root);
   } else {
-    return '';
+    return options.inverse(options.data.root);
   }
 }
