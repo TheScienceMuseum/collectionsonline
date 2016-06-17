@@ -4,6 +4,6 @@ module.exports = () => ({
   method: 'GET',
   path: '/{path*}',
   handler: function (req, reply) {
-    reply.file(Path.join(__dirname, 'public', req.params.path));
+    reply.file(Path.resolve(__dirname, '..', 'public', req.params.path));
   }
 });
