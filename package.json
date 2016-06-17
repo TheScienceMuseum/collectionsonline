@@ -43,6 +43,7 @@
     "build": "run-p build:*",
     "build:js": "browserify src/assets/js/*.js -o public/bundle.js",
     "build:css": "node-sass src/assets/scss/main.scss public/bundle.css --include-path bower_components/foundation-sites/scss --include-path bower_components/slick-carousel/slick",
+    "build:img": "cp src/assets/icons/* public/assets/icons",
     "build:svg": "svg-sprite --view --vscss --view-sprite=svg/sprite.view.svg --symbol --symbol-example --symbol-sprite=svg/sprite.symbol.svg --dest=public/assets/icons src/assets/icons/**/*.svg",
     "minify": "run-p minify:*",
     "minify:js": "uglifyjs public/bundle.js -o public/bundle.js",

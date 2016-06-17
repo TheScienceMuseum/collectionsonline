@@ -1,4 +1,4 @@
----
+<!-- ---
 type: archive
 title: The Babbage Papers
 fact:
@@ -60,15 +60,15 @@ details:
 			</div>
 			"
 
----
+--- -->
 
-{{> global-header}}
-{{> search-main reduced="reduced"}}
+{{> global/global-header}}
+{{> global/search-main reduced="reduced"}}
 
 <div class="page" role="main">
 
 <section class="white">
-	{{> record-top }}
+	{{> records/record-top }}
 
 	<div class="row">
 		<div class="columns medium-8">
@@ -157,18 +157,18 @@ Unfortunately the cross referencing system is far too complex to replicate in th
 		</div>
 		<div class="columns medium-4">
 
-			{{> record-related-people }}
+			{{> records/record-related-people }}
 
-			{{> record-related-people }}
+			{{> records/record-related-people }}
 
 		</div>
 	</div>
 </section>
 
-	{{> record-details }}
+	{{> records/record-details }}
 
-	{{> archive-tree top="y"}}
+	{{> records/archive-tree top="y"}}
 
 </div>
 
-{{> global-footer }}
+{{> global/global-footer }}

@@ -1,4 +1,4 @@
----
+<!-- ---
 title: Charles Babbage
 type: person
 fact:
@@ -27,16 +27,16 @@ details:
     key: Location
     value: Somewhere, or a whole paragraph of stuff. or a whole paragraph of stuff. or a whole paragraph of stuff. or a whole paragraph of stuff. or a whole paragraph of stuff. or a whole paragraph of stuff. or a whole paragraph of stuff. or a whole paragraph of stuff.
 
----
+--- -->
 
-{{> global-header}}
-{{> search-main reduced="reduced"}}
+{{> global/global-header}}
+{{> global/search-main reduced="reduced"}}
 
 <div class="page" role="main">
 
 <section class="white">
 
-	{{> record-top }}
+	{{> records/record-top }}
 
 
 	<div class="row">
@@ -89,16 +89,16 @@ details:
 				</div>
 			</div>
 
-			{{> record-related-people }}
+			{{> records/record-related-people }}
 
 		</div>
 	</div>
 	</section>
 
-	{{> record-details }}
+	{{> records/record-details }}
 
-	{{> record-related-results }}
+	{{> records/record-related-results }}
 
 </div>
 
-{{> global-footer }}
+{{> global/global-footer }}
