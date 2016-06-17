@@ -4,16 +4,29 @@ const routes = require('./routes');
 module.exports = (config, cb) => {
   const server = new Hapi.Server();
 
-  server.connection({
-    port: config.port
-  });
+  server.connection({ port: config.port });
 
-  server.route(routes);
+  server.route(routes());
 
-  server.register([require('inert'), require('hapi-negotiator')], (err) => {
+  server.register([
+    require('inert'),
+    require('hapi-negotiator'),
+    require('vision')
+  ], (err) => {
     if (err) {
       return cb(err);
     }
+
+    server.views({
+      engines: { html: { module: require('handlebars'), compileMode: 'sync' } },
+      relativeTo: __dirname,
+      path: './templates/pages',
+      layout: 'default',
+      layoutPath: './templates/layouts',
+      partialsPath: './templates/partials',
+      helpersPath: './templates/helpers'
+    });
+
     cb(null, server);
   });
 };

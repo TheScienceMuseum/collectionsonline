@@ -7,10 +7,13 @@
     "test": "test"
   },
   "dependencies": {
+    "handlebars": "^4.0.5",
     "hapi": "^13.4.1",
     "hapi-negotiator": "^2.0.1",
     "inert": "^4.0.0",
-    "rc": "^1.1.6"
+    "joi": "^8.4.2",
+    "rc": "^1.1.6",
+    "vision": "^4.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
