@@ -16,8 +16,12 @@ Or use `npm run watch` to rebuild and restart the server as you edit things.
 
 ```
 .
+├── bin         # Executable(s) for starting the server etc.
 ├── lib         # Shared modules
+├── public      # Public resources exposed by the server
 ├── routes      # API routes
+├── schemas     # Joi schemas for input validation
+├── templates   # Handlebars templates - layouts, pages, partials and helpers
 └── test        # Unit and integration tests
 ```
 
