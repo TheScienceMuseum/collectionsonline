@@ -10,7 +10,9 @@ exports.register = (server, options, next) => {
     const error = Boom.wrap(request.response);
     const accept = request.headers.accept || '';
 
-    request.server.log(['error'], error.stack);
+    if (error.status >= 500) {
+      request.server.log(['error'], error.stack);
+    }
 
     if (accept.indexOf('text/html') === 0) {
       // Respond with an error template
