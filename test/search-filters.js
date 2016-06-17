@@ -1,6 +1,24 @@
 const QueryString = require('querystring');
 const testWithServer = require('./helpers/test-with-server');
 
+testWithServer('Should accept params in filter[PARAM_NAME] format', (t, server) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({
+      'filter[date[from]]': '2016',
+      'filter[places]': ['London', 'Bath']
+    }),
+    headers: {'Accept': 'text/html'}
+  };
+
+  server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
 testWithServer('Should accept date[from] in format YYYY', (t, server) => {
   t.plan(1);
 
