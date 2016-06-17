@@ -1,3 +1,6 @@
+const fs = require('fs');
+const exampleData = JSON.parse(fs.readFileSync('./src/data/person.json'));
+
 module.exports = () => ({
   method: 'GET',
   path: '/person',
@@ -12,7 +15,7 @@ module.exports = () => ({
               title: 'Charles Babbage'
             };
 
-            reply.view('person', data);
+            reply.view('person', Object.assign(exampleData, data));
           },
           'application/vnd.api+json' (req, reply) {
             reply('"{"response": "JSONAPI"}"').header('content-type', 'application/vnd.api+json');

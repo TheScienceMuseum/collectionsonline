@@ -1,0 +1,52 @@
+{
+  "type": "archive",
+  "title": "The Babbage Papers",
+  "fact": {
+    "1": {
+      "key": "creator",
+      "value": "Charles Babbage, (1792-1871, Mathematician)",
+      "link": "person.html"
+    },
+    "2": {
+      "key": "dates",
+      "value": "1821-09 - 1849-03-06",
+      "link": "#"
+    },
+    "3": {
+      "key": "Extent",
+      "value": "11 plan press drawers and 8 linear meters of shelving",
+      "link": "#archive-tree"
+    }
+  },
+  "details": [
+    {
+      "key": "Repository name",
+      "value": "Science Museum, London",
+      "link": "#"
+    },
+    {
+      "key": "Reference",
+      "value": "BAB"
+    },
+    {
+      "key": "Language",
+      "value": "English"
+    },
+    {
+      "key": "Archival History",
+      "value": "<p>The archive was arranged and described by Dr Allan G. Bromley, Professor of Computing Science at the University of Sydney and Visiting Research Fellow at the Science Museum, London at the time. During the course of his work, Bromley deciphered and identified each individual item, consolidated the uniform system of identification and recorded cross references. He prepared the finding aid to enable the study of Babbage's calculating engine designs. The cross-reference finding aid was extracted from a computer database for a more extensive and detailed catalogue of the Babbage material. Much of the latter was built up by David Keck, Bromley’s research assistant.</p><p>The notebooks relating to the design of Difference Engine No. 1 were passed by Babbage to the government in 1842, but are now lost.</p><p>The archive was digitised during September 2011.</p>"
+    },
+    {
+      "key": "Conditions governing access",
+      "value": "The collection is available for public consultation according to the Science Museum Library and Archives Policy."
+    },
+    {
+      "key": "Conditions governing Reproduction",
+      "value": "Copies may be supplied of items in the collection, provided that the copying process used does not damage the item or is not detrimental to its preservation. Copies will be supplied in accordance with the Science Museum’s terms and conditions for the supply and reproduction of copies and the provisions of any relevant copyright legislation."
+    },
+    {
+      "key": "System of arrangement",
+      "value": "<p>Babbage’s work was divided into a series of distinct phases for the purposes of cataloguing.</p><div class='details' aria-expanded='false'><div class='details__summary'>More…</div><div class='details__content'><p> Work on the Difference Engine No. 1 was carried out from its conception in 1820 until the project was abruptly halted in 1833. Design of the Analytical Engine commenced immediately thereafter and the papers, covering a range of about thirty design plans, date from 1834 - 1848. The design of the Difference Engine No. 2 overlapped the last part of this period, from 1846 - 1848. Babbage’s active work on computing machinery then lapsed until about 1854. Serious work at constructing a simplified model of the Analytical Engine then occupied Babbage from about 1856 until his death in 1871. </p><p> The papers were divided into 26 major groups identified by letters of the alphabet. These are essentially subdivisions of the three main types of material, arranged according to format. The groups generally correspond to Babbage’s original groupings of the papers. The large series of drawings was divided into three groups, A (Analytical Engine, 1833-1848); B (Difference Engine No 2) and P (Analytical Engine 1857-1870). There are miscellaneous groups which may include several small original groupings. </p><p> The main series of drawings (Groups A, B and P) and Notations (Group F) were listed by H. P. Babbage in his published collection 'Babbage’s Calculating Engines', London, 1889. Bromley’s numbering corresponds with H. P. Babbage’s. However H. P. Babbage’s titles were taken from lists prepared by Charles Babbage, whilst Bromley’s were taken from the items themselves. H. P. Babbage’s lists are reproduced in the appendix of the published finding aid. </p><p> Series headings provide detailed descriptions about the series content. </p><p> In the vast majority of cases, papers were numbered by Babbage and this numbering system was followed. If no numbers were supplied originally by Babbage, items were numbered arbitrarily, namely for the miscellaneous papers, unnumbered sheets and notebooks. </p><p> Babbage used the * suffix on the drawings to indicate multiple sheets where a drawing comprises more than one sheet, or printed or other versions of the same drawing. Bromley converted the star symbol to using an x as the suffix instead in the printed finding aid. In order to accommodate the technical requirements of the cataloguing software, we have used a forward slash followed by the appropriate number to represent the suffix. </p><p> Inconsistencies in numbers and arrangement account for gaps in the number sequences. </p></div> </div>"
+    }
+  ]
+}
