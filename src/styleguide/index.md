@@ -1,16 +1,9 @@
-# Toby Section
+# General
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora omnis suscipit id ut laborum recusandae molestias hic aliquid **expedita!** [Non dicta](zurb.com), autem obcaecati error, id ab voluptate unde culpa nulla.
+While we are using Foundation for media queries, utilities, grid etc, most of the components are switched off because unused. However, the [foundation docs](http://foundation.zurb.com/sites/docs/) are still relevant, so this expands upon them.
 
-```html_example
-<a href="#" class="button">Button</a>
-<a href="#" class="button">Button</a>
-<a href="#" class="button">Button</a>
-```
 
 # The Grid
-
-<p class="lead">Problem: You've got tons of content, each needing different sized vertical columns, and don't know how to quick and easily get it all done. Solution: The awesome grid!</p>
 
 ---
 
@@ -28,7 +21,7 @@ In the Grid you can nest columns down as far as you'd like. Just embed rows insi
 
 ## How to Use
 
-Using this framework is easy. Here's how your code will look when you use a series of <div> tags to create vertical columns.
+Using this framework is easy. Here's how your code will look when you use a series of div tags to create vertical columns.
 
 ```html
 <div class="row">
@@ -137,48 +130,32 @@ As you've probably noticed in the examples above, you have access to a small, me
 
 # Colors
 
-<p class="lead">Below you can find the different values we created that support the primary color variable you can change at any time in <code>\_settings.scss</code></p>
+For DRYness' sake please see /src/assets/scss/base/_colour.scss
 
----
 
-<div class="row up-1 medium-up-3 large-up-5">
-  <div class="column">
-    <div class="color-block">
-      <span style="background: #2199e8"></span>
-      #2199e8
-    </div>
-  </div>
-  <div class="column">
-    <div class="color-block">
-      <span style="background: #3adb76"></span>
-      #3adb76
-    </div>
-  </div>
-  <div class="column">
-    <div class="color-block">
-      <span style="background: #ffae00"></span>
-      #ffae00
-    </div>
-  </div>
-  <div class="column">
-    <div class="color-block">
-      <span style="background: #ec5840"></span>
-      #ec5840
-    </div>
-  </div>
-  <div class="column">
-    <div class="color-block">
-      <span style="background: #0a0a0a"></span>
-      #0a0a0a
-    </div>
+
+# Panels
+
+```html_example
+<div class="panel panel__text">
+  <h4>a Typical panel, as used in the sidebar</h4>
+  <p>It has a modifier of panel__text - as all nodes inside are textual</p>
+</div>
+
+<div class="panel">
+  <img class="bleed" src="/assets/img/example/locations/scimus.png" />
+  <div class="panel__text">
+  <h4>a Typical panel, as used in the sidebar</h4>
+  <p>whereas this one has text nodes nested, and an image to bleed outside of that.</p>
   </div>
 </div>
+```
 
 
 
 # Typography
 
-<p class="lead">This design uses Helvetica Neue for headings and paragraph text.</p>
+<p class="lead">This design uses DIN as it's main typeface</p>
 
 ---
 
@@ -220,6 +197,71 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic quibusdam ratione 
 
 
 
+# Lists
+
+- a standard vanilla unordered list
+- a standard vanilla unordered list
+- a standard vanilla unordered list
+
+
+1. a standard vanilla ordered list
+2. a standard vanilla ordered list
+3. a standard vanilla ordered list
+
+
+## Piped list
+
+```html_example
+<ul class="ul-piped">
+  <li>a piped list</li>
+  <li>a piped list</li>
+  <li>a piped list</li>
+</ul>
+```
+
+## Block list
+
+```html_example
+<ul class="ul-block">
+  <li>a list structured as blocks (for nav items)</li>
+  <li>a list structured as blocks (for nav items)</li>
+  <li>a list structured as blocks (for nav items)</li>
+</ul>
+```
+
+
+
+# Controls
+
+<p class="lead">Controls are more likely than buttons.</p>
+Control buttons are likely to be icons. See icons partial for likely html output. TBC.
+
+```html_example
+<div class="control">
+  <label class="control__label">Label:</label>
+  <div class="control__buttons">
+    <a href="#" class="control__button control__button--active">{{{> icon }}}</a>
+    <a href="#" class="control__button">[icon]</a>
+  </div>
+</div>
+```
+
+
+
+# Details
+
+Like the html5 details elemt will be when its supported.
+```html_example
+<div class='details' aria-expanded='false'>
+  <div class='details__summary'>More…</div>
+  <div class='details__content'>
+    <p>More stuff goes in here</p>
+  </div>
+</div>
+```
+
+
+
 # Buttons
 
 <p class="lead">Buttons are tied to an action of some kind, whether that button is on a cheese dispenser or launches the rocket that you're strapped to. On the web, we follow similar conventions.</p>
@@ -251,110 +293,6 @@ These buttons are used for less important, secondary actions on a page.
 ```
 
 
-
-# Forms
-
-<p class="lead">Use forms to allow users to interact with the site and provide information to the company.</p>
-
----
-
-## Elements of a Form
-
-A form should be marked up using its default HTML properties. The ones we make use of include (in hierarchical order):
-
-- Form
-- Label
-- Input
-- Select
-- Text area
-- Button
-
----
-
-## How to Use
-
-Make forms great and easy to use with the following rules:
-
-- Wrap checkboxes and radio buttons within labels for larger hit areas, and be sure to set the for, name, and id attributes for all applicable elements.
-- Series of checkboxes and radio buttons below within a `<ul class="inline-list">`.
-- Before selecting any set of fields to use for a required input, explore other options (e.g., radio buttons over select lists).
-
----
-
-## Learn All About Forms
-
-Check out the [Foundation Docs](http://foundation.zurb.com/sites/docs) to learn about how flexible our forms are for creating different layouts. It works perfectly with the grid to meet all your form needs.
-
----
-
-## Form Layouts
-
-Form elements in Foundation are styled based on their type attribute rather than a class. Inputs in Foundation have another major advantage — they are full width by default. That means that inputs will run as wide as the column that contains them. However, you have two options which make these forms extremely versatile:
-
-- You can size inputs using column sizes, like `.medium-6`, `.small-6`.
-- You can create row elements inside your form and use columns for the form, including inputs, labels and more. Rows inside a form inherit some special padding to even up input spacing.
-
----
-
-## Form Example
-
-```html_example
-<form>
-  <div class="row">
-    <div class="large-12 columns">
-      <label>Label</label>
-      <input type="text" placeholder="placeholder">
-    </div>
-  </div>
-  <div class="row">
-    <div class="large-6 columns">
-      <label>Label</label>
-      <input type="text" placeholder="placeholder">
-    </div>
-    <div class="large-6 columns">
-      <div class="row collapse">
-        <label>Label</label>
-        <div class="input-group">
-          <input class="input-group-field" type="text" placeholder="placeholder">
-          <span class="input-group-label">.com</span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="large-12 columns">
-      <label>Select Box</label>
-      <select>
-        <option value="good">Good</option>
-        <option value="better">Better</option>
-        <option value="best">Best</option>
-      </select>
-    </div>
-  </div>
-  <div class="row">
-    <div class="large-6 columns">
-      <label>Choose Your Favorite</label>
-      <input type="radio" name="radio1" value="radio1" id="radio1"><label for="radio1">Red</label>
-      <input type="radio" name="radio2" value="radio2" id="radio2"><label for="radio2">Blue</label>
-    </div>
-    <div class="large-6 columns">
-      <label>Check these out</label>
-      <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
-      <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
-    </div>
-  </div>
-  <div class="row">
-    <div class="large-12 columns">
-      <label>Textarea Label</label>
-      <textarea placeholder="placeholder"></textarea>
-    </div>
-  </div>
-</form>
-```
-
-
-
 # Icons
 
 See [/assets/icons/symbol/sprite.symbol.html](/assets/icons/symbol/sprite.symbol.html) for a list of all icons generated by gulp
-

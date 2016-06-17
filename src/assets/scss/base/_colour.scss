@@ -38,22 +38,18 @@ $c-magenta: rgb(236,0,140); // sci museum process magenta
 $c-purple: #6F558C;
 $c-green: #00888A;
 
-//colors mapped to object type for quick changes, and for for loops
-$c-object: $c-cyan-mute;
-$c-person: $c-purple;
-$c-archive: $c-green;
-$c-archivedoc: $c-green;
-
+//colors mapped to recordypes for quick changes, and for for loops
 $recordtypes: (
 	object: $c-cyan-mute,
 	person: $c-purple,
 	archive: $c-green,
-	archivedoc: $c-green
+	archivedoc: $c-green,
+  collection: $c-blue
 );
 
 /// Returns a grey color from 0-white to 100-black
 /// @example grey(20) = #ccc
-/// @param {Number} $tint - number between 0-100 
+/// @param {Number} $tint - number between 0-100
 @function grey($tint) {
   @return rgb(255 - $tint * 2.55, 255 - $tint * 2.55, 255 - $tint * 2.55)
 }

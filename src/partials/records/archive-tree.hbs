@@ -3,7 +3,7 @@
 			<h2 class="archive-tree__title">Browse this archive</h2>
 		</div>
 		<div class="columns medium-4">
-			
+
 			<div class="searchbox searchbox--archive">
 				<input type="search" class="searchbox__search" placeholder="Or search within this archive">
 				<button aria-label="search" class="searchbox__submit">
@@ -13,67 +13,16 @@
 		</div>
 
 
-		<div class="archive-tree columns">
-			<!-- ul role="tree">
-				<li role="treeitem" aria-expanded="true">
-					<div class="archive-tree__label">
-						<button aria-controls="group1"></button>
-						<a class="">Top level</a>
-					</div>
-
-				
-					<ul role="group" id="group1">
-						<li role="treeitem" aria-expanded="false">
-							<div class="archive-tree__label">
-								<button aria-controls="groupX"></button>
-								<a class="">level 2</a>
-							</div>
-						</li>
-						<li role="treeitem" aria-expanded="true">
-							<div class="archive-tree__label">
-								<button aria-controls="group1"></button>
-								<a class="">level 2</a>
-							</div>
-					
-							<ul role="tree">
-								<li role="treeitem" aria-expanded="true">
-									<div class="archive-tree__label">
-										<button aria-controls="groupX"></button>
-										<a class="">level 3</a>
-									</div>
-								</li>
-								<li role="treeitem">
-									<div class="archive-tree__label">
-										<button disabled></button>
-										<a class="">level 3 document {{lorem count="3"}}</a>
-									</div>
-								</li>
-							</ul>
-
-						</li>
-
-						<li role="treeitem" aria-expanded="false">
-							<div class="archive-tree__label">
-								<button aria-controls="group1"></button>
-								<a class="">level 2</a>
-							</div>
-						</li>
-				
-					</ul>
-				
-				</li>
-			</ul -->
-
-
+		<div class="archive-tree columns" id="archive-tree">
 
 			<ul role="tree">
 				<li role="treeitem" aria-expanded="true">
-					<div class="archive-tree__label {{#if top}}current{{/if}}">
+					<div class="archive-tree__label archive-tree__label--root {{#if top}}current{{/if}}">
 						<button aria-controls="group1"></button>
 						<a class="" href="archive.html">BAB The Babbage Papers</a>
 					</div>
 
-				
+
 					<ul role="group" id="group1">
 						<li role="treeitem" aria-expanded="false">
 							<div class="archive-tree__label">
@@ -86,7 +35,7 @@
 								<button aria-controls="group1"></button>
 								<a class="">BAB/B Drawings and tracings of Difference Engine No. 2.</a>
 							</div>
-					
+
 							<ul role="tree">
 								<li role="treeitem">
 									<div class="archive-tree__label">
@@ -122,34 +71,32 @@
 								<a class="">BAB/D Drawings of the Analytical Engine</a>
 							</div>
 						</li>
-				
+
 						<li role="treeitem" aria-expanded="false">
 							<div class="archive-tree__label">
 								<button aria-controls="group1"></button>
 								<a class="">BAB/E Drawings of tools</a>
 							</div>
 						</li>
-				
+
 						<li role="treeitem" aria-expanded="false">
 							<div class="archive-tree__label">
 								<button aria-controls="group1"></button>
 								<a class="">BAB/F Notations of the Analytical Engine</a>
 							</div>
 						</li>
-				
+
 						<li role="treeitem" aria-expanded="false">
 							<div class="archive-tree__label">
 								<button aria-controls="group1"></button>
 								<a class="">BAB/G Cardboard drawings of the Analytical Engine</a>
 							</div>
 						</li>
-				
+
 					</ul>
-				
+
 				</li>
 			</ul>
 
 		</div>
 	</div>
-
-

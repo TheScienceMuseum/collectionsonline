@@ -1,0 +1,24 @@
+<label for="searchbox__search" class="searchbar__placeholder-for-small hide-for-medium">Search objects, people, categories, object numbers etc.</label>
+<div class="searchbox" id="searchbox" data-toggler="searchbox--focussed">
+  <input type="search" class="searchbox__search" placeholder="Search objects, people, categories, object numbers etc." data-toggle-focus="searchbox">
+  <button aria-label="search" class="searchbox__submit">
+    {{> icon i="search" size="32" }}
+  </button>
+
+  {{#if filters}}
+    <div class="searchbox__filters">
+
+      <div class="filterbadge" data-filter="Category">
+        <div class="filterbadge__label">Category</div>
+        <a class="filterbadge__x" title="remove">✕</a>
+      </div>
+
+      <div class="filterbadge" data-filter="Maker">
+        <div class="filterbadge__label">Maker</div>
+        <a class="filterbadge__x" title="remove">✕</a>
+      </div>
+
+    </div>
+  {{/if}}
+
+</div>

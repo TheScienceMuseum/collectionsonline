@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 // HELPERS
-// mixins, functions and other settings 
+// mixins, functions and other settings
 //-----------------------------------------------------------------------------
 
 $timing-defaults: 0.25s ease-out;
@@ -35,6 +35,18 @@ $timing-defaults: 0.25s ease-out;
 
 }
 
+@mixin ul-icons() {
+	margin: 0.5rem 0;
+	padding: 0;
+	li {
+		display: block;
+		margin: 0.5rem 0;
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
 @mixin icon-bullet($icon, $size:0.75rem, $left: 0){
 	position: relative;
 	padding-left: $size * 4/3 + $left;
@@ -54,9 +66,24 @@ $timing-defaults: 0.25s ease-out;
 
 }
 
+//certain icons used to represent recordtype should always be a mapped color.
+@each $type, $c in $recordtypes {
+	.icon-#{$type} {
+		color: $c;
+	}
+}
+
 
 
 @mixin small-caps {
 	font-size: 75%;
 	text-transform: uppercase;
+}
+
+@mixin control-base {
+	border: 1px grey(20) solid;
+	box-shadow: 0 1px 1px rgba(black, 0.1);
+	border-radius: 2px;
+	background: white;
+
 }

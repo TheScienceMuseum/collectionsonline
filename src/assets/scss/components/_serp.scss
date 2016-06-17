@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 // .row
-// ↳ .searchresults & .filtercolumn - are both quasi-columns, 
+// ↳ .searchresults & .filtercolumn - are both quasi-columns,
 // with filtercolumn collapsing to positioned or hidden states
 //-----------------------------------------------------------------------------
 
@@ -8,7 +8,7 @@
 	padding: 0;
 	margin: 0 !important;
 	position: relative;
-	
+
 	&__column {
 		@include grid-column(6);
 		@include grid-column-end;
@@ -20,12 +20,12 @@
 			@include grid-column(3);
 			@include grid-column-end;
 		}
-	
+
 	}
 	&__list {
-		@include grid-column();	
+		@include grid-column();
 	}
-	
+
 	&--filtersactive {
 		@include breakpoint(medium) {
 			@include grid-col-size(8);
@@ -33,7 +33,7 @@
 		@include breakpoint(large) {
 			@include grid-col-size(9);
 		}
-	
+
 		.searchresults__column {
 			@include breakpoint(medium) {
 				@include grid-column(6);
@@ -52,11 +52,11 @@
 	padding-right: 0.5rem;
 	position: relative;
 	display: none;
-	
+
 	&--filtersactive {
 		display: block;
 	}
-	// positioned on top for small screens, col on right for larger 
+	// positioned on top for small screens, col on right for larger
 	@include breakpoint(small only) {
 		position: absolute;
 		z-index: 1;
@@ -71,12 +71,12 @@
 	@include breakpoint(large) {
 		@include grid-col-size(3);
 	}
-    
+
 }
-    
-    
+
+
 //-----------------------------------------------------------------------------
-// 
+//
 // shared inheritance for .resultlist and .resultcard pattern
 //-----------------------------------------------------------------------------
 
@@ -86,11 +86,11 @@
 	color: black;
 	background-color: white;
 	overflow: hidden;
-	box-shadow: 0 2px 8px grey(20);	
+	box-shadow: 0 2px 8px rgba(black,0.2);
 	transition: background-color $timing-defaults, box-shadow $timing-defaults, transform $timing-defaults;
 	&:hover {
 		//background-color: grey(20);
-		box-shadow: 0 2px 8px grey(40);
+		box-shadow: 0 2px 8px rgba(black,0.4);
 		//transform: scale3d(1.02,1.02,1);
 		//top: -12px;
 		transform: translate3d(0, -2px, 0);
@@ -101,9 +101,11 @@
 		background-color: grey(80);
 		position: relative;
 		overflow: hidden;
-		
+
 		img {
 			position: absolute;
+			width: 100%;
+			height: auto;
 			max-width: 100%;
 			max-height: 100%;
 			top: 0;
@@ -112,7 +114,7 @@
 			bottom: 0;
 			margin: auto;
 		}
-		
+
 		figcaption {
 			overflow: hidden;
 			position: absolute;
@@ -128,7 +130,7 @@
 			font-weight: 300;
 		}
 	}
-	
+
 
 	&__title {
 		font-weight: 600;
@@ -149,7 +151,7 @@
 	}
 	p { margin: 0; }
 
-	
+
 	@each $type, $c in $recordtypes {
 		&--#{$type} {
 			border-color: $c;
@@ -159,14 +161,14 @@
 			.icon { color: $c; }
 		}
 	}
-	
+
 	//used as related results, slight smaller
 	&--related {
 		//background-color: white;
 	}
 
 }
- 
+
 //-----------------------------------------------------------------------------
 // .resultlist
 // The list view display of a result
@@ -177,7 +179,7 @@
 	//border-bottom: 1px grey(30) solid;
 	border-left: 0.25rem grey(30) solid;
 	margin-bottom: 1px;
-	
+
 	&__figure {
 		width: 4rem; //aspect 4:3
 		height: 3rem; //aspect 4:3
@@ -188,8 +190,8 @@
 		position: relative;
 		top: 0.15rem;
 	}
-	
-} 
+
+}
 
 //-----------------------------------------------------------------------------
 // .resultcard
@@ -200,13 +202,13 @@
 	@include resultclass;
 	margin-bottom: 1rem;
 	border-bottom: 0.25rem grey(30) solid;
-	
+
 	&__figure {
 		width: 100%; //aspect 4:3
 		padding-top: 75%; //aspect 4:3
 		border-bottom: 1px white solid;
 	}
-	
+
 	&__info {
 		height: 7 + 0.25rem; // = 2padding, 5 lines text, 1 margin!
 		overflow: hidden;
@@ -221,7 +223,7 @@
 			content: '';
 		}
 	}
-	
+
 	&__title {
 		.icon {
 			float: right;
@@ -230,28 +232,38 @@
 			clear: right;
 		}
 	}
-	
-	
+
+
 	//used as related results, slight smaller
 	&--related {
 		//background-color: white;
 	}
-	
-}
 
+	//used on home page, slight bigger
+	&--collection {
+	}
+	&--collection &__title {
+		font-size: 1.5rem;
+	}
+	&--collection &__description {
+		font-size: 1rem;
+		line-height: rem-calc(18);
+	}
+
+}
 
 
 
 //-----------------------------------------------------------------------------
 // .filtercolumn
-// ↳ .filterpanel 
+// ↳ .filterpanel
 //   ↳ .filter
 //-----------------------------------------------------------------------------
-   
+
 .filterpanel {
 	background-color: white;
     border: 1px grey(20) solid;
-	box-shadow: 0 2px 8px grey(20);	
+	box-shadow: 0 2px 8px grey(20);
 	@include breakpoint(small only) {
 		position: absolute;
 		top: -1.5rem;
@@ -259,11 +271,11 @@
 		box-shadow: 0 8px 16px rgba(black, 0.3);
 	}
 }
- 
+
 .filter {
 	padding: 0.5rem;
     & + & { border-top: 1px grey(20) solid; }
-	
+
 	&__name {
 		position: relative;
 		padding-left: 1.5rem;
@@ -275,7 +287,7 @@
 				transform: rotate(90deg);
 			}
 		}
-		
+
 		@include icon-bullet(arrow_right,1.5rem);
 	}
 	&__options {
@@ -299,7 +311,7 @@
 			line-height: rem-calc(16);
 			&:hover { color: mix($c-cyan, $c-blue) }
 		}
-		
+
 	}
 	&__count {
 		color: grey(50);
@@ -311,7 +323,7 @@
 			display: block;
 		}
 	}
-	
+
 	&--open {
 		.filter__name {
 			@include icon-bullet(arrow_down,1.5rem);
@@ -331,16 +343,16 @@
 		//background-image: linear-gradient(white, grey(5));
 		a { color: mix($c-cyan, $c-blue) }
 	}
-	
-		
+
+
 	&__daterange {
-		label { 
+		label {
 			float: left;
 			width: 50%;
 			margin-right: -1px;
 			padding: 0.125rem 0;
 		}
-	
+
 	}
 }
 
@@ -350,14 +362,6 @@
 //-----------------------------------------------------------------------------
 // other page .control 's
 //-----------------------------------------------------------------------------
-
-@mixin control-base {
-	border: 1px grey(20) solid;
-	box-shadow: 0 1px 1px rgba(black, 0.1);
-	border-radius: 2px;
-	background: white;
-
-}
 
 .controls { //.row
 	margin-top: 2rem;
@@ -369,7 +373,7 @@
 	display: inline-block;
 	height: rem-calc(40);
 	position: relative;
-	
+
 	&__label {
 		float: left;
 		line-height: rem-calc(16);
@@ -385,7 +389,7 @@
 		float: left;
 		height: rem-calc(40);
 		margin-top: -1px;
-		margin-right: -1px; 
+		margin-right: -1px;
 		border: 1px grey(20) solid;
 		&:not(&--active):hover {
 			border: 1px grey(30) solid;
@@ -400,14 +404,14 @@
 			background-color: grey(10);
 			color: grey(50);
 		}
-		
+
 		label { //alt posiiton of label
 			float: left;
 			line-height: rem-calc(16);
 			padding: rem-calc(16);
 		}
 	}
-	
+
 	&--filters {
 		width: 100%;
 		.control__button { float:right; }
@@ -423,7 +427,7 @@
 		background-image: url(/assets/img/filter-drop.svg);
 		background-repeat: no-repeat;
 	}
-	
+
 }
 
 
@@ -458,23 +462,33 @@
 
 	&__label {
 	}
-	
+
 	select {
 		width: auto;
 		height: rem-calc(40);
 		margin-top: -1px;
-		margin-right: -1px; 
+		margin-right: -1px;
 		line-height: 1rem;
 		padding-right: 1.5rem;
 		border-radius: 0 2px 2px 0;
 		background-position: right -1rem center; //need to check support
 		&:hover {
-			// because F is already using bg image for disclosure triangle, to add extra bg on hover means retrieving existing properties first. 
-			background-image: 
+			// because F is already using bg image for disclosure triangle, to add extra bg on hover means retrieving existing properties first.
+			background-image:
 			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="24" viewBox="0 0 32 24"><polygon points="0,0 32,0 16,24" style="fill: rgb%28138, 138, 138%29"></polygon></svg>'), linear-gradient(white, grey(10));
 			background-size: 9px 6px, cover;
 			background-origin: content-box, border-box;
 			background-repeat: no-repeat, repeat;
 		}
 	}
+}
+
+
+//-----------------------------------------------------------------------------
+// home page variation
+//-----------------------------------------------------------------------------
+
+.home-collections {
+	padding-top: 2rem;
+	padding-bottom: 2rem;
 }

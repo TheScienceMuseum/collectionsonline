@@ -12,27 +12,33 @@
 	padding-top: 2rem;
 	padding-bottom: 2rem;
 	background: white;
+
 	&__title {
 		font-size: 3rem;
 		font-weight: 600;
+
 		.icon {
-		font-size: 2rem;
+			font-size: 2rem;
 		}
 	}
 
 	&__dl {
 		font-size: 1.25rem;
+
 		dt,
 		dd {
 			display: inline;
 			margin: 0;
 		}
+
 		dt {
 			@include small-caps;
 		}
+
 		dd {
 			font-weight: 500;
 		}
+
 		a {
 			@include text-link();
 		}
@@ -41,7 +47,6 @@
 	&--dark {
 		background: grey(80);
 		color: white;
-
 	}
 }
 
@@ -100,23 +105,24 @@
 		border-width: 1px 0;
 	}
 
-@mixin imgpanelH {
+@mixin imgpanel-h {
 	$h: 36rem; // this might change after load?
 	height: $h;
 	transition: height $timing-defaults;
 }
 
 .record-imgpanel__slick {
-	@include imgpanelH;
+	@include imgpanel-h;
 	margin: 0;
 	background-color: black;
 
 	& .pic {
-		@include imgpanelH;
+		@include imgpanel-h;
 		width: auto;
 		opacity: 0.5;
 		filter: blur(2px);
 	}
+
 	.slick-active .pic {
 		opacity: 1;
 		outline: 1px white solid;
@@ -130,16 +136,18 @@
 }
 
 .record-imgpanel__singleimg {
-	@include imgpanelH;
+	@include imgpanel-h;
 	margin: 0;
 	background-color: grey(80);
+
 	& .pic {
-		@include imgpanelH;
+		@include imgpanel-h;
 		width: auto;
 		display: block;
 		margin: auto;
 	}
 }
+
 .record-imgpanel__slickthumbs {
 	position: relative;
 	height: 3rem;
@@ -401,15 +409,7 @@
 
 	a { @include text-link }
 	ul {
-		margin: 0.5rem 0;
-		padding: 0;
-	}
-	li {
-		display: block;
-		margin: 0.5rem 0;
-		&:last-child {
-			margin-bottom: 0;
-		}
+		@include ul-icons;
 	}
 
 	ul.related-person li {
@@ -425,12 +425,17 @@
 	}
 }
 
-.taxonomy li {
-	@include icon-bullet(taxonomy);
-	@for $i from 0 to 5 {
-	  &:nth-child(#{$i}) {
-		 margin-left: $i - 0.5rem;
-	  }
+.taxonomy {
+	@include ul-icons;
+	li {
+		@include icon-bullet(taxonomy);
+		margin-top: 0;
+		margin-bottom: 0;
+		@for $i from 0 to 5 {
+		  &:nth-child(#{$i}) {
+			 margin-left: $i - 0.5rem;
+		  }
+		}
 	}
 }
 
@@ -495,8 +500,10 @@
 	button {
 		width: rem-calc(40);
 		height: rem-calc(40);
-		outline: 1px white solid;
+		outline: 0 red solid;
 		border-width: 0 0 1px 1px;
+		border-color: white;
+		border-style: solid;
 		float: left;
 		background-size: 1rem;
 		background-position: center center;
@@ -522,7 +529,7 @@
 	}
 
 	li li {
-		margin-left: rem-calc(41);
+		margin-left: rem-calc(40);
 
 		button, a {
 			background-color: grey(30);
@@ -541,22 +548,20 @@
 
 	}
 	&__label {
-		//background-color: grey(20);
-		padding-left: 1px;
 		overflow: auto;
-		border-bottom: 1px white solid;
 		border-top: 1px white solid;
 		position: relative;
-		margin-left: -1px;
+	}
+	&__label--root { //toppermost
+		font-size: 2rem;
 	}
 
 	&__label a {
 		display: block;
-		//float: left;
 		margin-left: rem-calc(40);
-		//background: red;
-		padding: 0.5rem 1rem;
+		padding: rem-calc(8 16 7 16);
 		border-left: 1px white solid;
+		border-bottom: 1px white solid;
 		color: black;
 
 		&:hover {

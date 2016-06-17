@@ -7,8 +7,8 @@ fact:
     value: Charles Babbage
     link: person.html
   2:
-    key: Place made
-    value: London, England in 1850
+    key: Made
+    value: <a>London, England</a> in <a>1850</a>
 slides:
   - 121689_3.png
   - 121690_3.png
@@ -25,7 +25,7 @@ slides:
 
 details:
   -
-    key: Makers 
+    key: Makers
     value: <a href="#">Charles Babbage</a>, <a href="#">Ada Lovelace</a>
   -
     key: Category
@@ -49,6 +49,9 @@ details:
   -
     key: Credit
     value: Board of trustees of the British Library
+  -
+    key: Key
+    value: Keys can have multiple values, with multiple dd's in one dl (but difficult to output with current template construction!)
   #-
   #  key: Record completeness
   #  value: '<div class="completeness large-6 medium-9" title="completeness: mostly there"><div style="width:60%">completeness: mostly there</div></div>'
@@ -72,28 +75,28 @@ details:
 				{{/each}}
 			</div>
 		</div>
-		
+
 		{{> record-imgpanel__controlbar}}
 	</div>
 
 	<section class="white">
 		<div class="row">
 			<div class="columns medium-8">
-			
+
 				<p class="record-description">This is the main description text.</p>
 				<div class="record-longdesc">
-				
+
 					<p>Difference Engine No 2 designed from 1847-1849 by British computing pioneer Charles Babbage (1791-1871), which excludes printing mechanism. Size 2.1m high, 3.4m long, 0.5m wide. The engine was built by the Science Museum and the main part was completed in June 1991 for the bicentennial year of Babbage's birth. The printing mechanism was completed in 2000. Doron Swade, senior curator of computing and IT, oversaw its construction. Babbage conceived the engine to calculate a series of numerical values and automatically print the results. Difference Engine No 2 was never constructed in his lifetime.</p>
 					<p>This is the long description text. {{lorem count="5"}}</p>
-					
-				
+
+
 				</div>
-			
+
 			</div>
 			<div class="columns medium-4">
-		
+
 				{{> ondisplay }}
-								
+
 				{{> record-related-people }}
 
 			<div class="panel panel__text">
@@ -104,9 +107,9 @@ details:
 					<li><a href="#">History of Ada lovelace</a></li>
 				</ul>
 			</div>
-						
+
 				{{!-- {{> panel-taxonomy}} moved lower to record-details. but panels could also be used here. --}}
-						
+
 			</div>
 		</div>
 	</section>
@@ -118,4 +121,3 @@ details:
 </div>
 
 {{> global-footer }}
-

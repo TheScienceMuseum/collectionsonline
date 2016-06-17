@@ -15,8 +15,11 @@
 
 	//searchbox placeholder text gets hidden for small, and this shown instead
 	&__placeholder-for-small {
-		margin: -1.5rem 0.125rem -0.5rem;
 		@include breakpoint(medium) { display: none; }
+		margin: 1rem 0.125rem -0.5rem;
+	}
+	&__strap + &__placeholder-for-small {
+		margin: -1.5rem 0.125rem -0.5rem;
 	}
 }
 

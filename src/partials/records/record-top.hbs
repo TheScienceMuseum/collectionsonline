@@ -5,9 +5,9 @@
 			{{#each fact}}
 				<dl class="record-top__dl">
 					<dt>{{ this.key }}:</dt>
-					<dd><a href="{{#if this.link }}{{this.link}}{{/if}}{{#unless this.link }}#{{/unless}}" title="[link to filtered search results]" class="searchlink">{{ this.value }}</a></dd>
+					<dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{{ this.value }}}{{#if this.link }}</a>{{/if}}</dd>
 				</dl>
-			{{/each}}		
+			{{/each}}
 		  </div>
-		</div> 
+		</div>
 	</section>

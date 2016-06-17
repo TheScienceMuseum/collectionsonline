@@ -71,7 +71,7 @@ $global-weight-bold: 500;
 $global-radius: 0;
 $global-text-direction: ltr;
 $global-flexbox: false;
-$print-transparent-backgrounds: true;
+$print-transparent-backgrounds: false;
 
 @include add-foundation-colors;
 
@@ -561,4 +561,3 @@ $topbar-submenu-background: $topbar-background;
 $topbar-title-spacing: 1rem;
 $topbar-input-width: 200px;
 $topbar-unstack-breakpoint: medium;
-

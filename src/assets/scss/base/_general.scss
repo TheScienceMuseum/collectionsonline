@@ -1,0 +1,174 @@
+
+// then our stuff
+
+body {
+	background-color: grey(10);
+}
+
+abbr {
+	@include small-caps;
+	border: 0;
+	color: inherit;
+}
+
+//similar to html5 details/summary element
+.details {
+	&__summary {
+		@include control-base;
+		cursor: pointer;
+		background-color: inherit;
+		display: block;
+		padding: 0.25rem 0.5rem;
+		margin-bottom: 1rem;
+		@include icon-bullet(arrow_right, $size: 1rem, $left: 0.5rem);
+
+		&:hover {
+			border: 1px grey(30) solid;
+			background-image: linear-gradient(white, grey(10));
+		}
+	}
+
+	&[aria-expanded=true] &__summary {
+		@include icon-bullet(arrow_down, $size: 1rem, $left: 0.5rem);
+	}
+
+	&__content {
+		display: none; //default
+	}
+
+	&[aria-expanded="true"] &__content {
+		display: block;
+	}
+
+}
+
+.icon {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	fill: currentColor;
+}
+
+.globalheader {
+	background-color: black;
+
+	&__museumlink {
+		@include grid-column(3);
+		& + & { // all except first
+			border-left: 1px grey(50) solid;
+		}
+		img {
+			display: block;
+			margin: 0 auto;
+			max-height: rem-calc(88);
+		}
+	}
+}
+
+.globalfooter {
+	background-color: black;
+	color: grey(50);
+	padding: 1rem 0;
+	text-align: center;
+
+	&__logo {
+		@media #{$medium-up} { float: left; }
+	}
+
+	ul {
+		margin-top: 1rem;
+	}
+
+	a {
+		color: white;
+	}
+}
+
+.sitefooter {
+	background-color: grey(20);
+	padding-top: 2rem;
+	padding-bottom: 1rem;
+	font-size: rem-calc(14);
+
+	.columns {
+		padding-bottom: 1rem;
+	}
+	&__h {
+		margin: 0;
+		font-weight: 500;
+		font-size: rem-calc(16);
+	}
+
+	a {
+		color: black;
+		&:hover { color: $c-blue; }
+	}
+}
+
+.page {
+	//margin-top: 2rem;
+	margin-bottom: 2rem;
+}
+
+.white { //section
+	background: white;
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+}
+
+.ul-piped {
+	margin: 0;
+
+	li {
+		display: inline-block;
+		border-right: 1px solid;
+		&:last-child { border-right: 0; }
+		padding: rem-calc(0 12 0 9);
+		&:first-child { padding-left: 0; }
+		line-height: 1;
+	}
+}
+
+.ul-block {
+	margin: 0 0 1rem 0;
+	&:last-child { margin: 0; } // only bottom margin if something is following it
+	li {
+		display: block;
+		line-height: 1.2;
+	}
+
+	li+ li { margin-top: rem-calc(4); }
+}
+
+.ul-icons {
+	@include ul-icons;
+}
+
+
+//utility classes:
+
+.bleed { //probably for img
+	width: 100%;
+	max-width: auto;
+}
+//debug tool
+.grid-overlay {
+	display: none; //or not
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: rgba(pink, 0.2);
+
+	.column,
+	.columns {
+		background: rgba(pink, 0.2);
+		height: 100%;
+	}
+
+	.contents {
+		background: rgba(pink, 0.5);
+		height: 100%;
+	}
+}
