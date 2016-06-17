@@ -26,8 +26,8 @@ module.exports = ({ elastic }) => ({
         mediaTypes: {
           'text/html' (request, reply) {
             elastic.search({ q: request.query.q }, (err, result) => {
+              console.log(err, result);
               if (err) return reply(err);
-              console.log(result);
 
               const data = {
                 searchresults: exampleData,
@@ -35,11 +35,17 @@ module.exports = ({ elastic }) => ({
                 title: 'Search Results'
               };
 
+              // TODO: Transform for templates
               reply.view('index', data);
             });
           },
-          'application/vnd.api+json' (req, reply) {
-            reply('"{"response": "JSONAPI"}"').header('content-type', 'application/vnd.api+json');
+          'application/vnd.api+json' (request, reply) {
+            elastic.search({ q: request.query.q }, (err, result) => {
+              console.log(err, result);
+              if (err) return reply(err);
+              // TODO: Transform to jsonapi
+              reply(result).header('content-type', 'application/vnd.api+json');
+            });
           }
         }
       }
