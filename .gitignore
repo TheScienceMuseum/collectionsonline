@@ -35,7 +35,8 @@ bower_components
 
 public/bundle.js
 public/bundle.css
-public/assets/icons
+public/assets/icons/*
+!public/assets/icons/.gitkeep
 
 # Project configuration
 .corc
