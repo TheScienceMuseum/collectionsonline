@@ -35,6 +35,7 @@ bower_components
 
 public/bundle.js
 public/bundle.css
+public/assets/icons
 
 # Project configuration
 .corc
