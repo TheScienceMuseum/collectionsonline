@@ -5,7 +5,7 @@
 ## Getting started
 
 1. Install [Node.js](https://nodejs.org/en/) 6.x
-2. Install dependencies: `npm install`
+2. Install dependencies: `npm install && bower install`
 3. Copy `.corc.template` to `.corc` in the project route
 4. Add required config values to `.corc`
 5. Start the server: `npm start`
