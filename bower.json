@@ -1,0 +1,30 @@
+{
+  "name": "codesign",
+  "version": "1.0.0",
+  "authors": [
+    "toby@tobystokes.uk"
+  ],
+  "description": "Design templates for collections online",
+  "main": "gulpfile.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "foundation-sites": "~6.2.2",
+    "motion-ui": "~1.2.2",
+    "jquery": "^2.2.3",
+    "svgxuse": "^1.1.16",
+    "slick-carousel": "^1.5.9",
+    "svg4everybody": "^2.0.3",
+    "typeahead.js": "^0.11.1",
+    "clipboard": "^1.5.10",
+    "openseadragon": "^2.2.0"
+  },
+  "private": true,
+  "devDependencies": {}
+}

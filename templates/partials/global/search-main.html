@@ -1,0 +1,47 @@
+<section class="searchbar">
+	<div class="row columns">
+
+		{{#unless reduced}}
+			<h1 class="searchbar__strap">Search our collection</h1>
+			{{> global/searchbox filters="filters"}}
+
+			<nav class="searchtabs">
+				<a class="searchtab searchtab--active">
+					{{> global/icon i="all" }}
+					<span class="searchtab__label">All</span>
+					<span class="searchtab__count">1234</span>
+				</a>
+				<a class="searchtab" href="#">
+					{{> global/icon i="person" }}
+					<span class="searchtab__label">People</span>
+					<span class="searchtab__count">1234</span>
+				</a>
+				<a class="searchtab" href="#">
+					{{> global/icon i="object" }}
+					<span class="searchtab__label">Objects</span>
+					<span class="searchtab__count">99</span>
+				</a>
+				<a class="searchtab" href="#">
+					{{> global/icon i="archivedoc" }}
+					<span class="searchtab__label">Documents</span>
+					<span class="searchtab__count">5678</span>
+				</a>
+			</nav>
+		{{/unless}}
+
+		{{#if home}}
+			<h1 class="searchbar__strap">{{strap}}</h1>
+			<p>{{intro}}</p>
+		{{/if}}
+
+		{{#if reduced}}
+			{{> global/searchbox}}
+		{{/if}}
+
+	</div>
+
+	{{#if home}}
+		{{> search/home-collections}}
+	{{/if}}
+
+</section>

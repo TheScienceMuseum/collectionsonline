@@ -1,0 +1,102 @@
+	<div class="row">
+		<div class="columns medium-8">
+			<h2 class="archive-tree__title">Browse this archive</h2>
+		</div>
+		<div class="columns medium-4">
+
+			<div class="searchbox searchbox--archive">
+				<input type="search" class="searchbox__search" placeholder="Or search within this archive">
+				<button aria-label="search" class="searchbox__submit">
+					{{> global/icon i="search" size="24" }}
+				</button>
+			</div>
+		</div>
+
+
+		<div class="archive-tree columns" id="archive-tree">
+
+			<ul role="tree">
+				<li role="treeitem" aria-expanded="true">
+					<div class="archive-tree__label archive-tree__label--root {{#if top}}current{{/if}}">
+						<button aria-controls="group1"></button>
+						<a class="" href="archive.html">BAB The Babbage Papers</a>
+					</div>
+
+
+					<ul role="group" id="group1">
+						<li role="treeitem" aria-expanded="false">
+							<div class="archive-tree__label">
+								<button aria-controls="groupX"></button>
+								<a class="">BAB/A Drawings of the Analytical Engine</a>
+							</div>
+						</li>
+						<li role="treeitem" aria-expanded="true">
+							<div class="archive-tree__label">
+								<button aria-controls="group1"></button>
+								<a class="">BAB/B Drawings and tracings of Difference Engine No. 2.</a>
+							</div>
+
+							<ul role="tree">
+								<li role="treeitem">
+									<div class="archive-tree__label">
+										<button disabled></button>
+										<a class="">BAB/B/002 Plan of Difference Engine No. 2. Tracing of BAB A/164.</a>
+									</div>
+								</li>
+								<li role="treeitem">
+									<div class="archive-tree__label">
+										<button disabled></button>
+										<a class="">BAB/B/003 Difference Engine No. 2. Addition carriage and mode of driving the axis. Tracing of BAB A/171.</a>
+									</div>
+								</li>
+								<li role="treeitem">
+									<div class="archive-tree__label">
+										<button disabled></button>
+										<a class="">BAB/B/004 Plan of the calculating part with the means of conveying numbers to stereotype sectors. Tracing of BAB A/176.</a>
+									</div>
+								</li>
+								<li role="treeitem">
+									<div class="archive-tree__label {{#if doc}}current{{/if}}">
+										<button disabled></button>
+										<a href="archivedoc.html">BAB/B/006 General plan and detail of the driving of the calculating part of Difference Engine No. 2. Tracing of BAB A/161. </a>
+									</div>
+								</li>
+							</ul>
+
+						</li>
+
+						<li role="treeitem" aria-expanded="false">
+							<div class="archive-tree__label">
+								<button aria-controls="group1"></button>
+								<a class="">BAB/D Drawings of the Analytical Engine</a>
+							</div>
+						</li>
+
+						<li role="treeitem" aria-expanded="false">
+							<div class="archive-tree__label">
+								<button aria-controls="group1"></button>
+								<a class="">BAB/E Drawings of tools</a>
+							</div>
+						</li>
+
+						<li role="treeitem" aria-expanded="false">
+							<div class="archive-tree__label">
+								<button aria-controls="group1"></button>
+								<a class="">BAB/F Notations of the Analytical Engine</a>
+							</div>
+						</li>
+
+						<li role="treeitem" aria-expanded="false">
+							<div class="archive-tree__label">
+								<button aria-controls="group1"></button>
+								<a class="">BAB/G Cardboard drawings of the Analytical Engine</a>
+							</div>
+						</li>
+
+					</ul>
+
+				</li>
+			</ul>
+
+		</div>
+	</div>

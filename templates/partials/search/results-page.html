@@ -1,0 +1,47 @@
+{{!--  I'm hiding the filters by default for grid view, but showing for list. TBC --}}
+
+<div class="page" role="main">
+
+	<div class="controls row">
+		<div class="large-9 medium-8 small-6 columns">
+			<div class="control">
+				<label class="control__label">View:</label>
+				<div class="control__buttons">
+				  <a href="index.html" class="control__button {{#ifpage 'index'}}control__button--active{{/ifpage}}" title="View as grid">{{> global/icon i="grid" }}</a>
+				  <a href="results-list.html" class="control__button {{#ifpage 'results-list'}}control__button--active{{/ifpage}}" title="View as list">{{> global/icon i="list" }}</a>
+				</div>
+			</div>
+		</div>
+		<div class="large-3 medium-4 small-6 columns">
+			<div class="control control--filters {{#ifpage 'results-list'}}control--active{{/ifpage}}" id="control--filters" data-toggler=".control--active">
+				  <label class="control__label" for="fb">Refine search</label>
+				  <button class="control__button" id="fb" data-toggle="searchresults filtercolumn control--filters">{{> global/icon i="filter_list" }}</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+
+		<div class="filtercolumn {{#unlesspage 'index'}}filtercolumn--filtersactive{{/unlesspage}}" id="filtercolumn" data-toggler=".filtercolumn--filtersactive">
+
+			{{> search/filters }}
+
+		</div>
+
+		<div class="row searchresults {{#unlesspage 'index'}}searchresults--filtersactive{{/unlesspage}}" id="searchresults" data-toggler=".searchresults--filtersactive">
+
+			{{#ifpage 'index'}}{{> search/results-grid}}{{/ifpage}}
+			{{#ifpage 'results-list'}}{{> search/results-list }}{{/ifpage}}
+			{{#ifpage 'noresults'}}{{> search/noresults }}{{/ifpage}}
+
+
+		</div>
+
+
+
+
+	</div>
+
+	{{> search/pagination }}
+
+</div>

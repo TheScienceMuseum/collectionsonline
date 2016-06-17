@@ -1,0 +1,13 @@
+	<section class="record-top {{class}}">
+		<div class="row">
+		  <div class="large-12 columns">
+			<h1 class="record-top__title">{{> global/icon i=type}} {{title}}</h1>
+			{{#each fact}}
+				<dl class="record-top__dl">
+					<dt>{{ this.key }}:</dt>
+					<dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{{ this.value }}}{{#if this.link }}</a>{{/if}}</dd>
+				</dl>
+			{{/each}}
+		  </div>
+		</div>
+	</section>

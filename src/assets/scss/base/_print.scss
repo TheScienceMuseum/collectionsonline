@@ -1,0 +1,24 @@
+//-----------------------------------------------------------------------------
+// Print rules, hide the nav etc.
+//-----------------------------------------------------------------------------
+
+@media print {
+
+  .globalheader,
+  .searchbox,
+  .searchbar,
+  .searchtabs,
+  .sitefooter,
+  .globalfooter {
+    display: none;
+  }
+
+  // Don't 'Display the URL of a link after the text, like foundation is want to do. nice idea but this site is too linky.
+  a[href]:after { content: '' !important; }
+
+  .record-imgpanel {
+    background-color: transparent !important;
+  }
+
+
+}

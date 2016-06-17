@@ -25,6 +25,7 @@ build/Release
 
 # Dependency directory
 node_modules
+bower_components
 
 # Optional npm cache directory
 .npm
@@ -34,6 +35,8 @@ node_modules
 
 public/bundle.js
 public/bundle.css
+public/assets/icons/*
+!public/assets/icons/.gitkeep
 
 # Project configuration
 .corc

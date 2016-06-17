@@ -1,0 +1,19 @@
+@charset 'utf-8';
+
+// general settings and variables, required before foundation
+@import 'base/colour';
+@import 'base/type';
+@import 'base/helpers';
+@import 'base/print';
+
+// foundation _settings file, and component extensions
+@import 'base/foundation-settings';
+@import 'base/foundation-components';
+
+@import 'slick.scss'; // from bower currently
+
+@import 'base/general';
+@import 'components/search';
+@import 'components/serp';
+@import 'components/record';
+@import 'components/slick';

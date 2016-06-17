@@ -1,0 +1,64 @@
+// Photoshop blend modes nicked from https://github.com/heygrady/scss-blend-modes
+// this is useful too: http://jackiebalzer.com/color
+
+//-----------------------------------------------------------------------------
+// Normal
+//-----------------------------------------------------------------------------
+
+@function blend-normal ($foreground, $background) {
+  $opacity: opacity($foreground);
+  $background-opacity: opacity($background);
+
+  // calculate opacity
+  $bm-red: red($foreground) * $opacity + red($background) * $background-opacity * (1 - $opacity);
+  $bm-green: green($foreground) * $opacity + green($background) * $background-opacity * (1 - $opacity);
+  $bm-blue: blue($foreground) * $opacity + blue($background) * $background-opacity * (1 - $opacity);
+  @return rgb($bm-red, $bm-green, $bm-blue);
+}
+
+//--------------------------------
+// Multiply
+//--------------------------------
+@function blend-multiply ($foreground, $background) {
+  $bm-red: red($background) * red($foreground) / 255;
+  $bm-green: green($background) * green($foreground) / 255;
+  $bm-blue: blue($background) * blue($foreground) / 255;
+
+  @return blend-normal(rgba($bm-red, $bm-green, $bm-blue, opacity($foreground)), $background);
+}
+
+$c-red: #bc141a;
+$c-blue: #1F4191; // sci museum main blue
+$c-lightgrey: #DADADA;
+$c-whiteish: #fcfcfc;
+$c-dark: #2c2c2c;
+$c-cyan: rgb(0,174,239); // sci museum process cyan
+$c-cyan-mute: rgb(0,139,191); // time to make a map()??
+$c-magenta: rgb(236,0,140); // sci museum process magenta
+$c-purple: #6F558C;
+$c-green: #00888A;
+
+//colors mapped to recordypes for quick changes, and for for loops
+$recordtypes: (
+	object: $c-cyan-mute,
+	person: $c-purple,
+	archive: $c-green,
+	archivedoc: $c-green,
+  collection: $c-blue
+);
+
+/// Returns a grey color from 0-white to 100-black
+/// @example grey(20) = #ccc
+/// @param {Number} $tint - number between 0-100
+@function grey($tint) {
+  @return rgb(255 - $tint * 2.55, 255 - $tint * 2.55, 255 - $tint * 2.55)
+}
+
+/// lighten a color
+/// @access public
+/// @param {Color} $color - color to tint
+/// @param {Number} $percentage - percentage of `$color` in returned color
+/// @return {Color}
+@function tint($color, $percentage) {
+  @return mix($color, white, $percentage);
+}

@@ -1,5 +1,7 @@
 const Joi = require('joi');
 const filterSchema = require('../schemas/filter');
+const fs = require('fs');
+const exampleData = JSON.parse(fs.readFileSync('./src/data/searchresults.json'));
 
 module.exports = () => ({
   method: 'GET',
@@ -22,7 +24,13 @@ module.exports = () => ({
       'hapi-negotiator': {
         mediaTypes: {
           'text/html' (request, reply) {
-            reply.view('search');
+            const data = {
+              searchresults: exampleData,
+              page: 'index',
+              title: 'Search Results'
+            };
+
+            reply.view('index', data);
           },
           'application/vnd.api+json' (req, reply) {
             reply('"{"response": "JSONAPI"}"').header('content-type', 'application/vnd.api+json');
