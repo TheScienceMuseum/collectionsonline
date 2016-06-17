@@ -7,6 +7,8 @@
     "test": "test"
   },
   "dependencies": {
+    "good": "^7.0.1",
+    "good-console": "^6.1.2",
     "handlebars": "^4.0.5",
     "hapi": "^13.4.1",
     "hapi-negotiator": "^2.0.1",

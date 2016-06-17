@@ -9,6 +9,14 @@ module.exports = (config, cb) => {
   server.route(routes());
 
   server.register([
+    {
+      register: require('good'),
+      options: {
+        reporters: {
+          console: [{ module: 'good-console' }, 'stdout']
+        }
+      }
+    },
     require('inert'),
     require('hapi-negotiator'),
     require('vision')

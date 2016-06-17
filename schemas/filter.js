@@ -4,27 +4,27 @@ const dateSchema = require('./date');
 module.exports = Joi.object()
   .keys({
     // All
-    'date[from]': dateSchema,
-    'date[to]': dateSchema,
-    places: Joi.array().items(Joi.string()).single(),
+    'filter[date[from]]': dateSchema,
+    'filter[date[to]]': dateSchema,
+    'filter[places]': Joi.array().items(Joi.string()).single(),
     // Objects
-    type: Joi.string(),
-    makers: Joi.array().items(Joi.string()).single(),
-    people: Joi.array().items(Joi.string()).single(),
-    organisations: Joi.array().items(Joi.string()).single(),
-    categories: Joi.array().items(Joi.string()).single(),
-    museum: Joi.string().valid('NRM', 'SMG', 'NMeM', 'MSI'),
-    on_display: Joi.boolean(),
-    location: Joi.string(),
+    'filter[type]': Joi.string(),
+    'filter[makers]': Joi.array().items(Joi.string()).single(),
+    'filter[people]': Joi.array().items(Joi.string()).single(),
+    'filter[organisations]': Joi.array().items(Joi.string()).single(),
+    'filter[categories]': Joi.array().items(Joi.string()).single(),
+    'filter[museum]': Joi.string().valid('NRM', 'SMG', 'NMeM', 'MSI'),
+    'filter[on_display]': Joi.boolean(),
+    'filter[location]': Joi.string(),
     // People
-    'birth[place]': Joi.string(),
-    'birth[date]': dateSchema,
-    'death[date]': dateSchema,
-    occupation: Joi.string(),
+    'filter[birth[place]]': Joi.string(),
+    'filter[birth[date]]': dateSchema,
+    'filter[death[date]]': dateSchema,
+    'filter[occupation]': Joi.string(),
     // Documents
-    archive: Joi.string(),
-    formats: Joi.string(),
-    image_licences: Joi.string()
+    'filter[archive]': Joi.string(),
+    'filter[formats]': Joi.array().items(Joi.string()).single(),
+    'filter[image_licences]': Joi.array().items(Joi.string()).single()
   })
   .rename('date[from]', 'filter[date[from]]', {override: true, ignoreUndefined: true})
   .rename('date[to]', 'filter[date[to]]', {override: true, ignoreUndefined: true})
