@@ -69,3 +69,17 @@ testWithServer('Request with multiple instances of JSONAPI media type, one witho
     t.end();
   });
 });
+
+testWithServer('Request to /search requesting JSON', (t, server) => {
+  t.plan(1);
+
+  const acceptableJSONRequest = {
+    method: 'GET',
+    url: '/search',
+    headers: {'Accept': 'application/vnd.api+json'}
+  };
+  server.inject(acceptableJSONRequest, (res) => {
+    t.ok(res.headers['content-type'].indexOf('application/vnd.api+json') > -1, 'JSONAPI response header should be application/vnd.api+json');
+    t.end();
+  });
+});

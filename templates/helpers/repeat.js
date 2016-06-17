@@ -1,4 +1,4 @@
-module.exports = function(count, context) {
+module.exports = (count, context) => {
   var str = '';
 
   for (var i = 0; i < count; i++) {
@@ -6,4 +6,4 @@ module.exports = function(count, context) {
   }
 
   return str;
-}
+};

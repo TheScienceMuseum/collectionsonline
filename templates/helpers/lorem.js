@@ -1,5 +1,5 @@
 var lorem = require('helper-lorem');
 
-module.exports = function() {
+module.exports = () => {
   return lorem.apply(this, arguments);
 };
