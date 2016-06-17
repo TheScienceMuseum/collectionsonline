@@ -1,6 +1,6 @@
 const testWithServer = require('./helpers/test-with-server');
 
-testWithServer('Request for Archive HTML Page', (t, server) => {
+testWithServer('Request for Archive HTML Page', (t, { server }) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -15,7 +15,7 @@ testWithServer('Request for Archive HTML Page', (t, server) => {
   });
 });
 
-testWithServer('Request for Archivedoc HTML Page', (t, server) => {
+testWithServer('Request for Archivedoc HTML Page', (t, { server }) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -30,7 +30,7 @@ testWithServer('Request for Archivedoc HTML Page', (t, server) => {
   });
 });
 
-testWithServer('Request for Object HTML Page', (t, server) => {
+testWithServer('Request for Object HTML Page', (t, { server }) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -45,7 +45,7 @@ testWithServer('Request for Object HTML Page', (t, server) => {
   });
 });
 
-testWithServer('Request for Person HTML Page', (t, server) => {
+testWithServer('Request for Person HTML Page', (t, { server }) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -60,7 +60,7 @@ testWithServer('Request for Person HTML Page', (t, server) => {
   });
 });
 
-testWithServer('Request for Archive JSON', (t, server) => {
+testWithServer('Request for Archive JSON', (t, { server }) => {
   t.plan(2);
 
   const htmlRequest = {
@@ -76,7 +76,7 @@ testWithServer('Request for Archive JSON', (t, server) => {
   });
 });
 
-testWithServer('Request for Archivedoc JSON', (t, server) => {
+testWithServer('Request for Archivedoc JSON', (t, { server }) => {
   t.plan(2);
 
   const htmlRequest = {
@@ -92,7 +92,7 @@ testWithServer('Request for Archivedoc JSON', (t, server) => {
   });
 });
 
-testWithServer('Request for Object JSON Page', (t, server) => {
+testWithServer('Request for Object JSON Page', (t, { server }) => {
   t.plan(2);
 
   const htmlRequest = {
@@ -108,7 +108,7 @@ testWithServer('Request for Object JSON Page', (t, server) => {
   });
 });
 
-testWithServer('Request for Person JSON Page', (t, server) => {
+testWithServer('Request for Person JSON Page', (t, { server }) => {
   t.plan(2);
 
   const htmlRequest = {
