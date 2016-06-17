@@ -11,7 +11,7 @@
     "good-console": "^6.1.2",
     "handlebars": "^4.0.5",
     "hapi": "^13.4.1",
-    "hapi-negotiator": "^2.0.1",
+    "hapi-negotiator": "https://github.com/TheScienceMuseum/hapi-negotiator.git",
     "inert": "^4.0.0",
     "joi": "^8.4.2",
     "rc": "^1.1.6",
