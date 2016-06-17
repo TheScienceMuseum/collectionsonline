@@ -3,7 +3,7 @@ const fs = require('fs');
 const jsFile = fs.readFileSync('public/bundle.js');
 const cssFile = fs.readFileSync('public/bundle.css');
 
-testWithServer('Javascript Files served correctly', (t, server) => {
+testWithServer('Javascript Files served correctly', (t, { server }) => {
   t.plan(1);
 
   const jsRequest = {
@@ -17,7 +17,7 @@ testWithServer('Javascript Files served correctly', (t, server) => {
   });
 });
 
-testWithServer('CSS Files served correctly', (t, server) => {
+testWithServer('CSS Files served correctly', (t, { server }) => {
   t.plan(1);
 
   const cssRequest = {
@@ -31,7 +31,7 @@ testWithServer('CSS Files served correctly', (t, server) => {
   });
 });
 
-testWithServer('Non Existent Files', (t, server) => {
+testWithServer('Non Existent Files', (t, { server }) => {
   t.plan(1);
 
   const badRequest = {

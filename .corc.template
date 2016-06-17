@@ -1,3 +1,7 @@
 {
-  "port": 8000
+  "port": 8000,
+  "elasticsearch": {
+    "apiVersion": "1.7",
+    "host": ""
+  }
 }

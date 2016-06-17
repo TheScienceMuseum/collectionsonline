@@ -3,7 +3,7 @@ const filterSchema = require('../schemas/filter');
 const fs = require('fs');
 const exampleData = JSON.parse(fs.readFileSync('./src/data/searchresults.json'));
 
-module.exports = () => ({
+module.exports = ({ elastic }) => ({
   method: 'GET',
   path: '/search/{resource?}',
   handler: (request, reply) => reply(),
@@ -13,6 +13,7 @@ module.exports = () => ({
         resource: Joi.string().valid('objects', 'people', 'documents')
       },
       query: filterSchema.keys({
+        q: Joi.string().required(),
         'page[number]': Joi.number().integer().min(0),
         'page[size]': Joi.number().integer().min(1),
         'fields[objects]': Joi.string(),
@@ -24,16 +25,27 @@ module.exports = () => ({
       'hapi-negotiator': {
         mediaTypes: {
           'text/html' (request, reply) {
-            const data = {
-              searchresults: exampleData,
-              page: 'index',
-              title: 'Search Results'
-            };
+            elastic.search({ q: request.query.q }, (err, result) => {
+              console.log(err, result);
+              if (err) return reply(err);
 
-            reply.view('index', data);
+              const data = {
+                searchresults: exampleData,
+                page: 'index',
+                title: 'Search Results'
+              };
+
+              // TODO: Transform for templates
+              reply.view('index', data);
+            });
           },
-          'application/vnd.api+json' (req, reply) {
-            reply('"{"response": "JSONAPI"}"').header('content-type', 'application/vnd.api+json');
+          'application/vnd.api+json' (request, reply) {
+            elastic.search({ q: request.query.q }, (err, result) => {
+              console.log(err, result);
+              if (err) return reply(err);
+              // TODO: Transform to jsonapi
+              reply(result).header('content-type', 'application/vnd.api+json');
+            });
           }
         }
       }

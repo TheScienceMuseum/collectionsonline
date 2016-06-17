@@ -1,12 +1,12 @@
 const Hapi = require('hapi');
 const routes = require('./routes');
 
-module.exports = (config, cb) => {
+module.exports = ({ elastic, config }, cb) => {
   const server = new Hapi.Server();
 
   server.connection({ port: config.port });
 
-  server.route(routes());
+  server.route(routes({ elastic, config }));
 
   server.register([
     {
@@ -19,7 +19,8 @@ module.exports = (config, cb) => {
     },
     require('inert'),
     require('hapi-negotiator'),
-    require('vision')
+    require('vision'),
+    require('./routes/plugins/error')
   ], (err) => {
     if (err) {
       return cb(err);
@@ -35,6 +36,6 @@ module.exports = (config, cb) => {
       helpersPath: './templates/helpers'
     });
 
-    cb(null, server);
+    cb(null, { server, elastic });
   });
 };
