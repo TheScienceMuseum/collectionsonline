@@ -8,6 +8,17 @@ module.exports = (description, cb) => {
       throw err;
     }
 
+    server.views({
+      engines: {
+        html: require('handlebars')
+      },
+      path: 'src/pages',
+      layout: true,
+      layoutPath: './src/layouts',
+      helpersPath: './src/helpers',
+      partialsPath: './src/partials'
+    });
+
     tape(description, (t) => {
       cb(t, server);
     });

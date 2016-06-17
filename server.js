@@ -10,7 +10,7 @@ module.exports = (config, cb) => {
 
   server.route(routes);
 
-  server.register([require('inert'), require('hapi-negotiator')], (err) => {
+  server.register([require('inert'), require('hapi-negotiator'), require('vision')], (err) => {
     if (err) {
       return cb(err);
     }

@@ -3,26 +3,26 @@
 
 		{{#unless reduced}}
 			<h1 class="searchbar__strap">Search our collection</h1>
-			{{> searchbox filters="filters"}}
+			{{> global/searchbox filters="filters"}}
 
 			<nav class="searchtabs">
 				<a class="searchtab searchtab--active">
-					{{> icon i="all" }}
+					{{> global/icon i="all" }}
 					<span class="searchtab__label">All</span>
 					<span class="searchtab__count">1234</span>
 				</a>
 				<a class="searchtab" href="#">
-					{{> icon i="person" }}
+					{{> global/icon i="person" }}
 					<span class="searchtab__label">People</span>
 					<span class="searchtab__count">1234</span>
 				</a>
 				<a class="searchtab" href="#">
-					{{> icon i="object" }}
+					{{> global/icon i="object" }}
 					<span class="searchtab__label">Objects</span>
 					<span class="searchtab__count">99</span>
 				</a>
 				<a class="searchtab" href="#">
-					{{> icon i="archivedoc" }}
+					{{> global/icon i="archivedoc" }}
 					<span class="searchtab__label">Documents</span>
 					<span class="searchtab__count">5678</span>
 				</a>
@@ -35,13 +35,13 @@
 		{{/if}}
 
 		{{#if reduced}}
-			{{> searchbox}}
+			{{> global/searchbox}}
 		{{/if}}
 
 	</div>
 
 	{{#if home}}
-		{{> home-collections}}
+		{{> search/home-collections}}
 	{{/if}}
 
 </section>
