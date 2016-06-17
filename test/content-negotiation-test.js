@@ -1,6 +1,6 @@
 const testWithServer = require('./helpers/test-with-server');
 
-testWithServer('Request for HTML Content', (t, server) => {
+testWithServer('Request for HTML Content', (t, { server }) => {
   t.plan(2);
 
   const htmlRequest = {
@@ -16,7 +16,7 @@ testWithServer('Request for HTML Content', (t, server) => {
   });
 });
 
-testWithServer('Request for JSONAPI Content', (t, server) => {
+testWithServer('Request for JSONAPI Content', (t, { server }) => {
   // http://jsonapi.org/format/#content-negotiation-servers
   //
   // Servers MUST send all JSON API data in response documents with the header
@@ -36,7 +36,7 @@ testWithServer('Request for JSONAPI Content', (t, server) => {
   });
 });
 
-testWithServer('Request for JSONAPI Content with parameters', (t, server) => {
+testWithServer('Request for JSONAPI Content with parameters', (t, { server }) => {
   // http://jsonapi.org/format/#content-negotiation-servers
   //
   // Servers MUST respond with a 406 Not Acceptable status code if a request’s
@@ -56,7 +56,7 @@ testWithServer('Request for JSONAPI Content with parameters', (t, server) => {
   });
 });
 
-testWithServer('Request with multiple instances of JSONAPI media type, one without parameters', (t, server) => {
+testWithServer('Request with multiple instances of JSONAPI media type, one without parameters', (t, { server }) => {
   t.plan(1);
 
   const acceptableJSONRequest = {
@@ -70,12 +70,12 @@ testWithServer('Request with multiple instances of JSONAPI media type, one witho
   });
 });
 
-testWithServer('Request to /search requesting JSON', (t, server) => {
+testWithServer('Request to /search requesting JSON', (t, { server }) => {
   t.plan(1);
 
   const acceptableJSONRequest = {
     method: 'GET',
-    url: '/search',
+    url: '/search?q=test',
     headers: {'Accept': 'application/vnd.api+json'}
   };
   server.inject(acceptableJSONRequest, (res) => {

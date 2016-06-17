@@ -1,7 +1,10 @@
+const Client = require('elasticsearch').Client;
 const config = require('../config');
 const createServer = require('../server');
 
-createServer(config, (err, server) => {
+const elastic = new Client(config.elasticsearch);
+
+createServer({ elastic, config }, (err, { server }) => {
   if (err) {
     throw err;
   }

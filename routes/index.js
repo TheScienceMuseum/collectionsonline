@@ -1,6 +1,6 @@
-module.exports = () => ([
+module.exports = ({ elastic }) => ([
   require('./home')(),
-  require('./search')(),
+  require('./search')({ elastic }),
   require('./public')(),
   require('./archive')(),
   require('./archivedoc')(),

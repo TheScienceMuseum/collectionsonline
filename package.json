@@ -7,6 +7,7 @@
     "test": "test"
   },
   "dependencies": {
+    "elasticsearch": "^11.0.1",
     "good": "^7.0.1",
     "good-console": "^6.1.2",
     "handlebars": "^4.0.5",
