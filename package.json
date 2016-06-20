@@ -41,7 +41,7 @@
     "start": "node bin/server.js",
     "test": "run-s test:*",
     "test:lint": "semistandard",
-    "test:unit": "istanbul cover tape 'test/*.js'",
+    "test:unit": "istanbul cover tape 'test/**/*.js'",
     "build": "run-p build:*",
     "build:js": "browserify src/assets/js/*.js -o public/bundle.js",
     "build:css": "node-sass src/assets/scss/main.scss public/bundle.css --include-path bower_components/foundation-sites/scss --include-path bower_components/slick-carousel/slick",
