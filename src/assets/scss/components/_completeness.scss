@@ -1,0 +1,42 @@
+//-----------------------------------------------------------------------------
+// .completeness meter
+// if only html5 meter was supported...
+//-----------------------------------------------------------------------------
+
+
+.completeness {
+	height: 1rem;
+	background: grey(20);
+	border-radius: 0.5rem;
+	border: 4px white solid;
+	box-shadow: 0 0 0 1px grey(40);
+	overflow: hidden;
+	text-indent: 100%;
+
+	/*background: linear-gradient(
+		to right,
+		blue 0%,
+		blue 19%,
+		white 19%,
+		white 20%,
+		green 20%,
+		green 39%,
+		white 39%,
+		white 40%,
+		red 40%,
+		red 59%,
+		white 59%,
+		white 60%,
+		red 60%,
+		red 79%,
+		white 79%,
+		white 80%,
+		red 80%,
+		red 100%
+	);*/
+
+	div {
+		background: $c-cyan;
+		border-right: 1px solid white;
+	}
+}

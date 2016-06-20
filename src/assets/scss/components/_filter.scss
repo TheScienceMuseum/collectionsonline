@@ -1,0 +1,142 @@
+//-----------------------------------------------------------------------------
+// .filtercolumn
+// ↳ .filterpanel
+//   ↳ .filter
+//-----------------------------------------------------------------------------
+
+.filterpanel {
+	background-color: white;
+  border: 1px grey(20) solid;
+	box-shadow: 0 2px 8px grey(20);
+	@include breakpoint(small only) {
+		position: absolute;
+		top: -1.5rem;
+		width: 100%;
+		box-shadow: 0 8px 16px rgba(black, 0.3);
+	}
+}
+
+.filter {
+	padding: 0.5rem;
+    & + & { border-top: 1px grey(20) solid; }
+
+	&__name {
+		position: relative;
+		padding-left: 1.5rem;
+		@include icon-bullet(arrow_right, 1.5rem);
+
+		.icon {
+			font-size: rem-calc(24);
+			position: absolute;
+			left: -0.25rem;
+			.filter--open & {
+				transform: rotate(90deg);
+			}
+		}
+
+	}
+
+	&__options {
+		display: none;
+		font-size: rem-calc(12);
+		overflow: auto;
+
+		input {
+			margin-bottom: 0;
+		}
+
+		ul,
+		li {
+			display: block;
+			margin: 0;
+			padding: 0;
+		}
+
+		li {
+			padding-top: rem-calc(6);
+			padding-left: rem-calc(4);
+		}
+
+		label {
+			margin: 0;
+			line-height: rem-calc(16);
+			&:hover { color: mix($c-cyan, $c-blue); }
+		}
+
+	}
+
+	&__count {
+		color: grey(50);
+		@include small-caps;
+		padding-left: 0.5em;
+	}
+
+	&--active,
+	&--open {
+		.filter__options {
+			display: block;
+		}
+	}
+
+	&--open {
+		.filter__name {
+			@include icon-bullet(arrow_down,1.5rem);
+		}
+	}
+
+	&--active {
+		//border-left: 1px mix($c-cyan, $c-blue) solid;
+		background-color: mix(grey(5), $c-cyan,95);
+
+		.filter__name {
+			font-weight: 500;
+			@include icon-bullet(cancel, 1.5rem);
+		}
+	}
+
+	&:hover {
+		//background-image: linear-gradient(white, grey(5));
+		a { color: mix($c-cyan, $c-blue) }
+	}
+
+
+	&__daterange {
+		label {
+			float: left;
+			width: 50%;
+			margin-right: -1px;
+			padding: 0.125rem 0;
+		}
+
+	}
+}
+
+//-----------------------------------------------------------------------------
+// .filterbadge - attached searchbox, indicate active filters
+//-----------------------------------------------------------------------------
+
+.filterbadge {
+	$c: mix($c-cyan, $c-blue);
+	display: inline-block;
+	background: $c;
+	&:hover { background: darken($c, 10%); }
+	color: white;
+	a:hover { color: white; }
+	border-radius: 0.75rem;
+	line-height: 1rem;
+	margin-right: 0.5rem;
+	font-weight: 500;
+	font-size: rem-calc(14);
+	&__label {
+		display: inline-block;
+		padding: rem-calc(5 6 3 8); // slight baseline shift
+	}
+
+	&__x {
+		display: inline-block;
+		padding: rem-calc(5 8 3 6);
+		color: white;
+		border-left: 1px white solid;
+		&:hover { color: white; }
+	}
+}

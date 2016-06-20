@@ -1,0 +1,177 @@
+
+//-----------------------------------------------------------------------------
+//
+// shared inheritance for .resultlist and .resultcard pattern
+//-----------------------------------------------------------------------------
+
+
+@mixin resultclass {
+	position: relative;
+	color: black;
+	background-color: white;
+	overflow: hidden;
+	box-shadow: 0 2px 8px rgba(black,0.2);
+	transition: background-color $timing-defaults, box-shadow $timing-defaults, transform $timing-defaults;
+	&:hover {
+		//background-color: grey(20);
+		box-shadow: 0 2px 8px rgba(black,0.4);
+		//transform: scale3d(1.02,1.02,1);
+		//top: -12px;
+		transform: translate3d(0, -2px, 0);
+	}
+
+	&__figure {
+		margin: 0;
+		background-color: grey(80);
+		position: relative;
+		overflow: hidden;
+
+		img {
+			position: absolute;
+			width: 100%;
+			height: auto;
+			max-width: 100%;
+			max-height: 100%;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			margin: auto;
+		}
+
+		figcaption {
+			overflow: hidden;
+			position: absolute;
+			top: 0.25rem;
+			left: 0.25rem;
+			right: -0.75rem;
+			bottom: -0.5rem;
+			margin: auto;
+			color: rgba(white, 0.25);
+			font-size: rem-calc(32);
+			line-height: 1;
+			letter-spacing: rem-calc(-1);
+			font-weight: 300;
+		}
+	}
+
+
+	&__title {
+		font-weight: 600;
+		font-size: rem-calc(16);
+		line-height: rem-calc(18);
+		margin: 0 0 0.25rem 0;
+		color: grey(90);
+	}
+	&__info {
+		padding: 1rem;
+	}
+	&__description {
+		font-weight: 400;
+		font-size: rem-calc(14);
+		line-height: 1rem;
+		color: grey(80);
+		margin: 0;
+	}
+	p { margin: 0; }
+
+
+	@each $type, $c in $recordtypes {
+		&--#{$type} {
+			border-color: $c;
+			.resultcard__figure {
+				background-color: $c;
+			}
+			.icon { color: $c; }
+		}
+	}
+
+	//used as related results, slight smaller
+	&--related {
+		//background-color: white;
+	}
+
+}
+
+//-----------------------------------------------------------------------------
+// .resultlist
+// The list view display of a result
+//-----------------------------------------------------------------------------
+
+.resultlist {
+	@include resultclass;
+	//border-bottom: 1px grey(30) solid;
+	border-left: 0.25rem grey(30) solid;
+	margin-bottom: 1px;
+
+	&__figure {
+		width: 4rem; //aspect 4:3
+		height: 3rem; //aspect 4:3
+		float: right;
+		margin: 1rem;
+	}
+	.icon {
+		position: relative;
+		top: 0.15rem;
+	}
+
+}
+
+//-----------------------------------------------------------------------------
+// .resultcard
+// The main 'card' display of a result
+//-----------------------------------------------------------------------------
+
+.resultcard {
+	@include resultclass;
+	margin-bottom: 1rem;
+	border-bottom: 0.25rem grey(30) solid;
+
+	&__figure {
+		width: 100%; //aspect 4:3
+		padding-top: 75%; //aspect 4:3
+		border-bottom: 1px white solid;
+	}
+
+	&__info {
+		height: 7 + 0.25rem; // = 2padding, 5 lines text, 1 margin!
+		overflow: hidden;
+		position: relative;
+		&:after { // fade out overflow nicely
+			position: absolute;
+			bottom: 0;
+			height: 1rem;
+			left: 0;
+			right: 0;
+			background-image: linear-gradient(rgba(white,0), white);
+			content: '';
+		}
+	}
+
+	&__title {
+		.icon {
+			float: right;
+			margin-left: 0.5rem;
+			margin-bottom: 0.5rem;
+			clear: right;
+		}
+	}
+
+
+	//used as related results, slight smaller
+	&--related {
+		//background-color: white;
+	}
+
+	//used on home page, slight bigger
+	&--collection {
+	}
+	&--collection &__title {
+		font-size: 1.5rem;
+	}
+	&--collection &__description {
+		font-size: 1rem;
+		line-height: rem-calc(18);
+	}
+
+}

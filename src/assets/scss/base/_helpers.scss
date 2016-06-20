@@ -22,7 +22,7 @@ $timing-defaults: 0.25s ease-out;
 	}
 }
 
-@mixin icon-before($icon, $size:1rem){
+@mixin icon-before($icon, $size:1rem) {
 	position: relative;
 	&:before {
 		content: ' ';
@@ -32,12 +32,12 @@ $timing-defaults: 0.25s ease-out;
 		background-image: url(/assets/icons/#{$icon}.svg);
 		background-size: $size $size;
 	}
-
 }
 
 @mixin ul-icons() {
 	margin: 0.5rem 0;
 	padding: 0;
+
 	li {
 		display: block;
 		margin: 0.5rem 0;
@@ -47,7 +47,7 @@ $timing-defaults: 0.25s ease-out;
 	}
 }
 
-@mixin icon-bullet($icon, $size:0.75rem, $left: 0){
+@mixin icon-bullet($icon, $size:0.75rem, $left: 0, $top: null) {
 	position: relative;
 	padding-left: $size * 4/3 + $left;
 	&:before {
@@ -55,7 +55,11 @@ $timing-defaults: 0.25s ease-out;
 		display: block;
 		position: absolute;
 		left: 0 + $left;
-		top: -$size/5;
+		@if ($top) {
+			top: $top;
+    } @else {
+      top: -$size/5;
+    }
 		bottom: 0;
 		margin: auto; // top, bottom, height, auto = vertical align!
 		height: $size;
@@ -85,5 +89,16 @@ $timing-defaults: 0.25s ease-out;
 	box-shadow: 0 1px 1px rgba(black, 0.1);
 	border-radius: 2px;
 	background: white;
+}
 
+// used in imgpanel controls currently
+@mixin toolbar-button {
+	float: right;
+	display: block;
+	color: white;
+	border: 1px white solid;
+	border-color: inherit;
+	margin: rem-calc(-1 0 8 -1);
+	padding: 1rem;
+	&:hover { background-color: black;}
 }
