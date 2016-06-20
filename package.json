@@ -51,7 +51,7 @@
     "minify:js": "uglifyjs public/bundle.js -o public/bundle.js",
     "minify:css": "postcss -u cssnano -i public/bundle.css -o public/bundle.css",
     "watch": "npm-run-all build --parallel watch:*",
-    "watch:js": "watchify src/assets/js/*.js -o public/bundle.js",
+    "watch:js": "watchify src/assets/js/*.js -o public/bundle.js -v",
     "watch:css": "nodemon -e scss -x 'npm run build:css'",
     "watch:server": "nodemon --watch . --ignore node_modules/ --ignore public/ -e js -x 'npm start'"
   },
