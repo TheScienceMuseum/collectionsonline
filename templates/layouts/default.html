@@ -8,11 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
     <link rel="stylesheet" href="bundle.css">
-    <link rel="icon" type="image/png" href="{{root}}assets/img/favicon/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="{{root}}assets/img/favicon/android-chrome-192x192.png" sizes="192x192">
-    <link rel="icon" type="image/png" href="{{root}}assets/img/favicon/favicon-96x96.png" sizes="96x96">
-    <link rel="icon" type="image/png" href="{{root}}assets/img/favicon/favicon-16x16.png" sizes="16x16">
-    <link rel="shortcut icon" href="{{root}}assets/img/favicon/favicon.ico">
+    <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/assets/img/favicon/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-16x16.png" sizes="16x16">
+    <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico">
   </head>
   <body>
 
@@ -20,6 +20,12 @@
     {{{content}}}
 
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="/bower_components/foundation-sites/dist/foundation.min.js"></script>
+    <script type="text/javascript" src="/bower_components/svg4everybody/dist/svg4everybody.min.js"></script>
+    <script type="text/javascript" src="/bower_components/slick-carousel/slick/slick.min.js"></script>
+    <script type="text/javascript" src="/bower_components/clipboard/dist/clipboard.min.js"></script>
+    <script type="text/javascript" src="/bower_components/openseadragon/built-openseadragon/openseadragon/openseadragon.min.js"></script>
+    <script type="text/javascript" src="/bower_components/typeahead.js/dist/typeahead.bundle.min.js"></script>
     <script src="bundle.js"></script>
     <div class="grid-overlay row">
     	{{#repeat 12}}<div class="small-1 column"><div class="contents"></div></div>{{/repeat}}
