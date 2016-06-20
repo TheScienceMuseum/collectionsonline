@@ -37,9 +37,10 @@ The following main 3 document types are available in the index:
 
 Other document types:
 
-* Event
-* Place
-* Term
+* Location (museum)
+* Event (historical)
+* Place (geographical)
+* Term (thesaurus term)
 
 ### Display names
 
@@ -48,3 +49,4 @@ The name of the index types isn't always obvious to the public so on the site th
 * People => Agent
 * Objects => Object
 * Documents => Archive
+* Location => Facility
