@@ -11,35 +11,14 @@ abbr {
 	color: inherit;
 }
 
-//similar to html5 details/summary element
-.details {
-	&__summary {
-		@include control-base;
-		cursor: pointer;
-		background-color: inherit;
-		display: block;
-		padding: 0.25rem 0.5rem;
-		margin-bottom: 1rem;
-		@include icon-bullet(arrow_right, $size: 1rem, $left: 0.5rem);
-
-		&:hover {
-			border: 1px grey(30) solid;
-			background-image: linear-gradient(white, grey(10));
-		}
+button {
+	font-size: 1rem;
+.icon {
+		position: relative;
+		//@include vertical-center;
+		top: rem-calc(2);
+		left: rem-calc(-2);
 	}
-
-	&[aria-expanded=true] &__summary {
-		@include icon-bullet(arrow_down, $size: 1rem, $left: 0.5rem);
-	}
-
-	&__content {
-		display: none; //default
-	}
-
-	&[aria-expanded="true"] &__content {
-		display: block;
-	}
-
 }
 
 .icon {
@@ -105,11 +84,6 @@ abbr {
 	}
 }
 
-.page {
-	//margin-top: 2rem;
-	margin-bottom: 2rem;
-}
-
 .white { //section
 	background: white;
 	padding-top: 2rem;
@@ -144,6 +118,33 @@ abbr {
 	@include ul-icons;
 }
 
+//-----------------------------------------------------------------------------
+// .searchlink
+// can be applied to any anchor to indicate it will take you to search results
+//-----------------------------------------------------------------------------
+
+.searchlink {
+	$icnsize: 0.75em;
+	position: relative;
+	margin-right: $icnsize;
+	&:after {
+		content: ' ';
+		display: block;
+		position: absolute;
+		right: -$icnsize+(-$icnsize/4);
+		top: 0;
+		bottom: 0;
+		margin: auto; // top, bottom, height, auto = vertical align!
+		height: $icnsize;
+		width: $icnsize;
+		background-image: url(/assets/icons/search.svg);
+		background-size: $icnsize $icnsize;
+		opacity: 0.2;
+	}
+	&:hover:after {
+		opacity: 1;
+	}
+}
 
 //utility classes:
 

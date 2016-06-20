@@ -1,0 +1,38 @@
+//-----------------------------------------------------------------------------
+// .archive-tree
+// using bower_components Clipboard for copying cite text.
+// applies modifier --copied on copy.
+// https://clipboardjs.com/
+//-----------------------------------------------------------------------------
+
+.clipboard {
+	padding: rem-calc(6 20 4 4);
+	margin: 0.35rem 0;
+	height: auto;
+	box-shadow: 0;
+	background-image: url(/assets/icons/clipboard.svg);
+	background-size: 8px 8px;
+	background-position: right 6px center;
+	background-repeat: no-repeat;
+
+	&--copied { // this class applied by js once contents copied to clipboard
+		animation-name: copied;
+		animation-duration: 1.5s;
+		animation-timing-function: ease;
+		animation-iteration-count: 1;
+	}
+
+	@keyframes copied {
+		0% {
+			background-color: rgba($c-cyan, 0.25);
+			background-size: 12px 12px;
+			background-position: right 4px center;
+		}
+
+		100% {
+			background-color: white;
+			background-size: 8px 8px;
+			background-position: right 6px center;
+		}
+	}
+}

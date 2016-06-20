@@ -1,0 +1,130 @@
+//-----------------------------------------------------------------------------
+// other page .control 's
+// a common appearance across a few element types
+//-----------------------------------------------------------------------------
+
+.controls { //.row
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+}
+
+.control {
+	@include control-base;
+	display: inline-block;
+	height: rem-calc(40);
+	position: relative;
+
+	&__label {
+		float: left;
+		line-height: rem-calc(16);
+		padding: rem-calc(12 16);
+	}
+
+	&__buttons {
+		float: left;
+	}
+	&__buttons:last-child {
+		//margin-right: -1px;
+	}
+
+	&__button {
+		float: left;
+		height: rem-calc(40);
+		margin-top: -1px;
+		margin-right: -1px;
+		border: 1px grey(20) solid;
+		&:not(&--active):hover {
+			border: 1px grey(30) solid;
+			background-image: linear-gradient(white, grey(10));
+		}
+
+		.icon {
+			float: left;
+			font-size: rem-calc(24);
+			margin: rem-calc(8);
+		}
+
+		&--active,&--active:hover {
+			background-color: grey(10);
+			color: grey(50);
+		}
+
+		label { //alt posiiton of label
+			float: left;
+			line-height: rem-calc(16);
+			padding: rem-calc(16);
+		}
+	}
+
+	&--filters {
+		width: 100%;
+		.control__button { float: right; }
+	}
+
+	&--active:after {
+		content: '';
+		position: absolute;
+		bottom: -1rem;
+		left: 50%;
+		margin-left: -1rem;
+		width: 2rem;
+		height: 1rem;
+		background-image: url(/assets/img/filter-drop.svg);
+		background-repeat: no-repeat;
+	}
+
+}
+
+
+.pagination { // styled like a control
+	@include control-base;
+	float: right;
+	font-size: 0; // remove inline-block inbetween space
+	font-weight: 500;
+	@include breakpoint(medium) { text-align: center; }
+
+	li {
+		line-height: rem-calc(16);
+		margin-right: -1px;
+	}
+
+	a,
+	.current {
+		border: 1px grey(20) solid;
+		border-width: 0 1px;
+	}
+
+	.current {
+		background: grey(20);
+	}
+
+	a:hover {
+		border-color: grey(30);
+		background-image: linear-gradient(white, grey(10));
+	}
+}
+
+// rpp= results per page, but not quite worth inheriting from .control
+.control--rpp {
+	float: left;
+
+
+	select {
+		width: auto;
+		height: rem-calc(40);
+		margin-top: -1px;
+		margin-right: -1px;
+		line-height: 1rem;
+		padding-right: 1.5rem;
+		border-radius: 0 2px 2px 0;
+		background-position: right -1rem center; //need to check support
+		&:hover {
+			// because F is already using bg image for disclosure triangle, to add extra bg on hover means retrieving existing properties first.
+			background-image:
+			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="24" viewBox="0 0 32 24"><polygon points="0,0 32,0 16,24" style="fill: rgb%28138, 138, 138%29"></polygon></svg>'), linear-gradient(white, grey(10));
+			background-size: 9px 6px, cover;
+			background-origin: content-box, border-box;
+			background-repeat: no-repeat, repeat;
+		}
+	}
+}

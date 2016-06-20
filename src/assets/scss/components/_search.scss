@@ -3,7 +3,7 @@
 //-----------------------------------------------------------------------------
 
 .searchbar {
-	background-color: mix(grey(10),$c-cyan);
+	background-color: mix(grey(10), $c-cyan);
 	//border-bottom: 1px solid grey(20);
 	background-image: linear-gradient(45deg, mix(grey(10),$c-cyan), mix(grey(10),$c-blue) );
 
@@ -18,6 +18,7 @@
 		@include breakpoint(medium) { display: none; }
 		margin: 1rem 0.125rem -0.5rem;
 	}
+
 	&__strap + &__placeholder-for-small {
 		margin: -1.5rem 0.125rem -0.5rem;
 	}
@@ -88,50 +89,6 @@
 }
 
 //-----------------------------------------------------------------------------
-// .typeahead styles
-//-----------------------------------------------------------------------------
-
-.twitter-typeahead {
-	width: 100%;
-}
-
-.tt-menu {
-	left: -1px !important;
-	right: -1px !important;
-	top: calc(100% - 3px) !important; // hides rounded corners on compact version, cos I can't get  a class for suggestions not being empty!
-	border: 1px solid $c-blue;
-	border-width: 1px;
-	border-color: grey(20) $c-blue $c-blue $c-blue;
-	border-radius: 0 0 0.25rem 0.25rem;
-	//border-radius: 0.25rem;
-	background-color: white;
-	box-shadow: 0 2px 8px rgba(black, 0.2);
-}
-.tt-dataset {
-}
-.twitter-typeahead, .tt-hint, .tt-input, .tt-menu {
-}
-.tt-suggestion  {
-	padding: 0.5rem 1rem;
-}
-.tt-suggestion:last-child {
-	border-radius: 0 0 0.25rem 0.25rem;
-}
-.tt-suggestion:first-child {
-	//border-radius: 0.25rem 0.25rem 0 0;
-}
-
-.tt-suggestion:hover,
-.tt-cursor  {
-	background-color: grey(10);
-	color: $c-blue;
-}
-//not quite true..., its true once its enabled, not with visible choices...
-[aria-expanded=true].searchbox {
-	//border-radius: 0.25rem 0.25rem 0 0;
-}
-
-//-----------------------------------------------------------------------------
 // .searchtabs
 // ↳ .searchtab - results nav/filter within the top .searchbar
 // width is tight on small screens, breakpoints to reduce and hide on smalls.
@@ -185,36 +142,5 @@
 		@include small-caps;
 		color: mix($c-blue, grey(50));
 		@include breakpoint(small only) { display: none; } // no room
-	}
-}
-
-
-//-----------------------------------------------------------------------------
-// .filterbadge - attached searchbox, indicate active filters
-//-----------------------------------------------------------------------------
-
-.filterbadge {
-	$c: mix($c-cyan, $c-blue);
-	display: inline-block;
-	background: $c;
-	&:hover { background: darken($c, 10%); }
-	color: white;
-	a:hover { color: white; }
-	border-radius: 0.75rem;
-	line-height: 1rem;
-	margin-right: 0.5rem;
-	font-weight: 500;
-	font-size: rem-calc(14);
-	&__label {
-		display: inline-block;
-		padding: rem-calc(5 6 3 8); // slight baseline shift
-	}
-
-	&__x {
-		display: inline-block;
-		padding: rem-calc(5 8 3 6);
-		color: white;
-		border-left: 1px white solid;
-		&:hover { color: white; }
 	}
 }

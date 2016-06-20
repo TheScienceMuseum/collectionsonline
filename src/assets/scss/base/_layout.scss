@@ -1,0 +1,97 @@
+//-----------------------------------------------------------------------------
+// most pages will probably have a main <section> with .page
+//-----------------------------------------------------------------------------
+
+
+.page {
+	//margin-top: 2rem;
+	margin-bottom: 2rem;
+}
+
+
+//-----------------------------------------------------------------------------
+// .row
+// ↳ .searchresults & .filtercolumn - are both quasi-columns,
+// with filtercolumn collapsing to positioned or hidden states
+//-----------------------------------------------------------------------------
+
+.searchresults {
+	padding: 0;
+	margin: 0 !important;
+	position: relative;
+
+	&__column {
+		@include grid-column(6);
+		@include grid-column-end;
+		@include breakpoint(medium) {
+			@include grid-column(4);
+			@include grid-column-end;
+		}
+		@include breakpoint(large) {
+			@include grid-column(3);
+			@include grid-column-end;
+		}
+
+	}
+	
+	&__list {
+		@include grid-column();
+	}
+
+	&--filtersactive {
+		@include breakpoint(medium) {
+			@include grid-col-size(8);
+		}
+		@include breakpoint(large) {
+			@include grid-col-size(9);
+		}
+
+		.searchresults__column {
+			@include breakpoint(medium) {
+				@include grid-column(6);
+				@include grid-column-end;
+			}
+			@include breakpoint(large) {
+				@include grid-column(4);
+				@include grid-column-end;
+			}
+		}
+	}
+}
+
+.filtercolumn {
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+	position: relative;
+	display: none;
+
+	&--filtersactive {
+		display: block;
+	}
+	// positioned on top for small screens, col on right for larger
+	@include breakpoint(small only) {
+		position: absolute;
+		z-index: 1;
+		right: 1rem;
+		left: 1rem;
+		padding: 0;
+	}
+	@include breakpoint(medium) {
+		float: right;
+		@include grid-col-size(4);
+	}
+	@include breakpoint(large) {
+		@include grid-col-size(3);
+	}
+
+}
+
+
+//-----------------------------------------------------------------------------
+// home page variation
+//-----------------------------------------------------------------------------
+
+.home-collections {
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+}
