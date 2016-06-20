@@ -5,7 +5,7 @@ testWithServer('Request for Archive HTML Page', (t, { server }) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/archive',
+    url: '/archive/smga-archive-110000316',
     headers: {'Accept': 'text/html'}
   };
 
@@ -35,7 +35,7 @@ testWithServer('Request for Object HTML Page', (t, { server }) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/object',
+    url: '/object/smgc-object-37959',
     headers: {'Accept': 'text/html'}
   };
 
@@ -50,7 +50,7 @@ testWithServer('Request for Person HTML Page', (t, { server }) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/person',
+    url: '/person/smgc-agent-17351',
     headers: {'Accept': 'text/html'}
   };
 
@@ -65,7 +65,7 @@ testWithServer('Request for Archive JSON', (t, { server }) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/archive',
+    url: '/archive/smga-archive-110069402',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -97,7 +97,7 @@ testWithServer('Request for Object JSON Page', (t, { server }) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/object',
+    url: '/object/smgc-object-37959',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -113,7 +113,7 @@ testWithServer('Request for Person JSON Page', (t, { server }) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/person',
+    url: '/person/smgc-agent-17351',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 

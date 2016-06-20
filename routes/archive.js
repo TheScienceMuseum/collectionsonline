@@ -1,9 +1,10 @@
 const fs = require('fs');
 const exampleData = JSON.parse(fs.readFileSync('./src/data/archive.json'));
+const buildJSONResponse = require('../lib/jsonapi-response.js');
 
-module.exports = () => ({
+module.exports = ({ elastic }) => ({
   method: 'GET',
-  path: '/archive',
+  path: '/archive/{id}/{slug?}',
   handler: (request, reply) => reply(),
   config: {
     plugins: {
@@ -18,7 +19,13 @@ module.exports = () => ({
             reply.view('archive', Object.assign(exampleData, data));
           },
           'application/vnd.api+json' (req, reply) {
-            reply('"{"response": "JSONAPI"}"').header('content-type', 'application/vnd.api+json');
+            elastic.get({index: 'smg', type: 'archive', id: req.params.id}, (err, result) => {
+              if (err) {
+                return reply(err);
+              }
+
+              reply(buildJSONResponse(result)).header('content-type', 'application/vnd.api+json');
+            });
           }
         }
       }
