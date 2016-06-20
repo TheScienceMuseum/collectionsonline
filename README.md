@@ -37,7 +37,7 @@ The following main 3 document types are available in the index:
 
 Other document types:
 
-* Location (museum)
+* Location (museum location / gallery)
 * Event (historical)
 * Place (geographical)
 * Term (thesaurus term)
