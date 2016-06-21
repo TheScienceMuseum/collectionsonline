@@ -1,6 +1,10 @@
-			{{#each searchresults}}
+			{{#each results}}
 				<div class="searchresults__column">
+<<<<<<< 4647d75379267093269ece59b3b90988759eda6e
 					<a href="{{ this.type }}/id">
+=======
+					<a href="{{ this.link }}">
+>>>>>>> #40 First pass at displaying search results
 						<div class="resultcard {{#if type}}resultcard--{{ this.type }}{{/if}}">
 							<figure class="resultcard__figure">
 								{{#if figure}}<img src="{{ this.figure }}" /> {{/if}}
@@ -9,7 +13,7 @@
 							<div class="resultcard__info">
 								<h4 class="resultcard__title">
 									{{> global/icon i=this.type }}
-									{{#if ondisplay}}{{> global/icon i="room" size="16" }}{{/if}}
+									{{#if isOnDisplay}}{{> global/icon i="room" size="16" }}{{/if}}
 									{{ this.title }}
 								</h4>
 								<p class="resultcard__description">{{{ this.description }}}</p>

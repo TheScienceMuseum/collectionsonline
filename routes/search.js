@@ -1,17 +1,17 @@
 const Joi = require('joi');
 const filterSchema = require('../schemas/filter');
-const fs = require('fs');
 const searchResultsToJsonApi = require('../lib/transforms/search-results-to-jsonapi');
-const exampleData = JSON.parse(fs.readFileSync('./src/data/searchresults.json'));
+const searchResultsToTemplateData = require('../lib/transforms/search-results-to-template-data');
+const TypeMapping = require('../lib/type-mapping');
 
 module.exports = ({ elastic, config }) => ({
   method: 'GET',
-  path: '/search/{resource?}',
+  path: '/search/{type?}',
   handler: (request, reply) => reply(),
   config: {
     validate: {
       params: {
-        resource: Joi.string().valid('objects', 'people', 'documents')
+        type: Joi.string().valid('objects', 'people', 'documents')
       },
       query: filterSchema.keys({
         q: Joi.string().required(),
@@ -26,22 +26,49 @@ module.exports = ({ elastic, config }) => ({
       'hapi-negotiator': {
         mediaTypes: {
           'text/html' (request, reply) {
-            elastic.search({ q: request.query.q }, (err, result) => {
-              console.log(err, result);
+            const pageNumber = request.query['page[number]'] || 0;
+            const pageSize = request.query['page[size]'] || 50;
+
+            const searchOpts = {
+              index: 'smg',
+              q: request.query.q,
+              from: pageNumber * pageSize,
+              size: pageSize
+            };
+
+            if (request.params.type) {
+              searchOpts.type = TypeMapping.toInternal(request.params.type);
+              // Params type filter trumps query type filter
+              request.query['filter[type]'] = request.params.type;
+            }
+
+            elastic.search(searchOpts, (err, result) => {
               if (err) return reply(err);
 
-              const data = {
-                searchresults: exampleData,
-                page: 'index',
-                title: 'Search Results'
-              };
+              const jsonData = searchResultsToJsonApi(request.query, result, config);
+              const tplData = searchResultsToTemplateData(request.query, jsonData);
 
-              // TODO: Transform for templates
-              reply.view('index', data);
+              reply.view('search', tplData);
             });
           },
           'application/vnd.api+json' (request, reply) {
-            elastic.search({ q: request.query.q }, (err, result) => {
+            const pageNumber = request.query['page[number]'] || 0;
+            const pageSize = request.query['page[size]'] || 50;
+
+            const searchOpts = {
+              index: 'smg',
+              q: request.query.q,
+              from: pageNumber * pageSize,
+              size: pageSize
+            };
+
+            if (request.params.type) {
+              searchOpts.type = TypeMapping.toInternal(request.params.type);
+              // Params type filter trumps query type filter
+              request.query['filter[type]'] = request.params.type;
+            }
+
+            elastic.search(searchOpts, (err, result) => {
               if (err) return reply(err);
 
               reply(searchResultsToJsonApi(request.query, result, config))

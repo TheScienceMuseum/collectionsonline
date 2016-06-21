@@ -1,6 +1,6 @@
 <label for="searchbox__search" class="searchbar__placeholder-for-small hide-for-medium">Search objects, people, categories, object numbers etc.</label>
-<div class="searchbox" id="searchbox" data-toggler="searchbox--focussed">
-  <input type="search" class="searchbox__search" placeholder="Search objects, people, categories, object numbers etc." data-toggle-focus="searchbox">
+<form class="searchbox" id="searchbox" data-toggler="searchbox--focussed" action="/search">
+  <input type="search" class="searchbox__search" placeholder="Search objects, people, categories, object numbers etc." data-toggle-focus="searchbox" name="q" value="{{q}}">
   <button aria-label="search" class="searchbox__submit">
     {{> global/icon i="search" size="32" }}
   </button>
@@ -21,4 +21,4 @@
     </div>
   {{/if}}
 
-</div>
+</form>

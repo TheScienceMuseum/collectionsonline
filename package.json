@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "elasticsearch": "^11.0.1",
+    "format-number": "^2.0.1",
     "good": "^7.0.1",
     "good-console": "^6.1.2",
     "handlebars": "^4.0.5",
@@ -53,7 +54,7 @@
     "watch": "npm-run-all build --parallel watch:*",
     "watch:js": "watchify src/assets/js/*.js -o public/bundle.js -v",
     "watch:css": "nodemon -e scss -x 'npm run build:css'",
-    "watch:server": "nodemon --watch . --ignore node_modules/ --ignore public/ -e js -x 'npm start'"
+    "watch:server": "nodemon --watch . --ignore node_modules/ --ignore public/ -e js,html -x 'npm start'"
   },
   "semistandard": {
     "ignore": [
