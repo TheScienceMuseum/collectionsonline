@@ -4,7 +4,7 @@ const buildJSONResponse = require('../lib/jsonapi-response.js');
 const exampleGETResponse = require('./fixtures/example-get-response.json');
 
 test('Building the JSON Response', function (t) {
-  t.plan(13);
+  t.plan(15);
   const JSONAPIResponse = buildJSONResponse(exampleGETResponse, config);
   const terms = JSONAPIResponse.included.filter(el => el.type === 'term');
 
@@ -20,11 +20,14 @@ test('Building the JSON Response', function (t) {
   t.ok(JSONAPIResponse.relationships.terms, 'Relationships field contains terms');
   t.equal(JSONAPIResponse.relationships.terms.data.length, 3, 'Terms field contains correct number of items');
 
+  t.ok(JSONAPIResponse.relationships.maker, 'Relationships field contains maker');
+  t.ok(JSONAPIResponse.relationships.places, 'Relationships field contains places');
+
   t.ok(JSONAPIResponse.links, 'Response contains links field');
   t.equal(JSONAPIResponse.links.self, config.rootUrl + '/objects/smgc-objects-8245103', 'Response contains links field');
 
   t.ok(JSONAPIResponse.included, 'Response contains included field');
-  t.equal(JSONAPIResponse.included.length, 4, 'Included field contains correct number of resources');
+  t.equal(JSONAPIResponse.included.length, 6, 'Included field contains correct number of resources');
 
   t.equal(terms.length, 3, 'Included field contains correct number of terms');
   t.end();
