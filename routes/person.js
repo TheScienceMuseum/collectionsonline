@@ -2,10 +2,11 @@ const fs = require('fs');
 const Boom = require('boom');
 const exampleData = JSON.parse(fs.readFileSync('./src/data/person.json'));
 const buildJSONResponse = require('../lib/jsonapi-response');
+const TypeMapping = require('../lib/type-mapping');
 
 module.exports = ({ elastic, config }) => ({
   method: 'GET',
-  path: '/person/{id}/{slug?}',
+  path: '/people/{id}/{slug?}',
   handler: (request, reply) => reply(),
   config: {
     plugins: {
@@ -20,7 +21,7 @@ module.exports = ({ elastic, config }) => ({
             reply.view('person', Object.assign(exampleData, data));
           },
           'application/vnd.api+json' (req, reply) {
-            elastic.get({index: 'smg', type: 'agent', id: req.params.id}, (err, result) => {
+            elastic.get({index: 'smg', type: 'agent', id: TypeMapping.toInternal(req.params.id)}, (err, result) => {
               if (err) {
                 return reply(err);
               }
