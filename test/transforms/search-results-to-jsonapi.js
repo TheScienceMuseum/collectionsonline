@@ -151,3 +151,47 @@ test('Should ignore unknown object types', (t) => {
 
   t.end();
 });
+
+test('Should extract @link\'d document to relationships and included', (t) => {
+  t.plan(5);
+
+  const relId = `smg-agent-${Date.now()}`;
+  const relSummaryTitle = 'Charles Babbage';
+
+  const testResult = {
+    took: 0,
+    timed_out: false,
+    _shards: { total: 1, successful: 1, failed: 0 },
+    hits: {
+      total: 5,
+      max_score: null,
+      hits: [
+        {
+          _type: 'object',
+          _id: `smg-object-${Date.now()}`,
+          _source: {
+            agents: [
+              {
+                admin: { uid: relId },
+                summary_title: relSummaryTitle
+              }
+            ]
+          }
+        }
+      ]
+    }
+  };
+
+  let obj;
+
+  t.doesNotThrow(() => {
+    obj = searchResultsToJsonApi({ q: 'test', 'page[number]': 0, 'page[size]': 1 }, testResult);
+  }, 'Transform did not throw');
+
+  t.equal(obj.data[0].relationships.people.data[0].type, 'people', 'Relationship type was correct');
+  t.equal(obj.included[0].type, 'people', 'Included type was correct');
+  t.equal(obj.included[0].id, relId.replace('agent', 'people'), 'Included ID was correct');
+  t.equal(obj.included[0].attributes.summary_title, relSummaryTitle, 'Included summary_title was correct');
+
+  t.end();
+});
