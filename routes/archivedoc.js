@@ -3,7 +3,7 @@ const exampleData = JSON.parse(fs.readFileSync('./src/data/archivedoc.json'));
 
 module.exports = () => ({
   method: 'GET',
-  path: '/archivedoc',
+  path: '/archivedoc/{id?}',
   handler: (request, reply) => reply(),
   config: {
     plugins: {

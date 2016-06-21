@@ -50,3 +50,15 @@ The name of the index types isn't always obvious to the public so on the site th
 * Objects => Object
 * Documents => Archive
 * Location => Facility
+
+### Routes
+
+To access the pages we currently have templates for, use:
+
+* `/`
+* `/search?q={query}`
+* `/objects/{id}/{slug?}`
+* `/people/{id}/{slug?}`
+* `/documents/{id}/{slug?}`
+
+The routes will not work without params, however any random string will lead you to the example pages.

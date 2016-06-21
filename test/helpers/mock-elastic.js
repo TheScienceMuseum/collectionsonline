@@ -17,5 +17,18 @@ module.exports = () => ({
         hits: []
       }
     });
+  },
+
+  get: function () {
+    const cb = arguments[arguments.length - 1];
+
+    cb(null, {
+      _index: '',
+      _type: '',
+      _id: '',
+      _version: 1,
+      found: true,
+      _source: {}
+    });
   }
 });

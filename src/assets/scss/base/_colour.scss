@@ -40,9 +40,9 @@ $c-green: #00888A;
 
 //colors mapped to recordypes for quick changes, and for for loops
 $recordtypes: (
-	object: $c-cyan-mute,
-	person: $c-purple,
-	archive: $c-green,
+	objects: $c-cyan-mute,
+	people: $c-purple,
+	documents: $c-green,
 	archivedoc: $c-green,
   collection: $c-blue
 );
