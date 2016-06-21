@@ -3,7 +3,7 @@ const Boom = require('boom');
 const exampleData = JSON.parse(fs.readFileSync('./src/data/person.json'));
 const buildJSONResponse = require('../lib/jsonapi-response');
 
-module.exports = ({ elastic }) => ({
+module.exports = ({ elastic, config }) => ({
   method: 'GET',
   path: '/person/{id}/{slug?}',
   handler: (request, reply) => reply(),
@@ -29,7 +29,7 @@ module.exports = ({ elastic }) => ({
                 return reply(Boom.notFound('Person not found'));
               }
 
-              reply(buildJSONResponse(result)).header('content-type', 'application/vnd.api+json');
+              reply(buildJSONResponse(result, config)).header('content-type', 'application/vnd.api+json');
             });
           }
         }
