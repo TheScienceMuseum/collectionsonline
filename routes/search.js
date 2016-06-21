@@ -1,9 +1,10 @@
 const Joi = require('joi');
 const filterSchema = require('../schemas/filter');
 const fs = require('fs');
+const searchResultsToJsonApi = require('../lib/transforms/search-results-to-jsonapi');
 const exampleData = JSON.parse(fs.readFileSync('./src/data/searchresults.json'));
 
-module.exports = ({ elastic }) => ({
+module.exports = ({ elastic, config }) => ({
   method: 'GET',
   path: '/search/{resource?}',
   handler: (request, reply) => reply(),
@@ -41,10 +42,10 @@ module.exports = ({ elastic }) => ({
           },
           'application/vnd.api+json' (request, reply) {
             elastic.search({ q: request.query.q }, (err, result) => {
-              console.log(err, result);
               if (err) return reply(err);
-              // TODO: Transform to jsonapi
-              reply(result).header('content-type', 'application/vnd.api+json');
+
+              reply(searchResultsToJsonApi(request.query, result, config))
+                .header('content-type', 'application/vnd.api+json');
             });
           }
         }

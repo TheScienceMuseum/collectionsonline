@@ -1,5 +1,6 @@
 {
   "port": 8000,
+  "rootUrl": "http://localhost:8000",
   "elasticsearch": {
     "apiVersion": "1.7",
     "host": ""

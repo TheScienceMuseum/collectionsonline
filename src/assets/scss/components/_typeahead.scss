@@ -1,0 +1,42 @@
+//-----------------------------------------------------------------------------
+// .typeahead styles
+// for bower_components/typeahead.js
+//-----------------------------------------------------------------------------
+
+.twitter-typeahead {
+	width: 100%;
+}
+
+.tt-menu {
+	left: -1px !important;
+	right: -1px !important;
+	top: calc(100% - 3px) !important; // hides rounded corners on compact version, cos I can't get  a class for suggestions not being empty!
+	border: 1px solid $c-blue;
+	border-width: 1px;
+	border-color: grey(20) $c-blue $c-blue $c-blue;
+	border-radius: 0 0 0.25rem 0.25rem;
+	background-color: white;
+	box-shadow: 0 2px 8px rgba(black, 0.2);
+}
+.tt-dataset {
+}
+.twitter-typeahead, .tt-hint, .tt-input, .tt-menu {
+}
+.tt-suggestion  {
+	padding: 0.5rem 1rem;
+}
+.tt-suggestion:last-child {
+	border-radius: 0 0 0.25rem 0.25rem;
+}
+.tt-suggestion:first-child {
+}
+
+.tt-suggestion:hover,
+.tt-cursor  {
+	background-color: grey(10);
+	color: $c-blue;
+}
+//not quite true..., its true once its enabled, not with visible choices...
+[aria-expanded=true].searchbox {
+	//border-radius: 0.25rem 0.25rem 0 0;
+}
