@@ -26,7 +26,7 @@ module.exports = ({ elastic }) => ({
               }
 
               if (!result) {
-                return reply(Boom.notFound('Document not found'));
+                return reply(Boom.notFound('Object not found'));
               }
 
               reply(buildJSONResponse(result)).header('content-type', 'application/vnd.api+json');
