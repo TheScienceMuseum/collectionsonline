@@ -57,9 +57,8 @@ To access the pages we currently have templates for, use:
 
 * `/`
 * `/search?q={query}`
-* `/object/{id}`
-* `/person/{id}`
-* `/archive/{id}`
-* `/archivedoc`
+* `/objects/{id}/{slug?}`
+* `/people/{id}/{slug?}`
+* `/documents/{id}/{slug?}`
 
 The routes will not work without params, however any random string will lead you to the example pages.
