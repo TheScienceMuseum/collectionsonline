@@ -1,6 +1,7 @@
 const fs = require('fs');
+const Boom = require('boom');
 const exampleData = JSON.parse(fs.readFileSync('./src/data/object.json'));
-const buildJSONResponse = require('../lib/jsonapi-response.js');
+const buildJSONResponse = require('../lib/jsonapi-response');
 
 module.exports = ({ elastic }) => ({
   method: 'GET',
@@ -22,6 +23,10 @@ module.exports = ({ elastic }) => ({
             elastic.get({index: 'smg', type: 'object', id: req.params.id}, (err, result) => {
               if (err) {
                 return reply(err);
+              }
+
+              if (!result) {
+                return reply(Boom.notFound('Document not found'));
               }
 
               reply(buildJSONResponse(result)).header('content-type', 'application/vnd.api+json');
