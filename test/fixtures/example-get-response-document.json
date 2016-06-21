@@ -1,0 +1,64 @@
+{
+  "_index": "smg",
+  "_type": "archive",
+  "_id": "smga-archive-110069457",
+  "_version": 3,
+  "found": true,
+  "_source": {
+    "admin": {
+      "created": 1436193007000,
+      "id": "archive-110069457",
+      "modified": 1458824414000,
+      "processed": 1464712094000,
+      "source": "smga",
+      "stream": "smg-online",
+      "uid": "smga-archive-110069457"
+    },
+    "description": [
+      {
+        "type": "content description",
+        "value": "Folder of papers related to Muzak system, by Planned Music Limited, a subsidiary of ATV Limited."
+      }
+    ],
+    "identifier": [
+      {
+        "primary": true,
+        "value": "MS/2169"
+      }
+    ],
+    "level": {
+      "value": "fonds"
+    },
+    "measurements": {
+      "dimensions": [
+        {
+          "value": "1 folder"
+        }
+      ]
+    },
+    "organisations": [
+      {
+        "@link": {
+          "type": "literal"
+        },
+        "name": [
+          {
+            "primary": true,
+            "value": "Science Museum, London"
+          }
+        ],
+        "summary_title": "Science Museum, London"
+      }
+    ],
+    "summary_title": "Muzak System Archive",
+    "title": [
+      {
+        "primary": true,
+        "value": "Muzak System Archive"
+      }
+    ],
+    "type": {
+      "base": "archive"
+    }
+  }
+}

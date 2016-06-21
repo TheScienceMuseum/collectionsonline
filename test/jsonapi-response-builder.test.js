@@ -1,11 +1,12 @@
 const test = require('tape');
 const config = require('../config');
 const buildJSONResponse = require('../lib/jsonapi-response.js');
-const exampleGETResponse = require('./fixtures/example-get-response.json');
+const exampleObjResponse = require('./fixtures/example-get-response-object.json');
+const exampleDocResponse = require('./fixtures/example-get-response-document.json');
 
-test('Building the JSON Response', function (t) {
+test('Building the JSON Response for an object', function (t) {
   t.plan(15);
-  const JSONAPIResponse = buildJSONResponse(exampleGETResponse, config);
+  const JSONAPIResponse = buildJSONResponse(exampleObjResponse, config);
   const terms = JSONAPIResponse.included.filter(el => el.type === 'term');
 
   t.ok(JSONAPIResponse.data, 'Response contains data field');
@@ -30,5 +31,21 @@ test('Building the JSON Response', function (t) {
   t.equal(JSONAPIResponse.included.length, 6, 'Included field contains correct number of resources');
 
   t.equal(terms.length, 3, 'Included field contains correct number of terms');
+  t.end();
+});
+
+test('Building the JSON Response for a document', function (t) {
+  t.plan(6);
+  const JSONAPIResponse = buildJSONResponse(exampleDocResponse, config);
+
+  t.ok(JSONAPIResponse.data, 'Response contains data field');
+  t.equal(JSONAPIResponse.data.type, 'documents', 'Data field contains correct type');
+  t.equal(JSONAPIResponse.data.id, 'smga-documents-110069457', 'Data field contains correct id');
+
+  t.ok(JSONAPIResponse.data.attributes.organisations, 'Response should have organisations in attributes');
+
+  t.notOk(JSONAPIResponse.relationships, 'Response should not contain relationships field');
+
+  t.notOk(JSONAPIResponse.included, 'Response should not contain included field');
   t.end();
 });
