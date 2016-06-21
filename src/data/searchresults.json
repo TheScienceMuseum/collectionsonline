@@ -1,13 +1,13 @@
 [
   {
-    "type": "object",
+    "type": "objects",
     "title": "Scribbling book of Charles Babbage",
     "description": "This book has not yet been matched to one of those listed in The Babbage Papers in the Science Museum Library by Allan Bromley",
     "figure": "http://res.cloudinary.com/tobystokes/image/upload/c_crop,g_center,h_240,q_58,w_320/v1462902967/babbage_scribble_book.jpg",
     "figcaption": ""
   },
   {
-    "type": "object",
+    "type": "objects",
     "title": "Babbage's Analytical Engine",
     "description": "Computing & Data Processing",
     "figure": "http://res.cloudinary.com/tobystokes/image/upload/c_crop,g_center,h_240,q_58,w_320/Fig-1-plan1840_j2agwk.jpg",
@@ -15,37 +15,37 @@
     "ondisplay": true
   },
   {
-    "type": "object",
+    "type": "objects",
     "title": "Stationery bills issued to Charles Babbage",
     "description": "Type: accounts",
     "figcaption": "[Stationery bills (2) issued to Charles Babbage]/William Creswick, papermaker, John St, Oxford St, 1841 Dec & 1843 Apr. [The bills are for cartridge paper ruled to order]"
   },
   {
-    "type": "object",
+    "type": "objects",
     "title": "2 paper folders formerly belonging to Charles Babbage",
     "description": "Computing & Data Processing",
     "figcaption": "2 paper folders formerly belonging to Charles Babbage containing cut-outs of gearwheels, cams etc. in thin card. One folder marked Models the other marked Models of rejected contrivances"
   },
   {
-    "type": "object",
+    "type": "objects",
     "title": "Punched cards for Babbage's Analytical Engine, 1834-1871.",
     "description": "Computing & Data Processing: analytical engines; components; calculating machines",
     "figure": "http://res.cloudinary.com/tobystokes/image/upload/c_crop,g_center,h_240,q_58,w_320/10303273"
   },
   {
-    "type": "object",
+    "type": "objects",
     "title": "Test - A long title that wraps A long title that wraps Title",
     "description": "far too much text to fit! far too much text to fit! far too much text to fit!far too much text to fit! far too much text to fit! far too much text to fit! ",
     "figcaption": "[Stationery bills (2) issued to Charles Babbage]/William Creswick, papermaker, John St, Oxford St, 1841 Dec & 1843 Apr. [The bills are for cartridge paper ruled to order][Stationery bills (2) issued to Charles Babbage]/William Creswick, papermaker, John St, Oxford St, 1841 Dec & 1843 Apr. [The bills are for cartridge paper ruled to order][Stationery bills (2) issued to Charles Babbage]/William Creswick, papermaker, John St, Oxford St, 1841 Dec & 1843 Apr. [The bills are for cartridge paper ruled to order]"
   },
   {
-    "type": "archive",
+    "type": "documents",
     "title": "The Babbage Papers",
     "description": "Archive: 1489 Documents. <br/>11 plan press drawers and 8 linear meters of shelving",
     "figure": "/assets/img/archive.svg"
   },
   {
-    "type": "archive",
+    "type": "documents",
     "title": "The Diplomas etc of Charles Babbage",
     "description": "Archive: 41 items. <br/>11 plan press drawers and 8 linear meters of shelving",
     "figure": "/assets/img/archive.svg"
@@ -57,31 +57,31 @@
     "figure": "/assets/img/example/babbage/archivedoc-bab172.jpeg"
   },
   {
-    "type": "person",
+    "type": "people",
     "title": "Babbage, Charles",
     "description": "mathematician; computer pioneer, 1791-1871, English; British",
     "figcaption": "mathematician; computer pioneer, 1791-1871, English; British"
   },
   {
-    "type": "person",
+    "type": "people",
     "title": "Benjamin Herschel Babbage",
     "description": "engineer; artist; explorer; 1815-1878, British",
     "figcaption": "eldest son of Charles Babbage"
   },
   {
-    "type": "person",
+    "type": "people",
     "title": "Sir Rowland Macdonald Stephenson",
     "description": "railway engineer, 1806-1895, British",
     "figcaption": "planned and built railways for the East Indian Railway Company"
   },
   {
-    "type": "object",
+    "type": "objects",
     "title": "Test - No picture",
     "description": "txt instead of image",
     "figcaption": "This text will display if there is no picture to show instead"
   },
   {
-    "type": "object",
+    "type": "objects",
     "title": "Test - Test3",
     "description": "correct 4:3 image",
     "figure": "http://placekitten.com/g/400/300",
