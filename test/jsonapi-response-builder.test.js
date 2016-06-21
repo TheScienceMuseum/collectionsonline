@@ -3,7 +3,7 @@ const buildJSONResponse = require('../lib/jsonapi-response.js');
 const exampleGETResponse = require('./fixtures/example-get-response.json');
 
 test('Building the JSON Response', function (t) {
-  t.plan();
+  t.plan(3);
   const JSONAPIResponse = JSON.parse(buildJSONResponse(exampleGETResponse));
 
   t.ok(JSONAPIResponse.data, 'Response contains data field' + JSONAPIResponse.data);
