@@ -1,0 +1,47 @@
+{
+  "_index": "smg",
+  "_type": "agent",
+  "_id": "smgc-agent-114620",
+  "_version": 1,
+  "found": true,
+  "_source": {
+    "admin": {
+      "created": 1133255970000,
+      "id": "agent-114620",
+      "language": "eng",
+      "modified": 1437654047000,
+      "processed": 1464733522000,
+      "source": "smgc",
+      "stream": "smg-online",
+      "uid": "smgc-agent-114620"
+    },
+    "description": [
+      {
+        "type": "brief biography",
+        "value": "active 1934, Locomotive Running Superintendent, LNER, York"
+      }
+    ],
+    "gender": "M",
+    "name": [
+      {
+        "first_name": "Charles",
+        "last_name": "Stedman",
+        "primary": true,
+        "type": "preferred name",
+        "value": "Stedman, Charles"
+      },
+      {
+        "type": "variation",
+        "value": "Charles Stedman"
+      }
+    ],
+    "summary_title": "Stedman, Charles",
+    "type": {
+      "base": "agent",
+      "sub_type": [
+        "person"
+      ],
+      "type": "person"
+    }
+  }
+}
