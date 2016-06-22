@@ -1,9 +1,28 @@
 language: node_js
+
 node_js:
-  - "6"
+  - '6'
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
 install:
   - npm install -g bower
   - bower install
   - npm install
+
+before_deploy:
+  - zip -r latest *
+  - mkdir -p deploy
+  - mv latest.zip deploy/latest.zip
+
+deploy:
+  - provider: s3
+    bucket: smg-collectionsonline
+    local_dir: deploy
+    access_key_id: AKIAIYE5GN7RNPZSZELA
+    secret_access_key:
+      secure: WcCxLMSgUY5nkErfWrQcJ7WRqwldQYNpzVprNTGuJG81GMjCYNdlZYgpR77O8jxbFPSutUwvuHBVKp2CSaDYVDB6WYNREYPTqwDmPUYNA5Am/jYmFoZ3xUqMbyLMZ/ekCfQxCEY4yFqjR6q7DGgLB/UYz/A7LmwYK/3F2uleLf1SCJEFCRmZx2N9+HxOaBUXGsjfVhK8O8daSbAWmV67oVBWN7qNG/fjrOxZ8vnh9FZaUv0k+Xar8FKqs7qgHSHOlPUQHa2rrwo4ysStg5eLQ4V1tTFC5Nd9IgX8N5gnhkDimzPxAczJelnR8s8IGIWjtyhS2E4/Yu5znQr1ZI3LYy+9OhwzYKZvpCgpfiAEe2mS3+GmumqEHYUyxBeJ01nwhbHCiftgua2QjwEOinnrEjUNIxQf6lmb3ErLLzVf749P9+izlQXK24QhqtEd/YFm0WjQDlhLhq5cVjKHTs2n6mq2CnSCaUKFE9/FBGYRVnqCEGJ9n1putvhbDbBqQdkrQYUus0Xlji1LQW1O8X/lov89/qQ4bAhs00tEunp9BZHV8xTpooShaldaBftW7e7V6jylJ+fRDNXMFpxY0Qfw/Oy6mM/pnQyPgwhbuhoInVxRB0nrxW1rOSO5ECaB513bhkHNLCJfFoKgEqETc+ftRTfzpUwyvRpbaz0VjQgJ5ME=
+    skip_cleanup: true
+    on:
+      all_branches: true

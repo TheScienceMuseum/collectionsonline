@@ -62,3 +62,40 @@ To access the pages we currently have templates for, use:
 * `/documents/{id}/{slug?}`
 
 The routes will not work without params, however any random string will lead you to the example pages.
+
+## Deployment
+
+We use Travis for CI and production deployment. The `.travis.yml` file in the root directory contains configuration for deployments.
+
+### Setup CI
+
+* Setup bucket in AWS
+    * Create a new bucket **smg-collectionsonline**
+    * Create a new group **smg-collectionsonline**
+        * Edit permissions and add an inline policy:
+            ```
+            {
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Action": "s3:ListAllMyBuckets",
+                        "Resource": "arn:aws:s3:::*"
+                    },
+                    {
+                        "Effect": "Allow",
+                        "Action": "s3:*",
+                        "Resource": [
+                            "arn:aws:s3:::smg-collectionsonline",
+                            "arn:aws:s3:::smg-collectionsonline/*"
+                        ]
+                    }
+                ]
+            }
+            ```
+    * Create new user **smg-collectionsonline-deploy-travis**
+        * Add user to the **smg-collectionsonline** group
+* Configure `.travis.yml`
+    * Add the access key for **smg-collectionsonline-deploy-travis** to `.travis.yml` for `access_key_id`
+    * Use [Travis CLI](https://github.com/travis-ci/travis.rb) to encrypt the secret key for `smg-collectionsonline-deploy-travis`
+        * `travis encrypt --add deploy.secret_access_key`
+        * This should add it to `.travis.yml` under `secret_access_key`
