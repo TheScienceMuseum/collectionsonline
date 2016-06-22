@@ -35,14 +35,12 @@ test('Building the JSON Response for an object', function (t) {
 });
 
 test('Building the JSON Response for a document', function (t) {
-  t.plan(6);
+  t.plan(5);
   const JSONAPIResponse = buildJSONResponse(exampleDocResponse, config);
 
   t.ok(JSONAPIResponse.data, 'Response contains data field');
   t.equal(JSONAPIResponse.data.type, 'documents', 'Data field contains correct type');
   t.equal(JSONAPIResponse.data.id, 'smga-documents-110069457', 'Data field contains correct id');
-
-  t.ok(JSONAPIResponse.data.attributes.organisations, 'Response should have organisations in attributes');
 
   t.notOk(JSONAPIResponse.relationships, 'Response should not contain relationships field');
 
