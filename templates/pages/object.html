@@ -3,61 +3,61 @@
 
 <div class="page" role="main">
 
-	{{> records/record-top Xclass="record-top--dark" }}
+  {{> records/record-top Xclass="record-top--dark" }}
 
-	<div class="record-imgpanel">
-		<div class="row columns record-imgpanel__slickthumbs"><!-- thumbnav gets appended in here --></div>
-		<div class="record-imgpanel__slickwrap">
-			<div class="record-imgpanel__slick">
-				{{#each slides}}
-					<div data-thumb="/assets/img/example/babbage/{{ this }}"><img src="/assets/img/example/babbage/{{ this }}" class="pic" /></div>
-				{{/each}}
-			</div>
-		</div>
+  <div class="record-imgpanel">
+    <div class="row columns record-imgpanel__slickthumbs"><!-- thumbnav gets appended in here --></div>
+    <div class="record-imgpanel__slickwrap">
+      <div class="record-imgpanel__slick">
+        {{#each slides}}
+          <div data-thumb="/assets/img/example/babbage/{{ this }}"><img src="/assets/img/example/babbage/{{ this }}" class="pic" /></div>
+        {{/each}}
+      </div>
+    </div>
 
-		{{> records/record-imgpanel__controlbar}}
-	</div>
+    {{> records/record-imgpanel__controlbar}}
+  </div>
 
-	<section class="white">
-		<div class="row">
-			<div class="columns medium-8">
+  <section class="white">
+    <div class="row">
+      <div class="columns medium-8">
 
-				<p class="record-description">This is the main description text.</p>
-				<div class="record-longdesc">
+        <p class="record-description">This is the main description text.</p>
+        <div class="record-longdesc">
 
-					<p>Difference Engine No 2 designed from 1847-1849 by British computing pioneer Charles Babbage (1791-1871), which excludes printing mechanism. Size 2.1m high, 3.4m long, 0.5m wide. The engine was built by the Science Museum and the main part was completed in June 1991 for the bicentennial year of Babbage's birth. The printing mechanism was completed in 2000. Doron Swade, senior curator of computing and IT, oversaw its construction. Babbage conceived the engine to calculate a series of numerical values and automatically print the results. Difference Engine No 2 was never constructed in his lifetime.</p>
-					<p>This is the long description text.</p>
+          <p>Difference Engine No 2 designed from 1847-1849 by British computing pioneer Charles Babbage (1791-1871), which excludes printing mechanism. Size 2.1m high, 3.4m long, 0.5m wide. The engine was built by the Science Museum and the main part was completed in June 1991 for the bicentennial year of Babbage's birth. The printing mechanism was completed in 2000. Doron Swade, senior curator of computing and IT, oversaw its construction. Babbage conceived the engine to calculate a series of numerical values and automatically print the results. Difference Engine No 2 was never constructed in his lifetime.</p>
+          <p>This is the long description text.</p>
 
 
-				</div>
+        </div>
 
-			</div>
-			<div class="columns medium-4">
+      </div>
+      <div class="columns medium-4">
 
-				{{> records/ondisplay }}
+        {{> records/ondisplay }}
 
-				{{> records/record-related-people }}
+        {{> records/record-related-people }}
         {{> records/record-related-organisations }}
 
 
-			<div class="panel panel__text">
-				<h4>Related articles</h4>
-				<ul class="related-article">
-					<li><a href="#">The history of computers</a></li>
-					<li><a href="#">Early computers</a></li>
-					<li><a href="#">History of Ada lovelace</a></li>
-				</ul>
-			</div>
+      <div class="panel panel__text">
+        <h4>Related articles</h4>
+        <ul class="related-article">
+          <li><a href="#">The history of computers</a></li>
+          <li><a href="#">Early computers</a></li>
+          <li><a href="#">History of Ada lovelace</a></li>
+        </ul>
+      </div>
 
-				{{!-- {{> records/panel-taxonomy}} moved lower to record-details. but panels could also be used here. --}}
+        {{!-- {{> records/panel-taxonomy}} moved lower to record-details. but panels could also be used here. --}}
 
-			</div>
-		</div>
-	</section>
+      </div>
+    </div>
+  </section>
 
-	{{> records/record-details }}
+  {{> records/record-details }}
 
-	{{> records/record-related-results }}
+  {{> records/record-related-results }}
 
 </div>
 

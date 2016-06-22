@@ -3,25 +3,25 @@
 //-----------------------------------------------------------------------------
 
 .searchbar {
-	background-color: mix(grey(10), $c-cyan);
-	//border-bottom: 1px solid grey(20);
-	background-image: linear-gradient(45deg, mix(grey(10),$c-cyan), mix(grey(10),$c-blue) );
+  background-color: mix(grey(10), $c-cyan);
+  //border-bottom: 1px solid grey(20);
+  background-image: linear-gradient(45deg, mix(grey(10),$c-cyan), mix(grey(10),$c-blue) );
 
-	&__strap {
-		font-size: rem-calc(30);
-		font-weight: 500;
-		margin: 1.5rem 0;
-	}
+  &__strap {
+    font-size: rem-calc(30);
+    font-weight: 500;
+    margin: 1.5rem 0;
+  }
 
-	//searchbox placeholder text gets hidden for small, and this shown instead
-	&__placeholder-for-small {
-		@include breakpoint(medium) { display: none; }
-		margin: 1rem 0.125rem -0.5rem;
-	}
+  //searchbox placeholder text gets hidden for small, and this shown instead
+  &__placeholder-for-small {
+    @include breakpoint(medium) { display: none; }
+    margin: 1rem 0.125rem -0.5rem;
+  }
 
-	&__strap + &__placeholder-for-small {
-		margin: -1.5rem 0.125rem -0.5rem;
-	}
+  &__strap + &__placeholder-for-small {
+    margin: -1.5rem 0.125rem -0.5rem;
+  }
 }
 
 
@@ -30,62 +30,62 @@
 //-----------------------------------------------------------------------------
 
 .searchbox {
-	position: relative;
-	background-color: white;
-	margin: 1rem 0;
-	border: 1px solid mix(grey(20), $c-blue);
-	border-radius: 0.25rem;
+  position: relative;
+  background-color: white;
+  margin: 1rem 0;
+  border: 1px solid mix(grey(20), $c-blue);
+  border-radius: 0.25rem;
 
-	&--focussed {
-		border: 1px solid $c-blue;
-		box-shadow: 0 2px 8px rgba(black, 0.2);
-		.icon-search { fill: $c-blue; }
-	}
-	&__search {
-		margin-right: 3.5rem;
-		height: 3.5rem;
-		padding: 1rem;
-		border-radius: 0.25rem;
-		&, &:focus { border: 0; }
-		font-size: rem-calc(24);
-		font-weight: 500;
-		@include breakpoint(small only) {
-			&::placeholder {
-				color: transparent;
-			}
-		}
-	}
+  &--focussed {
+    border: 1px solid $c-blue;
+    box-shadow: 0 2px 8px rgba(black, 0.2);
+    .icon-search { fill: $c-blue; }
+  }
+  &__search {
+    margin-right: 3.5rem;
+    height: 3.5rem;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    &, &:focus { border: 0; }
+    font-size: rem-calc(24);
+    font-weight: 500;
+    @include breakpoint(small only) {
+      &::placeholder {
+        color: transparent;
+      }
+    }
+  }
 
-	&__submit {
-		height: 3.5rem;
-		width: 3.5rem;
-		position: absolute;
-		top:0;
-		right: 0;
-		border: 0;
-		background-color: transparent;
-		color: grey(50); // applied to svg fill via magic of currentColor!
-		&:hover { color: $c-blue; }
-	}
+  &__submit {
+    height: 3.5rem;
+    width: 3.5rem;
+    position: absolute;
+    top:0;
+    right: 0;
+    border: 0;
+    background-color: transparent;
+    color: grey(50); // applied to svg fill via magic of currentColor!
+    &:hover { color: $c-blue; }
+  }
 
-	&__filters {
-		padding: 0.5rem;
-		border-top: 1px solid mix($c-blue, white, 25%);
-	}
+  &__filters {
+    padding: 0.5rem;
+    border-top: 1px solid mix($c-blue, white, 25%);
+  }
 
-	//reused slightly smaller on archive section
-	&--archive {
-		margin-top: 0;
-		.searchbox__search {
-			padding: 0.5rem;
-			height: 2.5rem;
-			font-size: rem-calc(16);
-		}
-		.searchbox__submit {
-			height: 2.5rem;
-			width: 2.5rem;
-		}
-	}
+  //reused slightly smaller on archive section
+  &--archive {
+    margin-top: 0;
+    .searchbox__search {
+      padding: 0.5rem;
+      height: 2.5rem;
+      font-size: rem-calc(16);
+    }
+    .searchbox__submit {
+      height: 2.5rem;
+      width: 2.5rem;
+    }
+  }
 }
 
 //-----------------------------------------------------------------------------
@@ -95,52 +95,52 @@
 //-----------------------------------------------------------------------------
 
 .searchtabs {
-	overflow: visible;
+  overflow: visible;
 }
 
 .searchtab {
-	display: block;
-	float: left;
-	padding: 0.5rem;
-	margin-bottom: -1px;
-	font-weight: 500;
-	font-size: rem-calc(12);
-	line-height: rem-calc(16); //match icn size
-	@include breakpoint(medium) {
-		padding: 0.5rem 1rem;
-		line-height: rem-calc(24);
-		font-size: rem-calc(16);
-	}
-	@include breakpoint(large) {
-		padding: 0.5rem 2rem;
-	}
+  display: block;
+  float: left;
+  padding: 0.5rem;
+  margin-bottom: -1px;
+  font-weight: 500;
+  font-size: rem-calc(12);
+  line-height: rem-calc(16); //match icn size
+  @include breakpoint(medium) {
+    padding: 0.5rem 1rem;
+    line-height: rem-calc(24);
+    font-size: rem-calc(16);
+  }
+  @include breakpoint(large) {
+    padding: 0.5rem 2rem;
+  }
 
-	&:hover {
-		background-color: rgba(0,0,0,0.1);
-	}
+  &:hover {
+    background-color: rgba(0,0,0,0.1);
+  }
 
-	&--active, &--active:hover {
-		background-color: grey(10);
-		background-image: linear-gradient(white, grey(10) );
-		//border: 1px solid grey(20);
-		border-bottom: 0;
-	}
+  &--active, &--active:hover {
+    background-color: grey(10);
+    background-image: linear-gradient(white, grey(10) );
+    //border: 1px solid grey(20);
+    border-bottom: 0;
+  }
 
-	.icon {
-		position: relative;
-		font-size: rem-calc(12);
-		top: rem-calc(2);
-		@include breakpoint(medium) {
-			font-size: rem-calc(24);
-			top: rem-calc(6);
-		}
-	}
+  .icon {
+    position: relative;
+    font-size: rem-calc(12);
+    top: rem-calc(2);
+    @include breakpoint(medium) {
+      font-size: rem-calc(24);
+      top: rem-calc(6);
+    }
+  }
 
-	&__label { color: black; }
+  &__label { color: black; }
 
-	&__count {
-		@include small-caps;
-		color: mix($c-blue, grey(50));
-		@include breakpoint(small only) { display: none; } // no room
-	}
+  &__count {
+    @include small-caps;
+    color: mix($c-blue, grey(50));
+    @include breakpoint(small only) { display: none; } // no room
+  }
 }
