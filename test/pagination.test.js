@@ -79,3 +79,19 @@ test('Should not have break when current page is near end', (t) => {
 
   t.end();
 });
+
+test('Should show 3 pages when only 3 pages are available', (t) => {
+  t.plan(1);
+
+  const opts = {
+    currentPageNumber: 0,
+    totalPages: 3,
+    maxLinks: 6,
+    createPageLink: (p) => `http://example.org/${p.pageNumber}`
+  };
+
+  const pages = Pagination.pages(opts);
+
+  t.equal(pages.length, 3, 'Total pages was 3');
+  t.end();
+});
