@@ -9,5 +9,10 @@ module.exports = () => ({
     } else {
       reply.file(Path.resolve(__dirname, '..', 'public', req.params.path));
     }
+  },
+  config: {
+    plugins: {
+      'hapi-negotiator': false
+    }
   }
 });
