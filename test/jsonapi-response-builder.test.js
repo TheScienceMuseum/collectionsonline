@@ -13,19 +13,19 @@ test('Building the JSON Response for an object', function (t) {
   t.equal(JSONAPIResponse.data.type, 'objects', 'Data field contains correct type');
   t.equal(JSONAPIResponse.data.id, 'smgc-objects-8245103', 'Data field contains correct id');
 
-  t.ok(JSONAPIResponse.relationships, 'Response contains relationships field');
+  t.ok(JSONAPIResponse.data.relationships, 'Response contains relationships field');
 
-  t.ok(JSONAPIResponse.relationships.parent, 'Relationships field contains parent');
-  t.equal(JSONAPIResponse.relationships.parent.data[0].id, 'smgc-objects-5191', 'Parent field has correct id');
+  t.ok(JSONAPIResponse.data.relationships.parent, 'Relationships field contains parent');
+  t.equal(JSONAPIResponse.data.relationships.parent.data[0].id, 'smgc-objects-5191', 'Parent field has correct id');
 
-  t.ok(JSONAPIResponse.relationships.terms, 'Relationships field contains terms');
-  t.equal(JSONAPIResponse.relationships.terms.data.length, 3, 'Terms field contains correct number of items');
+  t.ok(JSONAPIResponse.data.relationships.terms, 'Relationships field contains terms');
+  t.equal(JSONAPIResponse.data.relationships.terms.data.length, 3, 'Terms field contains correct number of items');
 
-  t.ok(JSONAPIResponse.relationships.maker, 'Relationships field contains maker');
-  t.ok(JSONAPIResponse.relationships.places, 'Relationships field contains places');
+  t.ok(JSONAPIResponse.data.relationships.maker, 'Relationships field contains maker');
+  t.ok(JSONAPIResponse.data.relationships.places, 'Relationships field contains places');
 
-  t.ok(JSONAPIResponse.links, 'Response contains links field');
-  t.equal(JSONAPIResponse.links.self, config.rootUrl + '/objects/smgc-objects-8245103', 'Response contains links field');
+  t.ok(JSONAPIResponse.data.links, 'Response contains links field');
+  t.equal(JSONAPIResponse.data.links.self, config.rootUrl + '/objects/smgc-objects-8245103', 'Response contains links field');
 
   t.ok(JSONAPIResponse.included, 'Response contains included field');
   t.equal(JSONAPIResponse.included.length, 6, 'Included field contains correct number of resources');
