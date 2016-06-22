@@ -1,40 +1,40 @@
-	<div class="row columns controls">
+  <div class="row columns controls">
 
-		<div class="control control--rpp">
-			<label class="control__label">Results<span class="hide-for-small-only"> per page</span>:</label>
-			<select>
-				<option{{#if pagination.isPageSize50}} selected{{/if}}>50</option>
-				<option{{#if pagination.isPageSize100}} selected{{/if}}>100</option>
-			</select>
-		</div>
+    <div class="control control--rpp">
+      <label class="control__label">Results<span class="hide-for-small-only"> per page</span>:</label>
+      <select>
+        <option{{#if pagination.isPageSize50}} selected{{/if}}>50</option>
+        <option{{#if pagination.isPageSize100}} selected{{/if}}>100</option>
+      </select>
+    </div>
 
-		<ul class="pagination" role="navigation" aria-label="Pagination">
-			{{#if pagination.isFirst}}
-				<li class="pagination-previous disabled">Previous</li>
-			{{else}}
-				<li class="pagination-previous">
-					<a href="{{pagination.links.prev}}" aria-label="Previous">Previous</a>
-				</li>
-			{{/if}}
+    <ul class="pagination" role="navigation" aria-label="Pagination">
+      {{#if pagination.isFirst}}
+        <li class="pagination-previous disabled">Previous</li>
+      {{else}}
+        <li class="pagination-previous">
+          <a href="{{pagination.links.prev}}" aria-label="Previous">Previous</a>
+        </li>
+      {{/if}}
 
-			{{#each pagination.links.pages}}
-				{{#if this}}
-					{{#if this.isCurrent}}
-						<li class="current"><span class="show-for-sr">You're on page</span> {{this.pageNumberDisplay}}</li>
-					{{else}}
-						<li><a href="{{this.link}}" aria-label="Page {{this.pageNumberDisplay}}">{{this.pageNumberDisplay}}</a></li>
-					{{/if}}
-				{{else}}
-					<li class="ellipsis"></li>
-				{{/if}}
-			{{/each}}
+      {{#each pagination.links.pages}}
+        {{#if this}}
+          {{#if this.isCurrent}}
+            <li class="current"><span class="show-for-sr">You're on page</span> {{this.pageNumberDisplay}}</li>
+          {{else}}
+            <li><a href="{{this.link}}" aria-label="Page {{this.pageNumberDisplay}}">{{this.pageNumberDisplay}}</a></li>
+          {{/if}}
+        {{else}}
+          <li class="ellipsis"></li>
+        {{/if}}
+      {{/each}}
 
-			{{#if pagination.isLast}}
-				<li class="pagination-next disabled">Next</li>
-			{{else}}
-				<li class="pagination-next">
-					<a href="{{pagination.links.next}}" aria-label="Next">Next</a>
-				</li>
-			{{/if}}
-		</ul>
-	</div>
+      {{#if pagination.isLast}}
+        <li class="pagination-next disabled">Next</li>
+      {{else}}
+        <li class="pagination-next">
+          <a href="{{pagination.links.next}}" aria-label="Next">Next</a>
+        </li>
+      {{/if}}
+    </ul>
+  </div>

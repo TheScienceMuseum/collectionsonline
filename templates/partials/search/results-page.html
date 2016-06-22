@@ -2,46 +2,46 @@
 
 <div class="page" role="main">
 
-	<div class="controls row">
-		<div class="large-9 medium-8 small-6 columns">
-			<div class="control">
-				<label class="control__label">View:</label>
-				<div class="control__buttons">
-				  <a href="index.html" class="control__button {{#ifpage 'search'}}control__button--active{{/ifpage}}" title="View as grid">{{> global/icon i="grid" }}</a>
-				  <a href="results-list.html" class="control__button {{#ifpage 'results-list'}}control__button--active{{/ifpage}}" title="View as list">{{> global/icon i="list" }}</a>
-				</div>
-			</div>
-		</div>
-		<div class="large-3 medium-4 small-6 columns">
-			<div class="control control--filters {{#ifpage 'results-list'}}control--active{{/ifpage}}" id="control--filters" data-toggler=".control--active">
-				  <label class="control__label" for="fb">Refine search</label>
-				  <button class="control__button" id="fb" data-toggle="searchresults filtercolumn control--filters">{{> global/icon i="filter_list" }}</button>
-			</div>
-		</div>
-	</div>
+  <div class="controls row">
+    <div class="large-9 medium-8 small-6 columns">
+      <div class="control">
+        <label class="control__label">View:</label>
+        <div class="control__buttons">
+          <a href="index.html" class="control__button {{#ifpage 'search'}}control__button--active{{/ifpage}}" title="View as grid">{{> global/icon i="grid" }}</a>
+          <a href="results-list.html" class="control__button {{#ifpage 'results-list'}}control__button--active{{/ifpage}}" title="View as list">{{> global/icon i="list" }}</a>
+        </div>
+      </div>
+    </div>
+    <div class="large-3 medium-4 small-6 columns">
+      <div class="control control--filters {{#ifpage 'results-list'}}control--active{{/ifpage}}" id="control--filters" data-toggler=".control--active">
+          <label class="control__label" for="fb">Refine search</label>
+          <button class="control__button" id="fb" data-toggle="searchresults filtercolumn control--filters">{{> global/icon i="filter_list" }}</button>
+      </div>
+    </div>
+  </div>
 
-	<div class="row">
+  <div class="row">
 
-		<div class="filtercolumn {{#unlesspage 'search'}}filtercolumn--filtersactive{{/unlesspage}}" id="filtercolumn" data-toggler=".filtercolumn--filtersactive">
+    <div class="filtercolumn {{#unlesspage 'search'}}filtercolumn--filtersactive{{/unlesspage}}" id="filtercolumn" data-toggler=".filtercolumn--filtersactive">
 
-			{{> search/filters }}
+      {{> search/filters }}
 
-		</div>
+    </div>
 
-		<div class="row searchresults {{#unlesspage 'search'}}searchresults--filtersactive{{/unlesspage}}" id="searchresults" data-toggler=".searchresults--filtersactive">
+    <div class="row searchresults {{#unlesspage 'search'}}searchresults--filtersactive{{/unlesspage}}" id="searchresults" data-toggler=".searchresults--filtersactive">
 
-			{{#ifpage 'search'}}{{> search/results-grid}}{{/ifpage}}
-			{{#ifpage 'results-list'}}{{> search/results-list }}{{/ifpage}}
-			{{#ifpage 'noresults'}}{{> search/noresults }}{{/ifpage}}
-
-
-		</div>
+      {{#ifpage 'search'}}{{> search/results-grid}}{{/ifpage}}
+      {{#ifpage 'results-list'}}{{> search/results-list }}{{/ifpage}}
+      {{#ifpage 'noresults'}}{{> search/noresults }}{{/ifpage}}
 
 
+    </div>
 
 
-	</div>
 
-	{{> search/pagination }}
+
+  </div>
+
+  {{> search/pagination }}
 
 </div>

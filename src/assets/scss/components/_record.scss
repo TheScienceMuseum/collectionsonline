@@ -10,45 +10,45 @@
 //-----------------------------------------------------------------------------
 
 .record-top {
-	padding-top: 2rem;
-	padding-bottom: 2rem;
-	background: white;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  background: white;
 
-	&__title {
-		font-size: 3rem;
-		font-weight: 600;
+  &__title {
+    font-size: 3rem;
+    font-weight: 600;
 
-		.icon {
-			font-size: 2rem;
-		}
-	}
+    .icon {
+      font-size: 2rem;
+    }
+  }
 
-	&__dl {
-		font-size: 1.25rem;
+  &__dl {
+    font-size: 1.25rem;
 
-		dt,
-		dd {
-			display: inline;
-			margin: 0;
-		}
+    dt,
+    dd {
+      display: inline;
+      margin: 0;
+    }
 
-		dt {
-			@include small-caps;
-		}
+    dt {
+      @include small-caps;
+    }
 
-		dd {
-			font-weight: 500;
-		}
+    dd {
+      font-weight: 500;
+    }
 
-		a {
-			@include text-link();
-		}
-	}
+    a {
+      @include text-link();
+    }
+  }
 
-	&--dark {
-		background: grey(80);
-		color: white;
-	}
+  &--dark {
+    background: grey(80);
+    color: white;
+  }
 }
 
 //-----------------------------------------------------------------------------
@@ -57,293 +57,293 @@
 //-----------------------------------------------------------------------------
 
 .record-imgpanel {
-	background: grey(80);
-	color: white;
-	border-top: 1px white solid;
-	//margin-top: 2rem;
-	//margin-bottom: 2rem;
-	//font-size: rem-calc(14);
+  background: grey(80);
+  color: white;
+  border-top: 1px white solid;
+  //margin-top: 2rem;
+  //margin-bottom: 2rem;
+  //font-size: rem-calc(14);
 
-	&__controlbar {
-		//border: 1px white solid;
-		//border-width: 0 1px;
-		//height: 3rem;
-		position: relative;
-	}
+  &__controlbar {
+    //border: 1px white solid;
+    //border-width: 0 1px;
+    //height: 3rem;
+    position: relative;
+  }
 
-	&__caption {
-		margin: 1rem 0;
-		line-height: 1.2;
-	}
+  &__caption {
+    margin: 1rem 0;
+    line-height: 1.2;
+  }
 }
 
 .record-imgpanel__slickwrap,
 .record-imgpanel__singleimgwrap {
-		border: 1px white solid;
-		border-width: 1px 0;
-	}
+    border: 1px white solid;
+    border-width: 1px 0;
+  }
 
 @mixin imgpanel-h {
-	$h: 36rem; // this might change after load?
-	height: $h;
-	transition: height $timing-defaults;
+  $h: 36rem; // this might change after load?
+  height: $h;
+  transition: height $timing-defaults;
 }
 
 .record-imgpanel__slick {
-	@include imgpanel-h;
-	margin: 0;
-	background-color: black;
+  @include imgpanel-h;
+  margin: 0;
+  background-color: black;
 
-	& .pic {
-		@include imgpanel-h;
-		width: auto;
-		opacity: 0.5;
-		filter: blur(2px);
-	}
+  & .pic {
+    @include imgpanel-h;
+    width: auto;
+    opacity: 0.5;
+    filter: blur(2px);
+  }
 
-	.slick-active .pic {
-		opacity: 1;
-		outline: 1px white solid;
-		filter: blur(0);
-	}
+  .slick-active .pic {
+    opacity: 1;
+    outline: 1px white solid;
+    filter: blur(0);
+  }
 
-	//hide until initialised
-	& .pic { display: none; }
-	&.slick-initialized .pic { display: block; }
+  //hide until initialised
+  & .pic { display: none; }
+  &.slick-initialized .pic { display: block; }
 
 }
 
 .record-imgpanel__singleimg {
-	@include imgpanel-h;
-	margin: 0;
-	background-color: grey(80);
+  @include imgpanel-h;
+  margin: 0;
+  background-color: grey(80);
 
-	& .pic {
-		@include imgpanel-h;
-		width: auto;
-		display: block;
-		margin: auto;
-	}
+  & .pic {
+    @include imgpanel-h;
+    width: auto;
+    display: block;
+    margin: auto;
+  }
 }
 
 .record-imgpanel__slickthumbs {
-	position: relative;
-	height: 3rem;
+  position: relative;
+  height: 3rem;
 
-	.slick-dots {
-		bottom:auto;
-		top: 0;
+  .slick-dots {
+    bottom:auto;
+    top: 0;
 
-		img {
-			width: 3rem;
-			max-width: auto;
-			height: 3rem;
-		}
-	}
+    img {
+      width: 3rem;
+      max-width: auto;
+      height: 3rem;
+    }
+  }
 }
 
 .record-imgpanel__thumbnav {
-	margin: 0;
-	padding: 0;
-	overflow:auto;
+  margin: 0;
+  padding: 0;
+  overflow:auto;
 
-	li {
-		width: 3rem;
-		height: 3rem;
-		float: left;
-		display: block;
-		margin-right: -1px;
-	}
+  li {
+    width: 3rem;
+    height: 3rem;
+    float: left;
+    display: block;
+    margin-right: -1px;
+  }
 
-	img { // these shouldnt really need fixed sizes if we know we're sending a proper sized src.
-		width: 3rem;
-		height: 3rem;
-		display: block;
-		border-color: grey(60);
-		border-style: solid;
-		border-width: 0 1px;
-		opacity: 0.5;
-	}
-	.slick-active img {
-		opacity: 1;
-		border-color: white;
-		z-index: 1;
-		position: relative;
-	}
+  img { // these shouldnt really need fixed sizes if we know we're sending a proper sized src.
+    width: 3rem;
+    height: 3rem;
+    display: block;
+    border-color: grey(60);
+    border-style: solid;
+    border-width: 0 1px;
+    opacity: 0.5;
+  }
+  .slick-active img {
+    opacity: 1;
+    border-color: white;
+    z-index: 1;
+    position: relative;
+  }
 }
 
 
 
 .cite {
-	//there's not a top level B called cite, just E's
-	// inside record-imgpanel__controlbar
+  //there's not a top level B called cite, just E's
+  // inside record-imgpanel__controlbar
 
-	&__button {
-		@include button-base();
-		color: white;
-		border-color: white;
-		//padding-left: 2rem;
-		font-size: 1rem;
-		&--active .icon {
-		transform: rotate(270deg);
-		}
-	}
+  &__button {
+    @include button-base();
+    color: white;
+    border-color: white;
+    //padding-left: 2rem;
+    font-size: 1rem;
+    &--active .icon {
+    transform: rotate(270deg);
+    }
+  }
 
-	&__expand {
-		@include icon-before(img-expand, $size: 1.25rem);
-		top:auto;
-		left: auto;
+  &__expand {
+    @include icon-before(img-expand, $size: 1.25rem);
+    top:auto;
+    left: auto;
 
-		&--expanded {
-			@include icon-before(img-contract, $size: 1.25rem);
-		}
-	}
+    &--expanded {
+      @include icon-before(img-contract, $size: 1.25rem);
+    }
+  }
 
-	&__button,
-	&__expand {
-		@include toolbar-button;
-	}
+  &__button,
+  &__expand {
+    @include toolbar-button;
+  }
 
-	&__menu-pos-wrap { //wraps __menu to anchor position from top
-		position: absolute;
-		top: 0;
-		right: 0;
-		width: 100%;
-	}
-	&__menu {
-		background: rgba(black,0.9);
-		position: absolute;
-		width: 75%;
-		@include breakpoint(medium) { width: 50%; }
-		@include breakpoint(large) { width: 25%; }
-		right: 1rem;
-		border: 1px white solid;
-		bottom: 0rem;
-		padding: 1rem;
-		color: white;
-		z-index: 1;
-		box-shadow: 0 -8px 16px rgba(black, 0.3);
+  &__menu-pos-wrap { //wraps __menu to anchor position from top
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+  }
+  &__menu {
+    background: rgba(black,0.9);
+    position: absolute;
+    width: 75%;
+    @include breakpoint(medium) { width: 50%; }
+    @include breakpoint(large) { width: 25%; }
+    right: 1rem;
+    border: 1px white solid;
+    bottom: 0rem;
+    padding: 1rem;
+    color: white;
+    z-index: 1;
+    box-shadow: 0 -8px 16px rgba(black, 0.3);
 
-		display: none;
-		&--active {
-			display: block;
-		}
+    display: none;
+    &--active {
+      display: block;
+    }
 
-		button {
-			@include button-base();
-			color: $c-cyan;
-			border-color: $c-cyan;
-			float: right;
-			margin-right: 0;
-			//padding-left: 2rem;
-			font-size: 1rem;
-		}
-		p {
-			margin-bottom: 0.5rem;
-		}
-		img {
-			display: block;
-			margin-bottom: 0.25rem;
-		}
-	}
-	&__method {
-		overflow: auto;
-		& + & {
-			border-top: 1px grey(30) solid;
-			padding-top: 1rem;
-		}
-	}
+    button {
+      @include button-base();
+      color: $c-cyan;
+      border-color: $c-cyan;
+      float: right;
+      margin-right: 0;
+      //padding-left: 2rem;
+      font-size: 1rem;
+    }
+    p {
+      margin-bottom: 0.5rem;
+    }
+    img {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+  }
+  &__method {
+    overflow: auto;
+    & + & {
+      border-top: 1px grey(30) solid;
+      padding-top: 1rem;
+    }
+  }
 }
 
 .osd {
-	&__toolbar {
-		float: right;
-	}
-	&__button { //todo: merge with cite__button
-		@include toolbar-button;
-	}
+  &__toolbar {
+    float: right;
+  }
+  &__button { //todo: merge with cite__button
+    @include toolbar-button;
+  }
 }
 #osd-zoomout {
-	@include icon-before(osd-zoomout, $size: 1.25rem);
+  @include icon-before(osd-zoomout, $size: 1.25rem);
 }
 #osd-zoomin {
-	@include icon-before(osd-zoomin, $size: 1.25rem);
+  @include icon-before(osd-zoomin, $size: 1.25rem);
 }
 #osd-fullpage {
-	@include icon-before(img-expand, $size: 1.25rem);
+  @include icon-before(img-expand, $size: 1.25rem);
 }
 #osd-home {
-	@include icon-before(osd-home, $size: 1.25rem);
+  @include icon-before(osd-home, $size: 1.25rem);
 }
 
 .record-description {
-	font-size: rem-calc(18);
+  font-size: rem-calc(18);
 }
 .record-longdesc {
-	// this could be applied to a <p>
-	// but may be safer to apply to wrapping <div> for bigger content
+  // this could be applied to a <p>
+  // but may be safer to apply to wrapping <div> for bigger content
 }
 .record-details {
-	padding-bottom: 2rem;
-	border-bottom: 1px white solid;
-	margin-top: 2rem;
-	margin-bottom: 2rem;
-	&__dl {
-		@include grid-row($behavior: nest);
-		padding: 0.75rem 0;
+  padding-bottom: 2rem;
+  border-bottom: 1px white solid;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  &__dl {
+    @include grid-row($behavior: nest);
+    padding: 0.75rem 0;
 
-		// &:not(:last-of-type) { border-bottom: 1px grey(20) solid; }
-		// need to knock it in a gutter, hence
-		&:not(:last-of-type):after {
-			content: ' ';
-			margin: 0 0.5rem;
-			background: grey(20);
-			height: 1px;
-			display: block;
-			position: relative;
-			top: 0.75rem;
-		}
-		dt,
-		dd {
-			margin: 0;
-		}
-		dt {
-			@include grid-column(3);
-			@include small-caps;
-			color: grey(80);
-			line-height: 1rem;
-			padding-top: 0.25rem; // to match dd line-height
-		}
-		dd {
-			@include grid-column(9);
-			line-height: 1.5rem;
-			//font-weight: 500;
-		}
-		a {
-			@include text-link();
-		}
+    // &:not(:last-of-type) { border-bottom: 1px grey(20) solid; }
+    // need to knock it in a gutter, hence
+    &:not(:last-of-type):after {
+      content: ' ';
+      margin: 0 0.5rem;
+      background: grey(20);
+      height: 1px;
+      display: block;
+      position: relative;
+      top: 0.75rem;
+    }
+    dt,
+    dd {
+      margin: 0;
+    }
+    dt {
+      @include grid-column(3);
+      @include small-caps;
+      color: grey(80);
+      line-height: 1rem;
+      padding-top: 0.25rem; // to match dd line-height
+    }
+    dd {
+      @include grid-column(9);
+      line-height: 1.5rem;
+      //font-weight: 500;
+    }
+    a {
+      @include text-link();
+    }
 
-		p {
-			margin: 0;
-		}
-		p + p {
-			margin-top: 1em;
-		}
-	}
+    p {
+      margin: 0;
+    }
+    p + p {
+      margin-top: 1em;
+    }
+  }
 }
 
 .taxonomy {
-	@include ul-icons;
-	li {
-		@include icon-bullet(taxonomy);
-		margin-top: 0;
-		margin-bottom: 0;
-		@for $i from 0 to 5 {
-		  &:nth-child(#{$i}) {
-			 margin-left: $i - 0.5rem;
-		  }
-		}
-	}
+  @include ul-icons;
+  li {
+    @include icon-bullet(taxonomy);
+    margin-top: 0;
+    margin-bottom: 0;
+    @for $i from 0 to 5 {
+      &:nth-child(#{$i}) {
+       margin-left: $i - 0.5rem;
+      }
+    }
+  }
 }
 
 
@@ -355,6 +355,6 @@
 //-----------------------------------------------------------------------------
 
 .record-related {
-	margin: 2rem 0;
-	//background: grey(10);
+  margin: 2rem 0;
+  //background: grey(10);
 }

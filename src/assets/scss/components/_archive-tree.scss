@@ -4,110 +4,110 @@
 //-----------------------------------------------------------------------------
 
 .archive-tree {
-	background-color: grey(10);
-	margin-bottom: 1rem;
+  background-color: grey(10);
+  margin-bottom: 1rem;
 
-	&__title {
-		line-height: 2.5rem; // match searchbox probably to right
-		margin: 0;
-	}
+  &__title {
+    line-height: 2.5rem; // match searchbox probably to right
+    margin: 0;
+  }
 
-	ul {
-		margin: 0;
-		padding: 0;
-	}
+  ul {
+    margin: 0;
+    padding: 0;
+  }
 
-	ul ul {
-		margin-top: -1px;
-	}
+  ul ul {
+    margin-top: -1px;
+  }
 
-	li {
-		display: block;
-		min-height: rem-calc(40);
-		clear: left;
-		margin-bottom: -1px;
-	}
+  li {
+    display: block;
+    min-height: rem-calc(40);
+    clear: left;
+    margin-bottom: -1px;
+  }
 
-	button {
-		width: rem-calc(40);
-		height: rem-calc(40);
-		outline: 0 red solid;
-		border-width: 0 0 1px 1px;
-		border-color: white;
-		border-style: solid;
-		float: left;
-		background-size: 1rem;
-		background-position: center center;
-		background-repeat: no-repeat;
-		position: absolute;
-		&:not([disabled]):hover {
-			background-color: $c-cyan;
-		}
-	}
-	[aria-expanded="true"] button {
-		background-image: url(/assets/icons/tree-contract.svg);
-	}
-	[aria-expanded="false"] button {
-		background-image: url(/assets/icons/tree-expand.svg);
-	}
-	button[disabled] {
-		background-image: url(/assets/icons/tree-item.svg);
-	}
+  button {
+    width: rem-calc(40);
+    height: rem-calc(40);
+    outline: 0 red solid;
+    border-width: 0 0 1px 1px;
+    border-color: white;
+    border-style: solid;
+    float: left;
+    background-size: 1rem;
+    background-position: center center;
+    background-repeat: no-repeat;
+    position: absolute;
+    &:not([disabled]):hover {
+      background-color: $c-cyan;
+    }
+  }
+  [aria-expanded="true"] button {
+    background-image: url(/assets/icons/tree-contract.svg);
+  }
+  [aria-expanded="false"] button {
+    background-image: url(/assets/icons/tree-expand.svg);
+  }
+  button[disabled] {
+    background-image: url(/assets/icons/tree-item.svg);
+  }
 
-	button,
-	&__label a {
-		background-color: grey(20);
-	}
+  button,
+  &__label a {
+    background-color: grey(20);
+  }
 
-	li li {
-		margin-left: rem-calc(40);
+  li li {
+    margin-left: rem-calc(40);
 
-		button,
-		a {
-			background-color: grey(30);
-		}
+    button,
+    a {
+      background-color: grey(30);
+    }
 
-		li button,
-		li a {
-			background-color: grey(40);
-		}
-	}
+    li button,
+    li a {
+      background-color: grey(40);
+    }
+  }
 
-	.current a,
-	.current button,
-	.current a:hover {
-			background-color: $c-cyan;
-			color: black;
+  .current a,
+  .current button,
+  .current a:hover {
+      background-color: $c-cyan;
+      color: black;
 
-	}
+  }
 
-	&__label {
-		overflow: auto;
-		border-top: 1px white solid;
-		position: relative;
-	}
+  &__label {
+    overflow: auto;
+    border-top: 1px white solid;
+    position: relative;
+  }
 
-	&__label--root { //toppermost
-		font-size: 1.75rem;
-	}
+  &__label--root { //toppermost
+    font-size: 1.75rem;
+  }
 
-	&__label a {
-		display: block;
-		margin-left: rem-calc(40);
-		padding: rem-calc(8 16 7 16);
-		border-left: 1px white solid;
-		border-bottom: 1px white solid;
-		color: black;
+  &__label a {
+    display: block;
+    margin-left: rem-calc(40);
+    padding: rem-calc(8 16 7 16);
+    border-left: 1px white solid;
+    border-bottom: 1px white solid;
+    color: black;
 
-		&:hover {
-			background-color: blend-multiply( rgba($c-cyan,0.1),grey(20) );
-		}
-		li li &:hover {
-			background-color: blend-multiply( rgba($c-cyan,0.1),grey(30) );
-		}
-		li li li &:hover {
-			background-color: blend-multiply( rgba($c-cyan,0.1),grey(40) );
-		}
+    &:hover {
+      background-color: blend-multiply( rgba($c-cyan,0.1),grey(20) );
+    }
+    li li &:hover {
+      background-color: blend-multiply( rgba($c-cyan,0.1),grey(30) );
+    }
+    li li li &:hover {
+      background-color: blend-multiply( rgba($c-cyan,0.1),grey(40) );
+    }
 
-	}
+  }
 }

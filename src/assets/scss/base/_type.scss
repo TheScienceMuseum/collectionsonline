@@ -18,15 +18,15 @@ $fonts: (
 
 @each $f in $fonts {
 
-	@font-face {
-		font-family: 'SMDIN';
-		src: url('/assets/fonts/#{nth($f,1)}.eot');
-		src: url('/assets/fonts/#{nth($f,1)}.eot?#iefix') format('embedded-opentype'),
-			url('/assets/fonts/#{nth($f,1)}.woff') format('woff'),
-			url('/assets/fonts/#{nth($f,1)}.ttf') format('truetype');
-		font-weight: #{nth($f,2)};
-		font-style: #{nth($f,3)};
-	}
+  @font-face {
+    font-family: 'SMDIN';
+    src: url('/assets/fonts/#{nth($f,1)}.eot');
+    src: url('/assets/fonts/#{nth($f,1)}.eot?#iefix') format('embedded-opentype'),
+      url('/assets/fonts/#{nth($f,1)}.woff') format('woff'),
+      url('/assets/fonts/#{nth($f,1)}.ttf') format('truetype');
+    font-weight: #{nth($f,2)};
+    font-style: #{nth($f,3)};
+  }
 
 }
 
