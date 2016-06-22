@@ -1,4 +1,33 @@
 {{> global/global-header}}
-{{> global/search-main reduced="reduced" home="home"}}
+
+<section class="searchbar">
+  <div class="row columns">
+
+    <h1 class="searchbar__strap">{{strap}}</h1>
+    <p class="searchbar__intro">{{{intro}}}</p>
+
+    {{> global/searchbox}}
+
+  </div>
+
+  <div class="home-collections row">
+    {{#each collection}}
+      <div class="{{ this.columns }} columns end">
+        <a href="{{ this.link }}">
+          <div class="resultcard resultcard--related {{#if type}}resultcard--{{ this.type }}{{/if}}">
+            <figure class="resultcard__figure">
+              {{#if figure}}<img src="{{ this.figure }}" /> {{/if}}
+            </figure>
+            <div class="resultcard__info">
+              <h4 class="resultcard__title">{{ this.title }}</h4>
+              <p class="resultcard__description">{{ this.description }}</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    {{/each}}
+  </div>
+
+</section>
 
 {{> global/global-footer }}

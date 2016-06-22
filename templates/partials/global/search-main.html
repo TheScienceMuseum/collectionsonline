@@ -29,19 +29,9 @@
       </nav>
     {{/unless}}
 
-    {{#if home}}
-      <h1 class="searchbar__strap">{{strap}}</h1>
-      <p>{{intro}}</p>
-    {{/if}}
-
     {{#if reduced}}
       {{> global/searchbox}}
     {{/if}}
 
   </div>
-
-  {{#if home}}
-    {{> search/home-collections}}
-  {{/if}}
-
 </section>
