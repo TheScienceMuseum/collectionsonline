@@ -1,4 +1,7 @@
-<h1>{{output.payload.status}} {{output.payload.error}}</h1>
-{{#if output.payload.message}}
-<p>{{output.payload.message}}</p>
+<h1>{{error.output.payload.status}} {{error.output.payload.error}}</h1>
+{{#if error.output.payload.message}}
+  <p>{{error.output.payload.message}}</p>
+{{/if}}
+{{#if isDevelopment}}
+  <pre>{{error.stack}}</pre>
 {{/if}}

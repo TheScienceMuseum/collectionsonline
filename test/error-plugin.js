@@ -42,7 +42,7 @@ test('Should reply with error page for text/html accepted requests', (t) => {
 
   t.ok(mockReply.view.called, 'Render function was called');
   t.equal(mockReply.view.firstCall.args[0], 'error', 'Error template was rendered');
-  t.equal(mockReply.view.firstCall.args[1].message, errMessage, 'Error message was as expected');
+  t.equal(mockReply.view.firstCall.args[1].error.message, errMessage, 'Error message was as expected');
 
   t.ok(mockReply.code.called, 'Code function was called');
   t.equal(mockReply.code.firstCall.args[0], 500, 'Status code was 500');

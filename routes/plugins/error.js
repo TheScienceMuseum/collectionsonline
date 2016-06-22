@@ -1,4 +1,5 @@
 const Boom = require('boom');
+const isDevelopment = (process.env.NODE_ENV || 'development') === 'development';
 
 // Heavily based on the excellent https://github.com/dwyl/hapi-error
 // and https://gist.github.com/wraithgar/231ee3717b4d2da54044
@@ -12,13 +13,15 @@ exports.register = (server, options, next) => {
     const error = Boom.wrap(request.response);
     const accept = request.headers.accept || '';
 
-    if (error.status >= 500) {
-      request.server.log(['error'], error.stack);
+    if (error.output.statusCode >= 500) {
+      console.error(error.stack);
     }
 
     if (accept.indexOf('text/html') === 0) {
       // Respond with an error template
-      return reply.view(options.template || 'error', error).code(error.output.statusCode);
+      return reply
+        .view(options.template || 'error', { error, isDevelopment })
+        .code(error.output.statusCode);
     }
 
     if (accept.indexOf('application/vnd.api+json') === 0) {
