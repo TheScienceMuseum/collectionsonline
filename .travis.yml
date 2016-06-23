@@ -3,15 +3,6 @@ language: node_js
 node_js:
   - '4'
 
-env:
-  - CXX=g++-4.8
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-4.8
-
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
@@ -33,6 +24,7 @@ deploy:
   env: Default-Environment
   bucket_name: elasticbeanstalk-eu-west-1-431258931377
   zip_file: collectionsonline.zip
+  skip_cleanup: true
   on:
     repo: TheScienceMuseum/collectionsonline
     #branch: master
