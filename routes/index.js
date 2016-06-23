@@ -1,9 +1,9 @@
-module.exports = ({ elastic, config }) => ([
+module.exports = (elastic, config) => ([
   require('./home')(),
-  require('./search')({ elastic, config }),
+  require('./search')(elastic, config),
   require('./public')(),
-  require('./archive')({ elastic, config }),
-  require('./archivedoc')({ elastic, config }),
-  require('./object')({ elastic, config }),
-  require('./person')({ elastic, config })
+  require('./archive')(elastic, config),
+  require('./archivedoc')(elastic, config),
+  require('./object')(elastic, config),
+  require('./person')(elastic, config)
 ]);

@@ -4,14 +4,14 @@ const Pagination = require('../lib/pagination');
 test('Should have break when > 6 pages are available', (t) => {
   t.plan(2);
 
+  const currentPageNumber = 0;
+  const totalPages = 10;
   const opts = {
-    currentPageNumber: 0,
-    totalPages: 10,
     maxLinks: 6,
     createPageLink: (p) => `http://example.org/${p.pageNumber}`
   };
 
-  const pages = Pagination.pages(opts);
+  const pages = Pagination.pages(currentPageNumber, totalPages, opts);
 
   t.equal(pages.length, 7, 'Total pages was 7');
   t.notOk(pages[4], 'Found break at position 4');
@@ -22,14 +22,14 @@ test('Should have break when > 6 pages are available', (t) => {
 test('Should set isCurrent on current page', (t) => {
   t.plan(2);
 
+  const currentPageNumber = 3;
+  const totalPages = 10;
   const opts = {
-    currentPageNumber: 3,
-    totalPages: 10,
     maxLinks: 6,
     createPageLink: (p) => `http://example.org/${p.pageNumber}`
   };
 
-  const pages = Pagination.pages(opts);
+  const pages = Pagination.pages(currentPageNumber, totalPages, opts);
   const currentPage = pages.find((p) => p && p.isCurrent);
 
   t.ok(currentPage, 'Current page was found');
@@ -41,14 +41,14 @@ test('Should set isCurrent on current page', (t) => {
 test('Should not have break when <= 6 pages are available', (t) => {
   t.plan(7);
 
+  const currentPageNumber = 0;
+  const totalPages = 6;
   const opts = {
-    currentPageNumber: 0,
-    totalPages: 6,
     maxLinks: 6,
     createPageLink: (p) => `http://example.org/${p.pageNumber}`
   };
 
-  const pages = Pagination.pages(opts);
+  const pages = Pagination.pages(currentPageNumber, totalPages, opts);
 
   t.equal(pages.length, 6, 'Total pages was 6');
 
@@ -62,14 +62,14 @@ test('Should not have break when <= 6 pages are available', (t) => {
 test('Should not have break when current page is near end', (t) => {
   t.plan(7);
 
+  const currentPageNumber = 7;
+  const totalPages = 10;
   const opts = {
-    currentPageNumber: 7,
-    totalPages: 10,
     maxLinks: 6,
     createPageLink: (p) => `http://example.org/${p.pageNumber}`
   };
 
-  const pages = Pagination.pages(opts);
+  const pages = Pagination.pages(currentPageNumber, totalPages, opts);
 
   t.equal(pages.length, 6, 'Total pages was 6');
 
@@ -83,14 +83,14 @@ test('Should not have break when current page is near end', (t) => {
 test('Should show 3 pages when only 3 pages are available', (t) => {
   t.plan(1);
 
+  const currentPageNumber = 0;
+  const totalPages = 3;
   const opts = {
-    currentPageNumber: 0,
-    totalPages: 3,
     maxLinks: 6,
     createPageLink: (p) => `http://example.org/${p.pageNumber}`
   };
 
-  const pages = Pagination.pages(opts);
+  const pages = Pagination.pages(currentPageNumber, totalPages, opts);
 
   t.equal(pages.length, 3, 'Total pages was 3');
   t.end();

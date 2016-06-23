@@ -3,7 +3,7 @@ const fs = require('fs');
 const jsFile = fs.readFileSync('public/bundle.js');
 const cssFile = fs.readFileSync('public/bundle.css');
 
-testWithServer('Javascript Files served correctly', (t, { server }) => {
+testWithServer('Javascript Files served correctly', (t, ctx) => {
   t.plan(1);
 
   const jsRequest = {
@@ -11,13 +11,13 @@ testWithServer('Javascript Files served correctly', (t, { server }) => {
     url: '/bundle.js'
   };
 
-  server.inject(jsRequest, (res) => {
+  ctx.server.inject(jsRequest, (res) => {
     t.equal(res.payload.toString('utf-8'), jsFile.toString(), 'JS File should be served');
     t.end();
   });
 });
 
-testWithServer('CSS Files served correctly', (t, { server }) => {
+testWithServer('CSS Files served correctly', (t, ctx) => {
   t.plan(1);
 
   const cssRequest = {
@@ -25,13 +25,13 @@ testWithServer('CSS Files served correctly', (t, { server }) => {
     url: '/bundle.css'
   };
 
-  server.inject(cssRequest, function (res) {
+  ctx.server.inject(cssRequest, function (res) {
     t.equal(res.payload.toString('utf-8'), cssFile.toString(), 'CSS file should be served');
     t.end();
   });
 });
 
-testWithServer('Non Existent Files', (t, { server }) => {
+testWithServer('Non Existent Files', (t, ctx) => {
   t.plan(1);
 
   const badRequest = {
@@ -39,7 +39,7 @@ testWithServer('Non Existent Files', (t, { server }) => {
     url: '/notfound.js'
   };
 
-  server.inject(badRequest, (res) => {
+  ctx.server.inject(badRequest, (res) => {
     t.equal(res.statusCode, 404, 'Non-existent file should return 404');
     t.end();
   });

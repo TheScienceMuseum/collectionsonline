@@ -4,15 +4,18 @@ const createServer = require('../server');
 
 const elastic = new Client(config.elasticsearch);
 
-createServer({ elastic, config }, (err, { server }) => {
+// Allow PORT env variable to specify port for elasticbeanstalk
+config.port = process.env.PORT || config.port;
+
+createServer(elastic, config, (err, ctx) => {
   if (err) {
     throw err;
   }
 
-  server.start((err) => {
+  ctx.server.start((err) => {
     if (err) {
       throw err;
     }
-    console.log(server.info.uri);
+    console.log(ctx.server.info.uri);
   });
 });

@@ -1,7 +1,7 @@
 const QueryString = require('querystring');
 const testWithServer = require('./helpers/test-with-server');
 
-testWithServer('Should accept params in filter[PARAM_NAME] format', (t, { server }) => {
+testWithServer('Should accept params in filter[PARAM_NAME] format', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -14,13 +14,13 @@ testWithServer('Should accept params in filter[PARAM_NAME] format', (t, { server
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept date[from] in format YYYY', (t, { server }) => {
+testWithServer('Should accept date[from] in format YYYY', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -29,13 +29,13 @@ testWithServer('Should accept date[from] in format YYYY', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept date[from] in format YYYY-MM', (t, { server }) => {
+testWithServer('Should accept date[from] in format YYYY-MM', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -44,13 +44,13 @@ testWithServer('Should accept date[from] in format YYYY-MM', (t, { server }) => 
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept date[from] in format YYYY-MM-DD', (t, { server }) => {
+testWithServer('Should accept date[from] in format YYYY-MM-DD', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -59,13 +59,13 @@ testWithServer('Should accept date[from] in format YYYY-MM-DD', (t, { server }) 
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should not accept invalid date[from]', (t, { server }) => {
+testWithServer('Should not accept invalid date[from]', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -74,13 +74,13 @@ testWithServer('Should not accept invalid date[from]', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept date[to] in format YYYY', (t, { server }) => {
+testWithServer('Should accept date[to] in format YYYY', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -89,13 +89,13 @@ testWithServer('Should accept date[to] in format YYYY', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept date[to] in format YYYY-MM', (t, { server }) => {
+testWithServer('Should accept date[to] in format YYYY-MM', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -104,13 +104,13 @@ testWithServer('Should accept date[to] in format YYYY-MM', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept date[to] in format YYYY-MM-DD', (t, { server }) => {
+testWithServer('Should accept date[to] in format YYYY-MM-DD', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -119,13 +119,13 @@ testWithServer('Should accept date[to] in format YYYY-MM-DD', (t, { server }) =>
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should not accept invalid date[to]', (t, { server }) => {
+testWithServer('Should not accept invalid date[to]', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -134,13 +134,13 @@ testWithServer('Should not accept invalid date[to]', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept single places', (t, { server }) => {
+testWithServer('Should accept single places', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -149,13 +149,13 @@ testWithServer('Should accept single places', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept multiple places', (t, { server }) => {
+testWithServer('Should accept multiple places', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -164,13 +164,13 @@ testWithServer('Should accept multiple places', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept single type', (t, { server }) => {
+testWithServer('Should accept single type', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -179,13 +179,13 @@ testWithServer('Should accept single type', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should not accept multiple type', (t, { server }) => {
+testWithServer('Should not accept multiple type', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -194,13 +194,13 @@ testWithServer('Should not accept multiple type', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept single makers', (t, { server }) => {
+testWithServer('Should accept single makers', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -209,13 +209,13 @@ testWithServer('Should accept single makers', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept multiple makers', (t, { server }) => {
+testWithServer('Should accept multiple makers', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -224,13 +224,13 @@ testWithServer('Should accept multiple makers', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept single people', (t, { server }) => {
+testWithServer('Should accept single people', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -239,13 +239,13 @@ testWithServer('Should accept single people', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept multiple people', (t, { server }) => {
+testWithServer('Should accept multiple people', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -254,13 +254,13 @@ testWithServer('Should accept multiple people', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept single organisations', (t, { server }) => {
+testWithServer('Should accept single organisations', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -269,13 +269,13 @@ testWithServer('Should accept single organisations', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept multiple organisations', (t, { server }) => {
+testWithServer('Should accept multiple organisations', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -284,13 +284,13 @@ testWithServer('Should accept multiple organisations', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept single categories', (t, { server }) => {
+testWithServer('Should accept single categories', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -299,13 +299,13 @@ testWithServer('Should accept single categories', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept multiple categories', (t, { server }) => {
+testWithServer('Should accept multiple categories', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -314,13 +314,13 @@ testWithServer('Should accept multiple categories', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept valid museum NRM', (t, { server }) => {
+testWithServer('Should accept valid museum NRM', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -329,13 +329,13 @@ testWithServer('Should accept valid museum NRM', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept valid museum SMG', (t, { server }) => {
+testWithServer('Should accept valid museum SMG', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -344,13 +344,13 @@ testWithServer('Should accept valid museum SMG', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept valid museum NMeM', (t, { server }) => {
+testWithServer('Should accept valid museum NMeM', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -359,13 +359,13 @@ testWithServer('Should accept valid museum NMeM', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept valid museum MSI', (t, { server }) => {
+testWithServer('Should accept valid museum MSI', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -374,13 +374,13 @@ testWithServer('Should accept valid museum MSI', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should not accept invalid museum', (t, { server }) => {
+testWithServer('Should not accept invalid museum', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -389,13 +389,13 @@ testWithServer('Should not accept invalid museum', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept on_display true', (t, { server }) => {
+testWithServer('Should accept on_display true', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -404,13 +404,13 @@ testWithServer('Should accept on_display true', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept on_display false', (t, { server }) => {
+testWithServer('Should accept on_display false', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -419,13 +419,13 @@ testWithServer('Should accept on_display false', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should not accept invalid on_display', (t, { server }) => {
+testWithServer('Should not accept invalid on_display', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -434,13 +434,13 @@ testWithServer('Should not accept invalid on_display', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept single location', (t, { server }) => {
+testWithServer('Should accept single location', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -449,13 +449,13 @@ testWithServer('Should accept single location', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should not accept multiple location', (t, { server }) => {
+testWithServer('Should not accept multiple location', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -464,13 +464,13 @@ testWithServer('Should not accept multiple location', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept single birth[place]', (t, { server }) => {
+testWithServer('Should accept single birth[place]', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -479,13 +479,13 @@ testWithServer('Should accept single birth[place]', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should not accept multiple birth[place]', (t, { server }) => {
+testWithServer('Should not accept multiple birth[place]', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -494,13 +494,13 @@ testWithServer('Should not accept multiple birth[place]', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept birth[date] in format YYYY', (t, { server }) => {
+testWithServer('Should accept birth[date] in format YYYY', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -509,13 +509,13 @@ testWithServer('Should accept birth[date] in format YYYY', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept birth[date] in format YYYY-MM', (t, { server }) => {
+testWithServer('Should accept birth[date] in format YYYY-MM', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -524,13 +524,13 @@ testWithServer('Should accept birth[date] in format YYYY-MM', (t, { server }) =>
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept birth[date] in format YYYY-MM-DD', (t, { server }) => {
+testWithServer('Should accept birth[date] in format YYYY-MM-DD', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -539,13 +539,13 @@ testWithServer('Should accept birth[date] in format YYYY-MM-DD', (t, { server })
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should not accept invalid birth[date]', (t, { server }) => {
+testWithServer('Should not accept invalid birth[date]', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -554,13 +554,13 @@ testWithServer('Should not accept invalid birth[date]', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept death[date] in format YYYY', (t, { server }) => {
+testWithServer('Should accept death[date] in format YYYY', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -569,13 +569,13 @@ testWithServer('Should accept death[date] in format YYYY', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept death[date] in format YYYY-MM', (t, { server }) => {
+testWithServer('Should accept death[date] in format YYYY-MM', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -584,13 +584,13 @@ testWithServer('Should accept death[date] in format YYYY-MM', (t, { server }) =>
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept death[date] in format YYYY-MM-DD', (t, { server }) => {
+testWithServer('Should accept death[date] in format YYYY-MM-DD', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -599,13 +599,13 @@ testWithServer('Should accept death[date] in format YYYY-MM-DD', (t, { server })
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should not accept invalid death[date]', (t, { server }) => {
+testWithServer('Should not accept invalid death[date]', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -614,13 +614,13 @@ testWithServer('Should not accept invalid death[date]', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept single occupation', (t, { server }) => {
+testWithServer('Should accept single occupation', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -629,13 +629,13 @@ testWithServer('Should accept single occupation', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should not accept multiple occupation', (t, { server }) => {
+testWithServer('Should not accept multiple occupation', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -644,13 +644,13 @@ testWithServer('Should not accept multiple occupation', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept single archive', (t, { server }) => {
+testWithServer('Should accept single archive', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -659,13 +659,13 @@ testWithServer('Should accept single archive', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should not accept multiple archive', (t, { server }) => {
+testWithServer('Should not accept multiple archive', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -674,13 +674,13 @@ testWithServer('Should not accept multiple archive', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept single formats', (t, { server }) => {
+testWithServer('Should accept single formats', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -689,13 +689,13 @@ testWithServer('Should accept single formats', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept multiple formats', (t, { server }) => {
+testWithServer('Should accept multiple formats', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -704,13 +704,13 @@ testWithServer('Should accept multiple formats', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept single image_licences', (t, { server }) => {
+testWithServer('Should accept single image_licences', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -719,13 +719,13 @@ testWithServer('Should accept single image_licences', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Should accept multiple image_licences', (t, { server }) => {
+testWithServer('Should accept multiple image_licences', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -734,7 +734,7 @@ testWithServer('Should accept multiple image_licences', (t, { server }) => {
     headers: { Accept: 'text/html' }
   };
 
-  server.inject(htmlRequest, (res) => {
+  ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
