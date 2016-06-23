@@ -21,7 +21,7 @@ install:
   - npm install
 
 before_deploy:
-  - zip -r collectionsonline *
+  - zip -q -r collectionsonline *
 
 deploy:
   provider: elasticbeanstalk
