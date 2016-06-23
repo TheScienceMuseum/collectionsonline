@@ -175,8 +175,24 @@ Follow these steps to setup a new CI environment:
     Deploy only from TheScienceMuseum/collectionsonline? |yes|
     ```
 
-* Put the S3 bucket name in the deploy config `bucket_name: elasticbeanstalk-eu-west-1-431258931377`
-* In AWS elasticbeanstalk navigate to "software configuration" for the app
+* Add the following to the travis config:
+    * Zip up the built site before deploy
+
+    ````yaml
+    before_deploy:
+      - zip -q -x .git\* node_modules/\* -r collectionsonline *
+    ````
+
+    * Add the bucket name, zip file path and skip cleanup to the deploy section:
+
+    ```yaml
+    deploy:
+      bucket_name: elasticbeanstalk-eu-west-1-431258931377
+      zip_file: collectionsonline.zip
+      skip_cleanup: true
+    ```
+
+* In AWS elasticbeanstalk navigate to "Software Configuration" for the app
     * Add `npm start` as the "Node command"
     * Add config as environment vars to the new apps:
         * `co_rootUrl`
