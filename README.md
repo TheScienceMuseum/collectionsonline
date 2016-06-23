@@ -80,7 +80,7 @@ Follow these steps to setup a new CI environment:
 * Create an IAM group **smg-collections-online-deploy**
 * Add the following inline policy (named: **DeployPolicy**) to the group, substituting the resource values appropriately:
 
-    ```
+    ```json
     {
         "Statement": [
             {
