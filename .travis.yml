@@ -27,8 +27,7 @@ deploy:
     skip_cleanup: true
     on:
       repo: TheScienceMuseum/collectionsonline
-      #branch: master
-      all_branches: true
+      branch: master
   - provider: elasticbeanstalk
     access_key_id: *1
     secret_access_key: *2
