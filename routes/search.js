@@ -4,7 +4,7 @@ const searchResultsToJsonApi = require('../lib/transforms/search-results-to-json
 const searchResultsToTemplateData = require('../lib/transforms/search-results-to-template-data');
 const TypeMapping = require('../lib/type-mapping');
 
-module.exports = ({ elastic, config }) => ({
+module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/search/{type?}',
   handler: (request, reply) => reply(),

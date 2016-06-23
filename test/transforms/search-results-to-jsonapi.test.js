@@ -18,13 +18,13 @@ test('Should create valid links on first page', (t) => {
     }
   };
 
-  let obj;
+  var obj;
 
   t.doesNotThrow(() => {
     obj = searchResultsToJsonApi({ q: 'test', 'page[number]': 0, 'page[size]': 1 }, testResult);
   }, 'Transform did not throw');
 
-  let qs;
+  var qs;
 
   qs = QueryString.stringify({ q: 'test', 'page[number]': 0, 'page[size]': 1 });
   t.equal(obj.links.self, '/search?' + qs, 'Self page link was correct');
@@ -59,13 +59,13 @@ test('Should create valid links on middle page', (t) => {
     }
   };
 
-  let obj;
+  var obj;
 
   t.doesNotThrow(() => {
     obj = searchResultsToJsonApi({ q: 'test', 'page[number]': 1, 'page[size]': 1 }, testResult);
   }, 'Transform did not throw');
 
-  let qs;
+  var qs;
 
   qs = QueryString.stringify({ q: 'test', 'page[number]': 1, 'page[size]': 1 });
   t.equal(obj.links.self, '/search?' + qs, 'Self page link was correct');
@@ -101,13 +101,13 @@ test('Should create valid links on last page', (t) => {
     }
   };
 
-  let obj;
+  var obj;
 
   t.doesNotThrow(() => {
     obj = searchResultsToJsonApi({ q: 'test', 'page[number]': 4, 'page[size]': 1 }, testResult);
   }, 'Transform did not throw');
 
-  let qs;
+  var qs;
 
   qs = QueryString.stringify({ q: 'test', 'page[number]': 4, 'page[size]': 1 });
   t.equal(obj.links.self, '/search?' + qs, 'Self page link was correct');
@@ -140,7 +140,7 @@ test('Should ignore unknown object types', (t) => {
     }
   };
 
-  let obj;
+  var obj;
 
   t.doesNotThrow(() => {
     obj = searchResultsToJsonApi({ q: 'test', 'page[number]': 0, 'page[size]': 50 }, testResult);
@@ -182,7 +182,7 @@ test('Should extract @link\'d document to relationships and included', (t) => {
     }
   };
 
-  let obj;
+  var obj;
 
   t.doesNotThrow(() => {
     obj = searchResultsToJsonApi({ q: 'test', 'page[number]': 0, 'page[size]': 1 }, testResult);

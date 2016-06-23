@@ -7,7 +7,7 @@ const createMockElastic = require('./mock-elastic');
 module.exports = (description, cb) => {
   const elastic = createMockElastic();
 
-  createServer({ config, elastic }, (err, ctx) => {
+  createServer(elastic, config, (err, ctx) => {
     if (err) {
       throw err;
     }

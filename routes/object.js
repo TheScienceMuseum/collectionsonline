@@ -4,7 +4,7 @@ const exampleData = JSON.parse(fs.readFileSync('./src/data/object.json'));
 const buildJSONResponse = require('../lib/jsonapi-response');
 const TypeMapping = require('../lib/type-mapping');
 
-module.exports = ({ elastic, config }) => ({
+module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/objects/{id}/{slug?}',
   handler: (request, reply) => reply(),

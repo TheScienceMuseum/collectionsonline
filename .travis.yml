@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - '6'
+  - '4'
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
@@ -11,18 +11,16 @@ install:
   - bower install
   - npm install
 
-before_deploy:
-  - zip -r latest *
-  - mkdir -p deploy
-  - mv latest.zip deploy/latest.zip
-
 deploy:
-  - provider: s3
-    bucket: smg-collectionsonline
-    local_dir: deploy
-    access_key_id: AKIAIYE5GN7RNPZSZELA
-    secret_access_key:
-      secure: WcCxLMSgUY5nkErfWrQcJ7WRqwldQYNpzVprNTGuJG81GMjCYNdlZYgpR77O8jxbFPSutUwvuHBVKp2CSaDYVDB6WYNREYPTqwDmPUYNA5Am/jYmFoZ3xUqMbyLMZ/ekCfQxCEY4yFqjR6q7DGgLB/UYz/A7LmwYK/3F2uleLf1SCJEFCRmZx2N9+HxOaBUXGsjfVhK8O8daSbAWmV67oVBWN7qNG/fjrOxZ8vnh9FZaUv0k+Xar8FKqs7qgHSHOlPUQHa2rrwo4ysStg5eLQ4V1tTFC5Nd9IgX8N5gnhkDimzPxAczJelnR8s8IGIWjtyhS2E4/Yu5znQr1ZI3LYy+9OhwzYKZvpCgpfiAEe2mS3+GmumqEHYUyxBeJ01nwhbHCiftgua2QjwEOinnrEjUNIxQf6lmb3ErLLzVf749P9+izlQXK24QhqtEd/YFm0WjQDlhLhq5cVjKHTs2n6mq2CnSCaUKFE9/FBGYRVnqCEGJ9n1putvhbDbBqQdkrQYUus0Xlji1LQW1O8X/lov89/qQ4bAhs00tEunp9BZHV8xTpooShaldaBftW7e7V6jylJ+fRDNXMFpxY0Qfw/Oy6mM/pnQyPgwhbuhoInVxRB0nrxW1rOSO5ECaB513bhkHNLCJfFoKgEqETc+ftRTfzpUwyvRpbaz0VjQgJ5ME=
-    skip_cleanup: true
-    on:
-      all_branches: true
+  provider: elasticbeanstalk
+  access_key_id: AKIAIYE5GN7RNPZSZELA
+  secret_access_key:
+    secure: KAZf1zFPy4NuXEvQ8nkKU+VcIGdbC0aGAZoozDse3cunU9PGaKJG378hrD69vN4u6NwkDMfbibNwVnYMz9tXdR5FtDrid6ViLtD+3u+cCxR6kyqaTY2KxhD/mXP6QpL2YJDeFoKiujRkOXPalUf2cu78+Mltx9uhSOHeoTeEZYzxtCEsVDyzMiL71wrmOMEgRMcOvvd3EwejeJ8Srp0NrhLl5IMXevfYVUT9SaiZoFNQLaqM4ISyusQ1HrJA3Fg82aN2YZL6JqixoAajDv3UjPda1jPSVzEn6XUZtdfdc2bI2Sax+WBOORRMD4BcSVGvEj2djq0Zz4aLApfsmbc0EFnFyurL+1yPDcqSeO5yvs0lpeMr+ZZjWnADVNhjZlPBP7GrJ4OeTFhGbeea3693Gqq6T52HbeAIaelp3aqZCwMieqoEAhIGPfD/1f0Y8u+6zufpizffItteun/EJhvAwANavsIsfEkzC1fun/zR2ZbXIs6cJG1foU34S3S+cFHs3uGv68Mxx0fecQ78O6A7tOmuKmaNgWSaWxYK+YjXg+f9ma61aODtt6+YqYQeBBrsMpxfCdwt4WZBgC2vaGzG2j7kgAHH3Qe9NghIB6lYo5MnXvk9LnGrLFPvyG+9EgLcxNN6f0QPBoMH30GI0sZ7TLrhb7VCdHdR6m7qvawcgOY=
+  region: eu-west-1
+  app: "My First Elastic Beanstalk Application"
+  env: Default-Environment
+  bucket_name: elasticbeanstalk-eu-west-1-431258931377
+  on:
+    repo: TheScienceMuseum/collectionsonline
+    #branch: master
+    all_branches: true

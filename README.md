@@ -4,7 +4,7 @@
 
 ## Getting started
 
-1. Install [Node.js](https://nodejs.org/en/) 6.x
+1. Install [Node.js](https://nodejs.org/en/) 4.x
 2. Install dependencies: `bower install && npm install`
 3. Copy `.corc.template` to `.corc` in the project route
 4. Add required config values to `.corc`
@@ -69,33 +69,113 @@ We use Travis for CI and production deployment. The `.travis.yml` file in the ro
 
 ### Setup CI
 
-* Setup bucket in AWS
-    * Create a new bucket **smg-collectionsonline**
-    * Create a new group **smg-collectionsonline**
-        * Edit permissions and add an inline policy:
-            ```
+Follow these steps to setup a new CI environment:
+
+* Create an elasticbeanstalk Node.js app in the **eu-west-1** region
+    * Make a note of the application name and environment name (you'll need this later)
+* Get the name of the S3 bucket it creates
+    * It will look like **elasticbeanstalk-eu-west-1-431258931377**
+* Create an IAM user **smg-collectionsonline-deploy-travis**
+    * Save the access key and secret (you'll need this later)
+* Create an IAM group **smg-collections-online-deploy**
+* Add the following inline policy (named: **DeployPolicy**) to the group, substituting the resource values appropriately:
+
+    ```
+    {
+        "Statement": [
             {
-                "Statement": [
-                    {
-                        "Effect": "Allow",
-                        "Action": "s3:ListAllMyBuckets",
-                        "Resource": "arn:aws:s3:::*"
-                    },
-                    {
-                        "Effect": "Allow",
-                        "Action": "s3:*",
-                        "Resource": [
-                            "arn:aws:s3:::smg-collectionsonline",
-                            "arn:aws:s3:::smg-collectionsonline/*"
-                        ]
-                    }
+                "Effect": "Allow",
+                "Action": [
+                    "elasticbeanstalk:Check*",
+                    "elasticbeanstalk:Describe*",
+                    "elasticbeanstalk:List*",
+                    "elasticbeanstalk:RequestEnvironmentInfo",
+                    "elasticbeanstalk:RetrieveEnvironmentInfo",
+                    "ec2:Describe*",
+                    "elasticloadbalancing:Describe*",
+                    "autoscaling:Describe*",
+                    "cloudwatch:Describe*",
+                    "cloudwatch:List*",
+                    "cloudwatch:Get*",
+                    "s3:Get*",
+                    "s3:List*",
+                    "sns:Get*",
+                    "sns:List*",
+                    "cloudformation:Describe*",
+                    "cloudformation:Get*",
+                    "cloudformation:List*",
+                    "cloudformation:Validate*",
+                    "cloudformation:Estimate*",
+                    "rds:Describe*",
+                    "sqs:Get*",
+                    "sqs:List*"
+                ],
+                "Resource": "*"
+            },
+            {
+                "Effect": "Allow",
+                "Action": "s3:*",
+                "Resource": [
+                    "arn:aws:s3:::elasticbeanstalk-eu-west-1-431258931377",
+                    "arn:aws:s3:::elasticbeanstalk-eu-west-1-431258931377/*"
                 ]
+            },
+            {
+                "Effect": "Allow",
+                "Action": "elasticbeanstalk:*",
+                "Resource": "arn:aws:elasticbeanstalk:eu-west-1:431258931377:*"
+            },
+            {
+                "Effect": "Allow",
+                "Action": "elasticbeanstalk:UpdateEnvironment",
+                "Resource": "arn:aws:elasticbeanstalk:eu-west-1:431258931377:environment/Default-Environment/My First Elastic Beanstalk Application"
+            },
+            {
+                "Effect": "Allow",
+                "Action": "cloudformation:*",
+                "Resource": "arn:aws:cloudformation:eu-west-1:431258931377:*"
+            },
+            {
+                "Effect": "Allow",
+                "Action": [  
+                    "autoscaling:SuspendProcesses",
+                    "autoscaling:ResumeProcesses"
+                ],
+                "Resource": "*"
+            },
+            {
+                "Effect": "Allow",
+                "Action": "elasticloadbalancing:*",
+                "Resource": "arn:aws:elasticloadbalancing:eu-west-1:431258931377:*"
             }
-            ```
-    * Create new user **smg-collectionsonline-deploy-travis**
-        * Add user to the **smg-collectionsonline** group
-* Configure `.travis.yml`
-    * Add the access key for **smg-collectionsonline-deploy-travis** to `.travis.yml` for `access_key_id`
-    * Use [Travis CLI](https://github.com/travis-ci/travis.rb) to encrypt the secret key for `smg-collectionsonline-deploy-travis`
-        * `travis encrypt --add deploy.secret_access_key`
-        * This should add it to `.travis.yml` under `secret_access_key`
+        ]
+    }
+    ```
+
+* Create a `.travis.yml` in the project root and add the following:
+
+    ```
+    language: node_js
+
+    node_js:
+      - '4'
+    ```
+
+* Install the [Travis CLI](https://github.com/travis-ci/travis.rb) tool
+* Run `travis setup elasticbeanstalk`
+
+    ```sh
+    $ travis setup elasticbeanstalk
+    Access key ID: AKIAIYE5GN7RNPZSZELA
+    Secret access key: ****************************************
+    Elastic Beanstalk region: |us-east-1| eu-west-1
+    Elastic Beanstalk application name: My First Elastic Beanstalk Application
+    Elastic Beanstalk environment to update: Default-Environment
+    Encrypt secret access key? |yes|
+    Deploy only from TheScienceMuseum/collectionsonline? |yes|
+    ```
+
+* Put the S3 bucket name in the deploy config `bucket_name: elasticbeanstalk-eu-west-1-431258931377`
+* Finally, add config as environment vars to the new apps:
+    * `co_rootUrl`
+    * `co_elasticsearch__host`

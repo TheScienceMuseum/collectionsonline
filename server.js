@@ -1,12 +1,12 @@
 const Hapi = require('hapi');
 const routes = require('./routes');
 
-module.exports = ({ elastic, config }, cb) => {
+module.exports = (elastic, config, cb) => {
   const server = new Hapi.Server();
 
   server.connection({ port: config.port });
 
-  server.route(routes({ elastic, config }));
+  server.route(routes(elastic, config));
 
   server.register([
     {
