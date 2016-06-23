@@ -176,6 +176,8 @@ Follow these steps to setup a new CI environment:
     ```
 
 * Put the S3 bucket name in the deploy config `bucket_name: elasticbeanstalk-eu-west-1-431258931377`
-* Finally, add config as environment vars to the new apps:
-    * `co_rootUrl`
-    * `co_elasticsearch__host`
+* In AWS elasticbeanstalk navigate to "software configuration" for the app
+    * Add `npm start` as the "Node command"
+    * Add config as environment vars to the new apps:
+        * `co_rootUrl`
+        * `co_elasticsearch__host`
