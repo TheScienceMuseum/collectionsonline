@@ -3,7 +3,15 @@ const config = require('../../config');
 const buildJSONResponse = require('../../lib/jsonapi-response');
 const JSONAPIResponse = buildJSONResponse(require('../fixtures/example-get-response-organisation.json'), config);
 const buildHTMLData = require('../../lib/transforms/json-to-html-data');
-const HTMLData = buildHTMLData(JSONAPIResponse);
+var HTMLData;
+
+test('HTMLData should be transformed succesfully', (t) => {
+  t.plan(1);
+  t.doesNotThrow(() => {
+    HTMLData = buildHTMLData(JSONAPIResponse);
+  }, 'Transform did not throw error');
+  t.end();
+});
 
 test('Data fields should have correct values', function (t) {
   t.plan(6);
