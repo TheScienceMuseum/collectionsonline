@@ -11,31 +11,7 @@
   <div class="row">
     <div class="columns medium-8">
 
-      <p class="record-description">This is the main description text.</p>
-      <p class="record-longdesc">
-        This came from DB with line breaks only - but might it ever be rich text?<br /><br />
-
-        1810 - entered Trinity College, Cambridge<br/>
-        1811 - formed the Analytical Society<br/>
-        1812 - migrated to Peterhouse, Cambridge<br/>
-        1814 - graduated without honours, receiving a ‘poll’ degree<br/>
-        1816 - became fellow of the Royal Society<br/>
-        1817 - received MA<br/>
-      </p>
-      <div class="details" aria-expanded="false">
-          <div class="details__summary">More…</div>
-          <div class="details__content">
-            <p>1862 - Difference Engine no1 donated to the Science Museum, London<br/>
-            Charles Babbage was born in 1791, probably in the family home in south London. He began to show a passion for mathematics from a young age, and following his private education went to study at Cambridge in 1810. Babbage was dissatisfied with the teaching at Cambridge and set about supplementing his lectures with additional reading and other activities, establishing the Analytical Society with a group of mathematics undergraduates. The society wrote and published a history of calculus, and a translation of Sylvestre François Lacroix’s book on differential and integral calculus. <br/>
-            He graduated in mathematics from Cambridge in 1814 and by 1816 had already been elected a Fellow of the Royal Society, aged only 24. <br/>
-            Whilst still at Cambridge, Babbage had speculated about producing a machine to calculate logarithm tables, but it was not until 1819, stimulated by his interest in astronomy, that he set about designing and attempting to build a reliable mechanical computer capable of producing and printing accurate tables. By 1822 he had built a small calculating machine, or ‘Difference Engine’, able to work out squares and quadratic equations. With the backing of the Royal Society he was able to secure an initial government grant of £1500 to build a larger machine, a task he believed he could complete in three years. <br/>
-            Work on the Difference Engine began in 1823, but was slower and more expensive than anticipated. Progress was further interrupted by personal tragedy - Babbage’s wife and two of his children passed away in 1827 and his own health began to decline. In 1834, by which time the government had contributed £17,000 and Babbage £6000, work ceased altogether, though it was not until 1842 that the government took the final decision to abandon the Difference Engine. <br/>
-            By this time, Babbage was working on a more sophisticated engine, the ‘Analytical Engine’, which could perform multiple functions, store numbers and work to a program using punched cards. Babbage’s detailed drawings reveal the engine to be in many ways analogous to modern computers. However, a lack of funds meant Babbage never saw the Analytical Engine completed in his lifetime. Nor did he see his ‘Difference Engine No. 2’, an improved design of his original engine.<br/>
-            Babbage was passionate about promoting the usefulness of science in society, helping to set up the Astronomical Society (1820), the British Association for the Advancement of Science (1831) and the Statistical Society of London (1834). He died in London in 1871. <br/>
-            1991 - Science Museum completes a Difference Engine No. 2 to original designs, demonstrating viability (note)      <br/>
-    </p>
-      </div>
-      </div>
+      {{> records/record-description}}
 
     </div>
     <div class="columns medium-4">
@@ -50,7 +26,6 @@
 
       {{#if related.people}}{{> records/record-related-people }}{{/if}}
       {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
-
 
     </div>
   </div>
