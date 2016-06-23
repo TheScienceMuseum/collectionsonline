@@ -1,10 +1,8 @@
       <div class="panel panel__text">
-        <h4>Related people (users)</h4>
+        <h4>Related people</h4>
         <ul class="related-person">
-          <li><a href="/person.html">Lovelace, Ada</a> (association)</li>
-          <li><a href="/person.html">Herschel, William</a> (association)</li>
-          <li><a href="/person.html">Babbage, Henry Prevost</a> (son)</li>
-          <li><a href="/person.html">Babbage, Benjamin Herschel</a> (son)</li>
-          <li><a href="/person.html">Clarke, Edward Daniel</a> (association)</li>
+          {{#each related.people}}
+            {{related this}}
+          {{/each}}
         </ul>
       </div>

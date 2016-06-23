@@ -1,41 +1,277 @@
 {
   "_index": "smg",
   "_type": "agent",
-  "_id": "smgc-agent-114620",
-  "_version": 1,
-  "found": true,
+  "_id": "smgc-agent-43512",
+  "_score": 1,
   "_source": {
     "admin": {
-      "created": 1133255970000,
-      "id": "agent-114620",
+      "created": 1036744146000,
+      "id": "agent-43512",
       "language": "eng",
-      "modified": 1437654047000,
-      "processed": 1464733522000,
+      "modified": 1398252969000,
+      "processed": 1464734661000,
       "source": "smgc",
       "stream": "smg-online",
-      "uid": "smgc-agent-114620"
+      "uid": "smgc-agent-43512"
     },
+    "agents": [
+      {
+        "@link": {
+          "type": "reference"
+        },
+        "admin": {
+          "id": "agent-5207",
+          "uid": "smgc-agent-5207"
+        },
+        "summary_title": "Royal Astronomical Society"
+      },
+      {
+        "@link": {
+          "role": [
+            {
+              "value": "association"
+            }
+          ],
+          "type": "reference"
+        },
+        "admin": {
+          "id": "agent-36993",
+          "uid": "smgc-agent-36993"
+        },
+        "summary_title": "Babbage, Charles"
+      },
+      {
+        "@link": {
+          "role": [
+            {
+              "value": "son"
+            }
+          ],
+          "type": "reference"
+        },
+        "admin": {
+          "id": "agent-37442",
+          "uid": "smgc-agent-37442"
+        },
+        "summary_title": "Herschel, Sir John Frederick William"
+      },
+      {
+        "@link": {
+          "role": [
+            {
+              "value": "sister"
+            }
+          ],
+          "type": "reference"
+        },
+        "admin": {
+          "id": "agent-38681",
+          "uid": "smgc-agent-38681"
+        },
+        "summary_title": "Herschel, Caroline Lucretia"
+      }
+    ],
+    "date_of_birth": [
+      {
+        "latest": 1738,
+        "value": "1738-11-25"
+      }
+    ],
+    "date_of_death": [
+      {
+        "latest": 1822,
+        "value": "1822-08-25"
+      }
+    ],
     "description": [
       {
+        "primary": true,
+        "type": "biography",
+        "value": "Michael Hoskin, ‘Herschel, William (1738–1822)’, Oxford Dictionary of National Biography, Oxford University Press, Sept 2004; online edn, Oct 2005 [http://www.oxforddnb.com/view/article/13102]; C. A. Lubbock, ed., The Herschel chronicle: the life-story of William Herschel and his sister Caroline Herschel (1933); http://www.britannica.com/eb/article-9040235?query=william%20herschel&ct="
+      },
+      {
         "type": "brief biography",
-        "value": "active 1934, Locomotive Running Superintendent, LNER, York"
+        "value": "1738-1822, musician and astronomer, German born; naturalised British"
       }
     ],
     "gender": "M",
+    "historical": true,
+    "life_dates": [
+      {
+        "latest": 1822,
+        "value": "1738-11-25 - 1822-08-25"
+      }
+    ],
+    "lifecycle": {
+      "birth": [
+        {
+          "@event": {
+            "mapping": "creation"
+          },
+          "date": [
+            {
+              "earliest": 1738,
+              "latest": 1738,
+              "primary": true,
+              "value": "1738-11-25"
+            }
+          ],
+          "location": {
+            "@link": {
+              "type": "literal"
+            },
+            "name": [
+              {
+                "primary": true,
+                "value": "Hanover, Germany"
+              }
+            ],
+            "summary_title": "Hanover, Germany"
+          }
+        }
+      ],
+      "death": [
+        {
+          "@event": {
+            "mapping": "destruction"
+          },
+          "date": [
+            {
+              "earliest": 1822,
+              "latest": 1822,
+              "primary": true,
+              "value": "1822-08-25"
+            }
+          ],
+          "location": {
+            "@link": {
+              "type": "literal"
+            },
+            "name": [
+              {
+                "primary": true,
+                "value": "Slough, Slough, England, United Kingdom"
+              }
+            ],
+            "summary_title": "Slough, Slough, England, United Kingdom"
+          }
+        }
+      ]
+    },
     "name": [
       {
-        "first_name": "Charles",
-        "last_name": "Stedman",
+        "first_name": "William",
+        "last_name": "Herschel",
         "primary": true,
         "type": "preferred name",
-        "value": "Stedman, Charles"
+        "value": "Herschel, William"
+      },
+      {
+        "note": [
+          {
+            "value": "SAC authorized term"
+          }
+        ],
+        "type": "variation",
+        "value": "Herschel, William, Sir, 1738-1822"
+      },
+      {
+        "note": [
+          {
+            "value": "SAC normalised heading"
+          }
+        ],
+        "type": "variation",
+        "value": "Sir William Herschel (1738-1822)"
+      },
+      {
+        "note": [
+          {
+            "value": "SAC reference 1"
+          }
+        ],
+        "type": "variation",
+        "value": "Herschel, Frederick William, Sir,"
+      },
+      {
+        "note": [
+          {
+            "value": "SAC reference 2"
+          }
+        ],
+        "type": "variation",
+        "value": "Herschel, Friedrich Wilhelm, Sir,"
+      },
+      {
+        "note": [
+          {
+            "value": "SAC reference 3"
+          }
+        ],
+        "type": "variation",
+        "value": "Herschel, Wilhelm, Sir,"
+      },
+      {
+        "note": [
+          {
+            "value": "baptismal name"
+          }
+        ],
+        "type": "name variant",
+        "value": "Herschel, Friedrich Wilhelm"
+      },
+      {
+        "type": "name variant",
+        "value": "Herschel, W."
+      },
+      {
+        "type": "name variant",
+        "value": "Herschel, W"
       },
       {
         "type": "variation",
-        "value": "Charles Stedman"
+        "value": "Herschel, Sir William"
+      },
+      {
+        "type": "variation",
+        "value": "Herschell, Sir W."
+      },
+      {
+        "type": "variation",
+        "value": "Herschell, Sir William"
+      },
+      {
+        "type": "variation",
+        "value": "Herschell, William"
+      },
+      {
+        "type": "variation",
+        "value": "Sir W. Herschell"
+      },
+      {
+        "type": "variation",
+        "value": "Sir William Herschell"
+      },
+      {
+        "type": "variation",
+        "value": "W. Herschel"
+      },
+      {
+        "type": "variation",
+        "value": "William Herschel"
       }
     ],
-    "summary_title": "Stedman, Charles",
+    "nationality": [
+      "British; German"
+    ],
+    "note": [
+      {
+        "primary": true,
+        "value": "Emigrated from Hanover, Germany, career as musician with interest in astronomy.  Discoverer of the planet Uranus, appointed royal astronomer by King George III, moved from Bath to Windsor to fulfil royal duties.  Builder of large reflecting telescopes, died Windsor.  Awarded the Royal Guelphic Order - often styled, incorrectly, Sir William Herschel"
+      }
+    ],
+    "occupation": "musician; astronomer",
+    "summary_title": "Herschel, William",
     "type": {
       "base": "agent",
       "sub_type": [

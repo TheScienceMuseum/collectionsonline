@@ -1,7 +1,8 @@
-      <div class="panel panel__text">
-        <h4>Related organisations</h4>
-        <ul class="related-organisation">
-          <li><a href="/organisation.html">London and North Eastern Railway </a> (user)</li>
-          <li><a href="/organisation.html">British Rail</a> (commissioned)</li>
-        </ul>
-      </div>
+<div class="panel panel__text">
+  <h4>Related organisations</h4>
+  <ul class="related-organisation">
+    {{#each related.organisations}}
+      {{related this}}
+    {{/each}}
+  </ul>
+</div>
