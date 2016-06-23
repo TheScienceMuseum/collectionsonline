@@ -20,6 +20,9 @@ install:
   - bower install
   - npm install
 
+before_deploy:
+  - zip -r collectionsonline *
+
 deploy:
   provider: elasticbeanstalk
   access_key_id: AKIAIYE5GN7RNPZSZELA
@@ -29,6 +32,7 @@ deploy:
   app: "My First Elastic Beanstalk Application"
   env: Default-Environment
   bucket_name: elasticbeanstalk-eu-west-1-431258931377
+  zip_file: collectionsonline.zip
   on:
     repo: TheScienceMuseum/collectionsonline
     #branch: master
