@@ -15,16 +15,29 @@ before_deploy:
   - zip -q -x .git\* node_modules/\* -r collectionsonline *
 
 deploy:
-  provider: elasticbeanstalk
-  access_key_id: AKIAIYE5GN7RNPZSZELA
-  secret_access_key:
-    secure: KAZf1zFPy4NuXEvQ8nkKU+VcIGdbC0aGAZoozDse3cunU9PGaKJG378hrD69vN4u6NwkDMfbibNwVnYMz9tXdR5FtDrid6ViLtD+3u+cCxR6kyqaTY2KxhD/mXP6QpL2YJDeFoKiujRkOXPalUf2cu78+Mltx9uhSOHeoTeEZYzxtCEsVDyzMiL71wrmOMEgRMcOvvd3EwejeJ8Srp0NrhLl5IMXevfYVUT9SaiZoFNQLaqM4ISyusQ1HrJA3Fg82aN2YZL6JqixoAajDv3UjPda1jPSVzEn6XUZtdfdc2bI2Sax+WBOORRMD4BcSVGvEj2djq0Zz4aLApfsmbc0EFnFyurL+1yPDcqSeO5yvs0lpeMr+ZZjWnADVNhjZlPBP7GrJ4OeTFhGbeea3693Gqq6T52HbeAIaelp3aqZCwMieqoEAhIGPfD/1f0Y8u+6zufpizffItteun/EJhvAwANavsIsfEkzC1fun/zR2ZbXIs6cJG1foU34S3S+cFHs3uGv68Mxx0fecQ78O6A7tOmuKmaNgWSaWxYK+YjXg+f9ma61aODtt6+YqYQeBBrsMpxfCdwt4WZBgC2vaGzG2j7kgAHH3Qe9NghIB6lYo5MnXvk9LnGrLFPvyG+9EgLcxNN6f0QPBoMH30GI0sZ7TLrhb7VCdHdR6m7qvawcgOY=
-  region: eu-west-1
-  app: "My First Elastic Beanstalk Application"
-  env: Default-Environment
-  bucket_name: elasticbeanstalk-eu-west-1-431258931377
-  zip_file: collectionsonline.zip
-  skip_cleanup: true
-  on:
-    repo: TheScienceMuseum/collectionsonline
-    branch: master
+  - provider: elasticbeanstalk
+    access_key_id: &1 AKIAIYE5GN7RNPZSZELA
+    secret_access_key: &2
+      secure: KAZf1zFPy4NuXEvQ8nkKU+VcIGdbC0aGAZoozDse3cunU9PGaKJG378hrD69vN4u6NwkDMfbibNwVnYMz9tXdR5FtDrid6ViLtD+3u+cCxR6kyqaTY2KxhD/mXP6QpL2YJDeFoKiujRkOXPalUf2cu78+Mltx9uhSOHeoTeEZYzxtCEsVDyzMiL71wrmOMEgRMcOvvd3EwejeJ8Srp0NrhLl5IMXevfYVUT9SaiZoFNQLaqM4ISyusQ1HrJA3Fg82aN2YZL6JqixoAajDv3UjPda1jPSVzEn6XUZtdfdc2bI2Sax+WBOORRMD4BcSVGvEj2djq0Zz4aLApfsmbc0EFnFyurL+1yPDcqSeO5yvs0lpeMr+ZZjWnADVNhjZlPBP7GrJ4OeTFhGbeea3693Gqq6T52HbeAIaelp3aqZCwMieqoEAhIGPfD/1f0Y8u+6zufpizffItteun/EJhvAwANavsIsfEkzC1fun/zR2ZbXIs6cJG1foU34S3S+cFHs3uGv68Mxx0fecQ78O6A7tOmuKmaNgWSaWxYK+YjXg+f9ma61aODtt6+YqYQeBBrsMpxfCdwt4WZBgC2vaGzG2j7kgAHH3Qe9NghIB6lYo5MnXvk9LnGrLFPvyG+9EgLcxNN6f0QPBoMH30GI0sZ7TLrhb7VCdHdR6m7qvawcgOY=
+    region: eu-west-1
+    app: "My First Elastic Beanstalk Application"
+    env: Default-Environment
+    bucket_name: elasticbeanstalk-eu-west-1-431258931377
+    zip_file: collectionsonline.zip
+    skip_cleanup: true
+    on:
+      repo: TheScienceMuseum/collectionsonline
+      #branch: master
+      all_branches: true
+  - provider: elasticbeanstalk
+    access_key_id: *1
+    secret_access_key: *2
+    region: eu-west-1
+    app:
+    env:
+    bucket_name:
+    zip_file: collectionsonline.zip
+    skip_cleanup: true
+    on:
+      repo: TheScienceMuseum/collectionsonline
+      tags: true
