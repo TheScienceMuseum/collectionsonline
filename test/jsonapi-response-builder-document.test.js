@@ -1,7 +1,7 @@
 const test = require('tape');
 const config = require('../config');
 const buildJSONResponse = require('../lib/jsonapi-response.js');
-const JSONAPIResponse = buildJSONResponse(require('./fixtures/example-get-response-document.json'), config);
+const JSONAPIResponse = buildJSONResponse(require('./fixtures/elastic-responses/example-get-response-document.json'), config);
 
 test('JSON Response for an object should be structured correctly', function (t) {
   t.plan(4);

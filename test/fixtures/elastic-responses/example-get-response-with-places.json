@@ -1,0 +1,103 @@
+{
+  "_index": "smg",
+  "_type": "agent",
+  "_id": "smgc-agent-86306",
+  "_score": 1,
+  "_source": {
+    "admin": {
+      "created": 1105005750000,
+      "id": "agent-86306",
+      "language": "eng",
+      "modified": 1408552950000,
+      "processed": 1464730787000,
+      "source": "smgc",
+      "stream": "smg-online",
+      "uid": "smgc-agent-86306"
+    },
+    "date_of_birth": [
+      {
+        "latest": 1833,
+        "value": "1833"
+      }
+    ],
+    "date_of_death": [
+      {
+        "latest": 1846,
+        "value": "1846"
+      }
+    ],
+    "description": [
+      {
+        "primary": true,
+        "type": "biography",
+        "value": "WIKI http://en.wikipedia.org/wiki/Grand_Junction_Railway"
+      },
+      {
+        "type": "brief biography",
+        "value": "1833-1846, railway company, Crewe"
+      }
+    ],
+    "historical": true,
+    "life_dates": [
+      {
+        "latest": 1846,
+        "value": "1833 - 1846"
+      }
+    ],
+    "name": [
+      {
+        "primary": true,
+        "type": "preferred name",
+        "value": "Grand Junction Railway"
+      },
+      {
+        "type": "variation",
+        "value": "GJR"
+      },
+      {
+        "type": "variation",
+        "value": "Grand Junction Railway Co"
+      }
+    ],
+    "places": [
+      {
+        "@link": {
+          "role": [
+            {
+              "value": "user"
+            }
+          ],
+          "type": "reference"
+        },
+        "admin": {
+          "id": "place-4251",
+          "uid": "smgc-place-4251"
+        },
+        "summary_title": "Crewe railway works"
+      },
+      {
+        "@link": {
+          "role": [
+            {
+              "value": "user"
+            }
+          ],
+          "type": "reference"
+        },
+        "admin": {
+          "id": "place-4596",
+          "uid": "smgc-place-4596"
+        },
+        "summary_title": "Curzon Street Railway Station"
+      }
+    ],
+    "summary_title": "Grand Junction Railway",
+    "type": {
+      "base": "agent",
+      "sub_type": [
+        "organisation"
+      ],
+      "type": "organisation"
+    }
+  }
+}
