@@ -1,40 +1,44 @@
 {{> global/global-header}}
 {{> global/search-main reduced="reduced"}}
 
-<div class="page" role="main">
+{{#if error}}
+  {{> global/error}}
+{{else}}
+  <div class="page" role="main">
 
-<section class="white">
+  <section class="white">
 
-  {{> records/record-top }}
+    {{> records/record-top }}
 
 
-  <div class="row">
-    <div class="columns medium-8">
+    <div class="row">
+      <div class="columns medium-8">
 
-      {{> records/record-description}}
+        {{> records/record-description}}
 
-    </div>
-    <div class="columns medium-4">
-
-      <div class="panel">
-        <img class="bleed" src="/assets/img/example/babbage/person.jpg">
-        <div class="panel__text">
-          <h4>Charles Babbage</h4>
-          <p>Person image - needs CC, etc?</p>
-        </div>
       </div>
+      <div class="columns medium-4">
 
-      {{#if related.people}}{{> records/record-related-people }}{{/if}}
-      {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
+        <div class="panel">
+          <img class="bleed" src="/assets/img/example/babbage/person.jpg">
+          <div class="panel__text">
+            <h4>Charles Babbage</h4>
+            <p>Person image - needs CC, etc?</p>
+          </div>
+        </div>
 
+        {{#if related.people}}{{> records/record-related-people }}{{/if}}
+        {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
+
+      </div>
     </div>
+    </section>
+
+    {{> records/record-details }}
+
+    {{> records/record-related-results }}
+
   </div>
-  </section>
-
-  {{> records/record-details }}
-
-  {{> records/record-related-results }}
-
-</div>
+{{/if}}
 
 {{> global/global-footer }}

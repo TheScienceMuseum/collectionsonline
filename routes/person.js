@@ -18,11 +18,20 @@ module.exports = ({ elastic, config }) => ({
 
             elastic.get({index: 'smg', type: 'agent', id: TypeMapping.toInternal(request.params.id)}, (err, result) => {
               if (err) {
-                return reply(err);
-              }
+                if (err.status === 404) {
+                  const error = {
+                    output: {
+                      payload: {
+                        status: 404,
+                        error: 'Not found',
+                        message: 'The requested person could not be found'
+                      }
+                    }
+                  };
 
-              if (!result) {
-                return reply.view('noresults');
+                  return reply.view('person', {error}).code(404);
+                }
+                return reply(err);
               }
 
               const JSONData = buildJSONResponse(result, config);
