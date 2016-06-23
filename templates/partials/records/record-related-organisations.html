@@ -2,7 +2,15 @@
   <h4>Related organisations</h4>
   <ul class="related-organisation">
     {{#each related.organisations}}
-      {{related this}}
+    <li>
+      {{#if this.links}}
+        <a href={{this.links.self}}>
+      {{/if}}
+      {{this.attributes.summary_title}}
+      {{#if this.links}}
+        </a>
+      {{/if}}
+    </li>
     {{/each}}
   </ul>
 </div>

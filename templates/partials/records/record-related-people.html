@@ -2,7 +2,18 @@
         <h4>Related people</h4>
         <ul class="related-person">
           {{#each related.people}}
-            {{related this}}
+            <li>
+              {{#if this.links}}
+                <a href={{this.links.self}}>
+              {{/if}}
+              {{this.attributes.summary_title}}
+              {{#if this.links}}
+                </a>
+              {{/if}}
+              {{#if this.attributes.role}}
+                ({{this.attributes.role}})
+              {{/if}}
+            </li>
           {{/each}}
         </ul>
       </div>
