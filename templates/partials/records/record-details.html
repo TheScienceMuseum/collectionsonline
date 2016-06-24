@@ -7,7 +7,7 @@
         <dl class="record-details__dl">
           <dt>{{ this.key }}:</dt>
           <dd>
-            {{#if link}}<a href="#" title="[link to filtered search results]" class="searchlink">{{/if}}
+            {{#if link}}<a href="{{link}}" title="[link to filtered search results]" class="searchlink">{{/if}}
               {{{ this.value }}}
             {{#if link}}</a>{{/if}}
           </dd>
