@@ -4,7 +4,10 @@ const routes = require('./routes');
 module.exports = (elastic, config, cb) => {
   const server = new Hapi.Server();
 
-  server.connection({ port: config.port });
+  server.connection({
+    port: config.port,
+    routes: { cors: true }
+  });
 
   server.route(routes(elastic, config));
 
