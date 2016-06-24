@@ -50,7 +50,7 @@ testWithServer('Request for Person HTML Page', (t, { server }) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/people/smgc-agents-17351',
+    url: '/people/smgc-people-17351',
     headers: {'Accept': 'text/html'}
   };
 

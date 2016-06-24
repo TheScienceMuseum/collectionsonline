@@ -22,22 +22,17 @@
     <div class="row">
       <div class="columns medium-8">
 
-        <p class="record-description">This is the main description text.</p>
-        <div class="record-longdesc">
-
-          <p>Difference Engine No 2 designed from 1847-1849 by British computing pioneer Charles Babbage (1791-1871), which excludes printing mechanism. Size 2.1m high, 3.4m long, 0.5m wide. The engine was built by the Science Museum and the main part was completed in June 1991 for the bicentennial year of Babbage's birth. The printing mechanism was completed in 2000. Doron Swade, senior curator of computing and IT, oversaw its construction. Babbage conceived the engine to calculate a series of numerical values and automatically print the results. Difference Engine No 2 was never constructed in his lifetime.</p>
-          <p>This is the long description text.</p>
-
-
-        </div>
+        {{> records/record-description}}
 
       </div>
       <div class="columns medium-4">
 
-        {{> records/ondisplay }}
+        {{#if displayLocation}}
+          {{> records/ondisplay }}
+        {{/if}}
 
-        {{> records/record-related-people }}
-        {{> records/record-related-organisations }}
+        {{#if related.people}}{{> records/record-related-people }}{{/if}}
+        {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
 
 
       <div class="panel panel__text">
