@@ -8,8 +8,10 @@
   },
   "dependencies": {
     "boom": "^3.2.2",
+    "clipboard": "^1.5.12",
     "elasticsearch": "^11.0.1",
     "format-number": "^2.0.1",
+    "foundation-sites": "^6.2.3",
     "good": "^7.0.1",
     "good-console": "^6.1.2",
     "handlebars": "^4.0.5",
@@ -17,7 +19,13 @@
     "hapi-negotiator": "https://github.com/TheScienceMuseum/hapi-negotiator.git",
     "inert": "^4.0.0",
     "joi": "^8.4.2",
+    "jquery": "2.2.4",
+    "openseadragon": "^2.2.0",
+    "page": "^1.7.1",
     "rc": "^1.1.6",
+    "slick-carousel": "^1.6.0",
+    "svg4everybody": "^2.1.0",
+    "typeahead.js": "^0.11.1",
     "vision": "^4.1.0"
   },
   "devDependencies": {
@@ -45,22 +53,17 @@
     "test:lint": "semistandard",
     "test:unit": "istanbul cover tape 'test/**/*.test.js'",
     "build": "run-p build:*",
-    "build:js": "browserify src/assets/js/*.js -o public/bundle.js",
-    "build:css": "node-sass src/assets/scss/main.scss public/bundle.css --include-path bower_components/foundation-sites/scss --include-path bower_components/slick-carousel/slick",
-    "build:img": "cp src/assets/icons/* public/assets/icons",
-    "build:svg": "svg-sprite --view --vscss --view-sprite=svg/sprite.view.svg --symbol --symbol-example --symbol-sprite=svg/sprite.symbol.svg --dest=public/assets/icons src/assets/icons/**/*.svg",
+    "build:js": "browserify client/main.js -o public/bundle.js",
+    "build:css": "node-sass client/styles/main.scss public/bundle.css --include-path node_modules/foundation-sites/scss --include-path node_modules/slick-carousel/slick",
+    "build:img": "cp client/icons/* public/assets/icons",
+    "build:svg": "svg-sprite --view --vscss --view-sprite=svg/sprite.view.svg --symbol --symbol-example --symbol-sprite=svg/sprite.symbol.svg --dest=public/assets/icons client/icons/**/*.svg",
     "minify": "run-p minify:*",
     "minify:js": "uglifyjs public/bundle.js -o public/bundle.js",
     "minify:css": "postcss -u cssnano -i public/bundle.css -o public/bundle.css",
     "watch": "npm-run-all build --parallel watch:*",
-    "watch:js": "watchify src/assets/js/*.js -o public/bundle.js -v",
+    "watch:js": "watchify client/main.js -o public/bundle.js -v",
     "watch:css": "nodemon -e scss -x 'npm run build:css'",
     "watch:server": "nodemon --watch . --ignore node_modules/ --ignore public/ -e js,html -x 'npm start'"
-  },
-  "semistandard": {
-    "ignore": [
-      "src/**/*.js"
-    ]
   },
   "repository": {
     "type": "git",
