@@ -14,7 +14,8 @@
   }
 
   &__intro {
-    font-size: rem-calc(24);
+    font-size: rem-calc(18);
+    @include breakpoint(medium) { font-size: rem-calc(24); }
     line-height: 1.2;
     font-weight: 500;
     margin: 2rem 0;
@@ -22,11 +23,13 @@
 
   //searchbox placeholder text gets hidden for small, and this shown instead
   &__placeholder-for-small {
+    line-height: 1.2;
     @include breakpoint(medium) { display: none; }
     margin: 1rem 0.125rem -0.5rem;
   }
 
-  &__strap + &__placeholder-for-small {
+  &__strap + &__placeholder-for-small,
+  &__intro + &__placeholder-for-small  {
     margin: -1.5rem 0.125rem -0.5rem;
   }
 }
