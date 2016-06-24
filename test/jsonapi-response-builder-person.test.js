@@ -12,7 +12,10 @@ test('Response is built succesfully', (t) => {
 });
 
 test('JSON Response for an object should be structured correctly', (t) => {
-  t.plan(5);
+  t.plan(6);
+  t.doesNotThrow(() => {
+    JSONAPIResponse = buildJSONResponse(require('./fixtures/elastic-responses/example-get-response-person.json'), config);
+  }, 'Building response does not throw an error');
   t.ok(JSONAPIResponse.data, 'Response should contain data field');
   t.ok(JSONAPIResponse.data.attributes, 'Data field should contain attributes field');
   t.ok(JSONAPIResponse.data.relationships, 'Data field should contain relationships field');
@@ -22,14 +25,20 @@ test('JSON Response for an object should be structured correctly', (t) => {
 });
 
 test('Data field should contain correct attributes', (t) => {
-  t.plan(2);
+  t.plan(3);
+  t.doesNotThrow(() => {
+    JSONAPIResponse = buildJSONResponse(require('./fixtures/elastic-responses/example-get-response-person.json'), config);
+  }, 'Building response does not throw an error');
   t.equal(JSONAPIResponse.data.type, 'people', 'Data field contains correct type');
   t.equal(JSONAPIResponse.data.id, 'smgc-people-43512', 'Data field contains correct id');
   t.end();
 });
 
 test('Relationships field should contain correct attributes', (t) => {
-  t.plan(2);
+  t.plan(3);
+  t.doesNotThrow(() => {
+    JSONAPIResponse = buildJSONResponse(require('./fixtures/elastic-responses/example-get-response-person.json'), config);
+  }, 'Building response does not throw an error');
   t.ok(JSONAPIResponse.data.relationships.agents, 'Relationships field contains agents');
   t.equal(JSONAPIResponse.data.relationships.agents.data.length, 4, 'Relationships field contains correct number of agents');
   t.end();

@@ -14,7 +14,10 @@ test('HTMLData should be transformed succesfully', (t) => {
 });
 
 test('Data fields should have correct values', function (t) {
-  t.plan(6);
+  t.plan(7);
+  t.doesNotThrow(() => {
+    HTMLData = buildHTMLData(JSONAPIResponse);
+  }, 'Transform did not throw error');
   t.equal(HTMLData.title, 'Royal Astronomical Society', 'title should be correct');
   t.equal(HTMLData.type, 'people', 'type should be correct');
   t.deepEqual(HTMLData.fact, [], 'facts should be empty');

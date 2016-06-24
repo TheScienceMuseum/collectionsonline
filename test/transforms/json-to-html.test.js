@@ -14,7 +14,10 @@ test('HTMLData should be transformed succesfully', (t) => {
 });
 
 test('Data should have correct fields', function (t) {
-  t.plan(6);
+  t.plan(7);
+  t.doesNotThrow(() => {
+    HTMLData = buildHTMLData(JSONAPIResponse);
+  }, 'Transform did not throw error');
   t.ok(HTMLData.title, 'Data should contain title');
   t.ok(HTMLData.type, 'Data should contain type');
   t.ok(HTMLData.fact, 'Data field should contain facts');
