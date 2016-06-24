@@ -1,7 +1,7 @@
 const test = require('tape');
 const config = require('../../config');
 const buildJSONResponse = require('../../lib/jsonapi-response');
-const JSONAPIResponse = buildJSONResponse(require('../fixtures/elastic-responses/example-get-response-object.json'), config);
+const JSONAPIResponse = buildJSONResponse(require('../fixtures/elastic-responses/example-get-response-document.json'), config);
 const buildHTMLData = require('../../lib/transforms/json-to-html-data');
 var HTMLData;
 
@@ -18,10 +18,10 @@ test('Data fields should have correct values', function (t) {
   t.doesNotThrow(() => {
     HTMLData = buildHTMLData(JSONAPIResponse);
   }, 'Transform did not throw error');
-  t.equal(HTMLData.title, 'Packet of Technetium (MDP) for bone scintigraphy \'Amerscan\' agent (phial; packet; materia medica)', 'title should be correct');
-  t.equal(HTMLData.type, 'objects', 'type should be correct');
-  t.ok(HTMLData.fact.length, 'facts should not be empty');
-  t.equal(HTMLData.related.objects.length, 1, 'Data should contain one related object');
+  t.equal(HTMLData.title, 'The Babbage Papers', 'title should be correct');
+  t.equal(HTMLData.type, 'documents', 'type should be correct');
+  t.equal(HTMLData.fact.length, 0, 'facts should be empty');
+  t.equal(HTMLData.related.documents.length, 4, 'Data should contain four related documents');
   t.ok(HTMLData.description, 'Data should contain a description');
   t.end();
 });
