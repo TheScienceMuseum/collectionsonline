@@ -5,6 +5,7 @@
 
 .twitter-typeahead {
   width: 100%;
+  display: block !important; // sorry but typeahead adds inline styles, which cause extra space on FF
 }
 
 .tt-menu {
