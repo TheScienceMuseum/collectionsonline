@@ -30,7 +30,7 @@ test('Data field should contain correct attributes', (t) => {
     JSONAPIResponse = buildJSONResponse(require('./fixtures/elastic-responses/example-get-response-person.json'), config);
   }, 'Building response does not throw an error');
   t.equal(JSONAPIResponse.data.type, 'people', 'Data field contains correct type');
-  t.equal(JSONAPIResponse.data.id, 'smgc-people-43512', 'Data field contains correct id');
+  t.equal(JSONAPIResponse.data.id, 'smgc-people-36993', 'Data field contains correct id');
   t.end();
 });
 
@@ -40,7 +40,7 @@ test('Relationships field should contain correct attributes', (t) => {
     JSONAPIResponse = buildJSONResponse(require('./fixtures/elastic-responses/example-get-response-person.json'), config);
   }, 'Building response does not throw an error');
   t.ok(JSONAPIResponse.data.relationships.agents, 'Relationships field contains agents');
-  t.equal(JSONAPIResponse.data.relationships.agents.data.length, 4, 'Relationships field contains correct number of agents');
+  t.equal(JSONAPIResponse.data.relationships.agents.data.length, 5, 'Relationships field contains correct number of agents');
   t.end();
 });
 

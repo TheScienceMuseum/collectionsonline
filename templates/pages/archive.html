@@ -9,93 +9,16 @@
   <div class="row">
     <div class="columns medium-8">
 
-      <p class="record-description">This is the main description text.</p>
-      <div class="record-longdesc">
-
-      <p>This is the 'scope and content' section from top level of archive.</p>
-
-      <p>The papers held by the Science Museum Library and Archives relate mostly to Babbage’s automatic calculating engines. This archive contains three main types of material: 1) Babbage’s notebooks, 2) engineering drawings and 3) notations which describe the way parts are intended to act and can be thought of as 'walk throughs' or 'traces' of micro-programs for various models or plans of the engines.
-</p>
-
-
-<p>
-THE CROSS REFERENCING SYSTEM.
-</p>
-
-<p>
-These three types of material are integrally linked with each other. Babbage used an extensive system of cross referencing between the design drawings, notations and scribbling books, which he indicated on each specific item. It is, therefore, possible to follow this system from examining the original material and this is probably the quickest and simplest way of doing it.  Allan Bromley's published finding aid also identifies all of the individual items in the archive and establishes a uniform system of identification as well as explaining the method of construction and use of the item cross-referencing system and catalogue numbers.
-</p>
-
-
-<p>
-Unfortunately the cross referencing system is far too complex to replicate in this electronic catalogue at this time. It is hoped that this work will be undertaken as a separate project in the future.
-</p>
-
-        <div class="details" aria-expanded="false">
-          <div class="details__summary">More…</div>
-          <div class="details__content">
-            <p> DIFFERENCE ENGINE MATERIAL </p>
-
-            <p> This comprises engineering drawings and notations related to the two Difference Engines. They are arranged as follows. </p>
-
-            <p> Working drawings of Difference Engine No. 1 – this sequence is only about 30% complete. </p>
-
-            <p> Miscellaneous plans, drawings and notations relating to Difference Engine No. 1 (1822-1833). </p>
-
-            <p> Drawings and tracings of Difference Engine No. 2 (1847-1848). </p>
-
-            <p> Notation of units of Difference Engine No. 2 (1849). </p>
-
-            <p> Original Notation of Units of Difference Engine No. 2 (1848-1849). </p>
-
-            <p> Miscellaneous notations, some relating to Difference Engine No. 2 (1841; 1848). </p>
-
-            <p> Miscellaneous papers relating to motions of the calculating parts and index of parts for Difference Engine No. 2 (1848). </p>
-
-            <p> ANALYTICAL ENGINE MATERIAL </p>
-
-            <p> This is made up of engineering drawings and notations. There are three series of drawings, known as 'plans'. They are arranged according to three chronological phases of work. </p>
-
-            <p> Series A (1833-1848) shows details of the calculating mechanisms developed during the first phase of work, as well as a series of miscellaneous tracings relating to the first phase. </p>
-
-            <p> Series D shows drawings from 1857-1858 and reflects the start of the second phase. </p>
-
-
-        <p> Series P (1857-1870) shows the later part of the second phase in a quite distinct draughtsman’s hand. </p>
-
-        <p> Notations of the Analytical Engine (1835-1848) provide the functional descriptions of the machine. The mechanical details are given in the series of drawings and explain the complex algorithms that Babbage used for the various arithmetic functions. </p>
-
-        <p> Notations of Calculations (1837-1838) are 'walk throughs' or 'traces' of user or application programmes for the Analytical Engine. They show how the basic micro-programmed arithmetic functions of the Notations of the Analytical Engine are used in extended calculations. </p>
-
-        <p> Cardboard drawings of the Analytical Engine (1866-1871) relate to the model of the Analytical Engine under construction at the time of Babbage’s death. </p>
-
-        <p> Miscellaneous drawings, notations and abstracts relate to the Analytical Engine (1833-1871). There are also papers relating to H.P. Babbage’s construction of the 'Mill' or processing unit of the Analytical Engine (1880-1905). </p>
-
-        <p> History sheets (1834-1861) summarise the major developments and ideas in the Analytical Engine during a particular year. </p>
-
-        <p> 26 NOTEBOOKS AND LOOSE PAPERS (1821-1870) </p>
-
-
-        <p> These are manuscript bound volumes, described as both 'Sketch Books' and 'Scribbling Books' by Babbage. The notebooks contain Babbage’s rough sketches and notes, which show his thought processes and the development of the functions and design of his machines. The notebooks include other subjects as well as some personal and private matters. </p>
-
-        <p> THE REST OF THE MATERIAL IN THE ARCHIVE </p>
-
-        <p> This includes Stereotype Drawings (1836-1838) which are impressions from stereotype plates prepared for Babbage. They show his technique for preparing a series of printed drawings by successively removing detail from a stereotype plate. </p>
-
-        <p> Formulae relating to programmes contain only algebraic developments that relate to various calculations the Analytical Engine may have been intended to perform. Drawings of Tools (1857-1861), relate in particular to a Universal Machine Tool whose design Babbage developed to construct his engines. There are also papers relating to the Scheutzs' Difference Engine (c. 1854). </p>
-
-
-        </div>
-      </div>
-
-    </div>
+      {{> records/record-description}}
 
     </div>
     <div class="columns medium-4">
 
-      {{> records/record-related-people }}
+      {{#if related.people}}{{> records/record-related-people }}{{/if}}
 
-      {{> records/record-related-organisations }}
+      {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
+
+      {{#if related.documents}}{{> records/record-related-documents }}{{/if}}
 
     </div>
   </div>

@@ -1,0 +1,16 @@
+<div class="panel panel__text">
+  <h4>Related documents</h4>
+  <ul class="related-article">
+    {{#each related.documents}}
+    <li>
+      {{#if this.links}}
+        <a href="{{this.links.self}}">
+      {{/if}}
+      {{this.attributes.summary_title}}
+      {{#if this.links}}
+        </a>
+      {{/if}}
+    </li>
+    {{/each}}
+  </ul>
+</div>
