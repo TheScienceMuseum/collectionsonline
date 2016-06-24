@@ -6,11 +6,6 @@ node_js:
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
-install:
-  - npm install -g bower
-  - bower install
-  - npm install
-
 before_deploy:
   - zip -q -x .git\* node_modules/\* -r collectionsonline *
 
