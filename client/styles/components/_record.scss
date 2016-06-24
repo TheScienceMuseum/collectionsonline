@@ -74,6 +74,7 @@
   &__caption {
     margin: 1rem 0;
     line-height: 1.2;
+    @include breakpoint(small only) {  clear: right; }
   }
 }
 
@@ -145,7 +146,8 @@
 .record-imgpanel__thumbnav {
   margin: 0;
   padding: 0;
-  overflow:auto;
+  overflow: hidden;
+  height: 3rem;
 
   li {
     width: 3rem;
