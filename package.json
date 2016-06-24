@@ -54,7 +54,7 @@
     "test:unit": "istanbul cover tape 'test/**/*.test.js'",
     "build": "run-p build:*",
     "build:js": "browserify client/main.js -o public/bundle.js",
-    "build:css": "node-sass client/styles/main.scss public/bundle.css --include-path node_modules/foundation-sites/scss --include-path node_modules/slick-carousel/slick",
+    "build:css": "node-sass client/styles/main.scss public/bundle.css --include-path node_modules/foundation-sites/scss --include-path node_modules/slick-carousel/slick  && postcss --u autoprefixer -b 'last 2 versions, ie >= 9' -i public/bundle.css -o public/bundle.css",
     "build:img": "cp client/icons/* public/assets/icons",
     "build:svg": "svg-sprite --view --vscss --view-sprite=svg/sprite.view.svg --symbol --symbol-example --symbol-sprite=svg/sprite.symbol.svg --dest=public/assets/icons client/icons/**/*.svg",
     "minify": "run-p minify:*",
