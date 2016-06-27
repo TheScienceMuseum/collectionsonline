@@ -84,7 +84,14 @@
   "browserify": {
     "transform": [
       "brfs",
-      ["babelify", { "presets": ["es2015"] }]
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ]
+        }
+      ]
     ]
   }
 }
