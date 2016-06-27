@@ -55,10 +55,4 @@ module.exports = function () {
     console.log('typeahead:change');
   });
   // none of those events tell me when the suggestions box is visible!
-
-  // fake function to act as temporary home button.
-  // replace with a search engine or something;)
-  $('.searchbox__submit').on('click', function () {
-    window.location = '/index.html';
-  });
 };

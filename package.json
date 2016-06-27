@@ -10,6 +10,7 @@
     "boom": "^3.2.2",
     "clipboard": "^1.5.12",
     "elasticsearch": "^11.0.1",
+    "fetch-ponyfill": "^1.0.0",
     "format-number": "^2.0.1",
     "foundation-sites": "^6.2.3",
     "good": "^7.0.1",
@@ -30,6 +31,9 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
+    "babel-preset-es2015": "^6.9.0",
+    "babelify": "^7.3.0",
+    "brfs": "^1.4.3",
     "browserify": "^13.0.1",
     "codecov": "^1.0.1",
     "cssnano": "^3.7.0",
@@ -76,5 +80,11 @@
   "bugs": {
     "url": "https://github.com/TheScienceMuseum/collectionsonline/issues"
   },
-  "homepage": "https://github.com/TheScienceMuseum/collectionsonline"
+  "homepage": "https://github.com/TheScienceMuseum/collectionsonline",
+  "browserify": {
+    "transform": [
+      "brfs",
+      ["babelify", { "presets": ["es2015"] }]
+    ]
+  }
 }
