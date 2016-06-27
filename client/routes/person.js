@@ -17,7 +17,7 @@ module.exports = function (page) {
     //   window.location = ctx.path;
     // }
 
-    var pageEl = document.getElementsByTagName('body')[0];
+    var pageEl = document.getElementsByTagName('main')[0];
 
     var id = ctx.params.id;
     var url = '/people/' + id;
@@ -36,7 +36,8 @@ module.exports = function (page) {
       })
       .then(function (json) {
         if (json.errors) return Promise.reject(json.errors[0]);
-        pageEl.innerHTML = Templates['people'](JSONToHTML(json));
+        var data = JSONToHTML(json);
+        pageEl.innerHTML = Templates['people'](data);
         window.scrollTo(0, 0);
       })
       .catch(function (err) {
