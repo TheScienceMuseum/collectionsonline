@@ -14,7 +14,7 @@ test('HTMLData should be transformed succesfully', (t) => {
 });
 
 test('Data should have correct fields', function (t) {
-  t.plan(7);
+  t.plan(9);
   t.doesNotThrow(() => {
     HTMLData = buildHTMLData(JSONAPIResponse);
   }, 'Transform did not throw error');
@@ -24,5 +24,7 @@ test('Data should have correct fields', function (t) {
   t.ok(HTMLData.related, 'Data should contain related');
   t.ok(HTMLData.description, 'Data should contain description');
   t.ok(HTMLData.details, 'Data should contain details');
+  t.ok(HTMLData.system, 'Data should contain system');
+  t.ok(HTMLData.system.value === 'Mimsy', 'System should equal "Mimsy"');
   t.end();
 });
