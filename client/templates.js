@@ -85,6 +85,8 @@ Handlebars.registerPartial(
 // Helpers
 Handlebars.registerHelper('unlesspage', require('../templates/helpers/unlesspage.js'));
 
+Handlebars.registerHelper('classname', require('../templates/helpers/classname.js'));
+
 // Routes
 module.exports = {
   'results-grid': Handlebars.compile(
