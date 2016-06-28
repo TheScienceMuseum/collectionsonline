@@ -12,16 +12,17 @@ module.exports = function (page) {
   page('/documents/:id', enter);
 
   function enter (ctx) {
-    var pageEl = document.getElementsByTagName('body')[0];
+    if (!ctx.isInitialRender) {
+      var pageEl = document.getElementsByTagName('main')[0];
 
-    var id = ctx.params.id;
-    var url = '/documents/' + id;
+      var id = ctx.params.id;
+      var url = '/documents/' + id;
 
-    var opts = {
-      headers: { Accept: 'application/vnd.api+json' }
-    };
+      var opts = {
+        headers: { Accept: 'application/vnd.api+json' }
+      };
 
-    fetch(url, opts)
+      fetch(url, opts)
       .then(function (res) {
         if (res.ok) {
           return res.json();
@@ -34,15 +35,24 @@ module.exports = function (page) {
         pageEl.innerHTML = Templates['documents'](JSONToHTML(json));
         window.scrollTo(0, 0);
       })
+      .then(function () {
+        svg4everybody();
+        searchBox();
+        clipboard();
+        moreButton();
+        openseadragon();
+        slickCarousel();
+      })
       .catch(function (err) {
-        console.error('Failed to search', err);
+        console.error('Failed to find document', err);
       });
-
-    svg4everybody();
-    searchBox();
-    clipboard();
-    moreButton();
-    openseadragon();
-    slickCarousel();
+    } else {
+      svg4everybody();
+      searchBox();
+      clipboard();
+      moreButton();
+      openseadragon();
+      slickCarousel();
+    }
   }
 };

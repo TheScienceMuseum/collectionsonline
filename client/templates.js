@@ -95,5 +95,8 @@ module.exports = {
   ),
   'documents': Handlebars.compile(
     Fs.readFileSync('./templates/pages/archive.html', 'utf8')
+  ),
+  'objects': Handlebars.compile(
+    Fs.readFileSync('./templates/pages/object.html', 'utf8')
   )
 };
