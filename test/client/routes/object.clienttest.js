@@ -1,9 +1,7 @@
-const config = require('../../../config');
-
 module.exports = {
   'Object Page': function (browser) {
     browser
-      .url(config.rootUrl + '/objects/smgc-objects-8245103')
+      .url('http://localhost:8000/objects/smgc-objects-8245103')
       .waitForElementVisible('body', 1000)
       .assert.containsText('.record-top__title', 'Amerscan')
       .assert.containsText('.fact-Maker', 'Amersham')

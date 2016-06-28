@@ -1,9 +1,7 @@
-const config = require('../../../config');
-
 module.exports = {
   'Search Page': function (browser) {
     browser
-      .url(config.rootUrl + '/search?q=charles')
+      .url('http://localhost:8000/search?q=charles')
       .waitForElementVisible('body', 1000)
       .assert.value('.tt-input', 'charles')
       .assert.elementPresent('.resultcard')

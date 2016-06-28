@@ -1,9 +1,7 @@
-const config = require('../../../config');
-
 module.exports = {
   'People Page': function (browser) {
     browser
-      .url(config.rootUrl + '/people/smgc-people-36993')
+      .url('http://localhost:8000/people/smgc-people-36993')
       .waitForElementVisible('body', 1000)
       .assert.containsText('.record-top__title', 'Babbage')
       .assert.containsText('.fact-Occupation', 'mathematician')

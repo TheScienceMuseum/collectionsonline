@@ -1,9 +1,7 @@
-const config = require('../../../config');
-
 module.exports = {
   'Document Page': function (browser) {
     browser
-      .url(config.rootUrl + '/documents/smga-documents-110000003')
+      .url('http://localhost:8000/documents/smga-documents-110000003')
       .waitForElementVisible('body', 1000)
       .assert.containsText('.record-top__title', 'The Babbage Papers')
       .assert.containsText('.details-Identifier', 'BAB')
