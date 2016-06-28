@@ -9,5 +9,8 @@ Handlebars.registerPartial(
 module.exports = {
   'results-grid': Handlebars.compile(
     Fs.readFileSync('./templates/partials/search/results-grid.html', 'utf8')
+  ),
+  'searchnav': Handlebars.compile(
+    Fs.readFileSync('./templates/partials/global/search-nav.html', 'utf8')
   )
 };
