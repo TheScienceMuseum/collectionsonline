@@ -33,7 +33,7 @@ module.exports = {
         path: ''
       },
       globals: {
-        waitForConditionTimeout: 10000
+        waitForConditionTimeout: 20000
       },
       desiredCapabilities: {
         browserName: 'chrome',

@@ -100,5 +100,8 @@ module.exports = {
   ),
   'objects': Handlebars.compile(
     Fs.readFileSync('./templates/pages/object.html', 'utf8')
+  ),
+  'searchnav': Handlebars.compile(
+    Fs.readFileSync('./templates/partials/global/search-nav.html', 'utf8')
   )
 };

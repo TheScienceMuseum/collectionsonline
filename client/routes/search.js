@@ -16,6 +16,7 @@ module.exports = function (page) {
       window.location = ctx.path;
     }
 
+    var searchnav = document.getElementById('searchnav');
     var searchBoxEl = document.getElementById('searchbox');
     var searchResultsEl = document.getElementById('searchresults');
 
@@ -43,6 +44,7 @@ module.exports = function (page) {
         .then(function (json) {
           if (json.errors) return Promise.reject(json.errors[0]);
           var data = searchResultsToTemplateData(qs, json);
+          searchnav.innerHTML = Templates['searchnav'](data);
           searchResultsEl.innerHTML = Templates['results-grid'](data);
         })
         .catch(function (err) {
