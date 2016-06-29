@@ -1,3 +1,5 @@
+const fs = require('fs');
+const binpath = './node_modules/nightwatch/bin/';
 const TRAVIS_JOB_NUMBER = process.env.TRAVIS_JOB_NUMBER;
 
 module.exports = {
@@ -10,13 +12,12 @@ module.exports = {
 
   selenium: {
     start_process: true,
-    server_path: './lib/selenium-server-standalone-2.53.0.jar',
+    server_path: binpath + 'selenium.jar',
     log_path: '',
     host: '127.0.0.1',
     port: 4444,
     cli_args: {
-      'webdriver.chrome.driver': './lib/chromedriver',
-      'webdriver.ie.driver': ''
+      'webdriver.chrome.driver': binpath + 'chromedriver'
     }
   },
 
@@ -72,3 +73,12 @@ module.exports = {
     }
   }
 };
+
+fs.stat(binpath + 'selenium.jar', function (err, stat) {
+  if (err || !stat || stat.size < 1) {
+    require('selenium-download').ensure(binpath, function (error) {
+      if (error) throw new Error(error);
+      console.log('✔ Selenium & Chromedriver downloaded to:', binpath);
+    });
+  }
+});
