@@ -1,9 +1,11 @@
 const QueryString = require('querystring');
 const test = require('tape');
 const searchResultsToJsonApi = require('../../lib/transforms/search-results-to-jsonapi');
+const dir = __dirname.split('/')[__dirname.split('/').length - 1];
+const file = dir + __filename.replace(__dirname, '') + ' > ';
 
-test('Should create valid meta count numbers', (t) => {
-  t.plan(5);
+test(file + 'Should create valid meta count numbers', (t) => {
+  t.plan(7);
 
   const testResult = {
     took: 0,
@@ -42,10 +44,51 @@ test('Should create valid meta count numbers', (t) => {
   t.equal(obj.meta.count.type.people, 221, 'Total number of people is 221');
   t.equal(obj.meta.count.type.objects, 3304, 'Total number of people is 3304');
   t.equal(obj.meta.count.type.documents, 29, 'Total number of people is 29');
+  t.notOk(obj.meta.count.type.term, 'The term count is excluded');
+  t.notOk(obj.meta.count.type.place, 'The place count is excluded');
   t.end();
 });
 
-test('Should create valid links on first page', (t) => {
+test(file + 'Should create valid meta default count numbers for empty aggregations', (t) => {
+  t.plan(7);
+
+  const testResult = {
+    took: 0,
+    timed_out: false,
+    _shards: { total: 1, successful: 1, failed: 0 },
+    hits: {
+      total: 5,
+      max_score: null,
+      hits: [
+        { _type: 'object', _id: `smg-object-${Date.now()}` }
+      ]
+    },
+    aggregations: {
+      total: { doc_count: 3554, total: { value: 3554 } },
+      total_per_categories: {
+        doc_count_error_upper_bound: 0,
+        sum_other_doc_count: 0,
+        buckets: []
+      }
+    }
+  };
+
+  var obj;
+
+  t.doesNotThrow(() => {
+    obj = searchResultsToJsonApi({ q: 'test', 'page[number]': 0, 'page[size]': 1 }, testResult);
+  }, 'Transform did not throw');
+
+  t.equal(obj.meta.count.type.all, 3554, 'Total number of data is 3554');
+  t.equal(obj.meta.count.type.people, 0, 'Total number default value is 0 for people');
+  t.equal(obj.meta.count.type.objects, 0, 'Total number default value is 0 for objects');
+  t.equal(obj.meta.count.type.documents, 0, 'Total number of people is 29 for documents');
+  t.notOk(obj.meta.count.type.term, 'The term count is excluded');
+  t.notOk(obj.meta.count.type.place, 'The place count is excluded');
+  t.end();
+});
+
+test(file + 'Should create valid links on first page', (t) => {
   t.plan(6);
 
   const testResult = {
@@ -100,7 +143,7 @@ test('Should create valid links on first page', (t) => {
   t.end();
 });
 
-test('Should create valid links on middle page', (t) => {
+test(file + 'Should create valid links on middle page', (t) => {
   t.plan(6);
 
   const testResult = {
@@ -156,7 +199,7 @@ test('Should create valid links on middle page', (t) => {
   t.end();
 });
 
-test('Should create valid links on last page', (t) => {
+test(file + 'Should create valid links on last page', (t) => {
   t.plan(6);
 
   const testResult = {
@@ -211,7 +254,7 @@ test('Should create valid links on last page', (t) => {
   t.end();
 });
 
-test('Should ignore unknown object types', (t) => {
+test(file + 'Should ignore unknown object types', (t) => {
   t.plan(3);
 
   const testResult = {
@@ -251,7 +294,7 @@ test('Should ignore unknown object types', (t) => {
   t.end();
 });
 
-test('Should extract @link\'d document to relationships and included', (t) => {
+test(file + 'Should extract @link\'d document to relationships and included', (t) => {
   t.plan(5);
 
   const relId = `smg-agent-${Date.now()}`;
