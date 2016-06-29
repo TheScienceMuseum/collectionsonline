@@ -1,13 +1,8 @@
-var svg4everybody = require('svg4everybody');
-var searchBox = require('../lib/search-box');
-var clipboard = require('../lib/clipboard');
 var fetch = require('fetch-ponyfill')();
-var moreButton = require('../lib/more-button');
-var openseadragon = require('../lib/openseadragon');
-var slickCarousel = require('../lib/slick-carousel');
 var Templates = require('../templates');
 var JSONToHTML = require('../../lib/transforms/json-to-html-data');
 var exampleData = require('../../src/data/object.json');
+var initJqueryComp = require('../lib/init-jquery-components.js');
 
 module.exports = function (page) {
   page('/objects/:id', enter);
@@ -39,23 +34,13 @@ module.exports = function (page) {
         window.scrollTo(0, 0);
       })
       .then(function () {
-        slickCarousel();
-        svg4everybody();
-        searchBox();
-        clipboard();
-        moreButton();
-        openseadragon();
+        initJqueryComp();
       })
       .catch(function (err) {
         console.error('Failed to find object', err);
       });
     } else {
-      slickCarousel();
-      svg4everybody();
-      searchBox();
-      clipboard();
-      moreButton();
-      openseadragon();
+      initJqueryComp();
     }
   }
 };
