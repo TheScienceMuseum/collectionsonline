@@ -1,16 +1,17 @@
 module.exports = {
   'Object Page': function (browser) {
     browser
-      .url('http://localhost:8000/objects/smgc-objects-8245103')
+      .url('http://localhost:8000/objects/smgc-objects-205752')
       .waitForElementVisible('body', 1000)
-      .assert.containsText('.record-top__title', 'Amerscan')
-      .assert.containsText('.fact-manufacturer', 'Amersham')
-      .assert.containsText('.fact-Made', 'Chalfont')
-      .assert.containsText('.details-Category', 'Nuclear')
-      .assert.containsText('.details-Accession-Number', '1982-1705/2')
-      .assert.containsText('.details-Materials', 'cardboard')
-      .assert.containsText('.details-Measurements', '100 mm')
-      .assert.containsText('.details-Status', 'permanent collection')
+      .assert.containsText('.record-top__title', 'Duchess')
+      .assert.containsText('.fact-maker', 'London, Midland & Scottish')
+      .assert.containsText('.fact-designer', 'Stanier')
+      .assert.containsText('.fact-Made', 'Crewe')
+      .assert.containsText('.details-Category', 'Locomotives')
+      .assert.containsText('.details-Accession-Number', '1976-7000')
+      .assert.containsText('.details-Measurements', '22511 mm')
+      .assert.containsText('.details-status', 'permanent collection')
+      .assert.containsText('.details-credit', 'Butlins')
       .end();
   }
 };
