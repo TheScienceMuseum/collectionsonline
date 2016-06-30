@@ -9,6 +9,8 @@ module.exports = {
       .assert.containsText('.fact-Born', 'Southwark')
       .assert.containsText('.fact-Birth', '1791')
       .assert.containsText('.fact-Death', '1871')
+      .assert.containsText('.related-person > li > a', 'Lovelace')
+      .assert.containsText('.related-person > li', 'association')
       .end();
   }
 };
