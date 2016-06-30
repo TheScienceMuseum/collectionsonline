@@ -13,6 +13,7 @@ module.exports = {
       .assert.containsText('.details-status', 'permanent collection')
       .assert.containsText('.details-credit', 'Butlins')
       .assert.containsText('.details-type', 'steam locomotive')
+      .assert.containsText('.details-taxonomy', 'Locomotive and Rolling Stock, steam, steam locomotive')
       .end();
   }
 };
