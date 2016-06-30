@@ -12,6 +12,7 @@ module.exports = {
       .assert.containsText('.details-Measurements', '22511 mm')
       .assert.containsText('.details-status', 'permanent collection')
       .assert.containsText('.details-credit', 'Butlins')
+      .assert.containsText('.details-type', 'steam locomotive')
       .end();
   }
 };
