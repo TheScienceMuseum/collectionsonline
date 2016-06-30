@@ -39,7 +39,7 @@ module.exports = (elastic, config) => ({
           'application/vnd.api+json' (request, reply) {
             search(elastic, request, (err, result) => {
               if (err) return reply(err);
-              console.log(result);
+
               reply(searchResultsToJsonApi(request.query, result, config))
                 .header('content-type', 'application/vnd.api+json');
             });
