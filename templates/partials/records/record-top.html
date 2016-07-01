@@ -3,7 +3,7 @@
       <div class="large-12 columns">
       <h1 class="record-top__title">{{> global/icon i=type}} {{title}}</h1>
       {{#each fact}}
-        <dl class="record-top__dl">
+        <dl class="record-top__dl fact-{{classname this.key}}">
           <dt>{{ this.key }}:</dt>
           <dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{{ this.value }}}{{#if this.link }}</a>{{/if}}</dd>
         </dl>

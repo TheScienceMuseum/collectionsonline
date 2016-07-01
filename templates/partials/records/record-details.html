@@ -4,7 +4,7 @@
       <h2>Details</h2>
 
       {{#each details}}
-        <dl class="record-details__dl">
+        <dl class="record-details__dl details-{{classname this.key}}">
           <dt>{{ this.key }}:</dt>
           <dd>
             {{#if link}}<a href="{{link}}" title="[link to filtered search results]">{{/if}}
