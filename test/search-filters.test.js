@@ -185,7 +185,7 @@ testWithServer('Should accept single type', (t, ctx) => {
   });
 });
 
-testWithServer('Should not accept multiple type', (t, ctx) => {
+testWithServer('Should accept multiple type', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -195,7 +195,7 @@ testWithServer('Should not accept multiple type', (t, ctx) => {
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
+    t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
@@ -455,7 +455,7 @@ testWithServer('Should accept single location', (t, ctx) => {
   });
 });
 
-testWithServer('Should not accept multiple location', (t, ctx) => {
+testWithServer('Should accept multiple location', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -465,7 +465,7 @@ testWithServer('Should not accept multiple location', (t, ctx) => {
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
+    t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
@@ -485,7 +485,7 @@ testWithServer('Should accept single birth[place]', (t, ctx) => {
   });
 });
 
-testWithServer('Should not accept multiple birth[place]', (t, ctx) => {
+testWithServer('Should accept multiple birth[place]', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -495,7 +495,7 @@ testWithServer('Should not accept multiple birth[place]', (t, ctx) => {
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
+    t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
@@ -635,7 +635,7 @@ testWithServer('Should accept single occupation', (t, ctx) => {
   });
 });
 
-testWithServer('Should not accept multiple occupation', (t, ctx) => {
+testWithServer('Should accept multiple occupation', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -645,7 +645,7 @@ testWithServer('Should not accept multiple occupation', (t, ctx) => {
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
+    t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
@@ -665,7 +665,7 @@ testWithServer('Should accept single archive', (t, ctx) => {
   });
 });
 
-testWithServer('Should not accept multiple archive', (t, ctx) => {
+testWithServer('Should accept multiple archive', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -675,7 +675,7 @@ testWithServer('Should not accept multiple archive', (t, ctx) => {
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
+    t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
   });
 });
