@@ -7,8 +7,7 @@ module.exports = {
       .assert.containsText('.fact-occupation', 'mathematician')
       .assert.containsText('.fact-Nationality', 'English')
       .assert.containsText('.fact-born-in', 'Southwark')
-      .assert.containsText('.fact-Birth', '1791')
-      .assert.containsText('.fact-Death', '1871')
+      .assert.containsText('.record-top__date', '1791 - 1871')
       .assert.containsText('.related-person > li > a', 'Lovelace')
       .assert.containsText('.related-person > li', 'association')
       .end();
