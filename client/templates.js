@@ -87,6 +87,11 @@ Handlebars.registerPartial(
   Fs.readFileSync('./templates/partials/records/record-system.html', 'utf8')
 );
 
+Handlebars.registerPartial(
+  'records/ondisplay',
+  Fs.readFileSync('./templates/partials/records/ondisplay.html', 'utf8')
+);
+
 // Helpers
 Handlebars.registerHelper('unlesspage', require('../templates/helpers/unlesspage.js'));
 
