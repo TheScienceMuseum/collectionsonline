@@ -18,7 +18,7 @@ test('Data fields should have correct values', function (t) {
   t.doesNotThrow(() => {
     HTMLData = buildHTMLData(JSONAPIResponse);
   }, 'Transform did not throw error');
-  t.equal(HTMLData.title, 'Packet of Technetium (MDP) for bone scintigraphy \'Amerscan\' agent (phial; packet; materia medica)', 'title should be correct');
+  t.equal(HTMLData.title, 'Packet of Technetium (MDP) for bone scintigraphy \'Amerscan\' agent', 'title should be correct');
   t.equal(HTMLData.type, 'objects', 'type should be correct');
   t.ok(HTMLData.fact.length, 'facts should not be empty');
   t.equal(HTMLData.related.objects.length, 1, 'Data should contain one related object');
