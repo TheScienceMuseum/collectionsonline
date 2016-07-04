@@ -140,7 +140,7 @@ testWithServer('Should not accept invalid date[to]', (t, ctx) => {
   });
 });
 
-testWithServer('Should accept single places', (t, ctx) => {
+testWithServer('Should accept single places for html', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -155,13 +155,58 @@ testWithServer('Should accept single places', (t, ctx) => {
   });
 });
 
-testWithServer('Should accept multiple places', (t, ctx) => {
+testWithServer('Should accept single places for json', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({ q: 'test', places: 'London' }),
+    headers: { Accept: 'application/vnd.api+json' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer('Should accept multiple places for html', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/search?' + QueryString.stringify({ q: 'test', places: ['London', 'Manchester'] }),
     headers: { Accept: 'text/html' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer('Should not accept multiple places as array for json', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({ q: 'test', places: ['London', 'Manchester'] }),
+    headers: { Accept: 'application/vnd.api+json' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 400, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer('Should accept multiple places as csv for json', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({ q: 'test', places: 'London,Manchester' }),
+    headers: { Accept: 'application/vnd.api+json' }
   };
 
   ctx.server.inject(htmlRequest, (res) => {
@@ -185,13 +230,43 @@ testWithServer('Should accept single type', (t, ctx) => {
   });
 });
 
-testWithServer('Should not accept multiple type', (t, ctx) => {
+testWithServer('Should accept single type as json', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({ q: 'test', type: 'Model locomotive' }),
+    headers: { Accept: 'application/vnd.api+json' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer('Should accept multiple types', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/search?' + QueryString.stringify({ q: 'test', type: ['Model locomotive', 'Computer'] }),
     headers: { Accept: 'text/html' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer('Should not accept array of types as json', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({ q: 'test', type: ['Model locomotive', 'Computer'] }),
+    headers: { Accept: 'application/vnd.api+json' }
   };
 
   ctx.server.inject(htmlRequest, (res) => {
@@ -455,13 +530,28 @@ testWithServer('Should accept single location', (t, ctx) => {
   });
 });
 
-testWithServer('Should not accept multiple location', (t, ctx) => {
+testWithServer('Should accept multiple location', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/search?' + QueryString.stringify({ q: 'test', location: ['London', 'Portsmouth'] }),
     headers: { Accept: 'text/html' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer('Should not accept array of multiple locations for json', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({ q: 'test', location: ['London', 'Portsmouth'] }),
+    headers: { Accept: 'application/vnd.api+json' }
   };
 
   ctx.server.inject(htmlRequest, (res) => {
@@ -485,13 +575,28 @@ testWithServer('Should accept single birth[place]', (t, ctx) => {
   });
 });
 
-testWithServer('Should not accept multiple birth[place]', (t, ctx) => {
+testWithServer('Should accept multiple birth[place]', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/search?' + QueryString.stringify({ q: 'test', 'birth[place]': ['London', 'Portsmouth'] }),
     headers: { Accept: 'text/html' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer('Should not accept multiple array of birth[place] as json', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({ q: 'test', 'birth[place]': ['London', 'Portsmouth'] }),
+    headers: { Accept: 'application/vnd.api+json' }
   };
 
   ctx.server.inject(htmlRequest, (res) => {
@@ -635,13 +740,28 @@ testWithServer('Should accept single occupation', (t, ctx) => {
   });
 });
 
-testWithServer('Should not accept multiple occupation', (t, ctx) => {
+testWithServer('Should accept multiple occupation', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/search?' + QueryString.stringify({ q: 'test', occupation: ['Scientist', 'Computer Programmer'] }),
     headers: { Accept: 'text/html' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer('Should not accept array of multiple occupations as json', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({ q: 'test', occupation: ['Scientist', 'Computer Programmer'] }),
+    headers: { Accept: 'application/vnd.api+json' }
   };
 
   ctx.server.inject(htmlRequest, (res) => {
@@ -665,13 +785,28 @@ testWithServer('Should accept single archive', (t, ctx) => {
   });
 });
 
-testWithServer('Should not accept multiple archive', (t, ctx) => {
+testWithServer('Should accept multiple archive', (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/search?' + QueryString.stringify({ q: 'test', archive: ['The Babbage Archive', 'The Diplomas etc of Charles Babbage'] }),
     headers: { Accept: 'text/html' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer('Should not accept array of multiple archives as json', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({ q: 'test', archive: ['The Babbage Archive', 'The Diplomas etc of Charles Babbage'] }),
+    headers: { Accept: 'application/vnd.api+json' }
   };
 
   ctx.server.inject(htmlRequest, (res) => {
@@ -710,6 +845,21 @@ testWithServer('Should accept multiple formats', (t, ctx) => {
   });
 });
 
+testWithServer('Should accept array of multiple formats as json', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({ q: 'test', formats: ['bound volume', 'large format document', 'photograph'] }),
+    headers: { Accept: 'application/vnd.api+json' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 400, 'Status code was as expected');
+    t.end();
+  });
+});
+
 testWithServer('Should accept single image_licences', (t, ctx) => {
   t.plan(1);
 
@@ -736,6 +886,21 @@ testWithServer('Should accept multiple image_licences', (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer('Should not accept array of multiple image_licences as json', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({ q: 'test', 'image_licences': ['CC BY-NC-SA', 'CC BY-SA'] }),
+    headers: { Accept: 'application/vnd.api+json' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
