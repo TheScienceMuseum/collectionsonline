@@ -1,6 +1,7 @@
 const QueryString = require('querystring');
 const test = require('tape');
 const searchResultsToJsonApi = require('../../lib/transforms/search-results-to-jsonapi');
+const queryParams = require('../../lib/query-params');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
 
@@ -35,9 +36,9 @@ test(file + 'Should create valid meta count numbers', (t) => {
   };
 
   var obj;
-
+  var query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
   t.doesNotThrow(() => {
-    obj = searchResultsToJsonApi({ q: 'test', 'page[number]': 0, 'page[size]': 1 }, testResult);
+    obj = searchResultsToJsonApi(query, testResult);
   }, 'Transform did not throw');
 
   t.equal(obj.meta.count.type.all, 3554, 'Total number of data is 3554');
@@ -74,9 +75,10 @@ test(file + 'Should create valid meta default count numbers for empty aggregatio
   };
 
   var obj;
+  var query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
 
   t.doesNotThrow(() => {
-    obj = searchResultsToJsonApi({ q: 'test', 'page[number]': 0, 'page[size]': 1 }, testResult);
+    obj = searchResultsToJsonApi(query, testResult);
   }, 'Transform did not throw');
 
   t.equal(obj.meta.count.type.all, 3554, 'Total number of data is 3554');
@@ -119,9 +121,10 @@ test(file + 'Should create valid links on first page', (t) => {
   };
 
   var obj;
+  var query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
 
   t.doesNotThrow(() => {
-    obj = searchResultsToJsonApi({ q: 'test', 'page[number]': 0, 'page[size]': 1 }, testResult);
+    obj = searchResultsToJsonApi(query, testResult);
   }, 'Transform did not throw');
 
   var qs;
@@ -174,9 +177,10 @@ test(file + 'Should create valid links on middle page', (t) => {
   };
 
   var obj;
+  var query = queryParams('html', { query: { q: 'test', 'page[number]': 1, 'page[size]': 1 }, params: {} });
 
   t.doesNotThrow(() => {
-    obj = searchResultsToJsonApi({ q: 'test', 'page[number]': 1, 'page[size]': 1 }, testResult);
+    obj = searchResultsToJsonApi(query, testResult);
   }, 'Transform did not throw');
 
   var qs;
@@ -230,9 +234,10 @@ test(file + 'Should create valid links on last page', (t) => {
   };
 
   var obj;
+  var query = queryParams('html', { query: { q: 'test', 'page[number]': 4, 'page[size]': 1 }, params: {} });
 
   t.doesNotThrow(() => {
-    obj = searchResultsToJsonApi({ q: 'test', 'page[number]': 4, 'page[size]': 1 }, testResult);
+    obj = searchResultsToJsonApi(query, testResult);
   }, 'Transform did not throw');
 
   var qs;
@@ -283,9 +288,10 @@ test(file + 'Should ignore unknown object types', (t) => {
   };
 
   var obj;
+  var query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 50 }, params: {} });
 
   t.doesNotThrow(() => {
-    obj = searchResultsToJsonApi({ q: 'test', 'page[number]': 0, 'page[size]': 50 }, testResult);
+    obj = searchResultsToJsonApi(query, testResult);
   }, 'Transform did not throw');
 
   t.equal(obj.data.length, 0, 'No objects were returned');
@@ -339,9 +345,10 @@ test(file + 'Should extract @link\'d document to relationships and included', (t
   };
 
   var obj;
+  var query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
 
   t.doesNotThrow(() => {
-    obj = searchResultsToJsonApi({ q: 'test', 'page[number]': 0, 'page[size]': 1 }, testResult);
+    obj = searchResultsToJsonApi(query, testResult);
   }, 'Transform did not throw');
 
   t.equal(obj.data[0].relationships.people.data[0].type, 'people', 'Relationship type was correct');

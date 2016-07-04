@@ -5,6 +5,7 @@ const searchSchema = require('../schemas/search');
 const searchResultsToJsonApi = require('../lib/transforms/search-results-to-jsonapi');
 const searchResultsToTemplateData = require('../lib/transforms/search-results-to-template-data');
 const search = require('../lib/search');
+const createQueryParams = require('../lib/query-params');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -15,8 +16,7 @@ module.exports = (elastic, config) => ({
       'hapi-negotiator': {
         mediaTypes: {
           'text/html' (request, reply) {
-            var queryParams = {query: request.query, params: request.params};
-            Joi.validate(queryParams,
+            Joi.validate({query: request.query, params: request.params},
               {
                 params: {
                   type: Joi.string().valid('objects', 'people', 'documents')
@@ -28,11 +28,13 @@ module.exports = (elastic, config) => ({
                 const params = value.params;
                 const query = value.query;
 
-                search(elastic, {params, query}, (err, result) => {
+                const queryParams = createQueryParams('html', {query: query, params: params});
+                search(elastic, queryParams, (err, result) => {
                   if (err) return reply(err);
 
-                  const jsonData = searchResultsToJsonApi(query, result, config);
-                  const tplData = searchResultsToTemplateData(query, jsonData);
+                  // query['filter[type]'] = queryParams.type;
+                  const jsonData = searchResultsToJsonApi(queryParams, result, config);
+                  const tplData = searchResultsToTemplateData(queryParams, jsonData);
 
                   reply.view('search', tplData);
                 });
@@ -40,8 +42,7 @@ module.exports = (elastic, config) => ({
             );
           },
           'application/vnd.api+json' (request, reply) {
-            var queryParams = {query: request.query, params: request.params};
-            Joi.validate(queryParams,
+            Joi.validate({query: request.query, params: request.params},
               {
                 params: {
                   type: Joi.string().valid('objects', 'people', 'documents')
@@ -52,11 +53,11 @@ module.exports = (elastic, config) => ({
 
                 const params = value.params;
                 const query = value.query;
-
-                search(elastic, {params, query}, (err, result) => {
+                const queryParams = createQueryParams('json', {query: query, params: params});
+                search(elastic, queryParams, (err, result) => {
                   if (err) return reply(err);
 
-                  reply(searchResultsToJsonApi(query, result, config))
+                  reply(searchResultsToJsonApi(queryParams, result, config))
                     .header('content-type', 'application/vnd.api+json');
                 });
               }
