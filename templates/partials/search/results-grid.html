@@ -8,11 +8,13 @@
               </figure>
               <div class="resultcard__info">
                 <h4 class="resultcard__title">
-                  {{> global/icon i=this.type }}
-                  {{#if isOnDisplay}}{{> global/icon i="room" size="16" }}{{/if}}
+                  {{#if level}}{{> global/icon i=this.level }}{{else}}{{> global/icon i=this.type }}{{/if}}
+                  {{#if isOnDisplay}}{{> global/icon i="room" }}{{/if}}
                   {{ this.title }}
                 </h4>
-                <p class="resultcard__description">{{{ this.description }}}</p>
+                <p class="resultcard__description">{{{ this.category }}}</p>
+                <p class="resultcard__description">{{{ this.date }}}</p>
+                <p class="resultcard__description">{{{ this.occupation }}}</p>
               </div>
             </div>
           </a>
