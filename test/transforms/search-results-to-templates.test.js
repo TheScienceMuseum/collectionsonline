@@ -1,6 +1,9 @@
 const test = require('tape');
 const searchResultsToJsonApi = require('../../lib/transforms/search-results-to-jsonapi');
 const searchToTemplate = require('../../lib/transforms/search-results-to-template-data');
+const queryParams = require('../../lib/query-params');
+const dir = __dirname.split('/')[__dirname.split('/').length - 1];
+const file = dir + __filename.replace(__dirname, '') + ' > ';
 const testResult = {
   hits: {
     total: 5,
@@ -26,23 +29,24 @@ const testResult = {
     }
   }
 };
-const jsonData = searchResultsToJsonApi({ q: 'test', 'page[number]': 0, 'page[size]': 1 }, testResult);
+const query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
+const jsonData = searchResultsToJsonApi(query, testResult);
 
-test('Results should be transformed succesfully', (t) => {
+test(file + 'Results should be transformed succesfully', (t) => {
   var templateData;
   t.plan(2);
   t.doesNotThrow(() => {
-    templateData = searchToTemplate({ q: 'test', 'page[number]': 0, 'page[size]': 1 }, jsonData);
+    templateData = searchToTemplate(query, jsonData);
   }, 'Transform did not throw error');
   t.ok(templateData, 'template data is returned');
   t.end();
 });
 
-test('Person template data is correctly built', (t) => {
+test(file + 'Person template data is correctly built', (t) => {
   var templateData;
   t.plan(5);
   t.doesNotThrow(() => {
-    templateData = searchToTemplate({ q: 'test', 'page[number]': 0, 'page[size]': 1 }, jsonData);
+    templateData = searchToTemplate(query, jsonData);
   }, 'Transform did not throw error');
 
   const personResult = templateData.results.find(el => el.type === 'people');
@@ -54,11 +58,11 @@ test('Person template data is correctly built', (t) => {
   t.end();
 });
 
-test('Document template data is correctly built', (t) => {
+test(file + 'Document template data is correctly built', (t) => {
   var templateData;
   t.plan(4);
   t.doesNotThrow(() => {
-    templateData = searchToTemplate({ q: 'test', 'page[number]': 0, 'page[size]': 1 }, jsonData);
+    templateData = searchToTemplate(query, jsonData);
   }, 'Transform did not throw error');
 
   const documentResult = templateData.results.find(el => el.type === 'documents');
@@ -69,11 +73,11 @@ test('Document template data is correctly built', (t) => {
   t.end();
 });
 
-test('Object template data is correctly built', (t) => {
+test(file + 'Object template data is correctly built', (t) => {
   var templateData;
   t.plan(5);
   t.doesNotThrow(() => {
-    templateData = searchToTemplate({ q: 'test', 'page[number]': 0, 'page[size]': 1 }, jsonData);
+    templateData = searchToTemplate(query, jsonData);
   }, 'Transform did not throw error');
 
   const objectResult = templateData.results.find(el => el.type === 'objects');
