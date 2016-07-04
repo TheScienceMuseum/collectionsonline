@@ -2,6 +2,7 @@ const test = require('tape');
 const config = require('../../config');
 const buildJSONResponse = require('../../lib/jsonapi-response');
 const JSONAPIResponse = buildJSONResponse(require('../fixtures/elastic-responses/example-get-response-person.json'), config);
+const noBirthdayResponse = buildJSONResponse(require('../fixtures/elastic-responses/example-get-response-death.json'), config);
 const buildHTMLData = require('../../lib/transforms/json-to-html-data');
 var HTMLData;
 
@@ -33,8 +34,17 @@ test('Fields should have correct values', function (t) {
   t.doesNotThrow(() => {
     HTMLData = buildHTMLData(JSONAPIResponse);
   }, 'Transform did not throw error');
-  t.ok(HTMLData.title, 'Charles Babbage', 'name should be normalised');
-  t.ok(HTMLData.type, 'people', 'type should be correct');
-  t.ok(HTMLData.system.value === 'Mimsy', 'System should equal "Mimsy"');
+  t.equal(HTMLData.title, 'Charles Babbage', 'name should be normalised');
+  t.equal(HTMLData.type, 'people', 'type should be correct');
+  t.equal(HTMLData.system.value, 'Mimsy', 'System should equal "Mimsy"');
+  t.end();
+});
+
+test('Missing fields should be dealt with', function (t) {
+  t.plan(2);
+  t.doesNotThrow(() => {
+    HTMLData = buildHTMLData(noBirthdayResponse);
+  }, 'Transform did not throw error');
+  t.equal(HTMLData.date, 'Unknown - 1940', 'missing birthdate should change to unknown');
   t.end();
 });
