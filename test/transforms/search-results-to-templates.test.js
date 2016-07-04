@@ -49,7 +49,7 @@ test('Person template data is correctly built', (t) => {
 
   t.ok(personResult, 'person result is returned');
   t.equal(personResult.link, '/people/smgc-people-36993', 'person link is correct');
-  t.equal(personResult.title, 'Babbage, Charles', 'person title is correct');
+  t.equal(personResult.title, 'Charles Babbage', 'person title is correct');
   t.equal(personResult.date, '1791 - 1871', 'person\'s date is correct');
   t.end();
 });

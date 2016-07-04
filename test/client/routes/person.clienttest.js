@@ -3,7 +3,7 @@ module.exports = {
     browser
       .url('http://localhost:8000/people/smgc-people-36993')
       .waitForElementVisible('body', 1000)
-      .assert.containsText('.record-top__title', 'Babbage')
+      .assert.containsText('.record-top__title', 'Charles Babbage')
       .assert.containsText('.fact-occupation', 'Mathematician')
       .assert.containsText('.fact-Nationality', 'English')
       .assert.containsText('.fact-born-in', 'Southwark')

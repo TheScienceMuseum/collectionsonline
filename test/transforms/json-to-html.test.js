@@ -14,7 +14,7 @@ test('HTMLData should be transformed succesfully', (t) => {
 });
 
 test('Data should have correct fields', function (t) {
-  t.plan(9);
+  t.plan(8);
   t.doesNotThrow(() => {
     HTMLData = buildHTMLData(JSONAPIResponse);
   }, 'Transform did not throw error');
@@ -25,6 +25,16 @@ test('Data should have correct fields', function (t) {
   t.ok(HTMLData.description, 'Data should contain description');
   t.ok(HTMLData.details, 'Data should contain details');
   t.ok(HTMLData.system, 'Data should contain system');
+  t.end();
+});
+
+test('Fields should have correct values', function (t) {
+  t.plan(4);
+  t.doesNotThrow(() => {
+    HTMLData = buildHTMLData(JSONAPIResponse);
+  }, 'Transform did not throw error');
+  t.ok(HTMLData.title, 'Charles Babbage', 'name should be normalised');
+  t.ok(HTMLData.type, 'people', 'type should be correct');
   t.ok(HTMLData.system.value === 'Mimsy', 'System should equal "Mimsy"');
   t.end();
 });
