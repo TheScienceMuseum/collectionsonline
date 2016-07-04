@@ -1,0 +1,40 @@
+<div class="filter filter--active filter--open" data-filter="Occupation">
+  <a class="filter__name">Occupation</a>
+  <div class="filter__options">
+    <ul>
+      {{#each filters.occupation}}
+        <li><label><input type="checkbox" name="filter1" checked />{{value}}<span class="filter__count">{{count}}</span></label></li>
+      {{/each}}
+    </ul>
+  </div>
+</div>
+
+<div class="filter filter--open">
+  <a class="filter__name">Date (born / died)</a>
+  <div class="filter__options filter__daterange">
+    <label>From <input type="number" min="1600" max="2016" placeholder="1600" /></label>
+    <label>To <input type="number" min="1600" max="2016" placeholder="2016" /></label>
+  </div>
+</div>
+
+<div class="filter filter--active filter--open" data-filter="Place born">
+  <a class="filter__name">Place born</a>
+  <div class="filter__options">
+    <ul>
+      {{#each filters.place_born}}
+        <li><label><input type="checkbox" name="filter1" checked />{{value}}<span class="filter__count">{{count}}</span></label></li>
+      {{/each}}
+    </ul>
+  </div>
+</div>
+
+<div class="filter filter--active filter--open" data-filter="Organisation">
+  <a class="filter__name">Organisation / Person</a>
+  <div class="filter__options">
+    <ul>
+      {{#each filters.organisation}}
+        <li><label><input type="checkbox" name="filter1" checked />{{value}}<span class="filter__count">{{count}}</span></label></li>
+      {{/each}}
+    </ul>
+  </div>
+</div>
