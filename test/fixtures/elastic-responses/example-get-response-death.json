@@ -1,0 +1,91 @@
+{
+  "_index": "smg",
+  "_type": "agent",
+  "_id": "smgc-agent-108048",
+  "_score": 1,
+  "_source": {
+    "admin": {
+      "created": 1105008388000,
+      "id": "agent-108048",
+      "language": "eng",
+      "modified": 1416840138000,
+      "processed": 1464731235000,
+      "source": "smgc",
+      "stream": "smg-online",
+      "uid": "smgc-agent-108048"
+    },
+    "date_of_death": [
+      {
+        "latest": 1940,
+        "value": "1940"
+      }
+    ],
+    "description": [
+      {
+        "primary": true,
+        "type": "biography",
+        "value": "author of 'The Sinclair Handbook Of Photography' (1913)"
+      },
+      {
+        "type": "brief biography",
+        "value": "d 1940, photographer, author, London"
+      }
+    ],
+    "gender": "M",
+    "historical": true,
+    "life_dates": [
+      {
+        "earliest": 1940,
+        "latest": 1940,
+        "value": "- 1940"
+      }
+    ],
+    "lifecycle": {
+      "death": [
+        {
+          "@event": {
+            "mapping": "destruction"
+          },
+          "date": [
+            {
+              "earliest": 1940,
+              "latest": 1940,
+              "primary": true,
+              "value": "1940"
+            }
+          ]
+        }
+      ]
+    },
+    "name": [
+      {
+        "first_name": "James A",
+        "last_name": "Sinclair",
+        "primary": true,
+        "type": "preferred name",
+        "value": "Sinclair, James A"
+      },
+      {
+        "type": "MM2000 Preferred Name",
+        "value": "Sinclair, James A."
+      },
+      {
+        "type": "variation",
+        "value": "James A Sinclair"
+      },
+      {
+        "type": "variation",
+        "value": "Sinclair, James A (d. 1940)"
+      }
+    ],
+    "occupation": "photographer; author",
+    "summary_title": "Sinclair, James A",
+    "type": {
+      "base": "agent",
+      "sub_type": [
+        "person"
+      ],
+      "type": "person"
+    }
+  }
+}
