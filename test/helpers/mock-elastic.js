@@ -31,28 +31,34 @@ module.exports = () => ({
         },
         people: {
           occupation: {
-            doc_count_error_upper_bound: 0,
-            sum_other_doc_count: 0,
-            buckets: [
-              { key: 'mathematician', doc_count: 2 },
-              { key: 'engineer', doc_count: 1 }
-            ]
+            occupation_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'mathematician', doc_count: 2 },
+                { key: 'engineer', doc_count: 1 }
+              ]
+            }
           },
           place_born: {
-            doc_count_error_upper_bound: 0,
-            sum_other_doc_count: 0,
-            buckets: [
-              { key: 'London', doc_count: 2 },
-              { key: 'Toulouse', doc_count: 1 }
-            ]
+            place_born_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'London', doc_count: 2 },
+                { key: 'Toulouse', doc_count: 1 }
+              ]
+            }
           },
           organisation: {
-            doc_count_error_upper_bound: 0,
-            sum_other_doc_count: 0,
-            buckets: [
-              { key: 'people', doc_count: 2 },
-              { key: 'organisation', doc_count: 1 }
-            ]
+            organisations_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'people', doc_count: 2 },
+                { key: 'organisation', doc_count: 1 }
+              ]
+            }
           }
         }
       }

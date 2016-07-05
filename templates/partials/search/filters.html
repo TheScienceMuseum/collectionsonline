@@ -2,10 +2,14 @@
         <div class="filter filter--active filter--uncollapsible">
           <a class="filter__name">Clear all filters</a>
         </div>
-
-        {{#if isFilterPeople}}
-          {{> search/filters-people}}
-        {{/if}}
+        <form class="" action="/search" method="get">
+          <input type="hidden" name="q" value="{{q}}">
+          {{#if isFilterPeople}}
+            <input type="hidden" name="fields[type]" value="people">
+            {{> search/filters-people}}
+          {{/if}}
+          <button type="submit">Filter</button>
+        </form>
 
         <!-- <div class="filter filter--active filter--open" data-filter="Category">
           <a class="filter__name">Category</a>
