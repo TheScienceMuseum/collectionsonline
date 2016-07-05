@@ -30,10 +30,13 @@ module.exports = function (page) {
       var qs = { q: $('.tt-input', this).val() };
       var url = '/search?' + QueryString.stringify(qs);
       var queryParams = createQueryParams('json', {query: qs, params: {}});
-
       var opts = {
         headers: { Accept: 'application/vnd.api+json' }
       };
+
+      ctx.state.path = ctx.path = ctx.canonicalPath = url;
+      ctx.queryString = qs.q;
+      ctx.save();
 
       fetch(url, opts)
         .then(function (res) {
