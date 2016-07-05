@@ -5,6 +5,7 @@ var QueryString = require('querystring');
 var Templates = require('../templates');
 var searchBox = require('../lib/search-box');
 var searchResultsToTemplateData = require('../../lib/transforms/search-results-to-template-data');
+var createQueryParams = require('../../lib/query-params.js');
 
 module.exports = function (page) {
   page('/search', enter);
@@ -28,6 +29,7 @@ module.exports = function (page) {
 
       var qs = { q: $('.tt-input', this).val() };
       var url = '/search?' + QueryString.stringify(qs);
+      var queryParams = createQueryParams('json', {query: qs, params: {}});
 
       var opts = {
         headers: { Accept: 'application/vnd.api+json' }
@@ -43,7 +45,7 @@ module.exports = function (page) {
         })
         .then(function (json) {
           if (json.errors) return Promise.reject(json.errors[0]);
-          var data = searchResultsToTemplateData(qs, json);
+          var data = searchResultsToTemplateData(queryParams, json);
           searchnav.innerHTML = Templates['searchnav'](data);
           searchResultsEl.innerHTML = Templates['results-grid'](data);
         })
