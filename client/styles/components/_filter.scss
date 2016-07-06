@@ -14,6 +14,11 @@
     width: 100%;
     box-shadow: 0 8px 16px rgba(black, 0.3);
   }
+
+  &__button {// applies filters, but hidden if js is active
+    margin: 0;
+    width: 100%;
+  }
 }
 
 .filter {
@@ -21,9 +26,10 @@
     & + & { border-top: 1px grey(20) solid; }
 
   &__name {
+    display: block;
     position: relative;
     padding-left: 1.5rem;
-    @include icon-bullet(arrow_right, 1.5rem);
+    @include icon-bullet(arrow_right, 1.5rem, $top:0);
 
     .icon {
       font-size: rem-calc(24);
@@ -81,6 +87,16 @@
   &--open {
     .filter__name {
       @include icon-bullet(arrow_down,1.5rem);
+      padding-bottom: 0.25rem;
+      margin-bottom: 0.25rem;
+    }
+    .filter__name:after {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      right: 0.5rem;
+      bottom: 0;
+      border-bottom: 1px grey(20) dotted;
     }
   }
 
