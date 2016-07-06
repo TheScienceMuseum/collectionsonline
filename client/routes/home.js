@@ -1,10 +1,9 @@
 var svg4everybody = require('svg4everybody');
 var $ = require('jquery');
-var fetch = require('fetch-ponyfill')();
 var QueryString = require('querystring');
 var searchBox = require('../lib/search-box');
-var searchResultsToTemplateData = require('../../lib/transforms/search-results-to-template-data');
 var createQueryParams = require('../../lib/query-params.js');
+var getData = require('../lib/get-data.js');
 
 module.exports = function (page) {
   page('/', function (ctx) {
@@ -25,22 +24,9 @@ module.exports = function (page) {
         headers: { Accept: 'application/vnd.api+json' }
       };
 
-      fetch(url, opts)
-      .then(function (res) {
-        if (res.ok) {
-          return res.json();
-        } else {
-          return Promise.reject(new Error(res.status + ' Failed to fetch results'));
-        }
-      })
-      .then(function (json) {
-        if (json.errors) return Promise.reject(json.errors[0]);
-        var data = searchResultsToTemplateData(queryParams, json);
+      getData(url, opts, queryParams, function (data) {
         ctx.state.data = data;
         page.show(url, ctx.state);
-      })
-      .catch(function (err) {
-        console.error('Failed to search', err);
       });
     });
 

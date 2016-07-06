@@ -1,17 +1,16 @@
 var svg4everybody = require('svg4everybody');
 var $ = require('jquery');
-var fetch = require('fetch-ponyfill')();
 var QueryString = require('querystring');
 var Templates = require('../templates');
 var searchBox = require('../lib/search-box');
-var searchResultsToTemplateData = require('../../lib/transforms/search-results-to-template-data');
 var createQueryParams = require('../../lib/query-params.js');
+var getData = require('../lib/get-data.js');
 
 module.exports = function (page) {
-  page('/search', getData, load, enter);
-  page('/search/:type', getData, load, enter);
+  page('/search', load, render, enter);
+  page('/search/:type', load, render, enter);
 
-  function getData (ctx, next) {
+  function load (ctx, next) {
     if (!ctx.state.data) {
       var url = ctx.path;
       var opts = {
@@ -20,29 +19,16 @@ module.exports = function (page) {
       var qs = QueryString.parse(ctx.querystring);
       var queryParams = createQueryParams('json', {query: qs, params: {}});
 
-      fetch(url, opts)
-        .then(function (res) {
-          if (res.ok) {
-            return res.json();
-          } else {
-            return Promise.reject(new Error(res.status + ' Failed to fetch results'));
-          }
-        })
-        .then(function (json) {
-          if (json.errors) return Promise.reject(json.errors[0]);
-          var data = searchResultsToTemplateData(queryParams, json);
-          ctx.state.data = data;
-          next();
-        })
-        .catch(function (err) {
-          console.error('Failed to search', err);
-        });
+      getData(url, opts, queryParams, function (data) {
+        ctx.state.data = data;
+        next();
+      });
     } else {
       next();
     }
   }
 
-  function load (ctx, next) {
+  function render (ctx, next) {
     if (ctx.params.type) {
       var filter = 'isFilter' + ctx.params.type[0].toUpperCase() + ctx.params.type.slice(1);
       if (filter !== 'All') ctx.state.data.isFilterAll = false;
@@ -71,24 +57,10 @@ module.exports = function (page) {
         headers: { Accept: 'application/vnd.api+json' }
       };
 
-      fetch(url, opts)
-        .then(function (res) {
-          if (res.ok) {
-            return res.json();
-          } else {
-            return Promise.reject(new Error(res.status + ' Failed to fetch results'));
-          }
-        })
-        .then(function (json) {
-          if (json.errors) return Promise.reject(json.errors[0]);
-          var data = searchResultsToTemplateData(queryParams, json);
-          ctx.state.data = data;
-          page.show(url, ctx.state);
-          return;
-        })
-        .catch(function (err) {
-          console.error('Failed to search', err);
-        });
+      getData(url, opts, queryParams, function (data) {
+        ctx.state.data = data;
+        page.show(url, ctx.state);
+      });
     });
 
     // fake filtering to show states
