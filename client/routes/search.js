@@ -8,35 +8,17 @@ var searchResultsToTemplateData = require('../../lib/transforms/search-results-t
 var createQueryParams = require('../../lib/query-params.js');
 
 module.exports = function (page) {
-  page('/search', enter);
-  page('/search/:type', enter);
+  page('/search', getData, load, enter);
+  page('/search/:type', getData, load, enter);
 
-  function enter (ctx) {
-    // Temporary until templates pulled into js for client side rendering
-    if (!ctx.isInitialRender) {
-      window.location = ctx.path;
-    }
-
-    var searchnav = document.getElementById('searchnav');
-    var searchBoxEl = document.getElementById('searchbox');
-    var searchResultsEl = document.getElementById('searchresults');
-
-    searchBoxEl.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      // TODO: Maybe a nice loading spinner?
-      $('#searchresults .searchresults__column').animate({ opacity: 0.5 });
-
-      var qs = { q: $('.tt-input', this).val() };
-      var url = '/search?' + QueryString.stringify(qs);
-      var queryParams = createQueryParams('json', {query: qs, params: {}});
+  function getData (ctx, next) {
+    if (!ctx.state.data) {
+      var url = ctx.path;
       var opts = {
         headers: { Accept: 'application/vnd.api+json' }
       };
-
-      ctx.state.path = ctx.path = ctx.canonicalPath = url;
-      ctx.queryString = qs.q;
-      ctx.save();
+      var qs = QueryString.parse(ctx.querystring);
+      var queryParams = createQueryParams('json', {query: qs, params: {}});
 
       fetch(url, opts)
         .then(function (res) {
@@ -49,8 +31,60 @@ module.exports = function (page) {
         .then(function (json) {
           if (json.errors) return Promise.reject(json.errors[0]);
           var data = searchResultsToTemplateData(queryParams, json);
-          searchnav.innerHTML = Templates['searchnav'](data);
-          searchResultsEl.innerHTML = Templates['results-grid'](data);
+          ctx.state.data = data;
+          next();
+        })
+        .catch(function (err) {
+          console.error('Failed to search', err);
+        });
+    } else {
+      next();
+    }
+  }
+
+  function load (ctx, next) {
+    if (ctx.params.type) {
+      var filter = 'isFilter' + ctx.params.type[0].toUpperCase() + ctx.params.type.slice(1);
+      if (filter !== 'All') ctx.state.data.isFilterAll = false;
+      ctx.state.data[filter] = true;
+    }
+    if (!ctx.isInitialRender) {
+      var pageEl = document.getElementsByTagName('main')[0];
+      pageEl.innerHTML = Templates['search'](ctx.state.data);
+    }
+    next();
+  }
+
+  function enter (ctx, next) {
+    var searchBoxEl = document.getElementById('searchbox');
+
+    searchBoxEl.addEventListener('submit', function (e) {
+      e.preventDefault();
+      // TODO: Maybe a nice loading spinner?
+      $('#searchresults .searchresults__column').animate({ opacity: 0.5 });
+
+      var qs = { q: $('.tt-input', this).val() };
+      var params = ctx.params;
+      var url = params[0] + '?' + QueryString.stringify(qs);
+      var queryParams = createQueryParams('json', {query: qs, params: {}});
+      var opts = {
+        headers: { Accept: 'application/vnd.api+json' }
+      };
+
+      fetch(url, opts)
+        .then(function (res) {
+          if (res.ok) {
+            return res.json();
+          } else {
+            return Promise.reject(new Error(res.status + ' Failed to fetch results'));
+          }
+        })
+        .then(function (json) {
+          if (json.errors) return Promise.reject(json.errors[0]);
+          var data = searchResultsToTemplateData(queryParams, json);
+          ctx.state.data = data;
+          page.show(url, ctx.state);
+          return;
         })
         .catch(function (err) {
           console.error('Failed to search', err);
