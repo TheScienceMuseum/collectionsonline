@@ -8,8 +8,8 @@ var getData = require('../lib/get-data.js');
 var convertUrl = require('../lib/convert-url.js');
 
 module.exports = function (page) {
-  page('/search', load, render, enter);
-  page('/search/:type', load, render, enter);
+  page('/search', load, render, listeners);
+  page('/search/:type', load, render, listeners);
 
   function load (ctx, next) {
     if (!ctx.state.data) {
@@ -18,6 +18,11 @@ module.exports = function (page) {
         headers: { Accept: 'application/vnd.api+json' }
       };
       var qs = QueryString.parse(ctx.querystring);
+      Object.keys(qs).forEach(el => {
+        if (Array.isArray(qs[el])) {
+          qs[el] = qs[el].join();
+        }
+      });
       var queryParams = createQueryParams('json', {query: qs, params: {}});
 
       getData(convertUrl(url, 'json'), opts, queryParams, function (data) {
@@ -47,15 +52,17 @@ module.exports = function (page) {
     next();
   }
 
-  function enter (ctx, next) {
+  function listeners (ctx, next) {
     var searchBoxEl = document.getElementById('searchbox');
 
+    // New Search
     searchBoxEl.addEventListener('submit', function (e) {
       e.preventDefault();
       // TODO: Maybe a nice loading spinner?
       $('#searchresults .searchresults__column').animate({ opacity: 0.5 });
 
-      var qs = { q: $('.tt-input', this).val() };
+      var qs = QueryString.parse(ctx.querystring);
+      qs.q = $('.tt-input', this).val();
       var params = ctx.params;
       var url = params[0] + '?' + QueryString.stringify(qs);
       var queryParams = createQueryParams('json', {query: qs, params: {}});
@@ -69,35 +76,49 @@ module.exports = function (page) {
       });
     });
 
+    // Show/hide filters
     $('.control__button').on('click', function (e) {
       $('.searchresults').toggleClass('searchresults--filtersactive');
       $('.filtercolumn').toggleClass('filtercolumn--filtersactive');
       $('.control--filters').toggleClass('control--active');
     });
 
-    // fake filtering to show states
-    $('.filter:not(.filter--uncollapsible)')
-    .on('click', '.filter__name', function (e) {
-      if ($(this).parent().hasClass('filter--open')) {
-        $(this).parent().removeClass('filter--open');
+    // Clear Filters
+    $('.filter').on('click', '.filter__clear', function (e) {
+      var opts = {
+        headers: { Accept: 'application/vnd.api+json' }
+      };
+      var qs = {q: $('.tt-input').val()};
+      var queryParams = createQueryParams('json', {query: qs, params: {}});
+      var url = ctx.pathname + '?' + QueryString.stringify(qs);
 
-        if ($(this).parent().hasClass('filter--active')) {
-          $(this).parent().removeClass('filter--active');
-          $(this).siblings().find('[type=checkbox]').prop('checked', false);
-        }
+      getData(url, opts, queryParams, function (data) {
+        ctx.state.data = data;
+        page.show(url, ctx.state);
+      });
+    });
+
+    // Click to add filters
+    $('.filter:not(.filter--uncollapsible)').on('click', '[type=checkbox]', function (e) {
+      var qs = QueryString.parse(ctx.querystring);
+      qs.q = $('.tt-input').val();
+
+      if (qs[e.target.name]) {
+        qs[e.target.name] += ',' + e.target.value;
       } else {
-        $(this).parent().addClass('filter--open');
+        qs[e.target.name] = e.target.value;
       }
-    })
-    .on('click', '[type=checkbox]', function (e) {
-      // var filtername = $(this).closest('.filter').data('filter');
-      if ($(this).closest('.filter__options').find(':checked').length > 0) {
-        $(this).closest('.filter').addClass('filter--active');
-        // $('.searchbox__filters [data-filter='+filtername+']').show();
-      } else {
-        $(this).closest('.filter').removeClass('filter--active');
-        // $('.searchbox__filters [data-filter='+filtername+']').hide();
-      }
+
+      var url = ctx.pathname + '?' + QueryString.stringify(qs);
+      var opts = {
+        headers: { Accept: 'application/vnd.api+json' }
+      };
+      var queryParams = createQueryParams('json', {query: qs, params: {}});
+
+      getData(url, opts, queryParams, function (data) {
+        ctx.state.data = data;
+        page.show(url, ctx.state);
+      });
     });
 
     svg4everybody();

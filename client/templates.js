@@ -63,6 +63,26 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
+  'search/filters-all',
+  Fs.readFileSync('./templates/partials/search/filters-all.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'search/filters-documents',
+  Fs.readFileSync('./templates/partials/search/filters-documents.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'search/filters-objects',
+  Fs.readFileSync('./templates/partials/search/filters-objects.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'search/filters-people',
+  Fs.readFileSync('./templates/partials/search/filters-people.html', 'utf8')
+);
+
+Handlebars.registerPartial(
   'search/pagination',
   Fs.readFileSync('./templates/partials/search/pagination.html', 'utf8')
 );
