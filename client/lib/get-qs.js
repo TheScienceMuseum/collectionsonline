@@ -1,9 +1,10 @@
 var QueryString = require('querystring');
+var convertUrl = require('../lib/convert-url.js');
 
 module.exports = (e, ctx, q) => {
   var name = e.target.name;
   var value = e.target.value;
-  var qs = QueryString.parse(ctx.querystring);
+  var qs = QueryString.parse(convertUrl(ctx.querystring, 'json'));
   qs.q = q;
 
   if (qs[name]) {

@@ -7,6 +7,7 @@ var createQueryParams = require('../../lib/query-params.js');
 var getData = require('../lib/get-data.js');
 var convertUrl = require('../lib/convert-url.js');
 var getQueryString = require('../lib/get-qs.js');
+var convertUrl = require('../lib/convert-url.js');
 
 module.exports = function (page) {
   page('/search', load, render, listeners);
@@ -73,7 +74,7 @@ module.exports = function (page) {
         headers: { Accept: 'application/vnd.api+json' }
       };
 
-      getData(url, opts, queryParams, function (data) {
+      getData(convertUrl(url, 'json'), opts, queryParams, function (data) {
         ctx.state.data = data;
         page.show(convertUrl(url, 'json'), ctx.state);
       });
@@ -101,7 +102,7 @@ module.exports = function (page) {
       });
     });
 
-    // Click to add filters
+    // Click to add/remove filters
     $('.filter:not(.filter--uncollapsible)').on('click', '[type=checkbox]', function (e) {
       var q = $('.tt-input').val();
       var qs = getQueryString(e, ctx, q);
@@ -114,7 +115,7 @@ module.exports = function (page) {
 
       getData(url, opts, queryParams, function (data) {
         ctx.state.data = data;
-        page.show(url, ctx.state);
+        page.show(convertUrl(url, 'html'), ctx.state);
       });
     });
 
