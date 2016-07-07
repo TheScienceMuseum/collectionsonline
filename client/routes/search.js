@@ -37,6 +37,11 @@ module.exports = function (page) {
     if (!ctx.isInitialRender) {
       var pageEl = document.getElementsByTagName('main')[0];
       pageEl.innerHTML = Templates['search'](ctx.state.data);
+
+      // Hides filterpanel by default if javascript is enabled
+      $('.searchresults').removeClass('searchresults--filtersactive');
+      $('.filtercolumn').removeClass('filtercolumn--filtersactive');
+      $('.control--filters').removeClass('control--active');
     }
     next();
   }
@@ -61,6 +66,12 @@ module.exports = function (page) {
         ctx.state.data = data;
         page.show(url, ctx.state);
       });
+    });
+
+    $('.control__button').on('click', function (e) {
+      $('.searchresults').toggleClass('searchresults--filtersactive');
+      $('.filtercolumn').toggleClass('filtercolumn--filtersactive');
+      $('.control--filters').toggleClass('control--active');
     });
 
     // fake filtering to show states

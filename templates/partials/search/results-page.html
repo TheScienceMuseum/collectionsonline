@@ -13,22 +13,22 @@
       </div>
     </div>
     <div class="large-3 medium-4 small-6 columns">
-      <div class="control control--filters {{#ifpage 'results-list'}}control--active{{/ifpage}}" id="control--filters" data-toggler=".control--active">
+      <div class="control control--filters control--active" id="control--filters">
           <label class="control__label" for="fb">Refine search</label>
-          <button class="control__button" id="fb" data-toggle="searchresults filtercolumn control--filters">{{> global/icon i="filter_list" }}</button>
+          <button class="control__button" id="fb">{{> global/icon i="filter_list" }}</button>
       </div>
     </div>
   </div>
 
   <div class="row">
 
-    <div class="filtercolumn {{#unlesspage 'search'}}filtercolumn--filtersactive{{/unlesspage}}" id="filtercolumn" data-toggler=".filtercolumn--filtersactive">
+    <div class="filtercolumn filtercolumn--filtersactive" id="filtercolumn">
 
       {{> search/filters }}
 
     </div>
 
-    <div class="row searchresults {{#unlesspage 'search'}}searchresults--filtersactive{{/unlesspage}}" id="searchresults" data-toggler=".searchresults--filtersactive">
+    <div class="row searchresults searchresults--filtersactive" id="searchresults">
 
       {{#ifpage 'search'}}{{> search/results-grid}}{{/ifpage}}
       {{#ifpage 'results-list'}}{{> search/results-list }}{{/ifpage}}
