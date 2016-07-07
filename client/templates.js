@@ -123,8 +123,6 @@ Handlebars.registerPartial(
 );
 
 // Helpers
-Handlebars.registerHelper('unlesspage', require('../templates/helpers/unlesspage.js'));
-
 Handlebars.registerHelper('classname', require('../templates/helpers/classname.js'));
 
 Handlebars.registerHelper('ifpage', require('../templates/helpers/ifpage.js'));
