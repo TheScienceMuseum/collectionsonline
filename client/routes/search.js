@@ -6,6 +6,7 @@ var searchBox = require('../lib/search-box');
 var createQueryParams = require('../../lib/query-params.js');
 var getData = require('../lib/get-data.js');
 var convertUrl = require('../lib/convert-url.js');
+var getQueryString = require('../lib/get-qs.js');
 
 module.exports = function (page) {
   page('/search', load, render, listeners);
@@ -45,9 +46,11 @@ module.exports = function (page) {
       pageEl.innerHTML = Templates['search'](ctx.state.data);
 
       // Hides filterpanel by default if javascript is enabled
-      $('.searchresults').removeClass('searchresults--filtersactive');
-      $('.filtercolumn').removeClass('filtercolumn--filtersactive');
-      $('.control--filters').removeClass('control--active');
+      if (!Object.keys(ctx.state.data.selectedFilters).length) {
+        $('.searchresults').removeClass('searchresults--filtersactive');
+        $('.filtercolumn').removeClass('filtercolumn--filtersactive');
+        $('.control--filters').removeClass('control--active');
+      }
     }
     next();
   }
@@ -100,14 +103,8 @@ module.exports = function (page) {
 
     // Click to add filters
     $('.filter:not(.filter--uncollapsible)').on('click', '[type=checkbox]', function (e) {
-      var qs = QueryString.parse(ctx.querystring);
-      qs.q = $('.tt-input').val();
-
-      if (qs[e.target.name]) {
-        qs[e.target.name] += ',' + e.target.value;
-      } else {
-        qs[e.target.name] = e.target.value;
-      }
+      var q = $('.tt-input').val();
+      var qs = getQueryString(e, ctx, q);
 
       var url = ctx.pathname + '?' + QueryString.stringify(qs);
       var opts = {

@@ -4,7 +4,7 @@
   <div class="filter__options">
     <ul>
       {{#each filters.occupation}}
-        {{#if (lookup (lookup ../selectedFilters "occupation") value)}}
+        {{#if (lookup (lookup ../selectedFilters "filter[occupation]") value)}}
           <li><label><input type="checkbox" name="filter[occupation]" value="{{value}}" checked/>{{value}}<span class="filter__count">{{count}}</span></label></li>
         {{else}}
           <li><label><input type="checkbox" name="filter[occupation]" value="{{value}}" />{{value}}<span class="filter__count">{{count}}</span></label></li>
