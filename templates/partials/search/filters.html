@@ -4,10 +4,23 @@
         </div>
         <form class="" action="/search" method="get">
           <input type="hidden" name="q" value="{{q}}">
+          {{#if isFilterAll}}
+            {{> search/filters-all}}
+          {{/if}}
+
           {{#if isFilterPeople}}
             <input type="hidden" name="fields[type]" value="people">
             {{> search/filters-people}}
           {{/if}}
+
+          {{#if isFilterDocuments}}
+            {{> search/filters-documents}}
+          {{/if}}
+
+          {{#if isFilterObjects}}
+            {{> search/filters-objects}}
+          {{/if}}
+
           <button type="submit">Filter</button>
         </form>
 

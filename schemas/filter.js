@@ -8,8 +8,8 @@ const sharedSchema = {
   // Objects
   'filter[on_display]': Joi.boolean(),
   // People
-  'filter[birth[date]]': dateSchema,
-  'filter[death[date]]': dateSchema
+  'filter[birth[date]]': dateSchema.empty(''),
+  'filter[death[date]]': dateSchema.empty('')
   // Documents
 };
 

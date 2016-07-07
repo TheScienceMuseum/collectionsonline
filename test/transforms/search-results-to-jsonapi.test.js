@@ -4,11 +4,14 @@ const searchResultsToJsonApi = require('../../lib/transforms/search-results-to-j
 const queryParams = require('../../lib/query-params');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
+const aggregationsAll = require('../helpers/aggregations-all.json');
+const aggregationsPeople = require('../helpers/aggregations-people.json');
+const aggregationsObjects = require('../helpers/aggregations-objects.json');
+const aggregationsDocuments = require('../helpers/aggregations-documents.json');
 
 test(file + 'Should create valid meta count numbers', (t) => {
   t.plan(7);
-
-  const testResult = {
+  var testResult = {
     took: 0,
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
@@ -34,6 +37,11 @@ test(file + 'Should create valid meta count numbers', (t) => {
       }
     }
   };
+
+  testResult.aggregations.all = aggregationsAll;
+  testResult.aggregations.people = aggregationsPeople;
+  testResult.aggregations.objects = aggregationsObjects;
+  testResult.aggregations.documents = aggregationsDocuments;
 
   var obj;
   var query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
@@ -74,6 +82,11 @@ test(file + 'Should create valid meta default count numbers for empty aggregatio
     }
   };
 
+  testResult.aggregations.all = aggregationsAll;
+  testResult.aggregations.people = aggregationsPeople;
+  testResult.aggregations.objects = aggregationsObjects;
+  testResult.aggregations.documents = aggregationsDocuments;
+
   var obj;
   var query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
 
@@ -92,7 +105,6 @@ test(file + 'Should create valid meta default count numbers for empty aggregatio
 
 test(file + 'Should create valid links on first page', (t) => {
   t.plan(6);
-
   const testResult = {
     took: 0,
     timed_out: false,
@@ -119,6 +131,11 @@ test(file + 'Should create valid links on first page', (t) => {
       }
     }
   };
+
+  testResult.aggregations.all = aggregationsAll;
+  testResult.aggregations.people = aggregationsPeople;
+  testResult.aggregations.objects = aggregationsObjects;
+  testResult.aggregations.documents = aggregationsDocuments;
 
   var obj;
   var query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
@@ -148,7 +165,6 @@ test(file + 'Should create valid links on first page', (t) => {
 
 test(file + 'Should create valid links on middle page', (t) => {
   t.plan(6);
-
   const testResult = {
     took: 0,
     timed_out: false,
@@ -175,6 +191,11 @@ test(file + 'Should create valid links on middle page', (t) => {
       }
     }
   };
+
+  testResult.aggregations.all = aggregationsAll;
+  testResult.aggregations.people = aggregationsPeople;
+  testResult.aggregations.objects = aggregationsObjects;
+  testResult.aggregations.documents = aggregationsDocuments;
 
   var obj;
   var query = queryParams('html', { query: { q: 'test', 'page[number]': 1, 'page[size]': 1 }, params: {} });
@@ -233,6 +254,11 @@ test(file + 'Should create valid links on last page', (t) => {
     }
   };
 
+  testResult.aggregations.all = aggregationsAll;
+  testResult.aggregations.people = aggregationsPeople;
+  testResult.aggregations.objects = aggregationsObjects;
+  testResult.aggregations.documents = aggregationsDocuments;
+
   var obj;
   var query = queryParams('html', { query: { q: 'test', 'page[number]': 4, 'page[size]': 1 }, params: {} });
 
@@ -287,6 +313,11 @@ test(file + 'Should ignore unknown object types', (t) => {
     }
   };
 
+  testResult.aggregations.all = aggregationsAll;
+  testResult.aggregations.people = aggregationsPeople;
+  testResult.aggregations.objects = aggregationsObjects;
+  testResult.aggregations.documents = aggregationsDocuments;
+
   var obj;
   var query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 50 }, params: {} });
 
@@ -302,7 +333,6 @@ test(file + 'Should ignore unknown object types', (t) => {
 
 test(file + 'Should extract @link\'d document to relationships and included', (t) => {
   t.plan(5);
-
   const relId = `smg-agent-${Date.now()}`;
   const relSummaryTitle = 'Charles Babbage';
 
@@ -343,6 +373,11 @@ test(file + 'Should extract @link\'d document to relationships and included', (t
       }
     }
   };
+
+  testResult.aggregations.all = aggregationsAll;
+  testResult.aggregations.people = aggregationsPeople;
+  testResult.aggregations.objects = aggregationsObjects;
+  testResult.aggregations.documents = aggregationsDocuments;
 
   var obj;
   var query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
