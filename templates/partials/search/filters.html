@@ -1,28 +1,30 @@
-      <div class="filterpanel">
-        <div class="filter filter--active filter--uncollapsible">
-          <a class="filter__name">Clear all filters</a>
-        </div>
-        <form class="" action="/search" method="get">
-          <input type="hidden" name="q" value="{{q}}">
-          {{#if isFilterAll}}
-            {{> search/filters-all}}
-          {{/if}}
+<div class="filterpanel">
+  <div class="filter filter--active filter--uncollapsible">
+    <a class="filter__name">Clear all filters</a>
+  </div>
+  <form class="" action="/search" method="get">
+    <input type="hidden" name="q" value="{{q}}">
+    {{#if isFilterAll}}
+      {{> search/filters-all}}
+    {{/if}}
 
-          {{#if isFilterPeople}}
-            <input type="hidden" name="fields[type]" value="people">
-            {{> search/filters-people}}
-          {{/if}}
+    {{#if isFilterPeople}}
+      <input type="hidden" name="fields[type]" value="people">
+      {{> search/filters-people}}
+    {{/if}}
 
-          {{#if isFilterDocuments}}
-            {{> search/filters-documents}}
-          {{/if}}
+    {{#if isFilterDocuments}}
+      {{> search/filters-documents}}
+    {{/if}}
 
-          {{#if isFilterObjects}}
-            {{> search/filters-objects}}
-          {{/if}}
+    {{#if isFilterObjects}}
+      {{> search/filters-objects}}
+    {{/if}}
 
-          <button type="submit">Filter</button>
-        </form>
+    <!-- <input type="submit" class="button filterpanel__button" value="filter" /> -->
+    <button class="button filterpanel__button" />filter</button>
+  </form>
+</div>
 
         <!-- <div class="filter filter--active filter--open" data-filter="Category">
           <a class="filter__name">Category</a>
@@ -87,5 +89,5 @@
             <label>From <input type="number" min="1600" max="2016" placeholder="1600" /></label>
             <label>To <input type="number" min="1600" max="2016" placeholder="2016" /></label>
           </div>
+<<<<<<< HEAD
         </div> -->
-      </div>

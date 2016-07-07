@@ -3,6 +3,7 @@
 //-----------------------------------------------------------------------------
 
 .searchbar {
+  position: relative;
   background-color: mix(grey(10), $c-cyan);
   //border-bottom: 1px solid grey(20);
   background-image: linear-gradient(45deg, mix(grey(10),$c-cyan), mix(grey(10),$c-blue) );
