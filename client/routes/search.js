@@ -65,7 +65,7 @@ module.exports = function (page) {
       // TODO: Maybe a nice loading spinner?
       $('#searchresults .searchresults__column').animate({ opacity: 0.5 });
 
-      var qs = QueryString.parse(ctx.querystring);
+      var qs = {};
       qs.q = $('.tt-input', this).val();
       var params = ctx.params;
       var url = params[0] + '?' + QueryString.stringify(qs);
