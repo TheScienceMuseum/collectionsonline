@@ -1,34 +1,27 @@
-var QueryString = require('querystring');
-var convertUrl = require('../lib/convert-url.js');
-
 module.exports = (e, ctx, q) => {
   var name = e.target.name;
   var value = e.target.value;
-  var qs = QueryString.parse(convertUrl(ctx.querystring, 'json'));
+  var selected = ctx.state.data.selectedFilters;
+  var qs = {};
   qs.q = q;
 
-  if (qs[name]) {
-    var i = qs[name].indexOf(value);
-    if (i > -1) {
-      if (qs[name][i - 1] === ',') {
-        qs[name] = qs[name].substring(0, i - 1) + qs[name].substring(i + value.length);
-      } else {
-        qs[name] = qs[name].substring(0, i) + qs[name].substring(i + value.length);
+  if (selected[name]) {
+    if (selected[name][value]) {
+      delete selected[name][value];
+      if (!Object.keys(selected[name]).length) {
+        delete selected[name];
       }
     } else {
-      qs[name] += ',' + value;
+      selected[name][value] = true;
     }
   } else {
-    qs[name] = value;
+    selected[name] = {};
+    selected[name][value] = true;
   }
 
-  if (qs[name] && qs[name][0] === ',') {
-    qs[name] = qs[name].substr(1);
-  }
-
-  if (!qs[name].length) {
-    delete qs[name];
-  }
+  Object.keys(selected).forEach(el => {
+    qs[el] = Object.keys(selected[el]).join();
+  });
 
   return qs;
 };
