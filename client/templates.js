@@ -8,6 +8,11 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
+  'global/search-nav',
+  Fs.readFileSync('./templates/partials/global/search-nav.html', 'utf8')
+);
+
+Handlebars.registerPartial(
   'global/search-main',
   Fs.readFileSync('./templates/partials/global/search-main.html', 'utf8')
 );
@@ -25,6 +30,31 @@ Handlebars.registerPartial(
 Handlebars.registerPartial(
   'global/global-footer',
   Fs.readFileSync('./templates/partials/global/global-footer.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'search/results-page',
+  Fs.readFileSync('./templates/partials/search/results-page.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'search/filters',
+  Fs.readFileSync('./templates/partials/search/filters.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'search/pagination',
+  Fs.readFileSync('./templates/partials/search/pagination.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'search/results-grid',
+  Fs.readFileSync('./templates/partials/search/results-grid.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'search/noresults',
+  Fs.readFileSync('./templates/partials/search/noresults.html', 'utf8')
 );
 
 Handlebars.registerPartial(
@@ -93,12 +123,15 @@ Handlebars.registerPartial(
 );
 
 // Helpers
-Handlebars.registerHelper('unlesspage', require('../templates/helpers/unlesspage.js'));
-
 Handlebars.registerHelper('classname', require('../templates/helpers/classname.js'));
+
+Handlebars.registerHelper('ifpage', require('../templates/helpers/ifpage.js'));
 
 // Routes
 module.exports = {
+  'search': Handlebars.compile(
+    Fs.readFileSync('./templates/pages/search.html', 'utf8')
+  ),
   'results-grid': Handlebars.compile(
     Fs.readFileSync('./templates/partials/search/results-grid.html', 'utf8')
   ),
