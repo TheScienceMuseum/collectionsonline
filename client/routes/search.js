@@ -68,7 +68,7 @@ module.exports = function (page) {
       qs.q = $('.tt-input', this).val();
       var params = ctx.params;
       var url = params[0] + '?' + QueryString.stringify(qs);
-      var queryParams = createQueryParams('json', {query: qs, params: {}});
+      var queryParams = createQueryParams('json', {query: qs, params: params});
       var opts = {
         headers: { Accept: 'application/vnd.api+json' }
       };
@@ -105,11 +105,12 @@ module.exports = function (page) {
     $('.filter:not(.filter--uncollapsible)').on('click', '[type=checkbox]', function (e) {
       var q = $('.tt-input').val();
       var qs = getQueryString(e, ctx, q);
+      var params = ctx.params;
       var url = ctx.pathname + '?' + QueryString.stringify(qs);
       var opts = {
         headers: { Accept: 'application/vnd.api+json' }
       };
-      var queryParams = createQueryParams('json', {query: qs, params: {}}, ctx.state.data.selectedFilters);
+      var queryParams = createQueryParams('json', {query: qs, params: params}, ctx.state.data.selectedFilters);
       getData(url, opts, queryParams, function (data) {
         ctx.state.data = data;
         page.show(convertUrl(url, 'html'), ctx.state);
