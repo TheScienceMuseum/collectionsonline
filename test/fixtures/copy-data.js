@@ -101,6 +101,10 @@ database.archive[TypeMapping.toInternal('smga-documents-noResult')] = {error: nu
 database.agent[TypeMapping.toInternal('smgc-people-noResult')] = {error: null, response: null};
 database.object[TypeMapping.toInternal('smgc-object-noResult')] = {error: null, response: null};
 
+// search error fixture
+database.search = {};
+database.search.error = {error: {'status': 400, 'displayName': 'BadRequest', 'message': 'Bad Request'}, response: null};
+
 var count = 0;
 console.log('copy database to fixtures');
 dataToCopy.forEach(data => {

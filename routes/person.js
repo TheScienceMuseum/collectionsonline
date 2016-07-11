@@ -15,7 +15,6 @@ module.exports = (elastic, config) => ({
             const data = {
               page: 'person'
             };
-            console.log(request.params.id, TypeMapping.toInternal(request.params.id));
             elastic.get({index: 'smg', type: 'agent', id: TypeMapping.toInternal(request.params.id)}, (err, result) => {
               if (err) {
                 if (err.status === 404) {
