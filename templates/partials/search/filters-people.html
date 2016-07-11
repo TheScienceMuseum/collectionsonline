@@ -23,7 +23,7 @@
   <div class="filter__options">
     <ul>
       {{#each filters.place_born}}
-        <li><label><input type="checkbox" name="filter[birth[place]]" value="{{value}}" {{isselected ../selectedFilters "filter[birth[place]]" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        <li><label><input type="checkbox" class="filter__box" name="filter[birth[place]]" value="{{value}}" {{isselected ../selectedFilters "filter[birth[place]]" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
       {{/each}}
     </ul>
   </div>
