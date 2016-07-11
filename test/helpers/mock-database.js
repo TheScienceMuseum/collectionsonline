@@ -1,4 +1,5 @@
 // Create a mock elasticsearch client with noop functions
+const database = require('../fixtures/elastic-responses/database.json');
 module.exports = () => ({
   search: function () {
     const cb = arguments[arguments.length - 1];
@@ -35,14 +36,9 @@ module.exports = () => ({
 
   get: function () {
     const cb = arguments[arguments.length - 1];
-
-    cb(null, {
-      _index: '',
-      _type: '',
-      _id: '',
-      _version: 1,
-      found: true,
-      _source: {}
-    });
+    const type = arguments[0].type;
+    const id = arguments[0].id;
+    const data = database[type][id];
+    cb(data.error, data.response);
   }
 });
