@@ -4,11 +4,7 @@
   <div class="filter__options">
     <ul>
       {{#each filters.occupation}}
-        {{#if (lookup (lookup ../selectedFilters "filter[occupation]") value)}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[occupation]" value="{{value}}" checked/>{{value}}<span class="filter__count">{{count}}</span></label></li>
-        {{else}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[occupation]" value="{{value}}" />{{value}}<span class="filter__count">{{count}}</span></label></li>
-        {{/if}}
+        <li><label><input type="checkbox" class="filter__box" name="filter[occupation]" value="{{value}}" {{isselected ../selectedFilters "filter[occupation]" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
       {{/each}}
     </ul>
   </div>
@@ -27,11 +23,7 @@
   <div class="filter__options">
     <ul>
       {{#each filters.place_born}}
-        {{#if (lookup (lookup ../selectedFilters "birthPlace") value) }}
-          <li><label><input type="checkbox" name="filter[birth[place]]" value="{{value}}" checked/>{{value}}<span class="filter__count">{{count}}</span></label></li>
-        {{else}}
-          <li><label><input type="checkbox" name="filter[birth[place]]" value="{{value}}"/>{{value}}<span class="filter__count">{{count}}</span></label></li>
-        {{/if}}
+        <li><label><input type="checkbox" name="filter[birth[place]]" value="{{value}}" {{isselected ../selectedFilters "filter[birth[place]]" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
       {{/each}}
     </ul>
   </div>

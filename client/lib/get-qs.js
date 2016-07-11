@@ -1,6 +1,7 @@
 module.exports = (e, ctx, q) => {
+  var comma = /,/g;
   var name = e.target.name;
-  var value = e.target.value;
+  var value = e.target.value.replace(comma, '\\,');
   var selected = ctx.state.data.selectedFilters;
   var qs = {};
   qs.q = q;

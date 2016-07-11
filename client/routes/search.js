@@ -7,7 +7,6 @@ var createQueryParams = require('../../lib/query-params.js');
 var getData = require('../lib/get-data.js');
 var convertUrl = require('../lib/convert-url.js');
 var getQueryString = require('../lib/get-qs.js');
-var convertUrl = require('../lib/convert-url.js');
 
 module.exports = function (page) {
   page('/search', load, render, listeners);
@@ -106,13 +105,11 @@ module.exports = function (page) {
     $('.filter:not(.filter--uncollapsible)').on('click', '[type=checkbox]', function (e) {
       var q = $('.tt-input').val();
       var qs = getQueryString(e, ctx, q);
-
       var url = ctx.pathname + '?' + QueryString.stringify(qs);
       var opts = {
         headers: { Accept: 'application/vnd.api+json' }
       };
-      var queryParams = createQueryParams('json', {query: qs, params: {}});
-
+      var queryParams = createQueryParams('json', {query: qs, params: {}}, ctx.state.data.selectedFilters);
       getData(url, opts, queryParams, function (data) {
         ctx.state.data = data;
         page.show(convertUrl(url, 'html'), ctx.state);

@@ -167,6 +167,8 @@ Handlebars.registerHelper('classname', require('../templates/helpers/classname.j
 
 Handlebars.registerHelper('ifpage', require('../templates/helpers/ifpage.js'));
 
+Handlebars.registerHelper('isselected', require('../templates/helpers/isselected.js'));
+
 // Routes
 module.exports = {
   'search': Handlebars.compile(
