@@ -9,7 +9,7 @@ testWithServer(file + 'Should accept the param people', (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/search/people?' + QueryString.stringify({
-      q: 'test'
+      q: 'test people'
     }),
     headers: { Accept: 'text/html' }
   };
@@ -26,7 +26,7 @@ testWithServer(file + 'Should accept the param objects', (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/search/objects?' + QueryString.stringify({
-      q: 'test'
+      q: 'test objects'
     }),
     headers: { Accept: 'text/html' }
   };
@@ -43,7 +43,7 @@ testWithServer(file + 'Should accept the param documents', (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/search/documents?' + QueryString.stringify({
-      q: 'test'
+      q: 'test documents'
     }),
     headers: { Accept: 'text/html' }
   };

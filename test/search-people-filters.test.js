@@ -9,7 +9,7 @@ testWithServer(file + 'Should accept params in filter[PARAM_NAME] format for peo
   const htmlRequest = {
     method: 'GET',
     url: '/search/people?' + QueryString.stringify({
-      q: 'ada',
+      q: 'ada people',
       'filter[occupation]': 'mathematician; computer pioneer',
       'filter[birth[place]]': 'London, Greater London, England, United Kingdom',
       'filter[birth[date]]': '1600',

@@ -29,9 +29,8 @@ module.exports = (elastic, config) => ({
                 const query = value.query;
                 const queryParams = createQueryParams('html', {query: query, params: params});
                 search(elastic, queryParams, (err, result) => {
-                  if (err) return reply(err);
+                  if (err) return reply(Boom.badRequest(err));
 
-                  // query['filter[type]'] = queryParams.type;
                   const jsonData = searchResultsToJsonApi(queryParams, result, config);
                   const tplData = searchResultsToTemplateData(queryParams, jsonData);
 
@@ -54,7 +53,7 @@ module.exports = (elastic, config) => ({
                 const query = value.query;
                 const queryParams = createQueryParams('json', {query: query, params: params});
                 search(elastic, queryParams, (err, result) => {
-                  if (err) return reply(err);
+                  if (err) return reply(Boom.badRequest(err));
                   reply(searchResultsToJsonApi(queryParams, result, config))
                     .header('content-type', 'application/vnd.api+json');
                 });

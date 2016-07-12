@@ -9,7 +9,7 @@ testWithServer(file + 'Should accept params in filter[PARAM_NAME] format for obj
   const htmlRequest = {
     method: 'GET',
     url: '/search/objects?' + QueryString.stringify({
-      q: 'ada',
+      q: 'ada objects',
       'filter[categories]': 'NMeM - Photographs',
       'filter[date[from]]': '1600',
       'filter[date[to]]': '2000',
