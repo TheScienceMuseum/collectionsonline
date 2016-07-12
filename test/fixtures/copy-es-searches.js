@@ -6,7 +6,14 @@ module.exports = function (elastic, searchToCopy, database, next) {
   database.search.error = {error: {'status': 400, 'displayName': 'BadRequest', 'message': 'Bad Request'}, response: null};
   var count = 0;
   searchToCopy.forEach(searchItem => {
-    const queryParams = createQueryParams('html', {query: {q: searchItem.q}, params: searchItem.params});
+    const parameters = {query: {q: searchItem.q}, params: searchItem.params};
+    // add other query parameters
+    if (searchItem.queryParams) {
+      Object.keys(searchItem.queryParams).forEach(param => {
+        parameters.query[param] = searchItem.queryParams[param];
+      });
+    }
+    const queryParams = createQueryParams('html', parameters);
     search(elastic, queryParams, (errorSearch, responseSearch) => {
       // delete the list of results as we don't use them in our tests yet
       responseSearch.hits.hits = [];

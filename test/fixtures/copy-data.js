@@ -95,7 +95,9 @@ const searchToCopy = [
   {q: 'test documents', params: {type: 'documents'}},
   {q: 'ada', params: {}},
   {q: 'ada objects', params: {type: 'objects'}},
-  {q: 'ada people', params: {type: 'people'}}
+  {q: 'ada people', params: {type: 'people'}},
+  {q: 'Lumière', params: {type: 'people'}},
+  {q: 'Lumière filmmaker', queryParams: {'filter[occupation]': 'filmmaker'}, params: {type: 'people'}}
 ];
 
 var database = {};
