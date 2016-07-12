@@ -5,6 +5,8 @@ const getElasticDocument = require('./get-elastic-document');
 const fs = require('fs');
 const dirData = 'test/fixtures/elastic-responses';
 const TypeMapping = require('../../lib/type-mapping');
+const createQueryParams = require('../../lib/query-params');
+const search = require('../../lib/search');
 /**
 * Create files for transforms tests
 */
@@ -104,18 +106,25 @@ database.object[TypeMapping.toInternal('smgc-object-noResult')] = {error: null, 
 // search error fixture
 database.search = {};
 database.search.error = {error: {'status': 400, 'displayName': 'BadRequest', 'message': 'Bad Request'}, response: null};
+const queryParmasTest = createQueryParams('html', {query: {q: 'test'}, params: {}});
 
-var count = 0;
-console.log('copy database to fixtures');
-dataToCopy.forEach(data => {
-  getElasticDocument(elastic, data.type, TypeMapping.toInternal(data.id), (error, response) => {
-    if (error) {
-      console.log('Error get data for ', data.id);
-    }
-    database[data.type][TypeMapping.toInternal(data.id)] = {error: error, response: response};
-    count += 1;
-    if (count === dataToCopy.length) {
-      fs.writeFileSync(dirData + '/database.json', JSON.stringify(database), 'utf-8');
-    }
+search(elastic, queryParmasTest, (errorSearch, responseSearch) => {
+  // delete the list of results as we don't use them
+  responseSearch.hits.hits = [];
+  database.search.test = {error: errorSearch, response: responseSearch};
+
+  var count = 0;
+  console.log('copy database to fixtures');
+  dataToCopy.forEach(data => {
+    getElasticDocument(elastic, data.type, TypeMapping.toInternal(data.id), (error, response) => {
+      if (error) {
+        console.log('Error get data for ', data.id);
+      }
+      database[data.type][TypeMapping.toInternal(data.id)] = {error: error, response: response};
+      count += 1;
+      if (count === dataToCopy.length) {
+        fs.writeFileSync(dirData + '/database.json', JSON.stringify(database), 'utf-8');
+      }
+    });
   });
 });

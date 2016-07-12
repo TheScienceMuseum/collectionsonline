@@ -4,9 +4,9 @@ module.exports = () => ({
   search: function () {
     const cb = arguments[arguments.length - 1];
     const q = arguments[0].body.query.multi_match.query;
-    if (q === 'error') {
-      const errorSearch = database.search.error;
-      return cb(errorSearch.error, errorSearch.response);
+    if (database.search[q]) {
+      const search = database.search[q];
+      return cb(search.error, search.response);
     } else {
       cb(null, {
         took: 0,
