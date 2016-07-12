@@ -88,6 +88,7 @@ module.exports = function (page) {
 
     // Clear Filters
     $('.filter').on('click', '.filter__clear', function (e) {
+      e.preventDefault();
       var opts = {
         headers: { Accept: 'application/vnd.api+json' }
       };
