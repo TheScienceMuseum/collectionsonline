@@ -24,7 +24,7 @@ module.exports = (elastic, config) => ({
                 if (err.status === 404) {
                   return reply(Boom.notFound());
                 }
-                return reply(err);
+                return reply(Boom.serverUnavailable('unavailable'));
               }
 
               const JSONData = buildJSONResponse(result, config);

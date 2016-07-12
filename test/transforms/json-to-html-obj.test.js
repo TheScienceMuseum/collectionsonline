@@ -3,9 +3,11 @@ const config = require('../../config');
 const buildJSONResponse = require('../../lib/jsonapi-response');
 const JSONAPIResponse = buildJSONResponse(require('../fixtures/elastic-responses/example-get-response-object.json'), config);
 const buildHTMLData = require('../../lib/transforms/json-to-html-data');
+const dir = __dirname.split('/')[__dirname.split('/').length - 1];
+const file = dir + __filename.replace(__dirname, '') + ' > ';
 var HTMLData;
 
-test('HTMLData should be transformed succesfully', (t) => {
+test(file + 'HTMLData should be transformed succesfully', (t) => {
   t.plan(1);
   t.doesNotThrow(() => {
     HTMLData = buildHTMLData(JSONAPIResponse);
