@@ -6,10 +6,11 @@ var searchBox = require('../lib/search-box');
 var createQueryParams = require('../../lib/query-params.js');
 var getData = require('../lib/get-data.js');
 var convertUrl = require('../lib/convert-url.js');
+var getQueryString = require('../lib/get-qs.js');
 
 module.exports = function (page) {
-  page('/search', load, render, enter);
-  page('/search/:type', load, render, enter);
+  page('/search', load, render, listeners);
+  page('/search/:type', load, render, listeners);
 
   function load (ctx, next) {
     if (!ctx.state.data) {
@@ -18,6 +19,11 @@ module.exports = function (page) {
         headers: { Accept: 'application/vnd.api+json' }
       };
       var qs = QueryString.parse(ctx.querystring);
+      Object.keys(qs).forEach(el => {
+        if (Array.isArray(qs[el])) {
+          qs[el] = qs[el].join();
+        }
+      });
       var queryParams = createQueryParams('json', {query: qs, params: {}});
 
       getData(convertUrl(url, 'json'), opts, queryParams, function (data) {
@@ -40,64 +46,76 @@ module.exports = function (page) {
       pageEl.innerHTML = Templates['search'](ctx.state.data);
 
       // Hides filterpanel by default if javascript is enabled
-      $('.searchresults').removeClass('searchresults--filtersactive');
-      $('.filtercolumn').removeClass('filtercolumn--filtersactive');
-      $('.control--filters').removeClass('control--active');
+      if (!Object.keys(ctx.state.data.selectedFilters).length) {
+        $('.searchresults').removeClass('searchresults--filtersactive');
+        $('.filtercolumn').removeClass('filtercolumn--filtersactive');
+        $('.control--filters').removeClass('control--active');
+      }
     }
     next();
   }
 
-  function enter (ctx, next) {
+  function listeners (ctx, next) {
     var searchBoxEl = document.getElementById('searchbox');
 
+    // New Search
     searchBoxEl.addEventListener('submit', function (e) {
       e.preventDefault();
       // TODO: Maybe a nice loading spinner?
       $('#searchresults .searchresults__column').animate({ opacity: 0.5 });
 
-      var qs = { q: $('.tt-input', this).val() };
+      var qs = {};
+      qs.q = $('.tt-input', this).val();
       var params = ctx.params;
       var url = params[0] + '?' + QueryString.stringify(qs);
-      var queryParams = createQueryParams('json', {query: qs, params: {}});
+      var queryParams = createQueryParams('json', {query: qs, params: params});
       var opts = {
         headers: { Accept: 'application/vnd.api+json' }
       };
 
-      getData(url, opts, queryParams, function (data) {
+      getData(convertUrl(url, 'json'), opts, queryParams, function (data) {
         ctx.state.data = data;
         page.show(convertUrl(url, 'json'), ctx.state);
       });
     });
 
+    // Show/hide filters
     $('.control__button').on('click', function (e) {
       $('.searchresults').toggleClass('searchresults--filtersactive');
       $('.filtercolumn').toggleClass('filtercolumn--filtersactive');
       $('.control--filters').toggleClass('control--active');
     });
 
-    // fake filtering to show states
-    $('.filter:not(.filter--uncollapsible)')
-    .on('click', '.filter__name', function (e) {
-      if ($(this).parent().hasClass('filter--open')) {
-        $(this).parent().removeClass('filter--open');
+    // Clear Filters
+    $('.filter').on('click', '.filter__clear', function (e) {
+      e.preventDefault();
+      var opts = {
+        headers: { Accept: 'application/vnd.api+json' }
+      };
+      var qs = {q: $('.tt-input').val()};
+      var queryParams = createQueryParams('json', {query: qs, params: {}});
+      var url = ctx.pathname + '?' + QueryString.stringify(qs);
 
-        if ($(this).parent().hasClass('filter--active')) {
-          $(this).parent().removeClass('filter--active');
-          $(this).siblings().find('[type=checkbox]').prop('checked', false);
-        }
-      } else {
-        $(this).parent().addClass('filter--open');
-      }
-    })
-    .on('click', '[type=checkbox]', function (e) {
-      // var filtername = $(this).closest('.filter').data('filter');
-      if ($(this).closest('.filter__options').find(':checked').length > 0) {
-        $(this).closest('.filter').addClass('filter--active');
-        // $('.searchbox__filters [data-filter='+filtername+']').show();
-      } else {
-        $(this).closest('.filter').removeClass('filter--active');
-        // $('.searchbox__filters [data-filter='+filtername+']').hide();
-      }
+      getData(url, opts, queryParams, function (data) {
+        ctx.state.data = data;
+        page.show(url, ctx.state);
+      });
+    });
+
+    // Click to add/remove filters
+    $('.filter:not(.filter--uncollapsible)').on('click', '[type=checkbox]', function (e) {
+      var q = $('.tt-input').val();
+      var qs = getQueryString(e, ctx, q);
+      var params = ctx.params;
+      var url = ctx.pathname + '?' + QueryString.stringify(qs);
+      var opts = {
+        headers: { Accept: 'application/vnd.api+json' }
+      };
+      var queryParams = createQueryParams('json', {query: qs, params: params}, ctx.state.data.selectedFilters);
+      getData(url, opts, queryParams, function (data) {
+        ctx.state.data = data;
+        page.show(convertUrl(url, 'html'), ctx.state);
+      });
     });
 
     svg4everybody();

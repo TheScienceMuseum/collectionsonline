@@ -63,6 +63,26 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
+  'search/filters-all',
+  Fs.readFileSync('./templates/partials/search/filters-all.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'search/filters-documents',
+  Fs.readFileSync('./templates/partials/search/filters-documents.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'search/filters-objects',
+  Fs.readFileSync('./templates/partials/search/filters-objects.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'search/filters-people',
+  Fs.readFileSync('./templates/partials/search/filters-people.html', 'utf8')
+);
+
+Handlebars.registerPartial(
   'search/pagination',
   Fs.readFileSync('./templates/partials/search/pagination.html', 'utf8')
 );
@@ -146,6 +166,8 @@ Handlebars.registerPartial(
 Handlebars.registerHelper('classname', require('../templates/helpers/classname.js'));
 
 Handlebars.registerHelper('ifpage', require('../templates/helpers/ifpage.js'));
+
+Handlebars.registerHelper('isselected', require('../templates/helpers/isselected.js'));
 
 // Routes
 module.exports = {

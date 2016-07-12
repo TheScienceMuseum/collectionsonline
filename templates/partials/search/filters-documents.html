@@ -5,11 +5,7 @@
   <div class="filter__options">
     <ul>
       {{#each filters.archive}}
-        {{#if (lookup (lookup ../selectedFilters "archive") value)}}
-          <li><label><input type="checkbox" name="filter[archive]" value="{{value}}" checked/>{{value}}<span class="filter__count">{{count}}</span></label></li>
-        {{else}}
-          <li><label><input type="checkbox" name="filter[archive]" value="{{value}}" />{{value}}<span class="filter__count">{{count}}</span></label></li>
-        {{/if}}
+        <li><label><input type="checkbox" class="filter__box" name="filter[archive]" value="{{value}}" {{isselected ../selectedFilters "filter[archive]" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
       {{/each}}
     </ul>
   </div>
@@ -31,11 +27,7 @@
   <div class="filter__options">
     <ul>
       {{#each filters.organisation}}
-        {{#if (lookup (lookup ../selectedFilters "organisations") value)}}
-          <li><label><input type="checkbox" name="filter[organisations]" value="{{value}}" checked/>{{value}}<span class="filter__count">{{count}}</span></label></li>
-        {{else}}
-          <li><label><input type="checkbox" name="filter[organisations]" value="{{value}}" />{{value}}<span class="filter__count">{{count}}</span></label></li>
-        {{/if}}
+        <li><label><input type="checkbox" class="filter__box" name="filter[organisations]" value="{{value}}" {{isselected ../selectedFilters "filter[organisations]" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
       {{/each}}
     </ul>
   </div>
