@@ -1,0 +1,53 @@
+<input type="hidden" name="fields[type]" value="people">
+<div class="filter filter--active filter--open" data-filter="Occupation">
+  <a class="filter__name">Occupation</a>
+  <div class="filter__options">
+    <ul>
+      {{#each filters.occupation}}
+        {{#if (lookup (lookup ../selectedFilters "occupation") value)}}
+          <li><label><input type="checkbox" name="filter[occupation]" value="{{value}}" checked/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{else}}
+          <li><label><input type="checkbox" name="filter[occupation]" value="{{value}}" />{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{/if}}
+      {{/each}}
+    </ul>
+  </div>
+</div>
+
+<div class="filter filter--open">
+  <a class="filter__name">Date (born / died)</a>
+  <div class="filter__options filter__daterange">
+    <label>From <input type="number" placeholder="1600" name="filter[birth[date]]" value="{{lookup selectedFilters "birthDate"}}"/></label>
+    <label>To <input type="number" placeholder="2016" name="filter[death[date]]" value="{{lookup selectedFilters "deathDate"}}"/></label>
+  </div>
+</div>
+
+<div class="filter filter--active filter--open" data-filter="Place born">
+  <a class="filter__name">Place born</a>
+  <div class="filter__options">
+    <ul>
+      {{#each filters.place_born}}
+        {{#if (lookup (lookup ../selectedFilters "birthPlace") value) }}
+          <li><label><input type="checkbox" name="filter[birth[place]]" value="{{value}}" checked/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{else}}
+          <li><label><input type="checkbox" name="filter[birth[place]]" value="{{value}}"/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{/if}}
+      {{/each}}
+    </ul>
+  </div>
+</div>
+
+<div class="filter filter--active filter--open" data-filter="Organisation">
+  <a class="filter__name">Organisation / Person</a>
+  <div class="filter__options">
+    <ul>
+      {{#each filters.organisation}}
+        {{#if (lookup (lookup ../selectedFilters "organisations") value) }}
+          <li><label><input type="checkbox" name="filter[organisations]" value="{{value}}" checked/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{else}}
+          <li><label><input type="checkbox" name="filter[organisations]" value="{{value}}"/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{/if}}
+      {{/each}}
+    </ul>
+  </div>
+</div>

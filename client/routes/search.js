@@ -5,6 +5,7 @@ var Templates = require('../templates');
 var searchBox = require('../lib/search-box');
 var createQueryParams = require('../../lib/query-params.js');
 var getData = require('../lib/get-data.js');
+var convertUrl = require('../lib/convert-url.js');
 
 module.exports = function (page) {
   page('/search', load, render, enter);
@@ -19,7 +20,7 @@ module.exports = function (page) {
       var qs = QueryString.parse(ctx.querystring);
       var queryParams = createQueryParams('json', {query: qs, params: {}});
 
-      getData(url, opts, queryParams, function (data) {
+      getData(convertUrl(url, 'json'), opts, queryParams, function (data) {
         ctx.state.data = data;
         next();
       });
@@ -64,7 +65,7 @@ module.exports = function (page) {
 
       getData(url, opts, queryParams, function (data) {
         ctx.state.data = data;
-        page.show(url, ctx.state);
+        page.show(convertUrl(url, 'json'), ctx.state);
       });
     });
 

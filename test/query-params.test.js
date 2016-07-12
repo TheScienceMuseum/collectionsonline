@@ -47,3 +47,19 @@ test('Should build a query param object from a json api request', (t) => {
   t.equal(result.filter.people.occupation[1], 'developer', 'filter by occupation developer');
   t.end();
 });
+
+test('Should build a query param object with the value if the format is not html or json', (t) => {
+  t.plan(1);
+  const query = {
+    query: {
+      q: 'ada',
+      'fields[type]': 'people',
+      'filter[occupation]': 'mathematician,developer'
+    },
+    params: {}
+  };
+
+  const result = queryParams('wrongFormat', query);
+  t.equal(result.filter.people.occupation, 'mathematician,developer', 'filter by occupation is null');
+  t.end();
+});

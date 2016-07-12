@@ -1,0 +1,44 @@
+<input type="hidden" name="fields[type]" value="documents">
+<!-- ARCHIVE -->
+<div class="filter filter--active filter--open" data-filter="Archive">
+  <a class="filter__name">Archive</a>
+  <div class="filter__options">
+    <ul>
+      {{#each filters.archive}}
+        {{#if (lookup (lookup ../selectedFilters "archive") value)}}
+          <li><label><input type="checkbox" name="filter[archive]" value="{{value}}" checked/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{else}}
+          <li><label><input type="checkbox" name="filter[archive]" value="{{value}}" />{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{/if}}
+      {{/each}}
+    </ul>
+  </div>
+</div>
+
+<!-- FORMAT -->
+
+<!-- DATE -->
+
+<!-- CREATOR -->
+
+<!-- TYPE -->
+
+<!-- PLACE -->
+
+<!-- ORGANISATION -->
+<div class="filter filter--active filter--open" data-filter="Organisation">
+  <a class="filter__name">Organisation</a>
+  <div class="filter__options">
+    <ul>
+      {{#each filters.organisation}}
+        {{#if (lookup (lookup ../selectedFilters "organisations") value)}}
+          <li><label><input type="checkbox" name="filter[organisations]" value="{{value}}" checked/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{else}}
+          <li><label><input type="checkbox" name="filter[organisations]" value="{{value}}" />{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{/if}}
+      {{/each}}
+    </ul>
+  </div>
+</div>
+
+<!-- IMAGE -->

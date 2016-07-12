@@ -4,6 +4,10 @@ const searchToTemplate = require('../../lib/transforms/search-results-to-templat
 const queryParams = require('../../lib/query-params');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
+const aggregationsAll = require('../helpers/aggregations-all.json');
+const aggregationsPeople = require('../helpers/aggregations-people.json');
+const aggregationsObjects = require('../helpers/aggregations-objects.json');
+const aggregationsDocuments = require('../helpers/aggregations-documents.json');
 const testResult = {
   hits: {
     total: 5,
@@ -29,6 +33,12 @@ const testResult = {
     }
   }
 };
+
+testResult.aggregations.all = aggregationsAll;
+testResult.aggregations.people = aggregationsPeople;
+testResult.aggregations.objects = aggregationsObjects;
+testResult.aggregations.documents = aggregationsDocuments;
+
 const query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
 const jsonData = searchResultsToJsonApi(query, testResult);
 

@@ -3,13 +3,13 @@ const dateSchema = require('./date');
 
 const sharedSchema = {
   // All
-  'filter[date[from]]': dateSchema,
-  'filter[date[to]]': dateSchema,
+  'filter[date[from]]': dateSchema.empty(''),
+  'filter[date[to]]': dateSchema.empty(''),
   // Objects
   'filter[on_display]': Joi.boolean(),
   // People
-  'filter[birth[date]]': dateSchema,
-  'filter[death[date]]': dateSchema
+  'filter[birth[date]]': dateSchema.empty(''),
+  'filter[death[date]]': dateSchema.empty('')
   // Documents
 };
 
@@ -24,6 +24,7 @@ const jsonSchema = {
   'filter[categories]': Joi.string(),
   'filter[museum]': Joi.string().valid('NRM', 'SMG', 'NMeM', 'MSI'),
   'filter[location]': Joi.string(),
+  'filter[user]': Joi.string(),
   // People
   'filter[birth[place]]': Joi.string(),
   'filter[occupation]': Joi.string(),
@@ -44,6 +45,7 @@ const htmlSchema = {
   'filter[categories]': Joi.array().items(Joi.string()).single(),
   'filter[museum]': Joi.string().valid('NRM', 'SMG', 'NMeM', 'MSI'),
   'filter[location]': Joi.array().items(Joi.string()).single(),
+  'filter[user]': Joi.array().items(Joi.string()).single(),
   // People
   'filter[birth[place]]': Joi.array().items(Joi.string()).single(),
   'filter[occupation]': Joi.array().items(Joi.string()).single(),
@@ -81,5 +83,6 @@ module.exports = (contentType) => {
     .rename('occupation', 'filter[occupation]', {override: true, ignoreUndefined: true})
     .rename('archive', 'filter[archive]', {override: true, ignoreUndefined: true})
     .rename('formats', 'filter[formats]', {override: true, ignoreUndefined: true})
-    .rename('image_licences', 'filter[image_licences]', {override: true, ignoreUndefined: true});
+    .rename('image_licences', 'filter[image_licences]', {override: true, ignoreUndefined: true})
+    .rename('user', 'filter[user]', {override: true, ignoreUndefined: true});
 };

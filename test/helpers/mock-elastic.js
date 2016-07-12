@@ -28,6 +28,160 @@ module.exports = () => ({
             { key: 'archive', doc_count: 0 },
             { key: 'place', doc_count: 0 }
           ]
+        },
+        people: {
+          occupation: {
+            occupation_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'mathematician', doc_count: 2 },
+                { key: 'engineer', doc_count: 1 }
+              ]
+            }
+          },
+          place_born: {
+            place_born_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'London', doc_count: 2 },
+                { key: 'Toulouse', doc_count: 1 }
+              ]
+            }
+          },
+          organisation: {
+            organisations_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'people', doc_count: 2 },
+                { key: 'organisation', doc_count: 1 }
+              ]
+            }
+          }
+        },
+        all: {
+          category: {
+            category_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'Aeronautics', doc_count: 2 },
+                { key: 'Art', doc_count: 1 }
+              ]
+            }
+          },
+          maker: {
+            maker_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'Ada', doc_count: 2 },
+                { key: 'Simon', doc_count: 1 }
+              ]
+            }
+          },
+          type: {
+            type_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'Medal', doc_count: 2 },
+                { key: 'Bottle', doc_count: 1 }
+              ]
+            }
+          },
+          place: {
+            place_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'London', doc_count: 2 },
+                { key: 'Paris', doc_count: 1 }
+              ]
+            }
+          },
+          user: {
+            user_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'Ada', doc_count: 2 },
+                { key: 'Simon', doc_count: 1 }
+              ]
+            }
+          }
+        },
+        objects: {
+          category: {
+            category_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'Aeronautics', doc_count: 2 },
+                { key: 'Art', doc_count: 1 }
+              ]
+            }
+          },
+          maker: {
+            maker_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'Ada', doc_count: 2 },
+                { key: 'Simon', doc_count: 1 }
+              ]
+            }
+          },
+          type: {
+            type_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'Medal', doc_count: 2 },
+                { key: 'Bottle', doc_count: 1 }
+              ]
+            }
+          },
+          place: {
+            place_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'London', doc_count: 2 },
+                { key: 'Paris', doc_count: 1 }
+              ]
+            }
+          },
+          user: {
+            user_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'Ada', doc_count: 2 },
+                { key: 'Simon', doc_count: 1 }
+              ]
+            }
+          }
+        },
+        documents: {
+          archive: {
+            archive_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [
+                { key: 'The Babbage Papers', doc_count: 2 }
+              ]
+            }
+          },
+          organisation: {
+            organisation_filters: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: []
+            }
+          }
         }
       }
     });
