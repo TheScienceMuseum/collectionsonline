@@ -2,8 +2,10 @@ const testWithServer = require('./helpers/test-with-server');
 const fs = require('fs');
 const jsFile = fs.readFileSync('public/bundle.js');
 const cssFile = fs.readFileSync('public/bundle.css');
+const dir = __dirname.split('/')[__dirname.split('/').length - 1];
+const file = dir + __filename.replace(__dirname, '') + ' > ';
 
-testWithServer('Javascript Files served correctly', (t, ctx) => {
+testWithServer(file + 'Javascript Files served correctly', (t, ctx) => {
   t.plan(1);
 
   const jsRequest = {
@@ -17,7 +19,7 @@ testWithServer('Javascript Files served correctly', (t, ctx) => {
   });
 });
 
-testWithServer('CSS Files served correctly', (t, ctx) => {
+testWithServer(file + 'CSS Files served correctly', (t, ctx) => {
   t.plan(1);
 
   const cssRequest = {
@@ -31,7 +33,7 @@ testWithServer('CSS Files served correctly', (t, ctx) => {
   });
 });
 
-testWithServer('Non Existent Files', (t, ctx) => {
+testWithServer(file + 'Non Existent Files', (t, ctx) => {
   t.plan(1);
 
   const badRequest = {
