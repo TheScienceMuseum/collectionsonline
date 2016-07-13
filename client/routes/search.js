@@ -47,7 +47,7 @@ module.exports = function (page) {
 
       // Shows filter toggle button if javascript enabled
       document.getElementById('fb').className = 'control__button';
-      document.querySelector('button.filterpanel__button').className = 'hidden';
+      document.querySelector('button.filterpanel__button').style.display = 'none';
 
       // Hides filterpanel by default if javascript is enabled
       if (!Object.keys(ctx.state.data.selectedFilters).length) {
