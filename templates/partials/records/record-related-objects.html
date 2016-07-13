@@ -11,12 +11,15 @@
               </figure>
               <div class="resultcard__info">
                 <h4 class="resultcard__title">{{this.attributes.summary_title}}</h4>
-                <p class="resultcard__description">Related description</p>
               </div>
             </div>
           </a>
         </div>
       {{/each}}
+
+      <div class="columns">
+        <a href="/search/objects?q={{this.title}}" class="see-more">See more</a>
+      </div>
 
     </div>
   </section>
