@@ -295,7 +295,6 @@ testWithServer('Request for Person JSON Page for a wrong id', (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     var response = JSON.parse(res.payload);
-    t.equal(res.statusCode, 200, 'Status code was as expected');
     t.ok(response.status, 404, 'status is 404');
     t.ok(response.displayName, 'NotFound', 'the person is not found');
     t.ok(response.message, 'Not Found', 'the person message is not found');
