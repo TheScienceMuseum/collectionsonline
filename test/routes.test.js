@@ -285,7 +285,7 @@ testWithServer('Request for Person JSON Page', (t, ctx) => {
 });
 
 testWithServer('Request for Person JSON Page for a wrong id', (t, ctx) => {
-  t.plan(4);
+  t.plan(3);
 
   const htmlRequest = {
     method: 'GET',
