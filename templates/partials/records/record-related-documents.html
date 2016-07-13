@@ -1,16 +1,22 @@
-<div class="panel panel__text">
-  <h4>Related documents</h4>
-  <ul class="related-article">
+<section class="record-related">
+  <div class="nested row">
+    <h2 class="columns">Related Documents</h2>
+
     {{#each related.documents}}
-    <li>
-      {{#if this.links}}
-        <a href="{{this.links.self}}">
-      {{/if}}
-      {{this.attributes.summary_title}}
-      {{#if this.links}}
+      <div class="large-2 medium-3 small-4 columns end">
+        <a href="{{ this.link }}">
+          <div class="resultcard resultcard--related {{#if type}}resultcard--{{ this.type }}{{/if}}">
+            <figure class="resultcard__figure">
+              {{#if this.figure}}<img src="{{ this.figure }}" /> {{/if}}
+            </figure>
+            <div class="resultcard__info">
+              <h4 class="resultcard__title">{{this.attributes.summary_title}}</h4>
+              <p class="resultcard__description">Related description</p>
+            </div>
+          </div>
         </a>
-      {{/if}}
-    </li>
+      </div>
     {{/each}}
-  </ul>
-</div>
+
+  </div>
+</section>

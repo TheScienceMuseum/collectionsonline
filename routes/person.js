@@ -24,12 +24,13 @@ module.exports = (elastic, config) => ({
                 return reply(Boom.serverUnavailable('unavailable'));
               }
 
-              const JSONData = buildJSONResponse(result, config);
-              const HTMLData = JSONToHTML(JSONData);
-
               getRelatedItems(elastic, request.params.id, (err, relatedItems) => {
                 if (err) relatedItems = {};
-                reply.view('person', Object.assign(HTMLData, data, relatedItems));
+
+                const JSONData = buildJSONResponse(result, config, relatedItems);
+                const HTMLData = JSONToHTML(JSONData);
+
+                reply.view('person', Object.assign(HTMLData, data));
               });
             });
           },
@@ -45,7 +46,7 @@ module.exports = (elastic, config) => ({
 
               getRelatedItems(elastic, request.params.id, (err, relatedItems) => {
                 if (err) relatedItems = {};
-                reply(buildJSONResponse(result, config)).header('content-type', 'application/vnd.api+json');
+                reply(buildJSONResponse(result, config, relatedItems)).header('content-type', 'application/vnd.api+json');
               });
             });
           }
