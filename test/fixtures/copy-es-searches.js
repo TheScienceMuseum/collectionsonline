@@ -1,5 +1,5 @@
 const search = require('../../lib/search');
-const createQueryParams = require('../../lib/query-params');
+const createQueryParams = require('../../lib/query-params/query-params');
 
 module.exports = function (elastic, searchToCopy, database, next) {
   // define a search error response

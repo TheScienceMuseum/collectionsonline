@@ -2,7 +2,7 @@ var svg4everybody = require('svg4everybody');
 var $ = require('jquery');
 var QueryString = require('querystring');
 var searchBox = require('../lib/search-box');
-var createQueryParams = require('../../lib/query-params.js');
+var createQueryParams = require('../../lib/query-params/query-params.js');
 var getData = require('../lib/get-data.js');
 
 module.exports = function (page) {

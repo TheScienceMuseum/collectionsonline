@@ -56,7 +56,7 @@
   "scripts": {
     "postinstall": "run-s build minify && node nightwatch.conf.js",
     "start": "node bin/server.js",
-    "test": "node test/fixtures/fixtures-and-tests.js --data",
+    "test": "node test/fixtures/fixtures-and-tests.js",
     "copy-data": "node test/fixtures/copy-data.js",
     "test-all": "run-s test:*",
     "test:lint": "semistandard",

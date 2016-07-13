@@ -5,7 +5,7 @@ const searchSchema = require('../schemas/search');
 const searchResultsToJsonApi = require('../lib/transforms/search-results-to-jsonapi');
 const searchResultsToTemplateData = require('../lib/transforms/search-results-to-template-data');
 const search = require('../lib/search');
-const createQueryParams = require('../lib/query-params');
+const createQueryParams = require('../lib/query-params/query-params');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
