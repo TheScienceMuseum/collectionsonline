@@ -1,4 +1,11 @@
-module.exports = (details) => {
-  var accession = details.find(el => el.key === 'Accession Number');
-  return accession ? accession.value + '. ' : '';
+module.exports = function (details) {
+  var accession;
+
+  Object.keys(details).forEach(el => {
+    if (details[el].key === 'Accession Number') {
+      accession = details[el].value;
+    }
+  });
+
+  return accession ? accession + '. ' : '';
 };
