@@ -169,6 +169,10 @@ Handlebars.registerHelper('ifpage', require('../templates/helpers/ifpage.js'));
 
 Handlebars.registerHelper('isselected', require('../templates/helpers/isselected.js'));
 
+Handlebars.registerHelper('getinventorynumber', require('../templates/helpers/getinventorynumber.js'));
+
+Handlebars.registerHelper('gettodaysdate', require('../templates/helpers/gettodaysdate.js'));
+
 // Routes
 module.exports = {
   'search': Handlebars.compile(

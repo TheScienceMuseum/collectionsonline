@@ -45,6 +45,10 @@ module.exports = function (page) {
       var pageEl = document.getElementsByTagName('main')[0];
       pageEl.innerHTML = Templates['search'](ctx.state.data);
 
+      // Shows filter toggle button if javascript enabled
+      document.getElementById('fb').className = 'control__button';
+      document.querySelector('button.filterpanel__button').style.display = 'none';
+
       // Hides filterpanel by default if javascript is enabled
       if (!Object.keys(ctx.state.data.selectedFilters).length) {
         $('.searchresults').removeClass('searchresults--filtersactive');
