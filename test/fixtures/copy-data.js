@@ -6,6 +6,7 @@ const fs = require('fs');
 const dirData = 'test/fixtures/elastic-responses';
 const copyEsDocs = require('./copy-es-docs');
 const copyEsSearches = require('./copy-es-searches');
+const copyEsrelated = require('./copy-es-related');
 /**
 * Create files for transforms tests
 */
@@ -100,15 +101,22 @@ const searchToCopy = [
   {q: 'Lumière filmmaker', queryParams: {'filter[occupation]': 'filmmaker'}, params: {type: 'people'}}
 ];
 
+const related = [
+  {id: 'smgc-people-17351'}
+];
+
 var database = {};
 database.archive = {};
 database.agent = {};
 database.object = {};
 database.search = {};
+database.related = {};
 
 // copy get values
 copyEsDocs(elastic, dataToCopy, database, () => {
   copyEsSearches(elastic, searchToCopy, database, () => {
-    fs.writeFileSync(dirData + '/database.json', JSON.stringify(database), 'utf-8');
+    copyEsrelated(elastic, related, database, () => {
+      fs.writeFileSync(dirData + '/database.json', JSON.stringify(database), 'utf-8');
+    });
   });
 });
