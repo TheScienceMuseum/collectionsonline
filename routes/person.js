@@ -45,6 +45,7 @@ module.exports = (elastic, config) => ({
               }
 
               getRelatedItems(elastic, request.params.id, (err, relatedItems) => {
+                console.log('ERI', err, relatedItems);
                 if (err) relatedItems = {};
                 reply(buildJSONResponse(result, config, relatedItems)).header('content-type', 'application/vnd.api+json');
               });

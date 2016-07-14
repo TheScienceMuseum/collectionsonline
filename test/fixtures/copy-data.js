@@ -84,8 +84,8 @@ const dataToCopy = [
   {type: 'object', id: 'smgc-objects-37959'},
   {type: 'object', id: 'smgc-objects-wrongid'},
   {type: 'agent', id: 'smgc-people-17351'},
-  {type: 'agent', id: 'smgc-people-wrongid'},
-  {type: 'agent', id: 'smgc-people-17351'}
+  {type: 'agent', id: 'smgc-people-36993'},
+  {type: 'agent', id: 'smgc-people-wrongid'}
 ];
 
 const searchToCopy = [
@@ -102,7 +102,9 @@ const searchToCopy = [
 ];
 
 const related = [
-  {id: 'smgc-people-17351'}
+  {id: 'smgc-people-36993'},
+  {id: 'smgc-people-17351'},
+  {id: 'smgc-people-2735'}
 ];
 
 var database = {};
