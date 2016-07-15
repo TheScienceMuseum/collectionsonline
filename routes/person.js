@@ -1,7 +1,8 @@
 const Boom = require('boom');
 const buildJSONResponse = require('../lib/jsonapi-response');
 const TypeMapping = require('../lib/type-mapping');
-const JSONToHTML = require('../lib/transforms/json-to-html-data.js');
+const JSONToHTML = require('../lib/transforms/json-to-html-data');
+const getRelatedItems = require('../lib/get-related-items');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -23,14 +24,18 @@ module.exports = (elastic, config) => ({
                 return reply(Boom.serverUnavailable('unavailable'));
               }
 
-              const JSONData = buildJSONResponse(result, config);
-              const HTMLData = JSONToHTML(JSONData);
+              getRelatedItems(elastic, request.params.id, (err, relatedItems) => {
+                if (err) relatedItems = {};
 
-              reply.view('person', Object.assign(HTMLData, data));
+                const JSONData = buildJSONResponse(result, config, relatedItems);
+                const HTMLData = JSONToHTML(JSONData);
+
+                reply.view('person', Object.assign(HTMLData, data));
+              });
             });
           },
-          'application/vnd.api+json' (req, reply) {
-            elastic.get({index: 'smg', type: 'agent', id: TypeMapping.toInternal(req.params.id)}, (err, result) => {
+          'application/vnd.api+json' (request, reply) {
+            elastic.get({index: 'smg', type: 'agent', id: TypeMapping.toInternal(request.params.id)}, (err, result) => {
               if (err) {
                 return reply(err);
               }
@@ -39,7 +44,11 @@ module.exports = (elastic, config) => ({
                 return reply(Boom.notFound('Person not found'));
               }
 
-              reply(buildJSONResponse(result, config)).header('content-type', 'application/vnd.api+json');
+              getRelatedItems(elastic, request.params.id, (err, relatedItems) => {
+                console.log('ERI', err, relatedItems);
+                if (err) relatedItems = {};
+                reply(buildJSONResponse(result, config, relatedItems)).header('content-type', 'application/vnd.api+json');
+              });
             });
           }
         }

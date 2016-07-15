@@ -16,12 +16,10 @@ module.exports = {
       .assert.urlEquals('http://localhost:8000/search/people?q=charles&page[size]=50')
       .assert.containsText('.resultcard', 'prince')
       .pause(1000)
-      .click('.filter__box[value=artist]')
       .click('.filter__box[value=inventor]')
       .pause(1000)
-      .assert.urlEquals('http://localhost:8000/search/people?q=charles&page[size]=50&filter[occupation]=artist&filter[occupation]=inventor')
+      .assert.urlEquals('http://localhost:8000/search/people?q=charles&page[size]=50&filter[occupation]=inventor')
       .click('.filter__box[value=inventor]')
-      .click('.filter__box[value=artist]')
       .pause(1000)
       .click('.filter__box[value="England, United Kingdom"]')
       .pause(1000)
@@ -30,13 +28,10 @@ module.exports = {
       .pause(1000)
       .assert.urlEquals('http://localhost:8000/search/people?q=charles&page[size]=50')
       .click('.filter__box[value="England, United Kingdom"]')
-      .click('.filter__box[value="Gloucestershire, England, United Kingdom"]')
-      .pause(1000)
-      .click('.filter__box[value=inventor]')
       .pause(1000)
       .click('.filter__box[value=chemist]')
       .pause(1000)
-      .assert.urlEquals('http://localhost:8000/search/people?q=charles&page[size]=50&filter[birth[place]]=England,%20United%20Kingdom&filter[birth[place]]=Gloucestershire,%20England,%20United%20Kingdom&filter[occupation]=inventor&filter[occupation]=chemist')
+      .assert.urlEquals('http://localhost:8000/search/people?q=charles&page[size]=50&filter[birth[place]]=England,%20United%20Kingdom&filter[occupation]=chemist')
       .end();
   }
 };

@@ -1,6 +1,6 @@
   <section class="record-related">
     <div class="nested row">
-      <h2 class="columns">Related items</h2>
+      <h2 class="columns">Related Objects</h2>
 
       {{#each related.objects}}
         <div class="large-2 medium-3 small-4 columns end">
@@ -11,12 +11,15 @@
               </figure>
               <div class="resultcard__info">
                 <h4 class="resultcard__title">{{this.attributes.summary_title}}</h4>
-                <p class="resultcard__description">Related description</p>
               </div>
             </div>
           </a>
         </div>
       {{/each}}
+
+      <div class="columns">
+        <a href="/search/objects?q={{this.title}}" class="see-more">See more</a>
+      </div>
 
     </div>
   </section>
