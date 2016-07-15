@@ -7,8 +7,7 @@ module.exports = function (elastic, children, database, next) {
   children.forEach(item => {
     getChildren(elastic, item.id, (error, childrenResponse) => {
       var response = {};
-      response.children = childrenResponse;
-      response.hits = {hits: []};
+      response.hits = {hits: childrenResponse};
       database.children[TypeMapping.toInternal(item.id)] = {error: error, response: response};
       count += 1;
       if (count === children.length) {
