@@ -3,6 +3,7 @@ const buildJSONResponse = require('../lib/jsonapi-response');
 const TypeMapping = require('../lib/type-mapping');
 const JSONToHTML = require('../lib/transforms/json-to-html-data');
 const getRelatedItems = require('../lib/get-related-items');
+const sortRelated = require('../lib/sort-related-items');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -25,7 +26,11 @@ module.exports = (elastic, config) => ({
               }
 
               getRelatedItems(elastic, request.params.id, (err, relatedItems) => {
-                if (err) relatedItems = {};
+                if (err) {
+                  relatedItems = {};
+                } else {
+                  relatedItems = sortRelated(relatedItems);
+                }
 
                 const JSONData = buildJSONResponse(result, config, relatedItems);
                 const HTMLData = JSONToHTML(JSONData);
@@ -45,7 +50,12 @@ module.exports = (elastic, config) => ({
               }
 
               getRelatedItems(elastic, request.params.id, (err, relatedItems) => {
-                if (err) relatedItems = {};
+                if (err) {
+                  relatedItems = {};
+                } else {
+                  relatedItems = sortRelated(relatedItems);
+                }
+
                 reply(buildJSONResponse(result, config, relatedItems)).header('content-type', 'application/vnd.api+json');
               });
             });

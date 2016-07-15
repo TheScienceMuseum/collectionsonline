@@ -3,6 +3,7 @@ const buildJSONResponse = require('../lib/jsonapi-response');
 const TypeMapping = require('../lib/type-mapping');
 const JSONToHTML = require('../lib/transforms/json-to-html-data.js');
 const getChildArchives = require('../lib/get-child-files.js');
+const sortRelated = require('../lib/sort-related-items');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -25,10 +26,18 @@ module.exports = (elastic, config) => ({
                 return reply(Boom.serverUnavailable('unavailable'));
               }
 
-              const JSONData = buildJSONResponse(result, config);
-              const HTMLData = JSONToHTML(JSONData);
+              getChildArchives(elastic, request.params.id, function (err, children) {
+                if (err) {
+                  children = {};
+                } else {
+                  children = sortRelated(children, 'children');
+                }
 
-              reply.view('archive', Object.assign(HTMLData, data));
+                const JSONData = buildJSONResponse(result, config, children);
+                const HTMLData = JSONToHTML(JSONData);
+
+                reply.view('archive', Object.assign(HTMLData, data));
+              });
             });
           },
           'application/vnd.api+json' (request, reply) {
@@ -42,7 +51,12 @@ module.exports = (elastic, config) => ({
               }
 
               getChildArchives(elastic, request.params.id, function (err, children) {
-                if (err) children = {};
+                if (err) {
+                  children = {};
+                } else {
+                  children = sortRelated(children, 'children');
+                }
+
                 reply(buildJSONResponse(result, config, children)).header('content-type', 'application/vnd.api+json');
               });
             });
