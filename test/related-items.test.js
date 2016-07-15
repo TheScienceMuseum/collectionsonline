@@ -5,7 +5,7 @@ const buildHTMLData = require('../lib/transforms/json-to-html-data');
 var JSONAPIResponse;
 var HTMLData;
 var person = require('./fixtures/elastic-responses/example-get-response-person.json');
-var relatedItems = require('./fixtures/elastic-responses/database.json').related['smgc-people-36993'].response;
+var relatedItems = require('./fixtures/elastic-responses/database.json').related['smgc-agent-36993'].response;
 
 test('Response is built succesfully', (t) => {
   t.plan(1);

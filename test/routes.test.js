@@ -155,7 +155,7 @@ testWithServer('Request for Archive JSON', (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/documents/smga-documents-110069402',
+    url: '/documents/smga-documents-110000003',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 

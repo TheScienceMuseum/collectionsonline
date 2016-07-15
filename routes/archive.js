@@ -2,6 +2,7 @@ const Boom = require('boom');
 const buildJSONResponse = require('../lib/jsonapi-response');
 const TypeMapping = require('../lib/type-mapping');
 const JSONToHTML = require('../lib/transforms/json-to-html-data.js');
+const getChildArchives = require('../lib/get-child-files.js');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -30,8 +31,8 @@ module.exports = (elastic, config) => ({
               reply.view('archive', Object.assign(HTMLData, data));
             });
           },
-          'application/vnd.api+json' (req, reply) {
-            elastic.get({index: 'smg', type: 'archive', id: TypeMapping.toInternal(req.params.id)}, (err, result) => {
+          'application/vnd.api+json' (request, reply) {
+            elastic.get({index: 'smg', type: 'archive', id: TypeMapping.toInternal(request.params.id)}, (err, result) => {
               if (err) {
                 return reply(err);
               }
@@ -40,7 +41,10 @@ module.exports = (elastic, config) => ({
                 return reply(Boom.notFound('Document not found'));
               }
 
-              reply(buildJSONResponse(result, config)).header('content-type', 'application/vnd.api+json');
+              getChildArchives(elastic, request.params.id, function (err, children) {
+                if (err) children = {};
+                reply(buildJSONResponse(result, config, children)).header('content-type', 'application/vnd.api+json');
+              });
             });
           }
         }
