@@ -45,6 +45,21 @@ testWithServer('Request for Archive HTML Page but receive bad request from es', 
   });
 });
 
+testWithServer('Request for Archive HTML Page with expanded children', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/documents/smga-documents-110000003?expanded=smga-documents-110000036',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
 testWithServer('Request for Archivedoc HTML Page', (t, ctx) => {
   t.plan(1);
 

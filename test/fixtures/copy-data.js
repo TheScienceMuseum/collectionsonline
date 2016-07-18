@@ -111,7 +111,8 @@ const related = [
 
 const children = [
   {id: 'smga-documents-110000003'},
-  {id: 'smga-archive-110000316'}
+  {id: 'smga-archive-110000316'},
+  {id: 'smga-documents-110000036'}
 ];
 
 var database = {};
