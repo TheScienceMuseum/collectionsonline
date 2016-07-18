@@ -970,7 +970,6 @@ testWithServer(file + 'Number of filters for the occupation facet should be grea
   ctx.server.inject(htmlRequest, (res) => {
     const response = JSON.parse(res.payload);
     const test = response.meta.filters.occupation.length === 1;
-    console.log(response.meta.filters.occupation);
     t.equal(test, true, 'The facet occupation has now just 1 filter');
     t.end();
   });

@@ -1,6 +1,6 @@
 module.exports = (e, ctx, q) => {
   var name = e.target.name;
-  var value = e.target.value.replace(/,/g, '\\,');
+  var value = e.target.value;
   var selected = ctx.state.data.selectedFilters || {};
   var qs = {};
   qs.q = q;

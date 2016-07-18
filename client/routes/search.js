@@ -5,9 +5,7 @@ var Templates = require('../templates');
 var searchBox = require('../lib/search-box');
 var createQueryParams = require('../../lib/query-params.js');
 var getData = require('../lib/get-data.js');
-var convertUrl = require('../lib/convert-url.js');
 var getQueryString = require('../lib/get-qs.js');
-var escapeFlattenComma = require('../lib/escape-flatten-comma');
 var toJsonUrl = require('../lib/to-json-url');
 
 module.exports = function (page) {
@@ -24,8 +22,7 @@ module.exports = function (page) {
         headers: { Accept: 'application/vnd.api+json' }
       };
       var qs = QueryString.parse(ctx.querystring);
-      escapeFlattenComma(qs);
-      var queryParams = createQueryParams('json', {query: qs, params: {type: ctx.params.type}});
+      var queryParams = createQueryParams('html', {query: qs, params: {type: ctx.params.type}});
       getData(ctx.pathname + '?' + toJsonUrl(ctx.querystring), opts, queryParams, function (data) {
         ctx.state.data = data;
         next();
@@ -94,11 +91,10 @@ module.exports = function (page) {
     * Build a html url with the new filter selected (get the current url + new filter)
     */
     $('.filter:not(.filter--uncollapsible)').on('click', '[type=checkbox]', function (e) {
-      // var url = ctx.path + '&' + e.target.name + '=' + encodeURIComponent(e.target.value);
       var q = $('.tt-input').val();
       var qs = getQueryString(e, ctx, q);
       var url = ctx.pathname + '?' + QueryString.stringify(qs);
-      page.show(convertUrl(url, 'html'));
+      page.show(url);
     });
 
     svg4everybody();

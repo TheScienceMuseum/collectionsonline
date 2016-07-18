@@ -7,7 +7,7 @@ $(document).foundation();
 
 var page = require('page');
 //
-require('./middleware/initial-render')(page)
+require('./middleware/initial-render')(page);
 // Client routes
 require('./routes/home')(page);
 require('./routes/search')(page);

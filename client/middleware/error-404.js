@@ -21,4 +21,4 @@ module.exports = function (page) {
     var pageEl = document.getElementsByTagName('main')[0];
     pageEl.innerHTML = Templates['error'](error);
   }
-}
+};
