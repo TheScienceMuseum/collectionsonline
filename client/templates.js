@@ -63,26 +63,6 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
-  'search/filters-all',
-  Fs.readFileSync('./templates/partials/search/filters-all.html', 'utf8')
-);
-
-Handlebars.registerPartial(
-  'search/filters-documents',
-  Fs.readFileSync('./templates/partials/search/filters-documents.html', 'utf8')
-);
-
-Handlebars.registerPartial(
-  'search/filters-objects',
-  Fs.readFileSync('./templates/partials/search/filters-objects.html', 'utf8')
-);
-
-Handlebars.registerPartial(
-  'search/filters-people',
-  Fs.readFileSync('./templates/partials/search/filters-people.html', 'utf8')
-);
-
-Handlebars.registerPartial(
   'search/pagination',
   Fs.readFileSync('./templates/partials/search/pagination.html', 'utf8')
 );
@@ -123,8 +103,8 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
-  'records/record-related-results',
-  Fs.readFileSync('./templates/partials/records/record-related-results.html', 'utf8')
+  'records/record-related-objects',
+  Fs.readFileSync('./templates/partials/records/record-related-objects.html', 'utf8')
 );
 
 Handlebars.registerPartial(
@@ -175,6 +155,9 @@ Handlebars.registerHelper('gettodaysdate', require('../templates/helpers/gettoda
 
 // Routes
 module.exports = {
+  'home': Handlebars.compile(
+    Fs.readFileSync('./templates/pages/home.html', 'utf8')
+  ),
   'search': Handlebars.compile(
     Fs.readFileSync('./templates/pages/search.html', 'utf8')
   ),
@@ -192,5 +175,8 @@ module.exports = {
   ),
   'searchnav': Handlebars.compile(
     Fs.readFileSync('./templates/partials/global/search-nav.html', 'utf8')
+  ),
+  'error': Handlebars.compile(
+    Fs.readFileSync('./templates/pages/error.html', 'utf8')
   )
 };

@@ -41,3 +41,6 @@ public/assets/icons/*
 
 # Project configuration
 .corc
+
+#database test
+test/fixtures/elastic-responses/database.json

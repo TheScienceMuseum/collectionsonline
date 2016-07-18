@@ -20,7 +20,7 @@
     "hapi-negotiator": "https://github.com/TheScienceMuseum/hapi-negotiator.git",
     "inert": "^4.0.0",
     "joi": "^9.0.0",
-    "jquery": "3.1.0",
+    "jquery": "2.2.4",
     "openseadragon": "^2.2.0",
     "page": "^1.7.1",
     "rc": "^1.1.6",
@@ -56,7 +56,7 @@
   "scripts": {
     "postinstall": "run-s build minify && node nightwatch.conf.js",
     "start": "node bin/server.js",
-    "test": "node test/fixtures/fixtures-and-tests.js --data",
+    "test": "node test/fixtures/fixtures-and-tests.js --data && npm run test-all",
     "copy-data": "node test/fixtures/copy-data.js",
     "test-all": "run-s test:*",
     "test:lint": "semistandard",
