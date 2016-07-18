@@ -176,13 +176,13 @@ testWithServer('Request for Archive JSON', (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.ok(res.headers['content-type'].indexOf('application/vnd.api+json') > -1, 'JSONAPI response header should be application/vnd.api+json');
+    t.equal(res.headers['content-type'], 'application/vnd.api+json', 'JSONAPI response header should be application/vnd.api+json');
     t.end();
   });
 });
 
 testWithServer('Request for Archive JSON with error', (t, ctx) => {
-  t.plan(4);
+  t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
@@ -191,27 +191,7 @@ testWithServer('Request for Archive JSON with error', (t, ctx) => {
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    var response = JSON.parse(res.payload);
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.ok(response.status, 404, 'status is 404');
-    t.ok(response.displayName, 'NotFound', 'the archive is not found');
-    t.ok(response.message, 'Not Found', 'the archive message is not found');
-    t.end();
-  });
-});
-
-testWithServer('Request for Archive JSON with no result', (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/documents/smga-documents-noResult',
-    headers: {'Accept': 'application/vnd.api+json'}
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    var response = JSON.parse(res.payload);
-    t.ok(response.errors[0].detail, 404, 'Archive not found');
+    t.equal(res.statusCode, 404, 'Status code was as expected');
     t.end();
   });
 });
