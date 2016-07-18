@@ -26,3 +26,21 @@ test(file + 'Should not split on \\,', (t) => {
   t.plan(1);
   t.end();
 });
+
+test('Should turn string into array', (t) => {
+  var cities = 'London\\, England\\, United Kingdom, Paris\\, France';
+  var city = 'London';
+  t.plan(2);
+  t.ok(Array.isArray(splitCommas(cities)), 'Turns multiple cities into an array');
+  t.ok(Array.isArray(splitCommas(city)), 'Turns one city into an array');
+  t.end();
+});
+
+test('Should split string on unescaped commas', (t) => {
+  var cities = 'London\\, England\\, United Kingdom, Paris\\, France';
+  var city = 'London';
+  t.plan(2);
+  t.deepEqual(splitCommas(cities), ['London\\, England\\, United Kingdom', 'Paris\\, France'], 'Correctly splits cities');
+  t.deepEqual(splitCommas(city), ['London'], 'Turns one city into an array');
+  t.end();
+});
