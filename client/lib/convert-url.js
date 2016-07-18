@@ -1,7 +1,7 @@
 var QueryString = require('querystring');
 var splitOnUnescapedCommas = require('./split-commas.js');
-
-module.exports = (url, to, from) => {
+// TODO write do for this function
+module.exports = (url, to) => {
   var parsedUrl = QueryString.parse(url);
   Object.keys(parsedUrl).forEach(el => {
     if (to === 'html') {
@@ -15,7 +15,10 @@ module.exports = (url, to, from) => {
       parsedUrl[el] = parsedUrl[el].map(el => el.replace(escapedComma, ','));
     } else if (to === 'json') {
       if (Array.isArray(parsedUrl[el])) {
-        parsedUrl[el] = parsedUrl[el].join();
+        var escapedValues = parsedUrl[el].map(v => { return v.replace(/,/g, '\\,'); });
+        parsedUrl[el] = escapedValues.join();
+      } else {
+        parsedUrl[el] = parsedUrl[el].replace(/,/g, '\\,');
       }
     }
   });

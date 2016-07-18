@@ -6,10 +6,8 @@ require('foundation-sites');
 $(document).foundation();
 
 var page = require('page');
-
-// Pre-route middleware for all pages
-require('./middleware/initial-render')(page);
-
+//
+require('./middleware/initial-render')(page)
 // Client routes
 require('./routes/home')(page);
 require('./routes/search')(page);

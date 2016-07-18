@@ -175,6 +175,9 @@ Handlebars.registerHelper('gettodaysdate', require('../templates/helpers/gettoda
 
 // Routes
 module.exports = {
+  'home': Handlebars.compile(
+    Fs.readFileSync('./templates/pages/home.html', 'utf8')
+  ),
   'search': Handlebars.compile(
     Fs.readFileSync('./templates/pages/search.html', 'utf8')
   ),
@@ -192,5 +195,8 @@ module.exports = {
   ),
   'searchnav': Handlebars.compile(
     Fs.readFileSync('./templates/partials/global/search-nav.html', 'utf8')
+  ),
+  'error': Handlebars.compile(
+    Fs.readFileSync('./templates/pages/error.html', 'utf8')
   )
 };

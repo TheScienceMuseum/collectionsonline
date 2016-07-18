@@ -2,35 +2,30 @@ var svg4everybody = require('svg4everybody');
 var $ = require('jquery');
 var QueryString = require('querystring');
 var searchBox = require('../lib/search-box');
-var createQueryParams = require('../../lib/query-params.js');
-var getData = require('../lib/get-data.js');
+var data = require('../../fixtures/data');
+var Templates = require('../templates');
 
 module.exports = function (page) {
-  page('/', function (ctx) {
-    // Temporary until templates pulled into js for client side rendering
-    if (!ctx.isInitialRender) {
-      window.location = ctx.path;
-    }
+  page('/', render, listeners);
 
+  function render (ctx, next) {
+    var pageEl = document.getElementsByTagName('main')[0];
+    pageEl.innerHTML = Templates['home'](data);
+    next();
+  }
+
+  function listeners (ctx, next) {
     var searchBoxEl = document.getElementById('searchbox');
 
     searchBoxEl.addEventListener('submit', function (e) {
       e.preventDefault();
-
       var qs = { q: $('.tt-input', this).val() };
       var url = '/search?' + QueryString.stringify(qs);
-      var queryParams = createQueryParams('json', {query: qs, params: {}});
-      var opts = {
-        headers: { Accept: 'application/vnd.api+json' }
-      };
-
-      getData(url, opts, queryParams, function (data) {
-        ctx.state.data = data;
-        page.show(url, ctx.state);
-      });
+      page.show(url);
     });
 
     svg4everybody();
+    // autocomplete search
     searchBox();
-  });
+  }
 };

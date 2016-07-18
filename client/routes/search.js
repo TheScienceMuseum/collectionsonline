@@ -7,58 +7,59 @@ var createQueryParams = require('../../lib/query-params.js');
 var getData = require('../lib/get-data.js');
 var convertUrl = require('../lib/convert-url.js');
 var getQueryString = require('../lib/get-qs.js');
+var escapeFlattenComma = require('../lib/escape-flatten-comma');
+var toJsonUrl = require('../lib/to-json-url');
 
 module.exports = function (page) {
   page('/search', load, render, listeners);
   page('/search/:type', load, render, listeners);
-
+  /**
+  * Ajax request to get the data of the url
+  * assign ctx.state with an object representing the data displayed on the page
+  */
   function load (ctx, next) {
-    if (!ctx.state.data) {
-      var url = ctx.path;
+    // only load the data if the page hasn't been loaded before
+    if (!ctx.isInitialRender) {
       var opts = {
         headers: { Accept: 'application/vnd.api+json' }
       };
       var qs = QueryString.parse(ctx.querystring);
-      Object.keys(qs).forEach(el => {
-        if (Array.isArray(qs[el])) {
-          qs[el] = qs[el].join();
-        }
-      });
-      var queryParams = createQueryParams('json', {query: qs, params: {}});
-
-      getData(convertUrl(url, 'json'), opts, queryParams, function (data) {
+      escapeFlattenComma(qs);
+      var queryParams = createQueryParams('json', {query: qs, params: {type: ctx.params.type}});
+      getData(ctx.pathname + '?' + toJsonUrl(ctx.querystring), opts, queryParams, function (data) {
         ctx.state.data = data;
         next();
       });
     } else {
-      next();
+      ctx.state.data = {};
+      // jump to the listeners function to add the event listeners to the dom
+      listeners(ctx, next);
     }
   }
 
+  /**
+  * Call the Handlebars template with the data and display the new DOM on the page
+  */
   function render (ctx, next) {
-    if (ctx.params.type) {
-      var filter = 'isFilter' + ctx.params.type[0].toUpperCase() + ctx.params.type.slice(1);
-      if (filter !== 'All') ctx.state.data.isFilterAll = false;
-      ctx.state.data[filter] = true;
-    }
-    if (!ctx.isInitialRender) {
-      var pageEl = document.getElementsByTagName('main')[0];
-      pageEl.innerHTML = Templates['search'](ctx.state.data);
+    var pageEl = document.getElementsByTagName('main')[0];
+    pageEl.innerHTML = Templates['search'](ctx.state.data);
 
-      // Shows filter toggle button if javascript enabled
-      document.getElementById('fb').className = 'control__button';
-      document.querySelector('button.filterpanel__button').style.display = 'none';
+    // Shows filter toggle button if javascript enabled
+    document.getElementById('fb').className = 'control__button';
+    document.querySelector('button.filterpanel__button').style.display = 'none';
 
-      // Hides filterpanel by default if javascript is enabled
-      if (!Object.keys(ctx.state.data.selectedFilters).length) {
-        $('.searchresults').removeClass('searchresults--filtersactive');
-        $('.filtercolumn').removeClass('filtercolumn--filtersactive');
-        $('.control--filters').removeClass('control--active');
-      }
+    // Hides filterpanel by default if javascript is enabled
+    if (!Object.keys(ctx.state.data.selectedFilters).length) {
+      $('.searchresults').removeClass('searchresults--filtersactive');
+      $('.filtercolumn').removeClass('filtercolumn--filtersactive');
+      $('.control--filters').removeClass('control--active');
     }
     next();
   }
 
+  /**
+  * Define event listeners for search and filters
+  */
   function listeners (ctx, next) {
     var searchBoxEl = document.getElementById('searchbox');
 
@@ -67,20 +68,10 @@ module.exports = function (page) {
       e.preventDefault();
       // TODO: Maybe a nice loading spinner?
       $('#searchresults .searchresults__column').animate({ opacity: 0.5 });
-
       var qs = {};
       qs.q = $('.tt-input', this).val();
-      var params = ctx.params;
-      var url = params[0] + '?' + QueryString.stringify(qs);
-      var queryParams = createQueryParams('json', {query: qs, params: params});
-      var opts = {
-        headers: { Accept: 'application/vnd.api+json' }
-      };
-
-      getData(convertUrl(url, 'json'), opts, queryParams, function (data) {
-        ctx.state.data = data;
-        page.show(convertUrl(url, 'json'), ctx.state);
-      });
+      var url = ctx.pathname + '?' + QueryString.stringify(qs);
+      page.show(url);
     });
 
     // Show/hide filters
@@ -93,33 +84,21 @@ module.exports = function (page) {
     // Clear Filters
     $('.filter').on('click', '.filter__clear', function (e) {
       e.preventDefault();
-      var opts = {
-        headers: { Accept: 'application/vnd.api+json' }
-      };
       var qs = {q: $('.tt-input').val()};
-      var queryParams = createQueryParams('json', {query: qs, params: {}});
       var url = ctx.pathname + '?' + QueryString.stringify(qs);
-
-      getData(url, opts, queryParams, function (data) {
-        ctx.state.data = data;
-        page.show(url, ctx.state);
-      });
+      page.show(url);
     });
 
-    // Click to add/remove filters
+    /**
+    * Click to add/remove filters
+    * Build a html url with the new filter selected (get the current url + new filter)
+    */
     $('.filter:not(.filter--uncollapsible)').on('click', '[type=checkbox]', function (e) {
+      // var url = ctx.path + '&' + e.target.name + '=' + encodeURIComponent(e.target.value);
       var q = $('.tt-input').val();
       var qs = getQueryString(e, ctx, q);
-      var params = ctx.params;
       var url = ctx.pathname + '?' + QueryString.stringify(qs);
-      var opts = {
-        headers: { Accept: 'application/vnd.api+json' }
-      };
-      var queryParams = createQueryParams('json', {query: qs, params: params}, ctx.state.data.selectedFilters);
-      getData(url, opts, queryParams, function (data) {
-        ctx.state.data = data;
-        page.show(convertUrl(url, 'html'), ctx.state);
-      });
+      page.show(convertUrl(url, 'html'));
     });
 
     svg4everybody();
