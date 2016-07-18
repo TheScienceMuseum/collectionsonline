@@ -1,11 +1,24 @@
 // Create a mock elasticsearch client with noop functions
 const database = require('../fixtures/elastic-responses/database.json');
+const TypeMapping = require('../../lib/type-mapping.js');
+
 module.exports = () => ({
   search: function () {
+    var q;
+    var search;
     const cb = arguments[arguments.length - 1];
-    const q = arguments[0].body.query.multi_match.query;
+
+    if (arguments[0].body.query.multi_match) {
+      q = arguments[0].body.query.multi_match.query;
+    } else if (arguments[0].body.query.filtered) {
+      q = TypeMapping.toExternal(arguments[0].body.query.filtered.filter.bool.should[1].term['agents.admin.uid']);
+    }
+
     if (database.search[q]) {
-      const search = database.search[q];
+      search = database.search[q];
+      return cb(search.error, search.response);
+    } else if (database.related[q]) {
+      search = database.related[q];
       return cb(search.error, search.response);
     } else {
       console.log('search fixture not found for', q);

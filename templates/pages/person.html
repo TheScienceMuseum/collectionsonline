@@ -33,7 +33,8 @@
 
     {{> records/record-details }}
 
-    {{> records/record-related-results }}
+    {{#if related.objects}}{{> records/record-related-objects }}{{/if}}
+    {{#if related.documents}}{{> records/record-related-documents }}{{/if}}
 
   </div>
 
