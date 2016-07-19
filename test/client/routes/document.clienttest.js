@@ -11,7 +11,8 @@ module.exports = {
       .assert.containsText('.details-history-note', 'The archive was arranged and described by')
       .assert.containsText('.archive-tree', 'The Babbage Papers')
       .click('button[value=smga-documents-110000036]')
-      .assert.urlEquals('http://localhost:8000/documents/smga-documents-110000003?expanded=smga-documents-110000036#archive-block')
+      .assert.urlEquals('http://localhost:8000/documents/smga-documents-110000003')
+      .pause(1000)
       .assert.containsText('.archive-tree', 'Part of the end view of the Difference Engine')
       .end();
   }

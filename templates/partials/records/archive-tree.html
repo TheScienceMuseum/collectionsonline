@@ -1,3 +1,4 @@
+<div id="archive-tree">
   <div class="row">
     <div class="columns medium-8">
       <h2 id="archive-block" class="archive-tree__title">Browse this archive</h2>
@@ -12,7 +13,7 @@
       </div>
     </div>
 
-    <div class="archive-tree columns" id="archive-tree">
+    <div class="archive-tree columns">
 
       <ul role="tree">
         <li role="treeitem" aria-expanded="true">
@@ -26,9 +27,9 @@
             {{#each related.children}}
               <li role="treeitem" aria-expanded={{#if children}}true{{else}}false{{/if}}>
                 <div class="archive-tree__label">
-                  <form action="{{links.self}}#archive-block">
+                  <form class="expand" id="expand-{{id}}" action="{{links.self}}#archive-block">
                     {{#if children}}
-                      <button type="submit" aria-controls="groupX"></button>
+                      <button type="submit" value="{{id}}" aria-controls="groupX"></button>
                     {{else}}
                       <button name="expanded" value="{{id}}" type="submit" aria-controls="groupX"></button>
                     {{/if}}
@@ -59,3 +60,4 @@
 
     </div>
   </div>
+</div>
