@@ -1,27 +1,14 @@
-module.exports = (e, ctx, q) => {
-  var name = e.target.name;
-  var value = e.target.value;
-  var selected = ctx.state.data.selectedFilters || {};
-  var qs = {};
-  qs.q = q;
+var $ = require('jquery');
 
-  if (selected[name]) {
-    if (selected[name][value]) {
-      delete selected[name][value];
-      if (!Object.keys(selected[name]).length) {
-        delete selected[name];
-      }
-    } else {
-      selected[name][value] = true;
-    }
-  } else {
-    selected[name] = {};
-    selected[name][value] = true;
-  }
-
-  Object.keys(selected).forEach(el => {
-    qs[el] = Object.keys(selected[el]).join();
-  });
-
-  return qs;
+module.exports = function () {
+  /**
+  * select all the input checkbox checked, all the other input but not the checkbox (already selected) and not fields[type] already on url
+  */
+  var queryParams = $('#search-form input:checked, #search-form input:not([type="checkbox"],[name="fields[type]"]) ').filter(function (i, el) {
+    return $(el).val() !== '';
+  }).serialize();
+  // select result per page
+  var rpp = $('.control--rpp select').val();
+  queryParams += '&' + encodeURIComponent('page[size]') + '=' + rpp;
+  return queryParams;
 };

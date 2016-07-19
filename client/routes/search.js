@@ -5,8 +5,8 @@ var Templates = require('../templates');
 var searchBox = require('../lib/search-box');
 var createQueryParams = require('../../lib/query-params/query-params.js');
 var getData = require('../lib/get-data.js');
-var getQueryString = require('../lib/get-qs.js');
 var toJsonUrl = require('../lib/to-json-url');
+var getQueryString = require('../lib/get-qs');
 
 module.exports = function (page) {
   page('/search', load, render, listeners);
@@ -85,15 +85,20 @@ module.exports = function (page) {
       var url = ctx.pathname + '?' + QueryString.stringify(qs);
       page.show(url);
     });
-
     /**
     * Click to add/remove filters
     * Build a html url with the new filter selected (get the current url + new filter)
     */
     $('.filter:not(.filter--uncollapsible)').on('click', '[type=checkbox]', function (e) {
-      var q = $('.tt-input').val();
-      var qs = getQueryString(e, ctx, q);
-      var url = ctx.pathname + '?' + QueryString.stringify(qs);
+      var url = ctx.pathname + '?' + getQueryString();
+      page.show(url);
+    });
+
+    /**
+    * Search when the result per page is change
+    */
+    $('.control--rpp select').on('change', function (e) {
+      var url = ctx.pathname + '?' + getQueryString();
       page.show(url);
     });
 
