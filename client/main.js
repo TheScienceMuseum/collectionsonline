@@ -6,8 +6,11 @@ require('foundation-sites');
 $(document).foundation();
 
 var page = require('page');
-//
+
 require('./middleware/initial-render')(page);
+
+// define the state of the filter pannel, open or not
+require('./middleware/filter-state')(page);
 // Client routes
 require('./routes/home')(page);
 require('./routes/search')(page);
