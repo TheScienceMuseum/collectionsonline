@@ -2,7 +2,7 @@
   <div class="filter filter--active filter--uncollapsible">
     <a class="filter__name filter__clear" href="{{links.clearFilter}}">Clear all filters</a>
   </div>
-  <form class="" action="/search" method="get">
+  <form class="" id="search-form" action="/search" method="get">
     <input type="hidden" name="q" value="{{q}}">
     {{#if isFilterAll}}
       {{> search/filters-all}}

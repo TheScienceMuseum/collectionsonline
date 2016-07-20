@@ -1,7 +1,7 @@
 const QueryString = require('querystring');
 const test = require('tape');
 const searchResultsToJsonApi = require('../../lib/transforms/search-results-to-jsonapi');
-const queryParams = require('../../lib/query-params');
+const queryParams = require('../../lib/query-params/query-params');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
 const aggregationsAll = require('../helpers/aggregations-all.json');

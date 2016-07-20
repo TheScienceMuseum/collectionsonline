@@ -5,7 +5,7 @@ const searchSchema = require('../schemas/search');
 const searchResultsToJsonApi = require('../lib/transforms/search-results-to-jsonapi');
 const searchResultsToTemplateData = require('../lib/transforms/search-results-to-template-data');
 const search = require('../lib/search');
-const createQueryParams = require('../lib/query-params');
+const createQueryParams = require('../lib/query-params/query-params');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -52,8 +52,6 @@ module.exports = (elastic, config) => ({
                 const params = value.params;
                 const query = value.query;
                 const queryParams = createQueryParams('json', {query: query, params: params});
-                console.log('queryParams ', queryParams.filter.people);
-                console.log('########');
                 search(elastic, queryParams, (err, result) => {
                   if (err) return reply(Boom.badRequest(err));
                   reply(searchResultsToJsonApi(queryParams, result, config))
