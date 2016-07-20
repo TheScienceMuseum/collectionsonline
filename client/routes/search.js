@@ -7,6 +7,7 @@ var createQueryParams = require('../../lib/query-params/query-params.js');
 var getData = require('../lib/get-data.js');
 var toJsonUrl = require('../lib/to-json-url');
 var getQueryString = require('../lib/get-qs');
+var filterState = require('../lib/filter-state');
 
 module.exports = function (page) {
   page('/search', load, render, listeners);
@@ -43,10 +44,10 @@ module.exports = function (page) {
 
     // Shows filter toggle button if javascript enabled
     document.getElementById('fb').className = 'control__button';
-    document.querySelector('button.filterpanel__button').style.display = 'none';
+    // document.querySelector('button.filterpanel__button').style.display = 'none';
 
     // Hides filterpanel by default if javascript is enabled
-    if (!Object.keys(ctx.state.data.selectedFilters).length) {
+    if (!ctx.isFilterOpen) {
       $('.searchresults').removeClass('searchresults--filtersactive');
       $('.filtercolumn').removeClass('filtercolumn--filtersactive');
       $('.control--filters').removeClass('control--active');
@@ -100,6 +101,10 @@ module.exports = function (page) {
     $('.control--rpp select').on('change', function (e) {
       var url = ctx.pathname + '?' + getQueryString();
       page.show(url);
+    });
+
+    $('#fb').on('click', function (e) {
+      filterState.isFilterOpen = !filterState.isFilterOpen;
     });
 
     svg4everybody();
