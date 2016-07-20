@@ -87,7 +87,8 @@ const dataToCopy = [
   {type: 'object', id: 'smgc-objects-wrongid'},
   {type: 'agent', id: 'smgc-people-17351'},
   {type: 'agent', id: 'smgc-people-36993'},
-  {type: 'agent', id: 'smgc-people-wrongid'}
+  {type: 'agent', id: 'smgc-people-wrongid'},
+  {type: 'agent', id: 'smga-people-24329'}
 ];
 
 const searchToCopy = [

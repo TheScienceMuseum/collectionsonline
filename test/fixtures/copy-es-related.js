@@ -9,6 +9,7 @@ module.exports = function (elastic, related, database, next) {
       var response = {};
       response.hits = {hits: items};
       database.related[TypeMapping.toInternal(item.id)] = {error: error, response: response};
+      database.related[TypeMapping.toInternal('smga-people-24329')] = { error: { 'status': 400, 'displayName': 'BadRequest', 'message': 'Bad Request' } };
       count += 1;
       if (count === related.length) {
         return next();

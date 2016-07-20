@@ -165,6 +165,36 @@ testWithServer('Request for Person HTML Page but get error 503', (t, ctx) => {
   });
 });
 
+testWithServer('Request for Person HTML Page with no related items', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/people/smga-people-24329',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer('Request for Person JSON Page with no related items', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/people/smga-people-24329',
+    headers: {'Accept': 'application/vnd.api+json'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
 testWithServer('Request for Archive JSON', (t, ctx) => {
   t.plan(2);
 

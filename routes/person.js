@@ -27,7 +27,7 @@ module.exports = (elastic, config) => ({
 
               getRelatedItems(elastic, request.params.id, (err, relatedItems) => {
                 if (err) {
-                  relatedItems = {};
+                  relatedItems = null;
                 } else {
                   relatedItems = sortRelated(relatedItems);
                 }
@@ -51,7 +51,7 @@ module.exports = (elastic, config) => ({
 
               getRelatedItems(elastic, request.params.id, (err, relatedItems) => {
                 if (err) {
-                  relatedItems = {};
+                  relatedItems = null;
                 } else {
                   relatedItems = sortRelated(relatedItems);
                 }
