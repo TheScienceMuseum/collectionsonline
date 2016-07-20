@@ -52,6 +52,8 @@ module.exports = (elastic, config) => ({
                 const params = value.params;
                 const query = value.query;
                 const queryParams = createQueryParams('json', {query: query, params: params});
+                console.log('queryParams ', queryParams.filter.people);
+                console.log('########');
                 search(elastic, queryParams, (err, result) => {
                   if (err) return reply(Boom.badRequest(err));
                   reply(searchResultsToJsonApi(queryParams, result, config))

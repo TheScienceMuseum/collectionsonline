@@ -8,39 +8,35 @@ module.exports = function (page) {
   page('/objects/:id', enter);
 
   function enter (ctx) {
-    if (!ctx.isInitialRender) {
-      var pageEl = document.getElementsByTagName('main')[0];
+    var pageEl = document.getElementsByTagName('main')[0];
 
-      var id = ctx.params.id;
-      var url = '/objects/' + id;
+    var id = ctx.params.id;
+    var url = '/objects/' + id;
 
-      var opts = {
-        headers: { Accept: 'application/vnd.api+json' }
-      };
+    var opts = {
+      headers: { Accept: 'application/vnd.api+json' }
+    };
 
-      fetch(url, opts)
-      .then(function (res) {
-        if (res.ok) {
-          return res.json();
-        } else {
-          return Promise.reject(new Error(res.status + ' Failed to fetch results'));
-        }
-      })
-      .then(function (json) {
-        if (json.errors) return Promise.reject(json.errors[0]);
-        var data = JSONToHTML(json);
-        data.slides = exampleData.slides;
-        pageEl.innerHTML = Templates['objects'](data);
-        window.scrollTo(0, 0);
-      })
-      .then(function () {
-        initJqueryComp();
-      })
-      .catch(function (err) {
-        console.error('Failed to find object', err);
-      });
-    } else {
+    fetch(url, opts)
+    .then(function (res) {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject(new Error(res.status + ' Failed to fetch results'));
+      }
+    })
+    .then(function (json) {
+      if (json.errors) return Promise.reject(json.errors[0]);
+      var data = JSONToHTML(json);
+      data.slides = exampleData.slides;
+      pageEl.innerHTML = Templates['objects'](data);
+      window.scrollTo(0, 0);
+    })
+    .then(function () {
       initJqueryComp();
-    }
+    })
+    .catch(function (err) {
+      console.error('Failed to find object', err);
+    });
   }
 };

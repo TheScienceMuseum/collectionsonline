@@ -12,14 +12,3 @@ test('Should check correctly', (t) => {
   t.equal(isSelected(selected, 'filter[occupation]', 'author'), '', 'Is not checked if not selected');
   t.end();
 });
-
-test('Should parse commas correctly', (t) => {
-  const selected = {
-    'filter[birth[place]]': {
-      'London\\, United Kingdom': true
-    }
-  };
-  t.plan(1);
-  t.equal(isSelected(selected, 'filter[birth[place]]', 'London, United Kingdom'), 'checked', 'Commas parsed correctly');
-  t.end();
-});
