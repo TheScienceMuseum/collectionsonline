@@ -1,6 +1,6 @@
 // Create a mock elasticsearch client with noop functions
 const database = require('../fixtures/elastic-responses/database.json');
-const TypeMapping = require('../../lib/type-mapping.js');
+const getNestedProperty = require('../../lib/nested-property');
 
 module.exports = () => ({
   search: function () {
@@ -10,8 +10,10 @@ module.exports = () => ({
 
     if (arguments[0].body.query.multi_match) {
       q = arguments[0].body.query.multi_match.query;
-    } else if (arguments[0].body.query.filtered) {
-      q = TypeMapping.toExternal(arguments[0].body.query.filtered.filter.bool.should[1].term['agents.admin.uid']);
+    } else if (getNestedProperty(arguments, '0.body.query.filtered.filter.bool.should')) {
+      q = arguments[0].body.query.filtered.filter.bool.should[1].term['agents.admin.uid'];
+    } else if (getNestedProperty(arguments, '0.body.query.filtered.filter.bool.must')) {
+      q = arguments[0].body.query.filtered.filter.bool.must.term['parent.admin.uid'];
     }
 
     if (database.search[q]) {
@@ -19,6 +21,9 @@ module.exports = () => ({
       return cb(search.error, search.response);
     } else if (database.related[q]) {
       search = database.related[q];
+      return cb(search.error, search.response);
+    } else if (database.children[q]) {
+      search = database.children[q];
       return cb(search.error, search.response);
     } else {
       console.log('search fixture not found for', q);

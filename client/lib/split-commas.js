@@ -15,7 +15,7 @@ module.exports = function splitOnUnescapedCommas (str) {
         i = -1;
       }
     } else if (i === str.length - 1) {
-      splitResult.push(str.substr(0, i + 1));
+      splitResult.push(str.substr(0, i + 1).trim());
     }
   }
   return splitResult;

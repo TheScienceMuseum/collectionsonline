@@ -2,10 +2,11 @@ const test = require('tape');
 const config = require('../config');
 const buildJSONResponse = require('../lib/jsonapi-response.js');
 const buildHTMLData = require('../lib/transforms/json-to-html-data');
+const sortRelated = require('../lib/sort-related-items');
 var JSONAPIResponse;
 var HTMLData;
 var person = require('./fixtures/elastic-responses/example-get-response-person.json');
-var relatedItems = require('./fixtures/elastic-responses/database.json').related['smgc-people-36993'].response;
+var relatedItems = sortRelated(require('./fixtures/elastic-responses/database.json').related['smgc-agent-36993'].response.hits.hits);
 
 test('Response is built succesfully', (t) => {
   t.plan(1);

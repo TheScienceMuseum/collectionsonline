@@ -39,8 +39,8 @@ test('Relationships field should contain correct attributes', (t) => {
   t.doesNotThrow(() => {
     JSONAPIResponse = buildJSONResponse(require('./fixtures/elastic-responses/example-get-response-person.json'), config);
   }, 'Building response does not throw an error');
-  t.ok(JSONAPIResponse.data.relationships.agents, 'Relationships field contains agents');
-  t.equal(JSONAPIResponse.data.relationships.agents.data.length, 5, 'Relationships field contains correct number of agents');
+  t.ok(JSONAPIResponse.data.relationships.people, 'Relationships field contains people');
+  t.equal(JSONAPIResponse.data.relationships.people.data.length, 5, 'Relationships field contains correct number of people');
   t.end();
 });
 
