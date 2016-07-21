@@ -16,7 +16,7 @@ test(file + 'Should create valid meta count numbers', (t) => {
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
     hits: {
-      total: 5,
+      total: 3554,
       max_score: null,
       hits: [
         { _type: 'object', _id: `smg-object-${Date.now()}` }
@@ -66,7 +66,7 @@ test(file + 'Should create valid meta default count numbers for empty aggregatio
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
     hits: {
-      total: 5,
+      total: 3554,
       max_score: null,
       hits: [
         { _type: 'object', _id: `smg-object-${Date.now()}` }

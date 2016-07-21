@@ -7,10 +7,11 @@ module.exports = () => ({
     var q;
     var search;
     const cb = arguments[arguments.length - 1];
-
-    if (arguments[0].body.query.multi_match) {
-      q = arguments[0].body.query.multi_match.query;
-    } else if (arguments[0].body.query.filtered) {
+    // search query
+    if (arguments[0].body.query.filtered.query) {
+      q = arguments[0].body.query.filtered.query.multi_match.query;
+    // related query
+    } else if (arguments[0].body.query.filtered.filter) {
       q = TypeMapping.toExternal(arguments[0].body.query.filtered.filter.bool.should[1].term['agents.admin.uid']);
     }
 
