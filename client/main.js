@@ -20,5 +20,6 @@ require('./routes/document')(page);
 
 // Post-route middleware for all pages
 require('./middleware/error-404')(page);
-
-page();
+// do not decode the url received by page.js
+// avoid values with & to be split
+page({decodeURLComponents: false});

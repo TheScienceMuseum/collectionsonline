@@ -5,7 +5,7 @@
   <div class="filter__options">
     <ul>
       {{#each filters.archive}}
-        <li><label><input type="checkbox" class="filter__box" name="filter[archive]" value="{{value}}" {{isselected ../selectedFilters "filter[archive]" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        <li><label><input type="checkbox" class="filter__box" name="filter[archive]" value="{{value}}" {{isselected ../selectedFilters "archive" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
       {{/each}}
     </ul>
   </div>
@@ -27,7 +27,7 @@
   <div class="filter__options">
     <ul>
       {{#each filters.organisation}}
-        <li><label><input type="checkbox" class="filter__box" name="filter[organisations]" value="{{value}}" {{isselected ../selectedFilters "filter[organisations]" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        <li><label><input type="checkbox" class="filter__box" name="filter[organisations]" value="{{value}}" {{isselected ../selectedFilters "organisations" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
       {{/each}}
     </ul>
   </div>

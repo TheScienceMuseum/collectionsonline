@@ -4,7 +4,7 @@
   <div class="filter__options">
     <ul>
       {{#each filters.category}}
-        <li><label><input type="checkbox" class="filter__box" name="filter[categories]" value="{{value}}" {{isselected ../selectedFilters "filter[categories]" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        <li><label><input type="checkbox" class="filter__box" name="filter[categories]" value="{{value}}" {{isselected ../selectedFilters "categories" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
       {{/each}}
     </ul>
   </div>
@@ -27,7 +27,7 @@
   <div class="filter__options">
     <ul>
       {{#each filters.maker}}
-        <li><label><input type="checkbox" class="filter__box" name="filter[makers]" value="{{value}}" {{isselected ../selectedFilters "filter[makers]" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        <li><label><input type="checkbox" class="filter__box" name="filter[makers]" value="{{value}}" {{isselected ../selectedFilters "makers" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
       {{/each}}
     </ul>
   </div>
@@ -41,7 +41,7 @@
   <div class="filter__options">
     <ul>
       {{#each filters.type}}
-        <li><label><input type="checkbox" class="filter__box" name="filter[type]" value="{{value}}" {{isselected ../selectedFilters "filter[type]" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        <li><label><input type="checkbox" class="filter__box" name="filter[type]" value="{{value}}" {{isselected ../selectedFilters "type" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
       {{/each}}
     </ul>
   </div>
@@ -53,7 +53,7 @@
   <div class="filter__options">
     <ul>
       {{#each filters.place}}
-        <li><label><input type="checkbox" class="filter__box" name="filter[places]" value="{{value}}" {{isselected ../selectedFilters "filter[places]" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        <li><label><input type="checkbox" class="filter__box" name="filter[places]" value="{{value}}" {{isselected ../selectedFilters "places" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
       {{/each}}
     </ul>
   </div>
@@ -67,7 +67,7 @@
   <div class="filter__options">
     <ul>
       {{#each filters.user}}
-        <li><label><input type="checkbox" class="filter__box" name="filter[user]" value="{{value}}" {{isselected ../selectedFilters "filter[user]" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        <li><label><input type="checkbox" class="filter__box" name="filter[user]" value="{{value}}" {{isselected ../selectedFilters "user" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
       {{/each}}
     </ul>
   </div>
