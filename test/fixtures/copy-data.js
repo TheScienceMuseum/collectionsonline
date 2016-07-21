@@ -7,6 +7,7 @@ const dirData = 'test/fixtures/elastic-responses';
 const copyEsDocs = require('./copy-es-docs');
 const copyEsSearches = require('./copy-es-searches');
 const copyEsrelated = require('./copy-es-related');
+const copyEsChildren = require('./copy-es-children');
 /**
 * Create files for transforms tests
 */
@@ -81,11 +82,13 @@ const dataToCopy = [
   { type: 'archive', id: 'smga-documents-110000316' },
   { type: 'archive', id: 'smga-documents-wrongid' },
   {type: 'archive', id: 'smga-documents-110069402'},
+  {type: 'archive', id: 'smga-documents-110000003'},
   {type: 'object', id: 'smgc-objects-37959'},
   {type: 'object', id: 'smgc-objects-wrongid'},
   {type: 'agent', id: 'smgc-people-17351'},
   {type: 'agent', id: 'smgc-people-36993'},
-  {type: 'agent', id: 'smgc-people-wrongid'}
+  {type: 'agent', id: 'smgc-people-wrongid'},
+  {type: 'agent', id: 'smga-people-24329'}
 ];
 
 const searchToCopy = [
@@ -107,18 +110,27 @@ const related = [
   {id: 'smgc-people-2735'}
 ];
 
+const children = [
+  {id: 'smga-documents-110000003'},
+  {id: 'smga-archive-110000316'},
+  {id: 'smga-documents-110000036'}
+];
+
 var database = {};
 database.archive = {};
 database.agent = {};
 database.object = {};
 database.search = {};
 database.related = {};
+database.children = {};
 
 // copy get values
 copyEsDocs(elastic, dataToCopy, database, () => {
   copyEsSearches(elastic, searchToCopy, database, () => {
     copyEsrelated(elastic, related, database, () => {
-      fs.writeFileSync(dirData + '/database.json', JSON.stringify(database), 'utf-8');
+      copyEsChildren(elastic, children, database, () => {
+        fs.writeFileSync(dirData + '/database.json', JSON.stringify(database), 'utf-8');
+      });
     });
   });
 });

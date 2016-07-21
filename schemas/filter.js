@@ -60,7 +60,9 @@ module.exports = (contentType) => {
 
   if (contentType === 'json') {
     schema = Object.assign(sharedSchema, jsonSchema);
-  } else if (contentType === 'html') {
+  }
+
+  if (contentType === 'html') {
     schema = Object.assign(sharedSchema, htmlSchema);
   }
 

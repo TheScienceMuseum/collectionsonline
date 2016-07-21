@@ -4,7 +4,7 @@
 
       {{#each related.objects}}
         <div class="large-2 medium-3 small-4 columns end">
-          <a href="{{ this.links.self }}">
+          <a href="{{link}}">
             <div class="resultcard resultcard--related {{#if type}}resultcard--{{ this.type }}{{/if}}">
               <figure class="resultcard__figure">
                 {{#if this.figure}}<img src="{{ this.figure }}" /> {{/if}}
