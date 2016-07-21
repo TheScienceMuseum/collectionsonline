@@ -3,6 +3,7 @@ var Templates = require('../templates');
 var JSONToHTML = require('../../lib/transforms/json-to-html-data');
 var initJqueryComp = require('../lib/init-jquery-components.js');
 var $ = require('jquery');
+var QueryString = require('querystring');
 
 module.exports = function (page) {
   page('/documents/:id', enter, listeners);
@@ -49,14 +50,27 @@ module.exports = function (page) {
       e.preventDefault();
       var archiveTree = document.getElementById('archive-tree');
       var documentID = this.id.slice(7);
+      var query = QueryString.parse(ctx.querystring.substr(1));
+      var url = ctx.pathname;
 
-      var url = ctx.path;
-
-      if (ctx.querystring) {
-        url += '&expanded=' + documentID;
+      if (query.expanded) {
+        if (!Array.isArray(query.expanded)) {
+          query.expanded = [query.expanded];
+        }
+        var queryPos = query.expanded.indexOf(documentID);
+        if (queryPos > -1) {
+          query.expanded.splice(queryPos, 1);
+        } else {
+          query.expanded.push(documentID);
+        }
       } else {
-        url += '?expanded=' + documentID;
+        query.expanded = [];
+        query.expanded.push(documentID);
       }
+
+      ctx.querystring = '?' + QueryString.stringify(query);
+
+      url += ctx.querystring;
 
       ctx.path = url;
 
