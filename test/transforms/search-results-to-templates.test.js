@@ -19,18 +19,15 @@ const testResult = {
     ]
   },
   aggregations: {
-    total: { doc_count: 3554, total: { value: 3554 } },
-    total_per_categories: {
-      doc_count_error_upper_bound: 0,
-      sum_other_doc_count: 0,
-      buckets: [
-        { key: 'object', doc_count: 3304 },
-        { key: 'agent', doc_count: 221 },
-        { key: 'term', doc_count: 36 },
-        { key: 'archive', doc_count: 29 },
-        { key: 'place', doc_count: 7 }
-      ]
-    }
+    total_categories: {
+      doc_count: 17,
+      documents: { doc_count: 0, documents_total: [{value: 29}] },
+      objects: { doc_count: 13, objects_total: [{value: 3304}] },
+      people: { doc_count: 4, people_total: [{value: 221}] },
+      all: { doc_count: 17, all_total: {
+        doc_count_error_upper_bound: 0,
+        sum_other_doc_count: 0,
+        buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ] } } }
   }
 };
 
