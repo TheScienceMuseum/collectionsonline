@@ -85,6 +85,7 @@ const dataToCopy = [
   {type: 'archive', id: 'smga-documents-110000003'},
   {type: 'object', id: 'smgc-objects-37959'},
   {type: 'object', id: 'smgc-objects-wrongid'},
+  {type: 'object', id: 'smgc-objects-67812'},
   {type: 'agent', id: 'smgc-people-17351'},
   {type: 'agent', id: 'smgc-people-36993'},
   {type: 'agent', id: 'smgc-people-wrongid'},
@@ -101,7 +102,8 @@ const searchToCopy = [
   {q: 'ada objects', params: {type: 'objects'}},
   {q: 'ada people', params: {type: 'people'}},
   {q: 'Lumière', params: {type: 'people'}},
-  {q: 'Lumière filmmaker', queryParams: {'filter[occupation]': 'filmmaker'}, params: {type: 'people'}}
+  {q: 'Lumière filmmaker', queryParams: {'filter[occupation]': 'filmmaker'}, params: {type: 'people'}},
+  {q: 'sonnabend', params: {}}
 ];
 
 const related = [
