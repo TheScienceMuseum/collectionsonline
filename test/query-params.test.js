@@ -1,7 +1,9 @@
 const test = require('tape');
 const queryParams = require('../lib/query-params/query-params');
+const dir = __dirname.split('/')[__dirname.split('/').length - 1];
+const file = dir + __filename.replace(__dirname, '') + ' > ';
 
-test('Should build a query param object from a html request', (t) => {
+test(file + 'Should build a query param object from a html request', (t) => {
   t.plan(4);
   const query = {
     query: {
@@ -24,7 +26,7 @@ test('Should build a query param object from a html request', (t) => {
   t.end();
 });
 
-test('Should build a query param object from a json api request', (t) => {
+test(file + 'Should build a query param object from a json api request', (t) => {
   t.plan(6);
   const query = {
     query: {
@@ -48,7 +50,7 @@ test('Should build a query param object from a json api request', (t) => {
   t.end();
 });
 
-test('Should build a query param object with the value if the format is not html or json', (t) => {
+test(file + 'Should build a query param object with the value if the format is not html or json', (t) => {
   t.plan(1);
   const query = {
     query: {
@@ -61,5 +63,22 @@ test('Should build a query param object with the value if the format is not html
 
   const result = queryParams('wrongFormat', query);
   t.equal(result.filter.people.occupation, 'mathematician,developer', 'filter by occupation is null');
+  t.end();
+});
+
+test(file + 'Should convert pageNumber and pageSize to a type number', (t) => {
+  t.plan(2);
+  const query = {
+    query: {
+      q: 'ada',
+      'page[number]': '2',
+      'page[size]': '100'
+    },
+    params: {}
+  };
+
+  const result = queryParams('html', query);
+  t.equal(typeof result.pageNumber, 'number', 'pageNumber is a number');
+  t.equal(typeof result.pageSize, 'number', 'pageSize is a number');
   t.end();
 });
