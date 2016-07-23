@@ -15,8 +15,6 @@ module.exports = function (elastic, searchToCopy, database, next) {
     }
     const queryParams = createQueryParams('html', parameters);
     search(elastic, queryParams, (errorSearch, responseSearch) => {
-      // delete the list of results as we don't use them in our tests yet
-      responseSearch.hits.hits = [];
       database.search[searchItem.q] = {error: errorSearch, response: responseSearch};
       count += 1;
       if (count === searchToCopy.length) {

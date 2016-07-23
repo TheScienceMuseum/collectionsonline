@@ -27,6 +27,7 @@ module.exports = function (page) {
     .then(function (json) {
       if (json.errors) return Promise.reject(json.errors[0]);
       var data = JSONToHTML(json);
+      data.page = 'person';
       pageEl.innerHTML = Templates['people'](data);
       window.scrollTo(0, 0);
     })
