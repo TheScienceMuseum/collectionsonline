@@ -67,7 +67,7 @@ test(file + 'Person template data is correctly built', (t) => {
 
 test(file + 'Document template data is correctly built', (t) => {
   var templateData;
-  t.plan(4);
+  t.plan(5);
   t.doesNotThrow(() => {
     templateData = searchToTemplate(query, jsonData);
   }, 'Transform did not throw error');
@@ -77,6 +77,7 @@ test(file + 'Document template data is correctly built', (t) => {
   t.ok(documentResult, 'document result is returned');
   t.equal(documentResult.link, '/documents/smga-documents-110000003', 'document link is correct');
   t.equal(documentResult.title, 'The Babbage Papers', 'document title is correct');
+  t.equal(documentResult.figcaption, '11 plan press drawers and 8 linear meters of shelving', 'document figcaption is correct');
   t.end();
 });
 

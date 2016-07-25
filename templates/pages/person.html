@@ -28,10 +28,11 @@
         {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
 
       </div>
+      <div class="columns medium-4">
+        {{> records/panel-cite }}
+      </div>
     </div>
-    </section>
-
-    {{> records/record-details }}
+  </section>
 
     {{#if related.objects}}{{> records/record-related-objects }}{{/if}}
     {{#if related.documents}}{{> records/record-related-documents }}{{/if}}
