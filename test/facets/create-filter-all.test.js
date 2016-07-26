@@ -1,36 +1,66 @@
 const test = require('tape');
-const createFilterPeople = require('../../lib/facets/create-filter-all');
+const queryString = require('querystring');
+const createFilterAll = require('../../lib/facets/create-filter-all');
+const createFilterPeople = require('../../lib/facets/create-filter-people');
+const createFiltersObjects = require('../../lib/facets/create-filter-objects');
+const createFiltersDocuments = require('../../lib/facets/create-filter-documents');
+const createQueryParams = require('../../lib/query-params/query-params');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
 
 test(file + 'The filters date are included in the array filter', (t) => {
-  const queryParams = {
-    filter: {
-      all: {
-        dateFrom: new Date('1800'),
-        dateTo: new Date('1900')
-      },
-      objects: {}
+  const query = queryString.parse('q=ada&filter%5Bdate%5Bfrom%5D%5D=1800&page%5Bsize%5D=50');
+  const queryParams = createQueryParams('html', {query: query, params: {}});
+
+  const filters = {
+    people: createFilterPeople(queryParams),
+    objects: createFiltersObjects(queryParams),
+    documents: createFiltersDocuments(queryParams)
+  };
+
+  const filtersAll = createFilterAll(queryParams, filters);
+  const expected = {
+    bool: {
+      must: [
+        {
+          terms: {
+            'type.base': ['agent', 'object']
+          }
+        }
+      ],
+      should: [
+        {bool: {must: [{term: {'type.base': 'agent'}}, {range: {'lifecycle.birth.date.earliest': {gte: 1800}}}]}},
+        {bool: {must: [{term: {'type.base': 'object'}}, {range: {'lifecycle.creation.date.latest': {gte: 1800}}}]}},
+        {bool: {must: [{term: {'type.base': 'archive'}}]}}
+      ]
     }
   };
-  const filters = createFilterPeople(queryParams);
-  t.equal(filters.length, 2, 'The dates are part of the filter array');
+
   t.plan(1);
+  t.deepEqual(filtersAll, expected, 'Filter all filters is ok');
   t.end();
 });
 
 test(file + 'The filter people array do not include a term filter of a wrong date format', (t) => {
-  const queryParams = {
-    filter: {
-      all: {
-        dateFrom: new Date('wrongDateFormat'),
-        dateTo: new Date('wrongDateFormat')
-      },
-      objects: {}
-    }
+  const query = queryString.parse('q=ada&filter%5Bdate%5Bfrom%5D%5D=wrongDate&page%5Bsize%5D=50');
+  const queryParams = createQueryParams('html', {query: query, params: {}});
+
+  const filters = {
+    people: createFilterPeople(queryParams),
+    objects: createFiltersObjects(queryParams),
+    documents: createFiltersDocuments(queryParams)
   };
-  const filters = createFilterPeople(queryParams);
-  t.deepEqual(filters, [], 'The wrong date format are not included in the filter array');
+
+  const filtersAll = createFilterAll(queryParams, filters);
+  const mustExpected = [
+    {
+      terms: {
+        'type.base': ['agent', 'object', 'archive']
+      }
+    }
+  ];
+
+  t.deepEqual(filtersAll.bool.must, mustExpected, 'Must get all they types');
   t.plan(1);
   t.end();
 });
