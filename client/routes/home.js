@@ -11,6 +11,8 @@ module.exports = function (page) {
   function render (ctx, next) {
     var pageEl = document.getElementsByTagName('main')[0];
     pageEl.innerHTML = Templates['home'](data);
+    // refresh the title of the page
+    document.getElementsByTagName('title')[0].textContent = data.title;
     next();
   }
 
