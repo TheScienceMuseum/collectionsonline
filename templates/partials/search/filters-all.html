@@ -1,6 +1,6 @@
 <!-- DATE -->
 <div class="filter filter--open">
-  <a class="filter__name">Date</a>
+  <a href="{{lookup links.clearFacet "filter[dates]"}}" class="filter__name">Date</a>
   <div class="filter__options filter__daterange">
     <label>From <input type="number" placeholder="1600" name="filter[date[from]]" value="{{lookup selectedFilters "dateFrom"}}"/></label>
     <label>To <input type="number" placeholder="2016" name="filter[date[to]]" value="{{lookup selectedFilters "dateTo"}}"/></label>
@@ -9,7 +9,7 @@
 
 <!-- CATEGGORY -->
 <div class="filter filter--active filter--open" data-filter="Category">
-  <a class="filter__name">Category</a>
+  <a href="{{lookup links.clearFacet "filter[categories]"}}" class="filter__name">Category</a>
   <div class="filter__options">
     <ul>
       {{#each filters.category}}
@@ -22,7 +22,7 @@
 
 <!-- MAKER -->
 <div class="filter filter--active filter--open" data-filter="Maker">
-  <a class="filter__name">Maker</a>
+  <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">Maker</a>
   <div class="filter__options">
     <ul>
       {{#each filters.maker}}
@@ -36,7 +36,7 @@
 
 <!-- TYPE -->
 <div class="filter filter--active filter--open" data-filter="Type">
-  <a class="filter__name">Object type</a>
+  <a href="{{lookup links.clearFacet "filter[type]"}}" class="filter__name">Object type</a>
   <div class="filter__options">
     <ul>
       {{#each filters.type}}
@@ -48,7 +48,7 @@
 
 <!-- PLACE -->
 <div class="filter filter--active filter--open" data-filter="Place">
-  <a class="filter__name">Place</a>
+  <a href="{{lookup links.clearFacet "filter[places]"}}" class="filter__name">Place</a>
   <div class="filter__options">
     <ul>
       {{#each filters.place}}
@@ -62,7 +62,7 @@
 
 <!-- USER -->
 <div class="filter filter--active filter--open" data-filter="User">
-  <a class="filter__name">User</a>
+  <a href="{{lookup links.clearFacet "filter[user]"}}" class="filter__name">User</a>
   <div class="filter__options">
     <ul>
       {{#each filters.user}}
