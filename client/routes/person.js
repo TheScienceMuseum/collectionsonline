@@ -29,7 +29,7 @@ module.exports = function (page) {
       var data = JSONToHTML(json);
       data.page = 'person';
       pageEl.innerHTML = Templates['people'](data);
-      document.getElementsByTagName('title')[0].textContent = data.title;
+      document.getElementsByTagName('title')[0].textContent = data.titlePage;
       window.scrollTo(0, 0);
     })
     .then(function () {

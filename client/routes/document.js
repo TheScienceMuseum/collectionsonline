@@ -88,7 +88,9 @@ module.exports = function (page) {
       })
       .then(function (json) {
         if (json.errors) return Promise.reject(json.errors[0]);
-        archiveTree.innerHTML = Templates['archiveTree'](JSONToHTML(json));
+        var data = JSONToHTML(json);
+        archiveTree.innerHTML = Templates['archiveTree'](data);
+        document.getElementsByTagName('title')[0].textContent = data.titlePage;
         listeners(ctx);
       })
       .catch(function (err) {

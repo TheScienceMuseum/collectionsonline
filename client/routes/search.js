@@ -54,7 +54,7 @@ module.exports = function (page) {
     }
 
     // refresh the title of the page
-    document.getElementsByTagName('title')[0].textContent = ctx.state.data.title;
+    document.getElementsByTagName('title')[0].textContent = ctx.state.data.titlePage;
     next();
   }
 
