@@ -1,6 +1,7 @@
 const test = require('tape');
 const sortRelatedItems = require('../lib/sort-related-items.js');
 var sortedItems;
+var sortedChildren;
 var relatedItems = [
   {
     _id: 'smgc-object-1234',
@@ -21,6 +22,33 @@ var relatedItems = [
     _type: 'object',
     _source: {
       summary_title: 'Object 2'
+    }
+  }
+];
+
+var relatedChildren = [
+  {
+    _id: 'smgc-archive-1234',
+    _type: 'archive',
+    _source: {
+      summary_title: 'Hello World',
+      identifier: [{value: 2}]
+    }
+  },
+  {
+    _id: 'smgc-archive-3466',
+    _type: 'archive',
+    _source: {
+      summary_title: 'Archive No. 1',
+      identifier: [{value: 1}]
+    }
+  },
+  {
+    _id: 'smgc-archive-6789',
+    _type: 'archive',
+    _source: {
+      summary_title: 'Archive 2',
+      identifier: [{value: 1}]
     }
   }
 ];
@@ -62,5 +90,17 @@ test('Items should be correctly mapped', (t) => {
   t.ok(sortedItems.relatedDocuments.find(el => el.id === 'smgc-documents-1234'), 'contains correct document id');
   t.ok(sortedItems.relatedObjects.find(el => el.type === 'objects'), 'contains correct object type');
   t.ok(sortedItems.relatedDocuments.find(el => el.type === 'documents'), 'contains correct document type');
+  t.end();
+});
+
+test('Children should be correctly sorted', (t) => {
+  t.plan(5);
+  t.doesNotThrow(() => {
+    sortedChildren = sortRelatedItems(relatedChildren, 'children');
+  }, 'sorting items does not throw an error');
+  t.ok(sortedChildren.relatedChildren);
+  t.equal(sortedChildren.relatedChildren[0].id, 'smgc-documents-3466', 'First item is correct');
+  t.equal(sortedChildren.relatedChildren[1].id, 'smgc-documents-6789', 'Second item is correct');
+  t.equal(sortedChildren.relatedChildren[2].id, 'smgc-documents-1234', 'Third item is correct');
   t.end();
 });

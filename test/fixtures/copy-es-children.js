@@ -9,6 +9,7 @@ module.exports = function (elastic, children, database, next) {
       var response = {};
       response.hits = {hits: childrenResponse};
       database.children[TypeMapping.toInternal(item.id)] = {error: error, response: response};
+      database.children[TypeMapping.toInternal('smga-documents-110066453')] = { error: { 'status': 400, 'displayName': 'BadRequest', 'message': 'Bad Request' } };
       count += 1;
       if (count === children.length) {
         return next();
