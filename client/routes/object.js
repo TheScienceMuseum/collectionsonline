@@ -30,6 +30,7 @@ module.exports = function (page) {
       var data = JSONToHTML(json);
       data.slides = exampleData.slides;
       pageEl.innerHTML = Templates['objects'](data);
+      document.getElementsByTagName('title')[0].textContent = data.titlePage;
       window.scrollTo(0, 0);
     })
     .then(function () {

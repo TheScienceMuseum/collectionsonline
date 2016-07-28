@@ -52,6 +52,9 @@ module.exports = function (page) {
       $('.filtercolumn').removeClass('filtercolumn--filtersactive');
       $('.control--filters').removeClass('control--active');
     }
+
+    // refresh the title of the page
+    document.getElementsByTagName('title')[0].textContent = ctx.state.data.titlePage;
     next();
   }
 
