@@ -1,5 +1,6 @@
 module.exports = {
-  title: 'Collections Site',
+  title: 'Science Museum Group Collection',
+  titlePage: 'Science Museum Group Collection',
   strap: 'Search our collection',
   intro: 'Explore over 150,000 objects and archives from the <a href="#">Science Museum</a>, <a href="#">Museum of Science and Industry</a>, <a href="#">National Media Museum</a> and <a href="#">National Railway Museum</a>.',
   collection: [{

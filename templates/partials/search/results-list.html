@@ -1,21 +1,21 @@
-      {{#each searchresults}}
-        <div class="searchresults__list">
-          <a href="{{ this.type }}/id">
-            <div class="resultlist {{#if type}}resultlist--{{ this.type }}{{/if}}">
-              {{#if figure}}
-                <figure class="resultlist__figure">
-                  <img src="{{ this.figure }}" />
-                </figure>
-              {{/if}}
-              <div class="resultlist__info">
-                <h4 class="resultlist__title">
-                  {{> global/icon i=this.type }}
-                  {{#if ondisplay}}{{> icon i="room" size="16" }}{{/if}}
-                  {{ this.title }}
-                </h4>
-                <p class="resultlist__description">{{{ this.description }}}</p>
-              </div>
-            </div>
-          </a>
-        </div>
-      {{/each}}
+{{#each results}}
+<div class="searchresults__list">
+  <a href="{{this.link}}">
+    <div class="resultlist {{#if type}}resultlist--{{ this.type }}{{/if}}">
+      {{#if figure}}
+        <figure class="resultlist__figure">
+          <img src="{{ this.figure }}" />
+        </figure>
+      {{/if}}
+      <div class="resultlist__info">
+        <h4 class="resultlist__title">
+          {{> global/icon i=this.type }}
+          {{#if ondisplay}}{{> icon i="room" size="16" }}{{/if}}
+          {{ this.title }}
+        </h4>
+        <p class="resultlist__description">{{{ this.description }}}</p>
+      </div>
+    </div>
+  </a>
+</div>
+{{/each}}

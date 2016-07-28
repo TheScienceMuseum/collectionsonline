@@ -73,6 +73,11 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
+  'search/results-list',
+  Fs.readFileSync('./templates/partials/search/results-list.html', 'utf8')
+);
+
+Handlebars.registerPartial(
   'search/noresults',
   Fs.readFileSync('./templates/partials/search/noresults.html', 'utf8')
 );

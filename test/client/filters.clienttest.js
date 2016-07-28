@@ -5,7 +5,7 @@ module.exports = {
       .waitForElementVisible('body', 1000)
       .click('.searchtab:nth-of-type(2)')
       .pause(1000)
-      .assert.urlEquals('http://localhost:8000/search/people?q=charles&page%5Bsize%5D=50')
+      .assert.urlEquals('http://localhost:8000/search/people?q=charles&page%5Bsize%5D=50&page%5Btype%5D=search')
       .click('#fb')
       .waitForElementVisible('.filter__box[value=artist]', 3000)
       .click('.filter__box[value=artist]')

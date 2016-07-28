@@ -83,6 +83,7 @@ const dataToCopy = [
   { type: 'archive', id: 'smga-documents-wrongid' },
   {type: 'archive', id: 'smga-documents-110069402'},
   {type: 'archive', id: 'smga-documents-110000003'},
+  {type: 'archive', id: 'smga-documents-110066453'},
   {type: 'object', id: 'smgc-objects-37959'},
   {type: 'object', id: 'smgc-objects-wrongid'},
   {type: 'object', id: 'smgc-objects-67812'},
@@ -115,7 +116,8 @@ const related = [
 const children = [
   {id: 'smga-documents-110000003'},
   {id: 'smga-archive-110000316'},
-  {id: 'smga-documents-110000036'}
+  {id: 'smga-documents-110000036'},
+  {id: 'smga-documents-110066453'}
 ];
 
 var database = {};
