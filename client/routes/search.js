@@ -6,8 +6,8 @@ var searchBox = require('../lib/search-box');
 var createQueryParams = require('../../lib/query-params/query-params.js');
 var getData = require('../lib/get-data.js');
 var toJsonUrl = require('../lib/to-json-url');
-var getQueryString = require('../lib/get-qs');
 var filterState = require('../lib/filter-state');
+var filterResults = require('../lib/filter-results');
 
 module.exports = function (page) {
   page('/search', load, render, listeners);
@@ -44,7 +44,7 @@ module.exports = function (page) {
 
     // Shows filter toggle button if javascript enabled
     document.getElementById('fb').className = 'control__button';
-    // document.querySelector('button.filterpanel__button').style.display = 'none';
+    document.querySelector('button.filterpanel__button').style.display = 'none';
 
     // Hides filterpanel by default if javascript is enabled
     if (!ctx.isFilterOpen) {
@@ -94,18 +94,26 @@ module.exports = function (page) {
     * Build a html url with the new filter selected (get the current url + new filter)
     */
     $('.filter:not(.filter--uncollapsible)').on('click', '[type=checkbox]', function (e) {
-      var url = ctx.pathname + '?' + getQueryString();
-      page.show(url);
+      filterResults(ctx, page);
+    });
+
+    /**
+    * Search when one of the input date onblur
+    */
+    $('.filter:not(.filter--uncollapsible)').on('blur', '[type=number]', function (e) {
+      filterResults(ctx, page);
     });
 
     /**
     * Search when the result per page is change
     */
     $('.control--rpp select').on('change', function (e) {
-      var url = ctx.pathname + '?' + getQueryString();
-      page.show(url);
+      filterResults(ctx, page);
     });
 
+    /**
+    * update filter status (open/close)
+    */
     $('#fb').on('click', function (e) {
       filterState.isFilterOpen = !filterState.isFilterOpen;
     });

@@ -8,8 +8,8 @@ module.exports = () => ({
     var search;
     const cb = arguments[arguments.length - 1];
 
-    if (arguments[0].body.query.multi_match) {
-      q = arguments[0].body.query.multi_match.query;
+    if (arguments[0].body.query.filtered.query) {
+      q = arguments[0].body.query.filtered.query.multi_match.query;
     } else if (getNestedProperty(arguments, '0.body.query.filtered.filter.bool.should')) {
       q = arguments[0].body.query.filtered.filter.bool.should[1].term['agents.admin.uid'];
     } else if (getNestedProperty(arguments, '0.body.query.filtered.filter.bool.must')) {
