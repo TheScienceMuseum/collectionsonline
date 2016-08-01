@@ -23,34 +23,38 @@ module.exports = function (ctx) {
   });
 
   // make carousel as big as we have screen room for.
-  $('.cite__expand').on('click', function () {
-    // one of either imgpanel__singleimg or imgpanel__slick will exist, and they should work the same
-    var $thingsWithH = $('.record-imgpanel__slick, .record-imgpanel__slick .pic, .record-imgpanel__singleimg, .record-imgpanel__singleimg .pic');
+  $('.record-imgpanel').on('click', function (e) {
+    if ($(e.target).hasClass('cite__expand') || $(e.target).parent('.slick-active').length) {
+      // one of either imgpanel__singleimg or imgpanel__slick will exist, and they should work the same
+      var $thingsWithH = $('.record-imgpanel__slick, .record-imgpanel__slick .pic, .record-imgpanel__singleimg, .record-imgpanel__singleimg .pic');
 
-    var maxH = $(window).height() - $('.record-imgpanel').height() + $('.record-imgpanel__slick').height();
-    var newPos = $('.record-imgpanel').offset().top;
-    $('body').scrollTop(newPos);
+      var maxH = $(window).height() - $('.record-imgpanel').height() + $('.record-imgpanel__slick').height();
+      var newPos = $('.record-imgpanel').offset().top;
+      $('body').scrollTop(newPos);
 
-    if ($('.record-imgpanel').hasClass('record-imgpanel--expanded')) {
-      $thingsWithH.height('');
-      $('.record-imgpanel').removeClass('record-imgpanel--expanded');
-      $(this).removeClass('cite__expand--expanded');
-    } else {
-      $thingsWithH.height(maxH);
-      $('.record-imgpanel').addClass('record-imgpanel--expanded');
-      $(this).addClass('cite__expand--expanded');
-    }
+      if ($('.record-imgpanel').hasClass('record-imgpanel--expanded')) {
+        $thingsWithH.height('');
+        $('.record-imgpanel').removeClass('record-imgpanel--expanded');
+        $(this).removeClass('cite__expand--expanded');
+      } else {
+        $thingsWithH.height(maxH);
+        $('.record-imgpanel').addClass('record-imgpanel--expanded');
+        if ($(e.target).hasClass('cite__expand')) {
+          $(e.target).addClass('cite__expand--expanded');
+        }
+      }
 
-    if ($('.record-imgpanel__dragon').hasClass('hidden')) {
-      $('.record-imgpanel__slickwrap').addClass('hidden');
-      $('.record-imgpanel__dragon').removeClass('hidden');
-      openseadragon($('.slick-active img')[0].src, ctx);
-    } else {
-      ctx.viewer.destroy();
-      ctx.viewer = false;
-      ctx.save();
-      $('.record-imgpanel__slickwrap').removeClass('hidden');
-      $('.record-imgpanel__dragon').addClass('hidden');
+      if ($('.record-imgpanel__dragon').hasClass('hidden')) {
+        $('.record-imgpanel__slickwrap').addClass('hidden');
+        $('.record-imgpanel__dragon').removeClass('hidden');
+        openseadragon($('.slick-active img')[0].src, ctx);
+      } else {
+        ctx.viewer.destroy();
+        ctx.viewer = false;
+        ctx.save();
+        $('.record-imgpanel__slickwrap').removeClass('hidden');
+        $('.record-imgpanel__dragon').addClass('hidden');
+      }
     }
   });
 
