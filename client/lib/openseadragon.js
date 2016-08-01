@@ -8,10 +8,7 @@ module.exports = function (imgUrl, ctx) {
     id: 'openseadragon',
     // element: $('.record-imgpanel__singleimg'),
     prefixUrl: '/assets/img/openseadragon/',
-    zoomOutButton: 'osd-zoomout',
-    zoomInButton: 'osd-zoomin',
-    homeButton: 'osd-home',
-    fullPageButton: 'osd-fullpage',
+    showZoomControl: true,
     // just using an example static image, will be swapped for some magic tiles
     tileSources: {
       type: 'image',
