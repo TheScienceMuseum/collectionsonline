@@ -158,6 +158,8 @@ Handlebars.registerHelper('getinventorynumber', require('../templates/helpers/ge
 
 Handlebars.registerHelper('gettodaysdate', require('../templates/helpers/gettodaysdate.js'));
 
+Handlebars.registerHelper('ifmultiplepages', require('../templates/helpers/ifmultiplepages.js'));
+
 // Routes
 module.exports = {
   'home': Handlebars.compile(

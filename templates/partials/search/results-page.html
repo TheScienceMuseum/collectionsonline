@@ -38,6 +38,6 @@
 
   </div>
 
-  {{> search/pagination }}
+  {{#ifmultiplepages pagination.totalPages}}{{> search/pagination }}{{/ifmultiplepages}}
 
 </div>
