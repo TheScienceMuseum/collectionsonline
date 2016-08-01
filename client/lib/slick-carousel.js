@@ -1,7 +1,8 @@
 var $ = window.$ = window.jQuery = require('jquery');
 require('slick-carousel');
+var openseadragon = require('./openseadragon');
 
-module.exports = function () {
+module.exports = function (ctx) {
   // main image carousel thing
   // http://kenwheeler.github.io/slick/
   $('.record-imgpanel__slick').slick({
@@ -26,7 +27,7 @@ module.exports = function () {
     // one of either imgpanel__singleimg or imgpanel__slick will exist, and they should work the same
     var $thingsWithH = $('.record-imgpanel__slick, .record-imgpanel__slick .pic, .record-imgpanel__singleimg, .record-imgpanel__singleimg .pic');
 
-    var maxH = $(window).height() - $('.record-imgpanel').height() + $('.record-imgpanel__slick').height() + $('.record-imgpanel__singleimg').height();
+    var maxH = $(window).height() - $('.record-imgpanel').height() + $('.record-imgpanel__slick').height();
     var newPos = $('.record-imgpanel').offset().top;
     $('body').scrollTop(newPos);
 
@@ -38,6 +39,17 @@ module.exports = function () {
       $thingsWithH.height(maxH);
       $('.record-imgpanel').addClass('record-imgpanel--expanded');
       $(this).addClass('cite__expand--expanded');
+    }
+
+    if ($('.record-imgpanel__dragon').hasClass('hidden')) {
+      $('.record-imgpanel__slickwrap').addClass('hidden');
+      $('.record-imgpanel__dragon').removeClass('hidden');
+      openseadragon($('.slick-active img')[0].src, ctx);
+    } else {
+      ctx.viewer.destroy();
+      ctx.save();
+      $('.record-imgpanel__slickwrap').removeClass('hidden');
+      $('.record-imgpanel__dragon').addClass('hidden');
     }
   });
 };

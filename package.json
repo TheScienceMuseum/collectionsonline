@@ -101,5 +101,10 @@
         }
       ]
     ]
+  },
+  "semistandard": {
+    "globals": [
+      "OpenSeadragon"
+    ]
   }
 }
