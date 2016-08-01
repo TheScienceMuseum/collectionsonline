@@ -1,9 +1,11 @@
 var Templates = require('../templates');
 var initJqueryComp = require('../lib/init-jquery-components.js');
-var getDataItem = require('../lib/get-data-item');
+var getData = require('../lib/get-data.js');
+var JSONToHTML = require('../../lib/transforms/json-to-html-data');
+var searchListener = require('../lib/search-listener');
 
 module.exports = function (page) {
-  page('/people/:id', load, render);
+  page('/people/:id', load, render, listeners);
 };
 
 function load (ctx, next) {
@@ -13,10 +15,14 @@ function load (ctx, next) {
     };
     var id = ctx.params.id;
     var url = '/people/' + id;
-    getDataItem(url, opts, function (data) {
+    getData(url, opts, function (json) {
+      var data = JSONToHTML(json);
       ctx.state.data = data;
       next();
     });
+  } else {
+    ctx.state.data = {};
+    listeners(ctx, next);
   }
 }
 
@@ -27,6 +33,9 @@ function render (ctx, next) {
   document.getElementsByTagName('title')[0].textContent = ctx.state.data.titlePage;
   window.scrollTo(0, 0);
   initJqueryComp();
+  next();
 }
 
-// TODO add listeners for the search input
+function listeners (ctx, next) {
+  searchListener();
+}

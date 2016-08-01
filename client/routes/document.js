@@ -2,7 +2,9 @@ var Templates = require('../templates');
 var initJqueryComp = require('../lib/init-jquery-components.js');
 var $ = require('jquery');
 var QueryString = require('querystring');
-var getDataItem = require('../lib/get-data-item');
+var getData = require('../lib/get-data.js');
+var JSONToHTML = require('../../lib/transforms/json-to-html-data');
+var searchListener = require('../lib/search-listener');
 
 module.exports = function (page) {
   page('/documents/:id', load, render, listeners);
@@ -15,7 +17,8 @@ function load (ctx, next) {
     };
     var id = ctx.params.id;
     var url = '/documents/' + id;
-    getDataItem(url, opts, function (data) {
+    getData(url, opts, function (json) {
+      var data = JSONToHTML(json);
       ctx.state.data = data;
       next();
     });
@@ -35,6 +38,7 @@ function render (ctx, next) {
 }
 
 function listeners (ctx, next) {
+  searchListener();
   $('.expand').on('submit', function (e) {
     e.preventDefault();
     var archiveTree = document.getElementById('archive-tree');
@@ -67,7 +71,8 @@ function listeners (ctx, next) {
       headers: { Accept: 'application/vnd.api+json' }
     };
 
-    getDataItem(url, opts, function (data) {
+    getData(url, opts, function (json) {
+      var data = JSONToHTML(json);
       archiveTree.innerHTML = Templates['archiveTree'](data);
       document.getElementsByTagName('title')[0].textContent = data.titlePage;
       listeners(ctx, next);

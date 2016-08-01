@@ -9,6 +9,8 @@ var toJsonUrl = require('../lib/to-json-url');
 var filterState = require('../lib/filter-state');
 var filterResults = require('../lib/filter-results');
 var page = require('page');
+var searchResultsToTemplateData = require('../../lib/transforms/search-results-to-template-data');
+var searchListener = require('../lib/search-listener');
 
 module.exports = function (page) {
   page('/search', load, render, listeners);
@@ -26,13 +28,13 @@ function load (ctx, next) {
     };
     var qs = QueryString.parse(ctx.querystring);
     var queryParams = createQueryParams('html', {query: qs, params: {type: ctx.params.type}});
-    getData(ctx.pathname + '?' + toJsonUrl(ctx.querystring), opts, queryParams, function (data) {
+    getData(ctx.pathname + '?' + toJsonUrl(ctx.querystring), opts, function (json) {
+      var data = searchResultsToTemplateData(queryParams, json);
       ctx.state.data = data;
       next();
     });
   } else {
     ctx.state.data = {};
-    // jump to the listeners function to add the event listeners to the dom
     listeners(ctx, next);
   }
 }
@@ -64,19 +66,7 @@ function render (ctx, next) {
 * Define event listeners for search and filters
 */
 function listeners (ctx, next) {
-  var searchBoxEl = document.getElementById('searchbox');
-
-  // New Search
-  searchBoxEl.addEventListener('submit', function (e) {
-    e.preventDefault();
-    // TODO: Maybe a nice loading spinner?
-    $('#searchresults .searchresults__column').animate({ opacity: 0.5 });
-    var qs = {};
-    qs.q = $('.tt-input', this).val();
-    var url = ctx.pathname + '?' + QueryString.stringify(qs);
-    page.show(url);
-  });
-
+  searchListener();
   // Show/hide filters
   $('.control__button').on('click', function (e) {
     $('.searchresults').toggleClass('searchresults--filtersactive');
