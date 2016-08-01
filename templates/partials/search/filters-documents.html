@@ -1,15 +1,17 @@
 <input type="hidden" name="fields[type]" value="documents">
 <!-- ARCHIVE -->
-<div class="filter filter--active filter--open" data-filter="Archive">
-  <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name">Archive</a>
-  <div class="filter__options">
-    <ul>
-      {{#each filters.archive}}
-        <li><label><input type="checkbox" class="filter__box" name="filter[archive]" value="{{value}}" {{isselected ../selectedFilters "archive" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
-      {{/each}}
-    </ul>
+{{#if filters.archive.length}}
+  <div class="filter filter--active filter--open" data-filter="Archive">
+    <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name">Archive</a>
+    <div class="filter__options">
+      <ul>
+        {{#each filters.archive}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[archive]" value="{{value}}" {{isselected ../selectedFilters "archive" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{/each}}
+      </ul>
+    </div>
   </div>
-</div>
+{{/if}}
 
 <!-- FORMAT -->
 
@@ -22,15 +24,17 @@
 <!-- PLACE -->
 
 <!-- ORGANISATION -->
-<div class="filter filter--active filter--open" data-filter="Organisation">
-  <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name">Organisation</a>
-  <div class="filter__options">
-    <ul>
-      {{#each filters.organisation}}
-        <li><label><input type="checkbox" class="filter__box" name="filter[organisations]" value="{{value}}" {{isselected ../selectedFilters "organisations" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
-      {{/each}}
-    </ul>
+{{#if filters.organisation.length}}
+  <div class="filter filter--active filter--open" data-filter="Organisation">
+    <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name">Organisation</a>
+    <div class="filter__options">
+      <ul>
+        {{#each filters.organisation}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[organisations]" value="{{value}}" {{isselected ../selectedFilters "organisations" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{/each}}
+      </ul>
+    </div>
   </div>
-</div>
+{{/if}}
 
 <!-- IMAGE -->
