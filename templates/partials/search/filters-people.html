@@ -8,35 +8,41 @@
   </div>
 </div>
 
-<div class="filter filter--active filter--open" data-filter="Occupation">
-  <a href="{{lookup links.clearFacet "filter[occupation]"}}" class="filter__name">Occupation</a>
-  <div class="filter__options">
-    <ul>
-      {{#each filters.occupation}}
-        <li><label><input type="checkbox" class="filter__box" name="filter[occupation]" value="{{value}}" {{isselected ../selectedFilters "occupation" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
-      {{/each}}
-    </ul>
+{{#if filters.occupation.length}}
+  <div class="filter filter--active filter--open" data-filter="Occupation">
+    <a href="{{lookup links.clearFacet "filter[occupation]"}}" class="filter__name">Occupation</a>
+    <div class="filter__options">
+      <ul>
+        {{#each filters.occupation}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[occupation]" value="{{value}}" {{isselected ../selectedFilters "occupation" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{/each}}
+      </ul>
+    </div>
   </div>
-</div>
+{{/if}}
 
-<div class="filter filter--active filter--open" data-filter="Place born">
-  <a href="{{lookup links.clearFacet "filter[birth[place]]"}}" class="filter__name">Place born</a>
-  <div class="filter__options">
-    <ul>
-      {{#each filters.place_born}}
-        <li><label><input type="checkbox" class="filter__box" name="filter[birth[place]]" value="{{value}}" {{isselected ../selectedFilters "birthPlace" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
-      {{/each}}
-    </ul>
+{{#if filters.place_born.length}}
+  <div class="filter filter--active filter--open" data-filter="Place born">
+    <a href="{{lookup links.clearFacet "filter[birth[place]]"}}" class="filter__name">Place born</a>
+    <div class="filter__options">
+      <ul>
+        {{#each filters.place_born}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[birth[place]]" value="{{value}}" {{isselected ../selectedFilters "birthPlace" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{/each}}
+      </ul>
+    </div>
   </div>
-</div>
+{{/if}}
 
-<div class="filter filter--active filter--open" data-filter="Organisation">
-  <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name">Organisation / Person</a>
-  <div class="filter__options">
-    <ul>
-      {{#each filters.organisation}}
-        <li><label><input type="checkbox" class="filter__box" name="filter[organisations]" value="{{value}}" {{isselected ../selectedFilters "organisations" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
-      {{/each}}
-    </ul>
+{{#if filters.organisation}}
+  <div class="filter filter--active filter--open" data-filter="Organisation">
+    <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name">Organisation / Person</a>
+    <div class="filter__options">
+      <ul>
+        {{#each filters.organisation}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[organisations]" value="{{value}}" {{isselected ../selectedFilters "organisations" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{/each}}
+      </ul>
+    </div>
   </div>
-</div>
+{{/if}}
