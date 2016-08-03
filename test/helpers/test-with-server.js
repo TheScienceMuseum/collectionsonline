@@ -7,7 +7,7 @@ const createMockDatabase = require('./mock-database');
 // Wrap tape's test function with a function that creates a new server and mocks dependencies
 module.exports = (description, cb) => {
   const elastic = createMockDatabase();
-
+  config.auth = false;
   createServer(elastic, config, (err, ctx) => {
     if (err) {
       throw err;
