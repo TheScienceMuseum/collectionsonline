@@ -11,7 +11,10 @@ module.exports = (elastic, config, cb) => {
   });
 
   server.route(routes(elastic, config));
+  console.log('process.env', process.env.auth);
+  console.log('config auth:', config.auth, typeof config.auth);
   if (config.auth) {
+    console.log('auth mode');
     server.route(auth());
     server.register(require('hapi-auth-jwt2'), (err) => {
       if (err) {
