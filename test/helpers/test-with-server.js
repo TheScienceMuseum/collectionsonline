@@ -5,9 +5,13 @@ const config = require('../../config');
 const createMockDatabase = require('./mock-database');
 
 // Wrap tape's test function with a function that creates a new server and mocks dependencies
-module.exports = (description, cb) => {
+module.exports = (description, cb, auth) => {
   const elastic = createMockDatabase();
-  config.auth = false;
+  if (auth) {
+    config.auth = true;
+  } else {
+    config.auth = false;
+  }
   createServer(elastic, config, (err, ctx) => {
     if (err) {
       throw err;
