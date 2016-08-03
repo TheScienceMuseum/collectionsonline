@@ -19,6 +19,9 @@ exports.register = (server, options, next) => {
 
     if (accept.indexOf('text/html') === 0) {
       // Respond with an error template
+      if (error.output.statusCode === 401) {
+        return reply.redirect('/login');
+      }
       return reply
         .view(options.template || 'error', { error, isDevelopment })
         .code(error.output.statusCode);
