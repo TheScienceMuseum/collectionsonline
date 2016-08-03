@@ -14,9 +14,7 @@ module.exports = (elastic, config, cb) => {
   if (config.auth) {
     server.route(auth());
     server.register(require('hapi-auth-jwt2'), (err) => {
-      if (err) {
-        return cb(err);
-      }
+      console.log('error hapi-auth-jwt2', err);
       server.register(require('./auth/authentication'));
     });
   }
