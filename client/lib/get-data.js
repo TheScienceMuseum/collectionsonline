@@ -17,6 +17,10 @@ module.exports = function (url, opts, cb) {
       return cb(json);
     })
     .catch(function (err) {
-      console.error('Failed to get the content of ', url, err);
+      console.error('Failed to search', err);
+      // redirect to the login page if not authorized
+      if (err === '401 Failed to fetch results') {
+        window.location = '/login';
+      }
     });
 };

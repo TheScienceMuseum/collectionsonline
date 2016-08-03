@@ -24,7 +24,6 @@ function load (ctx, next) {
     });
   } else {
     ctx.state.data = {};
-    initJqueryComp();
     listeners(ctx, next);
   }
 }
@@ -33,11 +32,11 @@ function render (ctx, next) {
   var pageEl = document.getElementsByTagName('main')[0];
   pageEl.innerHTML = Templates['documents'](ctx.state.data);
   window.scrollTo(0, 0);
-  initJqueryComp();
   next();
 }
 
 function listeners (ctx, next) {
+  initJqueryComp();
   searchListener();
   $('.expand').on('submit', function (e) {
     e.preventDefault();
