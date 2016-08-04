@@ -3,6 +3,7 @@
         <ul class="related-person">
           {{#each related.people}}
             <li>
+              {{> global/icon i="people" }}
               {{#if this.links}}
                 <a href={{this.links.self}}>
               {{/if}}
