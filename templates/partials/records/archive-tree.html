@@ -15,48 +15,15 @@
 
     <div class="archive-tree columns">
 
-      <ul role="tree">
-        <li role="treeitem" aria-expanded="true">
-          <div class="archive-tree__label archive-tree__label--root {{#if top}}current{{/if}}">
-            <button aria-controls="group1"></button>
-            <a class="" href="{{links.self}}#archive-block">{{identifier}} {{title}}</a>
-          </div>
-        </li>
-          <ul role="group" id="group1">
+      {{#isfond}}
 
-            {{#each related.children}}
-              <li role="treeitem" aria-expanded={{#if children}}true{{else}}false{{/if}}>
-                <div class="archive-tree__label">
-                  <form class="expand" id="expand-{{id}}" action="{{links.self}}#archive-block">
-                    {{#if children}}
-                      <button type="submit" value="{{id}}" aria-controls="groupX"></button>
-                    {{else}}
-                      <button name="expanded" value="{{id}}" type="submit" aria-controls="groupX"></button>
-                    {{/if}}
-                  </form>
-                  <a class="" href="{{link}}">{{attributes.identifier}} {{attributes.summary_title}}</a>
-                </div>
+        {{> records/archive-tree-fond }}
 
-                {{#if children}}
-                  <ul role="tree">
-                    {{#each children}}
-                      <li role="treeitem">
-                        <div class="archive-tree__label">
-                          <button disabled></button>
-                          <a class="" href="{{link}}">{{attributes.identifier}} {{attributes.summary_title}}</a>
-                        </div>
-                      </li>
-                    {{/each}}
-                  </ul>
-                {{/if}}
+      {{else}}
 
-              </li>
-            {{/each}}
+        {{> records/archive-tree-nest}}
 
-          </ul>
-
-        </li>
-      </ul>
+      {{/isfond}}
 
     </div>
   </div>
