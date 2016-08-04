@@ -148,6 +148,11 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
+  'records/archive-tree-children',
+  Fs.readFileSync('./templates/partials/records/archive-tree-children.html', 'utf8')
+);
+
+Handlebars.registerPartial(
   'records/record-system',
   Fs.readFileSync('./templates/partials/records/record-system.html', 'utf8')
 );

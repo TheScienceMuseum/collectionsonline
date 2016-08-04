@@ -20,24 +20,11 @@
               <a class="" href="{{link}}">{{attributes.identifier}} {{attributes.summary_title}}</a>
             </div>
 
-              {{#if children}}
-                <ul role="tree">
-                  {{#each children}}
-                    <li role="treeitem">
-                      <div class="archive-tree__label">
-                        <form class="expand" id="expand-{{id}}" action="{{links.self}}#archive-block">
-                          {{#if children}}
-                            <button type="submit" value="{{id}}" aria-controls="groupX"></button>
-                          {{else}}
-                            <button name="expanded" value="{{id}}" type="submit" aria-controls="groupX"></button>
-                          {{/if}}
-                        </form>
-                        <a class="" href="{{link}}">{{attributes.identifier}} {{attributes.summary_title}}</a>
-                      </div>
-                    </li>
-                  {{/each}}
-                </ul>
-              {{/if}}
+            {{#if children}}
+              <ul role="tree">
+                {{> records/archive-tree-children}}
+              </ul>
+            {{/if}}
 
           </li>
         {{/each}}

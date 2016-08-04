@@ -118,7 +118,8 @@ const children = [
   {id: 'smga-documents-110000003'},
   {id: 'smga-archive-110000316'},
   {id: 'smga-documents-110000036'},
-  {id: 'smga-documents-110066453'}
+  {id: 'smga-documents-110066453'},
+  {id: 'smga-documents-110000009'}
 ];
 
 var database = {};
