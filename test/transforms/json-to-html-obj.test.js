@@ -15,7 +15,7 @@ test(file + 'HTMLData should be transformed succesfully', (t) => {
   t.end();
 });
 
-test('Data fields should have correct values', function (t) {
+test(file + 'Data fields should have correct values', function (t) {
   t.plan(5);
   t.doesNotThrow(() => {
     HTMLData = buildHTMLData(JSONAPIResponse);
