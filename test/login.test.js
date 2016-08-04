@@ -27,3 +27,19 @@ testWithServer('Attempt to acces the home page without authorisation', (t, ctx) 
     t.end();
   });
 }, true);
+
+testWithServer('Attempt to acces the home page without authorisation, redirect to login page if text/html origin request', (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 302, 'Redirect the request');
+    t.equal(res.headers.location, '/login', 'Redirect to login page');
+    t.end();
+  });
+}, true);
