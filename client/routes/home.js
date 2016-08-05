@@ -1,7 +1,6 @@
 var svg4everybody = require('svg4everybody');
 var $ = require('jquery');
 var QueryString = require('querystring');
-var searchBox = require('../lib/search-box');
 var data = require('../../fixtures/data');
 var Templates = require('../templates');
 
@@ -21,13 +20,11 @@ module.exports = function (page) {
 
     searchBoxEl.addEventListener('submit', function (e) {
       e.preventDefault();
-      var qs = { q: $('.tt-input', this).val() };
+      var qs = { q: $('.searchbox__search', this).val() };
       var url = '/search?' + QueryString.stringify(qs);
       page.show(url);
     });
 
     svg4everybody();
-    // autocomplete search
-    searchBox();
   }
 };

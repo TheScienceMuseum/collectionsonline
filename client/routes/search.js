@@ -2,7 +2,6 @@ var svg4everybody = require('svg4everybody');
 var $ = require('jquery');
 var QueryString = require('querystring');
 var Templates = require('../templates');
-var searchBox = require('../lib/search-box');
 var createQueryParams = require('../../lib/query-params/query-params.js');
 var getData = require('../lib/get-data.js');
 var toJsonUrl = require('../lib/to-json-url');
@@ -77,7 +76,7 @@ function listeners (ctx, next) {
   // Clear Filters
   $('.filter').on('click', '.filter__clear', function (e) {
     e.preventDefault();
-    var qs = {q: $('.tt-input').val()};
+    var qs = {q: $('.searchbox__search').val()};
     var url = ctx.pathname + '?' + QueryString.stringify(qs);
     page.show(url);
   });
@@ -111,5 +110,4 @@ function listeners (ctx, next) {
   });
 
   svg4everybody();
-  searchBox();
 }
