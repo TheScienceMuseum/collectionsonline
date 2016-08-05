@@ -32,7 +32,9 @@ function load (ctx, next) {
 function render (ctx, next) {
   var pageEl = document.getElementsByTagName('main')[0];
   pageEl.innerHTML = Templates['documents'](ctx.state.data);
-  window.scrollTo(0, 0);
+  if (window.location.href.indexOf('#') === -1) {
+    window.scrollTo(0, 0);
+  }
   next();
 }
 
