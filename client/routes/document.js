@@ -23,7 +23,6 @@ function load (ctx, next) {
       next();
     });
   } else {
-    initJqueryComp();
     ctx.state.data = {};
     listeners(ctx, next);
   }
@@ -39,6 +38,7 @@ function render (ctx, next) {
 }
 
 function listeners (ctx, next) {
+  initJqueryComp(ctx);
   searchListener();
   $('.expand').on('submit', function (e) {
     e.preventDefault();
