@@ -8,7 +8,7 @@ module.exports = function () {
     return $(el).val() !== '';
   }).serialize();
   // select result per page
-  var rpp = $('.control--rpp select').val();
+  var rpp = $('.control--rpp select').val() || 50;
   queryParams += '&' + encodeURIComponent('page[size]') + '=' + rpp;
   return queryParams;
 };
