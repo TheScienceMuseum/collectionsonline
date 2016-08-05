@@ -27,6 +27,7 @@ module.exports = () => ({
       return cb(search.error, search.response);
     } else {
       console.log('search fixture not found for', q);
+      return cb({error: 'not found'});
     }
   },
 

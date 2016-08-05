@@ -60,21 +60,6 @@ testWithServer('Request for Archive HTML Page with expanded children', (t, ctx) 
   });
 });
 
-testWithServer('Request for Archivedoc HTML Page', (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/archivedoc',
-    headers: {'Accept': 'text/html'}
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
 testWithServer('Request for Object HTML Page', (t, ctx) => {
   t.plan(1);
 
@@ -222,22 +207,6 @@ testWithServer('Request for Archive JSON with error', (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 404, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer('Request for Archivedoc JSON', (t, ctx) => {
-  t.plan(2);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/archivedoc',
-    headers: {'Accept': 'application/vnd.api+json'}
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.ok(res.headers['content-type'].indexOf('application/vnd.api+json') > -1, 'JSONAPI response header should be application/vnd.api+json');
     t.end();
   });
 });

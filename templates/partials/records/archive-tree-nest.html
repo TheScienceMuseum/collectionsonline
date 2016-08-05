@@ -1,0 +1,57 @@
+<ul>
+  <li role="treeitem" aria-expanded="true">
+    <div class="archive-tree__label archive-tree__label--root">
+      <button aria-controls="group1"></button>
+      <a class="" href="{{links.parent}}">{{parentid identifier}} {{parent.attributes.summary_title}}</a>
+    </div>
+    <ul role="tree">
+
+    <li role="treeitem" aria-expanded="true">
+      <div class="archive-tree__label current">
+        <button aria-controls="group1"></button>
+        <a class="" href="{{links.self}}#archive-block">{{identifier}} {{title}}</a>
+      </div>
+      <ul role="group" id="group1">
+
+        {{#each related.children}}
+          <li role="treeitem" aria-expanded={{#if children}}true{{else}}false{{/if}}>
+            <div class="archive-tree__label">
+              <form class="expand" id="expand-{{id}}" action="{{links.self}}#archive-block">
+                {{#if children}}
+                  <button type="submit" value="{{id}}" aria-controls="groupX"></button>
+                {{else}}
+                  <button name="expanded" value="{{id}}" type="submit" aria-controls="groupX"></button>
+                {{/if}}
+              </form>
+              <a class="" href="{{link}}">{{attributes.identifier}} {{attributes.summary_title}}</a>
+            </div>
+
+            {{#if children}}
+              <ul role="tree">
+                {{> records/archive-tree-children}}
+              </ul>
+            {{/if}}
+
+          </li>
+
+        {{/each}}
+
+      </ul>
+    </li>
+      <ul role="group" id="group1">
+
+        {{#each related.siblings}}
+          <li role="treeitem" aria-expanded={{#if children}}true{{else}}false{{/if}}>
+            <div class="archive-tree__label">
+              <form class="expand" id="expand-{{id}}" action="{{links.self}}#archive-block">
+                  <button name="expanded" value="{{id}}" type="submit" aria-controls="groupX"></button>
+              </form>
+              <a class="" href="{{link}}">{{attributes.identifier}} {{attributes.summary_title}}</a>
+            </div>
+          </li>
+        {{/each}}
+
+      </ul>
+    </ul>
+  </li>
+</ul>

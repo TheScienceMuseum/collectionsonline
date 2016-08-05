@@ -138,6 +138,21 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
+  'records/archive-tree-fond',
+  Fs.readFileSync('./templates/partials/records/archive-tree-fond.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'records/archive-tree-nest',
+  Fs.readFileSync('./templates/partials/records/archive-tree-nest.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'records/archive-tree-children',
+  Fs.readFileSync('./templates/partials/records/archive-tree-children.html', 'utf8')
+);
+
+Handlebars.registerPartial(
   'records/record-system',
   Fs.readFileSync('./templates/partials/records/record-system.html', 'utf8')
 );
@@ -159,6 +174,10 @@ Handlebars.registerHelper('getinventorynumber', require('../templates/helpers/ge
 Handlebars.registerHelper('gettodaysdate', require('../templates/helpers/gettodaysdate.js'));
 
 Handlebars.registerHelper('ifmultiplepages', require('../templates/helpers/ifmultiplepages.js'));
+
+Handlebars.registerHelper('isfond', require('../templates/helpers/isfond.js'));
+
+Handlebars.registerHelper('parentid', require('../templates/helpers/parentid.js'));
 
 // Routes
 module.exports = {
