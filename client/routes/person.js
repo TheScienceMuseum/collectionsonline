@@ -32,10 +32,10 @@ function render (ctx, next) {
   pageEl.innerHTML = Templates['people'](ctx.state.data);
   document.getElementsByTagName('title')[0].textContent = ctx.state.data.titlePage;
   window.scrollTo(0, 0);
-  initJqueryComp();
   next();
 }
 
 function listeners (ctx, next) {
+  initJqueryComp();
   searchListener();
 }

@@ -1,5 +1,6 @@
 const Hapi = require('hapi');
 const routes = require('./routes');
+const auth = require('./auth');
 
 module.exports = (elastic, config, cb) => {
   const server = new Hapi.Server();
@@ -10,7 +11,13 @@ module.exports = (elastic, config, cb) => {
   });
 
   server.route(routes(elastic, config));
-
+  if (config.auth) {
+    server.route(auth());
+    server.register(require('hapi-auth-jwt2'), (err) => {
+      console.log('error hapi-auth-jwt2', err);
+      server.register(require('./auth/authentication'));
+    });
+  }
   server.register([
     {
       register: require('good'),
