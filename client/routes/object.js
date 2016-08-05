@@ -23,6 +23,7 @@ function load (ctx, next) {
       next();
     });
   } else {
+    initJqueryComp(ctx);
     ctx.state.data = {};
     ctx.state.data.slides = exampleData.slides;
     listeners(ctx, next);
@@ -38,6 +39,5 @@ function render (ctx, next) {
 }
 
 function listeners (ctx, next) {
-  initJqueryComp(ctx);
   searchListener();
 }
