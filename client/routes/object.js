@@ -19,24 +19,26 @@ function load (ctx, next) {
     getData(url, opts, function (json) {
       var data = JSONToHTML(json);
       ctx.state.data = data;
+      ctx.state.data.slides = exampleData.slides;
       next();
     });
   } else {
     ctx.state.data = {};
+    ctx.state.data.slides = exampleData.slides;
     listeners(ctx, next);
   }
 }
 
 function render (ctx, next) {
   var pageEl = document.getElementsByTagName('main')[0];
-  ctx.state.data.slides = exampleData.slides;
   pageEl.innerHTML = Templates['objects'](ctx.state.data);
   document.getElementsByTagName('title')[0].textContent = ctx.state.data.titlePage;
   window.scrollTo(0, 0);
-  initJqueryComp();
+  initJqueryComp(ctx);
   next();
 }
 
 function listeners (ctx, next) {
+  initJqueryComp(ctx);
   searchListener();
 }
