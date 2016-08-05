@@ -8,45 +8,18 @@ const sortRelated = require('../lib/sort-related-items');
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/people/{id}/{slug?}',
-  handler: (request, reply) => reply(),
+  handler: (request, reply) => HTMLResponse(request, reply, elastic, config),
   config: {
     plugins: {
       'hapi-negotiator': {
         mediaTypes: {
           'text/html' (request, reply) {
-            const data = {
-              page: 'person'
-            };
-            elastic.get({index: 'smg', type: 'agent', id: TypeMapping.toInternal(request.params.id)}, (err, result) => {
-              if (err) {
-                if (err.status === 404) {
-                  return reply(Boom.notFound());
-                }
-                return reply(Boom.serverUnavailable('unavailable'));
-              }
-
-              getRelatedItems(elastic, request.params.id, (err, relatedItems) => {
-                if (err) {
-                  relatedItems = null;
-                } else {
-                  relatedItems = sortRelated(relatedItems);
-                }
-
-                const JSONData = buildJSONResponse(result, config, relatedItems);
-                const HTMLData = JSONToHTML(JSONData);
-
-                reply.view('person', Object.assign(HTMLData, data));
-              });
-            });
+            return HTMLResponse(request, reply, elastic, config);
           },
           'application/vnd.api+json' (request, reply) {
             elastic.get({index: 'smg', type: 'agent', id: TypeMapping.toInternal(request.params.id)}, (err, result) => {
               if (err) {
                 return reply(err);
-              }
-
-              if (!result) {
-                return reply(Boom.notFound('Person not found'));
               }
 
               getRelatedItems(elastic, request.params.id, (err, relatedItems) => {
@@ -65,3 +38,31 @@ module.exports = (elastic, config) => ({
     }
   }
 });
+
+function HTMLResponse (request, reply, elastic, config) {
+  const data = {
+    page: 'person'
+  };
+
+  elastic.get({index: 'smg', type: 'agent', id: TypeMapping.toInternal(request.params.id)}, (err, result) => {
+    if (err) {
+      if (err.status === 404) {
+        return reply(Boom.notFound());
+      }
+      return reply(Boom.serverUnavailable('unavailable'));
+    }
+
+    getRelatedItems(elastic, request.params.id, (err, relatedItems) => {
+      if (err) {
+        relatedItems = null;
+      } else {
+        relatedItems = sortRelated(relatedItems);
+      }
+
+      const JSONData = buildJSONResponse(result, config, relatedItems);
+      const HTMLData = JSONToHTML(JSONData);
+
+      reply.view('person', Object.assign(HTMLData, data));
+    });
+  });
+}

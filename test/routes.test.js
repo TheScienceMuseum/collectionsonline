@@ -288,7 +288,7 @@ testWithServer('Request for Object JSON Page, not found', (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     var response = JSON.parse(res.payload);
-    t.ok(response.errors[0].detail, 404, 'Object not found');
+    t.equal(response.status, 404, 'Object not found');
     t.end();
   });
 });
@@ -337,9 +337,8 @@ testWithServer('Request for Person JSON Page, no result', (t, ctx) => {
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    // {"errors":[{"title":"Not Found","status":404,"detail":"Person not found"}]}
     var response = JSON.parse(res.payload);
-    t.ok(response.errors[0].detail, 404, 'Person not found');
+    t.equal(response.status, 404, 'Person not found');
     t.end();
   });
 });
