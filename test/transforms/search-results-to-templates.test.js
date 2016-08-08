@@ -83,7 +83,7 @@ test(file + 'Document template data is correctly built', (t) => {
 
 test(file + 'Object template data is correctly built', (t) => {
   var templateData;
-  t.plan(5);
+  t.plan(4);
   t.doesNotThrow(() => {
     templateData = searchToTemplate(query, jsonData);
   }, 'Transform did not throw error');
@@ -93,6 +93,5 @@ test(file + 'Object template data is correctly built', (t) => {
   t.ok(objectResult, 'object result is returned');
   t.equal(objectResult.link, '/objects/smgc-objects-8245103', 'object link is correct');
   t.equal(objectResult.title, 'Packet of Technetium (MDP) for bone scintigraphy \'Amerscan\' agent', 'object title is correct');
-  t.equal(objectResult.isOnDisplay, 'S/G44/CU07B (2pts)', 'object is on display');
   t.end();
 });
