@@ -65,4 +65,9 @@ module.exports = function (ctx) {
       openseadragon(e.target.src, ctx);
     }
   });
+
+  $('#cite__button').on('click', function (e) {
+    $('#cite__menu').toggleClass('cite__menu--active');
+    $('#cite__button').toggleClass('cite__button--active');
+  });
 };
