@@ -14,6 +14,11 @@ module.exports = {
       .assert.urlEquals('http://localhost:8000/documents/smga-documents-110000003')
       .pause(1000)
       .assert.containsText('.archive-tree', 'Part of the end view of the Difference Engine')
+      .setValue('input[type=search]#archive-q', 'scheutz\'s')
+      .click('.searchbox--archive button.searchbox__submit')
+      .pause(1000)
+      .assert.urlEquals('http://localhost:8000/search/documents?q=scheutz%27s&archive=The%20Babbage%20Papers')
+      .assert.containsText('.resultcard', 'Papers relating to the Scheutz\'s Difference Engine')
       .end();
   }
 };
