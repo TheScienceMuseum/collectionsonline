@@ -4,7 +4,7 @@ module.exports = {
       .url('http://localhost:8000/objects/smgc-objects-205752')
       .waitForElementVisible('body', 1000)
       .assert.containsText('.record-top__title', 'Duchess')
-      .assert.containsText('.fact-maker', 'London, Midland & Scottish')
+      .assert.containsText('.fact-maker', 'London Midland & Scottish')
       .assert.containsText('.fact-designer', 'Stanier')
       .assert.containsText('.fact-Made', 'Crewe')
       .assert.containsText('.details-Category', 'Locomotives')
