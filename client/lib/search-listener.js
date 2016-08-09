@@ -12,7 +12,9 @@ module.exports = function () {
     e.preventDefault();
     $('#searchresults .searchresults__column').animate({ opacity: 0.5 });
     var qs = {};
-    qs.q = $('.searchbox__search', this).val();
+    if ($('.searchbox__search', this).val()) {
+      qs.q = $('.searchbox__search', this).val();
+    }
     var url = '/search?' + QueryString.stringify(qs);
     page.show(url);
   });
