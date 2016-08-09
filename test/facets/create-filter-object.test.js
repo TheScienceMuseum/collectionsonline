@@ -9,7 +9,14 @@ test(file + 'The filters date are included in the array filter', (t) => {
   const query = queryString.parse('q=ada&filter%5Bdate%5Bfrom%5D%5D=1800&page%5Bsize%5D=50');
   const queryParams = createQueryParams('html', {query: query, params: {type: 'objects'}});
   const filters = createFiltersObjects(queryParams);
-  const expected = {bool: {must: [{term: {'type.base': 'object'}}, {range: {'lifecycle.creation.date.latest': {'gte': 1800}}}]}};
+  const expected = {
+    bool: {
+      must: [
+        {term: {'type.base': 'object'}},
+        {bool: {should: [{range: {'lifecycle.creation.date.latest': {'gte': 1800}}}]}}
+      ]
+    }
+  };
   t.deepEqual(filters, expected, 'The dates are part of the filter array');
   t.plan(1);
   t.end();

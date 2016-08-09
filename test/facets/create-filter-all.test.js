@@ -19,30 +19,58 @@ test(file + 'The filters date are included in the array filter', (t) => {
   };
 
   const filtersAll = createFilterAll(queryParams, filters);
-  const expected = {
-    bool: {
-      must: [
-        {
-          terms: {
-            'type.base': ['agent', 'object']
-          }
+  var expected = {bool: {
+    must: [
+      {
+        terms: {'type.base': ['agent', 'object']}
+      }
+    ],
+    should: [
+      {
+        bool: {
+          must: [
+            {term: {'type.base': 'agent'}},
+            {
+              bool: {
+                should: [
+                  {range: {'lifecycle.birth.date.earliest': {'gte': 1800}}},
+                  {range: {'lifecycle.death.date.latest': {lte: 1900}}}
+                ]
+              }
+            }
+          ]
         }
-      ],
-      should: [
-        {bool: {must: [
-          {term: {'type.base': 'agent'}},
-          {range: {'lifecycle.birth.date.earliest': {gte: 1800}}},
-          {range: {'lifecycle.death.date.latest': {lte: 1900}}}
-        ]}},
-        {bool: {must: [
-          {term: {'type.base': 'object'}},
-          {range: {'lifecycle.creation.date.latest': {gte: 1800}}},
-          {range: {'lifecycle.creation.date.latest': {lte: 1900}}}
-        ]}},
-        {bool: {must: [{term: {'type.base': 'archive'}}]}}
-      ]
-    }
-  };
+      },
+      {
+        bool: {
+          must: [
+            {term: {'type.base': 'object'}},
+            {
+              bool: {
+                should: [
+                  {range: {'lifecycle.creation.date.latest': {'gte': 1800}}},
+                  {range: {'lifecycle.creation.date.latest': {'lte': 1900}}}
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        bool: {
+          must: [
+            {
+              term: {
+                'type.base': 'archive'
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+};
+
   t.plan(1);
   t.deepEqual(filtersAll, expected, 'Filter all filters is ok');
   t.end();
