@@ -23,6 +23,7 @@ module.exports = [
   'location',
   'materials',
   'measurements',
+  'multimedia',
   'numbers',
   'options',
   'level',
