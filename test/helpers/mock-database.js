@@ -1,19 +1,24 @@
 // Create a mock elasticsearch client with noop functions
 const database = require('../fixtures/elastic-responses/database.json');
-const getNestedProperty = require('../../lib/nested-property');
+// const getNestedProperty = require('../../lib/nested-property');
 
 module.exports = () => ({
   search: function () {
     var q;
     var search;
     const cb = arguments[arguments.length - 1];
+    // default search in lib/search.js
+    const searchName = arguments[0].searchName;
+    if (searchName === 'defaultSearch') {
+      q = arguments[0].body.query.bool.must.multi_match.query;
+    }
 
-    if (arguments[0].body.query.filtered.query) {
-      q = arguments[0].body.query.filtered.query.multi_match.query;
-    } else if (getNestedProperty(arguments, '0.body.query.filtered.filter.bool.should')) {
-      q = arguments[0].body.query.filtered.filter.bool.should[1].term['agents.admin.uid'];
-    } else if (getNestedProperty(arguments, '0.body.query.filtered.filter.bool.must')) {
-      q = arguments[0].body.query.filtered.filter.bool.must.term['parent.admin.uid'];
+    if (searchName === 'searchChildArchive') {
+      q = arguments[0].body.query.constant_score.filter.bool.must.term['parent.admin.uid'];
+    }
+
+    if (searchName === 'searchRelatedItems') {
+      q = arguments[0].body.query.constant_score.filter.bool.should[1].term['agents.admin.uid'];
     }
 
     if (database.search[q]) {
