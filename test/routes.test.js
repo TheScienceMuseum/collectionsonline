@@ -113,7 +113,6 @@ testWithServer('Request for Person HTML Page', (t, ctx) => {
     url: '/people/smgc-people-17351',
     headers: {'Accept': 'text/html'}
   };
-
   ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
