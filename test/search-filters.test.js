@@ -974,3 +974,36 @@ testWithServer(file + 'Number of filters for the occupation facet should be grea
     t.end();
   });
 });
+
+testWithServer(file + 'Should accept no query', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search',
+    headers: { Accept: 'text/html' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer(file + 'Should accept params and no query', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({
+      'filter[date[from]]': '2016',
+      'filter[places]': ['London', 'Bath']
+    }),
+    headers: { Accept: 'text/html' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});

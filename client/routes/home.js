@@ -1,8 +1,7 @@
 var svg4everybody = require('svg4everybody');
-var $ = require('jquery');
-var QueryString = require('querystring');
 var data = require('../../fixtures/data');
 var Templates = require('../templates');
+var searchListener = require('../lib/search-listener');
 
 module.exports = function (page) {
   page('/', render, listeners);
@@ -16,15 +15,7 @@ module.exports = function (page) {
   }
 
   function listeners (ctx, next) {
-    var searchBoxEl = document.getElementById('searchbox');
-
-    searchBoxEl.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var qs = { q: $('.searchbox__search', this).val() };
-      var url = '/search?' + QueryString.stringify(qs);
-      page.show(url);
-    });
-
+    searchListener();
     svg4everybody();
   }
 };

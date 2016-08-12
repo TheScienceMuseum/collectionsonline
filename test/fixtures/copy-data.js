@@ -106,7 +106,8 @@ const searchToCopy = [
   {q: 'ada people', params: {type: 'people'}},
   {q: 'Lumière', params: {type: 'people'}},
   {q: 'Lumière filmmaker', queryParams: {'filter[occupation]': 'filmmaker'}, params: {type: 'people'}},
-  {q: 'sonnabend', params: {}}
+  {q: 'sonnabend', params: {}},
+  {q: 'all', params: {}}
 ];
 
 const related = [
