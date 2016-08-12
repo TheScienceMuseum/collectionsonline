@@ -5,7 +5,11 @@
       {{#each fact}}
         <dl class="record-top__dl fact-{{classname this.key}}">
           <dt>{{ this.key }}:</dt>
-          <dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{{ this.value }}}{{#if this.link }}</a>{{/if}}</dd>
+          {{#if this.place}}
+            <dd>{{#if this.date.link }}<a href="{{this.date.link}}">{{/if}}{{ this.date.value }}{{#if this.date.link }}</a>{{/if}} in <a href="{{this.place.link}}">{{ this.place.value }}</a></dd>
+          {{else}}
+            <dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{ this.value }}{{#if this.link }}</a>{{/if}}</dd>
+          {{/if}}
         </dl>
       {{/each}}
       </div>
