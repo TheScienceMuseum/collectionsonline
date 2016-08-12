@@ -28,15 +28,15 @@
 
     img {
       position: absolute;
-      width: 100%;
+      width: auto;
       height: auto;
-      max-width: 100%;
-      max-height: 100%;
+      min-height: 100%;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
       margin: auto;
+      object-position: center;
     }
 
     figcaption {

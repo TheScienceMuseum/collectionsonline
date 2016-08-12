@@ -88,6 +88,7 @@ const dataToCopy = [
   {type: 'object', id: 'smgc-objects-wrongid'},
   {type: 'object', id: 'smgc-objects-67812'},
   {type: 'object', id: 'smgc-objects-520148'},
+  {type: 'object', id: 'smgc-objects-8229027'},
   {type: 'agent', id: 'smgc-people-17351'},
   {type: 'agent', id: 'smgc-people-36993'},
   {type: 'agent', id: 'smgc-people-wrongid'},
@@ -107,7 +108,8 @@ const searchToCopy = [
   {q: 'Lumière', params: {type: 'people'}},
   {q: 'Lumière filmmaker', queryParams: {'filter[occupation]': 'filmmaker'}, params: {type: 'people'}},
   {q: 'sonnabend', params: {}},
-  {q: 'all', params: {}}
+  {q: 'all', params: {}},
+  {q: 'plumed hat', params: {type: 'objects'}}
 ];
 
 const related = [
