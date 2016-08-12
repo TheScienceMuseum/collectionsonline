@@ -34,7 +34,7 @@ function load (ctx, next) {
     });
   } else {
     ctx.state.data = {};
-    listeners(ctx, next);
+    listeners(ctx);
   }
 }
 
