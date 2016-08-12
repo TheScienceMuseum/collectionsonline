@@ -1,16 +1,16 @@
 // Create a mock elasticsearch client with noop functions
 const database = require('../fixtures/elastic-responses/database.json');
-// const getNestedProperty = require('../../lib/nested-property');
+const getNestedProperty = require('../../lib/nested-property');
 
 module.exports = () => ({
   search: function () {
     var q;
     var search;
     const cb = arguments[arguments.length - 1];
-    // default search in lib/search.js
     const searchName = arguments[0].searchName;
+
     if (searchName === 'defaultSearch') {
-      q = arguments[0].body.query.bool.must.multi_match.query;
+      q = getNestedProperty(arguments, '0.body.query.bool.must.multi_match.query') || 'all';
     }
 
     if (searchName === 'searchChildArchive') {
