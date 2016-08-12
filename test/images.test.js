@@ -5,7 +5,7 @@ testWithServer('Request for Object Page with image', (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/smgc-objects-18360',
+    url: '/objects/smgc-objects-8229027',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
