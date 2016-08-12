@@ -8,7 +8,14 @@ const file = dir + __filename.replace(__dirname, '') + ' > ';
 test(file + 'The filters date are included in the array filter', (t) => {
   const query = queryString.parse('q=ada&filter%5Bdate%5Bfrom%5D%5D=1800&page%5Bsize%5D=50');
   const queryParams = createQueryParams('html', {query: query, params: {type: 'people'}});
-  const expected = {bool: {must: [{term: {'type.base': 'agent'}}, {range: {'lifecycle.birth.date.earliest': {'gte': 1800}}}]}};
+  const expected = {
+    bool: {
+      must: [
+        {term: {'type.base': 'agent'}},
+        {bool: {should: [{range: {'lifecycle.birth.date.earliest': {'gte': 1800}}}]}}
+      ]
+    }
+  };
   const filters = createFilterPeople(queryParams);
   t.deepEqual(filters, expected, 'The dates are part of the filter array');
   t.plan(1);

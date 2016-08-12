@@ -81,6 +81,11 @@
 
   }
 
+  &--fond > button {
+    height: rem-calc(46);
+    width: rem-calc(46);
+  }
+
   &__label {
     overflow: auto;
     border-top: 1px white solid;
@@ -108,6 +113,15 @@
     li li li &:hover {
       background-color: blend-multiply( rgba($c-cyan,0.1),grey(40) );
     }
+  }
 
+  &--fond a {
+    margin-left: rem-calc(46);
+  }
+
+  #group1 {
+    > li {
+      margin-left: rem-calc(46);
+    }
   }
 }
