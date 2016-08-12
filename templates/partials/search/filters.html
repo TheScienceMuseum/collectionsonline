@@ -4,6 +4,7 @@
   </div>
   <form class="" id="search-form" action="/search" method="get">
     <input type="hidden" name="q" value="{{q}}">
+    <input type="hidden" name="page[type]" value="{{page}}">
     {{#if isFilterAll}}
       {{> search/filters-all}}
     {{/if}}

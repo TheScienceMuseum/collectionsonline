@@ -7,7 +7,7 @@ module.exports = {
     .setValue('input[name="filter[birth[date]]"]', '1700')
     .click('input[name="filter[death[date]]"]')
     .pause(1000)
-    .assert.urlEquals('http://localhost:8000/search/people?q=ada&filter%5Bbirth%5Bdate%5D%5D=1700&page%5Bsize%5D=50')
+    .assert.urlEquals('http://localhost:8000/search/people?q=ada&filter%5Bbirth%5Bdate%5D%5D=1700&page%5Bsize%5D=50&page%5Btype%5D=search')
     .end();
   }
 };
