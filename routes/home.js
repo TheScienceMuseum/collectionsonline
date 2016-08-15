@@ -8,6 +8,8 @@ module.exports = () => ({
         mediaTypes: {
           'text/html' (request, reply) {
             const data = require('../fixtures/data');
+            data.footer = require('../fixtures/footer');
+            data.footerBanner = require('../fixtures/footer-banner');
             reply.view('home', data);
           }
         }

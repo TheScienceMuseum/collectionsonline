@@ -33,6 +33,11 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
+  'global/footer-banner',
+  Fs.readFileSync('./templates/partials/global/footer-banner.html', 'utf8')
+);
+
+Handlebars.registerPartial(
   'search/results-page',
   Fs.readFileSync('./templates/partials/search/results-page.html', 'utf8')
 );
