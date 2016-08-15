@@ -43,26 +43,15 @@ module.exports = function (ctx) {
           $(e.target).addClass('cite__expand--expanded');
         }
       }
-
-      if ($('.record-imgpanel__dragon').hasClass('hidden')) {
-        $('.record-imgpanel__slickwrap').addClass('hidden');
-        $('.record-imgpanel__dragon').removeClass('hidden');
-        openseadragon($('.slick-active img')[0].src, ctx);
-      } else {
-        ctx.viewer.destroy();
-        ctx.viewer = false;
-        ctx.save();
-        $('.record-imgpanel__slickwrap').removeClass('hidden');
-        $('.record-imgpanel__dragon').addClass('hidden');
-      }
     }
   });
 
   $('.record-imgpanel__thumbnav a').on('click', function (e) {
     if (ctx.viewer) {
       ctx.viewer.destroy();
+      ctx.viewer = false;
       ctx.save();
-      openseadragon(e.target.src, ctx);
+      openseadragon.init(ctx, e.target.src);
     }
   });
 
