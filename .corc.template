@@ -2,7 +2,12 @@
   "port": 8000,
   "rootUrl": "http://localhost:8000",
   "elasticsearch": {
-    "apiVersion": "1.7",
+    "apiVersion": "2.3",
     "host": ""
-  }
+  },
+  "auth": false,
+  "user": "",
+  "password": "",
+  "JWT_SECRET": "",
+  "mediaPath": ""
 }
