@@ -7,11 +7,17 @@ module.exports = function (page) {
   page('/', render, listeners);
 
   function render (ctx, next) {
-    var pageEl = document.getElementsByTagName('main')[0];
-    pageEl.innerHTML = Templates['home'](data);
-    // refresh the title of the page
-    document.getElementsByTagName('title')[0].textContent = data.titlePage;
-    next();
+    if (!ctx.isInitialRender) {
+      var pageEl = document.getElementsByTagName('main')[0];
+      data.footer = require('../../fixtures/footer');
+      data.footerBanner = require('../../fixtures/footer-banner');
+      pageEl.innerHTML = Templates['home'](data);
+      // refresh the title of the page
+      document.getElementsByTagName('title')[0].textContent = data.titlePage;
+      next();
+    } else {
+      listeners();
+    }
   }
 
   function listeners (ctx, next) {
