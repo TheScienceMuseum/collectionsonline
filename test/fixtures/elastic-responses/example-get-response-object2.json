@@ -1,1 +1,429 @@
-{"_index":"smg","_type":"object","_id":"smgc-object-205752","_version":1,"found":true,"_source":{"admin":{"created":826588800000,"id":"object-205752","language":"eng","modified":1452518234000,"processed":1469061158000,"source":"smgc","stream":"smg-online","uid":"smgc-object-205752"},"agents":[{"@link":{"role":[{"value":"user"}],"type":"reference"},"admin":{"id":"agent-3891","uid":"smgc-agent-3891"},"summary_title":"London Midland & Scottish Railway Company"}],"categories":[{"museum":"NRM","name":"NRM","value":"NRM - Locomotives and Rolling Stock"}],"component":[{"measurements":{"dimensions":[{"dimension":"depth","units":"in","value":"886 1/4"},{"dimension":"depth","units":"mm","value":"22511"}],"display":"length over buffers: 22511 mm,"},"name":"length over buffers"},{"measurements":{"dimensions":[{"dimension":"diameter","units":"in","value":"81"},{"dimension":"diameter","units":"mm","value":"2057"}],"display":"driving wheel diameter: 2057 mm,"},"name":"driving wheel diameter"},{"measurements":{"dimensions":[{"dimension":"height","units":"in","value":"153"},{"dimension":"height","units":"mm","value":"3886"}],"display":"height: 3886 mm"},"name":"height"},{"measurements":{"dimensions":[{"dimension":"width","units":"in","value":"111"},{"dimension":"width","units":"mm","value":"2819"}],"display":"width: 2819 mm"},"name":"width"},{"measurements":{"dimensions":[{"units":"kg","value":"107254"},{"units":"lbs","value":"236455.83015"}],"display":"weight: 107254kg"},"name":"weight"}],"condition":{"date":{"earliest":2011,"latest":2011,"value":"2011-12-02"},"examiner":"Tsolis, Efstathios","value":"1 - Good"},"description":[{"date":{"earliest":2010,"latest":2010,"value":"2010-04-14"},"primary":true,"type":"description","value":"Steam locomotive and tender, No 46229 'Duchess of Hamilton', 8P Coronation class, 4-6-2, London Midland & Scottish Railway, designed by William Stanier, built at Crewe in 1938. Length over buffers: 73' 10 1/4\"; width 9' 3\"; height 12' 9'; weight: 105 tons; 5 cwt; driving wheel diameter 6 feet, 9 inches (total weight according to H C Casserley 161 tonnes 12 cwt)."},{"date":{"earliest":2010,"latest":2010,"value":"2010-02-23"},"type":"description","value":"Steam locomotive and tender, London Midland & Scottish Railway, 8P Coronation class 4-6-2 No 46229 'Duchess of Hamilton', designed by William Stanier, built at Crewe in 1938. Length over buffers: 73' 10 1/4\"; weight: 105 tons; 5 cwt."},{"date":{"earliest":2010,"latest":2010,"value":"2010-03-31"},"type":"description","value":"Steam locomotive and tender, London Midland & Scottish Railway, 8P Coronation class 4-6-2 No 46229 'Duchess of Hamilton', designed by William Stanier, built at Crewe in 1938. Length over buffers: 73' 10 1/4\"; width 9' 3\"; height 12' 9'; weight: 105 tons; 5 cwt."},{"date":{"earliest":2010,"latest":2010,"value":"2010-04-01"},"type":"description","value":"Steam locomotive and tender, London Midland & Scottish Railway, 8P Coronation class 4-6-2 No 46229 'Duchess of Hamilton', designed by William Stanier, built at Crewe in 1938. Length over buffers: 73' 10 1/4\"; width 9' 3\"; height 12' 9'; weight: 105 tons; 5 cwt; driving wheel diameter 6 feet, 9 inches (total weight according to H C Casserley 161 tonnes 12 cwt)."}],"flag":{"flag1":"N","flag2":"N","flag3":"Y","flag4":"Y"},"identifier":[{"primary":true,"type":"accession number","value":"1976-7000"}],"language":["eng"],"legal":{"credit_line":"Butlins","legal_status":"permanent collection"},"lifecycle":{"creation":[{"date":[{"latest":1938,"role":[{"value":"made"}],"value":"1938"}],"maker":[{"@link":{"role":[{"value":"designer"}],"type":"reference"},"admin":{"id":"agent-1015","uid":"smgc-agent-1015"},"summary_title":"Stanier, Sir William Arthur"},{"@link":{"role":[{"value":"maker"}],"type":"reference"},"admin":{"id":"agent-3891","uid":"smgc-agent-3891"},"summary_title":"London Midland & Scottish Railway Company"}],"places":[{"@link":{"role":[{"value":"made"}],"type":"reference"},"admin":{"id":"place-4251","uid":"smgc-place-4251"},"summary_title":"Crewe railway works"}]}]},"name":[{"primary":true,"type":"object name","value":"steam locomotive"}],"numbers":{"NUMBER1":"401"},"options":{"option3":"Coulls, Anthony"},"summary_title":"LMS(R) steam locomotive with tender 'Duchess of Hamilton' 4-6-2 Coronation class, No 6229, 1938 (steam locomotive)","terms":[{"@link":{"role":[{"value":"NRM Category"}],"type":"reference"},"admin":{"id":"term-266627","uid":"smgc-term-266627"},"summary_title":"Locomotive and Rolling Stock"},{"@link":{"role":[{"value":"NRM Category filter"}],"type":"reference"},"admin":{"id":"term-266835","uid":"smgc-term-266835"},"summary_title":"steam"},{"@link":{"role":[{"value":"Object Name"}],"type":"reference"},"admin":{"id":"term-502655","uid":"smgc-term-502655"},"hierarchy":[{"@link":{"impact":true,"type":"reference"},"admin":{"available":true,"id":"term-503443","status":"valid and published","uid":"smgc-term-503443","uuid":"e9659e4a-19bc-320b-a359-3d6daad9358a"},"name":[{"primary":true,"type":"preferred","value":"<locomotives by power source>"}],"sort":0},{"@link":{"impact":true,"type":"reference"},"admin":{"available":true,"id":"term-501558","status":"valid and published","uid":"smgc-term-501558","uuid":"e64c684d-bc30-3468-a5df-903d054c856c"},"name":[{"primary":true,"type":"preferred","value":"locomotive"}],"sort":1},{"@link":{"impact":true,"type":"reference"},"admin":{"available":true,"id":"term-503152","status":"valid and published","uid":"smgc-term-503152","uuid":"c691e4f1-dc89-30b2-93cf-ce2294a7f714"},"name":[{"primary":true,"type":"preferred","value":"vehicle"}],"sort":2},{"@link":{"impact":true,"type":"reference"},"admin":{"available":true,"id":"term-503166","status":"valid and published","uid":"smgc-term-503166","uuid":"9611e275-721b-38b5-b5f3-b69aa979b0a9"},"name":[{"primary":true,"type":"preferred","value":"VEHICLES AND VEHICLE COMPONENTS"}],"sort":3}],"summary_title":"steam locomotive"}],"title":[{"primary":true,"type":"display title","value":"LMS(R) steam locomotive with tender 'Duchess of Hamilton' 4-6-2 Coronation class, No 6229, 1938"},{"type":"display title","value":"LMS(R) steam locomotive with tender 'Duchess of Hamilton' 4-6-2 Coronation class, No 46229, 1938"}],"type":{"base":"object","record_type":"WHOLE"}}}
+{
+  "_index": "smg",
+  "_type": "object",
+  "_id": "smgc-object-205752",
+  "_version": 1,
+  "found": true,
+  "_source": {
+    "admin": {
+      "created": 826588800000,
+      "id": "object-205752",
+      "language": "eng",
+      "modified": 1452518234000,
+      "processed": 1469061158000,
+      "source": "smgc",
+      "stream": "smg-online",
+      "uid": "smgc-object-205752"
+    },
+    "agents": [
+      {
+        "@link": {
+          "role": [
+            {
+              "value": "user"
+            }
+          ],
+          "type": "reference"
+        },
+        "admin": {
+          "id": "agent-3891",
+          "uid": "smgc-agent-3891"
+        },
+        "summary_title": "London Midland & Scottish Railway Company"
+      }
+    ],
+    "categories": [
+      {
+        "museum": "NRM",
+        "name": "NRM",
+        "value": "NRM - Locomotives and Rolling Stock"
+      }
+    ],
+    "component": [
+      {
+        "measurements": {
+          "dimensions": [
+            {
+              "dimension": "depth",
+              "units": "in",
+              "value": "886 1/4"
+            },
+            {
+              "dimension": "depth",
+              "units": "mm",
+              "value": "22511"
+            }
+          ],
+          "display": "length over buffers: 22511 mm,"
+        },
+        "name": "length over buffers"
+      },
+      {
+        "measurements": {
+          "dimensions": [
+            {
+              "dimension": "diameter",
+              "units": "in",
+              "value": "81"
+            },
+            {
+              "dimension": "diameter",
+              "units": "mm",
+              "value": "2057"
+            }
+          ],
+          "display": "driving wheel diameter: 2057 mm,"
+        },
+        "name": "driving wheel diameter"
+      },
+      {
+        "measurements": {
+          "dimensions": [
+            {
+              "dimension": "height",
+              "units": "in",
+              "value": "153"
+            },
+            {
+              "dimension": "height",
+              "units": "mm",
+              "value": "3886"
+            }
+          ],
+          "display": "height: 3886 mm"
+        },
+        "name": "height"
+      },
+      {
+        "measurements": {
+          "dimensions": [
+            {
+              "dimension": "width",
+              "units": "in",
+              "value": "111"
+            },
+            {
+              "dimension": "width",
+              "units": "mm",
+              "value": "2819"
+            }
+          ],
+          "display": "width: 2819 mm"
+        },
+        "name": "width"
+      },
+      {
+        "measurements": {
+          "dimensions": [
+            {
+              "units": "kg",
+              "value": "107254"
+            },
+            {
+              "units": "lbs",
+              "value": "236455.83015"
+            }
+          ],
+          "display": "weight: 107254kg"
+        },
+        "name": "weight"
+      }
+    ],
+    "condition": {
+      "date": {
+        "earliest": 2011,
+        "latest": 2011,
+        "value": "2011-12-02"
+      },
+      "examiner": "Tsolis, Efstathios",
+      "value": "1 - Good"
+    },
+    "description": [
+      {
+        "date": {
+          "earliest": 2010,
+          "latest": 2010,
+          "value": "2010-04-14"
+        },
+        "primary": true,
+        "type": "description",
+        "value": "Steam locomotive and tender, No 46229 'Duchess of Hamilton', 8P Coronation class, 4-6-2, London Midland & Scottish Railway, designed by William Stanier, built at Crewe in 1938. Length over buffers: 73' 10 1/4\"; width 9' 3\"; height 12' 9'; weight: 105 tons; 5 cwt; driving wheel diameter 6 feet, 9 inches (total weight according to H C Casserley 161 tonnes 12 cwt)."
+      },
+      {
+        "date": {
+          "earliest": 2010,
+          "latest": 2010,
+          "value": "2010-02-23"
+        },
+        "type": "description",
+        "value": "Steam locomotive and tender, London Midland & Scottish Railway, 8P Coronation class 4-6-2 No 46229 'Duchess of Hamilton', designed by William Stanier, built at Crewe in 1938. Length over buffers: 73' 10 1/4\"; weight: 105 tons; 5 cwt."
+      },
+      {
+        "date": {
+          "earliest": 2010,
+          "latest": 2010,
+          "value": "2010-03-31"
+        },
+        "type": "description",
+        "value": "Steam locomotive and tender, London Midland & Scottish Railway, 8P Coronation class 4-6-2 No 46229 'Duchess of Hamilton', designed by William Stanier, built at Crewe in 1938. Length over buffers: 73' 10 1/4\"; width 9' 3\"; height 12' 9'; weight: 105 tons; 5 cwt."
+      },
+      {
+        "date": {
+          "earliest": 2010,
+          "latest": 2010,
+          "value": "2010-04-01"
+        },
+        "type": "description",
+        "value": "Steam locomotive and tender, London Midland & Scottish Railway, 8P Coronation class 4-6-2 No 46229 'Duchess of Hamilton', designed by William Stanier, built at Crewe in 1938. Length over buffers: 73' 10 1/4\"; width 9' 3\"; height 12' 9'; weight: 105 tons; 5 cwt; driving wheel diameter 6 feet, 9 inches (total weight according to H C Casserley 161 tonnes 12 cwt)."
+      }
+    ],
+    "flag": {
+      "flag1": "N",
+      "flag2": "N",
+      "flag3": "Y",
+      "flag4": "Y"
+    },
+    "identifier": [
+      {
+        "primary": true,
+        "type": "accession number",
+        "value": "1976-7000"
+      }
+    ],
+    "language": [
+      "eng"
+    ],
+    "legal": {
+      "credit_line": "Butlins",
+      "legal_status": "permanent collection"
+    },
+    "lifecycle": {
+      "creation": [
+        {
+          "date": [
+            {
+              "latest": 1938,
+              "role": [
+                {
+                  "value": "made"
+                }
+              ],
+              "value": "1938"
+            }
+          ],
+          "maker": [
+            {
+              "@link": {
+                "role": [
+                  {
+                    "value": "designer"
+                  }
+                ],
+                "type": "reference"
+              },
+              "admin": {
+                "id": "agent-1015",
+                "uid": "smgc-agent-1015"
+              },
+              "summary_title": "Stanier, Sir William Arthur"
+            },
+            {
+              "@link": {
+                "role": [
+                  {
+                    "value": "maker"
+                  }
+                ],
+                "type": "reference"
+              },
+              "admin": {
+                "id": "agent-3891",
+                "uid": "smgc-agent-3891"
+              },
+              "summary_title": "London Midland & Scottish Railway Company"
+            }
+          ],
+          "places": [
+            {
+              "@link": {
+                "role": [
+                  {
+                    "value": "made"
+                  }
+                ],
+                "type": "reference"
+              },
+              "admin": {
+                "id": "place-4251",
+                "uid": "smgc-place-4251"
+              },
+              "summary_title": "Crewe railway works"
+            }
+          ]
+        }
+      ]
+    },
+    "name": [
+      {
+        "primary": true,
+        "type": "object name",
+        "value": "steam locomotive"
+      }
+    ],
+    "numbers": {
+      "NUMBER1": "401"
+    },
+    "options": {
+      "option3": "Coulls, Anthony"
+    },
+    "summary_title": "LMS(R) steam locomotive with tender 'Duchess of Hamilton' 4-6-2 Coronation class, No 6229, 1938 (steam locomotive)",
+    "terms": [
+      {
+        "@link": {
+          "role": [
+            {
+              "value": "NRM Category"
+            }
+          ],
+          "type": "reference"
+        },
+        "admin": {
+          "id": "term-266627",
+          "uid": "smgc-term-266627"
+        },
+        "summary_title": "Locomotive and Rolling Stock"
+      },
+      {
+        "@link": {
+          "role": [
+            {
+              "value": "NRM Category filter"
+            }
+          ],
+          "type": "reference"
+        },
+        "admin": {
+          "id": "term-266835",
+          "uid": "smgc-term-266835"
+        },
+        "summary_title": "steam"
+      },
+      {
+        "@link": {
+          "role": [
+            {
+              "value": "Object Name"
+            }
+          ],
+          "type": "reference"
+        },
+        "admin": {
+          "id": "term-502655",
+          "uid": "smgc-term-502655"
+        },
+        "hierarchy": [
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "available": true,
+              "id": "term-503443",
+              "status": "valid and published",
+              "uid": "smgc-term-503443",
+              "uuid": "e9659e4a-19bc-320b-a359-3d6daad9358a"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "<locomotives by power source>"
+              }
+            ],
+            "sort": 0
+          },
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "available": true,
+              "id": "term-501558",
+              "status": "valid and published",
+              "uid": "smgc-term-501558",
+              "uuid": "e64c684d-bc30-3468-a5df-903d054c856c"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "locomotive"
+              }
+            ],
+            "sort": 1
+          },
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "available": true,
+              "id": "term-503152",
+              "status": "valid and published",
+              "uid": "smgc-term-503152",
+              "uuid": "c691e4f1-dc89-30b2-93cf-ce2294a7f714"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "vehicle"
+              }
+            ],
+            "sort": 2
+          },
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "available": true,
+              "id": "term-503166",
+              "status": "valid and published",
+              "uid": "smgc-term-503166",
+              "uuid": "9611e275-721b-38b5-b5f3-b69aa979b0a9"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "VEHICLES AND VEHICLE COMPONENTS"
+              }
+            ],
+            "sort": 3
+          }
+        ],
+        "summary_title": "steam locomotive"
+      }
+    ],
+    "title": [
+      {
+        "primary": true,
+        "type": "display title",
+        "value": "LMS(R) steam locomotive with tender 'Duchess of Hamilton' 4-6-2 Coronation class, No 6229, 1938"
+      },
+      {
+        "type": "display title",
+        "value": "LMS(R) steam locomotive with tender 'Duchess of Hamilton' 4-6-2 Coronation class, No 46229, 1938"
+      }
+    ],
+    "type": {
+      "base": "object",
+      "record_type": "WHOLE"
+    }
+  }
+}
