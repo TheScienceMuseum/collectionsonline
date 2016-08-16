@@ -1,38 +1,23 @@
 var $ = window.$ = window.jQuery = require('jquery');
 require('typeahead.js');
-// fake static data to test.
-var suggestions = require('../fixtures/typeahead.json');
+const getData = require('./get-data');
 
 module.exports = function () {
-  // autocomplete. https://github.com/twitter/typeahead.js
-  var substringMatcher = function (strs) {
-    return function findMatches (q, cb) {
-      var matches;
-
-      // an array that will be populated with substring matches
-      matches = [];
-
-      // regex used to determine if a string contains the substring `q`
-      var substrRegex = new RegExp(q, 'i');
-
-      // iterate through the pool of strings and for any string that
-      // contains the substring `q`, add it to the `matches` array
-      $.each(strs, function (i, str) {
-        if (substrRegex.test(str)) {
-          matches.push(str);
-        }
-      });
-
-      cb(matches);
-    };
-  };
-
   $('#searchbox [type=search]').typeahead({
     minLength: 1,
     highlight: true
   }, {
     name: 'suggestions',
-    source: substringMatcher(suggestions)
+    source: (q, onData, onAsyncData) => {
+      const url = `/autocomplete?q=${encodeURIComponent(q)}`;
+      const opts = { headers: { Accept: 'application/vnd.api+json' } };
+      getData(url, opts, (results) => {
+        const suggestions = results.data.map((r) => r.attributes.summary_title);
+        onAsyncData(suggestions);
+      });
+    },
+    async: true,
+    limit: 10
   });
 
   $('#searchbox [type=search]').bind('typeahead:render', function (ev, sug, flag, name) {

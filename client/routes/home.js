@@ -1,4 +1,4 @@
-var svg4everybody = require('svg4everybody');
+var initJqueryComp = require('../lib/init-jquery-components.js');
 var data = require('../../fixtures/data');
 var Templates = require('../templates');
 var searchListener = require('../lib/search-listener');
@@ -16,6 +16,6 @@ module.exports = function (page) {
 
   function listeners (ctx, next) {
     searchListener();
-    svg4everybody();
+    initJqueryComp();
   }
 };
