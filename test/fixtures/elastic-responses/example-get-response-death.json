@@ -1,1 +1,98 @@
-{"_index":"smg","_type":"agent","_id":"smgc-agent-108048","_version":1,"found":true,"_source":{"admin":{"created":1105008388000,"id":"agent-108048","language":"eng","modified":1447178618000,"processed":1469059684000,"source":"smgc","stream":"smg-online","uid":"smgc-agent-108048"},"approved":"Y","date_of_death":[{"latest":1940,"value":"1940"}],"description":[{"type":"brief biography","value":"d. 1940, photographer, author, British"}],"gender":"M","historical":true,"life_dates":[{"earliest":1940,"latest":1940,"value":"- 1940"}],"lifecycle":{"death":[{"@event":{"mapping":"destruction"},"date":[{"earliest":1940,"latest":1940,"primary":true,"value":"1940"}]}]},"name":[{"first_name":"James A","last_name":"Sinclair","primary":true,"type":"preferred name","value":"Sinclair, James A"},{"type":"MM2000 Preferred Name","value":"Sinclair, James A."},{"type":"variation","value":"James A Sinclair"},{"type":"variation","value":"Sinclair, James A (d. 1940)"}],"nationality":["British"],"note":[{"primary":true,"value":"author of 'The Sinclair Handbook Of Photography' (1913)"}],"occupation":"photographer; author","publish":"Y","summary_title":"Sinclair, James A","type":{"base":"agent","sub_type":["person"],"type":"person"}}}
+{
+  "_index": "smg",
+  "_type": "agent",
+  "_id": "smgc-agent-108048",
+  "_version": 1,
+  "found": true,
+  "_source": {
+    "admin": {
+      "created": 1105008388000,
+      "id": "agent-108048",
+      "language": "eng",
+      "modified": 1447178618000,
+      "processed": 1469059684000,
+      "source": "smgc",
+      "stream": "smg-online",
+      "uid": "smgc-agent-108048"
+    },
+    "approved": "Y",
+    "date_of_death": [
+      {
+        "latest": 1940,
+        "value": "1940"
+      }
+    ],
+    "description": [
+      {
+        "type": "brief biography",
+        "value": "d. 1940, photographer, author, British"
+      }
+    ],
+    "gender": "M",
+    "historical": true,
+    "life_dates": [
+      {
+        "earliest": 1940,
+        "latest": 1940,
+        "value": "- 1940"
+      }
+    ],
+    "lifecycle": {
+      "death": [
+        {
+          "@event": {
+            "mapping": "destruction"
+          },
+          "date": [
+            {
+              "earliest": 1940,
+              "latest": 1940,
+              "primary": true,
+              "value": "1940"
+            }
+          ]
+        }
+      ]
+    },
+    "name": [
+      {
+        "first_name": "James A",
+        "last_name": "Sinclair",
+        "primary": true,
+        "type": "preferred name",
+        "value": "Sinclair, James A"
+      },
+      {
+        "type": "MM2000 Preferred Name",
+        "value": "Sinclair, James A."
+      },
+      {
+        "type": "variation",
+        "value": "James A Sinclair"
+      },
+      {
+        "type": "variation",
+        "value": "Sinclair, James A (d. 1940)"
+      }
+    ],
+    "nationality": [
+      "British"
+    ],
+    "note": [
+      {
+        "primary": true,
+        "value": "author of 'The Sinclair Handbook Of Photography' (1913)"
+      }
+    ],
+    "occupation": "photographer; author",
+    "publish": "Y",
+    "summary_title": "Sinclair, James A",
+    "type": {
+      "base": "agent",
+      "sub_type": [
+        "person"
+      ],
+      "type": "person"
+    }
+  }
+}
