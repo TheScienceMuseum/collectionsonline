@@ -11,6 +11,7 @@ before_script:
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - npm run synonyms
 
 after_script:
   - pkill node
