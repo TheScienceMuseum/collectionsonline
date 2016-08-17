@@ -10,6 +10,7 @@ var filterResults = require('../lib/filter-results');
 var page = require('page');
 var searchResultsToTemplateData = require('../../lib/transforms/search-results-to-template-data');
 var searchListener = require('../lib/search-listener');
+var Snackbar = require('snackbarlightjs');
 
 module.exports = function (page) {
   page('/search', load, render, listeners);
@@ -27,7 +28,11 @@ function load (ctx, next) {
     };
     var qs = QueryString.parse(ctx.querystring);
     var queryParams = createQueryParams('html', {query: qs, params: {type: ctx.params.type}});
-    getData(ctx.pathname + '?' + toJsonUrl(ctx.querystring), opts, function (json) {
+    getData(ctx.pathname + '?' + toJsonUrl(ctx.querystring), opts, function (err, json) {
+      if (err) {
+        console.warn(err);
+        Snackbar.create('Error getting data from the server');
+      }
       var data = searchResultsToTemplateData(queryParams, json);
       ctx.state.data = data;
       next();

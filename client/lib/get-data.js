@@ -12,12 +12,14 @@ module.exports = function (url, opts, cb) {
     })
     .then(function (json) {
       if (json.errors) return Promise.reject(json.errors[0]);
-      return cb(json);
+      return cb(null, json);
     })
     .catch(function (err) {
       // redirect to the login page if not authorized
       if (err.message === '401 Failed to fetch results') {
         window.location = '/login';
+      } else {
+        return cb(err);
       }
     });
 };
