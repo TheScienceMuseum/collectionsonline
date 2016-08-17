@@ -42,8 +42,9 @@ module.exports = (ctx, listeners) => {
 
     getData(url, opts, function (err, json) {
       if (err) {
-        console.warn(err);
+        console.error(err);
         Snackbar.create('Error getting data from the server');
+        return;
       }
       var data = JSONToHTML(json);
       archiveTree.innerHTML = Templates['archiveTree'](data);

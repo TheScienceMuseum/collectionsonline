@@ -30,8 +30,9 @@ function load (ctx, next) {
     var queryParams = createQueryParams('html', {query: qs, params: {type: ctx.params.type}});
     getData(ctx.pathname + '?' + toJsonUrl(ctx.querystring), opts, function (err, json) {
       if (err) {
-        console.warn(err);
+        console.error(err);
         Snackbar.create('Error getting data from the server');
+        return;
       }
       var data = searchResultsToTemplateData(queryParams, json);
       ctx.state.data = data;
