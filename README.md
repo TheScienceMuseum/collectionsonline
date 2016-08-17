@@ -12,6 +12,24 @@
 
 Or use `npm run watch` to rebuild and restart the server as you edit things.
 
+### Testing
+
+Use `npm test` to run _all_ the tests (including linting).
+
+There are two types of tests that can be run: unit and end-to-end. These can be run individually by running `npm run test:unit` and/or `npm run test:endtoend`.
+
+#### Unit tests
+
+By default, `npm run test:unit` syncs fixtures from the live index so you need to have a correctly configured `.corc` file pointing at the latest elasticsearch server.
+
+##### Offline
+
+Use `npm run test:unit:tape` to run the unit tests using the existing fixtures provided in the repo.
+
+#### End-to-end tests
+
+The end-to-end tests require an instance of the application to be running on http://localhost:8000.
+
 ## Directory structure
 
 ```
