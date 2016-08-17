@@ -11,10 +11,8 @@ module.exports = function () {
   searchBoxEl.addEventListener('submit', function (e) {
     e.preventDefault();
     $('#searchresults .searchresults__column').animate({ opacity: 0.5 });
-    var qs = {};
-    if ($('.searchbox__search', this).val()) {
-      qs.q = $('.searchbox__search', this).val();
-    }
+    const q = $('.searchbox__search.tt-input', this).val() || null;
+    const qs = { q };
     var url = '/search?' + QueryString.stringify(qs);
     page.show(url);
   });

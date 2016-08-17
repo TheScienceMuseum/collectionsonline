@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const TypeMapping = require('../lib/type-mapping');
+const autocomplete = require('../lib/autocomplete');
 const autocompleteResultsToJsonApi = require('../lib/transforms/autocomplete-results-to-jsonapi');
 
 module.exports = (elastic, config) => ({
@@ -11,38 +11,10 @@ module.exports = (elastic, config) => ({
       'hapi-negotiator': {
         mediaTypes: {
           'application/vnd.api+json' (request, reply) {
-            const must = [{
-              match_phrase_prefix: {
-                summary_title_text: { query: request.query.q }
-              }
-            }];
+            const queryParams = Object.assign({}, request.params, request.query);
 
-            if (request.params.type) {
-              must.push({
-                term: { 'type.base': TypeMapping.toInternal(request.params.type) }
-              });
-            }
-
-            const searchOpts = {
-              searchName: 'autocomplete',
-              index: 'smg',
-              size: request.query.size,
-              _source: ['summary_title'],
-              body: {
-                query: {
-                  bool: {
-                    must,
-                    filter: {
-                      terms: { 'type.base': ['agent', 'archive', 'object'] }
-                    }
-                  }
-                }
-              }
-            };
-
-            elastic.search(searchOpts, (err, results) => {
+            autocomplete(elastic, queryParams, (err, results) => {
               if (err) return reply(err);
-              const queryParams = Object.assign({}, request.params, request.query);
               reply(autocompleteResultsToJsonApi(queryParams, results, config));
             });
           }

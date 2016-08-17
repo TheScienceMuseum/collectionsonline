@@ -1,4 +1,4 @@
-var initJqueryComp = require('../lib/init-jquery-components.js');
+var initJqueryComp = require('../lib/init-jquery-components');
 var data = require('../../fixtures/data');
 var Templates = require('../templates');
 var searchListener = require('../lib/search-listener');

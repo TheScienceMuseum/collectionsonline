@@ -12,7 +12,7 @@ module.exports = function () {
   }, {
     name: 'suggestions',
     source: debounce((q, onData, onAsyncData) => {
-      const requestId = Date.now();
+      const requestId = currentRequestId = Date.now();
       const url = `/autocomplete?q=${encodeURIComponent(q)}`;
       const opts = { headers: { Accept: 'application/vnd.api+json' } };
 
