@@ -2,6 +2,7 @@ const search = require('../../lib/search');
 const createQueryParams = require('../../lib/query-params/query-params');
 
 module.exports = function (elastic, searchToCopy, database, next) {
+  database.search = database.search || {};
   // define a search error response
   database.search.error = {error: {'status': 400, 'displayName': 'BadRequest', 'message': 'Bad Request'}, response: null};
   var count = 0;

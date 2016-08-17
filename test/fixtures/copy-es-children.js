@@ -2,6 +2,7 @@ const getChildren = require('../../lib/get-child-files');
 const TypeMapping = require('../../lib/type-mapping');
 
 module.exports = function (elastic, children, database, next) {
+  database.children = database.children || {};
   database.children.error = {error: {'status': 400, 'displayName': 'BadRequest', 'message': 'Bad Request'}, response: null};
   var count = 0;
   children.forEach(item => {
