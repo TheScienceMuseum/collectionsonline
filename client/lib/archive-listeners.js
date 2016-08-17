@@ -4,6 +4,7 @@ var getData = require('./get-data.js');
 var Templates = require('../templates');
 var JSONToHTML = require('../../lib/transforms/json-to-html-data');
 var page = require('page');
+var Snackbar = require('snackbarlightjs');
 
 module.exports = (ctx, listeners) => {
   // Archive Browser Listener
@@ -39,7 +40,12 @@ module.exports = (ctx, listeners) => {
       headers: { Accept: 'application/vnd.api+json' }
     };
 
-    getData(url, opts, function (json) {
+    getData(url, opts, function (err, json) {
+      if (err) {
+        console.error(err);
+        Snackbar.create('Error getting data from the server');
+        return;
+      }
       var data = JSONToHTML(json);
       archiveTree.innerHTML = Templates['archiveTree'](data);
       document.getElementsByTagName('title')[0].textContent = data.titlePage;

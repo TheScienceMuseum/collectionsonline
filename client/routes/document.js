@@ -4,6 +4,7 @@ var getData = require('../lib/get-data.js');
 var JSONToHTML = require('../../lib/transforms/json-to-html-data');
 var searchListener = require('../lib/search-listener');
 var archiveListeners = require('../lib/archive-listeners');
+var Snackbar = require('snackbarlightjs');
 
 module.exports = function (page) {
   page('/documents/:id', load, render, listeners);
@@ -16,7 +17,12 @@ function load (ctx, next) {
     };
     var id = ctx.params.id;
     var url = '/documents/' + id;
-    getData(url, opts, function (json) {
+    getData(url, opts, function (err, json) {
+      if (err) {
+        console.error(err);
+        Snackbar.create('Error getting data from the server');
+        return;
+      }
       var data = JSONToHTML(json);
       ctx.state.data = data;
       next();
