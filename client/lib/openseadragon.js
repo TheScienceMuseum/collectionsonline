@@ -22,6 +22,7 @@ module.exports = {
         zoomOutButton: 'osd-zoomout',
         fullPageButton: 'osd-fullpage',
         homeButton: 'osd-home',
+        toolbar: 'openseadragon-toolbar',
         gestureSettingsMouse: {
           scrollToZoom: false
         }
