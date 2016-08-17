@@ -24,6 +24,7 @@ module.exports = (elastic, config) => ({
             }
 
             const searchOpts = {
+              searchName: 'autocomplete',
               index: 'smg',
               size: request.query.size,
               _source: ['summary_title'],

@@ -1,4 +1,4 @@
-const QueryString = require('querystring')
+const QueryString = require('querystring');
 const testWithServer = require('./helpers/test-with-server');
 const file = require('path').relative(process.cwd(), __filename) + ' > ';
 
