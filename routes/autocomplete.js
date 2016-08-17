@@ -53,7 +53,7 @@ module.exports = (elastic, config) => ({
         type: Joi.string().valid('objects', 'people', 'documents')
       },
       query: {
-        q: Joi.string().required(),
+        q: Joi.string().min(3).required(),
         size: Joi.number().integer().min(1).max(10).default(3)
       }
     }
