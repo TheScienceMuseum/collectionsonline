@@ -31,14 +31,12 @@ module.exports = function (synonyms, cb) {
       index: 'smg',
       body: settings
     }, function (errorSettings, responseSettings) {
-      if (errorSettings) {
-        return cb(errorSettings, responseSettings);
-      }
       client.indices.open({
         index: 'smg'
       }, function (errorOpen, responseOpen) {
-        if (errorOpen) {
-          return cb(errorOpen, responseOpen);
+        const error = errorSettings || errorOpen || null;
+        if (error) {
+          return cb(error);
         }
         return cb(null, 'Synonyms list deployed');
       });
