@@ -22,14 +22,14 @@ testWithServer('Search request for Object with "Purchased" in credit line', (t, 
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?q=sonnabend',
+    url: '/search?q=hawking%20painting',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
   ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.equal(res.result.data[1].id, 'smgc-objects-67812', 'Response contains correct object');
-    t.notOk(res.result.data[1].attributes.legal.credit_line, 'Response does not contain credit line');
+    t.equal(res.result.data[0].id, 'smgc-objects-67812', 'Response contains correct object');
+    t.notOk(res.result.data[0].attributes.legal.credit_line, 'Response does not contain credit line');
     t.end();
   });
 });

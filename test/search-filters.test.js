@@ -952,8 +952,8 @@ testWithServer(file + 'Number of filters for the occupation facet should be grea
 
   ctx.server.inject(htmlRequest, (res) => {
     const response = JSON.parse(res.payload);
-    const test = response.meta.filters.occupation.length > 1;
-    t.equal(test, true, 'The facet occupation has more than 1 filter');
+    const test = response.meta.filters.organisation.length > 1;
+    t.ok(test, 'The facet organisation has more than 1 filter');
     t.end();
   });
 });

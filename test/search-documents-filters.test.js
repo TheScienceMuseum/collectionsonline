@@ -9,7 +9,7 @@ testWithServer(file + 'Should accept params in filter[PARAM_NAME] format for doc
   const htmlRequest = {
     method: 'GET',
     url: '/search/documents?' + QueryString.stringify({
-      q: 'babbage doc',
+      q: 'babbage',
       'filter[archive]': 'The Babbage Papers',
       'filter[organisations]': 'Science Museum, London'
     }),

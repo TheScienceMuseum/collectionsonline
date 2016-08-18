@@ -10,7 +10,7 @@ module.exports = () => ({
     const searchName = arguments[0].searchName;
 
     if (searchName === 'defaultSearch') {
-      q = getNestedProperty(arguments, '0.body.query.function_score.query.bool.must.multi_match.query') || 'all';
+      q = getNestedProperty(arguments, '0.body.query.function_score.query.bool.should.0.multi_match.query') || 'all';
     }
 
     if (searchName === 'searchChildArchive') {
