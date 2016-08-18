@@ -16,7 +16,12 @@ module.exports = function () {
       const url = `/autocomplete?q=${encodeURIComponent(q)}`;
       const opts = { headers: { Accept: 'application/vnd.api+json' } };
 
-      getData(url, opts, (results) => {
+      getData(url, opts, (err, results) => {
+        if (err) {
+          // No need to feedback - not mission critical
+          return console.error('Failed to autocomplete', err);
+        }
+
         if (requestId !== currentRequestId) {
           return console.warn('Ignoring autocomplete response', requestId, results);
         }
