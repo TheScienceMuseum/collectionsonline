@@ -13,6 +13,7 @@ module.exports = [
   'arrangement',
   'categories',
   'component',
+  'content',
   'condition',
   'custodial_history',
   'dates',

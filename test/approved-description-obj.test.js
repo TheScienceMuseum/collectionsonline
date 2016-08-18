@@ -12,7 +12,7 @@ testWithServer('Request for Archive HTML Page', (t, ctx) => {
   ctx.server.inject(htmlRequest, (res) => {
     var response = JSON.parse(res.payload);
     var data = response.data.attributes;
-    t.equal(data.description[0].value, data.options.option1, 'The description has the value of the approved description');
+    t.equal(data.webDescription[0].value, data.options.option1, 'The description has the value of the approved description');
     t.end();
   });
 });
