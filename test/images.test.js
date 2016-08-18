@@ -37,3 +37,21 @@ testWithServer('Search for Object Page with image', (t, ctx) => {
     t.end();
   });
 });
+
+testWithServer('Object Page with no image', (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/objects/smgc-objects-114820',
+    headers: {'Accept': 'application/vnd.api+json'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    var response = JSON.parse(res.payload);
+
+    t.equal(res.statusCode, 200, 'Succesful request');
+    t.ok(response.data, 'Got results');
+    t.end();
+  });
+});

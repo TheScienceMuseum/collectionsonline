@@ -28,6 +28,7 @@
     "page": "^1.7.1",
     "rc": "^1.1.6",
     "slick-carousel": "^1.6.0",
+    "snackbarlightjs": "^1.1.2",
     "svg4everybody": "^2.1.0",
     "typeahead.js": "^0.11.1",
     "vision": "^4.1.0"
@@ -59,11 +60,11 @@
   "scripts": {
     "postinstall": "run-s build minify && node nightwatch.conf.js",
     "start": "node bin/server.js",
-    "test": "node test/fixtures/fixtures-and-tests.js --data && npm run test-all",
-    "copy-data": "node test/fixtures/copy-data.js",
-    "test-all": "run-s test:*",
+    "test": "run-s test:*",
     "test:lint": "semistandard",
-    "test:unit": "istanbul cover tape 'test/**/*.test.js'",
+    "test:unit": "run-s test:unit:*",
+    "test:unit:sync": "node test/fixtures/copy-data.js",
+    "test:unit:tape": "istanbul cover tape 'test/**/*.test.js'",
     "test:endtoend": "nightwatch --retries 3 --env ${NW_ENV}",
     "build": "run-p build:*",
     "build:js": "browserify client/main.js -o public/bundle.js",
