@@ -81,7 +81,7 @@
     "watch:css": "nodemon -e scss -x 'npm run build:css'",
     "watch:svg": "nodemon -e svg --ignore public/ -x 'npm run build:svg'",
     "watch:server": "nodemon --watch . --ignore node_modules/ --ignore public/ -e js,html -x 'npm start'",
-    "synonyms": "node synonyms/settings-synonyms.js"
+    "synonyms": "node synonyms/deploy-synonyms.js"
   },
   "repository": {
     "type": "git",
