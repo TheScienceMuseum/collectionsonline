@@ -1,8 +1,8 @@
 var svg4everybody = require('svg4everybody');
 // var searchBox = require('../lib/search-box');
-var clipboard = require('../lib/clipboard');
-var moreButton = require('../lib/more-button');
-var slickCarousel = require('../lib/slick-carousel');
+var clipboard = require('./clipboard');
+var moreButton = require('./more-button');
+var slickCarousel = require('./slick-carousel');
 
 module.exports = (ctx) => {
   svg4everybody();
