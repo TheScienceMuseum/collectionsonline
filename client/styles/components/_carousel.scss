@@ -1,0 +1,33 @@
+.carousel-image {
+  width: auto;
+  height: 100%;
+  display: none;
+  margin: auto;
+}
+
+.carousel-image-active {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.carousel-thumb {
+  width: 25px;
+  height: 25px;
+  background-color: red;
+  display: inline-block;
+  cursor: pointer;
+}
+
+#left-button {
+  @include icon-before('arrow_left_white', 5rem);
+  position: absolute;
+  top: 45%;
+  left: 0;
+}
+
+#right-button {
+  @include icon-before('arrow_right_white', 5rem);
+  position: absolute;
+  top: 45%;
+  right: 0;
+}

@@ -97,6 +97,7 @@
 
 .record-imgpanel__slick {
   @include imgpanel-h;
+  position: relative;
   margin: 0;
   background-color: black;
 
