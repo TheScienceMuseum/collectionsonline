@@ -1,58 +1,35 @@
 var $ = window.$ = window.jQuery = require('jquery');
 require('typeahead.js');
-// fake static data to test.
-var suggestions = require('../fixtures/typeahead.json');
+const debounce = require('lodash.debounce');
+const getData = require('./get-data');
 
 module.exports = function () {
-  // autocomplete. https://github.com/twitter/typeahead.js
-  var substringMatcher = function (strs) {
-    return function findMatches (q, cb) {
-      var matches;
-
-      // an array that will be populated with substring matches
-      matches = [];
-
-      // regex used to determine if a string contains the substring `q`
-      var substrRegex = new RegExp(q, 'i');
-
-      // iterate through the pool of strings and for any string that
-      // contains the substring `q`, add it to the `matches` array
-      $.each(strs, function (i, str) {
-        if (substrRegex.test(str)) {
-          matches.push(str);
-        }
-      });
-
-      cb(matches);
-    };
-  };
+  let currentRequestId = null;
 
   $('#searchbox [type=search]').typeahead({
-    minLength: 1,
+    minLength: 3,
     highlight: true
   }, {
     name: 'suggestions',
-    source: substringMatcher(suggestions)
-  });
+    source: debounce((q, onData, onAsyncData) => {
+      const requestId = currentRequestId = Date.now();
+      const url = `/autocomplete?q=${encodeURIComponent(q)}`;
+      const opts = { headers: { Accept: 'application/vnd.api+json' } };
 
-  $('#searchbox [type=search]').bind('typeahead:render', function (ev, sug, flag, name) {
-    console.log('typeahead:render:' + sug);
-  });
+      getData(url, opts, (err, results) => {
+        if (err) {
+          // No need to feedback - not mission critical
+          return console.error('Failed to autocomplete', err);
+        }
 
-  $('#searchbox [type=search]').bind('typeahead:open', function () {
-    console.log('typeahead:open');
+        if (requestId !== currentRequestId) {
+          return console.warn('Ignoring autocomplete response', requestId, results);
+        }
+        const suggestions = results.data.map((r) => r.attributes.summary_title);
+        onAsyncData(suggestions);
+      });
+    }, 500),
+    async: true,
+    limit: 10
   });
-
-  $('#searchbox [type=search]').bind('typeahead:close', function () {
-    console.log('typeahead:close');
-  });
-
-  $('#searchbox [type=search]').bind('typeahead:idle', function () {
-    console.log('typeahead:idle');
-  });
-
-  $('#searchbox [type=search]').bind('typeahead:change', function () {
-    console.log('typeahead:change');
-  });
-  // none of those events tell me when the suggestions box is visible!
 };

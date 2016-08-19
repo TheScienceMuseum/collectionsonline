@@ -1,8 +1,8 @@
-var svg4everybody = require('svg4everybody');
 var $ = require('jquery');
 var QueryString = require('querystring');
+var initJqueryComp = require('../lib/init-jquery-components');
 var Templates = require('../templates');
-var createQueryParams = require('../../lib/query-params/query-params.js');
+var createQueryParams = require('../../lib/query-params/query-params');
 var getData = require('../lib/get-data.js');
 var toJsonUrl = require('../lib/to-json-url');
 var filterState = require('../lib/filter-state');
@@ -115,5 +115,5 @@ function listeners (ctx, next) {
     filterState.isFilterOpen = !filterState.isFilterOpen;
   });
 
-  svg4everybody();
+  initJqueryComp();
 }

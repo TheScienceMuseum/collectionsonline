@@ -10,6 +10,7 @@ const copyEsDocs = require('./copy-es-docs');
 const copyEsSearches = require('./copy-es-searches');
 const copyEsrelated = require('./copy-es-related');
 const copyEsChildren = require('./copy-es-children');
+const copyEsAutocompletes = require('./copy-es-autocompletes');
 
 Async.parallel([
   /**
@@ -85,13 +86,18 @@ Async.parallel([
       {id: 'smga-documents-110000009'}
     ];
 
+    const autocompletes = [
+      { q: 'babb' }
+    ];
+
     const database = {};
 
     Async.parallel([
       (cb) => copyEsDocs(elastic, dataToCopy, database, cb),
       (cb) => copyEsSearches(elastic, searchToCopy, database, cb),
       (cb) => copyEsrelated(elastic, related, database, cb),
-      (cb) => copyEsChildren(elastic, children, database, cb)
+      (cb) => copyEsChildren(elastic, children, database, cb),
+      (cb) => copyEsAutocompletes(elastic, autocompletes, database, cb)
     ], (err) => {
       if (err) throw err;
       Fs.writeFile(dirData + '/database.json', JSON.stringify(database, null, 2), 'utf-8', cb);
