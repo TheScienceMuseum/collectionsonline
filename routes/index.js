@@ -5,5 +5,6 @@ module.exports = (elastic, config) => ([
   require('./archive')(elastic, config),
   require('./object')(elastic, config),
   require('./person')(elastic, config),
-  require('./autocomplete')(elastic, config)
+  require('./autocomplete')(elastic, config),
+  require('./sitemap')(config)
 ]);
