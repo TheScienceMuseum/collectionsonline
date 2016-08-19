@@ -26,3 +26,24 @@ testWithServer(file + 'Should accept params in filter[PARAM_NAME] format for obj
     t.end();
   });
 });
+
+testWithServer(file + 'Should accept params in filter[PARAM_NAME] format for objects type', (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search/objects?' + QueryString.stringify({
+      q: 'rocket',
+      'filter[categories]': 'NRM - Locomotives and Rolling Stock',
+      'filter[date[to]]': '2000',
+      'filter[type]': 'steam locomotive',
+      'filter[user]': 'Liverpool & Manchester Railway'
+    }),
+    headers: { Accept: 'text/html' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});

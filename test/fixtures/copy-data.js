@@ -56,18 +56,19 @@ Async.parallel([
     ];
 
     const searchToCopy = [
-      {q: 'babbage doc', params: {type: 'documents'}},
+      {q: 'babbage', params: {type: 'documents'}},
       {q: 'test', params: {}},
       {q: 'test people', params: {type: 'people'}},
       {q: 'test objects', params: {type: 'objects'}},
       {q: 'test documents', params: {type: 'documents'}},
       {q: 'ada', params: {}},
+      {q: 'rocket', params: {type: 'objects'}},
       {q: 'ada objects', params: {type: 'objects'}},
       {q: '2016-5008/49', params: {type: 'objects'}},
       {q: 'ada people', params: {type: 'people'}},
       {q: 'Lumière', params: {type: 'people'}},
       {q: 'Lumière filmmaker', queryParams: {'filter[occupation]': 'filmmaker'}, params: {type: 'people'}},
-      {q: 'sonnabend', params: {}},
+      {q: 'hawking painting', params: {}},
       {q: 'all', params: {}},
       {q: 'plumed hat', params: {type: 'objects'}}
     ];
