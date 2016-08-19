@@ -1,0 +1,12 @@
+<footer class="globalfooter" role="banner">
+  <div class="row">
+    <div class="columns">
+      <a href="{{footerBanner.link}}" class="globalfooter__logo"><img src="{{footerBanner.image.url}}" alt="{{footerBanner.image.alt}}" /></a>
+      <ul class="ul-piped">
+        {{#each footerBanner.links}}
+         <li><a href="{{url}}">{{name}}</a></li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</footer>
