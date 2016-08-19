@@ -30,6 +30,7 @@ module.exports = (elastic, config, cb) => {
     require('inert'),
     require('hapi-negotiator'),
     require('vision'),
+    require('h2o2'),
     require('./routes/plugins/error')
   ], (err) => {
     if (err) {
