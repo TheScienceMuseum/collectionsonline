@@ -1,5 +1,6 @@
 var $ = require('jquery');
 var QueryString = require('querystring');
+var fetch = require('fetch-ponyfill')();
 var initJqueryComp = require('../lib/init-jquery-components');
 var Templates = require('../templates');
 var createQueryParams = require('../../lib/query-params/query-params');
@@ -116,4 +117,23 @@ function listeners (ctx, next) {
   });
 
   initJqueryComp();
+
+  const onResultClick = (e) => {
+    const id = e.currentTarget.getAttribute('href').split('/').pop();
+
+    fetch('/analytics', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/vnd.api+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ event: 'RESULT_CLICK', data: id })
+    }).catch((err) => console.error('Failed to send RESULT_CLICK analytics', err));
+  };
+
+  const resultLinks = document.querySelectorAll('#searchresults a');
+
+  for (let i = 0; i < resultLinks.length; i++) {
+    resultLinks[i].addEventListener('click', onResultClick);
+  }
 }
