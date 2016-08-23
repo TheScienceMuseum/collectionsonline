@@ -47,21 +47,44 @@ $timing-defaults: 0.25s ease-out;
   }
 }
 
-@mixin icon-bullet($icon, $size:0.75rem, $left: 0, $top: null) {
+//-----------------------------------------------------------------------------
+// icon-bullet
+// replacing a bulleted list • with an svg icon
+// requires: $icon
+// params: $top, $left, $bottom , to offset if aligning
+//  $align: top | center | bottom
+//-----------------------------------------------------------------------------
+
+@mixin icon-bullet($icon, $size:0.75rem, $left: 0, $top: null, $bottom: null, $align: center) {
   position: relative;
   padding-left: $size * 4/3 + $left;
   &:before {
     content: ' ';
     display: block;
     position: absolute;
+    margin: auto; // top, bottom, height, auto = vertical align!
     left: 0 + $left;
     @if ($top) {
       top: $top;
     } @else {
       top: -$size/5;
     }
-    bottom: 0;
-    margin: auto; // top, bottom, height, auto = vertical align!
+    @if ($align == 'top') {
+      margin-top: 0;
+    } @else if ($align == 'bottom') {
+      @if ($bottom) {
+        bottom: $bottom;
+      } @else {
+        bottom: 0;
+      }
+      margin-bottom: 0;
+    } @else {
+      @if ($bottom) {
+        bottom: $bottom;
+      } @else {
+        bottom: 0;
+      }
+    }
     height: $size;
     width: $size;
     background-image: url(/assets/icons/#{$icon}.svg);
