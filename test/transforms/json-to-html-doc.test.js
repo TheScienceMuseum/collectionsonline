@@ -23,7 +23,7 @@ test('Data fields should have correct values', function (t) {
   t.equal(HTMLData.title, 'The Babbage Papers', 'title should be correct');
   t.equal(HTMLData.type, 'documents', 'type should be correct');
   t.equal(HTMLData.fact.length, 1, 'facts should not be empty');
-  t.equal(HTMLData.related.documents.length, 6, 'Data should contain six related documents');
+  t.equal(HTMLData.related.documents.length, 5, 'Data should contain five related documents');
   t.ok(HTMLData.description, 'Data should contain a description');
   t.end();
 });
