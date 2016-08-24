@@ -133,23 +133,37 @@
 
 .filterbadge {
   $c: mix($c-cyan, $c-blue);
+
+  position: relative;
   display: inline-block;
+  max-width: 33%;
+  vertical-align: middle;
   background: $c;
   &:hover { background: darken($c, 10%); }
   color: white;
   a:hover { color: white; }
   border-radius: 0.75rem;
   line-height: 1rem;
-  margin-right: 0.5rem;
+  margin-right: 0.25rem;
   font-weight: 500;
   font-size: rem-calc(14);
   &__label {
     display: inline-block;
-    padding: rem-calc(5 6 3 8); // slight baseline shift
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    vertical-align: top;
+    text-overflow: ellipsis;
+    padding: rem-calc(5 30 3 8); // slight baseline shift
   }
 
   &__x {
-    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: block;
+    float: right;
     padding: rem-calc(5 8 3 6);
     color: white;
     border-left: 1px white solid;
