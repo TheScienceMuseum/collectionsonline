@@ -28,8 +28,8 @@
   &__name {
     display: block;
     position: relative;
+    @include icon-bullet(arrow_right, 1.5rem, $left: -0.2rem);
     padding-left: 1.5rem;
-    @include icon-bullet(arrow_right, 1.5rem, $top:0);
 
     .icon {
       font-size: rem-calc(24);
@@ -45,7 +45,7 @@
   &__options {
     display: none;
     font-size: rem-calc(12);
-    overflow: auto;
+    @include clearfix;
 
     input {
       margin-bottom: 0;
@@ -60,15 +60,20 @@
 
     li {
       padding-top: rem-calc(6);
-      padding-left: rem-calc(4);
+      position: relative;
     }
 
     label {
+      padding-left: 1.5rem;
       margin: 0;
       line-height: rem-calc(16);
       &:hover { color: mix($c-cyan, $c-blue); }
     }
-
+    .filter__box { //checkbox within label
+      position: absolute; // relative to li
+      top: rem-calc(8);
+      left: rem-calc(4);
+    }
   }
 
   &__count {
@@ -86,15 +91,16 @@
 
   &--open {
     .filter__name {
-      @include icon-bullet(arrow_down,1.5rem);
-      padding-bottom: 0.25rem;
+      @include icon-bullet(arrow_down, 1.5rem, $left:-0.2rem);
+      padding-left: 1.5rem;
+      padding-bottom: 0.5rem;
       margin-bottom: 0.25rem;
     }
     .filter__name:after {
       content: '';
       position: absolute;
-      left: 0.5rem;
-      right: 0.5rem;
+      left: 0;
+      right: 0;
       bottom: 0;
       border-bottom: 1px grey(20) dotted;
     }
@@ -103,11 +109,16 @@
   &--active {
     //border-left: 1px mix($c-cyan, $c-blue) solid;
     background-color: mix(grey(5), $c-cyan,95);
-
+    color: red;
     .filter__name {
       font-weight: 500;
-      @include icon-bullet(cancel, 1.5rem);
+      @include icon-bullet(cancel, 1.5rem, $left:-0.2rem);
+      padding-left: 1.5rem;
     }
+  }
+
+  &--uncollapsible &__name {
+      @include icon-bullet(cancel, 1.5rem, $top: 0, $left: -0.2rem);
   }
 
   &:hover {
@@ -115,6 +126,20 @@
     a { color: mix($c-cyan, $c-blue) }
   }
 
+  .filter__other {
+    display: block;
+    @include icon-bullet(arrow_right, $size:1.25rem, $top:0.4rem);
+    &:before { opacity: 0.5; }
+    color: grey(40);
+    font-size: rem-calc(14);
+    padding-left: 1.5rem;
+    padding-top: rem-calc(4);
+
+    &--open {
+      @include icon-bullet(arrow_down, $size:1.25rem, $top:0.4rem);
+      padding-left: 1.5rem;
+    }
+  }
 
   &__daterange {
     label {
@@ -133,23 +158,37 @@
 
 .filterbadge {
   $c: mix($c-cyan, $c-blue);
+
+  position: relative;
   display: inline-block;
+  max-width: 33%;
+  vertical-align: middle;
   background: $c;
   &:hover { background: darken($c, 10%); }
   color: white;
   a:hover { color: white; }
   border-radius: 0.75rem;
   line-height: 1rem;
-  margin-right: 0.5rem;
+  margin-right: 0.25rem;
   font-weight: 500;
   font-size: rem-calc(14);
   &__label {
     display: inline-block;
-    padding: rem-calc(5 6 3 8); // slight baseline shift
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    vertical-align: top;
+    text-overflow: ellipsis;
+    padding: rem-calc(5 30 3 8); // slight baseline shift
   }
 
   &__x {
-    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: block;
+    float: right;
     padding: rem-calc(5 8 3 6);
     color: white;
     border-left: 1px white solid;

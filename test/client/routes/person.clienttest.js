@@ -8,8 +8,8 @@ module.exports = {
       .assert.containsText('.fact-Nationality', 'English')
       .assert.containsText('.fact-born-in', 'Southwark')
       .assert.containsText('.record-top__date', '1791 - 1871')
-      .assert.containsText('.related-person > li > a', 'Lovelace')
-      .assert.containsText('.related-person > li', 'association')
+      .assert.containsText('.related-people > li > a', 'Lovelace')
+      .assert.containsText('.related-people > li', 'association')
       .end();
   }
 };

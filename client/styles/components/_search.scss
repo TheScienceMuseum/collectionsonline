@@ -84,6 +84,13 @@
     border-top: 1px solid mix($c-blue, white, 25%);
   }
 
+  &__filtersplainer {
+      display: inline-block;
+      color: grey(50);
+      font-size: rem-calc(12);
+      @include small-caps;
+      margin-right: 0.25rem;
+  }
   //reused slightly smaller on archive section
   &--archive {
     margin-top: 0;

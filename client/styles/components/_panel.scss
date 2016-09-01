@@ -35,15 +35,15 @@
     @include ul-icons;
   }
 
-  ul.related-person li {
-    @include icon-bullet(person);
+  ul.related-people li {
+    @include icon-bullet(people, $align: top, $top: 0.15rem);
   }
   ul.related-organisation li {
-    @include icon-bullet(person);
+    @include icon-bullet(people, $align: top, $top: 0.15rem);
   }
 
   ul.related-article li {
-    @include icon-bullet(tree-item); //obvs needs a better icon
+    @include icon-bullet(tree-item, $align: top, $top: 0.15rem); //obvs needs a better icon
   }
 
   &--cite {
