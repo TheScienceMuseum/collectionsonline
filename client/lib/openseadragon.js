@@ -3,7 +3,7 @@ var $ = require('jquery');
 
 module.exports = {
   init: function (ctx, imgUrl, cb) {
-    imgUrl = imgUrl || $('.slick-active img')[0].src;
+    imgUrl = imgUrl || $('.carousel-image-active')[0].src;
     if (!$('#openseadragon').length) return;
 
     if (!ctx.viewer) {
