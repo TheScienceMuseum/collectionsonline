@@ -7,7 +7,19 @@
   {{> records/record-top Xclass="record-top--dark" }}
 
   <div class="record-imgpanel">
-    <div class="row columns record-imgpanel__slickthumbs"><!-- thumbnav gets appended in here --></div>
+    <div class="row columns record-imgpanel__slickthumbs">
+      {{#if images}}
+        {{#each images}}
+          <img src="{{this.thumb}}" class="carousel-thumb" />
+        {{/each}}
+      {{else}}
+        {{#each slides}}
+          <div class="thumbnail">
+            <img src="/assets/img/example/babbage/{{ this }}" class="carousel-thumb" />
+          </div>
+        {{/each}}
+      {{/if}}
+    </div>
     <div class="record-imgpanel__slickwrap">
       <div class="record-imgpanel__slick carousel">
         {{#if images}}

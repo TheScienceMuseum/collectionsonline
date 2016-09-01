@@ -26,12 +26,25 @@
   position: absolute;
 }
 
-.carousel-thumb {
-  width: 25px;
-  height: 25px;
-  background-color: red;
+.thumbnail {
   display: inline-block;
+  position: relative;
+  width: 3rem;
+  height: 3rem;
+  overflow: hidden;
+  text-align: center;
+}
+
+.carousel-thumb {
   cursor: pointer;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: 100%;
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
 }
 
 #left-button {
