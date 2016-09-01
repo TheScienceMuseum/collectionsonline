@@ -80,13 +80,6 @@ function listeners (ctx, next) {
     $('.control--filters').toggleClass('control--active');
   });
 
-  // Clear Filters
-  $('.filter').on('click', '.filter__clear', function (e) {
-    e.preventDefault();
-    var qs = {q: $('.searchbox__search').val()};
-    var url = ctx.pathname + '?' + QueryString.stringify(qs);
-    page.show(url);
-  });
   /**
   * Click to add/remove filters
   * Build a html url with the new filter selected (get the current url + new filter)
