@@ -9,6 +9,7 @@
   "dependencies": {
     "async": "^2.0.0",
     "boom": "^3.2.2",
+    "carousel-js": "https://github.com/TheScienceMuseum/carousel-js",
     "clipboard": "^1.5.12",
     "elasticsearch": "^11.0.1",
     "fetch-ponyfill": "^1.0.0",
