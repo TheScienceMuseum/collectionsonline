@@ -3,7 +3,7 @@ const testWithServer = require('./helpers/test-with-server');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
 
-testWithServer(file + 'Should accept params in filter[PARAM_NAME] format for people type', (t, ctx) => {
+testWithServer(file + 'Should accept params in filter[PARAM_NAME] format for people type', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {

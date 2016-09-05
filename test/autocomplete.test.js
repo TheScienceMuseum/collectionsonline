@@ -2,7 +2,7 @@ const QueryString = require('querystring');
 const testWithServer = require('./helpers/test-with-server');
 const file = require('path').relative(process.cwd(), __filename) + ' > ';
 
-testWithServer(file + 'Should suggest completion', (t, ctx) => {
+testWithServer(file + 'Should suggest completion', {}, (t, ctx) => {
   t.plan(2);
 
   const request = {
@@ -18,7 +18,7 @@ testWithServer(file + 'Should suggest completion', (t, ctx) => {
   });
 });
 
-testWithServer(file + 'Should disallow < 3 characters', (t, ctx) => {
+testWithServer(file + 'Should disallow < 3 characters', {}, (t, ctx) => {
   t.plan(2);
 
   const request = {

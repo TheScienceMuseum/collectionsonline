@@ -1,6 +1,6 @@
 const testWithServer = require('./helpers/test-with-server');
 
-testWithServer('Request for Object with "Purchased" in credit line', (t, ctx) => {
+testWithServer('Request for Object with "Purchased" in credit line', {}, (t, ctx) => {
   t.plan(3);
 
   const htmlRequest = {
@@ -17,7 +17,7 @@ testWithServer('Request for Object with "Purchased" in credit line', (t, ctx) =>
   });
 });
 
-testWithServer('Search request for Object with "Purchased" in credit line', (t, ctx) => {
+testWithServer('Search request for Object with "Purchased" in credit line', {}, (t, ctx) => {
   t.plan(3);
 
   const htmlRequest = {

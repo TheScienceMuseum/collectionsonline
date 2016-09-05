@@ -1,6 +1,6 @@
 const testWithServer = require('./helpers/test-with-server');
 
-testWithServer('Request for Object Page with image', (t, ctx) => {
+testWithServer('Request for Object Page with image', {}, (t, ctx) => {
   t.plan(3);
 
   const htmlRequest = {
@@ -19,7 +19,7 @@ testWithServer('Request for Object Page with image', (t, ctx) => {
   });
 });
 
-testWithServer('Search for Object Page with image', (t, ctx) => {
+testWithServer('Search for Object Page with image', {}, (t, ctx) => {
   t.plan(3);
 
   const htmlRequest = {
@@ -38,7 +38,7 @@ testWithServer('Search for Object Page with image', (t, ctx) => {
   });
 });
 
-testWithServer('Object Page with no image', (t, ctx) => {
+testWithServer('Object Page with no image', {}, (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {

@@ -1,7 +1,7 @@
 const testWithServer = require('./helpers/test-with-server');
 const config = require('../config');
 
-testWithServer('Authentication is ok', (t, ctx) => {
+testWithServer('Authentication is ok', {}, (t, ctx) => {
   t.plan(2);
   // mock config user
   const user = config.user;
@@ -24,7 +24,7 @@ testWithServer('Authentication is ok', (t, ctx) => {
   });
 }, true);
 
-testWithServer('Authentication is not ok', (t, ctx) => {
+testWithServer('Authentication is not ok', {}, (t, ctx) => {
   t.plan(1);
   // mock config user
   const user = config.user;

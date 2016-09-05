@@ -1,6 +1,6 @@
 const testWithServer = require('./helpers/test-with-server');
 
-testWithServer('Request for Archive HTML Page', (t, ctx) => {
+testWithServer('Request for Archive HTML Page', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -15,7 +15,7 @@ testWithServer('Request for Archive HTML Page', (t, ctx) => {
   });
 });
 
-testWithServer('Request for Archive HTML Page for a wrong id', (t, ctx) => {
+testWithServer('Request for Archive HTML Page for a wrong id', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -30,22 +30,7 @@ testWithServer('Request for Archive HTML Page for a wrong id', (t, ctx) => {
   });
 });
 
-testWithServer('Request for Archive HTML Page but receive bad request from es', (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/documents/smga-documents-badRequest',
-    headers: {'Accept': 'text/html'}
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 503, 'Status code was as expected t0 503');
-    t.end();
-  });
-});
-
-testWithServer('Request for Archive HTML Page with expanded children', (t, ctx) => {
+testWithServer('Request for Archive HTML Page with expanded children', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -60,7 +45,7 @@ testWithServer('Request for Archive HTML Page with expanded children', (t, ctx) 
   });
 });
 
-testWithServer('Request for Object HTML Page', (t, ctx) => {
+testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -75,7 +60,7 @@ testWithServer('Request for Object HTML Page', (t, ctx) => {
   });
 });
 
-testWithServer('Request for Object HTML Page for a wrong id', (t, ctx) => {
+testWithServer('Request for Object HTML Page for a wrong id', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -90,22 +75,7 @@ testWithServer('Request for Object HTML Page for a wrong id', (t, ctx) => {
   });
 });
 
-testWithServer('Request for Object HTML Page but get error 503', (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/objects/smgc-objects-badRequest',
-    headers: {'Accept': 'text/html'}
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 503, 'Status code was as expected to 503');
-    t.end();
-  });
-});
-
-testWithServer('Request for Person HTML Page', (t, ctx) => {
+testWithServer('Request for Person HTML Page', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -119,7 +89,7 @@ testWithServer('Request for Person HTML Page', (t, ctx) => {
   });
 });
 
-testWithServer('Request for Person HTML Page who doesn\'t exists', (t, ctx) => {
+testWithServer('Request for Person HTML Page who doesn\'t exists', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -134,22 +104,7 @@ testWithServer('Request for Person HTML Page who doesn\'t exists', (t, ctx) => {
   });
 });
 
-testWithServer('Request for Person HTML Page but get error 503', (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/people/smgc-people-badRequest',
-    headers: {'Accept': 'text/html'}
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 503, 'Status code was as expected to 503');
-    t.end();
-  });
-});
-
-testWithServer('Request for Person HTML Page with no related items', (t, ctx) => {
+testWithServer('Request for Person HTML Page with no related items', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -164,7 +119,7 @@ testWithServer('Request for Person HTML Page with no related items', (t, ctx) =>
   });
 });
 
-testWithServer('Request for Person JSON Page with no related items', (t, ctx) => {
+testWithServer('Request for Person JSON Page with no related items', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -179,7 +134,7 @@ testWithServer('Request for Person JSON Page with no related items', (t, ctx) =>
   });
 });
 
-testWithServer('Request for Archive JSON', (t, ctx) => {
+testWithServer('Request for Archive JSON', {}, (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
@@ -195,7 +150,7 @@ testWithServer('Request for Archive JSON', (t, ctx) => {
   });
 });
 
-testWithServer('Request for Archive JSON with error', (t, ctx) => {
+testWithServer('Request for Archive JSON with error', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -210,7 +165,7 @@ testWithServer('Request for Archive JSON with error', (t, ctx) => {
   });
 });
 
-testWithServer('Request for Object JSON Page', (t, ctx) => {
+testWithServer('Request for Object JSON Page', {}, (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
@@ -226,8 +181,8 @@ testWithServer('Request for Object JSON Page', (t, ctx) => {
   });
 });
 
-testWithServer('Request for Object JSON Page for a wrong id', (t, ctx) => {
-  t.plan(4);
+testWithServer('Request for Object JSON Page for a wrong id', {}, (t, ctx) => {
+  t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
@@ -236,32 +191,12 @@ testWithServer('Request for Object JSON Page for a wrong id', (t, ctx) => {
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    var response = JSON.parse(res.payload);
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.ok(response.status, 404, 'status is 404');
-    t.ok(response.displayName, 'NotFound', 'the object is not found');
-    t.ok(response.message, 'Not Found', 'the object message is not found');
+    t.equal(res.statusCode, 404, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer('Request for Object JSON Page, not found', (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/objects/smgc-objects-noResult',
-    headers: {'Accept': 'application/vnd.api+json'}
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    var response = JSON.parse(res.payload);
-    t.equal(response.status, 404, 'Object not found');
-    t.end();
-  });
-});
-
-testWithServer('Request for Person JSON Page', (t, ctx) => {
+testWithServer('Request for Person JSON Page', {}, (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
@@ -277,8 +212,8 @@ testWithServer('Request for Person JSON Page', (t, ctx) => {
   });
 });
 
-testWithServer('Request for Person JSON Page for a wrong id', (t, ctx) => {
-  t.plan(3);
+testWithServer('Request for Person JSON Page for a wrong id', {}, (t, ctx) => {
+  t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
@@ -287,26 +222,7 @@ testWithServer('Request for Person JSON Page for a wrong id', (t, ctx) => {
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    var response = JSON.parse(res.payload);
-    t.ok(response.status, 404, 'status is 404');
-    t.ok(response.displayName, 'NotFound', 'the person is not found');
-    t.ok(response.message, 'Not Found', 'the person message is not found');
-    t.end();
-  });
-});
-
-testWithServer('Request for Person JSON Page, no result', (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/people/smgc-people-noResult',
-    headers: {'Accept': 'application/vnd.api+json'}
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    var response = JSON.parse(res.payload);
-    t.equal(response.status, 404, 'Person not found');
+    t.ok(res.statusCode, 404, 'status is 404');
     t.end();
   });
 });
