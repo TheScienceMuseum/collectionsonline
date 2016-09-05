@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var QueryString = require('querystring');
 var fetch = require('fetch-ponyfill')();
 var initJqueryComp = require('../lib/init-jquery-components');
@@ -12,6 +11,8 @@ var page = require('page');
 var searchResultsToTemplateData = require('../../lib/transforms/search-results-to-template-data');
 var searchListener = require('../lib/search-listener');
 var Snackbar = require('snackbarlightjs');
+var toggleClass = require('../js-helpers/toggleClass');
+var i = 0;
 
 module.exports = function (page) {
   page('/search', load, render, listeners);
@@ -58,9 +59,14 @@ function render (ctx, next) {
 
   // Hides filterpanel by default if javascript is enabled
   if (!ctx.isFilterOpen) {
-    $('.searchresults').removeClass('searchresults--filtersactive');
-    $('.filtercolumn').removeClass('filtercolumn--filtersactive');
-    $('.control--filters').removeClass('control--active');
+    var searchresults = document.querySelector('.searchresults');
+    searchresults.className = searchresults.className.replace('searchresults--filtersactive', '');
+
+    var filtercolumn = document.querySelector('.filtercolumn');
+    filtercolumn.className = filtercolumn.className.replace('filtercolumn--filtersactive', '');
+
+    var controlFilters = document.querySelector('.control--filters');
+    controlFilters.className = controlFilters.className.replace('control--active', '');
   }
 
   // refresh the title of the page
@@ -73,39 +79,64 @@ function render (ctx, next) {
 */
 function listeners (ctx, next) {
   searchListener();
-  // Show/hide filters
-  $('.control__button').on('click', function (e) {
-    $('.searchresults').toggleClass('searchresults--filtersactive');
-    $('.filtercolumn').toggleClass('filtercolumn--filtersactive');
-    $('.control--filters').toggleClass('control--active');
-  });
+
+  var toggleElements = function () {
+    var searchresults = document.querySelector('.searchresults');
+    searchresults.className = toggleClass(searchresults.className, 'searchresults--filtersactive');
+
+    var filtercolumn = document.querySelector('.filtercolumn');
+    filtercolumn.className = toggleClass(filtercolumn.className, 'filtercolumn--filtersactive');
+
+    var controlFilters = document.querySelector('.control--filters');
+    controlFilters.className = toggleClass(controlFilters.className, 'control--active');
+  };
+
+  var controlButtons = document.getElementsByClassName('control__button');
+  for (i = 0; i < controlButtons.length; i++) {
+    controlButtons[i].addEventListener('click', toggleElements);
+  }
 
   /**
   * Click to add/remove filters
   * Build a html url with the new filter selected (get the current url + new filter)
   */
-  $('.filter:not(.filter--uncollapsible)').on('click', '[type=checkbox]', function (e) {
-    filterResults(ctx, page);
-  });
+  var filtersCheckbox = document.querySelectorAll('.filter:not(.filter--uncollapsible) [type=checkbox]');
+  for (i = 0; i < filtersCheckbox.length; i++) {
+    filtersCheckbox[i].addEventListener('click', function () {
+      filterResults(ctx, page);
+    });
+  }
 
   /**
   * Search when one of the input date onblur
   */
-  $('.filter:not(.filter--uncollapsible)').on('blur', '[type=number]', function (e) {
-    filterResults(ctx, page);
-  });
+  var filtersDate = document.querySelectorAll('.filter:not(.filter--uncollapsible) [type=number]');
+  for (i = 0; i < filtersDate.length; i++) {
+    filtersDate[i].addEventListener('blur', function () {
+      filterResults(ctx, page);
+    });
+  }
 
   /**
   * Search when the result per page is change
   */
-  $('.control--rpp select').on('change', function (e) {
-    filterResults(ctx, page);
-  });
+  var controlRpp = document.querySelector('.control--rpp select');
+  // the select page number only exists if there are enough results
+  if (controlRpp) {
+    controlRpp.addEventListener('change', function () {
+      filterResults(ctx, page);
+    });
+  }
+
+  // $('.control--rpp select').on('change', function (e) {
+  //   filterResults(ctx, page);
+  // });
 
   /**
   * update filter status (open/close)
   */
-  $('#fb').on('click', function (e) {
+  var filterButton = document.querySelector('#fb');
+  filterButton.addEventListener('click', function () {
     filterState.isFilterOpen = !filterState.isFilterOpen;
   });
 
