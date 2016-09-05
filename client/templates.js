@@ -167,6 +167,16 @@ Handlebars.registerPartial(
   Fs.readFileSync('./templates/partials/records/ondisplay.html', 'utf8')
 );
 
+Handlebars.registerPartial(
+  'records/carousel',
+  Fs.readFileSync('./templates/partials/records/carousel.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'records/single-image',
+  Fs.readFileSync('./templates/partials/records/single-image.html', 'utf8')
+);
+
 // Helpers
 Handlebars.registerHelper('classname', require('../templates/helpers/classname.js'));
 
@@ -178,7 +188,7 @@ Handlebars.registerHelper('getinventorynumber', require('../templates/helpers/ge
 
 Handlebars.registerHelper('gettodaysdate', require('../templates/helpers/gettodaysdate.js'));
 
-Handlebars.registerHelper('ifmultiplepages', require('../templates/helpers/ifmultiplepages.js'));
+Handlebars.registerHelper('ifmultiple', require('../templates/helpers/ifmultiple.js'));
 
 Handlebars.registerHelper('isfond', require('../templates/helpers/isfond.js'));
 
