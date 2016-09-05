@@ -6,28 +6,17 @@
 
   {{> records/record-top Xclass="record-top--dark" }}
 
-  <div class="record-imgpanel">
-    <div class="row columns record-imgpanel__slickthumbs"><!-- thumbnav gets appended in here --></div>
-    <div class="record-imgpanel__slickwrap">
-      <div class="record-imgpanel__slick">
-        {{#if images}}
-          {{#each images}}
-            <div data-thumb="{{this.thumb}}"><img src="{{this.large}}" class="pic" /></div>
-          {{/each}}
-        {{else}}
-          {{#each slides}}
-            <div data-thumb="/assets/img/example/babbage/{{ this }}"><img src="/assets/img/example/babbage/{{ this }}" class="pic" /></div>
-          {{/each}}
-        {{/if}}
-      </div>
-    </div>
-
-    <div class="record-imgpanel__singleimgwrap hidden record-imgpanel__dragon">
-      <div class="record-imgpanel__singleimg" id="openseadragon"></div>
-    </div>
-
-    {{> records/record-imgpanel__controlbar}}
-  </div>
+  {{#if images}}
+    {{#ifmultiple images}}
+      {{> records/carousel}}
+    {{else}}
+      {{>records/single-image}}
+    {{/ifmultiple}}
+  {{else}}
+    {{#ifmultiple slides}}
+      {{> records/carousel}}
+    {{/ifmultiple}}
+  {{/if}}
 
   <section class="white">
     <div class="row">

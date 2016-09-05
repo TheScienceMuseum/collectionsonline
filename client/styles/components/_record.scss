@@ -97,6 +97,7 @@
 
 .record-imgpanel__slick {
   @include imgpanel-h;
+  position: relative;
   margin: 0;
   background-color: black;
 
@@ -135,6 +136,7 @@
 .record-imgpanel__slickthumbs {
   position: relative;
   height: 3rem;
+  text-align: center;
 
   .slick-dots {
     bottom:auto;
