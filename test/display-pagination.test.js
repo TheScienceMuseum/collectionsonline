@@ -3,8 +3,8 @@ const Handlebars = require('handlebars');
 
 test('Should show 3 pages when only 3 pages are available', (t) => {
   t.plan(2);
-  Handlebars.registerHelper('ifmultiplepages', require('../templates/helpers/ifmultiplepages.js'));
-  var textHandlebar = '{{#ifmultiplepages totalPages}}multipage!!{{/ifmultiplepages}}';
+  Handlebars.registerHelper('ifmultiple', require('../templates/helpers/ifmultiple.js'));
+  var textHandlebar = '{{#ifmultiple totalPages}}multipage!!{{/ifmultiple}}';
   var template = Handlebars.compile(textHandlebar);
   var result1page = template({totalPages: 1});
   var resultMultiPage = template({totalPages: 5});
