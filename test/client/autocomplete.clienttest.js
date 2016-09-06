@@ -3,13 +3,11 @@ module.exports = {
     browser
       .url('http://localhost:8000/')
       .waitForElementVisible('body', 1000)
-      .setValue('input[type=search].searchbox__search.tt-input', 'babb')
+      .setValue('input[type=search].searchbox__search', 'babb')
       // Wait for the suggestions menu to open
-      .waitForElementVisible('.tt-menu.tt-open', 1000)
-      // ...and not empty
-      .assert.elementNotPresent('.tt-menu.tt-empty')
+      .waitForElementVisible('.awesomplete li', 1000)
       // Assert that a suggestion is present, highlighting "Babb" of "Babbage"
-      .assert.containsText('.tt-highlight', 'Babb')
+      .assert.containsText('.awesomplete li', 'Babb')
       .end();
   },
 
@@ -17,10 +15,10 @@ module.exports = {
     browser
       .url('http://localhost:8000/')
       .waitForElementVisible('body', 1000)
-      .setValue('input[type=search].searchbox__search.tt-input', 'ba')
+      .setValue('input[type=search].searchbox__search', 'ba')
       .pause(1000)
       // The suggestions menu should not show any suggestions
-      .assert.elementPresent('.tt-menu.tt-empty')
+      .assert.elementNotPresent('.awesomplete li')
       .end();
   },
 
@@ -28,13 +26,11 @@ module.exports = {
     browser
       .url('http://localhost:8000/search')
       .waitForElementVisible('body', 1000)
-      .setValue('input[type=search].searchbox__search.tt-input', 'babb')
+      .setValue('input[type=search].searchbox__search', 'babb')
       // Wait for the suggestions menu to open
-      .waitForElementVisible('.tt-menu.tt-open', 1000)
-      // ...and not empty
-      .assert.elementNotPresent('.tt-menu.tt-empty')
+      .waitForElementVisible('.awesomplete li', 1000)
       // Assert that a suggestion is present, highlighting "Babb" of "Babbage"
-      .assert.containsText('.tt-highlight', 'Babb')
+      .assert.containsText('.awesomplete li', 'Babb')
       .end();
   },
 
@@ -42,10 +38,10 @@ module.exports = {
     browser
       .url('http://localhost:8000/search')
       .waitForElementVisible('body', 1000)
-      .setValue('input[type=search].searchbox__search.tt-input', 'ba')
+      .setValue('input[type=search].searchbox__search', 'ba')
       .pause(1000)
       // The suggestions menu should not show any suggestions
-      .assert.elementPresent('.tt-menu.tt-empty')
+      .assert.elementNotPresent('.awesomplete li')
       .end();
   }
 };

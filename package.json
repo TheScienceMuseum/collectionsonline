@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "async": "^2.0.0",
+    "awesomplete": "^1.1.1",
     "boom": "^3.2.2",
     "carousel-js": "https://github.com/TheScienceMuseum/carousel-js",
     "clipboard": "^1.5.12",
