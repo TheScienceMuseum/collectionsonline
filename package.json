@@ -27,6 +27,7 @@
     "jquery": "2.2.4",
     "jsonwebtoken": "^7.1.7",
     "level": "^1.4.0",
+    "level-party": "^3.0.4",
     "lodash.debounce": "^4.0.8",
     "openseadragon": "^2.2.0",
     "page": "^1.7.1",

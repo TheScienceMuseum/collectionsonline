@@ -47,3 +47,4 @@ test/fixtures/elastic-responses/database.json
 
 #leveldb
 counts
+test-counts

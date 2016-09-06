@@ -7,5 +7,5 @@ module.exports = (elastic, config) => ([
   require('./person')(elastic, config),
   require('./autocomplete')(elastic, config),
   require('./sitemap')(config),
-  require('./analytics')()
+  require('./analytics')(elastic, config)
 ]);
