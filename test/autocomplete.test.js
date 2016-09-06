@@ -33,3 +33,33 @@ testWithServer(file + 'Should disallow < 3 characters', {}, (t, ctx) => {
     t.end();
   });
 });
+
+testWithServer(file + 'Autocomplete with type people', {}, (t, ctx) => {
+  t.plan(1);
+
+  const request = {
+    method: 'GET',
+    url: '/autocomplete/people?' + QueryString.stringify({ q: 'cha' }),
+    headers: { Accept: 'application/vnd.api+json' }
+  };
+
+  ctx.server.inject(request, (res) => {
+    t.equal(res.statusCode, 200, 'Status was OK');
+    t.end();
+  });
+});
+
+testWithServer(file + 'Autocomplete error', {mock: {method: 'search', response: {error: new Error()}}}, (t, ctx) => {
+  t.plan(1);
+
+  const request = {
+    method: 'GET',
+    url: '/autocomplete?' + QueryString.stringify({ q: 'cha' }),
+    headers: { Accept: 'application/vnd.api+json' }
+  };
+
+  ctx.server.inject(request, (res) => {
+    t.equal(res.statusCode, 503, 'Status code was as expected');
+    t.end();
+  });
+});

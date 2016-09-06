@@ -26,7 +26,7 @@ testWithServer(file + 'Should accept the param objects', {}, (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/search/objects?' + QueryString.stringify({
-      q: 'test objects'
+      q: 'test'
     }),
     headers: { Accept: 'text/html' }
   };

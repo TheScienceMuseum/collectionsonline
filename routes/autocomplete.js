@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const Boom = require('boom');
 const autocomplete = require('../lib/autocomplete');
 const autocompleteResultsToJsonApi = require('../lib/transforms/autocomplete-results-to-jsonapi');
 
@@ -14,7 +15,7 @@ module.exports = (elastic, config) => ({
             const queryParams = Object.assign({}, request.params, request.query);
 
             autocomplete(elastic, queryParams, (err, results) => {
-              if (err) return reply(err);
+              if (err) return reply(Boom.serverUnavailable(err));
               reply(autocompleteResultsToJsonApi(queryParams, results, config));
             });
           }

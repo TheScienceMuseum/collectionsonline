@@ -907,39 +907,6 @@ testWithServer(file + 'Should not accept array of multiple image_licences as jso
   });
 });
 
-// testWithServer(file + 'Should return an error if the elasticsearch search function fail', {}, (t, ctx) => {
-//   t.plan(1);
-//
-//   const htmlRequest = {
-//     method: 'GET',
-//     // mock-database trigger an error if the query parameter is equal to "error"
-//     url: '/search?' + QueryString.stringify({ q: 'error' }),
-//     headers: { Accept: 'text/html' }
-//   };
-//
-//   ctx.server.inject(htmlRequest, (res) => {
-//     t.equal(res.statusCode, 400, 'Status code was as expected to 400');
-//     t.end();
-//   });
-// });
-
-// testWithServer(file + 'Should return an error if the elasticsearch search function fail on json request', {}, (t, ctx) => {
-//   t.plan(2);
-//
-//   const htmlRequest = {
-//     method: 'GET',
-//     url: '/search?' + QueryString.stringify({ q: 'error' }),
-//     headers: { Accept: 'application/vnd.api+json' }
-//   };
-//
-//   ctx.server.inject(htmlRequest, (res) => {
-//     const response = JSON.parse(res.payload);
-//     t.equal(res.statusCode, 400, 'Status code was as expected to 400');
-//     t.equal(response.errors[0].title, 'Bad Request', 'the title of the error is Bad Request');
-//     t.end();
-//   });
-// });
-
 // AND logic for the filters
 testWithServer(file + 'Number of filters for the occupation facet should be greater than 1', {}, (t, ctx) => {
   t.plan(1);
@@ -998,6 +965,23 @@ testWithServer(file + 'Should accept params and no query', {}, (t, ctx) => {
     url: '/search?' + QueryString.stringify({
       'filter[date[from]]': '2016',
       'filter[places]': ['London', 'Bath']
+    }),
+    headers: { Accept: 'text/html' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer(file + 'Should accept user params', {}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({
+      'user': 'Great Central Railway'
     }),
     headers: { Accept: 'text/html' }
   };
