@@ -4,12 +4,13 @@ const getData = require('./get-data');
 
 module.exports = function () {
   let currentRequestId = null;
-  var searchbox = document.querySelector('#searchbox [type=search]');
-  var awesomplete = new Awesomplete(searchbox, {
+  var searchbox = document.getElementById('searchbox');
+  var searchinput = document.querySelector('#searchbox [type=search]');
+  var awesomplete = new Awesomplete(searchinput, {
     minChars: 3,
     autoFirst: false
   });
-  searchbox.addEventListener('keyup', debounce(function (e) {
+  searchinput.addEventListener('keyup', debounce(function (e) {
     var q = e.target.value;
     if (q.length > 0) {
       const requestId = currentRequestId = Date.now();
@@ -30,4 +31,16 @@ module.exports = function () {
       });
     }
   }, 500));
+  searchinput.addEventListener('focus', function (e) {
+    searchbox.classList.add('searchbox--focussed');
+  });
+  searchinput.addEventListener('blur', function (e) {
+    searchbox.classList.remove('searchbox--focussed');
+  });
+  searchinput.addEventListener('awesomplete-open', function (e) {
+    searchbox.classList.add('searchbox--awesomplete-open');
+  }, false);
+  searchinput.addEventListener('awesomplete-close', function (e) {
+    searchbox.classList.remove('searchbox--awesomplete-open');
+  }, false);
 };

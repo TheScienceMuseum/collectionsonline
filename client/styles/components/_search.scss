@@ -52,12 +52,20 @@
     box-shadow: 0 2px 8px rgba(black, 0.2);
     .icon-search { fill: $c-blue; }
   }
+
+  &--awesomplete-open {
+    border-radius: 0.25rem 0.25rem 0 0;
+  }
+
   &__search {
     margin-right: 3.5rem;
     height: 3.5rem;
     padding: 1rem;
     border-radius: 0.25rem;
-    &, &:focus { border: 0; }
+    &, &:focus {
+      border: 0;
+      box-shadow: none;
+    }
     font-size: rem-calc(24);
     font-weight: 500;
     @include breakpoint(small only) {

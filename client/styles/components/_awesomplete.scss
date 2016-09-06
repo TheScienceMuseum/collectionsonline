@@ -1,3 +1,8 @@
+//-----------------------------------------------------------------------------
+// .awesomplete - main search input autocomplete
+// https://leaverou.github.io/awesomplete
+//-----------------------------------------------------------------------------
+
 [hidden] { display: none; }
 
 .visually-hidden {
@@ -5,100 +10,72 @@
 	clip: rect(0, 0, 0, 0);
 }
 
-div.awesomplete {
+.awesomplete {
 	display: inline-block;
 	position: relative;
   width: 100%;
-}
 
-div.awesomplete > input {
-	display: block;
-}
-
-div.awesomplete > ul {
-	position: absolute;
-	left: 0;
-	z-index: 1;
-	min-width: 100%;
-	box-sizing: border-box;
-	list-style: none;
-	padding: 0;
-	border-radius: .3em;
-	margin: .2em 0 0;
-	background: hsla(0,0%,100%,.9);
-	background: linear-gradient(to bottom right, white, hsla(0,0%,100%,.8));
-	border: 1px solid rgba(0,0,0,.3);
-	box-shadow: .05em .2em .6em rgba(0,0,0,.2);
-	text-shadow: none;
-}
-
-div.awesomplete > ul[hidden],
-div.awesomplete > ul:empty {
-	display: none;
-}
-
-@supports (transform: scale(0)) {
-	div.awesomplete > ul {
-		transition: .3s cubic-bezier(.4,.2,.5,1.4);
-		transform-origin: 1.43em -.43em;
-	}
-
-	div.awesomplete > ul[hidden],
-	div.awesomplete > ul:empty {
-		opacity: 0;
-		transform: scale(0);
-		display: block;
-		transition-timing-function: ease;
-	}
-}
-
-	/* Pointer */
-	div.awesomplete > ul:before {
-		content: "";
+	ul {
 		position: absolute;
-		top: -.43em;
-		left: 1em;
-		width: 0; height: 0;
-		padding: .4em;
+		left: -1px;
+		right: -1px;
+		z-index: 1;
+		min-width: 100%;
+		list-style: none;
+		padding: 0;
+		border-radius: 0 0 0.25rem 0.25rem;
+		margin: 0;
 		background: white;
-		border: inherit;
-		border-right: 0;
-		border-bottom: 0;
-		-webkit-transform: rotate(45deg);
-		transform: rotate(45deg);
+		border: 1px solid $c-blue;
+		border-top: 1px solid mix($c-blue, white, 25%);
+		box-shadow: 0 2px 8px rgba(black, 0.2);
+		text-shadow: none;
 	}
 
-	div.awesomplete > ul > li {
+	ul[hidden],
+	ul:empty {
+		display: none;
+	}
+
+	li {
 		position: relative;
-		padding: .2em .5em;
+		padding: .625rem 1rem;
 		cursor: pointer;
-	}
 
-	div.awesomplete > ul > li:hover {
-		background: hsl(200, 40%, 80%);
-		color: black;
-	}
-
-	div.awesomplete > ul > li[aria-selected="true"] {
-		background: hsl(205, 40%, 40%);
-		color: white;
-	}
-
-		div.awesomplete mark {
-			background: hsl(65, 100%, 50%);
-      background-color: inherit;
-      font-weight: bold;
+		&:hover {
+			background-color: grey(10);
+			background-image: linear-gradient(grey(10) 0, grey(10) 1px, grey(5) 1px, grey(10) 100%);
+		  color: $c-blue;
 		}
 
-		div.awesomplete li:hover mark {
-			background: hsl(68, 100%, 41%);
-      background-color: inherit;
-      font-weight: bold;
+		&[aria-selected="true"] {
+			background:	mix(white, $c-cyan,75);
 		}
 
-		div.awesomplete li[aria-selected="true"] mark {
-			background: hsl(86, 100%, 21%);
-			color: inherit;
-      background-color: inherit;
-      font-weight: bold;
+		&:last-child,
+		&:last-child:hover {
+		  border-radius: 0 0 0.25rem 0.25rem;
 		}
+	}
+
+
+	mark {
+    font-weight: 500;
+		background-color: inherit;
+	}
+
+	@supports (transform: scale(0)) {
+		ul {
+			transition: $timing-defaults;
+			transform-origin: 0 0;
+		}
+
+		ul[hidden],
+		ul:empty {
+			opacity: 0;
+			transform: scale(1 0);
+			display: block;
+		}
+	}
+
+}
