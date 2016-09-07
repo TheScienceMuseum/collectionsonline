@@ -24,7 +24,7 @@ module.exports = {
       .pause(1000)
       .click('.filter__box[value="England, United Kingdom"]')
       .pause(1000)
-      .assert.urlEquals('http://localhost:8000/search/people?q=charles&filter%5Bbirth%5Bplace%5D%5D=England%2C+United+Kingdom&page%5Bsize%5D=50&page%5Btype%5D=search')
+      .assert.urlEquals('http://localhost:8000/search/people?q=charles&filter%5Bbirth%5Bplace%5D%5D=England%2C%20United%20Kingdom&page%5Bsize%5D=50&page%5Btype%5D=search')
       .click('.filter__box[value="England, United Kingdom"]')
       .pause(1000)
       .assert.urlEquals('http://localhost:8000/search/people?q=charles&page%5Bsize%5D=50&page%5Btype%5D=search')
@@ -32,7 +32,7 @@ module.exports = {
       .pause(1000)
       .click('.filter__box[value=chemist]')
       .pause(1000)
-      .assert.urlEquals('http://localhost:8000/search/people?q=charles&filter%5Boccupation%5D=chemist&filter%5Bbirth%5Bplace%5D%5D=England%2C+United+Kingdom&page%5Bsize%5D=50&page%5Btype%5D=search')
+      .assert.urlEquals('http://localhost:8000/search/people?q=charles&filter%5Boccupation%5D=chemist&filter%5Bbirth%5Bplace%5D%5D=England%2C%20United%20Kingdom&page%5Bsize%5D=50&page%5Btype%5D=search')
       .end();
   }
 };
