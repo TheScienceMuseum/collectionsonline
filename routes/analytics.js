@@ -10,8 +10,14 @@ module.exports = (elastic, config) => ({
       'hapi-negotiator': {
         mediaTypes: {
           'application/vnd.api+json' (request, reply) {
-            scores.update(request.payload.data);
-            reply().code(204);
+            scores.update(request.payload.data, function (err, result) {
+              if (err) {
+                console.log(err);
+                reply().code(503);
+              } else {
+                reply().code(204);
+              }
+            });
           }
         }
       }
