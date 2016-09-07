@@ -1,6 +1,6 @@
 const testWithServer = require('./helpers/test-with-server');
 
-testWithServer('Request for Archive HTML Page', (t, ctx) => {
+testWithServer('Request for Archive HTML Page', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {

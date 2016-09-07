@@ -5,7 +5,7 @@ const JWT = require('jsonwebtoken');
 const jwtSecret = config.JWT_SECRET;
 config.JWT_SECRET = 'enocdethejwt';
 
-testWithServer('Authentication is ok', (t, ctx) => {
+testWithServer('Authentication is ok', {}, (t, ctx) => {
   t.plan(1);
   const token = JWT.sign({valid: true}, config.JWT_SECRET);
   const htmlRequest = {
@@ -20,7 +20,7 @@ testWithServer('Authentication is ok', (t, ctx) => {
   });
 }, true);
 
-testWithServer('Attempt to access a page with a wrong cookie', (t, ctx) => {
+testWithServer('Attempt to access a page with a wrong cookie', {}, (t, ctx) => {
   t.plan(1);
   const token = JWT.sign({valid: 'wrong cookie value'}, config.JWT_SECRET);
   const htmlRequest = {

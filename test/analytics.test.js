@@ -1,7 +1,7 @@
 const testWithServer = require('./helpers/test-with-server');
 const file = require('path').relative(process.cwd(), __filename) + ' > ';
 
-testWithServer(file + 'Should process RESULT_CLICK analytics event', (t, ctx) => {
+testWithServer(file + 'Should process RESULT_CLICK analytics event', {}, (t, ctx) => {
   t.plan(1);
 
   const request = {

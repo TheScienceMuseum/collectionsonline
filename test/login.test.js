@@ -1,6 +1,6 @@
 const testWithServer = require('./helpers/test-with-server');
 
-testWithServer('Request for login Page', (t, ctx) => {
+testWithServer('Request for login Page', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -14,7 +14,7 @@ testWithServer('Request for login Page', (t, ctx) => {
   });
 }, true);
 
-testWithServer('Attempt to acces the home page without authorisation', (t, ctx) => {
+testWithServer('Attempt to acces the home page without authorisation', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -28,7 +28,7 @@ testWithServer('Attempt to acces the home page without authorisation', (t, ctx) 
   });
 }, true);
 
-testWithServer('Attempt to acces the home page without authorisation, redirect to login page if text/html origin request', (t, ctx) => {
+testWithServer('Attempt to acces the home page without authorisation, redirect to login page if text/html origin request', {}, (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {

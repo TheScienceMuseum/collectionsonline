@@ -3,7 +3,7 @@ const testWithServer = require('./helpers/test-with-server');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
 
-testWithServer(file + 'Should accept the param people', (t, ctx) => {
+testWithServer(file + 'Should accept the param people', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -20,13 +20,13 @@ testWithServer(file + 'Should accept the param people', (t, ctx) => {
   });
 });
 
-testWithServer(file + 'Should accept the param objects', (t, ctx) => {
+testWithServer(file + 'Should accept the param objects', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/search/objects?' + QueryString.stringify({
-      q: 'test objects'
+      q: 'test'
     }),
     headers: { Accept: 'text/html' }
   };
@@ -37,7 +37,7 @@ testWithServer(file + 'Should accept the param objects', (t, ctx) => {
   });
 });
 
-testWithServer(file + 'Should accept the param documents', (t, ctx) => {
+testWithServer(file + 'Should accept the param documents', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {

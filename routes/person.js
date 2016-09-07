@@ -19,7 +19,10 @@ module.exports = (elastic, config) => ({
           'application/vnd.api+json' (request, reply) {
             elastic.get({index: 'smg', type: 'agent', id: TypeMapping.toInternal(request.params.id)}, (err, result) => {
               if (err) {
-                return reply(err);
+                if (err.status === 404) {
+                  return reply(Boom.notFound());
+                }
+                return reply(Boom.serverUnavailable('unavailable'));
               }
 
               getRelatedItems(elastic, request.params.id, (err, relatedItems) => {
