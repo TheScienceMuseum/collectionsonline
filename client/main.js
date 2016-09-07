@@ -1,10 +1,3 @@
-var $ = window.$ = window.jQuery = require('jquery');
-
-require('foundation-sites');
-
-// loads foundation base (responsive media queries etc.
-$(document).foundation();
-
 var page = require('page');
 
 require('./middleware/initial-render')(page);

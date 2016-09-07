@@ -1,6 +1,6 @@
 var QueryString = require('querystring');
 var fetch = require('fetch-ponyfill')();
-var initJqueryComp = require('../lib/init-jquery-components');
+var initComp = require('../lib/init-components');
 var Templates = require('../templates');
 var createQueryParams = require('../../lib/query-params/query-params');
 var getData = require('../lib/get-data.js');
@@ -140,7 +140,7 @@ function listeners (ctx, next) {
     filterState.isFilterOpen = !filterState.isFilterOpen;
   });
 
-  initJqueryComp();
+  initComp();
 
   const onResultClick = (e) => {
     const id = e.currentTarget.getAttribute('href').split('/').pop();

@@ -1,4 +1,4 @@
-var initJqueryComp = require('../lib/init-jquery-components');
+var initComp = require('../lib/init-components');
 var data = require('../../fixtures/data');
 var Templates = require('../templates');
 var searchListener = require('../lib/search-listener');
@@ -22,6 +22,6 @@ module.exports = function (page) {
 
   function listeners (ctx, next) {
     searchListener();
-    initJqueryComp();
+    initComp();
   }
 };
