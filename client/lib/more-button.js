@@ -1,9 +1,10 @@
-var $ = require('jquery');
-
 module.exports = function () {
-  // html5 details element needs a js polyfill, so sod it
-  $(document).on('click', '.details__summary', function (e) {
-    var $d = $(this).parent();
-    $d.attr('aria-expanded', ($d.attr('aria-expanded') !== 'true'));
+  var body = document.querySelector('body');
+  body.addEventListener('click', function (e) {
+    if (e.target && e.target.className === 'details__summary') {
+      var parentElement = e.target.parentElement;
+      var attributeValue = parentElement.getAttribute('aria-expanded') !== 'true';
+      parentElement.setAttribute('aria-expanded', attributeValue);
+    }
   });
 };

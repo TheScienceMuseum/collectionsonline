@@ -1,14 +1,14 @@
 require('openseadragon');
-var $ = require('jquery');
 
 module.exports = {
   init: function (ctx, imgUrl, cb) {
-    imgUrl = imgUrl || $('.carousel-image-active')[0].src;
-    if (!$('#openseadragon').length) return;
+    imgUrl = imgUrl || document.querySelectorAll('.carousel-image-active')[0].src;
+    var openseadragon = document.querySelector('#openseadragon');
+    if (!openseadragon) return;
 
     if (!ctx.viewer) {
-      $('.record-imgpanel__slickwrap').addClass('hidden');
-      $('.record-imgpanel__dragon').removeClass('hidden');
+      document.querySelector('.record-imgpanel__slickwrap').classList.add('hidden');
+      document.querySelector('.record-imgpanel__dragon').classList.remove('hidden');
 
       ctx.viewer = OpenSeadragon({
         id: 'openseadragon',
@@ -36,7 +36,7 @@ module.exports = {
         }
       });
 
-      $('#openseadragon .pic').hide();
+      document.querySelector('#openseadragon .pic').style.display = 'none';
 
       ctx.save();
     }
@@ -46,7 +46,7 @@ module.exports = {
     ctx.viewer.destroy();
     ctx.viewer = false;
     ctx.save();
-    $('.record-imgpanel__slickwrap').removeClass('hidden');
-    $('.record-imgpanel__dragon').addClass('hidden');
+    document.querySelector('.record-imgpanel__slickwrap').classList.remove('hidden');
+    document.querySelector('.record-imgpanel__dragon').classList.add('hidden');
   }
 };

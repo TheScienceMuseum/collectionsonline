@@ -179,7 +179,7 @@
     overflow: hidden;
     vertical-align: top;
     text-overflow: ellipsis;
-    padding: rem-calc(5 30 3 8); // slight baseline shift
+    padding: rem-calc(4 30 4 8); // slight baseline shift
   }
 
   &__x {
@@ -189,7 +189,7 @@
     bottom: 0;
     display: block;
     float: right;
-    padding: rem-calc(5 8 3 6);
+    padding: rem-calc(4 8 4 6);
     color: white;
     border-left: 1px white solid;
     &:hover { color: white; }

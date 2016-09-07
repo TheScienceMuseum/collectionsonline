@@ -1,5 +1,5 @@
 var Templates = require('../templates');
-var initJqueryComp = require('../lib/init-jquery-components.js');
+var initComp = require('../lib/init-components.js');
 var getData = require('../lib/get-data.js');
 var JSONToHTML = require('../../lib/transforms/json-to-html-data');
 var searchListener = require('../lib/search-listener');
@@ -42,6 +42,6 @@ function render (ctx, next) {
 }
 
 function listeners (ctx, next) {
-  initJqueryComp();
+  initComp();
   searchListener();
 }

@@ -1,17 +1,18 @@
-var $ = window.$ = window.jQuery = require('jquery');
-require('typeahead.js');
+const Awesomplete = require('awesomplete');
 const debounce = require('lodash.debounce');
 const getData = require('./get-data');
 
 module.exports = function () {
   let currentRequestId = null;
-
-  $('#searchbox [type=search]').typeahead({
-    minLength: 3,
-    highlight: true
-  }, {
-    name: 'suggestions',
-    source: debounce((q, onData, onAsyncData) => {
+  var searchbox = document.getElementById('searchbox');
+  var searchinput = document.querySelector('#searchbox [type=search]');
+  var awesomplete = new Awesomplete(searchinput, {
+    minChars: 3,
+    autoFirst: false
+  });
+  searchinput.addEventListener('keyup', debounce(function (e) {
+    var q = e.target.value;
+    if (q.length > 0) {
       const requestId = currentRequestId = Date.now();
       const url = `/autocomplete?q=${encodeURIComponent(q)}`;
       const opts = { headers: { Accept: 'application/vnd.api+json' } };
@@ -26,10 +27,20 @@ module.exports = function () {
           return console.warn('Ignoring autocomplete response', requestId, results);
         }
         const suggestions = results.data.map((r) => r.attributes.summary_title);
-        onAsyncData(suggestions);
+        awesomplete.list = suggestions;
       });
-    }, 500),
-    async: true,
-    limit: 10
+    }
+  }, 500));
+  searchinput.addEventListener('focus', function (e) {
+    searchbox.classList.add('searchbox--focussed');
   });
+  searchinput.addEventListener('blur', function (e) {
+    searchbox.classList.remove('searchbox--focussed');
+  });
+  searchinput.addEventListener('awesomplete-open', function (e) {
+    searchbox.classList.add('searchbox--awesomplete-open');
+  }, false);
+  searchinput.addEventListener('awesomplete-close', function (e) {
+    searchbox.classList.remove('searchbox--awesomplete-open');
+  }, false);
 };
