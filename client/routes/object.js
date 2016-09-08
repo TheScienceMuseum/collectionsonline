@@ -8,7 +8,7 @@ var Snackbar = require('snackbarlightjs');
 var openseadragon = require('../lib/openseadragon');
 
 module.exports = function (page) {
-  page('/objects/:id', load, render, listeners);
+  page('/objects/:id/:slug?', load, render, listeners);
 };
 
 function load (ctx, next) {
