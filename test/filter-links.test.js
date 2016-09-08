@@ -6,6 +6,7 @@ test('Normal date and place test', (t) => {
 
   var resource = {
     data: {
+      type: 'objects',
       attributes: {
         lifecycle: {
           creation: [
@@ -45,6 +46,7 @@ test('date range test', (t) => {
 
   var resource = {
     data: {
+      type: 'objects',
       attributes: {
         lifecycle: {
           creation: [
@@ -78,6 +80,7 @@ test('bad date test', (t) => {
 
   var resource = {
     data: {
+      type: 'objects',
       attributes: {
         lifecycle: {
           creation: [
@@ -111,6 +114,7 @@ test('bad date range test', (t) => {
 
   var resource = {
     data: {
+      type: 'objects',
       attributes: {
         lifecycle: {
           creation: [
