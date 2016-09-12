@@ -5,7 +5,7 @@ testWithServer('Request for Object Page with image', {}, (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/smgc-objects-8229027',
+    url: '/objects/smgc-objects-26704',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -24,7 +24,7 @@ testWithServer('Search for Object Page with image', {}, (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search/objects?q=plumed%20hat',
+    url: '/search/objects?q=rocket',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
