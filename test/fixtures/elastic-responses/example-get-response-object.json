@@ -2,7 +2,7 @@
   "_index": "smg",
   "_type": "object",
   "_id": "smgc-object-8245103",
-  "_version": 1,
+  "_version": 4,
   "found": true,
   "_source": {
     "admin": {
@@ -10,7 +10,7 @@
       "id": "object-8245103",
       "language": "eng",
       "modified": 1427726164000,
-      "processed": 1469061204000,
+      "processed": 1473212378000,
       "source": "smgc",
       "stream": "smg-online",
       "uid": "smgc-object-8245103"
@@ -18,7 +18,7 @@
     "categories": [
       {
         "museum": "SCM",
-        "name": "SCM",
+        "name": "Nuclear Physics",
         "value": "SCM - Nuclear Physics"
       }
     ],
