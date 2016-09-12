@@ -1,6 +1,16 @@
 const Boom = require('boom');
 const archiveSchema = require('../schemas/archive.js');
 const getArchiveAndChildren = require('../lib/get-archive-and-children');
+const TypeMapping = require('../lib/type-mapping');
+const Catbox = require('catbox');
+const CatboxRedis = require('catbox-redis');
+var [ elasticacheHost, elasticachePort ] = ['127.0.0.1', '6379'];
+
+if (process.env.ELASTICACHE_EP) {
+  [ elasticacheHost, elasticachePort ] = process.env.ELASTICACHE_EP.split(':');
+}
+
+const cache = new Catbox.Client(CatboxRedis, {host: elasticacheHost, port: elasticachePort});
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -17,15 +27,23 @@ module.exports = (elastic, config) => ({
             return HTMLResponse(request, reply, elastic, config);
           },
           'application/vnd.api+json' (request, reply) {
-            return getArchiveAndChildren(elastic, config, request, function (err, data) {
-              if (err) {
-                if (err.status === 404) {
-                  return reply(Boom.notFound());
-                }
-                return reply(Boom.serverUnavailable('unavailable'));
-              }
+            cache.start((err) => {
+              if (err) console.log(err);
+              cache.get({segment: 'documents', id: TypeMapping.toInternal(request.params.id)}, (err, cached) => {
+                if (err) console.log(err);
+                if (cached) return reply(cached.item.JSONData);
+                cacheDocument(elastic, config, cache, request);
+                return getArchiveAndChildren(elastic, config, request, function (err, data) {
+                  if (err) {
+                    if (err.status === 404) {
+                      return reply(Boom.notFound());
+                    }
+                    return reply(Boom.serverUnavailable('unavailable'));
+                  }
 
-              return reply(data.JSONData).header('content-type', 'application/vnd.api+json');
+                  return reply(data.JSONData).header('content-type', 'application/vnd.api+json');
+                });
+              });
             });
           }
         }
@@ -35,14 +53,39 @@ module.exports = (elastic, config) => ({
 });
 
 function HTMLResponse (request, reply, elastic, config) {
+  cache.start((err) => {
+    if (err) console.log(err);
+    cache.get({segment: 'documents', id: TypeMapping.toInternal(request.params.id)}, (err, cached) => {
+      if (err) console.log(err);
+      if (cached) return reply.view('archive', cached.item.HTMLData);
+      cacheDocument(elastic, config, cache, request);
+      return getArchiveAndChildren(elastic, config, request, function (err, data) {
+        if (err) {
+          if (err.status === 404) {
+            return reply(Boom.notFound());
+          }
+          return reply(Boom.serverUnavailable('unavailable'));
+        }
+
+        return reply.view('archive', data.HTMLData);
+      });
+    });
+  });
+}
+
+function cacheDocument (elastic, config, cache, request) {
   return getArchiveAndChildren(elastic, config, request, function (err, data) {
     if (err) {
-      if (err.status === 404) {
-        return reply(Boom.notFound());
-      }
-      return reply(Boom.serverUnavailable('unavailable'));
+      console.log(err);
     }
 
-    return reply.view('archive', data.HTMLData);
+    cache.set({segment: 'documents', id: TypeMapping.toInternal(request.params.id)}, data, 100000000, (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(TypeMapping.toInternal(request.params.id) + ' successfully cached');
+      }
+      cache.stop();
+    });
   });
 }
