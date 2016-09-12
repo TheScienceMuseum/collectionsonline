@@ -7,7 +7,7 @@ var archiveListeners = require('../lib/archive-listeners');
 var Snackbar = require('snackbarlightjs');
 
 module.exports = function (page) {
-  page('/documents/:id:slug?', load, render, listeners);
+  page('/documents/:id/:slug?', load, render, listeners);
 };
 
 function load (ctx, next) {
