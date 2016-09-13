@@ -1,14 +1,14 @@
   {{#each children}}
     <li role="treeitem" aria-expanded={{#if children}}true{{else}}false{{/if}}>
       <div class="archive-tree__label {{current this}}">
-        <form class="expand" id="expand-{{id}}" action="{{links.self}}#archive-block">
+        <form class="expand" id="expand-{{id}}" action="{{getlink this}}">
           {{#if children}}
             <label for="{{id}}" "{{current this}}"></label>
           {{else}}
             <button name="expanded" disabled value="{{id}}" type="submit" aria-controls="groupX"></button>
           {{/if}}
         </form>
-        <a class="" href="{{link}}">{{identifier}} {{summary_title}}</a>
+        <a class="" href="{{getlink this}}">{{identifier}} {{summary_title}}</a>
       </div>
       <input id="{{id}}" {{current this}} type="checkbox" value="{{id}}" aria-controls="groupX"></input>
     {{#if children}}

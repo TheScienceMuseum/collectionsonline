@@ -191,6 +191,8 @@ Handlebars.registerHelper('parentid', require('../templates/helpers/parentid.js'
 
 Handlebars.registerHelper('current', require('../templates/helpers/current.js'));
 
+Handlebars.registerHelper('getlink', require('../templates/helpers/getlink.js'));
+
 // Routes
 module.exports = {
   'home': Handlebars.compile(

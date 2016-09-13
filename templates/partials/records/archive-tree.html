@@ -2,7 +2,7 @@
   <li role="treeitem" aria-expanded="true">
     <div class="archive-tree__label {{current this}} archive-tree__label--root archive-tree--fond">
       <button aria-controls="group1"></button>
-      <a class="" href="{{links.self}}#archive-block">{{identifier}} {{title}}</a>
+      <a class="" href="{{getlink this}}">{{this.tree.summary_title}}</a>
     </div>
     <ul role="tree">
       <ul role="group" id="group1">
@@ -17,7 +17,7 @@
                   <button name="expanded" disabled value="{{id}}" type="submit" aria-controls="groupX"></button>
                 {{/if}}
 
-              <a class="summary" href="{{link}}">{{identifier}} {{summary_title}}</a>
+              <a class="summary" href="{{getlink this}}">{{identifier}} {{summary_title}}</a>
             </div>
 
             <input id="{{id}}" {{current this}} type="checkbox" value="{{id}}" aria-controls="groupX"></input>
