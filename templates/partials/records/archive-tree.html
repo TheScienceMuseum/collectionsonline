@@ -1,6 +1,6 @@
 </ul>
   <li role="treeitem" aria-expanded="true">
-    <div class="archive-tree__label archive-tree__label--root current archive-tree--fond">
+    <div class="archive-tree__label {{current this}} archive-tree__label--root archive-tree--fond">
       <button aria-controls="group1"></button>
       <a class="" href="{{links.self}}#archive-block">{{identifier}} {{title}}</a>
     </div>
@@ -9,7 +9,7 @@
 
         {{#each tree.children}}
           <li role="treeitem" aria-expanded="false">
-            <div class="archive-tree__label">
+            <div class="archive-tree__label {{current this}}">
 
                 {{#if children}}
                   <label for="{{id}}"></label>
@@ -20,7 +20,7 @@
               <a class="summary" href="{{link}}">{{identifier}} {{summary_title}}</a>
             </div>
 
-            <input id="{{id}}" type="checkbox" value="{{id}}" aria-controls="groupX"></input>
+            <input id="{{id}}" {{current this}} type="checkbox" value="{{id}}" aria-controls="groupX"></input>
             {{#if children}}
               <ul role="tree" class="children">
                 {{> records/archive-tree-children}}

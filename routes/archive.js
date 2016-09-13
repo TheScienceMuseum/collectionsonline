@@ -44,7 +44,7 @@ module.exports = (elastic, config) => ({
                   if (cached) {
                     return reply(Object.assign(data.JSONData, {tree: cached.item})).header('content-type', 'application/vnd.api+json');
                   } else if (!err) {
-                    cacheDocument(elastic, config, cache, request);
+                    cacheDocument(elastic, cache, request);
                     return reply(data.JSONData).header('content-type', 'application/vnd.api+json');
                   }
                 });
@@ -73,7 +73,7 @@ function HTMLResponse (request, reply, elastic, config) {
         if (cached) {
           return reply.view('archive', Object.assign(data.HTMLData, {tree: cached.item}));
         } else if (!err) {
-          cacheDocument(elastic, config, cache, request);
+          cacheDocument(elastic, cache, request);
           return reply.view('archive', data.HTMLData);
         }
       });
@@ -81,7 +81,7 @@ function HTMLResponse (request, reply, elastic, config) {
   });
 }
 
-function cacheDocument (elastic, config, cache, request) {
+function cacheDocument (elastic, cache, request) {
   getFullArchive(elastic, TypeMapping.toInternal(request.params.id), function (err, data) {
     if (err) console.log(err);
     cache.set({segment: 'documents', id: TypeMapping.toInternal(request.params.id)}, archiveTree.sortChildren(data), 100000000, (err) => {
@@ -112,7 +112,7 @@ function getFullArchive (elastic, id, callback) {
         summary_title: result._source.fonds[0].summary_title
       };
     }
-    data.push({id: fond});
+    data.push(fond);
     getAllFromArchive(elastic, fond.id, function (err, result) {
       if (err) callback(err);
       callback(null, data.concat(result.map(el => {

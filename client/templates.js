@@ -189,6 +189,8 @@ Handlebars.registerHelper('isfond', require('../templates/helpers/isfond.js'));
 
 Handlebars.registerHelper('parentid', require('../templates/helpers/parentid.js'));
 
+Handlebars.registerHelper('current', require('../templates/helpers/current.js'));
+
 // Routes
 module.exports = {
   'home': Handlebars.compile(

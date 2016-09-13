@@ -32,6 +32,10 @@
     display: none;
   }
 
+  .current ~ .children, .open ~ .children {
+    display: block;
+  }
+
   input[type="checkbox"] {
     position: fixed;
     opacity: 0;
@@ -93,6 +97,7 @@
 
   .current a,
   .current button,
+  .current label,
   .current a:hover {
       background-color: $c-cyan;
       color: black;
