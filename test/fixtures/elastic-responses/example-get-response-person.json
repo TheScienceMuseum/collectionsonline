@@ -10,7 +10,7 @@
       "id": "agent-36993",
       "language": "eng",
       "modified": 1462287688000,
-      "processed": 1469061095000,
+      "processed": 1473212320000,
       "source": "smgc",
       "stream": "smg-online",
       "uid": "smgc-agent-36993"
@@ -93,16 +93,33 @@
       }
     ],
     "approved": "Y",
-    "date_of_birth": [
+    "date": [
       {
         "latest": 1791,
+        "role": [
+          {
+            "value": "date of birth"
+          }
+        ],
         "value": "1791-12-26"
-      }
-    ],
-    "date_of_death": [
+      },
       {
         "latest": 1791,
+        "role": [
+          {
+            "value": "date of death"
+          }
+        ],
         "value": "1791-12-26"
+      },
+      {
+        "latest": 1871,
+        "role": [
+          {
+            "value": "life dates"
+          }
+        ],
+        "value": "1791-12-26 - 1871-10-18"
       }
     ],
     "description": [
@@ -118,12 +135,6 @@
     ],
     "gender": "M",
     "historical": true,
-    "life_dates": [
-      {
-        "latest": 1871,
-        "value": "1791-12-26 - 1871-10-18"
-      }
-    ],
     "lifecycle": {
       "birth": [
         {
@@ -255,6 +266,9 @@
         "person"
       ],
       "type": "person"
-    }
+    },
+    "weblinks": [
+      "http://www.oxforddnb.com/view/article/962"
+    ]
   }
 }
