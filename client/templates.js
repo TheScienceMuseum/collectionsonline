@@ -143,13 +143,8 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
-  'records/archive-tree-fond',
-  Fs.readFileSync('./templates/partials/records/archive-tree-fond.html', 'utf8')
-);
-
-Handlebars.registerPartial(
-  'records/archive-tree-nest',
-  Fs.readFileSync('./templates/partials/records/archive-tree-nest.html', 'utf8')
+  'records/archive-tree-browser',
+  Fs.readFileSync('./templates/partials/records/archive-tree-browser.html', 'utf8')
 );
 
 Handlebars.registerPartial(

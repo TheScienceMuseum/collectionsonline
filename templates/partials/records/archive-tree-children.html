@@ -3,15 +3,16 @@
       <div class="archive-tree__label">
         <form class="expand" id="expand-{{id}}" action="{{links.self}}#archive-block">
           {{#if children}}
-            <button type="submit" value="{{id}}" aria-controls="groupX"></button>
+            <label for="{{id}}"></label>
           {{else}}
-            <button name="expanded" value="{{id}}" type="submit" aria-controls="groupX"></button>
+            <button name="expanded" disabled value="{{id}}" type="submit" aria-controls="groupX"></button>
           {{/if}}
         </form>
-        <a class="" href="{{link}}">{{attributes.identifier}} {{attributes.summary_title}}</a>
+        <a class="" href="{{link}}">{{identifier}} {{summary_title}}</a>
       </div>
+      <input id="{{id}}" type="checkbox" value="{{id}}" aria-controls="groupX"></input>
     {{#if children}}
-    <ul role="tree">
+    <ul role="tree" class="children">
       {{> records/archive-tree-children}}
     </ul>
     {{/if}}

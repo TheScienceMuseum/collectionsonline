@@ -28,7 +28,22 @@
     margin-bottom: -1px;
   }
 
-  button {
+  .children {
+    display: none;
+  }
+
+  input[type="checkbox"] {
+    position: fixed;
+    opacity: 0;
+    height: 0;
+    width: 0;
+  }
+
+  input[type="checkbox"]:checked + .children {
+    display: block;
+  }
+
+  button, label {
     width: rem-calc(40);
     height: rem-calc(40);
     outline: 0 red solid;
@@ -47,7 +62,7 @@
   [aria-expanded="true"] button {
     background-image: url(/assets/icons/tree-contract.svg);
   }
-  [aria-expanded="false"] button {
+  [aria-expanded="false"] button, label {
     background-image: url(/assets/icons/tree-expand.svg);
   }
   button[disabled] {
@@ -55,6 +70,7 @@
   }
 
   button,
+  label,
   &__label a {
     background-color: grey(20);
   }
@@ -63,11 +79,13 @@
     margin-left: rem-calc(40);
 
     button,
+    label,
     a {
       background-color: grey(30);
     }
 
     li button,
+    li label,
     li a {
       background-color: grey(40);
     }
