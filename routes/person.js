@@ -8,7 +8,7 @@ const sortRelated = require('../lib/sort-related-items');
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/people/{id}/{slug?}',
-  handler: (request, reply) => HTMLResponse(request, reply, elastic, config),
+  handler: (request, reply) => reply.continue(),
   config: {
     plugins: {
       'hapi-negotiator': {
@@ -61,10 +61,8 @@ function HTMLResponse (request, reply, elastic, config) {
       } else {
         relatedItems = sortRelated(relatedItems);
       }
-
       const JSONData = buildJSONResponse(result, config, relatedItems);
       const HTMLData = JSONToHTML(JSONData);
-
       reply.view('person', Object.assign(HTMLData, data));
     });
   });
