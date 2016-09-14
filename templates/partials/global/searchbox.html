@@ -4,15 +4,16 @@
   <button aria-label="search" class="searchbox__submit">
     {{> global/icon i="search" size="32" }}
   </button>
-
-  <div class="searchbox__filters">
-    <span class="searchbox__filtersplainer">Searching within</span>
-    {{#each categoryFilters}}
-    <div class="filterbadge" data-filter="Category">
-      <div class="filterbadge__label">{{this}}</div>
-      <a class="filterbadge__x" href="{{../links.clearCategoryLink}}" title="remove">✕</a>
-      <input type="hidden" class='searchbox__category__filter' name="filter[categories]" value="{{this}}">
+  {{#if categoryFilters.length}}
+    <div class="searchbox__filters">
+      <span class="searchbox__filtersplainer">Searching within</span>
+      {{#each categoryFilters}}
+      <div class="filterbadge" data-filter="Category">
+        <div class="filterbadge__label">{{this}}</div>
+        <a class="filterbadge__x" href="{{../links.clearCategoryLink}}" title="remove">✕</a>
+        <input type="hidden" class='searchbox__category__filter' name="filter[categories]" value="{{this}}">
+      </div>
+      {{/each}}
     </div>
-    {{/each}}
-  </div>
+  {{/if}}
 </form>
