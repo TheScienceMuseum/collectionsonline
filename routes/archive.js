@@ -22,7 +22,9 @@ module.exports = (elastic, config) => ({
           'application/vnd.api+json' (request, reply) {
             elastic.get({index: 'smg', type: 'archive', id: TypeMapping.toInternal(request.params.id)}, function (err, result) {
               var fondsId;
-              if (err) reply(err);
+              if (err) {
+                return reply(elasticError(err));
+              }
               if (result._source.fonds) {
                 fondsId = result._source.fonds[0].admin.uid;
               } else {
@@ -30,10 +32,7 @@ module.exports = (elastic, config) => ({
               }
               getCachedDocument(elastic, TypeMapping.toInternal(request.params.id), fondsId, function (err, data) {
                 if (err) {
-                  if (err.status === 404) {
-                    return reply(Boom.notFound());
-                  }
-                  return reply(Boom.serverUnavailable('unavailable'));
+                  return reply(elasticError(err));
                 }
                 return reply(Object.assign(buildJSONResponse(result, config), {tree: data})).header('content-type', 'application/vnd.api+json');
               });
@@ -48,7 +47,9 @@ module.exports = (elastic, config) => ({
 function HTMLResponse (request, reply, elastic, config) {
   elastic.get({index: 'smg', type: 'archive', id: TypeMapping.toInternal(request.params.id)}, function (err, result) {
     var fondsId;
-    if (err) reply(err);
+    if (err) {
+      return reply(elasticError(err));
+    }
     if (result._source.fonds) {
       fondsId = result._source.fonds[0].admin.uid;
     } else {
@@ -56,14 +57,19 @@ function HTMLResponse (request, reply, elastic, config) {
     }
     getCachedDocument(elastic, TypeMapping.toInternal(request.params.id), fondsId, function (err, data) {
       if (err) {
-        if (err.status === 404) {
-          return reply(Boom.notFound());
-        }
-        return reply(Boom.serverUnavailable('unavailable'));
+        return reply(elasticError(err));
       }
       var JSONData = buildJSONResponse(result, config);
       var HTMLData = JSONToHTML(JSONData);
       return reply.view('archive', Object.assign(HTMLData, {tree: data}));
     });
   });
+}
+
+function elasticError (err) {
+  if (err.status === 404) {
+    return Boom.notFound();
+  } else {
+    return Boom.serverUnavailable('unavailable');
+  }
 }
