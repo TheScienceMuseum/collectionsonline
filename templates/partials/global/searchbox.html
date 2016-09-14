@@ -5,27 +5,13 @@
     {{> global/icon i="search" size="32" }}
   </button>
 
-  {{#if filters}}
-    <div class="searchbox__filters">
-
-      <span class="searchbox__filtersplainer">Searching within</span>
-
-      <div class="filterbadge" data-filter="Museum">
-        <div class="filterbadge__label">Science Museum</div>
-        <a class="filterbadge__x" title="remove">✕</a>
-      </div>
-
-      <div class="filterbadge" data-filter="Category">
-        <div class="filterbadge__label">Category 1</div>
-        <a class="filterbadge__x" title="remove">✕</a>
-      </div>
-
-      <div class="filterbadge" data-filter="Category">
-        <div class="filterbadge__label">Category 2</div>
-        <a class="filterbadge__x" title="remove">✕</a>
-      </div>
-
+  <div class="searchbox__filters">
+    <span class="searchbox__filtersplainer">Searching within</span>
+    {{#each categoryFilters}}
+    <div class="filterbadge" data-filter="Category">
+      <div class="filterbadge__label">{{this}}</div>
+      <a class="filterbadge__x" href="{{../links.clearCategoryLink}}" title="remove">✕</a>
     </div>
-  {{/if}}
-
+    {{/each}}
+  </div>
 </form>
