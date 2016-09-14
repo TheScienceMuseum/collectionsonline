@@ -48,7 +48,9 @@ function listeners (ctx, next) {
   initComp(ctx);
   searchListener();
   document.getElementById('openseadragon-toolbar').addEventListener('click', function (e) {
-    openseadragon.init(ctx);
+    if (!ctx.viewer) {
+      openseadragon.init(ctx);
+    }
     if (e.target.id === 'osd-fullpage') {
       ctx.viewer.setFullScreen(true);
     } else if (e.target.id === 'osd-home') {

@@ -1,63 +1,54 @@
 .carousel {
+  height: 100%;
   overflow: hidden;
-  width: 100%;
-  white-space: nowrap;
-  text-align: center;
 }
 
 .carousel-image {
-  width: auto;
-  height: 100%;
-  display: none;
-  border: solid white 1px;
-}
-
-.carousel-image-active, .carousel-panel-next, .carousel-panel-prev {
-  display: inline-block;
-  margin-bottom: 5px;
-}
-
-.carousel-image-active {
-  height: 100%;
-  margin: auto;
-}
-
-.carousel-panel-prev, .carousel-panel-next {
-  filter: contrast(100%) blur(1.5px) opacity(50%);
-  position: absolute;
-}
-
-.thumbnail {
-  display: inline-block;
-  position: relative;
-  width: 3rem;
-  height: 3rem;
-  overflow: hidden;
-  text-align: center;
+  height: 36rem;
 }
 
 .carousel-thumb {
-  cursor: pointer;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  height: 100%;
+  height: 100%;;
   width: 100%;
-  -webkit-transform: translate(-50%,-50%);
-      -ms-transform: translate(-50%,-50%);
-          transform: translate(-50%,-50%);
 }
 
-#left-button {
-  @include icon-before('arrow_left_white', 5rem);
-  position: absolute;
-  top: 45%;
+.thumbnail {
+  height: 100%;
+  width: 3em;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.carousel-image:not(.is-selected) {
+  filter: contrast(100%) blur(1.5px) opacity(50%);
+}
+
+.flickity-prev-next-button {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 5px;
+  background: #333;
+  position: relative;
+  opacity: 0.6;
+}
+.flickity-prev-next-button:hover {
+  background: #000;
+}
+/* arrow color */
+.flickity-prev-next-button .arrow {
+  fill: white;
+}
+.flickity-prev-next-button.no-svg {
+  color: white;
+}
+/* position outside */
+.flickity-prev-next-button.previous {
+  top: 15rem;
   left: 0;
+  margin: 2rem;
 }
-
-#right-button {
-  @include icon-before('arrow_right_white', 5rem);
-  position: absolute;
-  top: 45%;
-  right: 0;
+.flickity-prev-next-button.next {
+  margin: 2rem;
+  float: right;
+  top: 15rem;
 }
