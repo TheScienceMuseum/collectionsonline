@@ -8,13 +8,13 @@ module.exports = {
       .assert.containsText('.fact-designer', 'Stanier')
       .assert.containsText('.fact-Made', 'Crewe')
       .assert.containsText('.details-Category', 'Locomotives')
-      .expect.element('.details-Category a').text.to.equal('Locomotives and Rolling Stock')
       .assert.containsText('.details-Accession-Number', '1976-7000')
       .assert.containsText('.details-Measurements', '22511 mm')
       .assert.containsText('.details-status', 'permanent collection')
       .assert.containsText('.details-credit', 'Butlins')
       .assert.containsText('.details-type', 'steam locomotive')
       .assert.containsText('.details-taxonomy', 'Locomotive and Rolling Stock, steam, steam locomotive')
+      .assert.containsText('.details-Category a', 'Locomotives and Rolling Stock')
       .end();
   }
 };
