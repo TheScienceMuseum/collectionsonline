@@ -9,7 +9,8 @@ module.exports = (ctx) => {
     ctx.carousel = new Flickity('.carousel', {
       wrapAround: true,
       setGallerySize: false,
-      pageDots: false
+      pageDots: false,
+      imagesLoaded: true
     });
 
     Array.prototype.slice.call(thumbnails).forEach((el, i) => el.addEventListener('click', function (e) {
