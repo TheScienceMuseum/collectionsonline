@@ -12,8 +12,8 @@ test('Cache Error when starting', function (t) {
   });
 
   cachedDocument(elastic, 'smga-documents-110000013', 'smga-documents-110000003', function (err, data) {
-    t.ok(err);
-    t.notOk(data);
+    t.ok(err, 'Error returned from cache start');
+    t.notOk(data, 'no data');
     cacheStart.restore();
     t.end();
   });
@@ -30,8 +30,8 @@ test('Cache Error when getting data', function (t) {
   });
 
   cachedDocument(elastic, 'smga-documents-110000013', 'smga-documents-110000003', function (err, data) {
-    t.ok(err);
-    t.notOk(data);
+    t.ok(err, 'Error returned from cache');
+    t.notOk(data, 'no data');
     cacheStart.restore();
     cacheGet.restore();
     t.end();
@@ -53,8 +53,8 @@ test('Get fonds data', function (t) {
   });
 
   cachedDocument(elastic, 'smga-documents-110000013', 'smga-documents-110000003', function (err, data) {
-    t.notOk(err);
-    t.ok(data);
+    t.notOk(err, 'no error');
+    t.ok(data, 'data from elasticsearch');
     cacheStart.restore();
     cacheGet.restore();
     elasticGet.restore();
@@ -85,8 +85,8 @@ test('Get child document data', function (t) {
   });
 
   cachedDocument(elastic, 'smga-documents-110000013', 'smga-documents-110000003', function (err, data) {
-    t.notOk(err);
-    t.ok(data);
+    t.notOk(err, 'no error');
+    t.ok(data, 'data from elasticsearch');
     cacheStart.restore();
     cacheGet.restore();
     cacheSet.restore();
@@ -119,8 +119,8 @@ test('Get single document data', function (t) {
   });
 
   cachedDocument(elastic, 'smga-documents-110000013', 'smga-documents-110000003', function (err, data) {
-    t.notOk(err);
-    t.ok(data);
+    t.notOk(err, 'no error');
+    t.ok(data, 'data from elasticsearch');
     cacheStart.restore();
     cacheGet.restore();
     cacheSet.restore();
@@ -157,14 +157,33 @@ test('Get single document data', function (t) {
   });
 
   cachedDocument(elastic, 'smga-documents-110000013', 'smga-documents-110000003', function (err, data) {
-    t.ok(err);
-    t.notOk(data);
+    t.ok(err, 'Error from elasticsearch');
+    t.notOk(data, 'no data');
     cacheStart.restore();
     cacheGet.restore();
     cacheSet.restore();
     elasticGet.restore();
     elasticSearch.restore();
     archiveTreeSort.restore();
+    t.end();
+  });
+});
+
+test('Get single document data', function (t) {
+  t.plan(2);
+  var cacheStart = stub(cache, 'start', function (cb) {
+    return cb();
+  });
+
+  var cacheGet = stub(cache, 'get', function (options, cb) {
+    return cb(null, {item: '123'});
+  });
+
+  cachedDocument(elastic, 'smga-documents-110000013', 'smga-documents-110000003', function (err, data) {
+    t.notOk(err, 'no error');
+    t.equal(data, '123', 'cached item is returned correctly');
+    cacheStart.restore();
+    cacheGet.restore();
     t.end();
   });
 });
