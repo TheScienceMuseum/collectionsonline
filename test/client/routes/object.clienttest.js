@@ -8,6 +8,7 @@ module.exports = {
       .assert.containsText('.fact-designer', 'Stanier')
       .assert.containsText('.fact-Made', 'Crewe')
       .assert.containsText('.details-Category', 'Locomotives')
+      .expect.element('.details-Category a').text.to.equal('Locomotives and Rolling Stock')
       .assert.containsText('.details-Accession-Number', '1976-7000')
       .assert.containsText('.details-Measurements', '22511 mm')
       .assert.containsText('.details-status', 'permanent collection')
