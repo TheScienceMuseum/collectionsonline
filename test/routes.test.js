@@ -15,6 +15,21 @@ testWithServer('Request for Archive HTML Page', {}, (t, ctx) => {
   });
 });
 
+testWithServer('Request for Archive JSON Page', {}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/documents/smga-documents-110000316',
+    headers: {'Accept': 'application/vnd.api+json'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
 testWithServer('Request for Archive HTML Page for a wrong id', {}, (t, ctx) => {
   t.plan(1);
 

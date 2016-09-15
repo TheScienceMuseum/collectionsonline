@@ -68,7 +68,7 @@
     "test:lint": "semistandard",
     "test:unit": "run-s test:unit:*",
     "test:unit:sync": "node test/fixtures/copy-data.js",
-    "test:unit:tape": "istanbul cover tape 'test/**/*.test.js'",
+    "test:unit:tape": "istanbul cover -x **/bin/** tape 'test/**/*.test.js'",
     "test:endtoend": "nightwatch --retries 3 --env ${NW_ENV}",
     "build": "run-p build:*",
     "build:js": "browserify client/main.js -o public/bundle.js",

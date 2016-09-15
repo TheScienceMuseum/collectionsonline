@@ -185,10 +185,6 @@ Handlebars.registerHelper('gettodaysdate', require('../templates/helpers/gettoda
 
 Handlebars.registerHelper('ifmultiple', require('../templates/helpers/ifmultiple.js'));
 
-Handlebars.registerHelper('isfond', require('../templates/helpers/isfond.js'));
-
-Handlebars.registerHelper('parentid', require('../templates/helpers/parentid.js'));
-
 Handlebars.registerHelper('current', require('../templates/helpers/current.js'));
 
 Handlebars.registerHelper('getlink', require('../templates/helpers/getlink.js'));
