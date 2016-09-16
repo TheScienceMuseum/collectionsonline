@@ -12,6 +12,7 @@ module.exports = (ctx) => {
       setGallerySize: false,
       pageDots: false,
       imagesLoaded: true,
+      lazyLoad: 1,
       arrowShape: {
         x0: 30,
         x1: 63.5, y1: 50,

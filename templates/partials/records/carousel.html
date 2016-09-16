@@ -17,7 +17,7 @@
       {{/each}}
     {{else}}
       {{#each slides}}
-        <img src="/assets/img/example/babbage/{{ this }}" class="carousel__image" />
+        <img data-flickity-lazyload="/assets/img/example/babbage/{{ this }}" class="carousel__image" />
       {{/each}}
     {{/if}}
   </div>
