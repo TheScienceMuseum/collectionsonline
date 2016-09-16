@@ -2,7 +2,7 @@
   "_index": "smg",
   "_type": "archive",
   "_id": "smga-archive-110000003",
-  "_version": 5,
+  "_version": 28,
   "found": true,
   "_source": {
     "access": {
@@ -15,8 +15,8 @@
     "admin": {
       "created": 1331826161000,
       "id": "archive-110000003",
-      "modified": 1464776587000,
-      "processed": 1469029937000,
+      "modified": 1469402609000,
+      "processed": 1473183625000,
       "source": "smga",
       "stream": "smg-online",
       "uid": "smga-archive-110000003"
@@ -40,7 +40,7 @@
           "id": "archive-110065984",
           "uid": "smga-archive-110065984"
         },
-        "summary_title": "Letters from George Boole and Charles Babbage."
+        "summary_title": "Letters from George Boole, Charles Babbage and other computer experts"
       },
       {
         "@link": {
@@ -61,6 +61,16 @@
           "uid": "smga-archive-110066997"
         },
         "summary_title": "Collection of letters to Charles Babbage"
+      },
+      {
+        "@link": {
+          "type": "reference"
+        },
+        "admin": {
+          "id": "archive-110067592",
+          "uid": "smga-archive-110067592"
+        },
+        "summary_title": "Printed sheet: Babbage's calculating machine"
       },
       {
         "@link": {
@@ -107,12 +117,11 @@
     },
     "identifier": [
       {
-        "primary": true,
-        "value": "BAB"
+        "value": "1878-4; 1878-5; 1878-5/1-4; 1878-6; 1878-6/1-3; 1878-7; 1878"
       },
       {
-        "type": "ScM Object Number",
-        "value": "1878-4; 1878-5; 1878-5/1-4; 1878-6; 1878-6/1-3; 1878-7; 1878"
+        "primary": true,
+        "value": "BAB"
       }
     ],
     "legal": {
@@ -175,20 +184,6 @@
       {
         "type": "history note",
         "value": "The archive was arranged and described by Dr Allan G. Bromley, Professor of Computing Science at the University of Sydney and Visiting Research Fellow at the Science Museum, London at the time. During the course of his work, Bromley deciphered and identified each individual item, consolidated the uniform system of identification and recorded cross references. He prepared the finding aid to enable the study of Babbage's calculating engine designs. The cross-reference finding aid was extracted from a computer database for a more extensive and detailed catalogue of the Babbage material. Much of the latter was built up by David Keck, Bromley’s research assistant. The notebooks relating to the design of Difference Engine No. 1 were passed by Babbage to the government in 1842, but are now lost. The archive was digitised during September 2011."
-      }
-    ],
-    "organisations": [
-      {
-        "@link": {
-          "type": "literal"
-        },
-        "name": [
-          {
-            "primary": true,
-            "value": "Science Museum, London"
-          }
-        ],
-        "summary_title": "Science Museum, London"
       }
     ],
     "summary_title": "The Babbage Papers",

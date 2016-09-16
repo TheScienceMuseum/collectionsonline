@@ -2,12 +2,12 @@ require('openseadragon');
 
 module.exports = {
   init: function (ctx, imgUrl, cb) {
-    imgUrl = imgUrl || document.querySelectorAll('.carousel-image-active')[0].src;
+    imgUrl = imgUrl || document.querySelectorAll('.carousel-image.is-selected')[0].src;
     var openseadragon = document.querySelector('#openseadragon');
     if (!openseadragon) return;
 
     if (!ctx.viewer) {
-      document.querySelector('.record-imgpanel__slickwrap').classList.add('hidden');
+      document.querySelector('.carousel').classList.add('hidden');
       document.querySelector('.record-imgpanel__dragon').classList.remove('hidden');
 
       ctx.viewer = OpenSeadragon({
@@ -36,8 +36,6 @@ module.exports = {
         }
       });
 
-      document.querySelector('#openseadragon .pic').style.display = 'none';
-
       ctx.save();
     }
   },
@@ -46,7 +44,7 @@ module.exports = {
     ctx.viewer.destroy();
     ctx.viewer = false;
     ctx.save();
-    document.querySelector('.record-imgpanel__slickwrap').classList.remove('hidden');
+    document.querySelector('.carousel').classList.remove('hidden');
     document.querySelector('.record-imgpanel__dragon').classList.add('hidden');
   }
 };
