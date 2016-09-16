@@ -193,6 +193,7 @@
     border-color: white;
     //padding-left: 2rem;
     font-size: 1rem;
+    line-height: 1.25rem; // needs to match icon sizes of other toolbar buttons
 
     .icon {
       top: rem-calc(2);
