@@ -125,3 +125,10 @@ $timing-defaults: 0.25s ease-out;
   padding: 1rem;
   &:hover { background-color: black;}
 }
+
+// common properties across record-imgpanel components
+@mixin imgpanel-h {
+  $h: 36rem; // this might change after load?
+  height: $h;
+  transition: height $timing-defaults;
+}

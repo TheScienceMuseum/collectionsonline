@@ -1,15 +1,11 @@
 <div class="record-imgpanel">
-  <div class="record-imgpanel__slickwrap">
-    <div class="record-imgpanel__slick carousel">
-      {{#each images}}
-        <img src="{{this.large}}" class="carousel-image-active"/>
-      {{/each}}
-    </div>
+  <div class="carousel">
+    {{#each images}}
+      <img src="{{this.large}}" class="carousel__image"/>
+    {{/each}}
   </div>
 
-  <div class="record-imgpanel__singleimgwrap hidden record-imgpanel__dragon">
-    <div class="record-imgpanel__singleimg" id="openseadragon"></div>
-  </div>
+  <div class="openseadragon hidden" id="openseadragon"></div>
 
   {{> records/record-imgpanel__controlbar}}
 </div>

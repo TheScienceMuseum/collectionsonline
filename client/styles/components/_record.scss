@@ -58,21 +58,42 @@
 
 //-----------------------------------------------------------------------------
 // .record-imgpanel
-// the big image panel thing with carousel
+// the big image panel thing with carousel, and/or openseadragon
 //-----------------------------------------------------------------------------
 
 .record-imgpanel {
   background: grey(80);
   color: white;
   border-top: 1px white solid;
-  //margin-top: 2rem;
-  //margin-bottom: 2rem;
-  //font-size: rem-calc(14);
 
+  &__thumbs {
+    position: relative;
+    height: 3rem;
+    text-align: center;
+    font-size: 0;
+    overflow: hidden;
+  }
+
+  &__thumb {
+    width: 3rem;
+    max-width: auto;
+    height: 3rem;
+    border-color: grey(60);
+    border-style: solid;
+    border-width: 0 1px;
+    opacity: 0.5;
+    margin-right: -1px;
+
+    &--selected {
+      opacity: 1;
+      border-color: white;
+      z-index: 1;
+      position: relative;
+    }
+  }
+
+  // beneath the images
   &__controlbar {
-    //border: 1px white solid;
-    //border-width: 0 1px;
-    //height: 3rem;
     position: relative;
   }
 
@@ -81,105 +102,21 @@
     line-height: 1.2;
     @include breakpoint(small only) {  clear: right; }
   }
+
 }
 
-.record-imgpanel__slickwrap,
-.record-imgpanel__singleimgwrap {
-    border: 1px white solid;
-    border-width: 1px 0;
-  }
+//-----------------------------------------------------------------------------
+// .openseadragon
+// A subcomponent of .record-imgpanel
+// .hidden by default, swaps with .carousel
+//-----------------------------------------------------------------------------
 
-@mixin imgpanel-h {
-  $h: 36rem; // this might change after load?
-  height: $h;
-  transition: height $timing-defaults;
-}
-
-.record-imgpanel__slick {
+.openseadragon {
   @include imgpanel-h;
-  position: relative;
-  margin: 0;
-  background-color: black;
-
-  & .pic {
-    @include imgpanel-h;
-    width: auto;
-    opacity: 0.5;
-    filter: blur(2px);
-  }
-
-  .slick-active .pic {
-    opacity: 1;
-    outline: 1px white solid;
-    filter: blur(0);
-  }
-
-  //hide until initialised
-  & .pic { display: none; }
-  &.slick-initialized .pic { display: block; }
-
+  border: 1px white solid;
+  border-width: 1px 0;
 }
 
-.record-imgpanel__singleimg {
-  @include imgpanel-h;
-  margin: 0;
-  background-color: grey(80);
-
-  & .pic {
-    @include imgpanel-h;
-    width: auto;
-    display: block;
-    margin: auto;
-  }
-}
-
-.record-imgpanel__slickthumbs {
-  position: relative;
-  height: 3rem;
-  text-align: center;
-
-  .slick-dots {
-    bottom:auto;
-    top: 0;
-
-    img {
-      width: 3rem;
-      max-width: auto;
-      height: 3rem;
-    }
-  }
-}
-
-.record-imgpanel__thumbnav {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  height: 3rem;
-
-  li {
-    width: 3rem;
-    height: 3rem;
-    float: left;
-    display: block;
-    margin-right: -1px;
-  }
-
-  img { // these shouldnt really need fixed sizes if we know we're sending a proper sized src.
-    width: 3rem;
-    height: 3rem;
-    display: block;
-    border-color: grey(60);
-    border-style: solid;
-    border-width: 0 1px;
-    opacity: 0.5;
-  }
-  .slick-active img {
-    opacity: 1;
-    border-color: white;
-    z-index: 1;
-    position: relative;
-  }
-}
 
 
 

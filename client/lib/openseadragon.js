@@ -2,13 +2,13 @@ require('openseadragon');
 
 module.exports = {
   init: function (ctx, imgUrl, cb) {
-    imgUrl = imgUrl || document.querySelectorAll('.carousel-image.is-selected')[0].src;
+    imgUrl = imgUrl || document.querySelectorAll('.carousel__image.is-selected')[0].src;
     var openseadragon = document.querySelector('#openseadragon');
     if (!openseadragon) return;
 
     if (!ctx.viewer) {
       document.querySelector('.carousel').classList.add('hidden');
-      document.querySelector('.record-imgpanel__dragon').classList.remove('hidden');
+      openseadragon.classList.remove('hidden');
 
       ctx.viewer = OpenSeadragon({
         id: 'openseadragon',
@@ -45,6 +45,6 @@ module.exports = {
     ctx.viewer = false;
     ctx.save();
     document.querySelector('.carousel').classList.remove('hidden');
-    document.querySelector('.record-imgpanel__dragon').classList.add('hidden');
+    document.querySelector('#openseadragon').classList.add('hidden');
   }
 };

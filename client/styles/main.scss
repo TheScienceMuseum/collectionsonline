@@ -13,6 +13,7 @@
 // our base styles, then all components
 @import 'base/general';
 @import 'base/layout';
+@import 'components/awesomplete';
 @import 'components/archive-tree';
 @import 'components/carousel';
 @import 'components/clipboard';
@@ -26,5 +27,4 @@
 @import 'components/result';
 @import 'components/search';
 @import 'components/slick';
-@import 'components/awesomplete';
 @import '../../node_modules/snackbarlightjs/src/css/snackbarlight';
