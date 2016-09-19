@@ -6,6 +6,7 @@ module.exports = (ctx) => {
   var carousel = document.querySelector('.carousel');
   if (carousel) {
     var thumbnails = document.getElementsByClassName('record-imgpanel__thumb');
+    var captions = Array.prototype.slice.call(document.getElementsByClassName('record-imgpanel__caption'));
 
     ctx.carousel = new Flickity('.carousel', {
       wrapAround: true,
@@ -25,6 +26,13 @@ module.exports = (ctx) => {
     ctx.carousel.on('select', function () {
       Array.prototype.slice.call(thumbnails).forEach((el, i) => el.classList.remove('record-imgpanel__thumb--selected'));
       thumbnails[flkty.selectedIndex].classList.add('record-imgpanel__thumb--selected');
+      captions.forEach(el => {
+        if (el.id === `record-imgpanel__caption-${flkty.selectedIndex}`) {
+          el.classList.remove('hidden');
+        } else {
+          el.classList.add('hidden');
+        }
+      });
     });
 
     Array.prototype.slice.call(thumbnails).forEach((el, i) => el.addEventListener('click', function (e) {

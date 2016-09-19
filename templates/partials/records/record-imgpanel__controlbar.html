@@ -26,7 +26,10 @@
         <button class="osd__button" id="osd-zoomin" aria-label="Zoom in"></button>
       </div>
 
-      <p class="record-imgpanel__caption">This is the caption for the image<br />
-      © This is the copyright of the photographer</p>
+      {{#each images}}
+      <p id="record-imgpanel__caption-{{@index}}" class="hidden record-imgpanel__caption">{{title}}<br />
+      {{#if author}}Photographer: {{author}}<br />{{/if}}
+      {{credit}}</p>
+      {{/each}}
 
     </div>
