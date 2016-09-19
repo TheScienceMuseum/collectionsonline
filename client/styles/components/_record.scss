@@ -105,21 +105,6 @@
 
 }
 
-//-----------------------------------------------------------------------------
-// .openseadragon
-// A subcomponent of .record-imgpanel
-// .hidden by default, swaps with .carousel
-//-----------------------------------------------------------------------------
-
-.openseadragon {
-  @include imgpanel-h;
-  border: 1px white solid;
-  border-width: 1px 0;
-}
-
-
-
-
 .cite {
   //there's not a top level B called cite, just E's
   // inside record-imgpanel__controlbar
