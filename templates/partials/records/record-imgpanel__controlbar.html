@@ -2,18 +2,22 @@
 
       <div class="cite__menu-pos-wrap">
         <div class="cite__menu" id="cite__menu" >
-          <div class="cite__method">
-            <p><img src="/assets/img/global/cc-by-nc-4.png" alt="Creative Commons License" width="80" height="15" />This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License</p>
-            <button class="">{{> global/icon i="download" size="16" }} Download</button>
+          {{#each images}}
+          <div class="cite__menu__methods hidden" id="cite__method-{{@index}}">
+            <div class="cite__method">
+              <p><img src="/assets/img/global/cc-by-nc-4.png" alt="Creative Commons License" width="80" height="15" />This work is licensed under a {{rights.usage_terms}} License</p>
+              <button class="">{{> global/icon i="download" size="16" }} Download</button>
+            </div>
+            <div class="cite__method">
+              <p>Buy this image as a print </p>
+              <button class="">{{> global/icon i="external" size="16" }} Buy</button>
+            </div>
+            <div class="cite__method">
+              <p>Licence this image for commercial use at Science and Society Picture Library</p>
+              <button class="">{{> global/icon i="external" size="16" }} Licence</button>
+            </div>
           </div>
-          <div class="cite__method">
-            <p>Buy this image as a print </p>
-            <button class="">{{> global/icon i="external" size="16" }} Buy</button>
-          </div>
-          <div class="cite__method">
-            <p>Licence this image for commercial use at Science and Society Picture Library</p>
-            <button class="">{{> global/icon i="external" size="16" }} Licence</button>
-          </div>
+          {{/each}}
         </div>
       </div>
 
@@ -21,9 +25,6 @@
 
       <div class="osd__toolbar" id="openseadragon-toolbar">
         <button class="osd__button" id="osd-fullpage" aria-label="full screen"></button>
-        <button class="osd__button" id="osd-home" aria-label="Original size"></button>
-        <button class="osd__button" id="osd-zoomout" aria-label="Zoom out"></button>
-        <button class="osd__button" id="osd-zoomin" aria-label="Zoom in"></button>
       </div>
 
       {{#each images}}
