@@ -10,7 +10,7 @@ module.exports = (ctx) => {
     var rights = Array.prototype.slice.call(document.getElementsByClassName('cite__menu__methods'));
 
     ctx.carousel = new Flickity('.carousel', {
-      wrapAround: true,
+      wrapAround: thumbnails.length >= 3,
       setGallerySize: false,
       pageDots: false,
       imagesLoaded: true,
