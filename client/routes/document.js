@@ -50,4 +50,5 @@ function listeners (ctx, next) {
   archiveListeners();
   osdListener(ctx);
   downloadImageListener();
+  osdListener(ctx);
 }
