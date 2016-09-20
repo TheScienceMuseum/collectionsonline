@@ -7,6 +7,14 @@
 <section class="white">
   {{> records/record-top }}
 
+  {{#if images}}
+    {{#ifmultiple images}}
+      {{> records/carousel}}
+    {{else}}
+      {{>records/single-image}}
+    {{/ifmultiple}}
+  {{/if}}
+
   <div class="row">
     <div class="columns medium-8">
 

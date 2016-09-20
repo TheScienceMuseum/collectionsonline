@@ -5,6 +5,7 @@ var JSONToHTML = require('../../lib/transforms/json-to-html-data');
 var searchListener = require('../lib/search-listener');
 var archiveListeners = require('../lib/archive-listeners');
 var Snackbar = require('snackbarlightjs');
+var osdListener = require('../lib/osd-listener');
 
 module.exports = function (page) {
   page('/documents/:id', load, render, listeners);
@@ -46,4 +47,5 @@ function listeners (ctx, next) {
   initComp(ctx);
   searchListener();
   archiveListeners();
+  osdListener(ctx);
 }
