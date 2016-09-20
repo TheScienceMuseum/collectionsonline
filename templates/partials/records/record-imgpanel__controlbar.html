@@ -6,7 +6,9 @@
           <div class="cite__menu__methods hidden" id="cite__method-{{@index}}">
             <div class="cite__method">
               <p><img src="/assets/img/global/cc-by-nc-4.png" alt="Creative Commons License" width="80" height="15" />This work is licensed under a {{rights.usage_terms}} License</p>
-              <button class="">{{> global/icon i="download" size="16" }} Download</button>
+              <form id="download-image" method="get" action="{{large}}">
+                <button type="submit" class="">{{> global/icon i="download" size="16" }} Download</button>
+              </form>
             </div>
             <div class="cite__method">
               <p>Buy this image as a print </p>

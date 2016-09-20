@@ -6,6 +6,7 @@ var searchListener = require('../lib/search-listener');
 var archiveListeners = require('../lib/archive-listeners');
 var Snackbar = require('snackbarlightjs');
 var osdListener = require('../lib/osd-listener');
+var downloadImageListener = require('../lib/download-image');
 
 module.exports = function (page) {
   page('/documents/:id', load, render, listeners);
@@ -48,4 +49,5 @@ function listeners (ctx, next) {
   searchListener();
   archiveListeners();
   osdListener(ctx);
+  downloadImageListener();
 }
