@@ -7,9 +7,15 @@
         <dl class="record-details__dl details-{{classname this.key}}">
           <dt>{{ this.key }}:</dt>
           <dd>
-            {{#if link}}<a href="{{link}}" title="[link to filtered search results]">{{/if}}
-              {{{ this.value }}}
-            {{#if link}}</a>{{/if}}
+            {{#each this.value}}
+              {{#if this.link}}<a href="{{this.link}}" title="[link to filtered search results]">{{/if}}
+                {{{ this.value }}}
+              {{#if this.link}}</a>{{/if}}
+            {{else}}
+              {{#if link}}<a href="{{link}}" title="[link to filtered search results]">{{/if}}
+                {{{ this.value }}}
+              {{#if link}}</a>{{/if}}
+            {{/each}}
           </dd>
         </dl>
       {{/each}}
