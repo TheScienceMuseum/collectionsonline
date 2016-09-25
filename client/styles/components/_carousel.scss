@@ -13,13 +13,21 @@
 .carousel__image {
   @include imgpanel-h;
 
-  &:not(.is-selected) {
-    filter: blur(2px);
-    opacity: 0.5;
-  }
+  height: 36rem;
+  opacity: 0;
 
   &.is-selected {
     outline: 1px white solid;
+  }
+
+  &.flickity-lazyloaded {
+    opacity: 1;
+    transition: opacity 1s;
+
+    &:not(.is-selected) {
+      filter: blur(2px);
+      opacity: 0.5;
+    }
   }
 }
 
