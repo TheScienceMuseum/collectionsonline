@@ -1,6 +1,6 @@
 const testWithServer = require('./helpers/test-with-server');
-const async = require('async');
-var stub = require('sinon').stub;
+const cache = require('../bin/cache.js');
+const stub = require('sinon').stub;
 
 testWithServer('Request for Archive HTML Page but receive bad request from es', {mock: {method: 'get', response: {error: true}}}, (t, ctx) => {
   t.plan(1);
@@ -140,7 +140,11 @@ testWithServer('Search for HTML', {mock: {method: 'search', response: {error: tr
 });
 
 testWithServer('Request for Archive JSON with children', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
-  t.plan(3);
+  t.plan(1);
+
+  var cacheGet = stub(cache, 'get', function (options, cb) {
+    return cb(new Error());
+  });
 
   const htmlRequest = {
     method: 'GET',
@@ -149,30 +153,28 @@ testWithServer('Request for Archive JSON with children', {mock: {method: 'search
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    var response = JSON.parse(res.payload);
-    t.equal(res.statusCode, 200, 'Status code was as expected, 200');
-    t.deepEqual(response.data.relationships.children.data, [], 'Response has no children');
-    t.deepEqual(response.data.relationships.siblings.data, [], 'Response has no related siblings');
+    t.equal(res.statusCode, 503, 'Status code was as expected, 503');
+    cacheGet.restore();
     t.end();
   });
 });
 
-testWithServer('Request for Archive JSON with children', {}, (t, ctx) => {
+testWithServer('Request for Archive JSON with children', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
   t.plan(1);
 
-  var mockAsync = stub(async, 'map');
-
-  mockAsync.callsArgWith(2, new Error(), null);
+  var cacheGet = stub(cache, 'get', function (options, cb) {
+    return cb(new Error());
+  });
 
   const htmlRequest = {
     method: 'GET',
-    url: '/documents/smga-documents-110000003?expanded=smga-documents-110000009',
-    headers: {'Accept': 'application/vnd.api+json'}
+    url: '/documents/smga-documents-110000003',
+    headers: {'Accept': 'text/html'}
   };
 
   ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 503, 'Status code was as expected, 503');
-    async.map.restore();
+    cacheGet.restore();
     t.end();
   });
 });

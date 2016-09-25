@@ -143,13 +143,8 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
-  'records/archive-tree-fond',
-  Fs.readFileSync('./templates/partials/records/archive-tree-fond.html', 'utf8')
-);
-
-Handlebars.registerPartial(
-  'records/archive-tree-nest',
-  Fs.readFileSync('./templates/partials/records/archive-tree-nest.html', 'utf8')
+  'records/archive-tree-browser',
+  Fs.readFileSync('./templates/partials/records/archive-tree-browser.html', 'utf8')
 );
 
 Handlebars.registerPartial(
@@ -190,9 +185,9 @@ Handlebars.registerHelper('gettodaysdate', require('../templates/helpers/gettoda
 
 Handlebars.registerHelper('ifmultiple', require('../templates/helpers/ifmultiple.js'));
 
-Handlebars.registerHelper('isfond', require('../templates/helpers/isfond.js'));
+Handlebars.registerHelper('current', require('../templates/helpers/current.js'));
 
-Handlebars.registerHelper('parentid', require('../templates/helpers/parentid.js'));
+Handlebars.registerHelper('getlink', require('../templates/helpers/getlink.js'));
 
 // Routes
 module.exports = {

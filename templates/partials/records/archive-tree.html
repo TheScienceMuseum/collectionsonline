@@ -1,34 +1,37 @@
-<div id="archive-tree">
-  <div class="row">
-    <div class="columns medium-8">
-      <h2 id="archive-block" class="archive-tree__title">Browse this archive</h2>
+</ul>
+  <li role="treeitem" aria-expanded="true">
+    <div class="archive-tree__label {{current this}} archive-tree__label--root archive-tree--fond">
+      <button aria-controls="group1"></button>
+      <a class="" href="{{getlink this}}">{{this.tree.summary_title}}</a>
     </div>
-    <div class="columns medium-4">
+    <ul role="tree">
+      <ul role="group" id="group1">
 
-    <form action="/search/documents" id="archive-search">
-      <div class="searchbox searchbox--archive">
-        <input type="search" class="searchbox__search" placeholder="Or search within this archive" name="q" id="archive-q">
-        <input type="hidden" name="archive" value="{{#if fonds}}{{fonds.summary_title}}{{else}}{{this.title}}{{/if}}" id="archive-title">
-        <button aria-label="search" type="submit" class="searchbox__submit">
-          {{> global/icon i="search" size="24" }}
-        </button>
-      </div>
-    </form>
+        {{#each tree.children}}
+          <li role="treeitem" aria-expanded="false">
+            <div class="archive-tree__label {{current this}}">
 
-    </div>
+                {{#if children}}
+                  <label for="{{id}}"></label>
+                {{else}}
+                  <button name="expanded" disabled value="{{id}}" type="submit" aria-controls="groupX"></button>
+                {{/if}}
 
-    <div class="archive-tree columns">
+              <a class="summary" href="{{getlink this}}">{{identifier}} {{summary_title}}</a>
+            </div>
 
-      {{#isfond}}
+            <input id="{{id}}" {{current this}} type="checkbox" value="{{id}}" aria-controls="groupX"></input>
+            {{#if children}}
+              <ul role="tree" class="children">
+                {{> records/archive-tree-children}}
+              </ul>
+            {{/if}}
 
-        {{> records/archive-tree-fond }}
+          </li>
+        {{/each}}
 
-      {{else}}
+      </ul>
 
-        {{> records/archive-tree-nest}}
-
-      {{/isfond}}
-
-    </div>
-  </div>
-</div>
+    </ul>
+  </li>
+</ul>

@@ -1,6 +1,9 @@
 const Boom = require('boom');
 const archiveSchema = require('../schemas/archive.js');
-const getArchiveAndChildren = require('../lib/get-archive-and-children');
+const TypeMapping = require('../lib/type-mapping');
+const getCachedDocument = require('../lib/cached-document');
+const buildJSONResponse = require('../lib/jsonapi-response');
+const JSONToHTML = require('../lib/transforms/json-to-html-data');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -17,15 +20,22 @@ module.exports = (elastic, config) => ({
             return HTMLResponse(request, reply, elastic, config);
           },
           'application/vnd.api+json' (request, reply) {
-            return getArchiveAndChildren(elastic, config, request, function (err, data) {
+            elastic.get({index: 'smg', type: 'archive', id: TypeMapping.toInternal(request.params.id)}, function (err, result) {
+              var fondsId;
               if (err) {
-                if (err.status === 404) {
-                  return reply(Boom.notFound());
-                }
-                return reply(Boom.serverUnavailable('unavailable'));
+                return reply(elasticError(err));
               }
-
-              return reply(data.JSONData).header('content-type', 'application/vnd.api+json');
+              if (result._source.fonds) {
+                fondsId = result._source.fonds[0].admin.uid;
+              } else {
+                fondsId = result._source.admin.uid;
+              }
+              getCachedDocument(elastic, TypeMapping.toInternal(request.params.id), fondsId, function (err, data) {
+                if (err) {
+                  return reply(elasticError(err));
+                }
+                return reply(Object.assign(buildJSONResponse(result, config), {tree: data})).header('content-type', 'application/vnd.api+json');
+              });
             });
           }
         }
@@ -35,14 +45,31 @@ module.exports = (elastic, config) => ({
 });
 
 function HTMLResponse (request, reply, elastic, config) {
-  return getArchiveAndChildren(elastic, config, request, function (err, data) {
+  elastic.get({index: 'smg', type: 'archive', id: TypeMapping.toInternal(request.params.id)}, function (err, result) {
+    var fondsId;
     if (err) {
-      if (err.status === 404) {
-        return reply(Boom.notFound());
-      }
-      return reply(Boom.serverUnavailable('unavailable'));
+      return reply(elasticError(err));
     }
-
-    return reply.view('archive', data.HTMLData);
+    if (result._source.fonds) {
+      fondsId = result._source.fonds[0].admin.uid;
+    } else {
+      fondsId = result._source.admin.uid;
+    }
+    getCachedDocument(elastic, TypeMapping.toInternal(request.params.id), fondsId, function (err, data) {
+      if (err) {
+        return reply(elasticError(err));
+      }
+      var JSONData = buildJSONResponse(result, config);
+      var HTMLData = JSONToHTML(JSONData);
+      return reply.view('archive', Object.assign(HTMLData, {tree: data}));
+    });
   });
+}
+
+function elasticError (err) {
+  if (err.status === 404) {
+    return Boom.notFound();
+  } else {
+    return Boom.serverUnavailable('unavailable');
+  }
 }
