@@ -25,6 +25,7 @@ const jsonSchema = {
   'filter[museum]': Joi.string().valid('NRM', 'SMG', 'NMeM', 'MSI'),
   'filter[location]': Joi.string(),
   'filter[user]': Joi.string(),
+  'filter[material]': Joi.string(),
   // People
   'filter[birth[place]]': Joi.string(),
   'filter[occupation]': Joi.string(),
@@ -46,6 +47,7 @@ const htmlSchema = {
   'filter[museum]': Joi.string().valid('NRM', 'SMG', 'NMeM', 'MSI'),
   'filter[location]': Joi.array().items(Joi.string()).single(),
   'filter[user]': Joi.array().items(Joi.string()).single(),
+  'filter[material]': Joi.array().items(Joi.string()).single(),
   // People
   'filter[birth[place]]': Joi.array().items(Joi.string()).single(),
   'filter[occupation]': Joi.array().items(Joi.string()).single(),
@@ -86,5 +88,6 @@ module.exports = (contentType) => {
     .rename('archive', 'filter[archive]', {override: true, ignoreUndefined: true})
     .rename('formats', 'filter[formats]', {override: true, ignoreUndefined: true})
     .rename('image_licences', 'filter[image_licences]', {override: true, ignoreUndefined: true})
-    .rename('user', 'filter[user]', {override: true, ignoreUndefined: true});
+    .rename('user', 'filter[user]', {override: true, ignoreUndefined: true})
+    .rename('material', 'filter[material]', {override: true, ignoreUndefined: true});
 };
