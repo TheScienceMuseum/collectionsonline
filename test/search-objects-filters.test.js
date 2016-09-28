@@ -10,7 +10,6 @@ testWithServer(file + 'Should accept params in filter[PARAM_NAME] format for obj
     method: 'GET',
     url: '/search/objects?' + QueryString.stringify({
       q: 'ada objects',
-      'filter[categories]': 'NMeM - Photographs',
       'filter[date[from]]': '1600',
       'filter[date[to]]': '2000',
       'filter[makers]': 'Cameron, Julia Margaret',
@@ -34,7 +33,6 @@ testWithServer(file + 'Should accept params in filter[PARAM_NAME] format for obj
     method: 'GET',
     url: '/search/objects?' + QueryString.stringify({
       q: 'rocket',
-      'filter[categories]': 'NRM - Locomotives and Rolling Stock',
       'filter[date[to]]': '2000',
       'filter[type]': 'steam locomotive',
       'filter[user]': 'Liverpool & Manchester Railway'
