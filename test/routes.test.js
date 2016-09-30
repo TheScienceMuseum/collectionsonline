@@ -90,6 +90,21 @@ testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
   });
 });
 
+testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/objects/smgc-objects-129834',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
 testWithServer('Request for Object HTML Page for a wrong id', {}, (t, ctx) => {
   t.plan(1);
 
