@@ -1,9 +1,7 @@
 const test = require('tape');
 const queryString = require('querystring');
 const createFilterAll = require('../../lib/facets/create-filter-all');
-const createFilterPeople = require('../../lib/facets/create-filter-people');
-const createFiltersObjects = require('../../lib/facets/create-filter-objects');
-const createFiltersDocuments = require('../../lib/facets/create-filter-documents');
+const createFilters = require('../../lib/facets/create-filters');
 const createQueryParams = require('../../lib/query-params/query-params');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
@@ -13,63 +11,64 @@ test(file + 'The filters date are included in the array filter', (t) => {
   const queryParams = createQueryParams('html', {query: query, params: {}});
 
   const filters = {
-    people: createFilterPeople(queryParams),
-    objects: createFiltersObjects(queryParams),
-    documents: createFiltersDocuments(queryParams)
+    people: createFilters(queryParams, 'agent'),
+    objects: createFilters(queryParams, 'object'),
+    documents: createFilters(queryParams, 'archive')
   };
 
   const filtersAll = createFilterAll(queryParams, filters);
-  var expected = {bool: {
-    must: [
-      {
-        terms: {'type.base': ['agent', 'object']}
-      }
-    ],
-    should: [
-      {
-        bool: {
-          must: [
-            {term: {'type.base': 'agent'}},
-            {
-              bool: {
-                should: [
-                  {range: {'lifecycle.birth.date.earliest': {'gte': 1800}}},
-                  {range: {'lifecycle.death.date.latest': {lte: 1900}}}
-                ]
+  var expected = {
+    bool: {
+      must: [{terms: {'type.base': ['agent', 'object']}}],
+      should: [
+        {
+          bool: {
+            must: [
+              {term: {'type.base': 'agent'}},
+              {
+                bool: {
+                  should: [
+                    {range: {'lifecycle.birth.date.earliest': {gte: 1800}}},
+                    {range: {'lifecycle.death.date.latest': {lte: 1900}}}
+                  ]
+                }
               }
-            }
-          ]
-        }
-      },
-      {
-        bool: {
-          must: [
-            {term: {'type.base': 'object'}},
-            {
-              bool: {
-                should: [
-                  {range: {'lifecycle.creation.date.latest': {'gte': 1800}}},
-                  {range: {'lifecycle.creation.date.latest': {'lte': 1900}}}
-                ]
+            ]
+          }
+        },
+        {
+          bool: {
+            must: [
+              {term: {'type.base': 'object'}},
+              {
+                bool: {
+                  should: [
+                    {range: {'lifecycle.creation.date.latest': {gte: 1800}}},
+                    {range: {'lifecycle.creation.date.latest': {lte: 1900}}}
+                  ]
+                }
               }
-            }
-          ]
-        }
-      },
-      {
-        bool: {
-          must: [
-            {
-              term: {
-                'type.base': 'archive'
+            ]
+          }
+        },
+        {
+          bool: {
+            must: [
+              {term: {'type.base': 'archive'}},
+              {
+                bool: {
+                  should: [
+                    {range: {'lifecycle.creation.date.latest': {gte: 1800}}},
+                    {range: {'lifecycle.creation.date.latest': {lte: 1900}}}
+                  ]
+                }
               }
-            }
-          ]
+            ]
+          }
         }
-      }
-    ]
-  }
-};
+      ]
+    }
+  };
 
   t.plan(1);
   t.deepEqual(filtersAll, expected, 'Filter all filters is ok');
@@ -81,9 +80,9 @@ test(file + 'The filter people array do not include a term filter of a wrong dat
   const queryParams = createQueryParams('html', {query: query, params: {}});
 
   const filters = {
-    people: createFilterPeople(queryParams),
-    objects: createFiltersObjects(queryParams),
-    documents: createFiltersDocuments(queryParams)
+    people: createFilters(queryParams, 'agent'),
+    objects: createFilters(queryParams, 'object'),
+    documents: createFilters(queryParams, 'archive')
   };
 
   const filtersAll = createFilterAll(queryParams, filters);
