@@ -189,6 +189,8 @@ Handlebars.registerHelper('current', require('../templates/helpers/current.js'))
 
 Handlebars.registerHelper('getlink', require('../templates/helpers/getlink.js'));
 
+Handlebars.registerHelper('ifsmgrights', require('../templates/helpers/ifsmgrights.js'));
+
 // Routes
 module.exports = {
   'home': Handlebars.compile(

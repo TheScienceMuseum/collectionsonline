@@ -12,18 +12,20 @@
               </form>
               {{/if}}
             </div>
-            <div class="cite__method">
-              <p>Buy this image as a print </p>
-              <a href="http://www.ssplprints.com/search/keywords/{{title}}">
-                <button class="">{{> global/icon i="external" size="16" }} Buy</button>
-              </a>
-            </div>
-            <div class="cite__method">
-              <p>Licence this image for commercial use at Science and Society Picture Library</p>
-              <a href="http://www.scienceandsociety.co.uk/results.asp?search=1&searchtxtkeys={{title}}">
-                <button class="">{{> global/icon i="external" size="16" }} Licence</button>
-              </a>
-            </div>
+            {{#ifsmgrights rights.details}}
+              <div class="cite__method">
+                <p>Buy this image as a print </p>
+                <a href="http://www.ssplprints.com/search/keywords/{{title}}">
+                  <button class="">{{> global/icon i="external" size="16" }} Buy</button>
+                </a>
+              </div>
+              <div class="cite__method">
+                <p>Licence this image for commercial use at Science and Society Picture Library</p>
+                <a href="http://www.scienceandsociety.co.uk/results.asp?search=1&searchtxtkeys={{title}}">
+                  <button class="">{{> global/icon i="external" size="16" }} Licence</button>
+                </a>
+              </div>
+            {{/ifsmgrights}}
           </div>
           {{/each}}
         </div>
@@ -37,8 +39,9 @@
 
       {{#each images}}
       <p id="record-imgpanel__caption-{{@index}}" class="hidden record-imgpanel__caption">{{title}}<br />
-      {{#if author}}Photographer: {{author}}<br />{{/if}}
-      {{credit}}</p>
+      {{credit}}<br />
+      {{rights.details}}
+      </p>
       {{/each}}
 
     </div>
