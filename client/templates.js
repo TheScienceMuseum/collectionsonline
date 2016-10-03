@@ -191,6 +191,8 @@ Handlebars.registerHelper('getlink', require('../templates/helpers/getlink.js'))
 
 Handlebars.registerHelper('displayFilters', require('../templates/helpers/displayFilters.js'));
 
+Handlebars.registerHelper('ifsmgrights', require('../templates/helpers/ifsmgrights.js'));
+
 // Routes
 module.exports = {
   'home': Handlebars.compile(

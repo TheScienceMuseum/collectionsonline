@@ -11,7 +11,7 @@ module.exports = {
         id: 'openseadragon',
         prefixUrl: '/assets/img/openseadragon/',
         showZoomControl: true,
-        tileSources: imgUrl,
+        tileSources: imgUrl + '.dzi',
         zoomInButton: 'osd-zoomin',
         zoomOutButton: 'osd-zoomout',
         fullPageButton: 'osd-fullpage',
