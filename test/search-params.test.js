@@ -53,3 +53,20 @@ testWithServer(file + 'Should accept the param documents', {}, (t, ctx) => {
     t.end();
   });
 });
+
+testWithServer(file + 'Should accept the param documents', {}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search/documents?' + QueryString.stringify({
+      q: 'a'
+    }),
+    headers: { Accept: 'text/html' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
