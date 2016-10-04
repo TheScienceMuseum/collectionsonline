@@ -192,6 +192,10 @@ Handlebars.registerHelper('taxonomy', require('../templates/helpers/taxonomy.js'
 
 Handlebars.registerHelper('comma', require('../templates/helpers/comma.js'));
 
+Handlebars.registerHelper('formatrelated', require('../templates/helpers/formatrelated.js'));
+
+Handlebars.registerHelper('seemore', require('../templates/helpers/seemore.js'));
+
 // Routes
 module.exports = {
   'home': Handlebars.compile(
