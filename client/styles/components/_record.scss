@@ -10,16 +10,23 @@
 //-----------------------------------------------------------------------------
 
 .record-top {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  @include breakpoint(medium) {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
   background: white;
 
   &__title {
-    font-size: 3rem;
+    font-size: 2rem;
+    @include breakpoint(medium) {
+      font-size: 3rem;
+    }
     font-weight: 600;
 
     .icon {
-      font-size: 2rem;
+      font-size: 66.6%;
     }
   }
 

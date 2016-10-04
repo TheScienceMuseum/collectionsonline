@@ -48,7 +48,10 @@
       bottom: -0.5rem;
       margin: auto;
       color: rgba(white, 0.25);
-      font-size: rem-calc(32);
+      font-size: rem-calc(24);
+      @include breakpoint(medium) {
+        font-size: rem-calc(32);
+      }
       line-height: 1;
       letter-spacing: rem-calc(-1);
       font-weight: 300;
@@ -58,13 +61,19 @@
 
   &__title {
     font-weight: 600;
-    font-size: rem-calc(16);
+    font-size: rem-calc(14);
+    @include breakpoint(medium) {
+      font-size: rem-calc(16);
+    }
     line-height: rem-calc(18);
     margin: 0 0 0.25rem 0;
     color: grey(90);
   }
   &__info {
-    padding: 1rem;
+    padding: 0.5rem;
+    @include breakpoint(medium) {
+      padding: 1rem;
+    }
   }
   &__description {
     font-weight: 400;
@@ -154,7 +163,10 @@
       margin-left: 0.5rem;
       margin-bottom: 0.5rem;
       clear: right;
-      font-size: rem-calc(24);
+      font-size: rem-calc(16);
+      @include breakpoint(medium) {
+        font-size: rem-calc(24);
+      }
     }
   }
 
