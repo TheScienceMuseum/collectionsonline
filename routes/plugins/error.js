@@ -22,6 +22,14 @@ exports.register = (server, options, next) => {
       if (error.output.statusCode === 401) {
         return reply.redirect('/login');
       }
+
+      if (error.output.statusCode === 404) {
+        var data = {};
+        data.footer = require('../../fixtures/footer');
+        data.footerBanner = require('../../fixtures/footer-banner');
+        return reply.view('404', data);
+      }
+
       return reply
         .view(options.template || 'error', { error, isDevelopment })
         .code(error.output.statusCode);
