@@ -58,7 +58,10 @@ function render (ctx, next) {
   if (fb) {
     fb.className = 'control__button';
   }
-  document.querySelector('button.filterpanel__button').style.display = 'none';
+  var filterButton = document.querySelector('button.filterpanel__button');
+  if (filterButton) {
+    filterButton.style.display = 'none';
+  }
 
   // Hides filterpanel by default if javascript is enabled
   if (!ctx.isFilterOpen) {

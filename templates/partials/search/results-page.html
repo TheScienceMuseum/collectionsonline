@@ -27,9 +27,9 @@
   <div class="row">
 
     <div class="filtercolumn filtercolumn--filtersactive" id="filtercolumn">
-
-      {{> search/filters }}
-
+      {{#if (displayFilters results selectedFilters)}}
+        {{> search/filters }}
+      {{/if}}
     </div>
 
     <div class="row searchresults searchresults--filtersactive" id="searchresults">
