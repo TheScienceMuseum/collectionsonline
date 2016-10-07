@@ -49,3 +49,62 @@ testWithServer('Request with multiple instances of JSONAPI media type, one witho
     t.end();
   });
 });
+
+testWithServer('Not acceptable request when to accept header', {}, (t, ctx) => {
+  t.plan(1);
+
+  const acceptableJSONRequest = {
+    method: 'GET',
+    url: '/'
+  };
+
+  ctx.server.inject(acceptableJSONRequest, (res) => {
+    t.equal(res.statusCode, 416, 'Not acceptable request when no accept header is defined');
+    t.end();
+  });
+});
+
+testWithServer('Not acceptable if json and html header are defined at the same time', {}, (t, ctx) => {
+  t.plan(1);
+
+  const acceptableJSONRequest = {
+    method: 'GET',
+    url: '/',
+    headers: {'Accept': 'text/html, application/json'}
+  };
+
+  ctx.server.inject(acceptableJSONRequest, (res) => {
+    t.equal(res.statusCode, 416, 'Not acceptable request when a json and html header are defined at the same time');
+    t.end();
+  });
+});
+
+testWithServer('Return html if user agent is twitter bot', {}, (t, ctx) => {
+  t.plan(1);
+
+  const acceptableJSONRequest = {
+    method: 'GET',
+    url: '/',
+    headers: {'user-agent': 'Twitterbot'}
+  };
+
+  ctx.server.inject(acceptableJSONRequest, (res) => {
+    t.equal(res.statusCode, 200, 'return some html for twitter');
+    t.end();
+  });
+});
+
+testWithServer('Not acceptable if no accept header and no user-agent twitter', {}, (t, ctx) => {
+  t.plan(1);
+
+  const acceptableJSONRequest = {
+    method: 'GET',
+    url: '/',
+    headers: {'user-agent': 'bot'}
+  };
+
+  ctx.server.inject(acceptableJSONRequest, (res) => {
+    t.equal(res.statusCode, 416, 'not acceptage if user-agent is not twitter');
+    t.end();
+  });
+});
