@@ -45,5 +45,5 @@ function render (ctx, next) {
 function listeners (ctx, next) {
   initComp(ctx);
   searchListener();
-  archiveListeners(ctx, listeners);
+  archiveListeners();
 }
