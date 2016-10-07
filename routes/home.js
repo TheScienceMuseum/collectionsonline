@@ -1,17 +1,24 @@
-var jsonContent = require('./route-helpers/json-content.js');
+var contentType = require('./route-helpers/content-type.js');
 module.exports = () => ({
   method: 'GET',
   path: '/',
   config: {
     handler: function (request, reply) {
-      var jsonResponse = jsonContent(request);
-      if (jsonResponse) {
-        reply('See https://github.com/TheScienceMuseum/collectionsonline/wiki/Collections-Online-API on how to use the api');
-      } else {
+      var responseType = contentType(request);
+      if (responseType === 'json') {
+        return reply('See https://github.com/TheScienceMuseum/collectionsonline/wiki/Collections-Online-API on how to use the api')
+        .header('content-type', 'application/vnd.api+json');
+      }
+
+      if (responseType === 'html') {
         const data = require('../fixtures/data');
         data.footer = require('../fixtures/footer');
         data.footerBanner = require('../fixtures/footer-banner');
-        reply.view('home', data);
+        return reply.view('home', data);
+      }
+
+      if (responseType === 'notAcceptable') {
+        return reply('Not Acceptable').code(416);
       }
     }
   }

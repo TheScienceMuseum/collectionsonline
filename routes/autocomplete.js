@@ -2,7 +2,7 @@ const Joi = require('joi');
 const Boom = require('boom');
 const autocomplete = require('../lib/autocomplete');
 const autocompleteResultsToJsonApi = require('../lib/transforms/autocomplete-results-to-jsonapi');
-const jsonContent = require('./route-helpers/json-content.js');
+const contentType = require('./route-helpers/content-type.js');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -21,8 +21,9 @@ module.exports = (elastic, config) => ({
       }
     },
     handler: function (request, reply) {
-      var jsonResponse = jsonContent(request);
-      if (jsonResponse) {
+      var responseType = contentType(request);
+
+      if (responseType === 'json') {
         const queryParams = Object.assign({}, request.params, request.query);
 
         autocomplete(elastic, queryParams, (err, results) => {

@@ -35,26 +35,6 @@ testWithServer('Request for JSONAPI Content', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for JSONAPI Content with parameters', {}, (t, ctx) => {
-  // http://jsonapi.org/format/#content-negotiation-servers
-  //
-  // Servers MUST respond with a 406 Not Acceptable status code if a request’s
-  // Accept header contains the JSON API media type and all instances of that
-  // media type are modified with media type parameters.
-  t.plan(1);
-
-  const badJSONRequest = {
-    method: 'GET',
-    url: '/search?q=test',
-    headers: {'Accept': 'application/vnd.api+json; charset=utf-8'}
-  };
-
-  ctx.server.inject(badJSONRequest, (res) => {
-    t.equal(res.statusCode, 406, 'One JSONAPI request with parameter should return 406');
-    t.end();
-  });
-});
-
 testWithServer('Request with multiple instances of JSONAPI media type, one without parameters', {}, (t, ctx) => {
   t.plan(1);
 

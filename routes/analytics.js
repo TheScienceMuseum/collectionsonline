@@ -1,5 +1,5 @@
 const Joi = require('joi');
-var jsonContent = require('./route-helpers/json-content.js');
+var contentType = require('./route-helpers/content-type.js');
 
 module.exports = (elastic, config) => ({
   method: 'POST',
@@ -11,12 +11,9 @@ module.exports = (elastic, config) => ({
         data: Joi.string()
       }
     },
-    plugins: {
-      'hapi-negotiator': false
-    },
     handler: function (request, reply) {
-      var jsonResponse = jsonContent(request);
-      if (jsonResponse) {
+      var responseType = contentType(request);
+      if (responseType === 'json') {
         reply().code(204);
       } else {
         return reply();

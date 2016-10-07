@@ -4,7 +4,7 @@ const TypeMapping = require('../lib/type-mapping');
 const getCachedDocument = require('../lib/cached-document');
 const buildJSONResponse = require('../lib/jsonapi-response');
 const JSONToHTML = require('../lib/transforms/json-to-html-data');
-const jsonContent = require('./route-helpers/json-content.js');
+const contentType = require('./route-helpers/content-type.js');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -13,12 +13,10 @@ module.exports = (elastic, config) => ({
     validate: {
       query: archiveSchema
     },
-    plugins: {
-      'hapi-negotiator': false
-    },
     handler: function (request, reply) {
-      var jsonResponse = jsonContent(request);
-      if (jsonResponse) {
+      var responseType = contentType(request);
+
+      if (responseType === 'json') {
         elastic.get({index: 'smg', type: 'archive', id: TypeMapping.toInternal(request.params.id)}, function (err, result) {
           var fondsId;
           if (err) {
@@ -36,8 +34,14 @@ module.exports = (elastic, config) => ({
             return reply(Object.assign(buildJSONResponse(result, config), {tree: data})).header('content-type', 'application/vnd.api+json');
           });
         });
-      } else {
+      }
+
+      if (responseType === 'html') {
         return HTMLResponse(request, reply, elastic, config);
+      }
+
+      if (responseType === 'notAcceptable') {
+        return reply('Not Acceptable').code(416);
       }
     }
   }
