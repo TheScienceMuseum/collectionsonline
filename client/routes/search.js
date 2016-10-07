@@ -54,8 +54,14 @@ function render (ctx, next) {
   pageEl.innerHTML = Templates['search'](ctx.state.data);
 
   // Shows filter toggle button if javascript enabled
-  document.getElementById('fb').className = 'control__button';
-  document.querySelector('button.filterpanel__button').style.display = 'none';
+  var fb = document.getElementById('fb');
+  if (fb) {
+    fb.className = 'control__button';
+  }
+  var filterButton = document.querySelector('button.filterpanel__button');
+  if (filterButton) {
+    filterButton.style.display = 'none';
+  }
 
   // Hides filterpanel by default if javascript is enabled
   if (!ctx.isFilterOpen) {
@@ -66,7 +72,9 @@ function render (ctx, next) {
     filtercolumn.className = filtercolumn.className.replace('filtercolumn--filtersactive', '');
 
     var controlFilters = document.querySelector('.control--filters');
-    controlFilters.className = controlFilters.className.replace('control--active', '');
+    if (controlFilters) {
+      controlFilters.className = controlFilters.className.replace('control--active', '');
+    }
   }
 
   // refresh the title of the page
@@ -136,9 +144,11 @@ function listeners (ctx, next) {
   * update filter status (open/close)
   */
   var filterButton = document.querySelector('#fb');
-  filterButton.addEventListener('click', function () {
-    filterState.isFilterOpen = !filterState.isFilterOpen;
-  });
+  if (filterButton) {
+    filterButton.addEventListener('click', function () {
+      filterState.isFilterOpen = !filterState.isFilterOpen;
+    });
+  }
 
   initComp();
 
