@@ -123,6 +123,9 @@ $timing-defaults: 0.25s ease-out;
   border-color: inherit;
   margin: rem-calc(-1 0 8 -1);
   padding: 1rem;
+  @include breakpoint(small only) {
+    padding: 0.66rem;
+  }
   &:hover { background-color: black;}
 }
 
