@@ -4,39 +4,38 @@ const TypeMapping = require('../lib/type-mapping');
 const JSONToHTML = require('../lib/transforms/json-to-html-data');
 const getRelatedItems = require('../lib/get-related-items');
 const sortRelated = require('../lib/sort-related-items');
+const jsonContent = require('./route-helpers/json-content.js');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/people/{id}/{slug?}',
-  handler: (request, reply) => HTMLResponse(request, reply, elastic, config),
   config: {
     plugins: {
-      'hapi-negotiator': {
-        mediaTypes: {
-          'text/html' (request, reply) {
-            return HTMLResponse(request, reply, elastic, config);
-          },
-          'application/vnd.api+json' (request, reply) {
-            elastic.get({index: 'smg', type: 'agent', id: TypeMapping.toInternal(request.params.id)}, (err, result) => {
-              if (err) {
-                if (err.status === 404) {
-                  return reply(Boom.notFound());
-                }
-                return reply(Boom.serverUnavailable('unavailable'));
-              }
-
-              getRelatedItems(elastic, request.params.id, (err, relatedItems) => {
-                if (err) {
-                  relatedItems = null;
-                } else {
-                  relatedItems = sortRelated(relatedItems);
-                }
-
-                reply(buildJSONResponse(result, config, relatedItems)).header('content-type', 'application/vnd.api+json');
-              });
-            });
+      'hapi-negotiator': false
+    },
+    handler: function (request, reply) {
+      var jsonResponse = jsonContent(request);
+      if (jsonResponse) {
+        elastic.get({index: 'smg', type: 'agent', id: TypeMapping.toInternal(request.params.id)}, (err, result) => {
+          if (err) {
+            if (err.status === 404) {
+              return reply(Boom.notFound());
+            }
+            return reply(Boom.serverUnavailable('unavailable'));
           }
-        }
+
+          getRelatedItems(elastic, request.params.id, (err, relatedItems) => {
+            if (err) {
+              relatedItems = null;
+            } else {
+              relatedItems = sortRelated(relatedItems);
+            }
+
+            reply(buildJSONResponse(result, config, relatedItems)).header('content-type', 'application/vnd.api+json');
+          });
+        });
+      } else {
+        return HTMLResponse(request, reply, elastic, config);
       }
     }
   }

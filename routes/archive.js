@@ -40,34 +40,6 @@ module.exports = (elastic, config) => ({
         return HTMLResponse(request, reply, elastic, config);
       }
     }
-    // plugins: {
-    //   'hapi-negotiator': {
-    //     mediaTypes: {
-    //       'text/html' (request, reply) {
-    //         return HTMLResponse(request, reply, elastic, config);
-    //       },
-    //       'application/vnd.api+json' (request, reply) {
-    //         elastic.get({index: 'smg', type: 'archive', id: TypeMapping.toInternal(request.params.id)}, function (err, result) {
-    //           var fondsId;
-    //           if (err) {
-    //             return reply(elasticError(err));
-    //           }
-    //           if (result._source.fonds) {
-    //             fondsId = result._source.fonds[0].admin.uid;
-    //           } else {
-    //             fondsId = result._source.admin.uid;
-    //           }
-    //           getCachedDocument(elastic, TypeMapping.toInternal(request.params.id), fondsId, function (err, data) {
-    //             if (err) {
-    //               return reply(elasticError(err));
-    //             }
-    //             return reply(Object.assign(buildJSONResponse(result, config), {tree: data})).header('content-type', 'application/vnd.api+json');
-    //           });
-    //         });
-    //       }
-    //     }
-    //   }
-    // }
   }
 });
 
