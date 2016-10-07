@@ -152,6 +152,13 @@
     border-bottom: 0;
   }
 
+  &[aria-disabled="true"],
+  &[aria-disabled="true"]:hover {
+    opacity: 0.33;
+    background-color: transparent;
+    background-image: none;
+  }
+
   .icon {
     position: relative;
     font-size: rem-calc(12);
