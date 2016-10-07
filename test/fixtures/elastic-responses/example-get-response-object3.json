@@ -1,0 +1,179 @@
+{
+  "_index": "smg",
+  "_type": "object",
+  "_id": "smgc-object-8537766",
+  "_version": 1,
+  "found": true,
+  "_source": {
+    "admin": {
+    "created": 1434986206000,
+    "id": "object-8537766",
+    "language": "eng",
+    "modified": 1460736072000,
+    "processed": 1473212266000,
+    "source": "smgc",
+    "stream": "smg-online",
+    "uid": "smgc-object-8537766"
+    },
+    "categories": [
+      {
+        "museum": "NMeM",
+        "name": "Photographs",
+        "value": "NMeM - Photographs"
+      }
+    ],
+    "condition": {
+      "date": {
+        "earliest": 2016,
+        "latest": 2016,
+        "value": "2016-04-15"
+      },
+      "examiner": "Torres, Vanessa",
+      "value": "1 - Good"
+    },
+    "description": [
+      {
+        "date": {
+          "earliest": 2015,
+          "latest": 2015,
+          "value": "2015-06-22"
+        },
+        "primary": true,
+        "type": "description",
+        "value": "Photograph entitled 'Goodness' taken by Julia Margaret Cameron in 1864. Albumen contact print from wet collodion negative. This photographic study of Mary Ann Hillier (1847-1936) and Alice Jessie Keown (born 1861), forms part of the Herschel Album, created by Cameron for her friend Sir John Herschel (1792-1871)."
+      },
+      {
+        "date": {
+          "earliest": 2015,
+          "latest": 2015,
+          "value": "2015-06-22"
+        },
+        "type": "description",
+        "value": "Photograph entitled 'Goodness' taken by Julia Margaret Cameron in 1864. Albumen contact print from wet collodion negative. This photographic study of Mary Ann Hillier (1847-1936) and Alice Jessie Keown (born 1861), forms part of the Herschel Album, created by Cameron for her friend Sir John Herschel (1792-1871)."
+      }
+    ],
+    "flag": {
+      "flag1": "N",
+      "flag2": "N",
+      "flag3": "N",
+      "flag4": "Y"
+    },
+    "identifier": [
+      {
+        "primary": true,
+        "type": "accession number",
+        "value": "1984-5017/44"
+      }
+    ],
+    "language": [
+      "eng"
+    ],
+    "legal": {
+      "credit_line": "Sotheby's",
+      "legal_status": "permanent collection",
+      "rights": [
+        {
+          "holder": "National Media Museum",
+          "type": "Copyright"
+        }
+      ]
+    },
+    "lifecycle": {
+      "creation": [
+        {
+          "date": [
+            {
+              "latest": 1864,
+              "role": [
+                {
+                  "value": "made"
+                }
+              ],
+              "value": "1864"
+            }
+          ],
+          "maker": [
+            {
+              "@link": {
+                "type": "literal"
+              },
+              "name": [
+                {
+                  "primary": true,
+                  "value": "Cameron, Julia Margaret"
+                }
+              ],
+              "summary_title": "Cameron, Julia Margaret"
+            }
+          ],
+          "places": [
+            {
+              "@link": {
+                "type": "literal"
+              },
+              "name": [
+                {
+                  "primary": true,
+                  "value": "England, United Kingdom"
+                }
+              ],
+              "summary_title": "England, United Kingdom"
+            }
+          ]
+        }
+      ]
+    },
+    "materials": [
+      "paper (fibre product)"
+    ],
+    "measurements": {
+      "dimensions": [
+        {
+          "dimension": "height",
+          "units": "in",
+          "value": "9 15/16"
+        },
+        {
+          "dimension": "height",
+          "units": "mm",
+          "value": "253"
+        },
+        {
+          "dimension": "width",
+          "units": "in",
+          "value": "7 7/8"
+        },
+        {
+          "dimension": "width",
+          "units": "mm",
+          "value": "200"
+        }
+      ],
+      "display": "overall: 253 mm x 200 mm"
+    },
+    "name": [
+      {
+        "primary": true,
+        "value": "photograph; albumen print"
+      }
+    ],
+    "note": [
+      {
+        "primary": true,
+        "value": "On Loan to the Art Institute of Chicago then to tour"
+      }
+    ],
+    "summary_title": "'Goodness', 1864 (photograph; albumen print)",
+    "title": [
+      {
+        "primary": true,
+        "type": "display title",
+        "value": "'Goodness', 1864"
+      }
+    ],
+    "type": {
+      "base": "object",
+      "record_type": "WHOLE"
+    }
+  }
+}
