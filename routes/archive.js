@@ -4,43 +4,70 @@ const TypeMapping = require('../lib/type-mapping');
 const getCachedDocument = require('../lib/cached-document');
 const buildJSONResponse = require('../lib/jsonapi-response');
 const JSONToHTML = require('../lib/transforms/json-to-html-data');
+const jsonContent = require('./route-helpers/json-content.js');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/documents/{id}/{slug?}',
-  handler: (request, reply) => HTMLResponse(request, reply, elastic, config),
   config: {
     validate: {
       query: archiveSchema
     },
     plugins: {
-      'hapi-negotiator': {
-        mediaTypes: {
-          'text/html' (request, reply) {
-            return HTMLResponse(request, reply, elastic, config);
-          },
-          'application/vnd.api+json' (request, reply) {
-            elastic.get({index: 'smg', type: 'archive', id: TypeMapping.toInternal(request.params.id)}, function (err, result) {
-              var fondsId;
-              if (err) {
-                return reply(elasticError(err));
-              }
-              if (result._source.fonds) {
-                fondsId = result._source.fonds[0].admin.uid;
-              } else {
-                fondsId = result._source.admin.uid;
-              }
-              getCachedDocument(elastic, TypeMapping.toInternal(request.params.id), fondsId, function (err, data) {
-                if (err) {
-                  return reply(elasticError(err));
-                }
-                return reply(Object.assign(buildJSONResponse(result, config), {tree: data})).header('content-type', 'application/vnd.api+json');
-              });
-            });
+      'hapi-negotiator': false
+    },
+    handler: function (request, reply) {
+      var jsonResponse = jsonContent(request);
+      if (jsonResponse) {
+        elastic.get({index: 'smg', type: 'archive', id: TypeMapping.toInternal(request.params.id)}, function (err, result) {
+          var fondsId;
+          if (err) {
+            return reply(elasticError(err));
           }
-        }
+          if (result._source.fonds) {
+            fondsId = result._source.fonds[0].admin.uid;
+          } else {
+            fondsId = result._source.admin.uid;
+          }
+          getCachedDocument(elastic, TypeMapping.toInternal(request.params.id), fondsId, function (err, data) {
+            if (err) {
+              return reply(elasticError(err));
+            }
+            return reply(Object.assign(buildJSONResponse(result, config), {tree: data})).header('content-type', 'application/vnd.api+json');
+          });
+        });
+      } else {
+        return HTMLResponse(request, reply, elastic, config);
       }
     }
+    // plugins: {
+    //   'hapi-negotiator': {
+    //     mediaTypes: {
+    //       'text/html' (request, reply) {
+    //         return HTMLResponse(request, reply, elastic, config);
+    //       },
+    //       'application/vnd.api+json' (request, reply) {
+    //         elastic.get({index: 'smg', type: 'archive', id: TypeMapping.toInternal(request.params.id)}, function (err, result) {
+    //           var fondsId;
+    //           if (err) {
+    //             return reply(elasticError(err));
+    //           }
+    //           if (result._source.fonds) {
+    //             fondsId = result._source.fonds[0].admin.uid;
+    //           } else {
+    //             fondsId = result._source.admin.uid;
+    //           }
+    //           getCachedDocument(elastic, TypeMapping.toInternal(request.params.id), fondsId, function (err, data) {
+    //             if (err) {
+    //               return reply(elasticError(err));
+    //             }
+    //             return reply(Object.assign(buildJSONResponse(result, config), {tree: data})).header('content-type', 'application/vnd.api+json');
+    //           });
+    //         });
+    //       }
+    //     }
+    //   }
+    // }
   }
 });
 
