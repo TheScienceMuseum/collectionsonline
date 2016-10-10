@@ -3,6 +3,23 @@ const testWithServer = require('./helpers/test-with-server');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
 
+testWithServer(file + 'Attempt to search with the wrong accept headers', {}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search/people?' + QueryString.stringify({
+      q: 'test people'
+    }),
+    headers: { Accept: 'wrongContent' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 416, 'Status code was as expected, 416');
+    t.end();
+  });
+});
+
 testWithServer(file + 'Should accept the param people', {}, (t, ctx) => {
   t.plan(1);
 
