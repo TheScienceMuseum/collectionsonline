@@ -5,7 +5,8 @@ var getData = require('../lib/get-data.js');
 var JSONToHTML = require('../../lib/transforms/json-to-html-data');
 var searchListener = require('../lib/search-listener');
 var Snackbar = require('snackbarlightjs');
-var openseadragon = require('../lib/openseadragon');
+var osdListener = require('../lib/osd-listener');
+var downloadImageListener = require('../lib/download-image');
 
 module.exports = function (page) {
   page('/objects/:id', load, render, listeners);
@@ -47,14 +48,6 @@ function render (ctx, next) {
 function listeners (ctx, next) {
   initComp(ctx);
   searchListener();
-  document.getElementById('openseadragon-toolbar').addEventListener('click', function (e) {
-    if (!ctx.viewer) {
-      openseadragon.init(ctx);
-    }
-    if (e.target.id === 'osd-fullpage') {
-      ctx.viewer.setFullScreen(true);
-    } else if (e.target.id === 'osd-home') {
-      openseadragon.quit(ctx);
-    }
-  });
+  osdListener(ctx);
+  downloadImageListener();
 }

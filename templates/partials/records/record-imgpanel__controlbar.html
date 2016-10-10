@@ -2,18 +2,32 @@
 
       <div class="cite__menu-pos-wrap">
         <div class="cite__menu" id="cite__menu" >
-          <div class="cite__method">
-            <p><img src="/assets/img/global/cc-by-nc-4.png" alt="Creative Commons License" width="80" height="15" />This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License</p>
-            <button class="">{{> global/icon i="download" size="16" }} Download</button>
+          {{#each images}}
+          <div class="cite__menu__methods hidden" id="cite__method-{{@index}}">
+            <div class="cite__method">
+              <p>{{#if rights.cc}}<img src="/assets/img/global/{{rights.image}}" alt="Creative Commons License" width="80" height="15" />{{/if}}This work is licensed under a {{rights.usage_terms}} License</p>
+              {{#if rights.cc}}
+              <form id="download-image" method="get" action="{{large}}">
+                <button type="submit" class="">{{> global/icon i="download" size="16" }} Download</button>
+              </form>
+              {{/if}}
+            </div>
+            {{#ifsmgrights rights.details}}
+              <div class="cite__method">
+                <p>Buy this image as a print </p>
+                <a href="http://www.ssplprints.com/search/keywords/{{title}}">
+                  <button class="">{{> global/icon i="external" size="16" }} Buy</button>
+                </a>
+              </div>
+              <div class="cite__method">
+                <p>Licence this image for commercial use at Science and Society Picture Library</p>
+                <a href="http://www.scienceandsociety.co.uk/results.asp?search=1&searchtxtkeys={{title}}">
+                  <button class="">{{> global/icon i="external" size="16" }} Licence</button>
+                </a>
+              </div>
+            {{/ifsmgrights}}
           </div>
-          <div class="cite__method">
-            <p>Buy this image as a print </p>
-            <button class="">{{> global/icon i="external" size="16" }} Buy</button>
-          </div>
-          <div class="cite__method">
-            <p>Licence this image for commercial use at Science and Society Picture Library</p>
-            <button class="">{{> global/icon i="external" size="16" }} Licence</button>
-          </div>
+          {{/each}}
         </div>
       </div>
 
@@ -21,12 +35,13 @@
 
       <div class="osd__toolbar" id="openseadragon-toolbar">
         <button class="osd__button" id="osd-fullpage" aria-label="full screen"></button>
-        <button class="osd__button" id="osd-home" aria-label="Original size"></button>
-        <button class="osd__button" id="osd-zoomout" aria-label="Zoom out"></button>
-        <button class="osd__button" id="osd-zoomin" aria-label="Zoom in"></button>
       </div>
 
-      <p class="record-imgpanel__caption">This is the caption for the image<br />
-      © This is the copyright of the photographer</p>
+      {{#each images}}
+      <p id="record-imgpanel__caption-{{@index}}" class="hidden record-imgpanel__caption">{{title}}<br />
+      {{credit}}<br />
+      {{rights.details}}
+      </p>
+      {{/each}}
 
     </div>
