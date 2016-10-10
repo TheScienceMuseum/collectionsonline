@@ -80,3 +80,16 @@
     </div>
   </div>
 {{/if}}
+
+{{#if filters.material.length}}
+  <div class="filter filter--active filter--open" data-filter="Material">
+    <a href="{{lookup links.clearFacet "filter[material]"}}" class="filter__name">Material</a>
+    <div class="filter__options">
+      <ul>
+        {{#each filters.material}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[material]" value="{{value}}" {{isselected ../selectedFilters "material" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+{{/if}}
