@@ -727,12 +727,12 @@ testWithServer(file + 'Should accept array of multiple formats as json', {}, (t,
   });
 });
 
-testWithServer(file + 'Should accept single image_licences', {}, (t, ctx) => {
+testWithServer(file + 'Should accept single image_license', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'image_licences': 'CC BY-NC-SA' }),
+    url: '/search?' + QueryString.stringify({ q: 'test', 'image_license': 'CC BY-NC-SA' }),
     headers: { Accept: 'text/html' }
   };
 
@@ -742,12 +742,12 @@ testWithServer(file + 'Should accept single image_licences', {}, (t, ctx) => {
   });
 });
 
-testWithServer(file + 'Should accept multiple image_licences', {}, (t, ctx) => {
+testWithServer(file + 'Should accept multiple image_license', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'image_licences': ['CC BY-NC-SA', 'CC BY-SA'] }),
+    url: '/search?' + QueryString.stringify({ q: 'test', 'image_license': ['CC BY-NC-SA', 'CC BY-SA'] }),
     headers: { Accept: 'text/html' }
   };
 
@@ -757,12 +757,12 @@ testWithServer(file + 'Should accept multiple image_licences', {}, (t, ctx) => {
   });
 });
 
-testWithServer(file + 'Should not accept array of multiple image_licences as json', {}, (t, ctx) => {
+testWithServer(file + 'Should not accept array of multiple image_license as json', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'image_licences': ['CC BY-NC-SA', 'CC BY-SA'] }),
+    url: '/search?' + QueryString.stringify({ q: 'test', 'image_license': ['CC BY-NC-SA', 'CC BY-SA'] }),
     headers: { Accept: 'application/vnd.api+json' }
   };
 

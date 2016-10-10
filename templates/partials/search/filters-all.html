@@ -113,6 +113,18 @@
 {{/if}}
 
 <!-- IMAGE -->
+{{#if filters.image_license.length}}
+  <div class="filter filter--active filter--open" data-filter="Image License">
+    <a href="{{lookup links.clearFacet "filter[image_license]"}}" class="filter__name">Image Licence</a>
+    <div class="filter__options">
+      <ul>
+        {{#each filters.image_license}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[image_license]" value="{{value}}" {{isselected ../selectedFilters "imageLicense" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+{{/if}}
 
 <!-- USER -->
 {{#if filters.user.length}}

@@ -15,6 +15,7 @@ const sharedSchema = {
 const jsonSchema = {
   // All
   'filter[places]': Joi.string(),
+  'filter[image_license]': Joi.string(),
   // Objects
   'filter[type]': Joi.string(),
   'filter[makers]': Joi.string(),
@@ -31,13 +32,13 @@ const jsonSchema = {
   'filter[occupation]': Joi.string(),
   // Documents
   'filter[archive]': Joi.string(),
-  'filter[formats]': Joi.string(),
-  'filter[image_licences]': Joi.string()
+  'filter[formats]': Joi.string()
 };
 
 const htmlSchema = {
   // All
   'filter[places]': Joi.array().items(Joi.string()).single(),
+  'filter[image_license]': Joi.array().items(Joi.string()).single(),
   // Objects
   'filter[type]': Joi.array().items(Joi.string()).single(),
   'filter[makers]': Joi.array().items(Joi.string()).single(),
@@ -54,8 +55,7 @@ const htmlSchema = {
   'filter[occupation]': Joi.array().items(Joi.string()).single(),
   // Documents
   'filter[archive]': Joi.array().items(Joi.string()).single(),
-  'filter[formats]': Joi.array().items(Joi.string()).single(),
-  'filter[image_licences]': Joi.array().items(Joi.string()).single()
+  'filter[formats]': Joi.array().items(Joi.string()).single()
 };
 
 module.exports = (contentType) => {
@@ -89,7 +89,7 @@ module.exports = (contentType) => {
     .rename('occupation', 'filter[occupation]', {override: true, ignoreUndefined: true})
     .rename('archive', 'filter[archive]', {override: true, ignoreUndefined: true})
     .rename('formats', 'filter[formats]', {override: true, ignoreUndefined: true})
-    .rename('image_licences', 'filter[image_licences]', {override: true, ignoreUndefined: true})
+    .rename('image_license', 'filter[image_license]', {override: true, ignoreUndefined: true})
     .rename('user', 'filter[user]', {override: true, ignoreUndefined: true})
     .rename('material', 'filter[material]', {override: true, ignoreUndefined: true});
 };
