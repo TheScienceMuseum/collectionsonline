@@ -283,7 +283,9 @@
 .taxonomy {
   @include ul-icons;
   li {
-    @include icon-bullet(taxonomy);
+    &:not(:first-child) {
+      @include icon-bullet(taxonomy);
+    }
     margin-top: 0;
     margin-bottom: 0;
     @for $i from 0 to 5 {
