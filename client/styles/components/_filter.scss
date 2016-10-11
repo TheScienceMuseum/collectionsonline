@@ -222,7 +222,7 @@ $filtertypes: (
       top: 0;
       bottom: 0;
       width: rem-calc(8);
-      background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 28" %3E%3Cpath stroke="#FFFFFF" fill="none" d="M1,0 7,15 1,28" vector-effect="non-scaling-stroke" %3E%3C/path%3E%3C/svg%3E');
+      background-image: svg-uri('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 28"><path stroke="#FFFFFF" fill="none" d="M1,0 7,15 1,28" vector-effect="non-scaling-stroke" ></path></svg>');
       background-repeat: no-repeat;
       background-size: 100% 100%;
 
@@ -259,7 +259,7 @@ $filtertypes: (
       top: 0;
       bottom: 0;
       width: rem-calc(8);
-      background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 28" %3E%3Cpath stroke="#FFFFFF" stroke-width="2px" fill="#cccccc" d="M1,0 7,15 1,28" vector-effect="non-scaling-stroke" %3E%3C/path%3E%3C/svg%3E');
+      background-image: svg-uri('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 28"><path stroke="#FFFFFF" stroke-width="2px" fill="#cccccc" d="M1,0 7,15 1,28" vector-effect="non-scaling-stroke" ></path></svg>');
       background-repeat: no-repeat;
       background-size: 100% 100%;
       z-index: 1;
