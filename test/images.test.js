@@ -19,6 +19,21 @@ testWithServer('Request for Object Page with image', {}, (t, ctx) => {
   });
 });
 
+testWithServer('Request for Object HTML with image', {}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/objects/smgc-objects-26704',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Found Object');
+    t.end();
+  });
+});
+
 testWithServer('Search for Object Page with image', {}, (t, ctx) => {
   t.plan(3);
 
