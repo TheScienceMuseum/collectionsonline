@@ -3,7 +3,6 @@ module.exports = {
     browser
     .url('http://localhost:8000/search/people?q=ada')
     .waitForElementVisible('body', 1000)
-    .click('#fb')
     .setValue('input[name="filter[birth[date]]"]', '1700')
     .click('input[name="filter[death[date]]"]')
     .pause(1000)
