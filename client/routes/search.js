@@ -14,7 +14,9 @@ var Snackbar = require('snackbarlightjs');
 var filterState = require('../lib/filter-state.js');
 var displayFacet = require('../lib/display-facet.js');
 var facetsStates = require('../lib/facets-states.js');
-var toggleFAcets = require('../lib/toggle-facets');
+var toggleFacets = require('../lib/toggle-facets.js');
+var deleteFiltersFacets = require('../lib/delete-filters-facets.js');
+var updateActiveStateFacets = require('../lib/update-active-states-facets.js');
 var i = 0;
 
 module.exports = function (page) {
@@ -107,17 +109,19 @@ function listeners (ctx, next) {
   // add click event listner on fb button to toggle the filter
   displayFilters(filterState.isFilterOpen);
   toggleFilterButton.addEventListener('click', function () {
-    console.log('click');
     filterState.isFilterOpen = !filterState.isFilterOpen;
     displayFilters(filterState.isFilterOpen);
   });
 
+  updateActiveStateFacets(facetsStates, ctx.params.type);
   // display the facet (close open or active)
   displayFacet(facetsStates, ctx.params.type);
 
   // add event listener on the facet toggle
-  toggleFAcets(facetsStates, ctx.params.type);
+  toggleFacets(facetsStates, ctx.params.type);
 
+  // add event listener when the filters of a facet are cleared to update the state
+  deleteFiltersFacets(facetsStates, ctx.params.type);
   /**
   * Click to add/remove filters
   * Build a html url with the new filter selected (get the current url + new filter)
