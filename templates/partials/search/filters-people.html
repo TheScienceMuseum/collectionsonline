@@ -9,8 +9,13 @@
 </div>
 
 {{#if filters.occupation.length}}
-  <div class="filter filter--active filter--open" data-filter="Occupation">
-    <a href="{{lookup links.clearFacet "filter[occupation]"}}" class="filter__name">Occupation</a>
+  {{#if (activeFacet selectedFilters 'occupation')}}
+    <div class="filter filter--active filter--open" data-filter="Occupation">
+      <a href="{{lookup links.clearFacet "filter[occupation]"}}" class="filter__name">Occupation</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="Occupation">
+      <a href="{{lookup links.clearFacet "filter[occupation]"}}" class="filter__name">Occupation</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.occupation}}
@@ -22,8 +27,13 @@
 {{/if}}
 
 {{#if filters.place_born.length}}
-  <div class="filter filter--active filter--open" data-filter="Place born">
-    <a href="{{lookup links.clearFacet "filter[birth[place]]"}}" class="filter__name">Place born</a>
+  {{#if (activeFacet selectedFilters 'birthPlace')}}
+    <div class="filter filter--active filter--open" data-filter="Place born">
+      <a href="{{lookup links.clearFacet "filter[birth[place]]"}}" class="filter__name">Place born</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="Place born">
+      <a href="{{lookup links.clearFacet "filter[birth[place]]"}}" class="filter__name">Place born</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.place_born}}
@@ -35,8 +45,13 @@
 {{/if}}
 
 {{#if filters.organisation}}
-  <div class="filter filter--active filter--open" data-filter="Organisation">
-    <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name">Organisation / Person</a>
+  {{#if (activeFacet selectedFilters 'organisations')}}
+    <div class="filter filter--active filter--open" data-filter="Organisation">
+      <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name">Organisation / Person</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="Organisation">
+      <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name">Organisation / Person</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.organisation}}
