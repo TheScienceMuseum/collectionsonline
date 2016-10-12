@@ -190,6 +190,8 @@ Handlebars.registerHelper('ifsmgrights', require('../templates/helpers/ifsmgrigh
 
 Handlebars.registerHelper('taxonomy', require('../templates/helpers/taxonomy.js'));
 
+Handlebars.registerHelper('activeFacet', require('../templates/helpers/activeFacet.js'));
+
 // Routes
 module.exports = {
   'home': Handlebars.compile(

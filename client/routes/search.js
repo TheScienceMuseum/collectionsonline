@@ -12,6 +12,9 @@ var searchResultsToTemplateData = require('../../lib/transforms/search-results-t
 var searchListener = require('../lib/search-listener');
 var Snackbar = require('snackbarlightjs');
 var filterState = require('../lib/filter-state.js');
+var displayFacet = require('../lib/display-facet.js');
+var facetsStates = require('../lib/facets-states.js');
+var toggleFAcets = require('../lib/toggle-facets');
 var i = 0;
 
 module.exports = function (page) {
@@ -42,6 +45,7 @@ function load (ctx, next) {
     });
   } else {
     ctx.state.data = {};
+    // change the display facet state to add active to the one who are
     listeners(ctx);
   }
 }
@@ -87,7 +91,6 @@ function render (ctx, next) {
 */
 function listeners (ctx, next) {
   searchListener();
-
   // hide the filter button
   var filterButton = document.querySelector('button.filterpanel__button');
   if (filterButton) {
@@ -104,9 +107,16 @@ function listeners (ctx, next) {
   // add click event listner on fb button to toggle the filter
   displayFilters(filterState.isFilterOpen);
   toggleFilterButton.addEventListener('click', function () {
+    console.log('click');
     filterState.isFilterOpen = !filterState.isFilterOpen;
     displayFilters(filterState.isFilterOpen);
   });
+
+  // display the facet (close open or active)
+  displayFacet(facetsStates, ctx.params.type);
+
+  // add event listener on the facet toggle
+  toggleFAcets(facetsStates, ctx.params.type);
 
   /**
   * Click to add/remove filters

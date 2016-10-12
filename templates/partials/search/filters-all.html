@@ -1,5 +1,5 @@
 <!-- DATE -->
-<div class="filter filter--open">
+<div class="filter filter--open" data-filter="Dates">
   <a href="{{lookup links.clearFacet "filter[dates]"}}" class="filter__name">Date</a>
   <div class="filter__options filter__daterange">
     <label>From <input type="number" placeholder="1600" name="filter[date[from]]" value="{{lookup selectedFilters "dateFrom"}}"/></label>
@@ -9,8 +9,13 @@
 
 <!-- CATEGGORY -->
 {{#if filters.category.length}}
-  <div class="filter filter--active filter--open" data-filter="Category">
-    <a href="{{lookup links.clearFacet "filter[categories]"}}" class="filter__name">Category</a>
+  {{#if (activeFacet selectedFilters 'categories')}}
+    <div class="filter filter--open filter--active" data-filter="Category">
+      <a href="{{lookup links.clearFacet "filter[categories]"}}" class="filter__name">Category</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="Category">
+      <a href="" class="filter__name">Category</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.category}}
@@ -24,7 +29,7 @@
 
 <!-- MAKER -->
 {{#if filters.maker.length}}
-  <div class="filter filter--active filter--open" data-filter="Maker">
+  <div class="filter" data-filter="Maker">
     <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">Maker</a>
     <div class="filter__options">
       <ul>
@@ -40,7 +45,7 @@
 
 <!-- TYPE -->
 {{#if filters.type.length}}
-  <div class="filter filter--active filter--open" data-filter="Type">
+  <div class="filter" data-filter="Type">
     <a href="{{lookup links.clearFacet "filter[type]"}}" class="filter__name">Object type</a>
     <div class="filter__options">
       <ul>
