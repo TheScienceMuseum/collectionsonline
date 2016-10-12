@@ -192,6 +192,8 @@ Handlebars.registerHelper('taxonomy', require('../templates/helpers/taxonomy.js'
 
 Handlebars.registerHelper('activeFacet', require('../templates/helpers/activeFacet.js'));
 
+Handlebars.registerHelper('comma', require('../templates/helpers/comma.js'));
+
 // Routes
 module.exports = {
   'home': Handlebars.compile(

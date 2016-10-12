@@ -27,7 +27,7 @@ test('Data fields should have correct values', function (t) {
   t.equal(HTMLData.type, 'people', 'type should be correct');
   t.ok(HTMLData.fact.length, 'facts should not be empty');
   t.equal(HTMLData.related.people.length, 1, 'Data should contain one related person');
-  t.notOk(HTMLData.description, 'Data should contain no description');
+  t.ok(HTMLData.description, 'Data should contain description');
   t.equal(HTMLData.details[0].key, 'Website', 'details should contain a website');
   t.end();
 });
