@@ -28,7 +28,7 @@ module.exports = {
       .waitForElementVisible('body', 1000)
       .setValue('input[type=search].searchbox__search', 'babb')
       // Wait for the suggestions menu to open
-      .waitForElementVisible('.awesomplete li', 1000)
+      .waitForElementVisible('.awesomplete li', 3000)
       // Assert that a suggestion is present, highlighting "Babb" of "Babbage"
       .assert.containsText('.awesomplete li', 'Babb')
       .end();
