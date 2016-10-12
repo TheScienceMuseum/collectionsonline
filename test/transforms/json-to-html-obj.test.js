@@ -16,7 +16,7 @@ test(file + 'HTMLData should be transformed succesfully', (t) => {
 });
 
 test(file + 'Data fields should have correct values', function (t) {
-  t.plan(5);
+  t.plan(6);
   t.doesNotThrow(() => {
     HTMLData = buildHTMLData(JSONAPIResponse);
   }, 'Transform did not throw error');
@@ -24,5 +24,6 @@ test(file + 'Data fields should have correct values', function (t) {
   t.equal(HTMLData.type, 'objects', 'type should be correct');
   t.ok(HTMLData.fact.length, 'facts should not be empty');
   t.ok(HTMLData.description, 'Data should contain a description');
+  t.ok(HTMLData.description.primary, 'Data should contain a primary description');
   t.end();
 });

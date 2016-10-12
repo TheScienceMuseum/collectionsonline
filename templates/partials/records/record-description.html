@@ -1,21 +1,47 @@
 {{#if description}}
 
-  {{#each description.initialDescription}}
-    <p>
-      {{this}}
-    </p>
-  {{/each}}
+  {{#if description.primary}}
+    {{#each description.primary.initialDescription}}
+      <p>
+        {{this}}
+      </p>
+    {{/each}}
 
-  {{#if description.moreDescription}}
-  <div class="details" aria-expanded="false">
-    <div class="details__summary">More…</div>
-      <div class="details__content">
-        {{#each description.moreDescription}}
-          <p>
-            {{this}}
-          </p>
-        {{/each}}
+    {{#if description.primary.moreDescription}}
+    <div class="details" aria-expanded="false">
+      <div class="details__summary">More…</div>
+        <div class="details__content">
+          {{#each description.primary.moreDescription}}
+            <p>
+              {{this}}
+            </p>
+          {{/each}}
+        </div>
       </div>
-    </div>
+    {{/if}}
+
   {{/if}}
+
+  {{#if description.web}}
+    {{#each description.web.initialDescription}}
+      <p>
+        {{this}}
+      </p>
+    {{/each}}
+
+    {{#if description.web.moreDescription}}
+    <div class="details" aria-expanded="false">
+      <div class="details__summary">More…</div>
+        <div class="details__content">
+          {{#each description.web.moreDescription}}
+            <p>
+              {{this}}
+            </p>
+          {{/each}}
+        </div>
+      </div>
+    {{/if}}
+
+  {{/if}}
+
 {{/if}}
