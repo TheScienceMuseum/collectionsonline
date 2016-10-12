@@ -27,8 +27,9 @@ module.exports = {
           e.eventSource.gestureSettingsMouse.scrollToZoom = true;
         } else {
           e.eventSource.gestureSettingsMouse.scrollToZoom = false;
+          this.quit(ctx);
         }
-      });
+      }.bind(this));
 
       ctx.save();
     }
