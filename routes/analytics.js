@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const scores = require('../lib/scores');
 
 module.exports = (elastic, config) => ({
   method: 'POST',
@@ -9,8 +10,14 @@ module.exports = (elastic, config) => ({
       'hapi-negotiator': {
         mediaTypes: {
           'application/vnd.api+json' (request, reply) {
-            // TODO: Register analytics event
-            reply().code(204);
+            scores.update(request.payload.data, function (err, result) {
+              if (err) {
+                console.log(err);
+                reply().code(503);
+              } else {
+                reply().code(204);
+              }
+            });
           }
         }
       }

@@ -44,3 +44,6 @@ public/assets/icons/*
 
 #database test
 test/fixtures/elastic-responses/database.json
+
+#leveldb
+counts
