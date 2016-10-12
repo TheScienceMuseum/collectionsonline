@@ -25,7 +25,7 @@ testWithServer('Attempt to request for Archive HTML Page with wrong accept heade
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 416, 'Wrong accept header');
+    t.equal(res.statusCode, 406, 'Wrong accept header');
     t.end();
   });
 });
@@ -266,7 +266,7 @@ testWithServer('Request for Object Page with wrong accept headers', {}, (t, ctx)
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 416, 'Status code was as expected, 416');
+    t.equal(res.statusCode, 406, 'Status code was as expected, 406');
     t.end();
   });
 });
@@ -312,7 +312,7 @@ testWithServer('Request for Person JSON Page with the wrong accept headers', {},
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 416, 'Status code was as expected as 416');
+    t.equal(res.statusCode, 406, 'Status code was as expected as 406');
     t.end();
   });
 });
@@ -343,7 +343,7 @@ testWithServer('Attemp to get the home JSON Page with the wrong accept header', 
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.statusCode, 416, 'status is 416');
+    t.ok(res.statusCode, 406, 'status is 406');
     t.end();
   });
 });

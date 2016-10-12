@@ -41,7 +41,7 @@ module.exports = (elastic, config) => ({
       }
 
       if (responseType === 'notAcceptable') {
-        return reply('Not Acceptable').code(416);
+        return reply('Not Acceptable').code(406);
       }
     }
   }

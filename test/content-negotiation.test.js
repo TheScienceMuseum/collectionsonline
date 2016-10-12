@@ -59,7 +59,7 @@ testWithServer('Not acceptable request when to accept header', {}, (t, ctx) => {
   };
 
   ctx.server.inject(acceptableJSONRequest, (res) => {
-    t.equal(res.statusCode, 416, 'Not acceptable request when no accept header is defined');
+    t.equal(res.statusCode, 406, 'Not acceptable request when no accept header is defined');
     t.end();
   });
 });
@@ -74,7 +74,7 @@ testWithServer('Not acceptable if json and html header are defined at the same t
   };
 
   ctx.server.inject(acceptableJSONRequest, (res) => {
-    t.equal(res.statusCode, 416, 'Not acceptable request when a json and html header are defined at the same time');
+    t.equal(res.statusCode, 406, 'Not acceptable request when a json and html header are defined at the same time');
     t.end();
   });
 });
@@ -104,7 +104,7 @@ testWithServer('Not acceptable if no accept header and no user-agent twitter', {
   };
 
   ctx.server.inject(acceptableJSONRequest, (res) => {
-    t.equal(res.statusCode, 416, 'not acceptage if user-agent is not twitter');
+    t.equal(res.statusCode, 406, 'not acceptage if user-agent is not twitter');
     t.end();
   });
 });

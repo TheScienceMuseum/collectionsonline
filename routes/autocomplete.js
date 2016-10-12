@@ -8,9 +8,6 @@ module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/autocomplete/{type?}',
   config: {
-    plugins: {
-      'hapi-negotiator': false
-    },
     validate: {
       params: {
         type: Joi.string().valid('objects', 'people', 'documents')

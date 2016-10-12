@@ -15,7 +15,7 @@ testWithServer(file + 'Attempt to search with the wrong accept headers', {}, (t,
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 416, 'Status code was as expected, 416');
+    t.equal(res.statusCode, 406, 'Status code was as expected, 406');
     t.end();
   });
 });
