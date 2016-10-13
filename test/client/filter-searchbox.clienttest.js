@@ -7,7 +7,7 @@ module.exports = {
       .click('.filter[data-filter="Category"] a')
       .waitForElementVisible('.filter__box[value=Art]', 3000)
       .click('.filter__box[value=Art]')
-      .waitForElementVisible('.filterbadge__label', 7000)
+      .waitForElementVisible('.filterbadge__label', 20000)
       .assert.containsText('.filterbadge__label', 'Art')
       .end();
   }

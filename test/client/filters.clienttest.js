@@ -11,7 +11,7 @@ module.exports = {
       .click('.filter[data-filter="Occupation"] a')
       .waitForElementVisible('.filter__box[value=artist]', 5000)
       .click('.filter__box[value=artist]')
-      .pause(5000)
+      .pause(10000)
       .assert.urlEquals('http://localhost:8000/search/people?q=charles&filter%5Boccupation%5D=artist&page%5Bsize%5D=50&page%5Btype%5D=search')
       .assert.containsText('.resultcard', 'Charles Buchel')
       .click('.filter__box')
