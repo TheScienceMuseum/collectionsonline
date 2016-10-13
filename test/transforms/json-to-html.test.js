@@ -34,7 +34,7 @@ test('Fields should have correct values', function (t) {
   t.doesNotThrow(() => {
     HTMLData = buildHTMLData(JSONAPIResponse);
   }, 'Transform did not throw error');
-  t.equal(HTMLData.title, 'Charles Babbage', 'name should be normalised');
+  t.equal(HTMLData.title, 'Babbage, Charles', 'name should not yet be normalised');
   t.equal(HTMLData.type, 'people', 'type should be correct');
   t.equal(HTMLData.system.value, 'Mimsy', 'System should equal "Mimsy"');
   t.end();

@@ -209,17 +209,18 @@ testWithServer('Request for Person HTML Page who doesn\'t exists', {}, (t, ctx) 
   });
 });
 
-testWithServer('Request for Person HTML Page with no related items', {}, (t, ctx) => {
-  t.plan(1);
+testWithServer('Request for Person HTML Page with related items', {}, (t, ctx) => {
+  t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/people/smga-people-24329',
+    url: '/people/smga-people-8',
     headers: {'Accept': 'text/html'}
   };
 
   ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.ok(res.payload.indexOf('Babbage') > -1, 'Page loaded correctly');
     t.end();
   });
 });

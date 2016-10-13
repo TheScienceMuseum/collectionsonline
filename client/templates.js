@@ -196,6 +196,8 @@ Handlebars.registerHelper('formatrelated', require('../templates/helpers/formatr
 
 Handlebars.registerHelper('seemore', require('../templates/helpers/seemore.js'));
 
+Handlebars.registerHelper('normalise', require('../templates/helpers/normalise.js'));
+
 // Routes
 module.exports = {
   'home': Handlebars.compile(
