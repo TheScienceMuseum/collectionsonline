@@ -1,6 +1,6 @@
 module.exports = function (facetsStates, typeSearch) {
   var type = typeSearch || 'all';
-  var facets = document.querySelectorAll('.filter');
+  var facets = Array.prototype.slice.call(document.querySelectorAll('.filter'));
   facets.forEach(function (facet) {
     var facetName = facet.getAttribute('data-filter');
     if (facetName) {
