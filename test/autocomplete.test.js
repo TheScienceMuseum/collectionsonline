@@ -63,3 +63,19 @@ testWithServer(file + 'Autocomplete error', {mock: {method: 'search', response: 
     t.end();
   });
 });
+
+testWithServer(file + 'Should return an empty response if accept header is not json', {}, (t, ctx) => {
+  t.plan(2);
+
+  const request = {
+    method: 'GET',
+    url: '/autocomplete?' + QueryString.stringify({ q: 'babb' }),
+    headers: { Accept: 'text/html' }
+  };
+
+  ctx.server.inject(request, (res) => {
+    t.equal(res.statusCode, 200, 'Status was OK');
+    t.ok((res.payload === ''), 'Empty response with a html request');
+    t.end();
+  });
+});
