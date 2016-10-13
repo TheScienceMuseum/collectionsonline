@@ -4,7 +4,7 @@ module.exports = {
       .url('http://localhost:8000/search?q=charles')
       .waitForElementVisible('body', 1000)
       .click('.searchtab:nth-of-type(2)')
-      .pause(1000)
+      .pause(5000)
       .assert.urlEquals('http://localhost:8000/search/people?q=charles&page%5Bsize%5D=50&page%5Btype%5D=search')
       .pause(1000)
       .waitForElementVisible('.filter[data-filter="Occupation"] a', 5000)

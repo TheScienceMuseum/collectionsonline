@@ -93,6 +93,8 @@ function render (ctx, next) {
 */
 function listeners (ctx, next) {
   searchListener();
+  initComp();
+
   // hide the filter button
   var filterButton = document.querySelector('button.filterpanel__button');
   if (filterButton) {
@@ -153,8 +155,6 @@ function listeners (ctx, next) {
       filterResults(ctx, page);
     });
   }
-
-  initComp();
 
   // analytics
   const onResultClick = (e) => {

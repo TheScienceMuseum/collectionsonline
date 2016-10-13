@@ -3,6 +3,7 @@ module.exports = {
     browser
       .url('http://localhost:8000/search?q=babbage')
       .waitForElementVisible('body', 1000)
+      .pause(5000)
       .waitForElementVisible('.filter[data-filter="Category"] a', 3000)
       .click('.filter[data-filter="Category"] a')
       .waitForElementVisible('.filter__box[value=Art]', 3000)

@@ -3,7 +3,7 @@ module.exports = {
     browser
       .url('http://localhost:8000/search?q=engine')
       .waitForElementVisible('body', 1000)
-      .pause(1000)
+      .pause(5000)
       .waitForElementVisible('.filter[data-filter="Type"] a', 1000)
       .click('.filter[data-filter="Type"] a')
       .waitForElementVisible('.filter__box[value="Petrol engines"]', 5000)
