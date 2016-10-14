@@ -6,13 +6,14 @@
   </button>
   {{#if categoryFilters.length}}
     <div class="searchbox__filters">
-      <span class="searchbox__filtersplainer">Searching within</span>
+      <div class="filterbadge--prefix">In</div>
       {{#each categoryFilters}}
-      <div class="filterbadge" data-filter="Category">
-        <div class="filterbadge__label">{{this}}</div>
+      <dl class="filterbadge" data-filter="Category">
+        <dt class="filterbadge__key">Category</dt>
+        <dd class="filterbadge__label">{{this}}</dd>
         <a class="filterbadge__x" href="{{../links.clearCategoryLink}}" title="remove">✕</a>
         <input type="hidden" class='searchbox__category__filter' name="filter[categories]" value="{{this}}">
-      </div>
+      </dl>
       {{/each}}
     </div>
   {{/if}}
