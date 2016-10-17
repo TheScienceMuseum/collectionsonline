@@ -2,7 +2,7 @@
   "_index": "smg",
   "_type": "object",
   "_id": "smgc-object-205752",
-  "_version": 4,
+  "_version": 1,
   "found": true,
   "_source": {
     "admin": {
@@ -10,7 +10,7 @@
       "id": "object-205752",
       "language": "eng",
       "modified": 1452518234000,
-      "processed": 1473212498000,
+      "processed": 1475518106000,
       "source": "smgc",
       "stream": "smg-online",
       "uid": "smgc-object-205752"
@@ -188,6 +188,10 @@
         "primary": true,
         "type": "accession number",
         "value": "1976-7000"
+      },
+      {
+        "type": "short",
+        "value": "sodtobject"
       }
     ],
     "language": [
@@ -225,7 +229,7 @@
                 "id": "agent-1015",
                 "uid": "smgc-agent-1015"
               },
-              "summary_title": "Stanier, Sir William Arthur"
+              "summary_title": "William Arthur Stanier"
             },
             {
               "@link": {
@@ -263,6 +267,47 @@
         }
       ]
     },
+    "locations": [
+      {
+        "@link": {
+          "type": "literal"
+        },
+        "admin": {
+          "id": "location-1681575",
+          "uuid": "857f51a3-bb20-37a7-898e-3c8eaa3940a7"
+        },
+        "facilities": [
+          {
+            "@link": {
+              "type": "reference"
+            },
+            "admin": {
+              "id": "facility-157",
+              "uid": "smgc-facility-157"
+            },
+            "summary_title": "National Railway Museum, Great Hall"
+          }
+        ],
+        "level1": "NRM",
+        "level2": "GH",
+        "name": [
+          {
+            "primary": true,
+            "value": "National Railway Museum, Great Hall"
+          },
+          {
+            "type": "gallery",
+            "value": "Great Hall"
+          },
+          {
+            "type": "museum",
+            "value": "National Railway Museum"
+          }
+        ],
+        "purpose": "on display",
+        "value": "National Railway Museum, Great Hall"
+      }
+    ],
     "name": [
       {
         "primary": true,
