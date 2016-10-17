@@ -2,7 +2,7 @@
   "_index": "smg",
   "_type": "object",
   "_id": "smgc-object-8245103",
-  "_version": 4,
+  "_version": 1,
   "found": true,
   "_source": {
     "admin": {
@@ -10,7 +10,7 @@
       "id": "object-8245103",
       "language": "eng",
       "modified": 1427726164000,
-      "processed": 1473212378000,
+      "processed": 1475518898000,
       "source": "smgc",
       "stream": "smg-online",
       "uid": "smgc-object-8245103"
@@ -102,6 +102,10 @@
         "primary": true,
         "type": "accession number",
         "value": "1982-1705/2"
+      },
+      {
+        "type": "short",
+        "value": "sodtobject"
       }
     ],
     "language": [
@@ -166,6 +170,37 @@
         }
       ]
     },
+    "locations": [
+      {
+        "@link": {
+          "type": "literal"
+        },
+        "admin": {
+          "id": "location-1477555",
+          "uuid": "18786c1d-f424-3337-a4ad-5404c4679aee"
+        },
+        "level1": "B",
+        "level2": "T26C",
+        "level3": "FR",
+        "level4": "05S",
+        "name": [
+          {
+            "primary": true,
+            "value": "Science Museum, Blythe House"
+          },
+          {
+            "type": "gallery",
+            "value": "Blythe House"
+          },
+          {
+            "type": "museum",
+            "value": "Science Museum"
+          }
+        ],
+        "purpose": "location audit; regular storage",
+        "value": "Science Museum, Blythe House"
+      }
+    ],
     "materials": [
       "cardboard",
       "glass",
@@ -178,6 +213,18 @@
       {
         "primary": true,
         "value": "phial; packet; materia medica"
+      },
+      {
+        "type": "name",
+        "value": "materia medica"
+      },
+      {
+        "type": "name",
+        "value": "packet"
+      },
+      {
+        "type": "name",
+        "value": "phial"
       }
     ],
     "numbers": {
