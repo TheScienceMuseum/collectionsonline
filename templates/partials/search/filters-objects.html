@@ -1,6 +1,6 @@
 <input type="hidden" name="fields[type]" value="objects">
 <!-- DATE -->
-<div class="filter filter--open">
+<div class="filter filter--open" data-filter="Dates">
   <a href="{{lookup links.clearFacet "dates"}}" class="filter__name">Date</a>
   <div class="filter__options filter__daterange">
     <label>From <input type="number" placeholder="1600" name="filter[date[from]]" value="{{lookup selectedFilters "dateFrom"}}"/></label>
@@ -8,9 +8,13 @@
   </div>
 </div>
 {{#if filters.category.length}}
-  <!-- CATEGGORY -->
-  <div class="filter filter--active filter--open" data-filter="Category">
-    <a href="{{lookup links.clearFacet "filter[categories]"}}" class="filter__name">Category</a>
+  {{#if (activeFacet selectedFilters 'categories')}}
+    <div class="filter filter--open filter--active" data-filter="Category">
+      <a href="{{lookup links.clearFacet "filter[categories]"}}" class="filter__name">Category</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="Category">
+      <a href="" class="filter__name">Category</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.category}}
@@ -23,8 +27,13 @@
 
 <!-- MAKER -->
 {{#if filters.maker.length}}
-  <div class="filter filter--active filter--open" data-filter="Maker">
-    <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">Maker</a>
+  {{#if (activeFacet selectedFilters 'makers')}}
+    <div class="filter filter--open filter--active" data-filter="Maker">
+      <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">Maker</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="Maker">
+      <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">Maker</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.maker}}
@@ -39,8 +48,13 @@
 
 <!-- TYPE -->
 {{#if filters.type.length}}
-  <div class="filter filter--active filter--open" data-filter="Type">
-    <a href="{{lookup links.clearFacet "filter[type]"}}" class="filter__name">Object type</a>
+  {{#if (activeFacet selectedFilters 'type')}}
+    <div class="filter filter--open filter--active" data-filter="Type">
+      <a href="{{lookup links.clearFacet "filter[type]"}}" class="filter__name">Object type</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="Type">
+      <a href="{{lookup links.clearFacet "filter[type]"}}" class="filter__name">Object type</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.type}}
@@ -53,8 +67,13 @@
 
 <!-- PLACE -->
 {{#if filters.place.length}}
-  <div class="filter filter--active filter--open" data-filter="Place">
-    <a href="{{lookup links.clearFacet "filter[places]"}}" class="filter__name">Place</a>
+  {{#if (activeFacet selectedFilters 'places')}}
+    <div class="filter filter--active filter--open" data-filter="Place">
+      <a href="{{lookup links.clearFacet "filter[places]"}}" class="filter__name">Place</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="Place">
+      <a href="{{lookup links.clearFacet "filter[places]"}}" class="filter__name">Place</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.place}}
@@ -69,8 +88,13 @@
 
 <!-- USER -->
 {{#if filters.user.length}}
-  <div class="filter filter--active filter--open" data-filter="User">
-    <a href="{{lookup links.clearFacet "filter[user]"}}" class="filter__name">User</a>
+  {{#if (activeFacet selectedFilters 'user')}}
+    <div class="filter filter--active filter--open" data-filter="User">
+      <a href="{{lookup links.clearFacet "filter[user]"}}" class="filter__name">User</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="User">
+      <a href="{{lookup links.clearFacet "filter[user]"}}" class="filter__name">User</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.user}}
@@ -82,8 +106,13 @@
 {{/if}}
 
 {{#if filters.material.length}}
-  <div class="filter filter--active filter--open" data-filter="Material">
-    <a href="{{lookup links.clearFacet "filter[material]"}}" class="filter__name">Material</a>
+  {{#if (activeFacet selectedFilters 'material')}}
+    <div class="filter filter--active filter--open" data-filter="Material">
+      <a href="{{lookup links.clearFacet "filter[material]"}}" class="filter__name">Material</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="Material">
+      <a href="{{lookup links.clearFacet "filter[material]"}}" class="filter__name">Material</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.material}}
