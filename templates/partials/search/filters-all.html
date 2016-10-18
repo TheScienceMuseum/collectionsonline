@@ -1,12 +1,3 @@
-<!-- DATE -->
-<div class="filter filter--open" data-filter="Dates">
-  <a href="{{lookup links.clearFacet "filter[dates]"}}" class="filter__name">Date</a>
-  <div class="filter__options filter__daterange">
-    <label>From <input type="number" placeholder="1600" name="filter[date[from]]" value="{{lookup selectedFilters "dateFrom"}}"/></label>
-    <label>To <input type="number" placeholder="2016" name="filter[date[to]]" value="{{lookup selectedFilters "dateTo"}}"/></label>
-  </div>
-</div>
-
 <!-- CATEGGORY -->
 {{#if filters.category.length}}
   {{#if (activeFacet selectedFilters 'categories')}}
@@ -106,3 +97,12 @@
     </div>
   </div>
 {{/if}}
+
+<!-- DATE -->
+<div class="filter filter--open" data-filter="Dates">
+  <a href="{{lookup links.clearFacet "filter[dates]"}}" class="filter__name">Date</a>
+  <div class="filter__options filter__daterange">
+    <label>From <input type="number" placeholder="1600" name="filter[date[from]]" value="{{lookup selectedFilters "dateFrom"}}"/></label>
+    <label>To <input type="number" placeholder="2016" name="filter[date[to]]" value="{{lookup selectedFilters "dateTo"}}"/></label>
+  </div>
+</div>

@@ -1,12 +1,5 @@
 <input type="hidden" name="fields[type]" value="objects">
-<!-- DATE -->
-<div class="filter filter--open" data-filter="Dates">
-  <a href="{{lookup links.clearFacet "dates"}}" class="filter__name">Date</a>
-  <div class="filter__options filter__daterange">
-    <label>From <input type="number" placeholder="1600" name="filter[date[from]]" value="{{lookup selectedFilters "dateFrom"}}"/></label>
-    <label>To <input type="number" placeholder="2016" name="filter[date[to]]" value="{{lookup selectedFilters "dateTo"}}"/></label>
-  </div>
-</div>
+
 {{#if filters.category.length}}
   {{#if (activeFacet selectedFilters 'categories')}}
     <div class="filter filter--open filter--active" data-filter="Category">
@@ -122,3 +115,12 @@
     </div>
   </div>
 {{/if}}
+
+<!-- DATE -->
+<div class="filter filter--open" data-filter="Dates">
+  <a href="{{lookup links.clearFacet "dates"}}" class="filter__name">Date</a>
+  <div class="filter__options filter__daterange">
+    <label>From <input type="number" placeholder="1600" name="filter[date[from]]" value="{{lookup selectedFilters "dateFrom"}}"/></label>
+    <label>To <input type="number" placeholder="2016" name="filter[date[to]]" value="{{lookup selectedFilters "dateTo"}}"/></label>
+  </div>
+</div>
