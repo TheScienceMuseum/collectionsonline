@@ -11,7 +11,7 @@ testWithServer('Authentication is ok', {}, (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/',
-    headers: { cookie: 'token=' + token }
+    headers: { cookie: 'token=' + token, 'Accept': 'text/html' }
   };
 
   ctx.server.inject(htmlRequest, (res) => {
@@ -21,16 +21,17 @@ testWithServer('Authentication is ok', {}, (t, ctx) => {
 }, true);
 
 testWithServer('Attempt to access a page with a wrong cookie', {}, (t, ctx) => {
-  t.plan(1);
+  t.plan(2);
   const token = JWT.sign({valid: 'wrong cookie value'}, config.JWT_SECRET);
   const htmlRequest = {
     method: 'GET',
     url: '/',
-    headers: { cookie: 'token=' + token }
+    headers: { cookie: 'token=' + token, 'Accept': 'text/html' }
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 401, 'Not authorized to access the page with a wrong cookie');
+    t.equal(res.statusCode, 302, 'Not authorized to access the page with a wrong cookie');
+    t.equal(res.headers.location, '/login', 'Redirect to login page');
     config.JWT_SECRET = jwtSecret;
     t.end();
   });

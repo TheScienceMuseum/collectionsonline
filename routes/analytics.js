@@ -1,24 +1,22 @@
 const Joi = require('joi');
+var contentType = require('./route-helpers/content-type.js');
 
 module.exports = (elastic, config) => ({
   method: 'POST',
   path: '/analytics',
-  handler: (request, reply) => reply(),
   config: {
-    plugins: {
-      'hapi-negotiator': {
-        mediaTypes: {
-          'application/vnd.api+json' (request, reply) {
-            // TODO: Register analytics event
-            reply().code(204);
-          }
-        }
-      }
-    },
     validate: {
       payload: {
         event: Joi.string().valid('RESULT_CLICK').required(),
         data: Joi.string()
+      }
+    },
+    handler: function (request, reply) {
+      var responseType = contentType(request);
+      if (responseType === 'json') {
+        reply().code(204);
+      } else {
+        return reply();
       }
     }
   }

@@ -19,3 +19,18 @@ testWithServer(file + 'Should process RESULT_CLICK analytics event', {}, (t, ctx
     t.end();
   });
 });
+
+testWithServer(file + 'empty response if not a json request', {}, (t, ctx) => {
+  t.plan(1);
+
+  const request = {
+    method: 'POST',
+    url: '/analytics',
+    payload: JSON.stringify({ event: 'RESULT_CLICK', data: 'smg-objects-12345' })
+  };
+
+  ctx.server.inject(request, (res) => {
+    t.equal(res.statusCode, 200, 'Nothing special');
+    t.end();
+  });
+});

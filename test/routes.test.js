@@ -15,6 +15,21 @@ testWithServer('Request for Archive HTML Page', {}, (t, ctx) => {
   });
 });
 
+testWithServer('Attempt to request for Archive HTML Page with wrong accept header', {}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/documents/smga-documents-110000316',
+    headers: {'Accept': 'wrongContent'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 406, 'Wrong accept header');
+    t.end();
+  });
+});
+
 testWithServer('Request for Archive JSON Page', {}, (t, ctx) => {
   t.plan(1);
 
@@ -286,6 +301,21 @@ testWithServer('Request for Object JSON Page for a wrong id', {}, (t, ctx) => {
   });
 });
 
+testWithServer('Request for Object Page with wrong accept headers', {}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/objects/smgc-objects-wrongid',
+    headers: {'Accept': 'wrongContent'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 406, 'Status code was as expected, 406');
+    t.end();
+  });
+});
+
 testWithServer('Request for Person JSON Page', {}, (t, ctx) => {
   t.plan(2);
 
@@ -313,6 +343,52 @@ testWithServer('Request for Person JSON Page for a wrong id', {}, (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     t.ok(res.statusCode, 404, 'status is 404');
+    t.end();
+  });
+});
+
+testWithServer('Request for Person JSON Page with the wrong accept headers', {}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/people/smgc-people-17351',
+    headers: {'Accept': 'wrongContent'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 406, 'Status code was as expected as 406');
+    t.end();
+  });
+});
+
+testWithServer('Request for home JSON Page', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/',
+    headers: {'Accept': 'application/vnd.api+json'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.statusCode, 200, 'status is 200');
+    t.ok(res.payload === 'See https://github.com/TheScienceMuseum/collectionsonline/wiki/Collections-Online-API on how to use the api', 'Response json home page ok');
+    t.end();
+  });
+});
+
+testWithServer('Attemp to get the home JSON Page with the wrong accept header', {}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/',
+    headers: {'Accept': 'wrongContent'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.statusCode, 406, 'status is 406');
     t.end();
   });
 });
