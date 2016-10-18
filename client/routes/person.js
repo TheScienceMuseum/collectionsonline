@@ -6,7 +6,7 @@ var searchListener = require('../lib/search-listener');
 var Snackbar = require('snackbarlightjs');
 
 module.exports = function (page) {
-  page('/people/:id', load, render, listeners);
+  page('/people/:id/:slug?', load, render, listeners);
 };
 
 function load (ctx, next) {

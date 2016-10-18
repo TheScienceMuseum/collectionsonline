@@ -19,7 +19,12 @@ test(file + 'Should create valid meta count numbers', (t) => {
       total: 3554,
       max_score: null,
       hits: [
-        { _type: 'object', _id: `smg-object-${Date.now()}` }
+        { _type: 'object',
+          _id: `smg-object-${Date.now()}`,
+          _source: {
+            summary_title: 'this is the summary title'
+          }
+        }
       ]
     },
     aggregations: {
@@ -66,7 +71,11 @@ test(file + 'Should create valid meta default count numbers for empty aggregatio
       total: 3554,
       max_score: null,
       hits: [
-        { _type: 'object', _id: `smg-object-${Date.now()}` }
+        {
+          _type: 'object',
+          _id: `smg-object-${Date.now()}`,
+          _source: {summary_title: 'this is the summary title'}
+        }
       ]
     },
     aggregations: {
@@ -113,7 +122,11 @@ test(file + 'Should create valid links on first page', (t) => {
       total: 5,
       max_score: null,
       hits: [
-        { _type: 'object', _id: `smg-object-${Date.now()}` }
+        {
+          _type: 'object',
+          _id: `smg-object-${Date.now()}`,
+          _source: {summary_title: 'this is the summary title'}
+        }
       ]
     },
     aggregations: {
@@ -170,7 +183,11 @@ test(file + 'Should create valid links on middle page', (t) => {
       total: 5,
       max_score: null,
       hits: [
-        { _type: 'object', _id: `smg-object-${Date.now()}` }
+        {
+          _type: 'object',
+          _id: `smg-object-${Date.now()}`,
+          _source: {summary_title: 'this is the summary title'}
+        }
       ]
     },
     aggregations: {
@@ -228,7 +245,11 @@ test(file + 'Should create valid links on last page', (t) => {
       total: 5,
       max_score: null,
       hits: [
-        { _type: 'object', _id: `smg-object-${Date.now()}` }
+        {
+          _type: 'object',
+          _id: `smg-object-${Date.now()}`,
+          _source: {summary_title: 'this is the summary title'}
+        }
       ]
     },
     aggregations: {
@@ -286,7 +307,11 @@ test(file + 'Should ignore unknown object types', (t) => {
       total: 5,
       max_score: null,
       hits: [
-        { _type: 'wrongtype', _id: `smg-object-${Date.now()}` }
+        {
+          _type: 'wrongtype',
+          _id: `smg-object-${Date.now()}`,
+          _source: {summary_title: 'this is the summary title'}
+        }
       ]
     },
     aggregations: {
@@ -337,6 +362,7 @@ test(file + 'Should extract @link\'d document to relationships and included', (t
           _type: 'object',
           _id: `smg-object-${Date.now()}`,
           _source: {
+            summary_title: 'this is the summary title',
             agents: [
               {
                 admin: { uid: relId },
