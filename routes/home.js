@@ -1,18 +1,24 @@
+var contentType = require('./route-helpers/content-type.js');
 module.exports = () => ({
   method: 'GET',
   path: '/',
-  handler: (request, reply) => reply(),
   config: {
-    plugins: {
-      'hapi-negotiator': {
-        mediaTypes: {
-          'text/html' (request, reply) {
-            const data = require('../fixtures/data');
-            data.footer = require('../fixtures/footer');
-            data.footerBanner = require('../fixtures/footer-banner');
-            reply.view('home', data);
-          }
-        }
+    handler: function (request, reply) {
+      var responseType = contentType(request);
+      if (responseType === 'json') {
+        return reply('See https://github.com/TheScienceMuseum/collectionsonline/wiki/Collections-Online-API on how to use the api')
+        .header('content-type', 'application/vnd.api+json');
+      }
+
+      if (responseType === 'html') {
+        const data = require('../fixtures/data');
+        data.footer = require('../fixtures/footer');
+        data.footerBanner = require('../fixtures/footer-banner');
+        return reply.view('home', data);
+      }
+
+      if (responseType === 'notAcceptable') {
+        return reply('Not Acceptable').code(406);
       }
     }
   }

@@ -5,9 +5,9 @@ const queryParams = require('../../lib/query-params/query-params');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
 const aggregationsAll = require('../helpers/aggregations-all.json');
-const aggregationsPeople = require('../helpers/aggregations-people.json');
-const aggregationsObjects = require('../helpers/aggregations-objects.json');
-const aggregationsDocuments = require('../helpers/aggregations-documents.json');
+const aggregationsPeople = require('../helpers/aggregations-all.json');
+const aggregationsObjects = require('../helpers/aggregations-all.json');
+const aggregationsDocuments = require('../helpers/aggregations-all.json');
 const testResult = {
   hits: {
     total: 5,

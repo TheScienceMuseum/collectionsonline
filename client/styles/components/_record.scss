@@ -10,16 +10,23 @@
 //-----------------------------------------------------------------------------
 
 .record-top {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  @include breakpoint(medium) {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
   background: white;
 
   &__title {
-    font-size: 3rem;
+    font-size: 2rem;
+    @include breakpoint(medium) {
+      font-size: 3rem;
+    }
     font-weight: 600;
 
     .icon {
-      font-size: 2rem;
+      font-size: 66.6%;
     }
   }
 
@@ -104,21 +111,6 @@
   }
 
 }
-
-//-----------------------------------------------------------------------------
-// .openseadragon
-// A subcomponent of .record-imgpanel
-// .hidden by default, swaps with .carousel
-//-----------------------------------------------------------------------------
-
-.openseadragon {
-  @include imgpanel-h;
-  border: 1px white solid;
-  border-width: 1px 0;
-}
-
-
-
 
 .cite {
   //there's not a top level B called cite, just E's
@@ -291,7 +283,9 @@
 .taxonomy {
   @include ul-icons;
   li {
-    @include icon-bullet(taxonomy);
+    &:not(:first-child) {
+      @include icon-bullet(taxonomy);
+    }
     margin-top: 0;
     margin-bottom: 0;
     @for $i from 0 to 5 {

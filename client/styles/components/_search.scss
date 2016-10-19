@@ -9,9 +9,13 @@
   background-image: linear-gradient(45deg, mix(grey(10),$c-cyan), mix(grey(10),$c-blue) );
 
   &__strap {
-    font-size: rem-calc(30);
+    font-size: rem-calc(24);
     font-weight: 500;
-    margin: 1.5rem 0;
+    margin: 1rem 0;
+    @include breakpoint(medium) {
+      font-size: rem-calc(30);
+      margin: 1.5rem 0;
+    }
   }
 
   &__intro {
@@ -19,7 +23,10 @@
     @include breakpoint(medium) { font-size: rem-calc(24); }
     line-height: 1.2;
     font-weight: 500;
-    margin: 2rem 0;
+    margin: 1rem 0 1.5rem 0;
+    @include breakpoint(medium) {
+      margin: 2rem 0;
+    }
   }
 
   //searchbox placeholder text gets hidden for small, and this shown instead
@@ -31,7 +38,7 @@
 
   &__strap + &__placeholder-for-small,
   &__intro + &__placeholder-for-small  {
-    margin: -1.5rem 0.125rem -0.5rem;
+    margin: -1rem 0.125rem -0.5rem;
   }
 }
 
@@ -88,7 +95,7 @@
   }
 
   &__filters {
-    padding: 0.5rem;
+    padding: rem-calc(4 8);
     border-top: 1px solid mix($c-blue, white, 25%);
   }
 
@@ -97,7 +104,7 @@
       color: grey(50);
       font-size: rem-calc(12);
       @include small-caps;
-      margin-right: 0.25rem;
+      margin: rem-calc(4 4 4 0);
   }
   //reused slightly smaller on archive section
   &--archive {
@@ -150,6 +157,13 @@
     background-image: linear-gradient(white, grey(10) );
     //border: 1px solid grey(20);
     border-bottom: 0;
+  }
+
+  &[aria-disabled="true"],
+  &[aria-disabled="true"]:hover {
+    opacity: 0.33;
+    background-color: transparent;
+    background-image: none;
   }
 
   .icon {

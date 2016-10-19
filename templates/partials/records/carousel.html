@@ -13,16 +13,16 @@
   <div class="carousel">
     {{#if images}}
       {{#each images}}
-        <img src="{{this.large}}" class="carousel__image" />
+        <img data-osd="{{this.zoom}}" data-flickity-lazyload="{{this.large}}" class="carousel__image" />
       {{/each}}
     {{else}}
       {{#each slides}}
-        <img data-flickity-lazyload="/assets/img/example/babbage/{{ this }}" class="carousel__image" />
+        <img data-osd="/assets/img/example/babbage/{{ this }}" data-flickity-lazyload="/assets/img/example/babbage/{{ this }}" class="carousel__image" />
       {{/each}}
     {{/if}}
   </div>
 
-  <div class="openseadragon hidden" id="openseadragon"></div>
+  <div class="openseadragon" id="openseadragon"></div>
 
   {{> records/record-imgpanel__controlbar}}
 </div>

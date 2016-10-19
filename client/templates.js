@@ -118,11 +118,6 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
-  'records/panel-taxonomy',
-  Fs.readFileSync('./templates/partials/records/panel-taxonomy.html', 'utf8')
-);
-
-Handlebars.registerPartial(
   'records/panel-cite',
   Fs.readFileSync('./templates/partials/records/panel-cite.html', 'utf8')
 );
@@ -188,6 +183,14 @@ Handlebars.registerHelper('ifmultiple', require('../templates/helpers/ifmultiple
 Handlebars.registerHelper('current', require('../templates/helpers/current.js'));
 
 Handlebars.registerHelper('getlink', require('../templates/helpers/getlink.js'));
+
+Handlebars.registerHelper('displayFilters', require('../templates/helpers/displayFilters.js'));
+
+Handlebars.registerHelper('ifsmgrights', require('../templates/helpers/ifsmgrights.js'));
+
+Handlebars.registerHelper('taxonomy', require('../templates/helpers/taxonomy.js'));
+
+Handlebars.registerHelper('comma', require('../templates/helpers/comma.js'));
 
 // Routes
 module.exports = {

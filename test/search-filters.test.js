@@ -991,3 +991,20 @@ testWithServer(file + 'Should accept user params', {}, (t, ctx) => {
     t.end();
   });
 });
+
+testWithServer(file + 'Should not return people or organisations as object type', {}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({
+      'q': 'Asbestos'
+    }),
+    headers: { Accept: 'application/vnd.api+json' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.notOk(JSON.parse(res.payload).meta.filters.type.find(el => el.value === 'Turner Bros Asbestos Co'), 'Org does not appear in object type filter');
+    t.end();
+  });
+});

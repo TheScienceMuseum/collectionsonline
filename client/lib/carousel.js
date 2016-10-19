@@ -6,9 +6,11 @@ module.exports = (ctx) => {
   var carousel = document.querySelector('.carousel');
   if (carousel) {
     var thumbnails = document.getElementsByClassName('record-imgpanel__thumb');
+    var captions = Array.prototype.slice.call(document.getElementsByClassName('record-imgpanel__caption'));
+    var rights = Array.prototype.slice.call(document.getElementsByClassName('cite__menu__methods'));
 
     ctx.carousel = new Flickity('.carousel', {
-      wrapAround: true,
+      wrapAround: thumbnails.length >= 3,
       setGallerySize: false,
       pageDots: false,
       imagesLoaded: true,
@@ -25,6 +27,8 @@ module.exports = (ctx) => {
     ctx.carousel.on('select', function () {
       Array.prototype.slice.call(thumbnails).forEach((el, i) => el.classList.remove('record-imgpanel__thumb--selected'));
       thumbnails[flkty.selectedIndex].classList.add('record-imgpanel__thumb--selected');
+      captions.forEach(showHide.bind(null, 'record-imgpanel__caption', flkty));
+      rights.forEach(showHide.bind(null, 'cite__method', flkty));
     });
 
     Array.prototype.slice.call(thumbnails).forEach((el, i) => el.addEventListener('click', function (e) {
@@ -47,3 +51,11 @@ module.exports = (ctx) => {
     }
   }
 };
+
+function showHide (idBase, flkty, element) {
+  if (element.id === `${idBase}-${flkty.selectedIndex}`) {
+    element.classList.remove('hidden');
+  } else {
+    element.classList.add('hidden');
+  }
+}
