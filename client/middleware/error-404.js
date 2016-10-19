@@ -11,6 +11,7 @@ module.exports = function (page) {
       var data = {};
       data.footer = require('../../fixtures/footer');
       data.footerBanner = require('../../fixtures/footer-banner');
+      data.items = require('../../fixtures/404.js');
       pageEl.innerHTML = Templates['404'](data);
       // refresh the title of the page
       document.getElementsByTagName('title')[0].textContent = 'Page not found';

@@ -27,7 +27,8 @@ exports.register = (server, options, next) => {
         var data = {};
         data.footer = require('../../fixtures/footer');
         data.footerBanner = require('../../fixtures/footer-banner');
-        return reply.view('404', data);
+        data.items = require('../../fixtures/404.js');
+        return reply.view('404', data).code(404);
       }
 
       return reply
