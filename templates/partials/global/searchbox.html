@@ -4,7 +4,7 @@
   <button aria-label="search" class="searchbox__submit">
     {{> global/icon i="search" size="32" }}
   </button>
-  {{#if categoryFilters.length}}
+  {{#if stickyFilters.length}}
     <div class="searchbox__filters">
       <span class="searchbox__filtersplainer">Searching within</span>
       {{#each categoryFilters}}
@@ -12,6 +12,13 @@
         <div class="filterbadge__label">{{this}}</div>
         <a class="filterbadge__x" href="{{../links.clearCategoryLink}}" title="remove">✕</a>
         <input type="hidden" class='searchbox__category__filter' name="filter[categories]" value="{{this}}">
+      </div>
+      {{/each}}
+      {{#each museumFilters}}
+      <div class="filterbadge" data-filter="Museum">
+        <div class="filterbadge__label">{{this}}</div>
+        <a class="filterbadge__x" href="{{../links.clearMuseumLink}}" title="remove">✕</a>
+        <input type="hidden" class='searchbox__museum__filter' name="filter[museum]" value="{{this}}">
       </div>
       {{/each}}
     </div>

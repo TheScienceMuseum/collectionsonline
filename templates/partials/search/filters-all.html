@@ -39,11 +39,11 @@
 <!-- ON DISPLAY: GALLERY -->
 {{#if filters.gallery.length}}
   <div class="filter filter--active filter--open" data-filter="Gallery">
-    <a href="{{lookup links.clearFacet "filter[location]"}}" class="filter__name">Gallery</a>
+    <a href="{{lookup links.clearFacet "filter[gallery]"}}" class="filter__name">Gallery</a>
     <div class="filter__options">
       <ul>
         {{#each filters.gallery}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[location]" value="{{value}}" {{isselected ../selectedFilters "location" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+          <li><label><input type="checkbox" class="filter__box" name="filter[gallery]" value="{{value}}" {{isselected ../selectedFilters "gallery" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
         {{/each}}
       </ul>
     </div>
@@ -53,11 +53,11 @@
 <!-- ON DISPLAY: MUSEUM -->
 {{#if filters.museum.length}}
   <div class="filter filter--active filter--open" data-filter="Museum">
-    <a href="{{lookup links.clearFacet "filter[location]"}}" class="filter__name">Museum</a>
+    <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">Museum</a>
     <div class="filter__options">
       <ul>
         {{#each filters.museum}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[location]" value="{{value}}" {{isselected ../selectedFilters "location" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+          <li><label><input type="checkbox" class="filter__box" name="filter[museum]" value="{{value}}" {{isselected ../selectedFilters "museum" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
         {{/each}}
       </ul>
     </div>

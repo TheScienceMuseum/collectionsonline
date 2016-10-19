@@ -8,55 +8,6 @@
       "buckets": []
     }
   },
-  "material": {
-    "doc_count": 993,
-    "material_filters": {
-      "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 551,
-      "buckets": [
-        {
-          "key": "glass",
-          "doc_count": 132
-        },
-        {
-          "key": "paper",
-          "doc_count": 115
-        },
-        {
-          "key": "wood",
-          "doc_count": 63
-        },
-        {
-          "key": "cardboard",
-          "doc_count": 57
-        },
-        {
-          "key": "paper (fibre product)",
-          "doc_count": 54
-        },
-        {
-          "key": "plastic",
-          "doc_count": 44
-        },
-        {
-          "key": "metal",
-          "doc_count": 43
-        },
-        {
-          "key": "steel",
-          "doc_count": 29
-        },
-        {
-          "key": "brass",
-          "doc_count": 21
-        },
-        {
-          "key": "cloth",
-          "doc_count": 17
-        }
-      ]
-    }
-  },
   "count": {
     "doc_count": 993,
     "count_filters": {
@@ -146,9 +97,107 @@
       ]
     }
   },
-  "location": {
+  "type": {
+    "doc_count": 964,
+    "type_filters": {
+      "doc_count_error_upper_bound": 6,
+      "sum_other_doc_count": 1018,
+      "buckets": [
+        {
+          "key": "test tubes",
+          "doc_count": 97
+        },
+        {
+          "key": "laboratory (apparatus)",
+          "doc_count": 75
+        },
+        {
+          "key": "urine test kits",
+          "doc_count": 57
+        },
+        {
+          "key": "ophthalmology (visual acuity)",
+          "doc_count": 55
+        },
+        {
+          "key": "test types",
+          "doc_count": 43
+        },
+        {
+          "key": "diagnosis (genito-urinary)",
+          "doc_count": 38
+        },
+        {
+          "key": "psychological test",
+          "doc_count": 38
+        },
+        {
+          "key": "test-types",
+          "doc_count": 19
+        },
+        {
+          "key": "wall charts",
+          "doc_count": 18
+        },
+        {
+          "key": "ophthalmology (binocular vision)",
+          "doc_count": 17
+        }
+      ]
+    }
+  },
+  "material": {
     "doc_count": 993,
-    "location_filters": {
+    "material_filters": {
+      "doc_count_error_upper_bound": 5,
+      "sum_other_doc_count": 551,
+      "buckets": [
+        {
+          "key": "glass",
+          "doc_count": 132
+        },
+        {
+          "key": "paper",
+          "doc_count": 115
+        },
+        {
+          "key": "wood",
+          "doc_count": 63
+        },
+        {
+          "key": "cardboard",
+          "doc_count": 57
+        },
+        {
+          "key": "paper (fibre product)",
+          "doc_count": 54
+        },
+        {
+          "key": "plastic",
+          "doc_count": 44
+        },
+        {
+          "key": "metal",
+          "doc_count": 43
+        },
+        {
+          "key": "steel",
+          "doc_count": 29
+        },
+        {
+          "key": "brass",
+          "doc_count": 21
+        },
+        {
+          "key": "cloth",
+          "doc_count": 17
+        }
+      ]
+    }
+  },
+  "museum": {
+    "doc_count": 993,
+    "museum_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 44,
       "buckets": [
@@ -353,55 +402,6 @@
       ]
     }
   },
-  "type": {
-    "doc_count": 964,
-    "type_filters": {
-      "doc_count_error_upper_bound": 6,
-      "sum_other_doc_count": 1018,
-      "buckets": [
-        {
-          "key": "test tubes",
-          "doc_count": 97
-        },
-        {
-          "key": "laboratory (apparatus)",
-          "doc_count": 75
-        },
-        {
-          "key": "urine test kits",
-          "doc_count": 57
-        },
-        {
-          "key": "ophthalmology (visual acuity)",
-          "doc_count": 55
-        },
-        {
-          "key": "test types",
-          "doc_count": 43
-        },
-        {
-          "key": "diagnosis (genito-urinary)",
-          "doc_count": 38
-        },
-        {
-          "key": "psychological test",
-          "doc_count": 38
-        },
-        {
-          "key": "test-types",
-          "doc_count": 19
-        },
-        {
-          "key": "wall charts",
-          "doc_count": 18
-        },
-        {
-          "key": "ophthalmology (binocular vision)",
-          "doc_count": 17
-        }
-      ]
-    }
-  },
   "place_born": {
     "doc_count": 993,
     "place_born_filters": {
@@ -455,6 +455,115 @@
         {
           "key": "Gertrude Lillian Baker",
           "doc_count": 2
+        }
+      ]
+    }
+  },
+  "gallery": {
+    "doc_count": 993,
+    "gallery_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 44,
+      "buckets": [
+        {
+          "key": "Science Museum",
+          "doc_count": 822
+        },
+        {
+          "key": "Blythe House",
+          "doc_count": 781
+        },
+        {
+          "key": "Science Museum, Blythe House",
+          "doc_count": 781
+        },
+        {
+          "key": "Science Museum at Wroughton",
+          "doc_count": 48
+        },
+        {
+          "key": "Museum of Science and Industry",
+          "doc_count": 26
+        },
+        {
+          "key": "National Media Museum",
+          "doc_count": 23
+        },
+        {
+          "key": "Manchester",
+          "doc_count": 11
+        },
+        {
+          "key": "Museum of Science and Industry, Manchester",
+          "doc_count": 10
+        },
+        {
+          "key": "National Railway Museum",
+          "doc_count": 9
+        },
+        {
+          "key": "No location available",
+          "doc_count": 9
+        },
+        {
+          "key": "Making the Modern World Gallery",
+          "doc_count": 8
+        },
+        {
+          "key": "Science & Art of Medicine",
+          "doc_count": 8
+        },
+        {
+          "key": "Science Museum, Making the Modern World Gallery",
+          "doc_count": 8
+        },
+        {
+          "key": "Science Museum, Science & Art of Medicine",
+          "doc_count": 8
+        },
+        {
+          "key": "Insight",
+          "doc_count": 5
+        },
+        {
+          "key": "National Media Museum, Insight",
+          "doc_count": 5
+        },
+        {
+          "key": "National Railway Museum, Search Engine",
+          "doc_count": 5
+        },
+        {
+          "key": "Science Museum Library and Archives",
+          "doc_count": 5
+        },
+        {
+          "key": "Science Museum Library and Archives, Wroughton",
+          "doc_count": 5
+        },
+        {
+          "key": "Search Engine",
+          "doc_count": 5
+        },
+        {
+          "key": "Wroughton",
+          "doc_count": 5
+        },
+        {
+          "key": "Exploring Space Gallery",
+          "doc_count": 3
+        },
+        {
+          "key": "Flight Gallery",
+          "doc_count": 3
+        },
+        {
+          "key": "Making the Modern World Gallery; Blythe House",
+          "doc_count": 3
+        },
+        {
+          "key": "Science Museum, Exploring Space Gallery",
+          "doc_count": 3
         }
       ]
     }
