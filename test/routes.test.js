@@ -456,6 +456,38 @@ testWithServer('NMEM Short url', {}, (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     t.ok(res.statusCode, 200, 'status is 200');
+    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=Science%20Museum', 'redirects to search on Science Museum');
+    t.end();
+  });
+});
+
+testWithServer('NRM Short url', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/nrm',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.statusCode, 200, 'status is 200');
+    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=National%20Railway%20Museum', 'redirects to search on Railway Museum');
+    t.end();
+  });
+});
+
+testWithServer('NMEM Short url', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/nmem',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.statusCode, 200, 'status is 200');
     t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=National%20Media%20Museum', 'redirects to search on Media Museum');
     t.end();
   });
