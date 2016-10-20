@@ -21,19 +21,18 @@
   </div>
 {{/if}}
 
-
-<!-- MAKER -->
-{{#if filters.maker.length}}
-  <div class="filter filter--active filter--open" data-filter="Maker">
-    <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">Maker</a>
-    <div class="filter__options">
-      <ul>
-        {{#each filters.maker}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[makers]" value="{{value}}" {{isselected ../selectedFilters "makers" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
-        {{/each}}
-      </ul>
-    </div>
+<!-- ON DISPLAY: MUSEUM -->
+{{#if filters.museum.length}}
+<div class="filter filter--active filter--open" data-filter="Museum">
+  <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">Museum</a>
+  <div class="filter__options">
+    <ul>
+      {{#each filters.museum}}
+      <li><label><input type="checkbox" class="filter__box" name="filter[museum]" value="{{value}}" {{isselected ../selectedFilters "museum" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+      {{/each}}
+    </ul>
   </div>
+</div>
 {{/if}}
 
 <!-- ON DISPLAY: GALLERY -->
@@ -50,20 +49,6 @@
   </div>
 {{/if}}
 
-<!-- ON DISPLAY: MUSEUM -->
-{{#if filters.museum.length}}
-  <div class="filter filter--active filter--open" data-filter="Museum">
-    <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">Museum</a>
-    <div class="filter__options">
-      <ul>
-        {{#each filters.museum}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[museum]" value="{{value}}" {{isselected ../selectedFilters "museum" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
-        {{/each}}
-      </ul>
-    </div>
-  </div>
-{{/if}}
-
 <!-- TYPE -->
 {{#if filters.type.length}}
   <div class="filter filter--active filter--open" data-filter="Type">
@@ -72,6 +57,20 @@
       <ul>
         {{#each filters.type}}
           <li><label><input type="checkbox" class="filter__box" name="filter[type]" value="{{value}}" {{isselected ../selectedFilters "type" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+{{/if}}
+
+<!-- MAKER -->
+{{#if filters.maker.length}}
+  <div class="filter filter--active filter--open" data-filter="Maker">
+    <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">Maker</a>
+    <div class="filter__options">
+      <ul>
+        {{#each filters.maker}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[makers]" value="{{value}}" {{isselected ../selectedFilters "makers" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
         {{/each}}
       </ul>
     </div>
@@ -102,6 +101,20 @@
       <ul>
         {{#each filters.user}}
           <li><label><input type="checkbox" class="filter__box" name="filter[user]" value="{{value}}" {{isselected ../selectedFilters "user" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+{{/if}}
+
+<!-- ARCHIVE -->
+{{#if filters.archive.length}}
+  <div class="filter filter--active filter--open" data-filter="Archive">
+    <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name">Archive</a>
+    <div class="filter__options">
+      <ul>
+        {{#each filters.archive}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[archive]" value="{{value}}" {{isselected ../selectedFilters "archive" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
         {{/each}}
       </ul>
     </div>

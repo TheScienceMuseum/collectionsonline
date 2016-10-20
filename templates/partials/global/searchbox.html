@@ -21,6 +21,13 @@
         <input type="hidden" class='searchbox__museum__filter' name="filter[museum]" value="{{this}}">
       </div>
       {{/each}}
+      {{#each archiveFilters}}
+      <div class="filterbadge" data-filter="Archive">
+        <div class="filterbadge__label">{{this}}</div>
+        <a class="filterbadge__x" href="{{../links.clearArchiveLink}}" title="remove">✕</a>
+        <input type="hidden" class='searchbox__archive__filter' name="filter[archive]" value="{{this}}">
+      </div>
+      {{/each}}
     </div>
   {{/if}}
 </form>
