@@ -24,11 +24,16 @@
 <!-- ON DISPLAY: MUSEUM -->
 {{#if filters.museum.length}}
 <div class="filter filter--active filter--open" data-filter="Museum">
-  <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">Museum</a>
+  <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">On Display</a>
   <div class="filter__options">
     <ul>
       {{#each filters.museum}}
-      <li><label><input type="checkbox" class="filter__box" name="filter[museum]" value="{{value}}" {{isselected ../selectedFilters "museum" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+      <li><label><input type="checkbox" class="filter__box" name="filter[museum]" value="{{value}}" {{isselected ../selectedFilters "museum" value galleries}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        <ul class="nested-galleries">
+          {{#each galleries}}
+            <li><label><input type="checkbox" class="filter__box" name="filter[gallery]" value="{{key}}" {{isselected ../../selectedFilters "gallery" key}}/>{{key}}<span class="filter__count">{{doc_count}}</span></label></li>
+          {{/each}}
+        </ul>
       {{/each}}
     </ul>
   </div>
@@ -36,7 +41,7 @@
 {{/if}}
 
 <!-- ON DISPLAY: GALLERY -->
-{{#if filters.gallery.length}}
+<!-- {{#if filters.gallery.length}}
   <div class="filter filter--active filter--open" data-filter="Gallery">
     <a href="{{lookup links.clearFacet "filter[gallery]"}}" class="filter__name">Gallery</a>
     <div class="filter__options">
@@ -47,7 +52,7 @@
       </ul>
     </div>
   </div>
-{{/if}}
+{{/if}} -->
 
 <!-- TYPE -->
 {{#if filters.type.length}}
