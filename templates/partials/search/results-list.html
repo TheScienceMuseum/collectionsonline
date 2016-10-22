@@ -11,7 +11,7 @@
         <h4 class="resultlist__title">
           {{> global/icon i=this.type }}
           {{#if ondisplay}}{{> icon i="room" size="16" }}{{/if}}
-          {{ this.title }}
+          {{ normalise this.title this }}
         </h4>
         <p class="resultlist__description">{{this.category}}</p>
         <p class="resultlist__description">{{this.date}}</p>

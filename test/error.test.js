@@ -178,3 +178,19 @@ testWithServer('Request for Archive JSON with children', {mock: {method: 'search
     t.end();
   });
 });
+
+testWithServer('Request for Person JSON with related items', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/people/smga-people-8',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Should still work');
+    t.equal(res.payload.indexOf('See more'), -1, 'Should have no related items');
+    t.end();
+  });
+});
