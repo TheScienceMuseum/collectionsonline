@@ -15,7 +15,7 @@ function load (ctx, next) {
       headers: { Accept: 'application/vnd.api+json' }
     };
     var id = ctx.params.id;
-    var url = '/people/' + id;
+    var url = '/people/' + id + '?ajax=true';
     getData(url, opts, function (err, json) {
       if (err) {
         console.error(err);
