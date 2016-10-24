@@ -445,12 +445,12 @@ testWithServer('NRM Short url', {}, (t, ctx) => {
   });
 });
 
-testWithServer('NMEM Short url', {}, (t, ctx) => {
+testWithServer('SCM Short url', {}, (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/nmem',
+    url: '/scm',
     headers: {'Accept': 'text/html'}
   };
 
@@ -505,6 +505,39 @@ testWithServer('MSI Short url', {}, (t, ctx) => {
   ctx.server.inject(htmlRequest, (res) => {
     t.ok(res.statusCode, 200, 'status is 200');
     t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=Museum%20of%20Science%20and%20Industry', 'redirects to search on Museum of Science and Industry');
+    t.end();
+  });
+});
+
+testWithServer('Short url with bad request', {}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/msi?123=456',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.statusCode, 400, 'status is 400, bad request');
+    t.end();
+  });
+});
+
+testWithServer('One gallery selected', {}, (t, ctx) => {
+  t.plan(3);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?q=locomotive&filter[gallery]=Station%20Hall',
+    headers: {'Accept': 'application/json'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    var result = JSON.parse(res.payload).meta.filters.museum;
+    t.ok(res.statusCode, 200, 'status is 200');
+    t.equal(result.length, 1);
+    t.equal(result[0].value, 'National Railway Museum', 'Selects relevant museum for gallery');
     t.end();
   });
 });
