@@ -5,7 +5,7 @@
           {{#each images}}
           <div class="cite__menu__methods hidden" id="cite__method-{{@index}}">
             <div class="cite__method">
-              <p>{{#if rights.cc}}<img src="/assets/img/global/{{rights.image}}" alt="Creative Commons License" width="80" height="15" />{{/if}}This work is licensed under a {{rights.usage_terms}} License</p>
+              <p>{{#if rights.cc}}<img src="/assets/img/global/{{rights.image}}" alt="Creative Commons License" width="80" height="15" />{{/if}}This image is released under a {{rights.usage_terms}} Licence</p>
               {{#if rights.cc}}
               <form id="download-image" method="get" action="{{large}}">
                 <button type="submit" class="">{{> global/icon i="download" size="16" }} Download</button>
