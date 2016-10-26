@@ -1,19 +1,21 @@
 {
   "_index": "smg",
   "_type": "agent",
-  "_id": "smgc-agent-108048",
+  "_id": "cp108048",
   "_version": 1,
   "found": true,
   "_source": {
     "admin": {
+      "SID": "p108048",
       "created": 1105008388000,
       "id": "agent-108048",
       "language": "eng",
       "modified": 1447178618000,
-      "processed": 1475516846000,
+      "processed": 1477351485000,
       "source": "smgc",
       "stream": "smg-online",
-      "uid": "smgc-agent-108048"
+      "uid": "cp108048",
+      "uuid": "2b70586a-83a2-35d7-9f30-baac1fc07b10"
     },
     "approved": "Y",
     "date": [
@@ -45,12 +47,6 @@
     ],
     "gender": "M",
     "historical": true,
-    "identifier": [
-      {
-        "type": "short",
-        "value": "spaeflodtagent"
-      }
-    ],
     "lifecycle": {
       "death": [
         {
@@ -68,52 +64,6 @@
         }
       ]
     },
-    "multimedia": [
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8230355",
-          "source": "smgc",
-          "uid": "smgc-object-8230355"
-        },
-        "summary_title": "London River - The Surrey Side (photogravure)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8230356",
-          "source": "smgc",
-          "uid": "smgc-object-8230356"
-        },
-        "summary_title": "St Martin-in-the-Fields (photogravure)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8230357",
-          "source": "smgc",
-          "uid": "smgc-object-8230357"
-        },
-        "summary_title": "The Way of Remembrance (photogravure)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8230358",
-          "source": "smgc",
-          "uid": "smgc-object-8230358"
-        },
-        "summary_title": "The Haymarket - Winter (photogravure)"
-      }
-    ],
     "name": [
       {
         "first_name": "James A",
@@ -145,6 +95,8 @@
       }
     ],
     "occupation": [
+      " author",
+      "photographer",
       "photographer; author"
     ],
     "publish": "Y",

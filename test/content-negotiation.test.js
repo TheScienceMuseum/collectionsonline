@@ -1,6 +1,8 @@
 const testWithServer = require('./helpers/test-with-server');
+const dir = __dirname.split('/')[__dirname.split('/').length - 1];
+const file = dir + __filename.replace(__dirname, '') + ' > ';
 
-testWithServer('Request for HTML Content', {}, (t, ctx) => {
+testWithServer(file + 'Request for HTML Content', {}, (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
@@ -16,7 +18,7 @@ testWithServer('Request for HTML Content', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for JSONAPI Content', {}, (t, ctx) => {
+testWithServer(file + 'Request for JSONAPI Content', {}, (t, ctx) => {
   // http://jsonapi.org/format/#content-negotiation-servers
   //
   // Servers MUST send all JSON API data in response documents with the header
@@ -35,7 +37,7 @@ testWithServer('Request for JSONAPI Content', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request with multiple instances of JSONAPI media type, one without parameters', {}, (t, ctx) => {
+testWithServer(file + 'Request with multiple instances of JSONAPI media type, one without parameters', {}, (t, ctx) => {
   t.plan(1);
 
   const acceptableJSONRequest = {
@@ -50,7 +52,7 @@ testWithServer('Request with multiple instances of JSONAPI media type, one witho
   });
 });
 
-testWithServer('Not acceptable request when to accept header', {}, (t, ctx) => {
+testWithServer(file + 'Not acceptable request when to accept header', {}, (t, ctx) => {
   t.plan(1);
 
   const acceptableJSONRequest = {
@@ -64,7 +66,7 @@ testWithServer('Not acceptable request when to accept header', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Not acceptable if json and html header are defined at the same time', {}, (t, ctx) => {
+testWithServer(file + 'Not acceptable if json and html header are defined at the same time', {}, (t, ctx) => {
   t.plan(1);
 
   const acceptableJSONRequest = {
@@ -79,7 +81,7 @@ testWithServer('Not acceptable if json and html header are defined at the same t
   });
 });
 
-testWithServer('Return html if user agent is twitter bot', {}, (t, ctx) => {
+testWithServer(file + 'Return html if user agent is twitter bot', {}, (t, ctx) => {
   t.plan(1);
 
   const acceptableJSONRequest = {
@@ -94,7 +96,7 @@ testWithServer('Return html if user agent is twitter bot', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Not acceptable if no accept header and no user-agent twitter', {}, (t, ctx) => {
+testWithServer(file + 'Not acceptable if no accept header and no user-agent twitter', {}, (t, ctx) => {
   t.plan(1);
 
   const acceptableJSONRequest = {
