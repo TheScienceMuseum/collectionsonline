@@ -43,7 +43,7 @@ testWithServer('Object Page with no image', {}, (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/smgc-objects-114820',
+    url: '/objects/co114820',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 

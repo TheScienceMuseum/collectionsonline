@@ -1,7 +1,7 @@
 module.exports = {
   'Object Page': function (browser) {
     browser
-      .url('http://localhost:8000/objects/smgc-objects-205752')
+      .url('http://localhost:8000/objects/co205752')
       .waitForElementVisible('body', 1000)
       .assert.containsText('.record-top__title', 'Duchess')
       .assert.containsText('.fact-maker', 'London Midland & Scottish')

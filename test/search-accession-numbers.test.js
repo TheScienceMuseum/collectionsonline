@@ -16,7 +16,7 @@ testWithServer(file + 'Should accept params in filter[PARAM_NAME] format for doc
 
   ctx.server.inject(htmlRequest, (res) => {
     const firstResult = JSON.parse(res.payload).data[0];
-    t.equal(firstResult.id, 'smgc-objects-67823', 'The first result match the searched accession number');
+    t.equal(firstResult.id, 'co67823', 'The first result match the searched accession number');
     t.end();
   });
 });
