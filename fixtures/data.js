@@ -2,46 +2,68 @@ module.exports = {
   title: 'Science Museum Group Collection',
   titlePage: 'Science Museum Group Collection',
   strap: 'Search our collection',
-  intro: 'Explore over 150,000 objects and archives from the <a href="#">Science Museum</a>, <a href="#">Museum of Science and Industry</a>, <a href="#">National Media Museum</a> and <a href="#">National Railway Museum</a>.',
-  collection: [{
-    type: 'collection',
-    title: 'Information Age',
-    description: 'The history of communications and information technology told through six networks that have changed our world',
-    figure: '/assets/img/example/collections/information.jpg',
-    figcaption: 'this has a figcaption and fig',
-    columns: 'medium-6',
-    link: '/search?q=Information%20Age'
+  intro: 'Explore over 150,000 objects and archives from the Science Museum, Museum of Science and Industry, National Media Museum and National Railway Museum.',
+  collectionGroup: [{
+    title: 'See what’s on display',
+    collection: [{
+      type: 'collection',
+      title: 'Science Museum',
+      description: 'London museum and library of science. Exhibitions cover all areas of science and technology.',
+      figure: '/assets/img/home/collections/sciencemuseum.jpg',
+      columns: 'small-6 medium-3',
+      link: '/scm'
+    }, {
+      type: 'collection',
+      title: 'Museum of Science & Industry',
+      figure: '/assets/img/home/collections/msi.jpg',
+      description: 'Stories about ideas that change the world, from the Industrial Revolution to today and beyond.',
+      columns: 'small-6 medium-3',
+      link: '/msi'
+    }, {
+      type: 'collection',
+      title: 'National Media Museum',
+      figure: '/assets/img/home/collections/nmm.jpg',
+      description: 'The National Photography, Cinematography, Television and New Media Collections',
+      columns: 'small-6 medium-3',
+      link: '/nmem'
+    }, {
+      type: 'collection',
+      title: 'National Railway Museum',
+      figure: '/assets/img/home/collections/nrm.jpg',
+      description: 'Home to the UK’s national rail collection.',
+      columns: 'small-6 medium-3',
+      link: '/nrm'
+    }]
   }, {
-    type: 'collection',
-    title: 'Railways',
-    description: 'Cosadfsdfas',
-    figure: '/assets/img/example/collections/railways.jpg',
-    figcaption: 'Our collection includes over 1,000,000 objects from over 300 years of railway history.',
-    columns: 'medium-6',
-    link: '/search?q=Railways'
-  }, {
-    type: 'collection',
-    title: 'Media',
-    description: 'This is a home page collection that links to a canned search',
-    figure: 'http://res.cloudinary.com/tobystokes/image/upload/c_crop,g_center,h_240,q_58,w_320/Fig-1-plan1840_j2agwk.jpg',
-    figcaption: 'this has a figcaption and fig',
-    columns: 'small-6 medium-4',
-    link: '/search?q=Media'
-  }, {
-    type: 'collection',
-    title: 'Art',
-    figure: '/assets/img/example/collections/art.jpg',
-    description: 'This is a home page collection that links to a canned search',
-    figcaption: 'this has a figcaption and fig',
-    columns: 'small-6 medium-4',
-    link: '/search?q=Art'
-  }, {
-    type: 'collection',
-    title: 'Space',
-    figure: '/assets/img/example/collections/space.jpg',
-    description: 'This is a home page collection that links to a canned search',
-    figcaption: 'this has a figcaption and fig',
-    columns: 'small-6 medium-4',
-    link: '/search?q=Space'
+    title: 'Explore by theme/collection',
+    collection: [{
+      type: 'collection',
+      title: 'Locomotives and Rolling Stock',
+      description: 'Search within 280 locomotives and rolling stock from the collection',
+      figure: '/assets/img/example/collections/railways.jpg',
+      columns: 'small-6 medium-3',
+      link: '/search?q=Railways'
+    }, {
+      type: 'collection',
+      title: 'Art',
+      figure: '/assets/img/home/collections/art.jpg',
+      description: '[EMILY To send some blurb here!]',
+      columns: 'small-6 medium-3',
+      link: '/search?q=Art'
+    }, {
+      type: 'collection',
+      title: 'The Babbage Papers',
+      figure: '/assets/img/home/collections/babbage.jpg',
+      description: 'The drawings and papers of mathematician and computer pioneer Charles Babbage',
+      columns: 'small-6 medium-3',
+      link: '/search?q=babbage'
+    }, {
+      type: 'collection',
+      title: 'Mathematics',
+      description: 'Explore the objects in Mathematics: The Winton Gallery ',
+      figure: '/assets/img/home/collections/mathematics.jpg',
+      columns: 'small-6 medium-3',
+      link: '/search?q=mathematics'
+    }]
   }]
 };

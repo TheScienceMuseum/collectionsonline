@@ -1,7 +1,7 @@
 module.exports = {
   'Object Page': function (browser) {
     browser
-      .url('http://localhost:8000/objects/smgc-objects-26704')
+      .url('http://localhost:8000/objects/co26704')
       .waitForElementVisible('body', 1000)
       .assert.containsText('.record-top__title', 'Rocket')
       .assert.containsText('.fact-maker', 'Robert Stephenson and Company')

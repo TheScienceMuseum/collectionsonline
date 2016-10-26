@@ -10,14 +10,14 @@ module.exports = function (elastic, dataToCopy, database, next) {
   database.object = database.object || {};
 
   // Error fixture 400 bad request
-  database.archive[TypeMapping.toInternal('smga-documents-badRequest')] = { error: { 'status': 400, 'displayName': 'BadRequest', 'message': 'Bad Request' } };
-  database.agent[TypeMapping.toInternal('smgc-people-badRequest')] = { error: { 'status': 400, 'displayName': 'BadRequest', 'message': 'Bad Request' } };
-  database.object[TypeMapping.toInternal('smgc-object-badRequest')] = { error: { 'status': 400, 'displayName': 'BadRequest', 'message': 'Bad Request' } };
+  database.archive[TypeMapping.toInternal('aabadRequest')] = { error: { 'status': 400, 'displayName': 'BadRequest', 'message': 'Bad Request' } };
+  database.agent[TypeMapping.toInternal('cpbadRequest')] = { error: { 'status': 400, 'displayName': 'BadRequest', 'message': 'Bad Request' } };
+  database.object[TypeMapping.toInternal('cobadRequest')] = { error: { 'status': 400, 'displayName': 'BadRequest', 'message': 'Bad Request' } };
 
   // Error fixtures no error but also no result
-  database.archive[TypeMapping.toInternal('smga-documents-noResult')] = {error: { status: 404, displayName: 'NotFound', message: 'Not Found' }, response: null};
-  database.agent[TypeMapping.toInternal('smgc-people-noResult')] = {error: { status: 404, displayName: 'NotFound', message: 'Not Found' }, response: null};
-  database.object[TypeMapping.toInternal('smgc-object-noResult')] = {error: { status: 404, displayName: 'NotFound', message: 'Not Found' }, response: null};
+  database.archive[TypeMapping.toInternal('aanoResult')] = {error: { status: 404, displayName: 'NotFound', message: 'Not Found' }, response: null};
+  database.agent[TypeMapping.toInternal('cpnoResult')] = {error: { status: 404, displayName: 'NotFound', message: 'Not Found' }, response: null};
+  database.object[TypeMapping.toInternal('conoResult')] = {error: { status: 404, displayName: 'NotFound', message: 'Not Found' }, response: null};
 
   var count = 0;
   console.log('copy database to fixtures');

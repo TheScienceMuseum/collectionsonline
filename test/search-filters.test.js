@@ -925,22 +925,22 @@ testWithServer(file + 'Number of filters for the occupation facet should be grea
   });
 });
 
-testWithServer(file + 'Number of filters for the occupation facet should be greater than 1', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search/people?' + QueryString.stringify({ q: 'Lumière filmmaker' }),
-    headers: { Accept: 'application/vnd.api+json' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    const response = JSON.parse(res.payload);
-    const test = response.meta.filters.occupation.length === 1;
-    t.equal(test, true, 'The facet occupation has now just 1 filter');
-    t.end();
-  });
-});
+// testWithServer(file + 'Number of filters for the occupation facet should be greater than 1', {}, (t, ctx) => {
+//   t.plan(1);
+//
+//   const htmlRequest = {
+//     method: 'GET',
+//     url: '/search/people?' + QueryString.stringify({ q: 'Lumière filmmaker' }),
+//     headers: { Accept: 'application/vnd.api+json' }
+//   };
+//
+//   ctx.server.inject(htmlRequest, (res) => {
+//     const response = JSON.parse(res.payload);
+//     const test = response.meta.filters.occupation.length === 1;
+//     t.equal(test, true, 'The facet occupation has now just 1 filter');
+//     t.end();
+//   });
+// });
 
 testWithServer(file + 'Should accept no query', {}, (t, ctx) => {
   t.plan(1);

@@ -13,7 +13,7 @@ testWithServer(file + 'Should suggest completion', {}, (t, ctx) => {
 
   ctx.server.inject(request, (res) => {
     t.equal(res.statusCode, 200, 'Status was OK');
-    t.ok(res.result.data.some((d) => d.attributes.summary_title === 'The Babbage Papers'), 'Autocompleted "The Babbage Papers" successfully');
+    t.ok(res.result.data.some((d) => d.attributes.summary_title === 'Printed sheet: Babbage\'s calculating machine'), 'Autocompleted "Printed sheet: Babbage\'s calculating machine" successfully');
     t.end();
   });
 });

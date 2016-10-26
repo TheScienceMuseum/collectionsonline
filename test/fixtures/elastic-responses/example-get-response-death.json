@@ -1,0 +1,112 @@
+{
+  "_index": "smg",
+  "_type": "agent",
+  "_id": "cp108048",
+  "_version": 1,
+  "found": true,
+  "_source": {
+    "admin": {
+      "SID": "p108048",
+      "created": 1105008388000,
+      "id": "agent-108048",
+      "language": "eng",
+      "modified": 1447178618000,
+      "processed": 1477351485000,
+      "source": "smgc",
+      "stream": "smg-online",
+      "uid": "cp108048",
+      "uuid": "2b70586a-83a2-35d7-9f30-baac1fc07b10"
+    },
+    "approved": "Y",
+    "date": [
+      {
+        "earliest": 1940,
+        "latest": 1940,
+        "role": [
+          {
+            "value": "life dates"
+          }
+        ],
+        "value": "- 1940"
+      },
+      {
+        "latest": 1940,
+        "role": [
+          {
+            "value": "date of death"
+          }
+        ],
+        "value": "1940"
+      }
+    ],
+    "description": [
+      {
+        "type": "brief biography",
+        "value": "d. 1940, photographer, author, British"
+      }
+    ],
+    "gender": "M",
+    "historical": true,
+    "lifecycle": {
+      "death": [
+        {
+          "@event": {
+            "mapping": "destruction"
+          },
+          "date": [
+            {
+              "earliest": 1940,
+              "latest": 1940,
+              "primary": true,
+              "value": "1940"
+            }
+          ]
+        }
+      ]
+    },
+    "name": [
+      {
+        "first_name": "James A",
+        "last_name": "Sinclair",
+        "primary": true,
+        "type": "preferred name",
+        "value": "Sinclair, James A"
+      },
+      {
+        "type": "MM2000 Preferred Name",
+        "value": "Sinclair, James A."
+      },
+      {
+        "type": "variation",
+        "value": "Sinclair, James A (d. 1940)"
+      },
+      {
+        "type": "variation",
+        "value": "Sinclair, James A"
+      }
+    ],
+    "nationality": [
+      "British"
+    ],
+    "note": [
+      {
+        "primary": true,
+        "value": "author of 'The Sinclair Handbook Of Photography' (1913)"
+      }
+    ],
+    "occupation": [
+      " author",
+      "photographer",
+      "photographer; author"
+    ],
+    "publish": "Y",
+    "summary_title": "James A Sinclair",
+    "type": {
+      "base": "agent",
+      "sub_type": [
+        "person"
+      ],
+      "type": "person"
+    }
+  }
+}

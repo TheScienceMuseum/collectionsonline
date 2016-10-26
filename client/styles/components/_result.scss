@@ -220,15 +220,7 @@
     }
   }
 
-  //used on home page, slight bigger
-  &--collection {
-  }
-  &--collection &__title {
-    font-size: 1.5rem;
-  }
-  &--collection &__description {
-    font-size: 1rem;
-    line-height: rem-calc(18);
-  }
+  //used on home page
+  &--collection { }
 
 }

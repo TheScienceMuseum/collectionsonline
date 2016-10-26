@@ -1,0 +1,525 @@
+{
+  "_index": "smg",
+  "_type": "object",
+  "_id": "co8245103",
+  "_version": 1,
+  "found": true,
+  "_source": {
+    "admin": {
+      "SID": "o8245103",
+      "created": 1322745566000,
+      "id": "object-8245103",
+      "language": "eng",
+      "modified": 1427726164000,
+      "processed": 1477354117000,
+      "source": "smgc",
+      "stream": "smg-online",
+      "uid": "co8245103",
+      "uuid": "deab5642-8aeb-36dd-8d2a-be8f1f17f8ef"
+    },
+    "categories": [
+      {
+        "museum": "SCM",
+        "name": "Nuclear Physics",
+        "value": "SCM - Nuclear Physics"
+      }
+    ],
+    "component": [
+      {
+        "measurements": {
+          "dimensions": [
+            {
+              "dimension": "depth",
+              "units": "in",
+              "value": "1 3/16"
+            },
+            {
+              "dimension": "depth",
+              "units": "mm",
+              "value": "30"
+            },
+            {
+              "dimension": "height",
+              "units": "in",
+              "value": "3 15/16"
+            },
+            {
+              "dimension": "height",
+              "units": "mm",
+              "value": "100"
+            },
+            {
+              "dimension": "width",
+              "units": "in",
+              "value": "1 9/16"
+            },
+            {
+              "dimension": "width",
+              "units": "mm",
+              "value": "40"
+            },
+            {
+              "units": "kg",
+              "value": "0.11"
+            },
+            {
+              "units": "lbs",
+              "value": "0.24251"
+            }
+          ],
+          "display": "overall (est H, W, D,; act Wt): 100 mm x 40 mm x 30 mm, 0.11kg"
+        },
+        "name": "overall (est h, w, d,; act wt)"
+      }
+    ],
+    "condition": {
+      "date": {
+        "earliest": 2011,
+        "latest": 2011,
+        "value": "2011-11-24"
+      },
+      "examiner": "Molteno, Nick",
+      "value": "1 - Good"
+    },
+    "description": [
+      {
+        "date": {
+          "earliest": 2011,
+          "latest": 2011,
+          "value": "2011-12-01"
+        },
+        "primary": true,
+        "type": "description",
+        "value": "Packet of Technetium (MDP) for bone scintigraphy 'Amerscan' agent, by Amersham International, Little Chalfont, Buckinghamshire, England, 1981-1982"
+      }
+    ],
+    "flag": {
+      "flag1": "N",
+      "flag2": "Y",
+      "flag3": "N",
+      "flag4": "Y"
+    },
+    "identifier": [
+      {
+        "primary": true,
+        "type": "accession number",
+        "value": "1982-1705/2"
+      }
+    ],
+    "language": [
+      "eng"
+    ],
+    "legal": {
+      "legal_status": "permanent collection"
+    },
+    "lifecycle": {
+      "creation": [
+        {
+          "date": [
+            {
+              "latest": 1981,
+              "note": [
+                {
+                  "value": "c"
+                }
+              ],
+              "role": [
+                {
+                  "value": "made"
+                }
+              ],
+              "value": "1981"
+            }
+          ],
+          "maker": [
+            {
+              "@link": {
+                "role": [
+                  {
+                    "value": "manufacturer"
+                  }
+                ],
+                "type": "reference"
+              },
+              "admin": {
+                "id": "agent-33399",
+                "uid": "cp33399"
+              },
+              "summary_title": "Amersham International plc"
+            }
+          ],
+          "places": [
+            {
+              "@link": {
+                "role": [
+                  {
+                    "value": "made"
+                  }
+                ],
+                "type": "reference"
+              },
+              "admin": {
+                "id": "place-1986",
+                "uid": "cd1986"
+              },
+              "summary_title": "Little Chalfont"
+            }
+          ]
+        }
+      ]
+    },
+    "materials": [
+      "cardboard",
+      "glass",
+      "materia medica",
+      "metal (unknown)",
+      "paper (fibre product)",
+      "plastic (unidentified)"
+    ],
+    "name": [
+      {
+        "primary": true,
+        "value": "phial; packet; materia medica"
+      },
+      {
+        "value": "materia medica"
+      },
+      {
+        "value": "packet"
+      },
+      {
+        "value": "phial"
+      }
+    ],
+    "numbers": {
+      "NUMBER1": "8"
+    },
+    "options": {
+      "option3": "Boyle, Alison"
+    },
+    "parent": [
+      {
+        "@link": {
+          "type": "reference"
+        },
+        "admin": {
+          "id": "object-5191",
+          "uid": "co5191"
+        },
+        "summary_title": "Six packets of 'Amerscan' agents (phial; packet; materia medica)"
+      }
+    ],
+    "summary_title": "Packet of Technetium (MDP) for bone scintigraphy 'Amerscan' agent (phial; packet; materia medica)",
+    "terms": [
+      {
+        "@link": {
+          "role": [
+            {
+              "value": "Object Name"
+            }
+          ],
+          "type": "reference"
+        },
+        "admin": {
+          "id": "term-262703",
+          "uid": "ct262703"
+        },
+        "hierarchy": [
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "id": "term-265099",
+              "uid": "ct265099",
+              "uuid": "4dab9f7b-631c-3b12-888d-f3fc4152a1ef"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "<container by form>"
+              }
+            ],
+            "sort": 0
+          },
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "id": "term-262537",
+              "uid": "ct262537",
+              "uuid": "23bd41a3-7527-3122-bad8-6ad692965baf"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "container - receptacle"
+              }
+            ],
+            "sort": 1
+          },
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "id": "term-265188",
+              "uid": "ct265188",
+              "uuid": "bd1feb46-9016-3e3f-9301-7477ac54223c"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "furnishing and equipment"
+              }
+            ],
+            "sort": 2
+          },
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "id": "term-262384",
+              "uid": "ct262384",
+              "uuid": "3be339fe-002f-38a4-af30-e17fbe24b638"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "<object facet>"
+              }
+            ],
+            "sort": 3
+          }
+        ],
+        "summary_title": "packet"
+      },
+      {
+        "@link": {
+          "role": [
+            {
+              "value": "Object Name"
+            }
+          ],
+          "type": "reference"
+        },
+        "admin": {
+          "id": "term-263821",
+          "uid": "ct263821"
+        },
+        "hierarchy": [
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "id": "term-262492",
+              "uid": "ct262492",
+              "uuid": "3ab975b7-b5a9-3692-bec9-c066a414ea91"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "drug"
+              }
+            ],
+            "sort": 0
+          },
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "id": "term-265239",
+              "uid": "ct265239",
+              "uuid": "1a1d67d9-51ee-30c8-a71e-91e70fa56fb0"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "<object genre by function>"
+              }
+            ],
+            "sort": 1
+          },
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "id": "term-265237",
+              "uid": "ct265237",
+              "uuid": "f28a11e6-781e-3100-a5c4-ea45925082ee"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "<object genre>"
+              }
+            ],
+            "sort": 2
+          },
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "id": "term-262384",
+              "uid": "ct262384",
+              "uuid": "3be339fe-002f-38a4-af30-e17fbe24b638"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "<object facet>"
+              }
+            ],
+            "sort": 3
+          }
+        ],
+        "summary_title": "materia medica"
+      },
+      {
+        "@link": {
+          "role": [
+            {
+              "value": "Object Name"
+            }
+          ],
+          "type": "reference"
+        },
+        "admin": {
+          "id": "term-265331",
+          "uid": "ct265331"
+        },
+        "hierarchy": [
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "id": "term-262525",
+              "uid": "ct262525",
+              "uuid": "be663990-4de9-3c0b-b3a7-1642b68b81a0"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "vessel"
+              }
+            ],
+            "sort": 0
+          },
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "id": "term-265099",
+              "uid": "ct265099",
+              "uuid": "4dab9f7b-631c-3b12-888d-f3fc4152a1ef"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "<container by form>"
+              }
+            ],
+            "sort": 1
+          },
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "id": "term-262537",
+              "uid": "ct262537",
+              "uuid": "23bd41a3-7527-3122-bad8-6ad692965baf"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "container - receptacle"
+              }
+            ],
+            "sort": 2
+          },
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "id": "term-265188",
+              "uid": "ct265188",
+              "uuid": "bd1feb46-9016-3e3f-9301-7477ac54223c"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "furnishing and equipment"
+              }
+            ],
+            "sort": 3
+          },
+          {
+            "@link": {
+              "impact": true,
+              "type": "reference"
+            },
+            "admin": {
+              "id": "term-262384",
+              "uid": "ct262384",
+              "uuid": "3be339fe-002f-38a4-af30-e17fbe24b638"
+            },
+            "name": [
+              {
+                "primary": true,
+                "type": "preferred",
+                "value": "<object facet>"
+              }
+            ],
+            "sort": 4
+          }
+        ],
+        "summary_title": "phial"
+      }
+    ],
+    "title": [
+      {
+        "primary": true,
+        "type": "display title",
+        "value": "Packet of Technetium (MDP) for bone scintigraphy 'Amerscan' agent"
+      }
+    ],
+    "type": {
+      "base": "object",
+      "record_type": "WHOLE"
+    }
+  }
+}

@@ -1,19 +1,21 @@
 {
   "_index": "smg",
   "_type": "agent",
-  "_id": "smgc-agent-36993",
-  "_version": 2,
+  "_id": "cp36993",
+  "_version": 1,
   "found": true,
   "_source": {
     "admin": {
+      "SID": "p36993",
       "created": 1014940800000,
       "id": "agent-36993",
       "language": "eng",
       "modified": 1462287688000,
-      "processed": 1475517923000,
+      "processed": 1477352848000,
       "source": "smgc",
       "stream": "smg-online",
-      "uid": "smgc-agent-36993"
+      "uid": "cp36993",
+      "uuid": "979b50db-1d7f-3285-9d01-f24c841e43d0"
     },
     "agents": [
       {
@@ -27,11 +29,8 @@
         },
         "admin": {
           "id": "agent-38764",
-          "uid": "smgc-agent-38764"
+          "uid": "cp38764"
         },
-        "rights": [
-          "person"
-        ],
         "summary_title": "Ada Lovelace"
       },
       {
@@ -45,11 +44,8 @@
         },
         "admin": {
           "id": "agent-43512",
-          "uid": "smgc-agent-43512"
+          "uid": "cp43512"
         },
-        "rights": [
-          "person"
-        ],
         "summary_title": "William Herschel"
       },
       {
@@ -63,11 +59,8 @@
         },
         "admin": {
           "id": "agent-50100",
-          "uid": "smgc-agent-50100"
+          "uid": "cp50100"
         },
-        "rights": [
-          "person"
-        ],
         "summary_title": "Henry Prevost Babbage"
       },
       {
@@ -81,11 +74,8 @@
         },
         "admin": {
           "id": "agent-51194",
-          "uid": "smgc-agent-51194"
+          "uid": "cp51194"
         },
-        "rights": [
-          "person"
-        ],
         "summary_title": "Benjamin Herschel Babbage"
       },
       {
@@ -99,11 +89,8 @@
         },
         "admin": {
           "id": "agent-136139",
-          "uid": "smgc-agent-136139"
+          "uid": "cp136139"
         },
-        "rights": [
-          "person"
-        ],
         "summary_title": "Edward Daniel Clarke"
       }
     ],
@@ -150,12 +137,6 @@
     ],
     "gender": "M",
     "historical": true,
-    "identifier": [
-      {
-        "type": "short",
-        "value": "spaeflodtagent"
-      }
-    ],
     "lifecycle": {
       "birth": [
         {
@@ -213,107 +194,6 @@
         }
       ]
     },
-    "multimedia": [
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-46274",
-          "source": "smgc",
-          "uid": "smgc-object-46274"
-        },
-        "summary_title": "Lathe with slide rest and appliances (lathe - machine)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-62243",
-          "source": "smgc",
-          "uid": "smgc-object-62243"
-        },
-        "summary_title": "Difference Engine No 1 (Difference Engine  (portion only))"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-62244",
-          "source": "smgc",
-          "uid": "smgc-object-62244"
-        },
-        "summary_title": "Sepia photograph, portrait of Charles Babbage, 1863 (photograph; portrait)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-62245",
-          "source": "smgc",
-          "uid": "smgc-object-62245"
-        },
-        "summary_title": "Babbage's Analytical Engine, 1834-1871. (Trial model) (analytical engines)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-62248",
-          "source": "smgc",
-          "uid": "smgc-object-62248"
-        },
-        "summary_title": "Punched cards for Babbage's Analytical Engine, 1834-1871. (analytical engines; components; calculating machines)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-62251",
-          "source": "smgc",
-          "uid": "smgc-object-62251"
-        },
-        "summary_title": "2 paper folders formerly belonging to Charles Babbage"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-65125",
-          "source": "smgc",
-          "uid": "smgc-object-65125"
-        },
-        "summary_title": "Charles Babbage (drawing; portrait)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-65167",
-          "source": "smgc",
-          "uid": "smgc-object-65167"
-        },
-        "summary_title": "Charles Babbage Esqr (print; portrait; engraving)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-531620",
-          "source": "smgc",
-          "uid": "smgc-object-531620"
-        },
-        "summary_title": "Lathe with slide rest and appliances (lathe - machine)"
-      }
-    ],
     "name": [
       {
         "first_name": "Charles",
@@ -380,6 +260,8 @@
       }
     ],
     "occupation": [
+      " computer pioneer",
+      "mathematician",
       "mathematician; computer pioneer"
     ],
     "publish": "Y",
@@ -390,9 +272,6 @@
         "person"
       ],
       "type": "person"
-    },
-    "weblinks": [
-      "http://www.oxforddnb.com/view/article/962"
-    ]
+    }
   }
 }
