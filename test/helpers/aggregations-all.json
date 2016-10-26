@@ -1,1 +1,571 @@
-{"doc_count":972,"occupation":{"doc_count":972,"occupation_filters":{"doc_count_error_upper_bound":0,"sum_other_doc_count":0,"buckets":[]}},"material":{"doc_count":972,"material_filters":{"doc_count_error_upper_bound":5,"sum_other_doc_count":551,"buckets":[{"key":"glass","doc_count":132},{"key":"paper","doc_count":115},{"key":"wood","doc_count":63},{"key":"cardboard","doc_count":57},{"key":"paper (fibre product)","doc_count":54},{"key":"plastic","doc_count":44},{"key":"metal","doc_count":43},{"key":"steel","doc_count":29},{"key":"brass","doc_count":21},{"key":"cloth","doc_count":17}]}},"count":{"doc_count":972,"count_filters":{"value":972}},"maker":{"doc_count":972,"maker_filters":{"doc_count_error_upper_bound":0,"sum_other_doc_count":3,"buckets":[{"key":"Hinde, John","doc_count":10},{"key":"Terman & Merrill","doc_count":3},{"key":"Burroughs Wellcome and Company Limited","doc_count":2},{"key":"C.H. Stoelting Co. Chicago","doc_count":2},{"key":"Unknown source","doc_count":2},{"key":"Amersham International Ltd","doc_count":1},{"key":"Burroughs Wellcome and Co. (maker)","doc_count":1},{"key":"Courtaulds Ltd.","doc_count":1},{"key":"George G. Harrup and Co. Ltd.","doc_count":1},{"key":"Pickard and Curry","doc_count":1}]}},"organisation":{"doc_count":972,"organisations_filters":{"doc_count_error_upper_bound":0,"sum_other_doc_count":0,"buckets":[{"key":"organisation","doc_count":1}]}},"archive":{"doc_count":972,"archive_filters":{"doc_count_error_upper_bound":0,"sum_other_doc_count":0,"buckets":[{"key":"Business records of W. T. Glover & Co. Ltd","doc_count":2},{"key":"Civil Defence Archive for British Railways Eastern Region","doc_count":1}]}},"place":{"doc_count":972,"place_filters":{"doc_count_error_upper_bound":0,"sum_other_doc_count":0,"buckets":[{"key":"Exmoor, England, United Kingdom","doc_count":10},{"key":"South Kensington, London, England, United Kingdom","doc_count":9},{"key":"South Kensington, Kensington and Chelsea, London, Greater London, England, United Kingdom","doc_count":5},{"key":"London, Greater London, England, United Kingdom","doc_count":2}]}},"category":{"doc_count":972,"category_filters":{"doc_count_error_upper_bound":0,"sum_other_doc_count":249,"buckets":[{"key":"Psychology, Psychiatry & Anthropometry","doc_count":176},{"key":"Ophthalmology","doc_count":122},{"key":"Laboratory Medicine","doc_count":116},{"key":"Clinical Diagnosis","doc_count":95},{"key":"Farnborough","doc_count":74},{"key":"Public Health & Hygiene","doc_count":37},{"key":"Photographs","doc_count":29},{"key":"Telecommunications","doc_count":24},{"key":"Experimental Chemistry","doc_count":23},{"key":"Gas Industry","doc_count":20}]}},"type":{"doc_count":972,"type_filters":{"doc_count_error_upper_bound":5,"sum_other_doc_count":873,"buckets":[{"key":"test tubes","doc_count":97},{"key":"laboratory (apparatus)","doc_count":75},{"key":"urine test kits","doc_count":57},{"key":"ophthalmology (visual acuity)","doc_count":55},{"key":"test types","doc_count":42},{"key":"diagnosis (genito-urinary)","doc_count":38},{"key":"psychological test","doc_count":37},{"key":"test-types","doc_count":19},{"key":"wall charts","doc_count":18},{"key":"ophthalmology (binocular vision)","doc_count":17}]}},"place_born":{"doc_count":972,"place_born_filters":{"doc_count_error_upper_bound":0,"sum_other_doc_count":0,"buckets":[]}},"user":{"doc_count":972,"user_filters":{"doc_count_error_upper_bound":0,"sum_other_doc_count":52,"buckets":[{"key":"Lister, Joseph","doc_count":16},{"key":"Jaeger, Eduard","doc_count":10},{"key":"Brunton, Sir Thomas Lauder","doc_count":5},{"key":"Harman, Nathaniel Bishop","doc_count":5},{"key":"Alexander, William Picken","doc_count":3},{"key":"Baker, Gertrude Lillian","doc_count":2},{"key":"Cowell, George","doc_count":2},{"key":"Gesell, Arnold Lucius","doc_count":2},{"key":"Holmgren, Alaric Frithiof","doc_count":2},{"key":"Ishihara, Shinobu","doc_count":2}]}}}
+{
+  "doc_count": 993,
+  "occupation": {
+    "doc_count": 993,
+    "occupation_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": []
+    }
+  },
+  "count": {
+    "doc_count": 993,
+    "count_filters": {
+      "value": 993
+    }
+  },
+  "maker": {
+    "doc_count": 993,
+    "maker_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 5,
+      "buckets": [
+        {
+          "key": "Hinde",
+          "doc_count": 10
+        },
+        {
+          "key": "Hinde, John",
+          "doc_count": 10
+        },
+        {
+          "key": "John",
+          "doc_count": 10
+        },
+        {
+          "key": "Terman & Merrill",
+          "doc_count": 3
+        },
+        {
+          "key": "Burroughs Wellcome and Company Limited",
+          "doc_count": 2
+        },
+        {
+          "key": "C.H. Stoelting Co. Chicago",
+          "doc_count": 2
+        },
+        {
+          "key": "Unknown source",
+          "doc_count": 2
+        },
+        {
+          "key": "Amersham International Ltd",
+          "doc_count": 1
+        },
+        {
+          "key": "Burroughs Wellcome and Co. (maker)",
+          "doc_count": 1
+        },
+        {
+          "key": "Courtaulds Ltd.",
+          "doc_count": 1
+        }
+      ]
+    }
+  },
+  "organisation": {
+    "doc_count": 993,
+    "organisations_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": [
+        {
+          "key": "organisation",
+          "doc_count": 1
+        }
+      ]
+    }
+  },
+  "archive": {
+    "doc_count": 993,
+    "archive_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": [
+        {
+          "key": "GEC Traction Archive",
+          "doc_count": 22
+        },
+        {
+          "key": "Business records of W. T. Glover & Co. Ltd",
+          "doc_count": 2
+        },
+        {
+          "key": "Civil Defence Archive for British Railways Eastern Region",
+          "doc_count": 1
+        }
+      ]
+    }
+  },
+  "type": {
+    "doc_count": 964,
+    "type_filters": {
+      "doc_count_error_upper_bound": 6,
+      "sum_other_doc_count": 1018,
+      "buckets": [
+        {
+          "key": "test tubes",
+          "doc_count": 97
+        },
+        {
+          "key": "laboratory (apparatus)",
+          "doc_count": 75
+        },
+        {
+          "key": "urine test kits",
+          "doc_count": 57
+        },
+        {
+          "key": "ophthalmology (visual acuity)",
+          "doc_count": 55
+        },
+        {
+          "key": "test types",
+          "doc_count": 43
+        },
+        {
+          "key": "diagnosis (genito-urinary)",
+          "doc_count": 38
+        },
+        {
+          "key": "psychological test",
+          "doc_count": 38
+        },
+        {
+          "key": "test-types",
+          "doc_count": 19
+        },
+        {
+          "key": "wall charts",
+          "doc_count": 18
+        },
+        {
+          "key": "ophthalmology (binocular vision)",
+          "doc_count": 17
+        }
+      ]
+    }
+  },
+  "material": {
+    "doc_count": 993,
+    "material_filters": {
+      "doc_count_error_upper_bound": 5,
+      "sum_other_doc_count": 551,
+      "buckets": [
+        {
+          "key": "glass",
+          "doc_count": 132
+        },
+        {
+          "key": "paper",
+          "doc_count": 115
+        },
+        {
+          "key": "wood",
+          "doc_count": 63
+        },
+        {
+          "key": "cardboard",
+          "doc_count": 57
+        },
+        {
+          "key": "paper (fibre product)",
+          "doc_count": 54
+        },
+        {
+          "key": "plastic",
+          "doc_count": 44
+        },
+        {
+          "key": "metal",
+          "doc_count": 43
+        },
+        {
+          "key": "steel",
+          "doc_count": 29
+        },
+        {
+          "key": "brass",
+          "doc_count": 21
+        },
+        {
+          "key": "cloth",
+          "doc_count": 17
+        }
+      ]
+    }
+  },
+  "museum": {
+    "doc_count": 993,
+    "museum_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 44,
+      "buckets": [
+        {
+          "key": "Science Museum",
+          "doc_count": 822
+        },
+        {
+          "key": "Blythe House",
+          "doc_count": 781
+        },
+        {
+          "key": "Science Museum, Blythe House",
+          "doc_count": 781
+        },
+        {
+          "key": "Science Museum at Wroughton",
+          "doc_count": 48
+        },
+        {
+          "key": "Museum of Science and Industry",
+          "doc_count": 26
+        },
+        {
+          "key": "National Media Museum",
+          "doc_count": 23
+        },
+        {
+          "key": "Manchester",
+          "doc_count": 11
+        },
+        {
+          "key": "Museum of Science and Industry, Manchester",
+          "doc_count": 10
+        },
+        {
+          "key": "National Railway Museum",
+          "doc_count": 9
+        },
+        {
+          "key": "No location available",
+          "doc_count": 9
+        },
+        {
+          "key": "Making the Modern World Gallery",
+          "doc_count": 8
+        },
+        {
+          "key": "Science & Art of Medicine",
+          "doc_count": 8
+        },
+        {
+          "key": "Science Museum, Making the Modern World Gallery",
+          "doc_count": 8
+        },
+        {
+          "key": "Science Museum, Science & Art of Medicine",
+          "doc_count": 8
+        },
+        {
+          "key": "Insight",
+          "doc_count": 5
+        },
+        {
+          "key": "National Media Museum, Insight",
+          "doc_count": 5
+        },
+        {
+          "key": "National Railway Museum, Search Engine",
+          "doc_count": 5
+        },
+        {
+          "key": "Science Museum Library and Archives",
+          "doc_count": 5
+        },
+        {
+          "key": "Science Museum Library and Archives, Wroughton",
+          "doc_count": 5
+        },
+        {
+          "key": "Search Engine",
+          "doc_count": 5
+        },
+        {
+          "key": "Wroughton",
+          "doc_count": 5
+        },
+        {
+          "key": "Exploring Space Gallery",
+          "doc_count": 3
+        },
+        {
+          "key": "Flight Gallery",
+          "doc_count": 3
+        },
+        {
+          "key": "Making the Modern World Gallery; Blythe House",
+          "doc_count": 3
+        },
+        {
+          "key": "Science Museum, Exploring Space Gallery",
+          "doc_count": 3
+        }
+      ]
+    }
+  },
+  "place": {
+    "doc_count": 993,
+    "place_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 149,
+      "buckets": [
+        {
+          "key": "London",
+          "doc_count": 66
+        },
+        {
+          "key": "United Kingdom",
+          "doc_count": 40
+        },
+        {
+          "key": "England",
+          "doc_count": 35
+        },
+        {
+          "key": "Exmoor, England, United Kingdom",
+          "doc_count": 10
+        },
+        {
+          "key": "Manchester",
+          "doc_count": 10
+        },
+        {
+          "key": "New Mexico",
+          "doc_count": 9
+        },
+        {
+          "key": "South Kensington, London, England, United Kingdom",
+          "doc_count": 9
+        },
+        {
+          "key": "United States",
+          "doc_count": 9
+        },
+        {
+          "key": "Chicago",
+          "doc_count": 8
+        },
+        {
+          "key": "France",
+          "doc_count": 8
+        }
+      ]
+    }
+  },
+  "category": {
+    "doc_count": 993,
+    "category_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 249,
+      "buckets": [
+        {
+          "key": "Psychology, Psychiatry & Anthropometry",
+          "doc_count": 176
+        },
+        {
+          "key": "Ophthalmology",
+          "doc_count": 122
+        },
+        {
+          "key": "Laboratory Medicine",
+          "doc_count": 116
+        },
+        {
+          "key": "Clinical Diagnosis",
+          "doc_count": 95
+        },
+        {
+          "key": "Farnborough",
+          "doc_count": 74
+        },
+        {
+          "key": "Public Health & Hygiene",
+          "doc_count": 37
+        },
+        {
+          "key": "Photographs",
+          "doc_count": 29
+        },
+        {
+          "key": "Experimental Chemistry",
+          "doc_count": 23
+        },
+        {
+          "key": "Telecommunications",
+          "doc_count": 23
+        },
+        {
+          "key": "Gas Industry",
+          "doc_count": 20
+        }
+      ]
+    }
+  },
+  "place_born": {
+    "doc_count": 993,
+    "place_born_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": []
+    }
+  },
+  "user": {
+    "doc_count": 993,
+    "user_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 52,
+      "buckets": [
+        {
+          "key": "Joseph Lister",
+          "doc_count": 16
+        },
+        {
+          "key": "Eduard Jaeger",
+          "doc_count": 10
+        },
+        {
+          "key": "Nathaniel Bishop Harman",
+          "doc_count": 5
+        },
+        {
+          "key": "null Brunton, Sir Thomas Lauder",
+          "doc_count": 5
+        },
+        {
+          "key": "William Picken Alexander",
+          "doc_count": 3
+        },
+        {
+          "key": "Alaric Frithiof Holmgren",
+          "doc_count": 2
+        },
+        {
+          "key": "Arnold Lucius Gesell",
+          "doc_count": 2
+        },
+        {
+          "key": "Edward G D Tuddenham",
+          "doc_count": 2
+        },
+        {
+          "key": "George Cowell",
+          "doc_count": 2
+        },
+        {
+          "key": "Gertrude Lillian Baker",
+          "doc_count": 2
+        }
+      ]
+    }
+  },
+  "gallery": {
+    "doc_count": 993,
+    "gallery_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 44,
+      "buckets": [
+        {
+          "key": "Science Museum",
+          "doc_count": 822
+        },
+        {
+          "key": "Blythe House",
+          "doc_count": 781
+        },
+        {
+          "key": "Science Museum, Blythe House",
+          "doc_count": 781
+        },
+        {
+          "key": "Science Museum at Wroughton",
+          "doc_count": 48
+        },
+        {
+          "key": "Museum of Science and Industry",
+          "doc_count": 26
+        },
+        {
+          "key": "National Media Museum",
+          "doc_count": 23
+        },
+        {
+          "key": "Manchester",
+          "doc_count": 11
+        },
+        {
+          "key": "Museum of Science and Industry, Manchester",
+          "doc_count": 10
+        },
+        {
+          "key": "National Railway Museum",
+          "doc_count": 9
+        },
+        {
+          "key": "No location available",
+          "doc_count": 9
+        },
+        {
+          "key": "Making the Modern World Gallery",
+          "doc_count": 8
+        },
+        {
+          "key": "Science & Art of Medicine",
+          "doc_count": 8
+        },
+        {
+          "key": "Science Museum, Making the Modern World Gallery",
+          "doc_count": 8
+        },
+        {
+          "key": "Science Museum, Science & Art of Medicine",
+          "doc_count": 8
+        },
+        {
+          "key": "Insight",
+          "doc_count": 5
+        },
+        {
+          "key": "National Media Museum, Insight",
+          "doc_count": 5
+        },
+        {
+          "key": "National Railway Museum, Search Engine",
+          "doc_count": 5
+        },
+        {
+          "key": "Science Museum Library and Archives",
+          "doc_count": 5
+        },
+        {
+          "key": "Science Museum Library and Archives, Wroughton",
+          "doc_count": 5
+        },
+        {
+          "key": "Search Engine",
+          "doc_count": 5
+        },
+        {
+          "key": "Wroughton",
+          "doc_count": 5
+        },
+        {
+          "key": "Exploring Space Gallery",
+          "doc_count": 3
+        },
+        {
+          "key": "Flight Gallery",
+          "doc_count": 3
+        },
+        {
+          "key": "Making the Modern World Gallery; Blythe House",
+          "doc_count": 3
+        },
+        {
+          "key": "Science Museum, Exploring Space Gallery",
+          "doc_count": 3
+        }
+      ]
+    }
+  }
+}
