@@ -2,7 +2,7 @@ const test = require('tape');
 const config = require('../../config');
 const responseOrganisation = require('../fixtures/elastic-responses/example-get-response-organisation.json');
 // None of the data in elasticsearch have the right value yet so we need to add some fixutre properties to the object
-responseOrganisation._source.occupation = 'Astronomy';
+responseOrganisation._source.occupation = ['Astronomy'];
 const buildJSONResponse = require('../../lib/jsonapi-response');
 const JSONAPIResponse = buildJSONResponse(responseOrganisation, config);
 const buildHTMLData = require('../../lib/transforms/json-to-html-data');
