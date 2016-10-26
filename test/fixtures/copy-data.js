@@ -11,6 +11,8 @@ const copyEsSearches = require('./copy-es-searches');
 const copyEsrelated = require('./copy-es-related');
 const copyEsChildren = require('./copy-es-children');
 const copyEsAutocompletes = require('./copy-es-autocompletes');
+const search = require('../../lib/search');
+const createQueryParams = require('../../lib/query-params/query-params');
 
 Async.parallel([
   /**
@@ -105,6 +107,14 @@ Async.parallel([
     ], (err) => {
       if (err) throw err;
       Fs.writeFile(dirData + '/database.json', JSON.stringify(database, null, 2), 'utf-8', cb);
+    });
+  },
+
+  // Aggregations
+  (cb) => {
+    search(elastic, createQueryParams('html', {query: {q: 'test'}, params: {}}), (err, response) => {
+      if (err) throw err;
+      Fs.writeFile(dirData + '/../../helpers/aggregations-all.json', JSON.stringify(response.aggregations.all, null, 2), 'utf-8', cb);
     });
   }
 ], (err) => {

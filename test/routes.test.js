@@ -381,17 +381,66 @@ testWithServer(file + 'Request for home JSON Page', {}, (t, ctx) => {
   });
 });
 
-testWithServer(file + 'Attemp to get the home JSON Page with the wrong accept header', {}, (t, ctx) => {
-  t.plan(1);
+testWithServer('SCM Short url', {}, (t, ctx) => {
+  t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/',
-    headers: {'Accept': 'wrongContent'}
+    url: '/scm',
+    headers: {'Accept': 'text/html'}
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.statusCode, 406, 'status is 406');
+    t.ok(res.statusCode, 200, 'status is 200');
+    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=Science%20Museum', 'redirects to search on Science Museum');
+    t.end();
+  });
+});
+
+testWithServer('NRM Short url', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/nrm',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.statusCode, 200, 'status is 200');
+    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=National%20Railway%20Museum', 'redirects to search on Railway Museum');
+    t.end();
+  });
+});
+
+testWithServer('NMEM Short url', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/nmem',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.statusCode, 200, 'status is 200');
+    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=National%20Media%20Museum', 'redirects to search on Media Museum');
+    t.end();
+  });
+});
+
+testWithServer('MSI Short url', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/msi',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.statusCode, 200, 'status is 200');
+    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=Museum%20of%20Science%20and%20Industry', 'redirects to search on Museum of Science and Industry');
     t.end();
   });
 });

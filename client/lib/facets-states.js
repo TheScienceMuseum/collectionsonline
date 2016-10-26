@@ -8,9 +8,11 @@ module.exports = {
     Dates: 'close',
     Category: 'close',
     Maker: 'close',
+    Museum: 'close',
     Type: 'close',
     Place: 'close',
-    User: 'close'
+    User: 'close',
+    Archive: 'close'
   },
   people: {
     Dates: 'close',
@@ -22,6 +24,7 @@ module.exports = {
     Dates: 'close',
     Category: 'close',
     Maker: 'close',
+    Museum: 'close',
     Type: 'close',
     Place: 'close',
     User: 'close',

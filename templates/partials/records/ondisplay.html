@@ -2,9 +2,6 @@
     <!--<img class="bleed" src="/assets/img/example/locations/scimus.png">-->
     <div class="panel__text">
       <h4>{{> global/icon i="room" size="16" }} On display</h4>
-      <p>
-        {{displayLocation}}
-      </p>
-      <a href="#">Visit the Science Museum </a> | <a href="#">Download map (PDF)</a>
+      <a href="{{museumlinks displayLocation.museum}}">{{displayLocation.museum}}: {{displayLocation.gallery}} </a>
     </div>
   </div>

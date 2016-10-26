@@ -457,21 +457,6 @@ testWithServer(file + 'Should accept valid museum MSI', {}, (t, ctx) => {
   });
 });
 
-testWithServer(file + 'Should not accept invalid museum', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', museum: 'INVALID' }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
-});
-
 testWithServer(file + 'Should accept on_display true', {}, (t, ctx) => {
   t.plan(1);
 

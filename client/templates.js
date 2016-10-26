@@ -202,6 +202,8 @@ Handlebars.registerHelper('seemore', require('../templates/helpers/seemore.js'))
 
 Handlebars.registerHelper('normalise', require('../templates/helpers/normalise.js'));
 
+Handlebars.registerHelper('museumlinks', require('../templates/helpers/museumlinks.js'));
+
 // Routes
 module.exports = {
   'home': Handlebars.compile(
