@@ -196,3 +196,18 @@ testWithServer(file + 'Request for Person JSON with related items', {mock: {meth
     t.end();
   });
 });
+
+testWithServer('Specific api endpoint error', {mock: {method: 'get', response: {error: true}}}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/api/objects/co8357578',
+    headers: {'Accept': 'application/json'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.statusCode, 503, 'server is unavailable');
+    t.end();
+  });
+});
