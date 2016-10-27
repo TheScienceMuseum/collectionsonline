@@ -9,7 +9,7 @@ var osdListener = require('../lib/osd-listener');
 var downloadImageListener = require('../lib/download-image');
 
 module.exports = function (page) {
-  page('/objects/:id', load, render, listeners);
+  page('/objects/:id/:slug?', load, render, listeners);
 };
 
 function load (ctx, next) {
