@@ -15,8 +15,12 @@ module.exports = function splitOnUnescapedCommas (str) {
         i = -1;
       }
     } else if (i === str.length - 1) {
-      splitResult.push(str.substr(0, i + 1).trim());
+      splitResult.push(str.substr(0, i + 1));
     }
   }
+  // trim the values except the first one where we want to keep the spaces see #524
+  splitResult = splitResult.map(function (val, i) {
+    return i !== 0 ? val.trim() : val;
+  });
   return splitResult;
 };
