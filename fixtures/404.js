@@ -2,31 +2,31 @@ module.exports = [
   {
     figure: '',
     caption: 'Lost Something Useful?',
-    link: '/objects/smgc-objects-413845'
+    link: '/objects/co413845'
   },
   {
     figure: '',
     caption: 'Culpeper microscope',
-    link: '/objects/smgc-objects-444363'
+    link: '/objects/co444363'
   },
   {
     figure: '',
     caption: 'Replica of Isaac Newton’s reflecting telescope',
-    link: '/objects/smgc-objects-56834'
+    link: '/objects/co56834'
   },
   {
     figure: '',
     caption: 'Human skin, tattooed with an eye ',
-    link: '/objects/smgc-objects-77622'
+    link: '/objects/co77622'
   },
   {
     figure: '',
     caption: 'Model of an eye',
-    link: '/objects/smgc-objects-77088'
+    link: '/objects/co77088'
   },
   {
     figure: '',
     caption: 'Accident Emergency Case',
-    link: '/objects/smgc-objects-142861'
+    link: '/objects/co142861'
   }
 ];
