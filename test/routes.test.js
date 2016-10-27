@@ -123,6 +123,38 @@ testWithServer(file + 'Request for Object HTML Page', {}, (t, ctx) => {
 });
 
 testWithServer(file + 'Request for Object HTML Page', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/objects/co429651',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.ok(res.payload.indexOf('<dd>Unidentified</dd>' > -1), '');
+    t.end();
+  });
+});
+
+testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/objects/co124',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.ok(res.payload.indexOf('<dd>Unknown</dd>' > -1), '');
+    t.end();
+  });
+});
+
+testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
