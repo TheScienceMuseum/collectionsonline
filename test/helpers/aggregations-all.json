@@ -106,7 +106,7 @@
     "doc_count": 964,
     "type_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 1021,
+      "sum_other_doc_count": 1020,
       "buckets": [
         {
           "key": "test tubes",
