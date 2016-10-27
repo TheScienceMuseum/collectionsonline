@@ -5,13 +5,18 @@ var Templates = require('../templates');
 var createQueryParams = require('../../lib/query-params/query-params');
 var getData = require('../lib/get-data.js');
 var toJsonUrl = require('../lib/to-json-url');
-var filterState = require('../lib/filter-state');
+var displayFilters = require('../lib/display-filters.js');
 var filterResults = require('../lib/filter-results');
 var page = require('page');
 var searchResultsToTemplateData = require('../../lib/transforms/search-results-to-template-data');
 var searchListener = require('../lib/search-listener');
 var Snackbar = require('snackbarlightjs');
-var toggleClass = require('../js-helpers/toggleClass');
+var filterState = require('../lib/filter-state.js');
+var displayFacet = require('../lib/display-facet.js');
+var facetsStates = require('../lib/facets-states.js');
+var toggleFacets = require('../lib/toggle-facets.js');
+var deleteFiltersFacets = require('../lib/delete-filters-facets.js');
+var updateActiveStateFacets = require('../lib/update-active-states-facets.js');
 var i = 0;
 
 module.exports = function (page) {
@@ -42,6 +47,7 @@ function load (ctx, next) {
     });
   } else {
     ctx.state.data = {};
+    // change the display facet state to add active to the one who are
     listeners(ctx);
   }
 }
@@ -87,23 +93,36 @@ function render (ctx, next) {
 */
 function listeners (ctx, next) {
   searchListener();
-
-  var toggleElements = function () {
-    var searchresults = document.querySelector('.searchresults');
-    searchresults.className = toggleClass(searchresults.className, 'searchresults--filtersactive');
-
-    var filtercolumn = document.querySelector('.filtercolumn');
-    filtercolumn.className = toggleClass(filtercolumn.className, 'filtercolumn--filtersactive');
-
-    var controlFilters = document.querySelector('.control--filters');
-    controlFilters.className = toggleClass(controlFilters.className, 'control--active');
-  };
-
-  var controlButtons = document.getElementsByClassName('control__button');
-  for (i = 0; i < controlButtons.length; i++) {
-    controlButtons[i].addEventListener('click', toggleElements);
+  initComp();
+  // hide the filter button
+  var filterButton = document.querySelector('button.filterpanel__button');
+  if (filterButton) {
+    filterButton.style.display = 'none';
   }
 
+  // display the button on the filter which toggle the filters
+  var toggleFilterButton = document.getElementById('fb');
+  if (toggleFilterButton) {
+    toggleFilterButton.classList.remove('hidden');
+    toggleFilterButton.classList.add('control__button');
+  }
+
+  // add click event listner on fb button to toggle the filter
+  displayFilters(filterState.isFilterOpen);
+  toggleFilterButton.addEventListener('click', function () {
+    filterState.isFilterOpen = !filterState.isFilterOpen;
+    displayFilters(filterState.isFilterOpen);
+  });
+
+  updateActiveStateFacets(facetsStates, ctx.params.type);
+  // display the facet (close open or active)
+  displayFacet(facetsStates, ctx.params.type);
+
+  // add event listener on the facet toggle
+  toggleFacets(facetsStates, ctx.params.type);
+
+  // add event listener when the filters of a facet are cleared to update the state
+  deleteFiltersFacets(facetsStates, ctx.params.type);
   /**
   * Click to add/remove filters
   * Build a html url with the new filter selected (get the current url + new filter)
@@ -136,22 +155,7 @@ function listeners (ctx, next) {
     });
   }
 
-  // $('.control--rpp select').on('change', function (e) {
-  //   filterResults(ctx, page);
-  // });
-
-  /**
-  * update filter status (open/close)
-  */
-  var filterButton = document.querySelector('#fb');
-  if (filterButton) {
-    filterButton.addEventListener('click', function () {
-      filterState.isFilterOpen = !filterState.isFilterOpen;
-    });
-  }
-
-  initComp();
-
+  // analytics
   const onResultClick = (e) => {
     const id = e.currentTarget.getAttribute('href').split('/').pop();
 

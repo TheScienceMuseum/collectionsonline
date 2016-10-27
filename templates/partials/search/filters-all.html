@@ -1,16 +1,12 @@
-<!-- DATE -->
-<div class="filter filter--open">
-  <a href="{{lookup links.clearFacet "filter[dates]"}}" class="filter__name">Date</a>
-  <div class="filter__options filter__daterange">
-    <label>From <input type="number" placeholder="1600" name="filter[date[from]]" value="{{lookup selectedFilters "dateFrom"}}"/></label>
-    <label>To <input type="number" placeholder="2016" name="filter[date[to]]" value="{{lookup selectedFilters "dateTo"}}"/></label>
-  </div>
-</div>
-
 <!-- CATEGGORY -->
 {{#if filters.category.length}}
-  <div class="filter filter--active filter--open" data-filter="Category">
-    <a href="{{lookup links.clearFacet "filter[categories]"}}" class="filter__name">Category</a>
+  {{#if (activeFacet selectedFilters 'categories')}}
+    <div class="filter filter--open filter--active" data-filter="Category">
+      <a href="{{lookup links.clearFacet "filter[categories]"}}" class="filter__name">Category</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="Category">
+      <a href="" class="filter__name">Category</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.category}}
@@ -23,21 +19,26 @@
 
 <!-- ON DISPLAY: MUSEUM -->
 {{#if filters.museum.length}}
-<div class="filter filter--active filter--open" data-filter="Museum">
-  <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">On Display</a>
-  <div class="filter__options">
-    <ul>
-      {{#each filters.museum}}
-      <li><label><input type="checkbox" class="filter__box" name="filter[museum]" value="{{value}}" {{isselected ../selectedFilters "museum" value galleries}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
-        <ul class="nested-galleries">
-          {{#each galleries}}
-            <li><label><input type="checkbox" class="filter__box" name="filter[gallery]" value="{{key}}" {{isselected ../../selectedFilters "gallery" key}}/>{{key}}<span class="filter__count">{{doc_count}}</span></label></li>
-          {{/each}}
-        </ul>
-      {{/each}}
-    </ul>
+  {{#if (activeFacet selectedFilters 'museum')}}
+    <div class="filter filter--open filter--active" data-filter="Museum">
+      <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">On Display</a>
+    {{else}}
+    <div class="filter filter--open" data-filter="Museum">
+      <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">On Display</a>
+  {{/if}}
+    <div class="filter__options">
+      <ul>
+        {{#each filters.museum}}
+        <li><label><input type="checkbox" class="filter__box" name="filter[museum]" value="{{value}}" {{isselected ../selectedFilters "museum" value galleries}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+          <ul class="nested-galleries">
+            {{#each galleries}}
+              <li><label><input type="checkbox" class="filter__box" name="filter[gallery]" value="{{key}}" {{isselected ../../selectedFilters "gallery" key}}/>{{key}}<span class="filter__count">{{doc_count}}</span></label></li>
+            {{/each}}
+          </ul>
+        {{/each}}
+      </ul>
+    </div>
   </div>
-</div>
 {{/if}}
 
 <!-- ON DISPLAY: GALLERY -->
@@ -56,8 +57,13 @@
 
 <!-- TYPE -->
 {{#if filters.type.length}}
-  <div class="filter filter--active filter--open" data-filter="Type">
+  {{#if (activeFacet selectedFilters 'type')}}
+  <div class="filter filter--open filter--active" data-filter="Type">
     <a href="{{lookup links.clearFacet "filter[type]"}}" class="filter__name">Object type</a>
+  {{else}}
+  <div class="filter filter--open" data-filter="Type">
+    <a href="{{lookup links.clearFacet "filter[type]"}}" class="filter__name">Object type</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.type}}
@@ -70,22 +76,32 @@
 
 <!-- MAKER -->
 {{#if filters.maker.length}}
-  <div class="filter filter--active filter--open" data-filter="Maker">
-    <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">Maker</a>
-    <div class="filter__options">
-      <ul>
-        {{#each filters.maker}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[makers]" value="{{value}}" {{isselected ../selectedFilters "makers" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
-        {{/each}}
-      </ul>
-    </div>
+  {{#if (activeFacet selectedFilters 'makers')}}
+    <div class="filter filter--open filter--active" data-filter="Maker">
+      <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">Maker</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="Maker">
+      <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">Maker</a>
+  {{/if}}
+  <div class="filter__options">
+    <ul>
+      {{#each filters.maker}}
+        <li><label><input type="checkbox" class="filter__box" name="filter[makers]" value="{{value}}" {{isselected ../selectedFilters "makers" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+      {{/each}}
+    </ul>
   </div>
+</div>
 {{/if}}
 
 <!-- PLACE -->
 {{#if filters.place.length}}
-  <div class="filter filter--active filter--open" data-filter="Place">
-    <a href="{{lookup links.clearFacet "filter[places]"}}" class="filter__name">Place</a>
+  {{#if (activeFacet selectedFilters 'places')}}
+    <div class="filter filter--active filter--open" data-filter="Place">
+      <a href="{{lookup links.clearFacet "filter[places]"}}" class="filter__name">Place</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="Place">
+      <a href="{{lookup links.clearFacet "filter[places]"}}" class="filter__name">Place</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.place}}
@@ -100,8 +116,13 @@
 
 <!-- USER -->
 {{#if filters.user.length}}
-  <div class="filter filter--active filter--open" data-filter="User">
-    <a href="{{lookup links.clearFacet "filter[user]"}}" class="filter__name">User</a>
+  {{#if (activeFacet selectedFilters 'user')}}
+    <div class="filter filter--active filter--open" data-filter="User">
+      <a href="{{lookup links.clearFacet "filter[user]"}}" class="filter__name">User</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="User">
+      <a href="{{lookup links.clearFacet "filter[user]"}}" class="filter__name">User</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.user}}
@@ -114,8 +135,13 @@
 
 <!-- ARCHIVE -->
 {{#if filters.archive.length}}
-  <div class="filter filter--active filter--open" data-filter="Archive">
-    <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name">Archive</a>
+  {{#if (activeFacet selectedFilters 'archive')}}
+    <div class="filter filter--active filter--open" data-filter="Archive">
+      <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name">Archive</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="Archive">
+      <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name">Archive</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.archive}}
@@ -125,3 +151,12 @@
     </div>
   </div>
 {{/if}}
+
+<!-- DATE -->
+<div class="filter filter--open" data-filter="Dates">
+  <a href="{{lookup links.clearFacet "filter[dates]"}}" class="filter__name">Date</a>
+  <div class="filter__options filter__daterange">
+    <label>From <input type="number" placeholder="1600" name="filter[date[from]]" value="{{lookup selectedFilters "dateFrom"}}"/></label>
+    <label>To <input type="number" placeholder="2016" name="filter[date[to]]" value="{{lookup selectedFilters "dateTo"}}"/></label>
+  </div>
+</div>
