@@ -1,13 +1,15 @@
 const testWithServer = require('./helpers/test-with-server');
 const cache = require('../bin/cache.js');
 const stub = require('sinon').stub;
+const dir = __dirname.split('/')[__dirname.split('/').length - 1];
+const file = dir + __filename.replace(__dirname, '') + ' > ';
 
-testWithServer('Request for Archive HTML Page but receive bad request from es', {mock: {method: 'get', response: {error: true}}}, (t, ctx) => {
+testWithServer(file + 'Request for Archive HTML Page but receive bad request from es', {mock: {method: 'get', response: {error: true}}}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/documents/smga-documents-badRequest',
+    url: '/documents/aabadRequest',
     headers: {'Accept': 'text/html'}
   };
 
@@ -17,12 +19,12 @@ testWithServer('Request for Archive HTML Page but receive bad request from es', 
   });
 });
 
-testWithServer('Request for Archive JSON Page but receive bad request from es', {mock: {method: 'get', response: {error: true}}}, (t, ctx) => {
+testWithServer(file + 'Request for Archive JSON Page but receive bad request from es', {mock: {method: 'get', response: {error: true}}}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/documents/smga-documents-badRequest',
+    url: '/documents/aabadRequest',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -32,12 +34,12 @@ testWithServer('Request for Archive JSON Page but receive bad request from es', 
   });
 });
 
-testWithServer('Request for Object HTML Page but receive bad request from es', {mock: {method: 'get', response: {error: true}}}, (t, ctx) => {
+testWithServer(file + 'Request for Object HTML Page but receive bad request from es', {mock: {method: 'get', response: {error: true}}}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/smgc-objects-badRequest',
+    url: '/objects/cobadRequest',
     headers: {'Accept': 'text/html'}
   };
 
@@ -47,12 +49,12 @@ testWithServer('Request for Object HTML Page but receive bad request from es', {
   });
 });
 
-testWithServer('Request for Object JSON Page but receive bad request from es', {mock: {method: 'get', response: {error: true}}}, (t, ctx) => {
+testWithServer(file + 'Request for Object JSON Page but receive bad request from es', {mock: {method: 'get', response: {error: true}}}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/smgc-objects-badRequest',
+    url: '/objects/cobadRequest',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -62,12 +64,12 @@ testWithServer('Request for Object JSON Page but receive bad request from es', {
   });
 });
 
-testWithServer('Request for Person HTML Page but receive bad request from es', {mock: {method: 'get', response: {error: true}}}, (t, ctx) => {
+testWithServer(file + 'Request for Person HTML Page but receive bad request from es', {mock: {method: 'get', response: {error: true}}}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/people/smgc-people-badRequest',
+    url: '/people/cpbadRequest',
     headers: {'Accept': 'text/html'}
   };
 
@@ -77,12 +79,12 @@ testWithServer('Request for Person HTML Page but receive bad request from es', {
   });
 });
 
-testWithServer('Request for Person JSON Page but receive bad request from es', {mock: {method: 'get', response: {error: true}}}, (t, ctx) => {
+testWithServer(file + 'Request for Person JSON Page but receive bad request from es', {mock: {method: 'get', response: {error: true}}}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/people/smgc-people-badRequest',
+    url: '/people/cpbadRequest',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -92,12 +94,12 @@ testWithServer('Request for Person JSON Page but receive bad request from es', {
   });
 });
 
-testWithServer('Request for Person with related items', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
+testWithServer(file + 'Request for Person with related items', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/people/smgc-people-36993',
+    url: '/people/cp36993',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -109,7 +111,7 @@ testWithServer('Request for Person with related items', {mock: {method: 'search'
   });
 });
 
-testWithServer('Search for JSON', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
+testWithServer(file + 'Search for JSON', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -124,7 +126,7 @@ testWithServer('Search for JSON', {mock: {method: 'search', response: {error: tr
   });
 });
 
-testWithServer('Search for HTML', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
+testWithServer(file + 'Search for HTML', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -139,7 +141,7 @@ testWithServer('Search for HTML', {mock: {method: 'search', response: {error: tr
   });
 });
 
-testWithServer('Request for Archive JSON with children', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
+testWithServer(file + 'Request for Archive JSON with children', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
   t.plan(1);
 
   var cacheGet = stub(cache, 'get', function (options, cb) {
@@ -148,7 +150,7 @@ testWithServer('Request for Archive JSON with children', {mock: {method: 'search
 
   const htmlRequest = {
     method: 'GET',
-    url: '/documents/smga-documents-110000003',
+    url: '/documents/aa110000003',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -159,7 +161,7 @@ testWithServer('Request for Archive JSON with children', {mock: {method: 'search
   });
 });
 
-testWithServer('Request for Archive JSON with children', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
+testWithServer(file + 'Request for Archive JSON with children', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
   t.plan(1);
 
   var cacheGet = stub(cache, 'get', function (options, cb) {
@@ -168,13 +170,29 @@ testWithServer('Request for Archive JSON with children', {mock: {method: 'search
 
   const htmlRequest = {
     method: 'GET',
-    url: '/documents/smga-documents-110000003',
+    url: '/documents/aa110000003',
     headers: {'Accept': 'text/html'}
   };
 
   ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 503, 'Status code was as expected, 503');
     cacheGet.restore();
+    t.end();
+  });
+});
+
+testWithServer(file + 'Request for Person JSON with related items', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/people/ap8',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Should still work');
+    t.equal(res.payload.indexOf('See more'), -1, 'Should have no related items');
     t.end();
   });
 });

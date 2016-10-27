@@ -1,19 +1,21 @@
 {
   "_index": "smg",
   "_type": "object",
-  "_id": "smgc-object-205752",
+  "_id": "co205752",
   "_version": 1,
   "found": true,
   "_source": {
     "admin": {
+      "SID": "o205752",
       "created": 826588800000,
       "id": "object-205752",
       "language": "eng",
       "modified": 1452518234000,
-      "processed": 1475518106000,
+      "processed": 1477353081000,
       "source": "smgc",
       "stream": "smg-online",
-      "uid": "smgc-object-205752"
+      "uid": "co205752",
+      "uuid": "f58ece68-a64e-3f5a-90f5-79ead870c74d"
     },
     "agents": [
       {
@@ -27,7 +29,7 @@
         },
         "admin": {
           "id": "agent-3891",
-          "uid": "smgc-agent-3891"
+          "uid": "cp3891"
         },
         "summary_title": "London Midland & Scottish Railway Company"
       }
@@ -188,10 +190,6 @@
         "primary": true,
         "type": "accession number",
         "value": "1976-7000"
-      },
-      {
-        "type": "short",
-        "value": "sodtobject"
       }
     ],
     "language": [
@@ -227,7 +225,7 @@
               },
               "admin": {
                 "id": "agent-1015",
-                "uid": "smgc-agent-1015"
+                "uid": "cp1015"
               },
               "summary_title": "William Arthur Stanier"
             },
@@ -242,7 +240,7 @@
               },
               "admin": {
                 "id": "agent-3891",
-                "uid": "smgc-agent-3891"
+                "uid": "cp3891"
               },
               "summary_title": "London Midland & Scottish Railway Company"
             }
@@ -259,7 +257,7 @@
               },
               "admin": {
                 "id": "place-4251",
-                "uid": "smgc-place-4251"
+                "uid": "cd4251"
               },
               "summary_title": "Crewe railway works"
             }
@@ -283,7 +281,7 @@
             },
             "admin": {
               "id": "facility-157",
-              "uid": "smgc-facility-157"
+              "uid": "cf157"
             },
             "summary_title": "National Railway Museum, Great Hall"
           }
@@ -334,7 +332,7 @@
         },
         "admin": {
           "id": "term-266627",
-          "uid": "smgc-term-266627"
+          "uid": "ct266627"
         },
         "summary_title": "Locomotive and Rolling Stock"
       },
@@ -349,7 +347,7 @@
         },
         "admin": {
           "id": "term-266835",
-          "uid": "smgc-term-266835"
+          "uid": "ct266835"
         },
         "summary_title": "steam"
       },
@@ -364,7 +362,7 @@
         },
         "admin": {
           "id": "term-502655",
-          "uid": "smgc-term-502655"
+          "uid": "ct502655"
         },
         "hierarchy": [
           {
@@ -373,10 +371,8 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
               "id": "term-503443",
-              "status": "valid and published",
-              "uid": "smgc-term-503443",
+              "uid": "ct503443",
               "uuid": "e9659e4a-19bc-320b-a359-3d6daad9358a"
             },
             "name": [
@@ -394,10 +390,8 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
               "id": "term-501558",
-              "status": "valid and published",
-              "uid": "smgc-term-501558",
+              "uid": "ct501558",
               "uuid": "e64c684d-bc30-3468-a5df-903d054c856c"
             },
             "name": [
@@ -415,10 +409,8 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
               "id": "term-503152",
-              "status": "valid and published",
-              "uid": "smgc-term-503152",
+              "uid": "ct503152",
               "uuid": "c691e4f1-dc89-30b2-93cf-ce2294a7f714"
             },
             "name": [
@@ -436,10 +428,8 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
               "id": "term-503166",
-              "status": "valid and published",
-              "uid": "smgc-term-503166",
+              "uid": "ct503166",
               "uuid": "9611e275-721b-38b5-b5f3-b69aa979b0a9"
             },
             "name": [

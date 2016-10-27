@@ -58,6 +58,14 @@
       padding: 0;
     }
 
+    .nested-galleries {
+      margin-left: 1.5em;
+
+      li label {
+        font-size: 1em;
+      }
+    }
+
     li {
       padding-top: rem-calc(6);
       position: relative;

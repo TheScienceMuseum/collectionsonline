@@ -182,8 +182,16 @@
   // the final related result
   &--seemore {
     //background-color: white;
-    background-image: linear-gradient(135deg, mix(grey(10),$c-cyan), mix(grey(10),$c-blue) );
-    border-color: map-get($recordtypes, objects);
+    &.see-more-objects {
+      background-image: linear-gradient(135deg, mix(grey(10),$c-cyan), mix(grey(10),$c-blue) );
+      border-color: map-get($recordtypes, objects);
+    }
+
+    &.see-more-documents {
+      background-image: linear-gradient(135deg, mix(grey(10),$c-turquoise), mix(grey(10),$c-dark-green) );
+      border-color: map-get($recordtypes, documents);
+    }
+
     text-align: center;
 
     .resultcard__figure {
@@ -212,15 +220,7 @@
     }
   }
 
-  //used on home page, slight bigger
-  &--collection {
-  }
-  &--collection &__title {
-    font-size: 1.5rem;
-  }
-  &--collection &__description {
-    font-size: 1rem;
-    line-height: rem-calc(18);
-  }
+  //used on home page
+  &--collection { }
 
 }

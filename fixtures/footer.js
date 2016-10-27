@@ -6,15 +6,11 @@ module.exports = [
     links: [
       {
         name: 'About the collection',
-        url: ''
+        url: 'https://group.sciencemuseum.org.uk/about-us/collection'
       },
       {
-        name: 'Search the collection',
-        url: ''
-      },
-      {
-        name: 'What is online?',
-        url: ''
+        name: 'Contact us',
+        url: 'https://group.sciencemuseum.org.uk/about-us/collection/contact'
       }
     ]
   },
@@ -25,15 +21,11 @@ module.exports = [
     links: [
       {
         name: 'Archive catalogue',
-        url: ''
+        url: 'http://archives.sciencemuseumgroup.ac.uk/'
       },
       {
         name: 'Library catalogue',
-        url: ''
-      },
-      {
-        name: 'Visit the Archive',
-        url: ''
+        url: 'https://smg.koha-ptfs.co.uk/'
       }
     ]
   },
@@ -43,16 +35,12 @@ module.exports = [
     url: '',
     links: [
       {
-        name: 'Usage the data',
-        url: ''
+        name: 'Using our API',
+        url: 'https://group.sciencemuseum.org.uk/about-us/collection/api'
       },
       {
         name: 'Our API',
-        url: ''
-      },
-      {
-        name: 'Digital Lab',
-        url: ''
+        url: 'https://github.com/TheScienceMuseum/collectionsonline/wiki/Collections-Online-API'
       }
     ]
   },
@@ -62,16 +50,12 @@ module.exports = [
     url: '',
     links: [
       {
-        name: 'Print on Demand',
-        url: ''
+        name: 'Non-Commercial Use',
+        url: 'https://group.sciencemuseum.org.uk/creative-commons/'
       },
       {
-        name: 'Non Commercial Use',
-        url: ''
-      },
-      {
-        name: 'Commercial use / Image Licencing',
-        url: ''
+        name: 'Commercial licensing',
+        url: 'https://group.sciencemuseum.org.uk/business-services/brand-licensing/'
       }
     ]
   }

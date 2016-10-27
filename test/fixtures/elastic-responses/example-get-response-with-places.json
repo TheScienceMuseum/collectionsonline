@@ -1,19 +1,21 @@
 {
   "_index": "smg",
   "_type": "agent",
-  "_id": "smgc-agent-86306",
+  "_id": "cp86306",
   "_version": 1,
   "found": true,
   "_source": {
     "admin": {
+      "SID": "p86306",
       "created": 1105005750000,
       "id": "agent-86306",
       "language": "eng",
       "modified": 1408552950000,
-      "processed": 1475516906000,
+      "processed": 1477351560000,
       "source": "smgc",
       "stream": "smg-online",
-      "uid": "smgc-agent-86306"
+      "uid": "cp86306",
+      "uuid": "07e331a7-6230-3784-8c57-693f49531332"
     },
     "approved": "Y",
     "date": [
@@ -57,302 +59,53 @@
       }
     ],
     "historical": true,
-    "identifier": [
-      {
-        "type": "short",
-        "value": "spaeflodtagent"
-      }
-    ],
-    "multimedia": [
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-27017",
-          "source": "smgc",
-          "uid": "smgc-object-27017"
-        },
-        "summary_title": "model of crossbar signal (model signal)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-27599",
-          "source": "smgc",
-          "uid": "smgc-object-27599"
-        },
-        "summary_title": "Commemorative medal, Grand Junction Railway (medal)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-27601",
-          "source": "smgc",
-          "uid": "smgc-object-27601"
-        },
-        "summary_title": "Commemorative medal, Grand Junction Railway (medal)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-28302",
-          "source": "smgc",
-          "uid": "smgc-object-28302"
-        },
-        "summary_title": "Carriage Panel with hand-painted Grand Junction Railway arms (panel; coat-of-arms)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-205741",
-          "source": "smgc",
-          "uid": "smgc-object-205741"
-        },
-        "summary_title": "Grand Junction Railway locomotive 'Columbine' (steam locomotive)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-205884",
-          "source": "smgc",
-          "uid": "smgc-object-205884"
-        },
-        "summary_title": "Replica Grand Junction Railway travelling post office (railway carriage)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-211534",
-          "source": "smgc",
-          "uid": "smgc-object-211534"
-        },
-        "summary_title": "Model railway signal (model)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-213292",
-          "source": "smgc",
-          "uid": "smgc-object-213292"
-        },
-        "summary_title": "Grand Junction Railway, Inspector Generals Ticket - Major General Pasley (ticket)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-213293",
-          "source": "smgc",
-          "uid": "smgc-object-213293"
-        },
-        "summary_title": "Free pass, Grand Junction Railway (pass)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-213613",
-          "source": "smgc",
-          "uid": "smgc-object-213613"
-        },
-        "summary_title": "Free pass, Grand Junction Railway (pass)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-226046",
-          "source": "smgc",
-          "uid": "smgc-object-226046"
-        },
-        "summary_title": "Alloy commemorative medallion, Grand Junction Railway (medallion)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-226134",
-          "source": "smgc",
-          "uid": "smgc-object-226134"
-        },
-        "summary_title": "Commemorating the opening of the Grand Junction Railway, July 4 1837 (medal)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-233828",
-          "source": "smgc",
-          "uid": "smgc-object-233828"
-        },
-        "summary_title": "Seal die, Grand Junction Railway Co. (seal die)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8021611",
-          "source": "smgc",
-          "uid": "smgc-object-8021611"
-        },
-        "summary_title": "Deeds chest, japanned iron, labelled 'Liverpool & Manchester (deeds chest)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8029443",
-          "source": "smgc",
-          "uid": "smgc-object-8029443"
-        },
-        "summary_title": "Notice, Grand Junction Railway (notice)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8033717",
-          "source": "smgc",
-          "uid": "smgc-object-8033717"
-        },
-        "summary_title": "Columbine (locomotive cab)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8056670",
-          "source": "smgc",
-          "uid": "smgc-object-8056670"
-        },
-        "summary_title": "Grand Junction Railway  rates for the carriage of horses (tariff)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8082752",
-          "source": "smgc",
-          "uid": "smgc-object-8082752"
-        },
-        "summary_title": "New Table of Passenger Fares to and from Every Station on the Grand Junction Railway (notice)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8095952",
-          "source": "smgc",
-          "uid": "smgc-object-8095952"
-        },
-        "summary_title": "Grand Junction Railway letter (letter)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8095953",
-          "source": "smgc",
-          "uid": "smgc-object-8095953"
-        },
-        "summary_title": "Grand Junction Railway letter (letter)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8101221",
-          "source": "smgc",
-          "uid": "smgc-object-8101221"
-        },
-        "summary_title": "GJR notice (notice)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8102566",
-          "source": "smgc",
-          "uid": "smgc-object-8102566"
-        },
-        "summary_title": "Grand Junction Railway fares and Distances Whitmore Station (timetable)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8102627",
-          "source": "smgc",
-          "uid": "smgc-object-8102627"
-        },
-        "summary_title": "Grand Junction Railway from Birmingham to Liverpool and Manchester (fares list)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8102668",
-          "source": "smgc",
-          "uid": "smgc-object-8102668"
-        },
-        "summary_title": "Osborne's map of the Grand Junction Railway (map)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8238765",
-          "source": "smgc",
-          "uid": "smgc-object-8238765"
-        },
-        "summary_title": "Staffordshire mug - Grand Junction Railway (mug)"
-      },
-      {
-        "@link": {
-          "type": "reference"
-        },
-        "admin": {
-          "id": "object-8348692",
-          "source": "smgc",
-          "uid": "smgc-object-8348692"
-        },
-        "summary_title": "Replica Grand Junction Railway travelling post office (railway carriage)"
-      }
-    ],
+    "lifecycle": {
+      "birth": [
+        {
+          "@event": {
+            "mapping": "creation"
+          },
+          "date": [
+            {
+              "earliest": 1833,
+              "latest": 1833,
+              "primary": true,
+              "value": "1833"
+            }
+          ],
+          "location": {
+            "@link": {
+              "type": "literal"
+            },
+            "name": [
+              {
+                "primary": true,
+                "value": "Birmingham, Borough of Birmingham, West Midlands, England, United Kingdom"
+              }
+            ],
+            "summary_title": "Birmingham, Borough of Birmingham, West Midlands, England, United Kingdom"
+          }
+        }
+      ],
+      "death": [
+        {
+          "@event": {
+            "mapping": "destruction"
+          },
+          "date": [
+            {
+              "earliest": 1846,
+              "latest": 1846,
+              "primary": true,
+              "value": "1846"
+            }
+          ]
+        }
+      ]
+    },
     "name": [
       {
+        "last_name": "Grand Junction Railway",
         "primary": true,
         "type": "preferred name",
         "value": "Grand Junction Railway"
@@ -366,6 +119,18 @@
         "value": "Grand Junction Railway Co"
       }
     ],
+    "nationality": [
+      "British"
+    ],
+    "note": [
+      {
+        "primary": true,
+        "value": "Founded in 1833 after Parliamentary authorisation and opened for business on July 4, 1837 with the design being done by George Stephenson and Joseph Locke. It ran from Birmingham through Wolverhampton (via Perry Barr and Bescot), Stafford, Crewe, and Warrington, then via the existing Warrington and Newton Railway to join the Liverpool and Manchester Railway. The head engineering office was established at Crewe. They were the first railway to sort mail en route. In 1840 it  absorbed the Chester and Crewe Railway. They also invested in the Lancaster and Carlisle Railway and the Caledonian Railway. In 1845 the GJR merged with the Liverpool and Manchester Railway, and consolidated its position by buying the North Union Railway in association with the Manchester and Leeds Railway."
+      }
+    ],
+    "occupation": [
+      "railway company"
+    ],
     "places": [
       {
         "@link": {
@@ -378,7 +143,7 @@
         },
         "admin": {
           "id": "place-4251",
-          "uid": "smgc-place-4251"
+          "uid": "cd4251"
         },
         "summary_title": "Crewe railway works"
       },
@@ -393,7 +158,7 @@
         },
         "admin": {
           "id": "place-4596",
-          "uid": "smgc-place-4596"
+          "uid": "cd4596"
         },
         "summary_title": "Curzon Street Railway Station"
       }
@@ -406,9 +171,6 @@
         "organisation"
       ],
       "type": "organisation"
-    },
-    "weblinks": [
-      "http://en.wikipedia.org/wiki/Grand_Junction_Railway"
-    ]
+    }
   }
 }

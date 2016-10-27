@@ -6,7 +6,7 @@ const sortRelated = require('../lib/sort-related-items');
 var JSONAPIResponse;
 var HTMLData;
 var person = require('./fixtures/elastic-responses/example-get-response-person.json');
-var relatedItems = sortRelated(require('./fixtures/elastic-responses/database.json').related['smgc-agent-36993'].response.hits.hits);
+var relatedItems = sortRelated(require('./fixtures/elastic-responses/database.json').related['cp36993'].response.hits.hits);
 
 test('Response is built succesfully', (t) => {
   t.plan(1);
