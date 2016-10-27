@@ -5,6 +5,7 @@ module.exports = {
       .waitForElementVisible('body', 1000)
       .assert.elementNotPresent('.control__buttons')
       .assert.elementNotPresent('.control--filters')
+      .assert.elementNotPresent('.callout a')
       .end();
   }
 };

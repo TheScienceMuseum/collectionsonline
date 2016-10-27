@@ -194,6 +194,8 @@ Handlebars.registerHelper('activeFacet', require('../templates/helpers/activeFac
 
 Handlebars.registerHelper('comma', require('../templates/helpers/comma.js'));
 
+Handlebars.registerHelper('filtersSelected', require('../templates/helpers/filtersSelected.js'));
+
 Handlebars.registerHelper('clearAllFilters', require('../templates/helpers/clearAllFilters.js'));
 
 Handlebars.registerHelper('formatrelated', require('../templates/helpers/formatrelated.js'));
