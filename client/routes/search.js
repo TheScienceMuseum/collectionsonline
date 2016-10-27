@@ -133,8 +133,21 @@ function listeners (ctx, next) {
   */
   var filtersCheckbox = document.querySelectorAll('.filter:not(.filter--uncollapsible) [type=checkbox]');
   for (i = 0; i < filtersCheckbox.length; i++) {
-    filtersCheckbox[i].addEventListener('click', function () {
+    filtersCheckbox[i].addEventListener('click', function (e) {
+      var museums = ['Science-Museum', 'National-Railway-Museum', 'National-Media-Museum', 'Museum-of-Science-and-Industry'];
       loadingBar.start();
+      museums.forEach(function (m) {
+        var museumFilter = document.getElementsByClassName('filter__museum__' + m)[0];
+        var galleryFilters = document.querySelectorAll('.nested-galleries input[type=checkbox]');
+
+        if (e.target.classList.contains('filter__gallery__' + m) && !museumFilter.checked) {
+          museumFilter.checked = e.target.checked;
+        } else if (e.target.classList.contains('filter__museum__' + m) && !museumFilter.checked) {
+          Array.prototype.slice.call(galleryFilters).forEach(function (g) {
+            g.checked = false;
+          });
+        }
+      });
       filterResults(ctx, page);
     });
   }
