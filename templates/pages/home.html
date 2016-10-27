@@ -5,31 +5,77 @@
   <div class="row columns">
 
     <h1 class="searchbar__strap">{{strap}}</h1>
-    <p class="searchbar__intro">{{{intro}}}</p>
 
     {{> global/searchbox}}
 
   </div>
+</section>
 
-  <div class="home-collections row">
-    {{#each collection}}
-      <div class="{{ this.columns }} columns end">
-        <a href="{{ this.link }}">
-          <div class="resultcard resultcard--related {{#if type}}resultcard--{{ this.type }}{{/if}}">
-            <figure class="resultcard__figure">
-              {{#if figure}}<img src="{{ this.figure }}" /> {{/if}}
-            </figure>
-            <div class="resultcard__info">
-              <h4 class="resultcard__title">{{ this.title }}</h4>
-              <p class="resultcard__description">{{ this.description }}</p>
-            </div>
-          </div>
-        </a>
+<section class="home-features">
+  {{!-- update /client/styles/components/_home.scss if no of images changes --}}
+  <img src="/assets/img/home/feature/1600/1878-0005_0004_A163_0002.jpg" srcset="/assets/img/home/feature/800/1878-0005_0004_A163_0002.jpg 800w, /assets/img/home/feature/1600/1878-0005_0004_A163_0002.jpg 1600w" />
+  <img src="/assets/img/home/feature/1600/1911-0346_0014.jpg" srcset="/assets/img/home/feature/800/1911-0346_0014.jpg 800w, /assets/img/home/feature/1600/1911-0346_0014.jpg 1600w" />
+  <img src="/assets/img/home/feature/1600/cd0274_008_070301.jpg" srcset="/assets/img/home/feature/800/cd0274_008_070301.jpg 800w, /assets/img/home/feature/1600/cd0274_008_070301.jpg 1600w" />
+  <img src="/assets/img/home/feature/1600/cd0634_030_100924_1988_242.jpg" srcset="/assets/img/home/feature/800/cd0634_030_100924_1988_242.jpg 800w, /assets/img/home/feature/1600/cd0634_030_100924_1988_242.jpg 1600w" />
+  <img src="/assets/img/home/feature/1600/cd0705_056_130311_1972_29.jpg" srcset="/assets/img/home/feature/800/cd0705_056_130311_1972_29.jpg 800w, /assets/img/home/feature/1600/cd0705_056_130311_1972_29.jpg 1600w" />
+  <img src="/assets/img/home/feature/1600/DS080056-61487.jpg" srcset="/assets/img/home/feature/800/DS080056-61487.jpg 800w, /assets/img/home/feature/1600/DS080056-61487.jpg 1600w" />
+
+  <div class="row columns">
+    <h2 class="home-features__intro">{{{intro}}}</h2>
+
+    <div class="featuresteps">
+      <div class="featurestep">
+        <h4 class="featurestep__title">{{> global/icon i="search" class="featurestep__icon" }} Search</h4>
+        <p class="featurestep__desc">Explore over 150,000 objects, people and archives</p>
       </div>
-    {{/each}}
+      <div class="featurestep featurestep--arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2" preserveAspectRatio="none" class="featurestep__arrow">
+          <path d="M0 0 1 2 2 0" vector-effect="non-scaling-stroke" class="ttb"></path>
+          <path d="M0 0 2 1 0 2" vector-effect="non-scaling-stroke" class="ltr"></path>
+        </svg>
+      </div>
+      <div class="featurestep">
+        <h4 class="featurestep__title">{{> global/icon i="filter_list" class="featurestep__icon" }} Filter</h4>
+        <p class="featurestep__desc">View by museum, theme, or ones with nice pictures</p>
+      </div>
+      <div class="featurestep featurestep--arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2" preserveAspectRatio="none" class="featurestep__arrow">
+          <path d="M0 0 1 2 2 0" vector-effect="non-scaling-stroke" class="ttb"></path>
+          <path d="M0 0 2 1 0 2" vector-effect="non-scaling-stroke" class="ltr"></path>
+        </svg>
+      </div>
+      <div class="featurestep">
+        <h4 class="featurestep__title">{{> global/icon i="cc-cc" class="featurestep__icon" }} Use</h4>
+        <p class="featurestep__desc">Our data is free to reuse under creative commons license</p>
+      </div>
+    </div>
   </div>
 
 </section>
+
+{{#each collectionGroup}}
+  <section class="home-collections">
+    <div class="row">
+      <h2 class="home-collections__h columns">{{this.title}}</h2>
+      {{#each this.collection}}
+        <div class="{{ this.columns }} columns end">
+          <a href="{{ this.link }}">
+            <div class="resultcard {{#if type}}resultcard--{{ this.type }}{{/if}}">
+              <figure class="resultcard__figure">
+                <img src="{{ this.figure }}" />
+              </figure>
+              <div class="resultcard__info">
+                <h4 class="resultcard__title">{{ this.title }}</h4>
+                <p class="resultcard__description">{{ this.description }}</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      {{/each}}
+    </div>
+  </section>
+{{/each}}
+
 
 {{> global/global-footer}}
 </main>

@@ -1,11 +1,13 @@
 const testWithServer = require('./helpers/test-with-server');
+const dir = __dirname.split('/')[__dirname.split('/').length - 1];
+const file = dir + __filename.replace(__dirname, '') + ' > ';
 
-testWithServer('Request for Archive HTML Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Archive HTML Page', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/documents/smga-documents-110000316',
+    url: '/documents/aa110000316',
     headers: {'Accept': 'text/html'}
   };
 
@@ -15,12 +17,12 @@ testWithServer('Request for Archive HTML Page', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Attempt to request for Archive HTML Page with wrong accept header', {}, (t, ctx) => {
+testWithServer(file + 'Attempt to request for Archive HTML Page with wrong accept header', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/documents/smga-documents-110000316',
+    url: '/documents/aa110000316',
     headers: {'Accept': 'wrongContent'}
   };
 
@@ -30,12 +32,12 @@ testWithServer('Attempt to request for Archive HTML Page with wrong accept heade
   });
 });
 
-testWithServer('Request for Archive JSON Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Archive JSON Page', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/documents/smga-documents-110000316',
+    url: '/documents/aa110000316',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -45,12 +47,12 @@ testWithServer('Request for Archive JSON Page', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for Archive HTML Page for a wrong id', {}, (t, ctx) => {
+testWithServer(file + 'Request for Archive HTML Page for a wrong id', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/documents/smga-documents-wrongid',
+    url: '/documents/aawrongid',
     headers: {'Accept': 'text/html'}
   };
 
@@ -60,12 +62,27 @@ testWithServer('Request for Archive HTML Page for a wrong id', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for Archive HTML Page with expanded children', {}, (t, ctx) => {
+// testWithServer(file + 'Request for Archive HTML Page with expanded children', {}, (t, ctx) => {
+//   t.plan(1);
+//
+//   const htmlRequest = {
+//     method: 'GET',
+//     url: '/documents/aa110000003?expanded=aa110000036',
+//     headers: {'Accept': 'text/html'}
+//   };
+//
+//   ctx.server.inject(htmlRequest, (res) => {
+//     t.equal(res.statusCode, 200, 'Status code was as expected');
+//     t.end();
+//   });
+// });
+
+testWithServer(file + 'Request for Object HTML Page', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/documents/smga-documents-110000003?expanded=smga-documents-110000036',
+    url: '/objects/co37959',
     headers: {'Accept': 'text/html'}
   };
 
@@ -75,12 +92,12 @@ testWithServer('Request for Archive HTML Page with expanded children', {}, (t, c
   });
 });
 
-testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object HTML Page', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/smgc-objects-37959',
+    url: '/objects/co193432',
     headers: {'Accept': 'text/html'}
   };
 
@@ -90,12 +107,12 @@ testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object HTML Page', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/smgc-objects-193432',
+    url: '/objects/co129834',
     headers: {'Accept': 'text/html'}
   };
 
@@ -105,12 +122,12 @@ testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object HTML Page', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/smgc-objects-129834',
+    url: '/objects/co26704',
     headers: {'Accept': 'text/html'}
   };
 
@@ -120,12 +137,12 @@ testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object HTML Page', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/smgc-objects-26704',
+    url: '/objects/co26704',
     headers: {'Accept': 'text/html'}
   };
 
@@ -135,12 +152,12 @@ testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object HTML Page', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/smgc-objects-26704',
+    url: '/objects/co62243',
     headers: {'Accept': 'text/html'}
   };
 
@@ -150,27 +167,12 @@ testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object HTML Page for a wrong id', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/smgc-objects-62243',
-    headers: {'Accept': 'text/html'}
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer('Request for Object HTML Page for a wrong id', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/objects/smgc-objects-wrongid',
+    url: '/objects/cowrongid',
     headers: {'Accept': 'text/html'}
   };
 
@@ -180,12 +182,12 @@ testWithServer('Request for Object HTML Page for a wrong id', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for Person HTML Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Person HTML Page', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/people/smgc-people-17351',
+    url: '/people/cp17351',
     headers: {'Accept': 'text/html'}
   };
   ctx.server.inject(htmlRequest, (res) => {
@@ -194,12 +196,12 @@ testWithServer('Request for Person HTML Page', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for Person HTML Page who doesn\'t exists', {}, (t, ctx) => {
+testWithServer(file + 'Request for Person HTML Page who doesn\'t exists', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/people/smgc-people-wrongid',
+    url: '/people/cpwrongid',
     headers: {'Accept': 'text/html'}
   };
 
@@ -209,42 +211,43 @@ testWithServer('Request for Person HTML Page who doesn\'t exists', {}, (t, ctx) 
   });
 });
 
-testWithServer('Request for Person HTML Page with no related items', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/people/smga-people-24329',
-    headers: {'Accept': 'text/html'}
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer('Request for Person JSON Page with no related items', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/people/smga-people-24329',
-    headers: {'Accept': 'application/vnd.api+json'}
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer('Request for Archive JSON', {}, (t, ctx) => {
+testWithServer(file + 'Request for Person HTML Page with related items', {}, (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/documents/smga-documents-110000003',
+    url: '/people/ap8',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.ok(res.payload.indexOf('Babbage') > -1, 'Page loaded correctly');
+    t.end();
+  });
+});
+
+testWithServer(file + 'Request for Person JSON Page with no related items', {}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/people/ap24329',
+    headers: {'Accept': 'application/vnd.api+json'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer(file + 'Request for Archive JSON', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/documents/aa110000003',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -255,12 +258,12 @@ testWithServer('Request for Archive JSON', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for Archive JSON with error', {}, (t, ctx) => {
+testWithServer(file + 'Request for Archive JSON with error', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/documents/smga-documents-wrongid',
+    url: '/documents/aawrongid',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -270,12 +273,12 @@ testWithServer('Request for Archive JSON with error', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for Object JSON Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object JSON Page', {}, (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/smgc-objects-37959',
+    url: '/objects/co37959',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -286,12 +289,12 @@ testWithServer('Request for Object JSON Page', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for Object JSON Page for a wrong id', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object JSON Page for a wrong id', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/smgc-objects-wrongid',
+    url: '/objects/cowrongid',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -301,12 +304,12 @@ testWithServer('Request for Object JSON Page for a wrong id', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for Object Page with wrong accept headers', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object Page with wrong accept headers', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/smgc-objects-wrongid',
+    url: '/objects/cowrongid',
     headers: {'Accept': 'wrongContent'}
   };
 
@@ -316,12 +319,12 @@ testWithServer('Request for Object Page with wrong accept headers', {}, (t, ctx)
   });
 });
 
-testWithServer('Request for Person JSON Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Person JSON Page', {}, (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/people/smgc-people-17351',
+    url: '/people/cp17351',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -332,12 +335,12 @@ testWithServer('Request for Person JSON Page', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for Person JSON Page for a wrong id', {}, (t, ctx) => {
+testWithServer(file + 'Request for Person JSON Page for a wrong id', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/people/smgc-people-wrongid',
+    url: '/people/cpwrongid',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -347,12 +350,12 @@ testWithServer('Request for Person JSON Page for a wrong id', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Request for Person JSON Page with the wrong accept headers', {}, (t, ctx) => {
+testWithServer(file + 'Request for Person JSON Page with the wrong accept headers', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/people/smgc-people-17351',
+    url: '/people/cp17351',
     headers: {'Accept': 'wrongContent'}
   };
 
@@ -362,7 +365,7 @@ testWithServer('Request for Person JSON Page with the wrong accept headers', {},
   });
 });
 
-testWithServer('Request for home JSON Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for home JSON Page', {}, (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
@@ -378,17 +381,66 @@ testWithServer('Request for home JSON Page', {}, (t, ctx) => {
   });
 });
 
-testWithServer('Attemp to get the home JSON Page with the wrong accept header', {}, (t, ctx) => {
-  t.plan(1);
+testWithServer('SCM Short url', {}, (t, ctx) => {
+  t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/',
-    headers: {'Accept': 'wrongContent'}
+    url: '/scm',
+    headers: {'Accept': 'text/html'}
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.statusCode, 406, 'status is 406');
+    t.ok(res.statusCode, 200, 'status is 200');
+    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=Science%20Museum', 'redirects to search on Science Museum');
+    t.end();
+  });
+});
+
+testWithServer('NRM Short url', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/nrm',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.statusCode, 200, 'status is 200');
+    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=National%20Railway%20Museum', 'redirects to search on Railway Museum');
+    t.end();
+  });
+});
+
+testWithServer('NMEM Short url', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/nmem',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.statusCode, 200, 'status is 200');
+    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=National%20Media%20Museum', 'redirects to search on Media Museum');
+    t.end();
+  });
+});
+
+testWithServer('MSI Short url', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/msi',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.statusCode, 200, 'status is 200');
+    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=Museum%20of%20Science%20and%20Industry', 'redirects to search on Museum of Science and Industry');
     t.end();
   });
 });

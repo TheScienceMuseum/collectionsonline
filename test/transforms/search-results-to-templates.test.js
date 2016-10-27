@@ -59,8 +59,8 @@ test(file + 'Person template data is correctly built', (t) => {
   const personResult = templateData.results.find(el => el.type === 'people');
 
   t.ok(personResult, 'person result is returned');
-  t.equal(personResult.link, '/people/smgc-people-36993', 'person link is correct');
-  t.equal(personResult.title, 'Charles Babbage', 'person title is correct');
+  t.equal(personResult.link, '/people/cp36993', 'person link is correct');
+  t.equal(personResult.title, 'Babbage, Charles', 'person title is correct');
   t.equal(personResult.date, '1791 - 1871', 'person\'s date is correct');
   t.end();
 });
@@ -75,7 +75,7 @@ test(file + 'Document template data is correctly built', (t) => {
   const documentResult = templateData.results.find(el => el.type === 'documents');
 
   t.ok(documentResult, 'document result is returned');
-  t.equal(documentResult.link, '/documents/smga-documents-110000003', 'document link is correct');
+  t.equal(documentResult.link, '/documents/aa110000003', 'document link is correct');
   t.equal(documentResult.title, 'The Babbage Papers', 'document title is correct');
   t.equal(documentResult.figcaption, '11 plan press drawers and 8 linear meters of shelving', 'document figcaption is correct');
   t.end();
@@ -91,7 +91,7 @@ test(file + 'Object template data is correctly built', (t) => {
   const objectResult = templateData.results.find(el => el.type === 'objects');
 
   t.ok(objectResult, 'object result is returned');
-  t.equal(objectResult.link, '/objects/smgc-objects-8245103', 'object link is correct');
+  t.equal(objectResult.link, '/objects/co8245103', 'object link is correct');
   t.equal(objectResult.title, 'Packet of Technetium (MDP) for bone scintigraphy \'Amerscan\' agent', 'object title is correct');
   t.end();
 });

@@ -5,7 +5,7 @@ testWithServer('Request for Object with "Purchased" in credit line', {}, (t, ctx
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/smgc-objects-67812',
+    url: '/objects/co67812',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -22,13 +22,13 @@ testWithServer('Search request for Object with "Purchased" in credit line', {}, 
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?q=hawking%20painting',
+    url: '/search/objects?q=hawking%20painting',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
   ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.equal(res.result.data[0].id, 'smgc-objects-67812', 'Response contains correct object');
+    t.equal(res.result.data[0].id, 'co67812', 'Response contains correct object');
     t.notOk(res.result.data[0].attributes.legal.credit_line, 'Response does not contain credit line');
     t.end();
   });

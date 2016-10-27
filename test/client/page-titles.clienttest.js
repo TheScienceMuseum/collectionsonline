@@ -9,7 +9,7 @@ module.exports = {
       .waitForElementVisible('body', 1000)
       .pause(1000)
       .assert.title('Science Museum Group Collection')
-      .url('http://localhost:8000/people/smgc-people-38764')
+      .url('http://localhost:8000/people/cp38764')
       .waitForElementVisible('body', 1000)
       .pause(1000)
       .assert.title('Ada Lovelace | Science Museum Group Collection')

@@ -194,6 +194,14 @@ Handlebars.registerHelper('comma', require('../templates/helpers/comma.js'));
 
 Handlebars.registerHelper('filtersSelected', require('../templates/helpers/filtersSelected.js'));
 
+Handlebars.registerHelper('formatrelated', require('../templates/helpers/formatrelated.js'));
+
+Handlebars.registerHelper('seemore', require('../templates/helpers/seemore.js'));
+
+Handlebars.registerHelper('normalise', require('../templates/helpers/normalise.js'));
+
+Handlebars.registerHelper('museumlinks', require('../templates/helpers/museumlinks.js'));
+
 // Routes
 module.exports = {
   'home': Handlebars.compile(
