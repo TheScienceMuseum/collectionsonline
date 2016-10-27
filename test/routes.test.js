@@ -541,3 +541,36 @@ testWithServer('One gallery selected', {}, (t, ctx) => {
     t.end();
   });
 });
+
+testWithServer('Specific api endpoint', {}, (t, ctx) => {
+  t.plan(3);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/api/objects/co8357578',
+    headers: {'Accept': 'application/json'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    var result = JSON.parse(res.payload);
+    t.ok(res.statusCode, 200, 'status is 200');
+    t.ok(result, 'Result was json');
+    t.equal(result.data.attributes.admin.uid, 'co8357578', 'Correct object returned');
+    t.end();
+  });
+});
+
+testWithServer('non-existent api endpoint', {}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/api/objects/cowrongid',
+    headers: {'Accept': 'application/json'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.statusCode, 404, 'status is 404');
+    t.end();
+  });
+});
