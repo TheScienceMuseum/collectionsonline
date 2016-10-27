@@ -6,7 +6,7 @@ module.exports = {
       .assert.containsText('.record-top__title', 'The Babbage Papers')
       .assert.containsText('.details-Identifier', 'BAB')
       .assert.containsText('.details-Access', 'The collection is available for public consultation')
-      .assert.containsText('.details-rights', 'Copies may be supplied')
+      .assert.containsText('.details-copyright', 'Copies may be supplied')
       .assert.containsText('.details-System-of-Arrangement', 'Babbage’s work was divided into a series of distinct')
       .assert.containsText('.details-history-note', 'The archive was arranged and described by')
       .assert.containsText('.archive-tree', 'The Babbage Papers')
