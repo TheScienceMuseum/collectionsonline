@@ -18,6 +18,7 @@ var toggleFacets = require('../lib/toggle-facets.js');
 var deleteFiltersFacets = require('../lib/delete-filters-facets.js');
 var updateActiveStateFacets = require('../lib/update-active-states-facets.js');
 var loadingBar = require('../lib/loading-bar');
+var hideKeyboard = require('../lib/hide-keyboard');
 var i = 0;
 
 module.exports = function (page) {
@@ -59,6 +60,7 @@ function load (ctx, next) {
 */
 function render (ctx, next) {
   window.scrollTo(0, 0);
+  hideKeyboard();
   loadingBar.end();
   var pageEl = document.getElementsByTagName('main')[0];
   pageEl.innerHTML = Templates['search'](ctx.state.data);
