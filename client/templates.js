@@ -190,9 +190,13 @@ Handlebars.registerHelper('ifsmgrights', require('../templates/helpers/ifsmgrigh
 
 Handlebars.registerHelper('taxonomy', require('../templates/helpers/taxonomy.js'));
 
+Handlebars.registerHelper('activeFacet', require('../templates/helpers/activeFacet.js'));
+
 Handlebars.registerHelper('comma', require('../templates/helpers/comma.js'));
 
 Handlebars.registerHelper('filtersSelected', require('../templates/helpers/filtersSelected.js'));
+
+Handlebars.registerHelper('clearAllFilters', require('../templates/helpers/clearAllFilters.js'));
 
 Handlebars.registerHelper('formatrelated', require('../templates/helpers/formatrelated.js'));
 
@@ -204,6 +208,9 @@ Handlebars.registerHelper('museumlinks', require('../templates/helpers/museumlin
 
 // Routes
 module.exports = {
+  '404': Handlebars.compile(
+    Fs.readFileSync('./templates/pages/404.html', 'utf8')
+  ),
   'home': Handlebars.compile(
     Fs.readFileSync('./templates/pages/home.html', 'utf8')
   ),

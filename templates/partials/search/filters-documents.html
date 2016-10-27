@@ -1,8 +1,13 @@
 <input type="hidden" name="fields[type]" value="documents">
 <!-- ARCHIVE -->
 {{#if filters.archive.length}}
-  <div class="filter filter--active filter--open" data-filter="Archive">
-    <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name">Archive</a>
+  {{#if (activeFacet selectedFilters 'archive')}}
+    <div class="filter filter--active filter--open" data-filter="Archive">
+      <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name">Archive</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="Archive">
+      <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name">Archive</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.archive}}
@@ -25,8 +30,13 @@
 
 <!-- ORGANISATION -->
 {{#if filters.organisation.length}}
-  <div class="filter filter--active filter--open" data-filter="Organisation">
-    <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name">Organisation</a>
+  {{#if (activeFacet selectedFilters 'organisations')}}
+    <div class="filter filter--active filter--open" data-filter="Organisation">
+      <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name">Organisation</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="Organisation">
+      <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name">Organisation</a>
+  {{/if}}
     <div class="filter__options">
       <ul>
         {{#each filters.organisation}}
