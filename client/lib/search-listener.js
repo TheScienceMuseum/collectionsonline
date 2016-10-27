@@ -3,10 +3,12 @@
 */
 var QueryString = require('querystring');
 var page = require('page');
+var loadingBar = require('./loading-bar');
 
 module.exports = function () {
   var searchBoxEl = document.getElementById('searchbox');
   searchBoxEl.addEventListener('submit', function (e) {
+    loadingBar.start();
     e.preventDefault();
     var searchValue = document.querySelector('.searchbox__search').value;
     var categoryFilter = document.querySelector('.searchbox__category__filter') && document.querySelector('.searchbox__category__filter').value;

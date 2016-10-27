@@ -3,6 +3,7 @@
 */
 var Querystring = require('querystring');
 var getQueryString = require('./get-qs');
+
 module.exports = function (ctx, page) {
   var currentQueryString = Querystring.parse(ctx.querystring);
   var pageType = currentQueryString['page[type]'] ? currentQueryString['page[type]'] : 'search';

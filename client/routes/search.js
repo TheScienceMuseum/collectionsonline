@@ -17,6 +17,7 @@ var facetsStates = require('../lib/facets-states.js');
 var toggleFacets = require('../lib/toggle-facets.js');
 var deleteFiltersFacets = require('../lib/delete-filters-facets.js');
 var updateActiveStateFacets = require('../lib/update-active-states-facets.js');
+var loadingBar = require('../lib/loading-bar');
 var i = 0;
 
 module.exports = function (page) {
@@ -30,6 +31,7 @@ module.exports = function (page) {
 function load (ctx, next) {
   // only load the data if the page hasn't been loaded before
   if (!ctx.isInitialRender) {
+    loadingBar.start();
     var opts = {
       headers: { Accept: 'application/vnd.api+json' }
     };
@@ -56,6 +58,8 @@ function load (ctx, next) {
 * Call the Handlebars template with the data and display the new DOM on the page
 */
 function render (ctx, next) {
+  window.scrollTo(0, 0);
+  loadingBar.end();
   var pageEl = document.getElementsByTagName('main')[0];
   pageEl.innerHTML = Templates['search'](ctx.state.data);
 
@@ -130,6 +134,7 @@ function listeners (ctx, next) {
   var filtersCheckbox = document.querySelectorAll('.filter:not(.filter--uncollapsible) [type=checkbox]');
   for (i = 0; i < filtersCheckbox.length; i++) {
     filtersCheckbox[i].addEventListener('click', function () {
+      loadingBar.start();
       filterResults(ctx, page);
     });
   }
