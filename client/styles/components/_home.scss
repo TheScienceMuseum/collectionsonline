@@ -92,6 +92,7 @@
   &--arrow {
     flex-basis: 4em;
     margin: 0 2em;
+    position: relative; // for safari
     @include breakpoint(small only) {
       height: 3rem;
       margin: 1rem 33%;
@@ -100,6 +101,7 @@
   &__arrow {
     width: 100%;
     height: 100%;
+    position: absolute; // for safari
     stroke-width: 1;
     stroke: #fff;
     fill: none;
