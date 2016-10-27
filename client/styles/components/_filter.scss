@@ -161,33 +161,80 @@
 }
 
 //-----------------------------------------------------------------------------
-// .filterbadge - attached searchbox, indicate active filters
+// .filterbadge - attached beneath searchbox, indicate (some, important) active filters
+// see
+// templates/partials/global/searchbox.html
+// Expecting a data-filter="Category|Museum|Archive"
 //-----------------------------------------------------------------------------
 
-.filterbadge {
-  $c: mix($c-cyan, $c-blue);
-
+@mixin filterbadge-base {
   position: relative;
   display: inline-block;
-  max-width: 33%;
+  white-space: nowrap;
+  max-width: 100%;
+  @include breakpoint(medium up) {
+    max-width: 75%;
+  }
   vertical-align: middle;
-  background: $c;
-  &:hover { background: darken($c, 10%); }
-  color: white;
-  a:hover { color: white; }
-  border-radius: 0.75rem;
   line-height: 1rem;
-  margin: rem-calc(4 4 4 0);
   font-weight: 500;
-  font-size: rem-calc(14);
-  &__label {
+  font-size: 0;
+  & * { font-size: rem-calc(14); }
+}
+
+$filtertypes: (
+  Category: $c-cyan,
+  Museum: $c-purple,
+  Archive: $c-green,
+);
+@each $type, $c in $filtertypes {
+  .filterbadge[data-filter="#{$type}"] {
+    $c: mix($c, $c-blue);
+    background: $c;
+  }
+  [data-filter="#{$type}"] .filterbadge__x {
+    background: $c;
+    &:hover { background: darken($c, 10%); }
+  }
+}
+
+.filterbadge {
+  @include filterbadge-base;
+  overflow: hidden;
+  color: white;
+  background: grey(50); // but should be overridden by data-filter type
+  a:hover { color: white; }
+  border-radius: rem-calc(6);
+  margin: rem-calc(4 4 4 0);
+  &__label,
+  &__key {
     display: inline-block;
     white-space: nowrap;
-    max-width: 100%;
+    max-width: 80%;
     overflow: hidden;
     vertical-align: top;
     text-overflow: ellipsis;
-    padding: rem-calc(4 30 4 8); // slight baseline shift
+    padding: rem-calc(4 8);
+  }
+  &__label {
+    padding-right: rem-calc(30);
+    padding-left: rem-calc(4);
+  }
+  &__key {
+    padding-right: rem-calc(12); // 4 + width of pseudo el
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: rem-calc(8);
+      background-image: svg-uri('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 28"><path stroke="#FFFFFF" fill="none" d="M1,0 7,15 1,28" vector-effect="non-scaling-stroke" ></path></svg>');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+
+    }
   }
 
   &__x {
@@ -201,5 +248,34 @@
     color: white;
     border-left: 1px white solid;
     &:hover { color: white; }
+  }
+
+  &--prefix {
+    @include filterbadge-base;
+    color: grey(60);
+    background-color: grey(20);
+    @include small-caps;
+    padding: rem-calc(4 8);
+    border-radius: rem-calc(6 0 0 6);
+    margin: rem-calc(4 -4 4 0);
+
+    &:after {
+      content: '';
+      position: absolute;
+      right: rem-calc(-6);
+      overflow: visible;
+      top: 0;
+      bottom: 0;
+      width: rem-calc(8);
+      background-image: svg-uri('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 28"><path stroke="#FFFFFF" stroke-width="2px" fill="#cccccc" d="M1,0 7,15 1,28" vector-effect="non-scaling-stroke" ></path></svg>');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      z-index: 1;
+    }
+  }
+  &--prefix + & { // the first badge after prefix
+    border-radius: rem-calc(0 6 6 0);
+    padding-left: rem-calc(4);
+    max-width: 80%;
   }
 }
