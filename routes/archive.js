@@ -1,5 +1,4 @@
 const Boom = require('boom');
-const archiveSchema = require('../schemas/archive.js');
 const TypeMapping = require('../lib/type-mapping');
 const getCachedDocument = require('../lib/cached-document');
 const buildJSONResponse = require('../lib/jsonapi-response');
@@ -9,40 +8,35 @@ const contentType = require('./route-helpers/content-type.js');
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/documents/{id}/{slug?}',
-  config: {
-    validate: {
-      query: archiveSchema
-    },
-    handler: function (request, reply) {
-      var responseType = contentType(request);
+  handler: function (request, reply) {
+    var responseType = contentType(request);
 
-      if (responseType === 'json') {
-        elastic.get({index: 'smg', type: 'archive', id: TypeMapping.toInternal(request.params.id)}, function (err, result) {
-          var fondsId;
+    if (responseType === 'json') {
+      elastic.get({index: 'smg', type: 'archive', id: TypeMapping.toInternal(request.params.id)}, function (err, result) {
+        var fondsId;
+        if (err) {
+          return reply(elasticError(err));
+        }
+        if (result._source.fonds) {
+          fondsId = result._source.fonds[0].admin.uid;
+        } else {
+          fondsId = result._source.admin.uid;
+        }
+        getCachedDocument(elastic, TypeMapping.toInternal(request.params.id), fondsId, function (err, data) {
           if (err) {
             return reply(elasticError(err));
           }
-          if (result._source.fonds) {
-            fondsId = result._source.fonds[0].admin.uid;
-          } else {
-            fondsId = result._source.admin.uid;
-          }
-          getCachedDocument(elastic, TypeMapping.toInternal(request.params.id), fondsId, function (err, data) {
-            if (err) {
-              return reply(elasticError(err));
-            }
-            return reply(Object.assign(buildJSONResponse(result, config), {tree: data})).header('content-type', 'application/vnd.api+json');
-          });
+          return reply(Object.assign(buildJSONResponse(result, config), {tree: data})).header('content-type', 'application/vnd.api+json');
         });
-      }
+      });
+    }
 
-      if (responseType === 'html') {
-        return HTMLResponse(request, reply, elastic, config);
-      }
+    if (responseType === 'html') {
+      return HTMLResponse(request, reply, elastic, config);
+    }
 
-      if (responseType === 'notAcceptable') {
-        return reply('Not Acceptable').code(406);
-      }
+    if (responseType === 'notAcceptable') {
+      return reply('Not Acceptable').code(406);
     }
   }
 });
