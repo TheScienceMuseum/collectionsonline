@@ -206,6 +206,9 @@ Handlebars.registerHelper('museumlinks', require('../templates/helpers/museumlin
 
 // Routes
 module.exports = {
+  '404': Handlebars.compile(
+    Fs.readFileSync('./templates/pages/404.html', 'utf8')
+  ),
   'home': Handlebars.compile(
     Fs.readFileSync('./templates/pages/home.html', 'utf8')
   ),

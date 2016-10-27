@@ -1,0 +1,113 @@
+<main id="main-page">
+{{> global/global-header}}
+{{> global/search-main reduced="reduced"}}
+
+  <div class="page 404-page" role="main">
+
+      <section class="white">
+        <div class="row">
+          <div class="columns">
+            <h1>Page not found</h1>
+            <p>The page you requested doesn't exist, sorry.</p>
+            <p>If you were expecting to see something from our collection, then try using the search above.</p>
+          </div>
+        </div>
+
+      </section>
+
+  </div>
+
+  <section class="record-related">
+    <div class="nested row">
+      <h2 class="columns">Related objects</h2>
+      {{#each items}}
+        <div class="large-2 medium-3 small-4 columns end">
+          <a href="{{link}}">
+            <div class="resultcard resultcard--related ">
+              <figure class="resultcard__figure">
+                {{#if figure}}<img src="{{figure }}" />{{/if}}
+              </figure>
+              <div class="resultcard__info">
+                <h4 class="resultcard__title">{{caption}}</h4>
+              </div>
+            </div>
+          </a>
+        </div>
+      {{/each}}
+    </div>
+  </section>
+
+
+      <!-- <div class="large-2 medium-3 small-4 columns end">
+        <a href="">
+          <div class="resultcard resultcard--related ">
+            <figure class="resultcard__figure">
+            </figure>
+            <div class="resultcard__info">
+              <h4 class="resultcard__title">this.attributes.summary_title</h4>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="large-2 medium-3 small-4 columns end">
+        <a href="">
+          <div class="resultcard resultcard--related ">
+            <figure class="resultcard__figure">
+            </figure>
+            <div class="resultcard__info">
+              <h4 class="resultcard__title">this.attributes.summary_title</h4>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="large-2 medium-3 small-4 columns end">
+        <a href="">
+          <div class="resultcard resultcard--related ">
+            <figure class="resultcard__figure">
+            </figure>
+            <div class="resultcard__info">
+              <h4 class="resultcard__title">this.attributes.summary_title</h4>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="large-2 medium-3 small-4 columns end">
+        <a href="">
+          <div class="resultcard resultcard--related ">
+            <figure class="resultcard__figure">
+            </figure>
+            <div class="resultcard__info">
+              <h4 class="resultcard__title">this.attributes.summary_title</h4>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="large-2 medium-3 small-4 columns end">
+        <a href="">
+          <div class="resultcard resultcard--related ">
+            <figure class="resultcard__figure">
+            </figure>
+            <div class="resultcard__info">
+              <h4 class="resultcard__title">this.attributes.summary_title</h4>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="large-2 medium-3 small-4 columns end">
+        <a href="">
+          <div class="resultcard resultcard--related ">
+            <figure class="resultcard__figure">
+            </figure>
+            <div class="resultcard__info">
+              <h4 class="resultcard__title">this.attributes.summary_title</h4>
+            </div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </section> -->
+
+
+{{> global/global-footer}}
+</main>
