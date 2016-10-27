@@ -11,6 +11,8 @@ const copyEsSearches = require('./copy-es-searches');
 const copyEsrelated = require('./copy-es-related');
 const copyEsChildren = require('./copy-es-children');
 const copyEsAutocompletes = require('./copy-es-autocompletes');
+const search = require('../../lib/search');
+const createQueryParams = require('../../lib/query-params/query-params');
 
 Async.parallel([
   /**
@@ -18,16 +20,19 @@ Async.parallel([
   */
   (cb) => {
     Async.each([
-      { id: 'smgc-agent-108048', type: 'agent', filename: 'example-get-response-death' },
-      { id: 'smga-archive-110000003', type: 'archive', filename: 'example-get-response-document' },
-      { id: 'smgc-object-8245103', type: 'object', filename: 'example-get-response-object' },
-      { id: 'smgc-object-205752', type: 'object', filename: 'example-get-response-object2' },
-      { id: 'smgc-agent-5207', type: 'agent', filename: 'example-get-response-organisation' },
-      { id: 'smgc-agent-36993', type: 'agent', filename: 'example-get-response-person' },
-      { id: 'smgc-agent-86306', type: 'agent', filename: 'example-get-response-with-places' }
+      { id: 'cp108048', type: 'agent', filename: 'example-get-response-death' },
+      { id: 'aa110000003', type: 'archive', filename: 'example-get-response-document' },
+      { id: 'co8245103', type: 'object', filename: 'example-get-response-object' },
+      { id: 'co205752', type: 'object', filename: 'example-get-response-object2' },
+      { id: 'cp5207', type: 'agent', filename: 'example-get-response-organisation' },
+      { id: 'cp36993', type: 'agent', filename: 'example-get-response-person' },
+      { id: 'cp86306', type: 'agent', filename: 'example-get-response-with-places' }
     ], (data, cb) => {
       getElasticDocument(elastic, data.type, data.id, (err, response) => {
-        if (err) return cb(err);
+        if (err) {
+          console.log('Error Elastic', data.id);
+          return cb(err);
+        }
         Fs.writeFile(`${dirData}/${data.filename}.json`, JSON.stringify(response, null, 2), 'utf-8', cb);
       });
     }, cb);
@@ -38,21 +43,21 @@ Async.parallel([
 */
   (cb) => {
     const dataToCopy = [
-      { type: 'archive', id: 'smga-documents-110000316' },
-      { type: 'archive', id: 'smga-documents-wrongid' },
-      {type: 'archive', id: 'smga-documents-110069402'},
-      {type: 'archive', id: 'smga-documents-110000003'},
-      {type: 'archive', id: 'smga-documents-110066453'},
-      {type: 'object', id: 'smgc-objects-37959'},
-      {type: 'object', id: 'smgc-objects-wrongid'},
-      {type: 'object', id: 'smgc-objects-67812'},
-      {type: 'object', id: 'smgc-objects-520148'},
-      {type: 'object', id: 'smgc-objects-8229027'},
-      {type: 'object', id: 'smgc-objects-114820'},
-      {type: 'agent', id: 'smgc-people-17351'},
-      {type: 'agent', id: 'smgc-people-36993'},
-      {type: 'agent', id: 'smgc-people-wrongid'},
-      {type: 'agent', id: 'smga-people-24329'}
+      { type: 'archive', id: 'aa110000316' },
+      { type: 'archive', id: 'aawrongid' },
+      {type: 'archive', id: 'aa110069402'},
+      {type: 'archive', id: 'aa110000003'},
+      {type: 'archive', id: 'aa110066453'},
+      {type: 'object', id: 'co37959'},
+      {type: 'object', id: 'cowrongid'},
+      {type: 'object', id: 'co67812'},
+      {type: 'object', id: 'co520148'},
+      {type: 'object', id: 'co8229027'},
+      {type: 'object', id: 'co114820'},
+      {type: 'agent', id: 'cp17351'},
+      {type: 'agent', id: 'cp36993'},
+      {type: 'agent', id: 'cpwrongid'},
+      {type: 'agent', id: 'ap24329'}
     ];
 
     const searchToCopy = [
@@ -74,17 +79,17 @@ Async.parallel([
     ];
 
     const related = [
-      {id: 'smgc-people-36993'},
-      {id: 'smgc-people-17351'},
-      {id: 'smgc-people-2735'}
+      {id: 'cp36993'},
+      {id: 'cp17351'},
+      {id: 'cp2735'}
     ];
 
     const children = [
-      {id: 'smga-documents-110000003'},
-      {id: 'smga-archive-110000316'},
-      {id: 'smga-documents-110000036'},
-      {id: 'smga-documents-110066453'},
-      {id: 'smga-documents-110000009'}
+      {id: 'aa110000003'},
+      {id: 'aa110000316'},
+      {id: 'aa110000036'},
+      {id: 'aa110066453'},
+      {id: 'aa110000009'}
     ];
 
     const autocompletes = [
@@ -102,6 +107,14 @@ Async.parallel([
     ], (err) => {
       if (err) throw err;
       Fs.writeFile(dirData + '/database.json', JSON.stringify(database, null, 2), 'utf-8', cb);
+    });
+  },
+
+  // Aggregations
+  (cb) => {
+    search(elastic, createQueryParams('html', {query: {q: 'test'}, params: {}}), (err, response) => {
+      if (err) throw err;
+      Fs.writeFile(dirData + '/../../helpers/aggregations-all.json', JSON.stringify(response.aggregations.all, null, 2), 'utf-8', cb);
     });
   }
 ], (err) => {
