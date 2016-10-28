@@ -37,23 +37,28 @@
   </div>
 {{/if}}
 
-<!-- ON DISPLAY -->
+<!-- ON DISPLAY: MUSEUM -->
 {{#if filters.museum.length}}
-<div class="filter filter--active filter--open" data-filter="Museum">
-  <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">On Display</a>
-  <div class="filter__options">
-    <ul>
-      {{#each filters.museum}}
-      <li><label><input type="checkbox" class="filter__box filter__museum__{{classname value}}" name="filter[museum]" value="{{value}}" {{isselected ../selectedFilters "museum" value galleries}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
-        <ul class="nested-galleries">
-          {{#each galleries}}
-            <li><label><input type="checkbox" class="filter__box filter__gallery__{{classname ../value}}" name="filter[gallery]" value="{{key}}" {{isselected ../../selectedFilters "gallery" key}}/>{{key}}<span class="filter__count">{{doc_count}}</span></label></li>
-          {{/each}}
-        </ul>
-      {{/each}}
-    </ul>
+  {{#if (activeFacet selectedFilters 'museum')}}
+  <div class="filter filter--active filter--open" data-filter="Museum">
+    <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">On Display</a>
+    {{else}}
+    <div class="filter filter--open" data-filter="Museum">
+      <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">On Display</a>
+    {{/if}}
+    <div class="filter__options">
+      <ul>
+        {{#each filters.museum}}
+        <li><label><input type="checkbox" class="filter__box filter__museum__{{classname value}}" name="filter[museum]" value="{{value}}" {{isselected ../selectedFilters "museum" value galleries}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+          <ul class="nested-galleries">
+            {{#each galleries}}
+              <li><label><input type="checkbox" class="filter__box filter__gallery__{{classname ../value}}" name="filter[gallery]" value="{{key}}" {{isselected ../../selectedFilters "gallery" key}}/>{{key}}<span class="filter__count">{{doc_count}}</span></label></li>
+            {{/each}}
+          </ul>
+        {{/each}}
+      </ul>
+    </div>
   </div>
-</div>
 {{/if}}
 
 <!-- TYPE -->
