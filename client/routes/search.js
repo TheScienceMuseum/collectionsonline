@@ -1,5 +1,5 @@
 var QueryString = require('querystring');
-var fetch = require('fetch-ponyfill')();
+var fetch = require('fetch-ponyfill')().fetch;
 var initComp = require('../lib/init-components');
 var Templates = require('../templates');
 var createQueryParams = require('../../lib/query-params/query-params');
