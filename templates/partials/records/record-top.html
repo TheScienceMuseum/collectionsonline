@@ -6,7 +6,23 @@
         <dl class="record-top__dl fact-{{classname this.key}}">
           <dt>{{ this.key }}:</dt>
           {{#if this.place}}
-            <dd>{{#if this.date.value}}{{#if this.date.link }}<a href="{{this.date.link}}">{{/if}}{{ this.date.value }}{{#if this.date.link }}</a>{{/if}}{{/if}} {{#if this.place.value}}in <a href="{{this.place.link}}">{{ this.place.value }}</a>{{/if}}</dd>
+            <dd>
+              {{#if this.date.value}}
+                {{#if this.date.link }}<a href="{{this.date.link}}">{{/if}}
+                {{ this.date.value }}
+                {{#if this.date.link }}</a>{{/if}}
+              {{/if}}
+
+              {{#if this.date.value}}
+                {{#if this.place.value}}
+                  in
+                {{/if}}
+              {{/if}}
+
+              {{#if this.place.value}}
+                <a href="{{this.place.link}}">{{ this.place.value }}</a>
+              {{/if}}
+            </dd>
           {{else}}
             {{#each this.value}}
               <dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{ this.value }}{{#if this.link }}</a>{{/if}}</dd>
