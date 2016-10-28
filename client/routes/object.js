@@ -7,6 +7,7 @@ var searchListener = require('../lib/search-listener');
 var Snackbar = require('snackbarlightjs');
 var osdListener = require('../lib/osd-listener');
 var downloadImageListener = require('../lib/download-image');
+var hideKeyboard = require('../lib/hide-keyboard');
 
 module.exports = function (page) {
   page('/objects/:id/:slug?', load, render, listeners);
@@ -41,6 +42,7 @@ function render (ctx, next) {
   var pageEl = document.getElementsByTagName('main')[0];
   pageEl.innerHTML = Templates['objects'](ctx.state.data);
   document.getElementsByTagName('title')[0].textContent = ctx.state.data.titlePage;
+  hideKeyboard();
   window.scrollTo(0, 0);
   next();
 }
