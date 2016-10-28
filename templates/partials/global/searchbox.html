@@ -17,6 +17,7 @@
       {{/each}}
       {{#each museumFilters}}
       <div class="filterbadge" data-filter="Museum">
+        <dt class="filterbadge__key">Museum</dt>
         <div class="filterbadge__label">{{this}}</div>
         <a class="filterbadge__x" href="{{../links.clearMuseumLink}}" title="remove">✕</a>
         <input type="hidden" class='searchbox__museum__filter' name="filter[museum]" value="{{this}}">
@@ -24,6 +25,7 @@
       {{/each}}
       {{#each archiveFilters}}
       <div class="filterbadge" data-filter="Archive">
+        <dt class="filterbadge__key">Archive</dt>
         <div class="filterbadge__label">{{this}}</div>
         <a class="filterbadge__x" href="{{../links.clearArchiveLink}}" title="remove">✕</a>
         <input type="hidden" class='searchbox__archive__filter' name="filter[archive]" value="{{this}}">
