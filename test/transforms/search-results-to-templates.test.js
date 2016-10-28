@@ -24,10 +24,12 @@ const testResult = {
       documents: { doc_count: 0, documents_total: [{value: 29}] },
       objects: { doc_count: 13, objects_total: [{value: 3304}] },
       people: { doc_count: 4, people_total: [{value: 221}] },
-      all: { doc_count: 17, all_total: {
-        doc_count_error_upper_bound: 0,
-        sum_other_doc_count: 0,
-        buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ] } } }
+      all: {
+        doc_count: 17,
+        all_total: {
+          doc_count_error_upper_bound: 0,
+          sum_other_doc_count: 0,
+          buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ] } } }
   }
 };
 

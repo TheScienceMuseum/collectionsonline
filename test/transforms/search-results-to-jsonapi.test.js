@@ -19,7 +19,8 @@ test(file + 'Should create valid meta count numbers', (t) => {
       total: 3554,
       max_score: null,
       hits: [
-        { _type: 'object',
+        {
+          _type: 'object',
           _id: `smg-object-${Date.now()}`,
           _source: {
             summary_title: 'this is the summary title'
@@ -33,10 +34,15 @@ test(file + 'Should create valid meta count numbers', (t) => {
         documents: { doc_count: 0, documents_total: [{value: 29}] },
         objects: { doc_count: 13, objects_total: [{value: 3304}] },
         people: { doc_count: 4, people_total: [{value: 221}] },
-        all: { doc_count: 17, all_total: {
-          doc_count_error_upper_bound: 0,
-          sum_other_doc_count: 0,
-          buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ] } } }
+        all: {
+          doc_count: 17,
+          all_total: {
+            doc_count_error_upper_bound: 0,
+            sum_other_doc_count: 0,
+            buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ]
+          }
+        }
+      }
     }
   };
 
@@ -84,10 +90,15 @@ test(file + 'Should create valid meta default count numbers for empty aggregatio
         documents: { doc_count: 0, documents_total: [{value: 29}] },
         objects: { doc_count: 13, objects_total: [{value: 3304}] },
         people: { doc_count: 4, people_total: [{value: 221}] },
-        all: { doc_count: 17, all_total: {
-          doc_count_error_upper_bound: 0,
-          sum_other_doc_count: 0,
-          buckets: [] } } }
+        all: {
+          doc_count: 17,
+          all_total: {
+            doc_count_error_upper_bound: 0,
+            sum_other_doc_count: 0,
+            buckets: []
+          }
+        }
+      }
     }
   };
 
@@ -135,10 +146,15 @@ test(file + 'Should create valid links on first page', (t) => {
         documents: { doc_count: 0, documents_total: [{value: 29}] },
         objects: { doc_count: 13, objects_total: [{value: 3304}] },
         people: { doc_count: 4, people_total: [{value: 221}] },
-        all: { doc_count: 17, all_total: {
-          doc_count_error_upper_bound: 0,
-          sum_other_doc_count: 0,
-          buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ] } } }
+        all: {
+          doc_count: 17,
+          all_total: {
+            doc_count_error_upper_bound: 0,
+            sum_other_doc_count: 0,
+            buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ]
+          }
+        }
+      }
     }
   };
 
@@ -196,10 +212,15 @@ test(file + 'Should create valid links on middle page', (t) => {
         documents: { doc_count: 0, documents_total: [{value: 29}] },
         objects: { doc_count: 13, objects_total: [{value: 3304}] },
         people: { doc_count: 4, people_total: [{value: 221}] },
-        all: { doc_count: 17, all_total: {
-          doc_count_error_upper_bound: 0,
-          sum_other_doc_count: 0,
-          buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ] } } }
+        all: {
+          doc_count: 17,
+          all_total: {
+            doc_count_error_upper_bound: 0,
+            sum_other_doc_count: 0,
+            buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ]
+          }
+        }
+      }
     }
   };
   testResult.aggregations.all = aggregationsAll;
@@ -258,10 +279,15 @@ test(file + 'Should create valid links on last page', (t) => {
         documents: { doc_count: 0, documents_total: [{value: 29}] },
         objects: { doc_count: 13, objects_total: [{value: 3304}] },
         people: { doc_count: 4, people_total: [{value: 221}] },
-        all: { doc_count: 17, all_total: {
-          doc_count_error_upper_bound: 0,
-          sum_other_doc_count: 0,
-          buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ] } } }
+        all: {
+          doc_count: 17,
+          all_total: {
+            doc_count_error_upper_bound: 0,
+            sum_other_doc_count: 0,
+            buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ]
+          }
+        }
+      }
     }
   };
 
@@ -320,10 +346,15 @@ test(file + 'Should ignore unknown object types', (t) => {
         documents: { doc_count: 0, documents_total: [{value: 29}] },
         objects: { doc_count: 13, objects_total: [{value: 3304}] },
         people: { doc_count: 4, people_total: [{value: 221}] },
-        all: { doc_count: 17, all_total: {
-          doc_count_error_upper_bound: 0,
-          sum_other_doc_count: 0,
-          buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ] } } }
+        all: {
+          doc_count: 17,
+          all_total: {
+            doc_count_error_upper_bound: 0,
+            sum_other_doc_count: 0,
+            buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ]
+          }
+        }
+      }
     }
   };
 
@@ -379,10 +410,15 @@ test(file + 'Should extract @link\'d document to relationships and included', (t
         documents: { doc_count: 0, documents_total: [{value: 29}] },
         objects: { doc_count: 13, objects_total: [{value: 3304}] },
         people: { doc_count: 4, people_total: [{value: 221}] },
-        all: { doc_count: 17, all_total: {
-          doc_count_error_upper_bound: 0,
-          sum_other_doc_count: 0,
-          buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ] } } }
+        all: {
+          doc_count: 17,
+          all_total: {
+            doc_count_error_upper_bound: 0,
+            sum_other_doc_count: 0,
+            buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ]
+          }
+        }
+      }
     }
   };
 

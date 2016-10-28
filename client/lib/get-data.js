@@ -1,5 +1,4 @@
-var fetch = require('fetch-ponyfill')();
-// var searchResultsToTemplateData = require('../../lib/transforms/search-results-to-template-data');
+var fetch = require('fetch-ponyfill')().fetch;
 
 module.exports = function (url, opts, cb) {
   fetch(url, opts)

@@ -17,8 +17,10 @@ module.exports = (ctx) => {
       lazyLoad: 1,
       arrowShape: {
         x0: 30,
-        x1: 63.5, y1: 50,
-        x2: 70, y2: 45.5,
+        x1: 63.5,
+        y1: 50,
+        x2: 70,
+        y2: 45.5,
         x3: 40
       }
     });
