@@ -1,7 +1,7 @@
 {
-  "doc_count": 996,
+  "doc_count": 711,
   "occupation": {
-    "doc_count": 996,
+    "doc_count": 711,
     "occupation_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -14,62 +14,62 @@
     }
   },
   "count": {
-    "doc_count": 996,
+    "doc_count": 711,
     "count_filters": {
-      "value": 996
+      "value": 711
     }
   },
   "maker": {
-    "doc_count": 996,
+    "doc_count": 711,
     "maker_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 182,
+      "sum_other_doc_count": 115,
       "buckets": [
         {
           "key": "Unknown maker",
-          "doc_count": 55
-        },
-        {
-          "key": "English Electric Company Limited",
-          "doc_count": 16
-        },
-        {
-          "key": "Unknown photographer",
-          "doc_count": 13
+          "doc_count": 51
         },
         {
           "key": "Hinde",
-          "doc_count": 10
+          "doc_count": 8
         },
         {
           "key": "Hinde, John",
-          "doc_count": 10
+          "doc_count": 8
         },
         {
           "key": "John",
-          "doc_count": 10
-        },
-        {
-          "key": "GEC Traction Limited",
-          "doc_count": 7
-        },
-        {
-          "key": "C H Stoelting Company",
-          "doc_count": 6
+          "doc_count": 8
         },
         {
           "key": "Unipath Limited",
           "doc_count": 6
         },
         {
-          "key": "Margaret Lowenfeld",
+          "key": "C H Stoelting Company",
           "doc_count": 5
+        },
+        {
+          "key": "Margaret Lowenfeld",
+          "doc_count": 4
+        },
+        {
+          "key": "National Institute of Industrial Psychology",
+          "doc_count": 4
+        },
+        {
+          "key": "Parke, Davis and Company Inc.",
+          "doc_count": 4
+        },
+        {
+          "key": "Wendy Ramshaw",
+          "doc_count": 4
         }
       ]
     }
   },
   "organisation": {
-    "doc_count": 996,
+    "doc_count": 711,
     "organisations_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -82,126 +82,118 @@
     }
   },
   "archive": {
-    "doc_count": 996,
+    "doc_count": 711,
     "archive_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "GEC Traction Archive",
-          "doc_count": 24
-        },
-        {
-          "key": "Business records of W. T. Glover & Co. Ltd",
-          "doc_count": 2
-        },
-        {
-          "key": "Civil Defence Archive for British Railways Eastern Region",
-          "doc_count": 1
+          "doc_count": 3
         }
       ]
     }
   },
   "type": {
-    "doc_count": 964,
+    "doc_count": 707,
     "type_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 1020,
+      "sum_other_doc_count": 768,
       "buckets": [
         {
           "key": "test tubes",
-          "doc_count": 97
+          "doc_count": 96
         },
         {
           "key": "laboratory (apparatus)",
-          "doc_count": 75
+          "doc_count": 72
         },
         {
           "key": "urine test kits",
-          "doc_count": 57
-        },
-        {
-          "key": "ophthalmology (visual acuity)",
           "doc_count": 55
         },
         {
-          "key": "test types",
-          "doc_count": 43
-        },
-        {
-          "key": "diagnosis (genito-urinary)",
-          "doc_count": 38
+          "key": "ophthalmology (visual acuity)",
+          "doc_count": 45
         },
         {
           "key": "psychological test",
           "doc_count": 38
         },
         {
-          "key": "ophthalmology (binocular vision)",
-          "doc_count": 17
+          "key": "diagnosis (genito-urinary)",
+          "doc_count": 36
+        },
+        {
+          "key": "test types",
+          "doc_count": 33
         },
         {
           "key": "test-types",
           "doc_count": 17
         },
         {
-          "key": "wall charts",
-          "doc_count": 17
+          "key": "ophthalmology (astigmatism)",
+          "doc_count": 15
+        },
+        {
+          "key": "psychometric test",
+          "doc_count": 15
         }
       ]
     }
   },
   "material": {
-    "doc_count": 996,
+    "doc_count": 711,
     "material_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 551,
+      "sum_other_doc_count": 425,
       "buckets": [
         {
           "key": "glass",
-          "doc_count": 132
-        },
-        {
-          "key": "paper",
           "doc_count": 115
         },
         {
+          "key": "paper",
+          "doc_count": 100
+        },
+        {
           "key": "wood",
-          "doc_count": 63
+          "doc_count": 53
         },
         {
           "key": "cardboard",
-          "doc_count": 57
-        },
-        {
-          "key": "paper (fibre product)",
-          "doc_count": 54
-        },
-        {
-          "key": "plastic",
           "doc_count": 44
         },
         {
           "key": "metal",
-          "doc_count": 43
+          "doc_count": 40
+        },
+        {
+          "key": "plastic",
+          "doc_count": 38
         },
         {
           "key": "steel",
-          "doc_count": 29
+          "doc_count": 24
+        },
+        {
+          "key": "paper (fibre product)",
+          "doc_count": 23
         },
         {
           "key": "brass",
-          "doc_count": 21
+          "doc_count": 17
         },
         {
           "key": "cloth",
-          "doc_count": 17
+          "doc_count": 14
         }
       ]
     }
   },
   "museum": {
-    "doc_count": 996,
+    "doc_count": 711,
     "museum_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -294,105 +286,105 @@
     }
   },
   "place": {
-    "doc_count": 996,
+    "doc_count": 711,
     "place_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 149,
+      "sum_other_doc_count": 97,
       "buckets": [
         {
           "key": "London",
-          "doc_count": 66
+          "doc_count": 49
         },
         {
           "key": "United Kingdom",
-          "doc_count": 40
+          "doc_count": 33
         },
         {
           "key": "England",
-          "doc_count": 35
-        },
-        {
-          "key": "Exmoor, England, United Kingdom",
-          "doc_count": 10
+          "doc_count": 25
         },
         {
           "key": "Manchester",
-          "doc_count": 10
-        },
-        {
-          "key": "New Mexico",
           "doc_count": 9
         },
         {
-          "key": "South Kensington, London, England, United Kingdom",
-          "doc_count": 9
+          "key": "Exmoor, England, United Kingdom",
+          "doc_count": 8
         },
         {
           "key": "United States",
-          "doc_count": 9
-        },
-        {
-          "key": "Chicago",
           "doc_count": 8
         },
         {
           "key": "France",
-          "doc_count": 8
+          "doc_count": 7
+        },
+        {
+          "key": "Bedford",
+          "doc_count": 5
+        },
+        {
+          "key": "Chicago",
+          "doc_count": 5
+        },
+        {
+          "key": "Scotland",
+          "doc_count": 5
         }
       ]
     }
   },
   "category": {
-    "doc_count": 996,
+    "doc_count": 711,
     "category_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 249,
+      "sum_other_doc_count": 135,
       "buckets": [
         {
           "key": "Psychology, Psychiatry & Anthropometry",
-          "doc_count": 176
-        },
-        {
-          "key": "Ophthalmology",
-          "doc_count": 122
+          "doc_count": 161
         },
         {
           "key": "Laboratory Medicine",
-          "doc_count": 116
+          "doc_count": 108
+        },
+        {
+          "key": "Ophthalmology",
+          "doc_count": 99
         },
         {
           "key": "Clinical Diagnosis",
-          "doc_count": 95
-        },
-        {
-          "key": "Farnborough",
-          "doc_count": 74
+          "doc_count": 86
         },
         {
           "key": "Public Health & Hygiene",
-          "doc_count": 37
-        },
-        {
-          "key": "Photographs",
           "doc_count": 29
         },
         {
-          "key": "Experimental Chemistry",
-          "doc_count": 23
-        },
-        {
-          "key": "Telecommunications",
-          "doc_count": 23
+          "key": "Farnborough",
+          "doc_count": 26
         },
         {
           "key": "Gas Industry",
-          "doc_count": 20
+          "doc_count": 17
+        },
+        {
+          "key": "Microbiology",
+          "doc_count": 16
+        },
+        {
+          "key": "Telecommunications",
+          "doc_count": 16
+        },
+        {
+          "key": "Experimental Chemistry",
+          "doc_count": 14
         }
       ]
     }
   },
   "place_born": {
-    "doc_count": 996,
+    "doc_count": 711,
     "place_born_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -405,10 +397,10 @@
     }
   },
   "user": {
-    "doc_count": 996,
+    "doc_count": 711,
     "user_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 52,
+      "sum_other_doc_count": 39,
       "buckets": [
         {
           "key": "Joseph Lister",
@@ -423,11 +415,11 @@
           "doc_count": 5
         },
         {
-          "key": "null Brunton, Sir Thomas Lauder",
-          "doc_count": 5
+          "key": "William Picken Alexander",
+          "doc_count": 3
         },
         {
-          "key": "William Picken Alexander",
+          "key": "null Brunton, Sir Thomas Lauder",
           "doc_count": 3
         },
         {
@@ -439,22 +431,22 @@
           "doc_count": 2
         },
         {
-          "key": "Edward G D Tuddenham",
-          "doc_count": 2
-        },
-        {
           "key": "George Cowell",
           "doc_count": 2
         },
         {
           "key": "Gertrude Lillian Baker",
           "doc_count": 2
+        },
+        {
+          "key": "Margaret Lowenfeld",
+          "doc_count": 2
         }
       ]
     }
   },
   "gallery": {
-    "doc_count": 996,
+    "doc_count": 711,
     "gallery_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
