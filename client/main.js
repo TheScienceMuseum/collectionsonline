@@ -9,6 +9,7 @@ require('./routes/object')(page);
 require('./routes/person')(page);
 require('./routes/document')(page);
 require('./routes/museums')(page);
+require('./routes/api')(page);
 
 // Post-route middleware for all pages
 require('./middleware/error-404')(page);
