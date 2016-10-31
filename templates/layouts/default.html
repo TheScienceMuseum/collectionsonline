@@ -11,10 +11,16 @@
     <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-96x96.png" sizes="96x96">
     <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-16x16.png" sizes="16x16">
     <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico">
+    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@sciencemuseum" />
     <meta name="twitter:title" content="{{titlePage}}" />
-    <meta name="twitter:description" content="{{description.initialDescription}}" />
+    <meta name="twitter:description" content="{{description.primary.initialDescription}}" />
+    <!-- Open Graph data -->
+    <meta property="og:title" content="{{titlePage}}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="{{links.self}}" />
+    <meta property="og:description" content="{{description.primary.initialDescription}}" />
     <script type="application/ld+json">
       {{{jsonLD}}}
     </script>
