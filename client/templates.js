@@ -243,5 +243,8 @@ module.exports = {
   ),
   'search-main': Handlebars.compile(
     Fs.readFileSync('./templates/partials/global/search-main.html', 'utf8')
+  ),
+  'api': Handlebars.compile(
+    Fs.readFileSync('./templates/pages/api.html', 'utf8')
   )
 };

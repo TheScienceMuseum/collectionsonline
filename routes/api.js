@@ -2,6 +2,7 @@ const Boom = require('boom');
 const buildJSONResponse = require('../lib/jsonapi-response');
 const TypeMapping = require('../lib/type-mapping');
 var beautify = require('json-beautify');
+var contentType = require('./route-helpers/content-type.js');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -16,7 +17,14 @@ module.exports = (elastic, config) => ({
           return reply(Boom.serverUnavailable('unavailable'));
         }
 
-        return reply(beautify(buildJSONResponse(result, config), null, 2, 80)).header('content-type', 'application/vnd.api+json');
+        var responseType = contentType(request);
+
+        var apiData = beautify(buildJSONResponse(result, config), null, 2, 80);
+        if (responseType === 'json') {
+          return reply(apiData).header('content-type', 'application/vnd.api+json');
+        } else {
+          return reply.view('api', {api: apiData});
+        }
       });
     }
   }
