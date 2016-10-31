@@ -23,8 +23,11 @@ module.exports = function (page) {
   }
 
   function render (ctx, next) {
+    // create partial for this specific view
     var body = document.getElementsByTagName('body')[0];
-    console.log(body);
-    body.textContent = ctx.json;
+    var pre = document.createElement('pre');
+    pre.textContent = ctx.json;
+    body.innerHTML = '';
+    body.appendChild(pre);
   }
 };
