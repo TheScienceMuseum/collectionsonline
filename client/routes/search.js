@@ -62,8 +62,19 @@ function render (ctx, next) {
   window.scrollTo(0, 0);
   hideKeyboard();
   loadingBar.end();
+
+  var searchResults = document.querySelector('.results-page');
+  var searchBar = document.querySelector('.search-main');
   var pageEl = document.getElementsByTagName('main')[0];
-  pageEl.innerHTML = Templates['search'](ctx.state.data);
+
+  if (searchResults && searchBar) {
+    // If already on the search page, just re-render the results
+    searchBar.innerHTML = Templates['search-main'](ctx.state.data);
+    searchResults.innerHTML = Templates['search-results'](ctx.state.data);
+  } else {
+    // Else re-render the whole page
+    pageEl.innerHTML = Templates['search'](ctx.state.data);
+  }
 
   // Shows filter toggle button if javascript enabled
   var fb = document.getElementById('fb');

@@ -237,5 +237,11 @@ module.exports = {
   ),
   'archiveTree': Handlebars.compile(
     Fs.readFileSync('./templates/partials/records/archive-tree.html', 'utf8')
+  ),
+  'search-results': Handlebars.compile(
+    Fs.readFileSync('./templates/partials/search/results-page.html', 'utf8')
+  ),
+  'search-main': Handlebars.compile(
+    Fs.readFileSync('./templates/partials/global/search-main.html', 'utf8')
   )
 };

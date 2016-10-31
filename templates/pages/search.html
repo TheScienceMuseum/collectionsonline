@@ -1,8 +1,13 @@
 <main id="main-page">
   {{> global/global-header}}
 
-  {{> global/search-main }}
-  {{> search/results-page }}
+  <div class="search-main">
+    {{> global/search-main }}
+  </div>
+
+  <div class="results-page">
+    {{> search/results-page }}
+  </div>
 
   {{> global/global-footer }}
 </main>
