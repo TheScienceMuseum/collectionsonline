@@ -560,6 +560,22 @@ testWithServer('Specific api endpoint', {}, (t, ctx) => {
   });
 });
 
+testWithServer('Specific api endpoint, html response', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/api/objects/co8357578',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.statusCode, 200, 'status is 200');
+    t.ok(res.headers['content-type'].indexOf('text/html') > -1, 'html response');
+    t.end();
+  });
+});
+
 testWithServer('non-existent api endpoint', {}, (t, ctx) => {
   t.plan(1);
 

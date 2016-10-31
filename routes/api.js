@@ -20,12 +20,10 @@ module.exports = (elastic, config) => ({
         var responseType = contentType(request);
 
         var apiData = beautify(buildJSONResponse(result, config), null, 2, 80);
-        if (responseType === 'html') {
-          return reply.view('api', {api: apiData});
-        }
-
         if (responseType === 'json') {
           return reply(apiData).header('content-type', 'application/vnd.api+json');
+        } else {
+          return reply.view('api', {api: apiData});
         }
       });
     }
