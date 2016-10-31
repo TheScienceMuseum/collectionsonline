@@ -16,7 +16,7 @@
             {{else}}
               {{#each this.value}}
                 {{#if this.link}}<a href="{{this.link}}" title="[link to filtered search results]">{{/if}}
-                  {{{ this.value }}}{{#if this.link}}</a>{{/if}}{{comma this ../this}}
+                  {{{ this.value }}}{{#if this.link}}</a>{{/if}}{{comma this ../this.value false}}
               {{else}}
                 {{#if link}}<a href="{{link}}" title="[link to filtered search results]">{{/if}}
                   {{{ this.value }}}

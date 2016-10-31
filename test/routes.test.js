@@ -570,7 +570,23 @@ testWithServer('non-existent api endpoint', {}, (t, ctx) => {
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.statusCode, 404, 'status is 404');
+    t.equal(res.statusCode, 404, 'status is 404');
+    t.end();
+  });
+});
+
+testWithServer('Multiple Makers', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/objects/co63869',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'status is ok');
+    t.ok(res.payload.indexOf('Germany</a> and') > -1, 'Renders multiple makers correctly');
     t.end();
   });
 });
