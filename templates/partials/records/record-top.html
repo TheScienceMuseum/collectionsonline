@@ -5,7 +5,7 @@
       {{#each fact}}
         <dl class="record-top__dl fact-{{classname this.key}}">
           <dt>{{ this.key }}:</dt>
-          {{#if this.place}}
+          {{#isequal this.key 'Made' this}}
             <dd>
               {{#if this.date.value}}
                 {{#if this.date.link }}<a href="{{this.date.link}}">{{/if}}
@@ -14,14 +14,14 @@
               {{/if}}
 
               {{#if this.date.value}}
-                {{#if this.place.value}}
+                {{#if this.place}}
                   in
                 {{/if}}
               {{/if}}
 
-              {{#if this.place.value}}
-                <a href="{{this.place.link}}">{{ this.place.value }}</a>
-              {{/if}}
+              {{#each this.place}}
+                <a href="{{link}}">{{ value }}</a>{{comma this ../this.place true}}
+              {{/each}}
             </dd>
           {{else}}
             {{#each this.value}}
@@ -29,7 +29,7 @@
             {{else}}
               <dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{ this.value }}{{#if this.link }}</a>{{/if}}</dd>
             {{/each}}
-          {{/if}}
+          {{/isequal}}
         </dl>
       {{/each}}
       </div>

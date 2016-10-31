@@ -206,6 +206,8 @@ Handlebars.registerHelper('normalise', require('../templates/helpers/normalise.j
 
 Handlebars.registerHelper('museumlinks', require('../templates/helpers/museumlinks.js'));
 
+Handlebars.registerHelper('isequal', require('../templates/helpers/isequal.js'));
+
 // Routes
 module.exports = {
   '404': Handlebars.compile(

@@ -34,9 +34,9 @@ test('Normal date and place test', (t) => {
   t.ok(made, 'Data has facts');
   t.ok(made.place, 'Data has a place');
   t.ok(made.date, 'Data has a date');
-  t.equal(made.place.value, 'London', 'Made location is correct');
+  t.ok(made.place.find(e => e.value === 'London'), 'Made location is correct');
   t.equal(made.date.value, '1912', 'Made date is correct');
-  t.equal(made.place.link, 'http://localhost:8000/search?filter[places]=London', 'Place Link is correct');
+  t.ok(made.place.find(e => e.link === 'http://localhost:8000/search?filter[places]=London'), 'Place Link is correct');
   t.equal(made.date.link, 'http://localhost:8000/search?date[from]=1912&date[to]=1912', 'Date link is correct');
   t.end();
 });
