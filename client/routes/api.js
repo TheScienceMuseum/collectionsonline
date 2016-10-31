@@ -1,5 +1,6 @@
 var getData = require('../lib/get-data.js');
 var Snackbar = require('snackbarlightjs');
+var Templates = require('../templates');
 
 module.exports = function (page) {
   page('/api/:type/:id', load, render);
@@ -23,11 +24,7 @@ module.exports = function (page) {
   }
 
   function render (ctx, next) {
-    // create partial for this specific view
-    var body = document.getElementsByTagName('body')[0];
-    var pre = document.createElement('pre');
-    pre.textContent = ctx.json;
-    body.innerHTML = '';
-    body.appendChild(pre);
+    var pageEl = document.getElementsByTagName('main')[0];
+    pageEl.innerHTML = Templates['api']({api: ctx.json});
   }
 };
