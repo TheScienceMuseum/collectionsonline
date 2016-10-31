@@ -7,7 +7,7 @@ module.exports = (elastic, config, cb) => {
 
   server.connection({
     port: config.port,
-    routes: { cors: true }
+    routes: { cors: true, log: true }
   });
 
   server.route(routes(elastic, config));

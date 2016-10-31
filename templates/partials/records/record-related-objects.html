@@ -19,18 +19,20 @@
         {{/formatrelated}}
       {{/each}}
 
-      {{#seemore related.objects}}
-        <div class="large-2 medium-3 small-4 columns end">
-          <a href="/search/objects?filter[makers]={{this.title}}">
-            <div class="resultcard resultcard--seemore see-more-objects">
-              <figure class="resultcard__figure">{{> global/icon i="search" size="48" }}</figure>
-              <div class="resultcard__info">
-                See more related objects
+      {{#isequal this.type 'people' this}}
+        {{#seemore related.objects}}
+          <div class="large-2 medium-3 small-4 columns end">
+            <a href="/search/objects?filter[makers]={{normalise this.title this}}">
+              <div class="resultcard resultcard--seemore see-more-objects">
+                <figure class="resultcard__figure">{{> global/icon i="search" size="48" }}</figure>
+                <div class="resultcard__info">
+                  See more related objects
+                </div>
               </div>
-            </div>
-          </a>
-        </div>
-      {{/seemore}}
+            </a>
+          </div>
+        {{/seemore}}
+      {{/isequal}}
 
     </div>
   </section>

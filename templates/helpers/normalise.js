@@ -3,6 +3,6 @@ module.exports = function normaliseName (name, obj) {
     return name;
   } else {
     var splitName = name.split(',');
-    return splitName[1] + ' ' + splitName[0];
+    return (splitName[1] + ' ' + splitName[0]).trim();
   }
 };

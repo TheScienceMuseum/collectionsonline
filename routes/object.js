@@ -5,6 +5,8 @@ const buildJSONResponse = require('../lib/jsonapi-response');
 const TypeMapping = require('../lib/type-mapping');
 const JSONToHTML = require('../lib/transforms/json-to-html-data.js');
 const contentType = require('./route-helpers/content-type.js');
+const getSimilarObjects = require('../lib/get-similar-objects');
+const sortRelated = require('../lib/sort-related-items');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -21,7 +23,15 @@ module.exports = (elastic, config) => ({
             return reply(Boom.serverUnavailable('unavailable'));
           }
 
-          return reply(buildJSONResponse(result, config)).header('content-type', 'application/vnd.api+json');
+          getSimilarObjects(result, elastic, function (err, relatedItems) {
+            if (err) {
+              relatedItems = null;
+            } else {
+              relatedItems = sortRelated(relatedItems);
+            }
+
+            return reply(buildJSONResponse(result, config, relatedItems)).header('content-type', 'application/vnd.api+json');
+          });
         });
       }
 
@@ -50,9 +60,17 @@ function HTMLResponse (request, reply, elastic, config) {
       return reply(Boom.serverUnavailable('unavailable'));
     }
 
-    const JSONData = buildJSONResponse(result, config);
-    const HTMLData = JSONToHTML(JSONData);
+    getSimilarObjects(result, elastic, function (err, relatedItems) {
+      if (err) {
+        relatedItems = null;
+      } else {
+        relatedItems = sortRelated(relatedItems);
+      }
 
-    return reply.view('object', Object.assign(HTMLData, data));
+      const JSONData = buildJSONResponse(result, config, relatedItems);
+      const HTMLData = JSONToHTML(JSONData);
+
+      return reply.view('object', Object.assign(HTMLData, data));
+    });
   });
 }

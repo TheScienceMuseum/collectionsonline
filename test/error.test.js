@@ -211,3 +211,36 @@ testWithServer('Specific api endpoint error', {mock: {method: 'get', response: {
     t.end();
   });
 });
+
+testWithServer('Search for similar objects error', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/objects/co8357578',
+    headers: {'Accept': 'application/json'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    var result = JSON.parse(res.payload);
+    t.ok(res.statusCode, 200, 'should still return result');
+    t.notOk(result.relationships, 'no related items');
+    t.end();
+  });
+});
+
+testWithServer('Search for similar objects error', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/objects/co8357578',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.statusCode, 200, 'should still return result');
+    t.ok(res.payload.indexOf('Related Objects') === -1, 'no related items');
+    t.end();
+  });
+});
