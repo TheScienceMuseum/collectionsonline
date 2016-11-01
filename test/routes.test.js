@@ -612,7 +612,7 @@ testWithServer('Robot.txt route', {}, (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/robot.txt'
+    url: '/robots.txt'
   };
 
   ctx.server.inject(htmlRequest, (res) => {
