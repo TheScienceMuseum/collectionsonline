@@ -3,5 +3,7 @@ module.exports = (related, index, object, options) => {
     return options.fn(object);
   } else if (related.length > 12 && index < 11) {
     return options.fn(object);
+  } else if (options.data.root.type === 'objects') {
+    return options.fn(object);
   }
 };
