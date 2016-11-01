@@ -606,3 +606,18 @@ testWithServer('Multiple Makers', {}, (t, ctx) => {
     t.end();
   });
 });
+
+testWithServer('Robot.txt route', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/robot.txt'
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'status is ok');
+    t.ok(res.payload.indexOf('sitemap: ') > -1, 'The /robot.txt contains the sitemap url');
+    t.end();
+  });
+});
