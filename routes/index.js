@@ -12,5 +12,6 @@ module.exports = (elastic, config) => ([
   require('./museum').msi(),
   require('./museum').nmem(),
   require('./museum').nrm(),
-  require('./api')(elastic, config)
+  require('./api')(elastic, config),
+  require('./robot')()
 ]);
