@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
+    "babel-plugin-transform-object-assign": "^6.8.0",
     "babel-preset-es2015": "^6.9.0",
     "babelify": "^7.3.0",
     "brfs": "^1.4.3",
@@ -53,6 +54,7 @@
     "npm-run-all": "^3.1.1",
     "postcss-cli": "^2.5.2",
     "pre-commit": "^1.1.3",
+    "promise": "^7.1.1",
     "selenium-download": "^2.0.4",
     "semistandard": "^9.1.0",
     "sinon": "^1.17.4",
@@ -105,6 +107,9 @@
         {
           "presets": [
             "es2015"
+          ],
+          "plugins": [
+            "transform-object-assign"
           ]
         }
       ]
@@ -113,6 +118,9 @@
   "semistandard": {
     "globals": [
       "OpenSeadragon"
+    ],
+    "ignore": [
+      "client/lib/polyfills.js"
     ]
   }
 }

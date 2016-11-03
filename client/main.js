@@ -1,3 +1,4 @@
+require('./lib/polyfills.js')();
 var page = require('page');
 
 require('./middleware/initial-render')(page);
