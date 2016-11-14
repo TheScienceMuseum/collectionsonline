@@ -2,7 +2,7 @@
   "_index": "smg",
   "_type": "archive",
   "_id": "aa110000003",
-  "_version": 1,
+  "_version": 2,
   "found": true,
   "_source": {
     "access": {
@@ -16,8 +16,8 @@
       "SID": "a110000003",
       "created": 1331826161000,
       "id": "archive-110000003",
-      "modified": 1477007676000,
-      "processed": 1477324698000,
+      "modified": 1477665343000,
+      "processed": 1477677878000,
       "source": "smga",
       "stream": "smg-online",
       "uid": "aa110000003",

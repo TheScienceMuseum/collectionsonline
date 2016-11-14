@@ -12,7 +12,6 @@ module.exports = {
       .assert.containsText('.details-status', 'permanent collection')
       .assert.containsText('.details-credit', 'Thompson and Sons')
       .assert.containsText('.details-type', 'steam locomotive')
-      .assert.containsText('.details-Materials', 'brass (copper, zinc alloy), iron, pine (wood), steel (metal)')
       .end();
   }
 };
