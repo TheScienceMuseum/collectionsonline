@@ -65,6 +65,8 @@
     "wreck": "^10.0.0"
   },
   "scripts": {
+    "index-update": "run-s index-update:*",
+    "index-update:galleries": "node scripts/get-galleries.js",
     "postinstall": "run-s build minify && node nightwatch.conf.js",
     "start": "node bin/server.js",
     "test": "run-s test:*",

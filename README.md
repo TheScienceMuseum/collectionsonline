@@ -215,3 +215,11 @@ Follow these steps to setup a new CI environment:
     * Add config as environment vars to the new apps:
         * `co_rootUrl`
         * `co_elasticsearch__host`
+
+## Development Notes
+
+### Scripts
+
+Some scripts need to be run whenever the index is updated. To do this run the command:
+
+`npm run index-update`

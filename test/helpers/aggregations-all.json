@@ -1,7 +1,7 @@
 {
-  "doc_count": 711,
+  "doc_count": 691,
   "occupation": {
-    "doc_count": 711,
+    "doc_count": 691,
     "occupation_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -14,20 +14,20 @@
     }
   },
   "count": {
-    "doc_count": 711,
+    "doc_count": 691,
     "count_filters": {
-      "value": 711
+      "value": 691
     }
   },
   "maker": {
-    "doc_count": 711,
+    "doc_count": 691,
     "maker_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 115,
+      "sum_other_doc_count": 109,
       "buckets": [
         {
           "key": "Unknown maker",
-          "doc_count": 51
+          "doc_count": 50
         },
         {
           "key": "Hinde",
@@ -69,7 +69,7 @@
     }
   },
   "organisation": {
-    "doc_count": 711,
+    "doc_count": 691,
     "organisations_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -82,27 +82,27 @@
     }
   },
   "archive": {
-    "doc_count": 711,
+    "doc_count": 691,
     "archive_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "GEC Traction Archive",
-          "doc_count": 3
+          "doc_count": 2
         }
       ]
     }
   },
   "type": {
-    "doc_count": 707,
+    "doc_count": 688,
     "type_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 768,
+      "sum_other_doc_count": 756,
       "buckets": [
         {
           "key": "test tubes",
-          "doc_count": 96
+          "doc_count": 93
         },
         {
           "key": "laboratory (apparatus)",
@@ -114,7 +114,7 @@
         },
         {
           "key": "ophthalmology (visual acuity)",
-          "doc_count": 45
+          "doc_count": 43
         },
         {
           "key": "psychological test",
@@ -129,61 +129,61 @@
           "doc_count": 33
         },
         {
-          "key": "test-types",
-          "doc_count": 17
-        },
-        {
           "key": "ophthalmology (astigmatism)",
           "doc_count": 15
         },
         {
           "key": "psychometric test",
           "doc_count": 15
+        },
+        {
+          "key": "test tube",
+          "doc_count": 15
         }
       ]
     }
   },
   "material": {
-    "doc_count": 711,
+    "doc_count": 691,
     "material_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 425,
+      "sum_other_doc_count": 397,
       "buckets": [
         {
           "key": "glass",
-          "doc_count": 115
+          "doc_count": 114
         },
         {
           "key": "paper",
-          "doc_count": 100
+          "doc_count": 96
         },
         {
           "key": "wood",
-          "doc_count": 53
+          "doc_count": 55
         },
         {
           "key": "cardboard",
-          "doc_count": 44
+          "doc_count": 45
         },
         {
           "key": "metal",
-          "doc_count": 40
+          "doc_count": 41
         },
         {
           "key": "plastic",
-          "doc_count": 38
-        },
-        {
-          "key": "steel",
-          "doc_count": 24
+          "doc_count": 39
         },
         {
           "key": "paper (fibre product)",
           "doc_count": 23
         },
         {
+          "key": "steel",
+          "doc_count": 19
+        },
+        {
           "key": "brass",
-          "doc_count": 17
+          "doc_count": 15
         },
         {
           "key": "cloth",
@@ -193,14 +193,14 @@
     }
   },
   "museum": {
-    "doc_count": 711,
+    "doc_count": 691,
     "museum_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "Science Museum",
-          "doc_count": 12
+          "doc_count": 13
         },
         {
           "key": "Making the Modern World Gallery",
@@ -281,19 +281,27 @@
         {
           "key": "Science Museum, Science & Art of Medicine Gallery; Science Museum, Blythe House",
           "doc_count": 1
+        },
+        {
+          "key": "Science Museum, Winton Mathematics Gallery",
+          "doc_count": 1
+        },
+        {
+          "key": "Winton Mathematics Gallery",
+          "doc_count": 1
         }
       ]
     }
   },
   "place": {
-    "doc_count": 711,
+    "doc_count": 691,
     "place_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 97,
+      "sum_other_doc_count": 96,
       "buckets": [
         {
           "key": "London",
-          "doc_count": 49
+          "doc_count": 46
         },
         {
           "key": "United Kingdom",
@@ -316,15 +324,15 @@
           "doc_count": 8
         },
         {
-          "key": "France",
-          "doc_count": 7
-        },
-        {
           "key": "Bedford",
           "doc_count": 5
         },
         {
           "key": "Chicago",
+          "doc_count": 5
+        },
+        {
+          "key": "France",
           "doc_count": 5
         },
         {
@@ -335,10 +343,10 @@
     }
   },
   "category": {
-    "doc_count": 711,
+    "doc_count": 691,
     "category_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 135,
+      "sum_other_doc_count": 132,
       "buckets": [
         {
           "key": "Psychology, Psychiatry & Anthropometry",
@@ -346,23 +354,23 @@
         },
         {
           "key": "Laboratory Medicine",
-          "doc_count": 108
+          "doc_count": 103
         },
         {
           "key": "Ophthalmology",
-          "doc_count": 99
+          "doc_count": 95
         },
         {
           "key": "Clinical Diagnosis",
-          "doc_count": 86
+          "doc_count": 85
         },
         {
           "key": "Public Health & Hygiene",
-          "doc_count": 29
+          "doc_count": 28
         },
         {
           "key": "Farnborough",
-          "doc_count": 26
+          "doc_count": 23
         },
         {
           "key": "Gas Industry",
@@ -373,18 +381,18 @@
           "doc_count": 16
         },
         {
-          "key": "Telecommunications",
-          "doc_count": 16
+          "key": "Experimental Chemistry",
+          "doc_count": 14
         },
         {
-          "key": "Experimental Chemistry",
+          "key": "Telecommunications",
           "doc_count": 14
         }
       ]
     }
   },
   "place_born": {
-    "doc_count": 711,
+    "doc_count": 691,
     "place_born_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -397,7 +405,7 @@
     }
   },
   "user": {
-    "doc_count": 711,
+    "doc_count": 691,
     "user_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 39,
@@ -446,14 +454,14 @@
     }
   },
   "gallery": {
-    "doc_count": 711,
+    "doc_count": 691,
     "gallery_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "Science Museum",
-          "doc_count": 12
+          "doc_count": 13
         },
         {
           "key": "Making the Modern World Gallery",
@@ -533,6 +541,14 @@
         },
         {
           "key": "Science Museum, Science & Art of Medicine Gallery; Science Museum, Blythe House",
+          "doc_count": 1
+        },
+        {
+          "key": "Science Museum, Winton Mathematics Gallery",
+          "doc_count": 1
+        },
+        {
+          "key": "Winton Mathematics Gallery",
           "doc_count": 1
         }
       ]
