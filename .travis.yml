@@ -1,23 +1,16 @@
 language: node_js
-
 node_js:
   - '4'
-
 addons:
   sauce_connect: true
-
 before_script:
   - npm run start &
-
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-
 after_script:
   - pkill node
-
 before_deploy:
   - zip -q -x .git\* node_modules/\* -r collectionsonline *
-
 deploy:
   - provider: elasticbeanstalk
     access_key_id: &1 AKIAIWVLTZ3YIKYYXEYQ
