@@ -45,4 +45,3 @@ deploy:
     on:
       repo: TheScienceMuseum/collectionsonline
       branch: release
-
