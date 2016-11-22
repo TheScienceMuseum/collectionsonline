@@ -19,5 +19,9 @@ deploy:
   region: eu-west-1
   app: Collections Online
   env: collectionsonline-staging
+  bucket_name: elasticbeanstalk-eu-west-1-275504355335
+  zip_file: collectionsonline.zip
+  skip_cleanup: true
   on:
     repo: TheScienceMuseum/collectionsonline
+    branch: master
