@@ -1,7 +1,7 @@
 {
-  "doc_count": 613,
+  "doc_count": 612,
   "occupation": {
-    "doc_count": 613,
+    "doc_count": 612,
     "occupation_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -14,13 +14,13 @@
     }
   },
   "count": {
-    "doc_count": 613,
+    "doc_count": 612,
     "count_filters": {
-      "value": 613
+      "value": 612
     }
   },
   "maker": {
-    "doc_count": 613,
+    "doc_count": 612,
     "maker_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 104,
@@ -69,7 +69,7 @@
     }
   },
   "organisation": {
-    "doc_count": 613,
+    "doc_count": 612,
     "organisations_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -82,7 +82,7 @@
     }
   },
   "archive": {
-    "doc_count": 613,
+    "doc_count": 612,
     "archive_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -95,10 +95,10 @@
     }
   },
   "type": {
-    "doc_count": 611,
+    "doc_count": 610,
     "type_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 656,
+      "sum_other_doc_count": 655,
       "buckets": [
         {
           "key": "test tubes",
@@ -144,7 +144,7 @@
     }
   },
   "material": {
-    "doc_count": 613,
+    "doc_count": 612,
     "material_filters": {
       "doc_count_error_upper_bound": 5,
       "sum_other_doc_count": 385,
@@ -171,7 +171,7 @@
         },
         {
           "key": "plastic",
-          "doc_count": 39
+          "doc_count": 38
         },
         {
           "key": "paper (fibre product)",
@@ -193,7 +193,7 @@
     }
   },
   "museum": {
-    "doc_count": 613,
+    "doc_count": 612,
     "museum_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -294,10 +294,10 @@
     }
   },
   "place": {
-    "doc_count": 613,
+    "doc_count": 612,
     "place_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 95,
+      "sum_other_doc_count": 94,
       "buckets": [
         {
           "key": "London",
@@ -343,10 +343,10 @@
     }
   },
   "category": {
-    "doc_count": 613,
+    "doc_count": 612,
     "category_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 128,
+      "sum_other_doc_count": 127,
       "buckets": [
         {
           "key": "Psychology, Psychiatry & Anthropometry",
@@ -392,7 +392,7 @@
     }
   },
   "place_born": {
-    "doc_count": 613,
+    "doc_count": 612,
     "place_born_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -405,7 +405,7 @@
     }
   },
   "user": {
-    "doc_count": 613,
+    "doc_count": 612,
     "user_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 38,
@@ -454,7 +454,7 @@
     }
   },
   "gallery": {
-    "doc_count": 613,
+    "doc_count": 612,
     "gallery_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
