@@ -1,7 +1,7 @@
 {
-  "doc_count": 612,
+  "doc_count": 657,
   "occupation": {
-    "doc_count": 612,
+    "doc_count": 657,
     "occupation_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -14,44 +14,48 @@
     }
   },
   "count": {
-    "doc_count": 612,
+    "doc_count": 657,
     "count_filters": {
-      "value": 612
+      "value": 657
     }
   },
   "maker": {
-    "doc_count": 612,
+    "doc_count": 657,
     "maker_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 104,
+      "sum_other_doc_count": 119,
       "buckets": [
         {
           "key": "Unknown maker",
-          "doc_count": 51
+          "doc_count": 55
         },
         {
           "key": "Hinde",
-          "doc_count": 8
+          "doc_count": 10
         },
         {
           "key": "Hinde, John",
-          "doc_count": 8
+          "doc_count": 10
         },
         {
           "key": "John",
-          "doc_count": 8
+          "doc_count": 10
+        },
+        {
+          "key": "C H Stoelting Company",
+          "doc_count": 6
         },
         {
           "key": "Unipath Limited",
           "doc_count": 6
         },
         {
-          "key": "C H Stoelting Company",
+          "key": "David Edward Hughes",
           "doc_count": 5
         },
         {
           "key": "Margaret Lowenfeld",
-          "doc_count": 4
+          "doc_count": 5
         },
         {
           "key": "National Institute of Industrial Psychology",
@@ -60,16 +64,12 @@
         {
           "key": "Parke, Davis and Company Inc.",
           "doc_count": 4
-        },
-        {
-          "key": "Wendy Ramshaw",
-          "doc_count": 4
         }
       ]
     }
   },
   "organisation": {
-    "doc_count": 612,
+    "doc_count": 657,
     "organisations_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -82,35 +82,35 @@
     }
   },
   "archive": {
-    "doc_count": 612,
+    "doc_count": 657,
     "archive_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "GEC Traction Archive",
-          "doc_count": 1
+          "doc_count": 3
         }
       ]
     }
   },
   "type": {
-    "doc_count": 610,
+    "doc_count": 653,
     "type_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 655,
+      "sum_other_doc_count": 725,
       "buckets": [
+        {
+          "key": "laboratory (apparatus)",
+          "doc_count": 72
+        },
         {
           "key": "test tubes",
           "doc_count": 72
         },
         {
-          "key": "laboratory (apparatus)",
-          "doc_count": 71
-        },
-        {
           "key": "ophthalmology (visual acuity)",
-          "doc_count": 40
+          "doc_count": 47
         },
         {
           "key": "psychological test",
@@ -118,22 +118,22 @@
         },
         {
           "key": "test types",
-          "doc_count": 31
+          "doc_count": 38
         },
         {
           "key": "diagnosis (genito-urinary)",
-          "doc_count": 17
-        },
-        {
-          "key": "ophthalmology (astigmatism)",
-          "doc_count": 15
+          "doc_count": 18
         },
         {
           "key": "psychometric test",
-          "doc_count": 15
+          "doc_count": 16
         },
         {
           "key": "urine test kits",
+          "doc_count": 16
+        },
+        {
+          "key": "ophthalmology (astigmatism)",
           "doc_count": 15
         },
         {
@@ -144,38 +144,38 @@
     }
   },
   "material": {
-    "doc_count": 612,
+    "doc_count": 657,
     "material_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 385,
+      "sum_other_doc_count": 443,
       "buckets": [
         {
           "key": "glass",
-          "doc_count": 91
+          "doc_count": 96
         },
         {
           "key": "paper",
-          "doc_count": 89
+          "doc_count": 91
         },
         {
           "key": "wood",
-          "doc_count": 52
+          "doc_count": 56
         },
         {
           "key": "cardboard",
-          "doc_count": 44
+          "doc_count": 46
         },
         {
           "key": "metal",
-          "doc_count": 40
+          "doc_count": 42
         },
         {
           "key": "plastic",
-          "doc_count": 38
+          "doc_count": 41
         },
         {
           "key": "paper (fibre product)",
-          "doc_count": 23
+          "doc_count": 27
         },
         {
           "key": "steel",
@@ -183,43 +183,59 @@
         },
         {
           "key": "cloth",
-          "doc_count": 14
+          "doc_count": 16
         },
         {
-          "key": "metal (unknown)",
-          "doc_count": 13
+          "key": "wood (unidentified)",
+          "doc_count": 16
         }
       ]
     }
   },
   "museum": {
-    "doc_count": 612,
+    "doc_count": 657,
     "museum_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 0,
+      "sum_other_doc_count": 1,
       "buckets": [
         {
           "key": "Science Museum",
-          "doc_count": 13
+          "doc_count": 24
+        },
+        {
+          "key": "Information Age Gallery: Exchange",
+          "doc_count": 7
+        },
+        {
+          "key": "Science Museum, Information Age Gallery: Exchange",
+          "doc_count": 7
         },
         {
           "key": "Making the Modern World Gallery",
-          "doc_count": 4
+          "doc_count": 6
         },
         {
           "key": "Science Museum, Making the Modern World Gallery",
-          "doc_count": 4
+          "doc_count": 6
+        },
+        {
+          "key": "Science Museum, Science & Art of Medicine Gallery",
+          "doc_count": 3
+        },
+        {
+          "key": "Information Age Gallery: Cable",
+          "doc_count": 2
         },
         {
           "key": "Information Age Gallery: Cell",
           "doc_count": 2
         },
         {
-          "key": "Science Museum, Information Age Gallery: Cell",
+          "key": "Science Museum, Information Age Gallery: Cable",
           "doc_count": 2
         },
         {
-          "key": "Science Museum, Science & Art of Medicine Gallery",
+          "key": "Science Museum, Information Age Gallery: Cell",
           "doc_count": 2
         },
         {
@@ -239,10 +255,6 @@
           "doc_count": 1
         },
         {
-          "key": "Information Age Gallery: Cable",
-          "doc_count": 1
-        },
-        {
           "key": "Journeys through Medicine: Henry Wellcome's Legacy",
           "doc_count": 1
         },
@@ -255,6 +267,10 @@
           "doc_count": 1
         },
         {
+          "key": "Science & Art of Medicine Gallery",
+          "doc_count": 1
+        },
+        {
           "key": "Science & Art of Medicine Gallery; Blythe House",
           "doc_count": 1
         },
@@ -264,10 +280,6 @@
         },
         {
           "key": "Science Museum, Blythe House",
-          "doc_count": 1
-        },
-        {
-          "key": "Science Museum, Information Age Gallery: Cable",
           "doc_count": 1
         },
         {
@@ -285,34 +297,34 @@
         {
           "key": "Science Museum, Winton Mathematics Gallery",
           "doc_count": 1
-        },
-        {
-          "key": "Winton Mathematics Gallery",
-          "doc_count": 1
         }
       ]
     }
   },
   "place": {
-    "doc_count": 612,
+    "doc_count": 657,
     "place_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 94,
+      "sum_other_doc_count": 98,
       "buckets": [
         {
           "key": "London",
-          "doc_count": 46
+          "doc_count": 51
         },
         {
           "key": "United Kingdom",
-          "doc_count": 33
+          "doc_count": 36
         },
         {
           "key": "England",
-          "doc_count": 25
+          "doc_count": 33
         },
         {
           "key": "Exmoor, England, United Kingdom",
+          "doc_count": 10
+        },
+        {
+          "key": "Chicago",
           "doc_count": 8
         },
         {
@@ -324,49 +336,49 @@
           "doc_count": 8
         },
         {
-          "key": "Bedford",
-          "doc_count": 5
-        },
-        {
-          "key": "Chicago",
-          "doc_count": 5
-        },
-        {
           "key": "Europe",
-          "doc_count": 5
+          "doc_count": 6
         },
         {
           "key": "France",
+          "doc_count": 6
+        },
+        {
+          "key": "Bedford",
           "doc_count": 5
         }
       ]
     }
   },
   "category": {
-    "doc_count": 612,
+    "doc_count": 657,
     "category_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 127,
+      "sum_other_doc_count": 134,
       "buckets": [
         {
           "key": "Psychology, Psychiatry & Anthropometry",
-          "doc_count": 161
-        },
-        {
-          "key": "Laboratory Medicine",
-          "doc_count": 95
+          "doc_count": 163
         },
         {
           "key": "Ophthalmology",
-          "doc_count": 90
+          "doc_count": 98
+        },
+        {
+          "key": "Laboratory Medicine",
+          "doc_count": 97
         },
         {
           "key": "Public Health & Hygiene",
-          "doc_count": 28
+          "doc_count": 33
         },
         {
           "key": "Clinical Diagnosis",
-          "doc_count": 26
+          "doc_count": 29
+        },
+        {
+          "key": "Telecommunications",
+          "doc_count": 25
         },
         {
           "key": "Farnborough",
@@ -374,25 +386,21 @@
         },
         {
           "key": "Gas Industry",
-          "doc_count": 17
+          "doc_count": 18
+        },
+        {
+          "key": "Photographs",
+          "doc_count": 18
         },
         {
           "key": "Microbiology",
           "doc_count": 15
-        },
-        {
-          "key": "Experimental Chemistry",
-          "doc_count": 14
-        },
-        {
-          "key": "Telecommunications",
-          "doc_count": 14
         }
       ]
     }
   },
   "place_born": {
-    "doc_count": 612,
+    "doc_count": 657,
     "place_born_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -405,10 +413,10 @@
     }
   },
   "user": {
-    "doc_count": 612,
+    "doc_count": 657,
     "user_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 38,
+      "sum_other_doc_count": 45,
       "buckets": [
         {
           "key": "Joseph Lister",
@@ -419,15 +427,19 @@
           "doc_count": 10
         },
         {
+          "key": "David Edward Hughes",
+          "doc_count": 5
+        },
+        {
           "key": "Nathaniel Bishop Harman",
           "doc_count": 5
         },
         {
-          "key": "William Picken Alexander",
-          "doc_count": 3
+          "key": "null Brunton, Sir Thomas Lauder",
+          "doc_count": 4
         },
         {
-          "key": "null Brunton, Sir Thomas Lauder",
+          "key": "William Picken Alexander",
           "doc_count": 3
         },
         {
@@ -445,42 +457,54 @@
         {
           "key": "Gertrude Lillian Baker",
           "doc_count": 2
-        },
-        {
-          "key": "Margaret Lowenfeld",
-          "doc_count": 2
         }
       ]
     }
   },
   "gallery": {
-    "doc_count": 612,
+    "doc_count": 657,
     "gallery_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "Science Museum",
-          "doc_count": 13
+          "doc_count": 24
+        },
+        {
+          "key": "Information Age Gallery: Exchange",
+          "doc_count": 7
+        },
+        {
+          "key": "Science Museum, Information Age Gallery: Exchange",
+          "doc_count": 7
         },
         {
           "key": "Making the Modern World Gallery",
-          "doc_count": 4
+          "doc_count": 6
         },
         {
           "key": "Science Museum, Making the Modern World Gallery",
-          "doc_count": 4
+          "doc_count": 6
+        },
+        {
+          "key": "Science Museum, Science & Art of Medicine Gallery",
+          "doc_count": 3
+        },
+        {
+          "key": "Information Age Gallery: Cable",
+          "doc_count": 2
         },
         {
           "key": "Information Age Gallery: Cell",
           "doc_count": 2
         },
         {
-          "key": "Science Museum, Information Age Gallery: Cell",
+          "key": "Science Museum, Information Age Gallery: Cable",
           "doc_count": 2
         },
         {
-          "key": "Science Museum, Science & Art of Medicine Gallery",
+          "key": "Science Museum, Information Age Gallery: Cell",
           "doc_count": 2
         },
         {
@@ -500,10 +524,6 @@
           "doc_count": 1
         },
         {
-          "key": "Information Age Gallery: Cable",
-          "doc_count": 1
-        },
-        {
           "key": "Journeys through Medicine: Henry Wellcome's Legacy",
           "doc_count": 1
         },
@@ -516,6 +536,10 @@
           "doc_count": 1
         },
         {
+          "key": "Science & Art of Medicine Gallery",
+          "doc_count": 1
+        },
+        {
           "key": "Science & Art of Medicine Gallery; Blythe House",
           "doc_count": 1
         },
@@ -525,10 +549,6 @@
         },
         {
           "key": "Science Museum, Blythe House",
-          "doc_count": 1
-        },
-        {
-          "key": "Science Museum, Information Age Gallery: Cable",
           "doc_count": 1
         },
         {
