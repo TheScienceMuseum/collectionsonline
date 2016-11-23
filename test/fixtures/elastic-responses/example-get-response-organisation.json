@@ -2,7 +2,7 @@
   "_index": "smg",
   "_type": "agent",
   "_id": "cp5207",
-  "_version": 1,
+  "_version": 3,
   "found": true,
   "_source": {
     "admin": {
@@ -11,7 +11,7 @@
       "id": "agent-5207",
       "language": "eng",
       "modified": 1429787674000,
-      "processed": 1477351666000,
+      "processed": 1478669524000,
       "source": "smgc",
       "stream": "smg-online",
       "uid": "cp5207",
@@ -29,7 +29,8 @@
         },
         "admin": {
           "id": "agent-43512",
-          "uid": "cp43512"
+          "uid": "cp43512",
+          "uuid": "6899cac9-d0ea-3b8f-8831-1a10b69c4956"
         },
         "summary_title": "William Herschel"
       }

@@ -37,8 +37,10 @@ function load (ctx, next) {
       headers: { Accept: 'application/vnd.api+json' }
     };
     var qs = QueryString.parse(ctx.querystring);
+    qs.ajax = true;
+
     var queryParams = createQueryParams('html', {query: qs, params: {type: ctx.params.type}});
-    getData(ctx.pathname + '?' + toJsonUrl(ctx.querystring) + '&ajax=true', opts, function (err, json) {
+    getData(ctx.pathname + '?' + toJsonUrl(ctx.querystring), opts, function (err, json) {
       if (err) {
         console.error(err);
         Snackbar.create('Error getting data from the server');

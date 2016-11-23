@@ -2,7 +2,7 @@
   "_index": "smg",
   "_type": "archive",
   "_id": "aa110000003",
-  "_version": 2,
+  "_version": 3,
   "found": true,
   "_source": {
     "access": {
@@ -17,7 +17,7 @@
       "created": 1331826161000,
       "id": "archive-110000003",
       "modified": 1477665343000,
-      "processed": 1477677878000,
+      "processed": 1478612112000,
       "source": "smga",
       "stream": "smg-online",
       "uid": "aa110000003",
@@ -30,7 +30,8 @@
         },
         "admin": {
           "id": "archive-110000564",
-          "uid": "aa110000564"
+          "uid": "aa110000564",
+          "uuid": "deecaf19-edfe-32d1-9f39-dcf6f8be18a2"
         },
         "summary_title": "The diplomas of Charles Babbage"
       },
@@ -40,7 +41,8 @@
         },
         "admin": {
           "id": "archive-110065984",
-          "uid": "aa110065984"
+          "uid": "aa110065984",
+          "uuid": "c0cf163a-90fa-3b10-82a1-017bfd69b65d"
         },
         "summary_title": "Letters from George Boole, Charles Babbage and other computer experts"
       },
@@ -50,7 +52,8 @@
         },
         "admin": {
           "id": "archive-110066735",
-          "uid": "aa110066735"
+          "uid": "aa110066735",
+          "uuid": "3d1ff055-700a-384f-be9a-164e1e4d79eb"
         },
         "summary_title": "Social diary of Charles Babbage for the year 1844"
       },
@@ -60,7 +63,8 @@
         },
         "admin": {
           "id": "archive-110066997",
-          "uid": "aa110066997"
+          "uid": "aa110066997",
+          "uuid": "726d5390-5edf-3191-9d33-c97f13b95b81"
         },
         "summary_title": "Collection of letters to Charles Babbage"
       },
@@ -70,7 +74,8 @@
         },
         "admin": {
           "id": "archive-110067592",
-          "uid": "aa110067592"
+          "uid": "aa110067592",
+          "uuid": "a06c34e4-fd83-3c1a-9a53-2dcd00a1e8bd"
         },
         "summary_title": "Printed sheet: Babbage's calculating machine"
       },
@@ -80,7 +85,8 @@
         },
         "admin": {
           "id": "archive-110067724",
-          "uid": "aa110067724"
+          "uid": "aa110067724",
+          "uuid": "efd1fc77-6297-3ac3-8207-75a770747f0e"
         },
         "summary_title": "Ph.D. thesis in the history of science entitled: \"Un modello algoritmico: l'Analytical Engine di Charles Babbage\""
       },
@@ -90,7 +96,8 @@
         },
         "admin": {
           "id": "archive-110069380",
-          "uid": "aa110069380"
+          "uid": "aa110069380",
+          "uuid": "fd594f84-0ee9-3d10-b59e-f735a9722702"
         },
         "summary_title": "Thesis entitled: \"The little engines that could've: the calculating machines of Charles Babbage\""
       },
@@ -100,7 +107,8 @@
         },
         "admin": {
           "id": "archive-110069392",
-          "uid": "aa110069392"
+          "uid": "aa110069392",
+          "uuid": "88418031-d108-3cc5-9565-5a8a9e05a2bc"
         },
         "summary_title": "PhD thesis entitled: \"The mathematical work of Charles Babbage\""
       }
@@ -163,7 +171,8 @@
               },
               "admin": {
                 "id": "agent-8",
-                "uid": "ap8"
+                "uid": "ap8",
+                "uuid": "d0b1788c-2748-35b8-b239-e225d7d90e34"
               },
               "summary_title": "Babbage, Charles (1791-1871, mathematician)"
             }

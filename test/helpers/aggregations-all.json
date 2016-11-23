@@ -1,7 +1,7 @@
 {
-  "doc_count": 691,
+  "doc_count": 613,
   "occupation": {
-    "doc_count": 691,
+    "doc_count": 613,
     "occupation_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -14,20 +14,20 @@
     }
   },
   "count": {
-    "doc_count": 691,
+    "doc_count": 613,
     "count_filters": {
-      "value": 691
+      "value": 613
     }
   },
   "maker": {
-    "doc_count": 691,
+    "doc_count": 613,
     "maker_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 109,
+      "sum_other_doc_count": 104,
       "buckets": [
         {
           "key": "Unknown maker",
-          "doc_count": 50
+          "doc_count": 51
         },
         {
           "key": "Hinde",
@@ -69,7 +69,7 @@
     }
   },
   "organisation": {
-    "doc_count": 691,
+    "doc_count": 613,
     "organisations_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -82,51 +82,47 @@
     }
   },
   "archive": {
-    "doc_count": 691,
+    "doc_count": 613,
     "archive_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "GEC Traction Archive",
-          "doc_count": 2
+          "doc_count": 1
         }
       ]
     }
   },
   "type": {
-    "doc_count": 688,
+    "doc_count": 611,
     "type_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 756,
+      "sum_other_doc_count": 656,
       "buckets": [
         {
           "key": "test tubes",
-          "doc_count": 93
-        },
-        {
-          "key": "laboratory (apparatus)",
           "doc_count": 72
         },
         {
-          "key": "urine test kits",
-          "doc_count": 55
+          "key": "laboratory (apparatus)",
+          "doc_count": 71
         },
         {
           "key": "ophthalmology (visual acuity)",
-          "doc_count": 43
+          "doc_count": 40
         },
         {
           "key": "psychological test",
           "doc_count": 38
         },
         {
-          "key": "diagnosis (genito-urinary)",
-          "doc_count": 36
+          "key": "test types",
+          "doc_count": 31
         },
         {
-          "key": "test types",
-          "doc_count": 33
+          "key": "diagnosis (genito-urinary)",
+          "doc_count": 17
         },
         {
           "key": "ophthalmology (astigmatism)",
@@ -137,37 +133,41 @@
           "doc_count": 15
         },
         {
-          "key": "test tube",
+          "key": "urine test kits",
           "doc_count": 15
+        },
+        {
+          "key": "light test charts",
+          "doc_count": 14
         }
       ]
     }
   },
   "material": {
-    "doc_count": 691,
+    "doc_count": 613,
     "material_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 397,
+      "sum_other_doc_count": 385,
       "buckets": [
         {
           "key": "glass",
-          "doc_count": 114
+          "doc_count": 91
         },
         {
           "key": "paper",
-          "doc_count": 96
+          "doc_count": 89
         },
         {
           "key": "wood",
-          "doc_count": 55
+          "doc_count": 52
         },
         {
           "key": "cardboard",
-          "doc_count": 45
+          "doc_count": 44
         },
         {
           "key": "metal",
-          "doc_count": 41
+          "doc_count": 40
         },
         {
           "key": "plastic",
@@ -182,18 +182,18 @@
           "doc_count": 19
         },
         {
-          "key": "brass",
-          "doc_count": 15
-        },
-        {
           "key": "cloth",
           "doc_count": 14
+        },
+        {
+          "key": "metal (unknown)",
+          "doc_count": 13
         }
       ]
     }
   },
   "museum": {
-    "doc_count": 691,
+    "doc_count": 613,
     "museum_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -294,10 +294,10 @@
     }
   },
   "place": {
-    "doc_count": 691,
+    "doc_count": 613,
     "place_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 96,
+      "sum_other_doc_count": 95,
       "buckets": [
         {
           "key": "London",
@@ -312,11 +312,11 @@
           "doc_count": 25
         },
         {
-          "key": "Manchester",
-          "doc_count": 9
+          "key": "Exmoor, England, United Kingdom",
+          "doc_count": 8
         },
         {
-          "key": "Exmoor, England, United Kingdom",
+          "key": "Manchester",
           "doc_count": 8
         },
         {
@@ -332,21 +332,21 @@
           "doc_count": 5
         },
         {
-          "key": "France",
+          "key": "Europe",
           "doc_count": 5
         },
         {
-          "key": "Scotland",
+          "key": "France",
           "doc_count": 5
         }
       ]
     }
   },
   "category": {
-    "doc_count": 691,
+    "doc_count": 613,
     "category_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 132,
+      "sum_other_doc_count": 128,
       "buckets": [
         {
           "key": "Psychology, Psychiatry & Anthropometry",
@@ -354,19 +354,19 @@
         },
         {
           "key": "Laboratory Medicine",
-          "doc_count": 103
-        },
-        {
-          "key": "Ophthalmology",
           "doc_count": 95
         },
         {
-          "key": "Clinical Diagnosis",
-          "doc_count": 85
+          "key": "Ophthalmology",
+          "doc_count": 90
         },
         {
           "key": "Public Health & Hygiene",
           "doc_count": 28
+        },
+        {
+          "key": "Clinical Diagnosis",
+          "doc_count": 26
         },
         {
           "key": "Farnborough",
@@ -378,7 +378,7 @@
         },
         {
           "key": "Microbiology",
-          "doc_count": 16
+          "doc_count": 15
         },
         {
           "key": "Experimental Chemistry",
@@ -392,7 +392,7 @@
     }
   },
   "place_born": {
-    "doc_count": 691,
+    "doc_count": 613,
     "place_born_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -405,10 +405,10 @@
     }
   },
   "user": {
-    "doc_count": 691,
+    "doc_count": 613,
     "user_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 39,
+      "sum_other_doc_count": 38,
       "buckets": [
         {
           "key": "Joseph Lister",
@@ -454,7 +454,7 @@
     }
   },
   "gallery": {
-    "doc_count": 691,
+    "doc_count": 613,
     "gallery_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,

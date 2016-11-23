@@ -2,7 +2,7 @@
   "_index": "smg",
   "_type": "agent",
   "_id": "cp108048",
-  "_version": 1,
+  "_version": 3,
   "found": true,
   "_source": {
     "admin": {
@@ -11,7 +11,7 @@
       "id": "agent-108048",
       "language": "eng",
       "modified": 1447178618000,
-      "processed": 1477351485000,
+      "processed": 1478669264000,
       "source": "smgc",
       "stream": "smg-online",
       "uid": "cp108048",

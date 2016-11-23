@@ -2,7 +2,7 @@
   "_index": "smg",
   "_type": "agent",
   "_id": "cp86306",
-  "_version": 1,
+  "_version": 3,
   "found": true,
   "_source": {
     "admin": {
@@ -11,7 +11,7 @@
       "id": "agent-86306",
       "language": "eng",
       "modified": 1408552950000,
-      "processed": 1477351560000,
+      "processed": 1478669393000,
       "source": "smgc",
       "stream": "smg-online",
       "uid": "cp86306",
@@ -143,7 +143,8 @@
         },
         "admin": {
           "id": "place-4251",
-          "uid": "cd4251"
+          "uid": "cd4251",
+          "uuid": "1dc1e145-f203-37c1-a5c5-f64ca9f0ff06"
         },
         "summary_title": "Crewe railway works"
       },
@@ -158,7 +159,8 @@
         },
         "admin": {
           "id": "place-4596",
-          "uid": "cd4596"
+          "uid": "cd4596",
+          "uuid": "9b557a7c-c903-3c94-bfd7-7aeb84d6f834"
         },
         "summary_title": "Curzon Street Railway Station"
       }

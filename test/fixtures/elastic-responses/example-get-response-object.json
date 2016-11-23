@@ -2,7 +2,7 @@
   "_index": "smg",
   "_type": "object",
   "_id": "co8245103",
-  "_version": 1,
+  "_version": 3,
   "found": true,
   "_source": {
     "admin": {
@@ -11,7 +11,7 @@
       "id": "object-8245103",
       "language": "eng",
       "modified": 1427726164000,
-      "processed": 1477354117000,
+      "processed": 1478672588000,
       "source": "smgc",
       "stream": "smg-online",
       "uid": "co8245103",
@@ -143,7 +143,8 @@
               },
               "admin": {
                 "id": "agent-33399",
-                "uid": "cp33399"
+                "uid": "cp33399",
+                "uuid": "2dc4868c-04b2-3d27-a38a-8769a1054abb"
               },
               "summary_title": "Amersham International plc"
             }
@@ -160,7 +161,8 @@
               },
               "admin": {
                 "id": "place-1986",
-                "uid": "cd1986"
+                "uid": "cd1986",
+                "uuid": "fe91d8bb-8e00-3084-9f50-d969c51ae126"
               },
               "summary_title": "Little Chalfont"
             }
@@ -204,7 +206,8 @@
         },
         "admin": {
           "id": "object-5191",
-          "uid": "co5191"
+          "uid": "co5191",
+          "uuid": "acc0de2f-9ad0-3520-b7a9-15b5343224fd"
         },
         "summary_title": "Six packets of 'Amerscan' agents (phial; packet; materia medica)"
       }
@@ -222,7 +225,8 @@
         },
         "admin": {
           "id": "term-262703",
-          "uid": "ct262703"
+          "uid": "ct262703",
+          "uuid": "4442ec5b-30b3-307b-a4c0-7a0c88788c52"
         },
         "hierarchy": [
           {
@@ -231,7 +235,9 @@
               "type": "reference"
             },
             "admin": {
+              "available": true,
               "id": "term-265099",
+              "status": "valid and published",
               "uid": "ct265099",
               "uuid": "4dab9f7b-631c-3b12-888d-f3fc4152a1ef"
             },
@@ -250,7 +256,9 @@
               "type": "reference"
             },
             "admin": {
+              "available": true,
               "id": "term-262537",
+              "status": "valid and published",
               "uid": "ct262537",
               "uuid": "23bd41a3-7527-3122-bad8-6ad692965baf"
             },
@@ -269,7 +277,9 @@
               "type": "reference"
             },
             "admin": {
+              "available": true,
               "id": "term-265188",
+              "status": "valid and published",
               "uid": "ct265188",
               "uuid": "bd1feb46-9016-3e3f-9301-7477ac54223c"
             },
@@ -288,7 +298,9 @@
               "type": "reference"
             },
             "admin": {
+              "available": true,
               "id": "term-262384",
+              "status": "valid and published",
               "uid": "ct262384",
               "uuid": "3be339fe-002f-38a4-af30-e17fbe24b638"
             },
@@ -315,7 +327,8 @@
         },
         "admin": {
           "id": "term-263821",
-          "uid": "ct263821"
+          "uid": "ct263821",
+          "uuid": "ef52e1fe-b85c-3dd2-b78b-c1b2a7832b72"
         },
         "hierarchy": [
           {
@@ -324,7 +337,9 @@
               "type": "reference"
             },
             "admin": {
+              "available": true,
               "id": "term-262492",
+              "status": "valid and published",
               "uid": "ct262492",
               "uuid": "3ab975b7-b5a9-3692-bec9-c066a414ea91"
             },
@@ -343,7 +358,9 @@
               "type": "reference"
             },
             "admin": {
+              "available": true,
               "id": "term-265239",
+              "status": "valid and published",
               "uid": "ct265239",
               "uuid": "1a1d67d9-51ee-30c8-a71e-91e70fa56fb0"
             },
@@ -362,7 +379,9 @@
               "type": "reference"
             },
             "admin": {
+              "available": true,
               "id": "term-265237",
+              "status": "valid and published",
               "uid": "ct265237",
               "uuid": "f28a11e6-781e-3100-a5c4-ea45925082ee"
             },
@@ -381,7 +400,9 @@
               "type": "reference"
             },
             "admin": {
+              "available": true,
               "id": "term-262384",
+              "status": "valid and published",
               "uid": "ct262384",
               "uuid": "3be339fe-002f-38a4-af30-e17fbe24b638"
             },
@@ -408,7 +429,8 @@
         },
         "admin": {
           "id": "term-265331",
-          "uid": "ct265331"
+          "uid": "ct265331",
+          "uuid": "e0761a7d-51ad-3c99-b8e5-9a478513ed74"
         },
         "hierarchy": [
           {
@@ -417,7 +439,9 @@
               "type": "reference"
             },
             "admin": {
+              "available": true,
               "id": "term-262525",
+              "status": "valid and published",
               "uid": "ct262525",
               "uuid": "be663990-4de9-3c0b-b3a7-1642b68b81a0"
             },
@@ -436,7 +460,9 @@
               "type": "reference"
             },
             "admin": {
+              "available": true,
               "id": "term-265099",
+              "status": "valid and published",
               "uid": "ct265099",
               "uuid": "4dab9f7b-631c-3b12-888d-f3fc4152a1ef"
             },
@@ -455,7 +481,9 @@
               "type": "reference"
             },
             "admin": {
+              "available": true,
               "id": "term-262537",
+              "status": "valid and published",
               "uid": "ct262537",
               "uuid": "23bd41a3-7527-3122-bad8-6ad692965baf"
             },
@@ -474,7 +502,9 @@
               "type": "reference"
             },
             "admin": {
+              "available": true,
               "id": "term-265188",
+              "status": "valid and published",
               "uid": "ct265188",
               "uuid": "bd1feb46-9016-3e3f-9301-7477ac54223c"
             },
@@ -493,7 +523,9 @@
               "type": "reference"
             },
             "admin": {
+              "available": true,
               "id": "term-262384",
+              "status": "valid and published",
               "uid": "ct262384",
               "uuid": "3be339fe-002f-38a4-af30-e17fbe24b638"
             },
