@@ -1,5 +1,5 @@
 const test = require('tape');
-const sortImages = require('../lib/helpers/multimedia/sort-images');
+const sortImages = require('../lib/helpers/jsonapi-response/sort-images');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
 
