@@ -2,7 +2,7 @@
   "_index": "smg",
   "_type": "agent",
   "_id": "cp36993",
-  "_version": 1,
+  "_version": 3,
   "found": true,
   "_source": {
     "admin": {
@@ -11,7 +11,7 @@
       "id": "agent-36993",
       "language": "eng",
       "modified": 1462287688000,
-      "processed": 1477352848000,
+      "processed": 1478670927000,
       "source": "smgc",
       "stream": "smg-online",
       "uid": "cp36993",
@@ -29,7 +29,8 @@
         },
         "admin": {
           "id": "agent-38764",
-          "uid": "cp38764"
+          "uid": "cp38764",
+          "uuid": "df861864-fd2d-3ce0-ae30-add42146342f"
         },
         "summary_title": "Ada Lovelace"
       },
@@ -44,7 +45,8 @@
         },
         "admin": {
           "id": "agent-43512",
-          "uid": "cp43512"
+          "uid": "cp43512",
+          "uuid": "6899cac9-d0ea-3b8f-8831-1a10b69c4956"
         },
         "summary_title": "William Herschel"
       },
@@ -59,7 +61,8 @@
         },
         "admin": {
           "id": "agent-50100",
-          "uid": "cp50100"
+          "uid": "cp50100",
+          "uuid": "b41c18f9-2ee4-301c-8a2b-4f1c8a68648a"
         },
         "summary_title": "Henry Prevost Babbage"
       },
@@ -74,7 +77,8 @@
         },
         "admin": {
           "id": "agent-51194",
-          "uid": "cp51194"
+          "uid": "cp51194",
+          "uuid": "97032a6b-44b5-3df3-ad85-e25108da70fa"
         },
         "summary_title": "Benjamin Herschel Babbage"
       },
@@ -89,7 +93,8 @@
         },
         "admin": {
           "id": "agent-136139",
-          "uid": "cp136139"
+          "uid": "cp136139",
+          "uuid": "14584662-885c-36f1-8a4b-3a4b1a7094a1"
         },
         "summary_title": "Edward Daniel Clarke"
       }
