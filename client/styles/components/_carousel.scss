@@ -31,6 +31,15 @@
   }
 }
 
+.single_image_container {
+  text-align: center;
+
+  .single_image {
+    height: 36rem;
+  }
+}
+
+
 
 .flickity-prev-next-button {
   width: 6rem;

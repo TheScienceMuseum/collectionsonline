@@ -1,6 +1,4 @@
-const fs = require('fs');
 const Boom = require('boom');
-const exampleData = JSON.parse(fs.readFileSync('./src/data/object.json'));
 const buildJSONResponse = require('../lib/jsonapi-response');
 const TypeMapping = require('../lib/type-mapping');
 const JSONToHTML = require('../lib/transforms/json-to-html-data.js');
@@ -48,8 +46,7 @@ module.exports = (elastic, config) => ({
 
 function HTMLResponse (request, reply, elastic, config) {
   const data = {
-    page: 'object',
-    slides: exampleData.slides
+    page: 'object'
   };
 
   elastic.get({index: 'smg', type: 'object', id: TypeMapping.toInternal(request.params.id)}, (err, result) => {
