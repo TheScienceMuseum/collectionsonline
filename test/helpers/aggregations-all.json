@@ -27,7 +27,7 @@
       "buckets": [
         {
           "key": "Unknown maker",
-          "doc_count": 50
+          "doc_count": 51
         },
         {
           "key": "Hinde",
@@ -332,11 +332,11 @@
           "doc_count": 5
         },
         {
-          "key": "France",
+          "key": "Europe",
           "doc_count": 5
         },
         {
-          "key": "Scotland",
+          "key": "France",
           "doc_count": 5
         }
       ]
