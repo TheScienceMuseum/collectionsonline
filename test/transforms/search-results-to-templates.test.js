@@ -40,7 +40,7 @@ testResult.aggregations.documents = aggregationsDocuments;
 
 const query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
 const jsonData = searchResultsToJsonApi(query, testResult);
-
+console.log(jsonData);
 test(file + 'Results should be transformed succesfully', (t) => {
   var templateData;
   t.plan(2);
