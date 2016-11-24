@@ -175,6 +175,12 @@ function listeners (ctx, next) {
     filtersDate[i].addEventListener('blur', function () {
       filterResults(ctx, page);
     });
+    filtersDate[i].addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.keyCode === 13) {
+        e.preventDefault();
+        filterResults(ctx, page);
+      }
+    });
   }
 
   /**
