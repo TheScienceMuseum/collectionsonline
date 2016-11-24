@@ -12,7 +12,7 @@ module.exports = function () {
   });
   searchinput.addEventListener('keyup', debounce(function (e) {
     var q = e.target.value;
-    if (q.length > 0 && e.code !== 'Enter') {
+    if (q.length > 0 && e.key !== 'Enter') {
       const requestId = currentRequestId = Date.now();
       const url = `/autocomplete?q=${encodeURIComponent(q)}`;
       const opts = { headers: { Accept: 'application/vnd.api+json' } };
