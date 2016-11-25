@@ -113,18 +113,25 @@
 {{/if}}
 
 <!-- IMAGE -->
-{{#if filters.image_license.length}}
-  <div class="filter filter--active filter--open" data-filter="Image License">
-    <a href="{{lookup links.clearFacet "filter[image_license]"}}" class="filter__name">Image Licence</a>
+{{#or filters.image_license.length filters.has_image.length}}
+  {{#or (activeFacet selectedFilters 'imageLicense') (activeFacet selectedFilters 'hasImage')}}
+    <div class="filter filter--active filter--open" data-filter="Image">
+  {{else}}
+    <div class="filter filter--open" data-filter="Image">
+  {{/or}}
+    <a href="{{lookup links.clearFacet "filter[image_license]"}}" class="filter__name">Image</a>
     <div class="filter__options">
       <ul>
+        {{#each filters.has_image}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[has_image]" value="true" {{isselected ../selectedFilters "hasImage" true}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{/each}}
         {{#each filters.image_license}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[image_license]" value="{{value}}" {{isselected ../selectedFilters "imageLicense" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+          <li><label><input type="checkbox" class="filter__box" name="filter[image_license]" value="true" {{isselected ../selectedFilters "imageLicense" true}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
         {{/each}}
       </ul>
     </div>
   </div>
-{{/if}}
+{{/or}}
 
 <!-- USER -->
 {{#if filters.user.length}}
