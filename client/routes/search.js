@@ -128,10 +128,12 @@ function listeners (ctx, next) {
 
   // add click event listner on fb button to toggle the filter
   displayFilters(filterState.isFilterOpen);
-  toggleFilterButton.addEventListener('click', function () {
-    filterState.isFilterOpen = !filterState.isFilterOpen;
-    displayFilters(filterState.isFilterOpen);
-  });
+  if (toggleFilterButton) {
+    toggleFilterButton.addEventListener('click', function () {
+      filterState.isFilterOpen = !filterState.isFilterOpen;
+      displayFilters(filterState.isFilterOpen);
+    });
+  }
 
   updateActiveStateFacets(facetsStates, ctx.params.type);
   // display the facet (close open or active)
