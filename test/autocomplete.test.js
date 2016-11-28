@@ -7,7 +7,7 @@ testWithServer(file + 'Should suggest completion', {}, (t, ctx) => {
 
   const request = {
     method: 'GET',
-    url: '/autocomplete?' + QueryString.stringify({ q: 'babb' }),
+    url: '/autocomplete?' + QueryString.stringify({ q: 'babba' }),
     headers: { Accept: 'application/vnd.api+json' }
   };
 
