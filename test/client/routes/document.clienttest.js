@@ -18,7 +18,7 @@ module.exports = {
       .click('.searchbox--archive button.searchbox__submit')
       .pause(1000)
       .assert.urlEquals('http://localhost:8000/search/documents?q=scheutz%27s&archive=The%20Babbage%20Papers')
-      .assert.containsText('.resultcard', 'Papers relating to the Scheutz\'s Difference Engine')
+      .assert.containsText('.resultcard', 'Papers relating to the Scheutz\'s Differenc...')
       .end();
   }
 };

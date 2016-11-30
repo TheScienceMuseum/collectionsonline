@@ -10,7 +10,9 @@ module.exports = function (url, opts, cb) {
       }
     })
     .then(function (json) {
-      if (json.errors) return Promise.reject(json.errors[0]);
+      if (json.errors) {
+        return Promise.reject(json.errors[0]);
+      }
       return cb(null, json);
     })
     .catch(function (err) {

@@ -10,7 +10,7 @@
           <h4 class="resultcard__title">
             {{#if level}}{{> global/icon i=this.level }}{{else}}{{> global/icon i=this.type }}{{/if}}
             {{#if isOnDisplay}}{{> global/icon i="room" }}{{/if}}
-            {{ normalise this.title this }}
+            {{ truncate this.title this }}
           </h4>
           <p class="resultcard__description">{{{ this.category }}}</p>
           <p class="resultcard__description">{{{ this.date }}}</p>
