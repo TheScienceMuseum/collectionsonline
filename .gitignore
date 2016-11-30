@@ -44,3 +44,5 @@ public/assets/icons/*
 
 #database test
 test/fixtures/elastic-responses/database.json
+test/fixtures/elastic-responses/example-get-response-person.json
+test/helpers/aggregations-all.json

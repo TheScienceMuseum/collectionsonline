@@ -139,7 +139,11 @@
 {{/if}}
 
 <!-- DATE -->
-<div class="filter filter--open" data-filter="Dates">
+{{#or (lookup selectedFilters "dateFrom") (lookup selectedFilters "dateTo")}}
+  <div class="filter filter--active filter--open" data-filter="Dates">
+{{ else }}
+  <div class="filter filter--open" data-filter="Dates">
+{{/or}}
   <a href="{{lookup links.clearFacet "dates"}}" class="filter__name">Date</a>
   <div class="filter__options filter__daterange">
     <label>From <input type="number" placeholder="1600" name="filter[date[from]]" value="{{lookup selectedFilters "dateFrom"}}"/></label>

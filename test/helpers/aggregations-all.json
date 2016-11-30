@@ -1,7 +1,7 @@
 {
-  "doc_count": 657,
+  "doc_count": 654,
   "occupation": {
-    "doc_count": 657,
+    "doc_count": 654,
     "occupation_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -14,32 +14,32 @@
     }
   },
   "count": {
-    "doc_count": 657,
+    "doc_count": 654,
     "count_filters": {
-      "value": 657
+      "value": 654
     }
   },
   "maker": {
-    "doc_count": 657,
+    "doc_count": 654,
     "maker_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 119,
+      "sum_other_doc_count": 118,
       "buckets": [
         {
           "key": "Unknown maker",
-          "doc_count": 55
+          "doc_count": 54
         },
         {
           "key": "Hinde",
-          "doc_count": 10
+          "doc_count": 9
         },
         {
           "key": "Hinde, John",
-          "doc_count": 10
+          "doc_count": 9
         },
         {
           "key": "John",
-          "doc_count": 10
+          "doc_count": 9
         },
         {
           "key": "C H Stoelting Company",
@@ -69,7 +69,7 @@
     }
   },
   "organisation": {
-    "doc_count": 657,
+    "doc_count": 654,
     "organisations_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -82,7 +82,7 @@
     }
   },
   "archive": {
-    "doc_count": 657,
+    "doc_count": 654,
     "archive_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -95,10 +95,10 @@
     }
   },
   "type": {
-    "doc_count": 653,
+    "doc_count": 650,
     "type_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 725,
+      "sum_other_doc_count": 730,
       "buckets": [
         {
           "key": "laboratory (apparatus)",
@@ -144,14 +144,14 @@
     }
   },
   "material": {
-    "doc_count": 657,
+    "doc_count": 654,
     "material_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 443,
+      "sum_other_doc_count": 440,
       "buckets": [
         {
           "key": "glass",
-          "doc_count": 96
+          "doc_count": 95
         },
         {
           "key": "paper",
@@ -175,11 +175,11 @@
         },
         {
           "key": "paper (fibre product)",
-          "doc_count": 27
+          "doc_count": 26
         },
         {
           "key": "steel",
-          "doc_count": 19
+          "doc_count": 20
         },
         {
           "key": "cloth",
@@ -193,14 +193,14 @@
     }
   },
   "museum": {
-    "doc_count": 657,
+    "doc_count": 654,
     "museum_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 1,
       "buckets": [
         {
           "key": "Science Museum",
-          "doc_count": 24
+          "doc_count": 23
         },
         {
           "key": "Information Age Gallery: Exchange",
@@ -223,15 +223,7 @@
           "doc_count": 3
         },
         {
-          "key": "Information Age Gallery: Cable",
-          "doc_count": 2
-        },
-        {
           "key": "Information Age Gallery: Cell",
-          "doc_count": 2
-        },
-        {
-          "key": "Science Museum, Information Age Gallery: Cable",
           "doc_count": 2
         },
         {
@@ -252,6 +244,10 @@
         },
         {
           "key": "Great Hall",
+          "doc_count": 1
+        },
+        {
+          "key": "Information Age Gallery: Cable",
           "doc_count": 1
         },
         {
@@ -283,6 +279,10 @@
           "doc_count": 1
         },
         {
+          "key": "Science Museum, Information Age Gallery: Cable",
+          "doc_count": 1
+        },
+        {
           "key": "Science Museum, Journeys through Medicine: Henry Wellcome's Legacy",
           "doc_count": 1
         },
@@ -302,14 +302,14 @@
     }
   },
   "place": {
-    "doc_count": 657,
+    "doc_count": 654,
     "place_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 98,
+      "sum_other_doc_count": 100,
       "buckets": [
         {
           "key": "London",
-          "doc_count": 51
+          "doc_count": 50
         },
         {
           "key": "United Kingdom",
@@ -321,7 +321,7 @@
         },
         {
           "key": "Exmoor, England, United Kingdom",
-          "doc_count": 10
+          "doc_count": 9
         },
         {
           "key": "Chicago",
@@ -351,10 +351,10 @@
     }
   },
   "category": {
-    "doc_count": 657,
+    "doc_count": 654,
     "category_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 134,
+      "sum_other_doc_count": 133,
       "buckets": [
         {
           "key": "Psychology, Psychiatry & Anthropometry",
@@ -377,30 +377,30 @@
           "doc_count": 29
         },
         {
-          "key": "Telecommunications",
+          "key": "Farnborough",
           "doc_count": 25
         },
         {
-          "key": "Farnborough",
-          "doc_count": 23
+          "key": "Telecommunications",
+          "doc_count": 24
         },
         {
           "key": "Gas Industry",
           "doc_count": 18
         },
         {
-          "key": "Photographs",
-          "doc_count": 18
+          "key": "Microbiology",
+          "doc_count": 15
         },
         {
-          "key": "Microbiology",
+          "key": "Photographs",
           "doc_count": 15
         }
       ]
     }
   },
   "place_born": {
-    "doc_count": 657,
+    "doc_count": 654,
     "place_born_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -413,7 +413,7 @@
     }
   },
   "user": {
-    "doc_count": 657,
+    "doc_count": 654,
     "user_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 45,
@@ -462,14 +462,14 @@
     }
   },
   "gallery": {
-    "doc_count": 657,
+    "doc_count": 654,
     "gallery_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "Science Museum",
-          "doc_count": 24
+          "doc_count": 23
         },
         {
           "key": "Information Age Gallery: Exchange",
@@ -492,15 +492,7 @@
           "doc_count": 3
         },
         {
-          "key": "Information Age Gallery: Cable",
-          "doc_count": 2
-        },
-        {
           "key": "Information Age Gallery: Cell",
-          "doc_count": 2
-        },
-        {
-          "key": "Science Museum, Information Age Gallery: Cable",
           "doc_count": 2
         },
         {
@@ -521,6 +513,10 @@
         },
         {
           "key": "Great Hall",
+          "doc_count": 1
+        },
+        {
+          "key": "Information Age Gallery: Cable",
           "doc_count": 1
         },
         {
@@ -549,6 +545,10 @@
         },
         {
           "key": "Science Museum, Blythe House",
+          "doc_count": 1
+        },
+        {
+          "key": "Science Museum, Information Age Gallery: Cable",
           "doc_count": 1
         },
         {
