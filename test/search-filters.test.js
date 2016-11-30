@@ -37,7 +37,7 @@ testWithServer(file + 'Should accept date[from] in format YYYY', {}, (t, ctx) =>
   });
 });
 
-testWithServer(file + 'Should accept date[from] in format YYYY-MM', {}, (t, ctx) => {
+testWithServer(file + 'Should not accept date[from] in format YYYY-MM', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -47,12 +47,12 @@ testWithServer(file + 'Should accept date[from] in format YYYY-MM', {}, (t, ctx)
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer(file + 'Should accept date[from] in format YYYY-MM-DD', {}, (t, ctx) => {
+testWithServer(file + 'Should not accept date[from] in format YYYY-MM-DD', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -62,7 +62,7 @@ testWithServer(file + 'Should accept date[from] in format YYYY-MM-DD', {}, (t, c
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
@@ -97,7 +97,7 @@ testWithServer(file + 'Should accept date[to] in format YYYY', {}, (t, ctx) => {
   });
 });
 
-testWithServer(file + 'Should accept date[to] in format YYYY-MM', {}, (t, ctx) => {
+testWithServer(file + 'Should not accept date[to] in format YYYY-MM', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -107,12 +107,12 @@ testWithServer(file + 'Should accept date[to] in format YYYY-MM', {}, (t, ctx) =
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer(file + 'Should accept date[to] in format YYYY-MM-DD', {}, (t, ctx) => {
+testWithServer(file + 'Should not accept date[to] in format YYYY-MM-DD', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -122,7 +122,7 @@ testWithServer(file + 'Should accept date[to] in format YYYY-MM-DD', {}, (t, ctx
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
@@ -584,126 +584,6 @@ testWithServer(file + 'Should not accept multiple array of birth[place] as json'
     method: 'GET',
     url: '/search?' + QueryString.stringify({ q: 'test', 'birth[place]': ['London', 'Portsmouth'] }),
     headers: { Accept: 'application/vnd.api+json' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer(file + 'Should accept birth[date] in format YYYY', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'birth[date]': '2016' }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer(file + 'Should accept birth[date] in format YYYY-MM', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'birth[date]': '2016-12' }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer(file + 'Should accept birth[date] in format YYYY-MM-DD', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'birth[date]': '2016-12-12' }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer(file + 'Should not accept invalid birth[date]', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'birth[date]': '2016-13-12' }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer(file + 'Should accept death[date] in format YYYY', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'death[date]': '2016' }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer(file + 'Should accept death[date] in format YYYY-MM', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'death[date]': '2016-12' }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer(file + 'Should accept death[date] in format YYYY-MM-DD', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'death[date]': '2016-12-12' }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer(file + 'Should not accept invalid death[date]', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'death[date]': '2016-13-12' }),
-    headers: { Accept: 'text/html' }
   };
 
   ctx.server.inject(htmlRequest, (res) => {

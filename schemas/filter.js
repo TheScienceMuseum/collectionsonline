@@ -1,15 +1,14 @@
 const Joi = require('joi');
-const dateSchema = require('./date');
 
 const sharedSchema = {
   // All
-  'filter[date[from]]': dateSchema.empty(''),
-  'filter[date[to]]': dateSchema.empty(''),
+  'filter[date[from]]': Joi.number().integer().min(0),
+  'filter[date[to]]': Joi.number().integer().min(0),
   // Objects
   'filter[on_display]': Joi.boolean(),
   // People
-  'filter[birth[date]]': dateSchema.empty(''),
-  'filter[death[date]]': dateSchema.empty('')
+  'filter[birth[date]]': Joi.number().integer().min(0),
+  'filter[death[date]]': Joi.number().integer().min(0)
   // Documents
 };
 
