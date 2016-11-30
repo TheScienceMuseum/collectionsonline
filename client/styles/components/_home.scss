@@ -15,6 +15,7 @@
   &__intro {
     font-weight: 600;
     margin-bottom: 2rem;
+    @include breakpoint(small only) { display: none; }
     @include breakpoint(medium up) { margin-bottom: 4rem; }
     @include breakpoint(large up) { margin-bottom: 6rem; }
     a { color: white; }
