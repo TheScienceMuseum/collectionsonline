@@ -7,5 +7,6 @@ module.exports = function (name, obj) {
     return '';
   }
 
-  return value.slice(0, 42) + '...';
+
+  return value.length < 42 ? value : value.slice(0, 42) + '...';
 };
