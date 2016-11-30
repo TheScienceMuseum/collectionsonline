@@ -1,6 +1,5 @@
 module.exports = [
   'supplier',
-  'user',
   'preparer',
   'collector',
   'patentee',
