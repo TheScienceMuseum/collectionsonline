@@ -204,6 +204,8 @@ Handlebars.registerHelper('seemore', require('../templates/helpers/seemore.js'))
 
 Handlebars.registerHelper('normalise', require('../templates/helpers/normalise.js'));
 
+Handlebars.registerHelper('truncate', require('../templates/helpers/truncate.js'));
+
 Handlebars.registerHelper('or', require('../templates/helpers/or.js'));
 
 Handlebars.registerHelper('isequal', require('../templates/helpers/isequal.js'));

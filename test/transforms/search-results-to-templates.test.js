@@ -79,7 +79,7 @@ test(file + 'Document template data is correctly built', (t) => {
   t.ok(documentResult, 'document result is returned');
   t.equal(documentResult.link, '/documents/aa110000003/the-babbage-papers', 'document link is correct');
   t.equal(documentResult.title, 'The Babbage Papers', 'document title is correct');
-  t.equal(documentResult.figcaption, '11 plan press drawers and 8 linear meters of shelving', 'document figcaption is correct');
+  t.equal(documentResult.figcaption, '11 plan press drawers and 8 linear meters ...', 'document figcaption is correct');
   t.end();
 });
 
