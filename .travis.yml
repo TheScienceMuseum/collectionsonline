@@ -32,16 +32,3 @@ deploy:
     on:
       repo: TheScienceMuseum/collectionsonline
       branch: master
-  - provider: elasticbeanstalk
-    access_key_id: &1 AKIAIWVLTZ3YIKYYXEYQ
-    secret_access_key: &2
-      secure: "qwCHBpEUxIbcJ/QC1rbZPi/TLAknuVL6qhO7ZPGxm6NhC/8Hwi1bGjimRp4scCpPMzIDLzicjPyOdQIFkVs6mD/3xeehuZybb+UpsTJlRHLLqODktTaeGyF54+QxmTOs40us1W50ywC9SsxYjCgTvRQRo9nV9tOTn79W5HZwzI4cIQcdrfUINleRF+e9eVRu2Or1d2ZC1aq6iLKRJ4xH4nB61A0t4cT4ZcMnANZLd+hA5VeaqlAQNLZ9xiVNfDY2n8dBzfiY6gVN3xL4tHue3j1Zo8Aj3YmPgJ1OuwNdfwsyEvylTuH8Ks090gNu2LsvTEBskLH4pGiGf+nFnN7UPA/VoPvs6h7wbEP3ZVVFyL7eIKO+/8OXco1Ls81iXxaE1Duf8rTZKIrl6xHHxSjMbAT0GF74HDq6mjTRDNSl/C3c6C1m1RtxCrPe6YjlLulM2lKp65JHMLgeCitpr3GqaAxJgwhq/niZub/kmDyteayEskL2U3RiDW81EEf4D9UFBtVfpPrP9ByO+QfIUt7kBEnXLwAu1uz/phKJbFFkuD+8bZzreF4zTAd76HElky7QYzsimls0RTRXIzIT3A331PAa4lCCQtMFH01/kw/jkXznrDVFXYgVx3P79XCcF6GLfrpnBKMmgXXggK/0VQRb6TI/cKtd3UeHK7Ci72foBto="
-    region: eu-west-1
-    app: "Collections Online"
-    env: collectionsonline-production
-    bucket_name: elasticbeanstalk-eu-west-1-275504355335
-    zip_file: collectionsonline.zip
-    skip_cleanup: true
-    on:
-      repo: TheScienceMuseum/collectionsonline
-      branch: release
