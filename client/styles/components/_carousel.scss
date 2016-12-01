@@ -33,9 +33,13 @@
 
 .single_image_container {
   text-align: center;
+  border: 1px white solid;
+  border-width: 1px 0;
 
   .single_image {
     height: 36rem;
+    border: 1px white solid;
+    border-width: 0 1px;
   }
 }
 
