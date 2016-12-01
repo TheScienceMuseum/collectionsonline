@@ -4,7 +4,6 @@
 
 <div class="page" role="main">
 
-<section class="white">
   {{> records/record-top }}
 
   {{#if images}}
@@ -15,21 +14,22 @@
     {{/ifmultiple}}
   {{/if}}
 
-  <div class="row">
-    <div class="columns medium-8">
+  <section class="white">
+    <div class="row">
+      <div class="columns medium-8">
 
-      {{> records/record-description}}
+        {{> records/record-description}}
 
+      </div>
+      <div class="columns medium-4">
+
+        {{#if related.people}}{{> records/record-related-people }}{{/if}}
+
+        {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
+
+      </div>
     </div>
-    <div class="columns medium-4">
-
-      {{#if related.people}}{{> records/record-related-people }}{{/if}}
-
-      {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
-
-    </div>
-  </div>
-</section>
+  </section>
 
   {{> records/record-details }}
 
