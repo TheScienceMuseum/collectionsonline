@@ -19,16 +19,25 @@
       "value": 654
     }
   },
-  "maker": {
+  "image_license": {
     "doc_count": 654,
-    "maker_filters": {
+    "image_license_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 118,
+      "sum_other_doc_count": 0,
       "buckets": [
         {
-          "key": "Unknown maker",
-          "doc_count": 54
-        },
+          "key": "CC-BY-NC-SA 4.0",
+          "doc_count": 40
+        }
+      ]
+    }
+  },
+  "maker": {
+    "doc_count": 597,
+    "maker_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 110,
+      "buckets": [
         {
           "key": "Hinde",
           "doc_count": 9
@@ -55,7 +64,7 @@
         },
         {
           "key": "Margaret Lowenfeld",
-          "doc_count": 5
+          "doc_count": 4
         },
         {
           "key": "National Institute of Industrial Psychology",
@@ -63,6 +72,10 @@
         },
         {
           "key": "Parke, Davis and Company Inc.",
+          "doc_count": 4
+        },
+        {
+          "key": "Wendy Ramshaw",
           "doc_count": 4
         }
       ]
@@ -297,6 +310,19 @@
         {
           "key": "Science Museum, Winton Mathematics Gallery",
           "doc_count": 1
+        }
+      ]
+    }
+  },
+  "has_image": {
+    "doc_count": 654,
+    "has_image_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": [
+        {
+          "key": "1",
+          "doc_count": 40
         }
       ]
     }
