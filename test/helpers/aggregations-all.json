@@ -1,0 +1,603 @@
+{
+  "doc_count": 654,
+  "occupation": {
+    "doc_count": 654,
+    "occupation_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": [
+        {
+          "key": "testing station",
+          "doc_count": 1
+        }
+      ]
+    }
+  },
+  "count": {
+    "doc_count": 654,
+    "count_filters": {
+      "value": 654
+    }
+  },
+  "image_license": {
+    "doc_count": 654,
+    "image_license_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": [
+        {
+          "key": "CC-BY-NC-SA 4.0",
+          "doc_count": 40
+        }
+      ]
+    }
+  },
+  "maker": {
+    "doc_count": 597,
+    "maker_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 110,
+      "buckets": [
+        {
+          "key": "Hinde",
+          "doc_count": 9
+        },
+        {
+          "key": "Hinde, John",
+          "doc_count": 9
+        },
+        {
+          "key": "John",
+          "doc_count": 9
+        },
+        {
+          "key": "C H Stoelting Company",
+          "doc_count": 6
+        },
+        {
+          "key": "Unipath Limited",
+          "doc_count": 6
+        },
+        {
+          "key": "David Edward Hughes",
+          "doc_count": 5
+        },
+        {
+          "key": "Margaret Lowenfeld",
+          "doc_count": 4
+        },
+        {
+          "key": "National Institute of Industrial Psychology",
+          "doc_count": 4
+        },
+        {
+          "key": "Parke, Davis and Company Inc.",
+          "doc_count": 4
+        },
+        {
+          "key": "Wendy Ramshaw",
+          "doc_count": 4
+        }
+      ]
+    }
+  },
+  "organisation": {
+    "doc_count": 654,
+    "organisations_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": [
+        {
+          "key": "organisation",
+          "doc_count": 1
+        }
+      ]
+    }
+  },
+  "archive": {
+    "doc_count": 654,
+    "archive_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": [
+        {
+          "key": "GEC Traction Archive",
+          "doc_count": 3
+        }
+      ]
+    }
+  },
+  "type": {
+    "doc_count": 650,
+    "type_filters": {
+      "doc_count_error_upper_bound": 5,
+      "sum_other_doc_count": 730,
+      "buckets": [
+        {
+          "key": "laboratory (apparatus)",
+          "doc_count": 72
+        },
+        {
+          "key": "test tubes",
+          "doc_count": 72
+        },
+        {
+          "key": "ophthalmology (visual acuity)",
+          "doc_count": 47
+        },
+        {
+          "key": "psychological test",
+          "doc_count": 38
+        },
+        {
+          "key": "test types",
+          "doc_count": 38
+        },
+        {
+          "key": "diagnosis (genito-urinary)",
+          "doc_count": 18
+        },
+        {
+          "key": "psychometric test",
+          "doc_count": 16
+        },
+        {
+          "key": "urine test kits",
+          "doc_count": 16
+        },
+        {
+          "key": "ophthalmology (astigmatism)",
+          "doc_count": 15
+        },
+        {
+          "key": "light test charts",
+          "doc_count": 14
+        }
+      ]
+    }
+  },
+  "material": {
+    "doc_count": 654,
+    "material_filters": {
+      "doc_count_error_upper_bound": 5,
+      "sum_other_doc_count": 440,
+      "buckets": [
+        {
+          "key": "glass",
+          "doc_count": 95
+        },
+        {
+          "key": "paper",
+          "doc_count": 91
+        },
+        {
+          "key": "wood",
+          "doc_count": 56
+        },
+        {
+          "key": "cardboard",
+          "doc_count": 46
+        },
+        {
+          "key": "metal",
+          "doc_count": 42
+        },
+        {
+          "key": "plastic",
+          "doc_count": 41
+        },
+        {
+          "key": "paper (fibre product)",
+          "doc_count": 26
+        },
+        {
+          "key": "steel",
+          "doc_count": 20
+        },
+        {
+          "key": "cloth",
+          "doc_count": 16
+        },
+        {
+          "key": "wood (unidentified)",
+          "doc_count": 16
+        }
+      ]
+    }
+  },
+  "museum": {
+    "doc_count": 654,
+    "museum_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 1,
+      "buckets": [
+        {
+          "key": "Science Museum",
+          "doc_count": 23
+        },
+        {
+          "key": "Information Age Gallery: Exchange",
+          "doc_count": 7
+        },
+        {
+          "key": "Science Museum, Information Age Gallery: Exchange",
+          "doc_count": 7
+        },
+        {
+          "key": "Making the Modern World Gallery",
+          "doc_count": 6
+        },
+        {
+          "key": "Science Museum, Making the Modern World Gallery",
+          "doc_count": 6
+        },
+        {
+          "key": "Science Museum, Science & Art of Medicine Gallery",
+          "doc_count": 3
+        },
+        {
+          "key": "Information Age Gallery: Cell",
+          "doc_count": 2
+        },
+        {
+          "key": "Science Museum, Information Age Gallery: Cell",
+          "doc_count": 2
+        },
+        {
+          "key": "Science Museum, Who am I? Gallery",
+          "doc_count": 2
+        },
+        {
+          "key": "Who am I? Gallery",
+          "doc_count": 2
+        },
+        {
+          "key": "Blythe House",
+          "doc_count": 1
+        },
+        {
+          "key": "Great Hall",
+          "doc_count": 1
+        },
+        {
+          "key": "Information Age Gallery: Cable",
+          "doc_count": 1
+        },
+        {
+          "key": "Journeys through Medicine: Henry Wellcome's Legacy",
+          "doc_count": 1
+        },
+        {
+          "key": "National Railway Museum",
+          "doc_count": 1
+        },
+        {
+          "key": "National Railway Museum, Great Hall",
+          "doc_count": 1
+        },
+        {
+          "key": "Science & Art of Medicine Gallery",
+          "doc_count": 1
+        },
+        {
+          "key": "Science & Art of Medicine Gallery; Blythe House",
+          "doc_count": 1
+        },
+        {
+          "key": "Science & Art of Medicine Gallery; Science Museum",
+          "doc_count": 1
+        },
+        {
+          "key": "Science Museum, Blythe House",
+          "doc_count": 1
+        },
+        {
+          "key": "Science Museum, Information Age Gallery: Cable",
+          "doc_count": 1
+        },
+        {
+          "key": "Science Museum, Journeys through Medicine: Henry Wellcome's Legacy",
+          "doc_count": 1
+        },
+        {
+          "key": "Science Museum, Science & Art of Medicine Gallery; Blythe House",
+          "doc_count": 1
+        },
+        {
+          "key": "Science Museum, Science & Art of Medicine Gallery; Science Museum, Blythe House",
+          "doc_count": 1
+        },
+        {
+          "key": "Science Museum, Winton Mathematics Gallery",
+          "doc_count": 1
+        }
+      ]
+    }
+  },
+  "has_image": {
+    "doc_count": 654,
+    "has_image_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": [
+        {
+          "key": "1",
+          "doc_count": 40
+        }
+      ]
+    }
+  },
+  "place": {
+    "doc_count": 654,
+    "place_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 100,
+      "buckets": [
+        {
+          "key": "London",
+          "doc_count": 50
+        },
+        {
+          "key": "United Kingdom",
+          "doc_count": 36
+        },
+        {
+          "key": "England",
+          "doc_count": 33
+        },
+        {
+          "key": "Exmoor, England, United Kingdom",
+          "doc_count": 9
+        },
+        {
+          "key": "Chicago",
+          "doc_count": 8
+        },
+        {
+          "key": "Manchester",
+          "doc_count": 8
+        },
+        {
+          "key": "United States",
+          "doc_count": 8
+        },
+        {
+          "key": "Europe",
+          "doc_count": 6
+        },
+        {
+          "key": "France",
+          "doc_count": 6
+        },
+        {
+          "key": "Bedford",
+          "doc_count": 5
+        }
+      ]
+    }
+  },
+  "category": {
+    "doc_count": 654,
+    "category_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 133,
+      "buckets": [
+        {
+          "key": "Psychology, Psychiatry & Anthropometry",
+          "doc_count": 163
+        },
+        {
+          "key": "Ophthalmology",
+          "doc_count": 98
+        },
+        {
+          "key": "Laboratory Medicine",
+          "doc_count": 97
+        },
+        {
+          "key": "Public Health & Hygiene",
+          "doc_count": 33
+        },
+        {
+          "key": "Clinical Diagnosis",
+          "doc_count": 29
+        },
+        {
+          "key": "Farnborough",
+          "doc_count": 25
+        },
+        {
+          "key": "Telecommunications",
+          "doc_count": 24
+        },
+        {
+          "key": "Gas Industry",
+          "doc_count": 18
+        },
+        {
+          "key": "Microbiology",
+          "doc_count": 15
+        },
+        {
+          "key": "Photographs",
+          "doc_count": 15
+        }
+      ]
+    }
+  },
+  "place_born": {
+    "doc_count": 654,
+    "place_born_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": [
+        {
+          "key": "Rugby, Warwickshire, England, United Kingdom",
+          "doc_count": 1
+        }
+      ]
+    }
+  },
+  "user": {
+    "doc_count": 654,
+    "user_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 45,
+      "buckets": [
+        {
+          "key": "Joseph Lister",
+          "doc_count": 16
+        },
+        {
+          "key": "Eduard Jaeger",
+          "doc_count": 10
+        },
+        {
+          "key": "David Edward Hughes",
+          "doc_count": 5
+        },
+        {
+          "key": "Nathaniel Bishop Harman",
+          "doc_count": 5
+        },
+        {
+          "key": "null Brunton, Sir Thomas Lauder",
+          "doc_count": 4
+        },
+        {
+          "key": "William Picken Alexander",
+          "doc_count": 3
+        },
+        {
+          "key": "Alaric Frithiof Holmgren",
+          "doc_count": 2
+        },
+        {
+          "key": "Arnold Lucius Gesell",
+          "doc_count": 2
+        },
+        {
+          "key": "George Cowell",
+          "doc_count": 2
+        },
+        {
+          "key": "Gertrude Lillian Baker",
+          "doc_count": 2
+        }
+      ]
+    }
+  },
+  "gallery": {
+    "doc_count": 654,
+    "gallery_filters": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": [
+        {
+          "key": "Science Museum",
+          "doc_count": 23
+        },
+        {
+          "key": "Information Age Gallery: Exchange",
+          "doc_count": 7
+        },
+        {
+          "key": "Science Museum, Information Age Gallery: Exchange",
+          "doc_count": 7
+        },
+        {
+          "key": "Making the Modern World Gallery",
+          "doc_count": 6
+        },
+        {
+          "key": "Science Museum, Making the Modern World Gallery",
+          "doc_count": 6
+        },
+        {
+          "key": "Science Museum, Science & Art of Medicine Gallery",
+          "doc_count": 3
+        },
+        {
+          "key": "Information Age Gallery: Cell",
+          "doc_count": 2
+        },
+        {
+          "key": "Science Museum, Information Age Gallery: Cell",
+          "doc_count": 2
+        },
+        {
+          "key": "Science Museum, Who am I? Gallery",
+          "doc_count": 2
+        },
+        {
+          "key": "Who am I? Gallery",
+          "doc_count": 2
+        },
+        {
+          "key": "Blythe House",
+          "doc_count": 1
+        },
+        {
+          "key": "Great Hall",
+          "doc_count": 1
+        },
+        {
+          "key": "Information Age Gallery: Cable",
+          "doc_count": 1
+        },
+        {
+          "key": "Journeys through Medicine: Henry Wellcome's Legacy",
+          "doc_count": 1
+        },
+        {
+          "key": "National Railway Museum",
+          "doc_count": 1
+        },
+        {
+          "key": "National Railway Museum, Great Hall",
+          "doc_count": 1
+        },
+        {
+          "key": "Science & Art of Medicine Gallery",
+          "doc_count": 1
+        },
+        {
+          "key": "Science & Art of Medicine Gallery; Blythe House",
+          "doc_count": 1
+        },
+        {
+          "key": "Science & Art of Medicine Gallery; Science Museum",
+          "doc_count": 1
+        },
+        {
+          "key": "Science Museum, Blythe House",
+          "doc_count": 1
+        },
+        {
+          "key": "Science Museum, Information Age Gallery: Cable",
+          "doc_count": 1
+        },
+        {
+          "key": "Science Museum, Journeys through Medicine: Henry Wellcome's Legacy",
+          "doc_count": 1
+        },
+        {
+          "key": "Science Museum, Science & Art of Medicine Gallery; Blythe House",
+          "doc_count": 1
+        },
+        {
+          "key": "Science Museum, Science & Art of Medicine Gallery; Science Museum, Blythe House",
+          "doc_count": 1
+        },
+        {
+          "key": "Science Museum, Winton Mathematics Gallery",
+          "doc_count": 1
+        },
+        {
+          "key": "Winton Mathematics Gallery",
+          "doc_count": 1
+        }
+      ]
+    }
+  }
+}
