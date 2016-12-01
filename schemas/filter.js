@@ -1,15 +1,16 @@
 const Joi = require('joi');
-const dateSchema = require('./date');
 
 const sharedSchema = {
   // All
-  'filter[date[from]]': dateSchema.empty(''),
-  'filter[date[to]]': dateSchema.empty(''),
+  'filter[date[from]]': Joi.number().integer().min(0),
+  'filter[date[to]]': Joi.number().integer().min(0),
   // Objects
   'filter[on_display]': Joi.boolean(),
+  'filter[has_image]': Joi.string(),
+  'filter[image_license]': Joi.string(),
   // People
-  'filter[birth[date]]': dateSchema.empty(''),
-  'filter[death[date]]': dateSchema.empty('')
+  'filter[birth[date]]': Joi.number().integer().min(0),
+  'filter[death[date]]': Joi.number().integer().min(0)
   // Documents
 };
 
@@ -32,8 +33,7 @@ const jsonSchema = {
   'filter[occupation]': Joi.string(),
   // Documents
   'filter[archive]': Joi.string(),
-  'filter[formats]': Joi.string(),
-  'filter[image_licences]': Joi.string()
+  'filter[formats]': Joi.string()
 };
 
 const htmlSchema = {
@@ -55,8 +55,7 @@ const htmlSchema = {
   'filter[occupation]': Joi.array().items(Joi.string()).single(),
   // Documents
   'filter[archive]': Joi.array().items(Joi.string()).single(),
-  'filter[formats]': Joi.array().items(Joi.string()).single(),
-  'filter[image_licences]': Joi.array().items(Joi.string()).single()
+  'filter[formats]': Joi.array().items(Joi.string()).single()
 };
 
 module.exports = (contentType) => {
@@ -90,7 +89,8 @@ module.exports = (contentType) => {
     .rename('occupation', 'filter[occupation]', {override: true, ignoreUndefined: true})
     .rename('archive', 'filter[archive]', {override: true, ignoreUndefined: true})
     .rename('formats', 'filter[formats]', {override: true, ignoreUndefined: true})
-    .rename('image_licences', 'filter[image_licences]', {override: true, ignoreUndefined: true})
+    .rename('has_image', 'filter[has_image]', {override: true, ignoreUndefined: true})
+    .rename('image_license', 'filter[image_license]', {override: true, ignoreUndefined: true})
     .rename('user', 'filter[user]', {override: true, ignoreUndefined: true})
     .rename('material', 'filter[material]', {override: true, ignoreUndefined: true});
 };

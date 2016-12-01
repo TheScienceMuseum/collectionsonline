@@ -206,7 +206,7 @@ Handlebars.registerHelper('normalise', require('../templates/helpers/normalise.j
 
 Handlebars.registerHelper('truncate', require('../templates/helpers/truncate.js'));
 
-Handlebars.registerHelper('museumlinks', require('../templates/helpers/museumlinks.js'));
+Handlebars.registerHelper('or', require('../templates/helpers/or.js'));
 
 Handlebars.registerHelper('isequal', require('../templates/helpers/isequal.js'));
 

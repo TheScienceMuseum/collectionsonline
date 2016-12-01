@@ -27,9 +27,9 @@ test(file + 'The filters date are included in the array filter', (t) => {
               {term: {'type.base': 'agent'}},
               {
                 bool: {
-                  should: [
-                    {range: {'lifecycle.birth.date.earliest': {gte: 1800}}},
-                    {range: {'lifecycle.death.date.latest': {lte: 1900}}}
+                  must: [
+                    {'or': [{'range': {'lifecycle.death.date.latest': {'gte': ['1800']}}}, {'range': {'lifecycle.creation.date.latest': {'gte': ['1800']}}}]},
+                    {'or': [{'range': {'lifecycle.birth.date.latest': {'lte': ['1900']}}}, {'range': {'lifecycle.creation.date.latest': {'lte': ['1900']}}}]}
                   ]
                 }
               }
@@ -42,9 +42,9 @@ test(file + 'The filters date are included in the array filter', (t) => {
               {term: {'type.base': 'object'}},
               {
                 bool: {
-                  should: [
-                    {range: {'lifecycle.creation.date.latest': {gte: 1800}}},
-                    {range: {'lifecycle.creation.date.latest': {lte: 1900}}}
+                  must: [
+                    {'or': [{'range': {'lifecycle.death.date.latest': {'gte': ['1800']}}}, {'range': {'lifecycle.creation.date.latest': {'gte': ['1800']}}}]},
+                    {'or': [{'range': {'lifecycle.birth.date.latest': {'lte': ['1900']}}}, {'range': {'lifecycle.creation.date.latest': {'lte': ['1900']}}}]}
                   ]
                 }
               }
@@ -57,9 +57,9 @@ test(file + 'The filters date are included in the array filter', (t) => {
               {term: {'type.base': 'archive'}},
               {
                 bool: {
-                  should: [
-                    {range: {'lifecycle.creation.date.latest': {gte: 1800}}},
-                    {range: {'lifecycle.creation.date.latest': {lte: 1900}}}
+                  must: [
+                    {'or': [{'range': {'lifecycle.death.date.latest': {'gte': ['1800']}}}, {'range': {'lifecycle.creation.date.latest': {'gte': ['1800']}}}]},
+                    {'or': [{'range': {'lifecycle.birth.date.latest': {'lte': ['1900']}}}, {'range': {'lifecycle.creation.date.latest': {'lte': ['1900']}}}]}
                   ]
                 }
               }
