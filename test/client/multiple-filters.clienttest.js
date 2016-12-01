@@ -23,7 +23,7 @@ module.exports = {
       .assert.containsText('.searchtab:nth-of-type(4)', '0')
       .click('.searchtab:nth-of-type(3)')
       .pause(10000)
-      .assert.urlEquals('http://localhost:8000/search/objects?q=engine&filter%5Btype%5D=petrol%20engines&filter%5Btype%5D=private%20car%20components&page%5Bsize%5D=50&page%5Btype%5D=search&ajax=true')
+      .assert.urlEquals('http://localhost:8000/search/objects?q=engine&filter%5Btype%5D=petrol%20engines&filter%5Btype%5D=private%20car%20components&page%5Bsize%5D=50&page%5Btype%5D=search')
       .assert.containsText('.searchtab:nth-of-type(1)', '7')
       .assert.containsText('.searchtab:nth-of-type(2)', '0')
       .assert.containsText('.searchtab:nth-of-type(3)', '7')
