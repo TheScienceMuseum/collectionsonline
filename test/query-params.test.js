@@ -11,8 +11,8 @@ test(file + 'Should build a query param object from a html request', (t) => {
       'fields[type]': 'people',
       'filter[occupation]': 'mathematician',
       'filter[birth[place]]': 'london',
-      'filter[birth[date]]': '1800',
-      'filter[death[date]]': '1900'
+      'filter[date[from]]': 1800,
+      'filter[date[to]]': 1900
     },
     params: {}
   };
@@ -20,8 +20,8 @@ test(file + 'Should build a query param object from a html request', (t) => {
   const result = queryParams('html', query);
 
   t.equal(result.filter.people.birthPlace[0], 'london', 'filter with place equal "london"');
-  t.equal(result.filter.people.birthDate.getFullYear(), 1800, 'filter by birthDate with 1800');
-  t.equal(result.filter.people.deathDate.getFullYear(), 1900, 'filter by deathDate with 1900');
+  t.equal(result.filter.people.birthDate, 1800, 'filter by birthDate with 1800');
+  t.equal(result.filter.people.deathDate, 1900, 'filter by deathDate with 1900');
   t.equal(result.filter.people.occupation[0], 'mathematician', 'filter by occupation mathematician');
   t.end();
 });
@@ -34,8 +34,8 @@ test(file + 'Should build a query param object from a json api request', (t) => 
       'fields[type]': 'people',
       'filter[occupation]': 'mathematician,developer',
       'filter[birth[place]]': 'london,Paris',
-      'filter[birth[date]]': '1800',
-      'filter[death[date]]': '1900'
+      'filter[date[from]]': 1800,
+      'filter[date[to]]': 1900
     },
     params: {}
   };
@@ -43,8 +43,8 @@ test(file + 'Should build a query param object from a json api request', (t) => 
   const result = queryParams('json', query);
   t.equal(result.filter.people.birthPlace[0], 'london', 'filter with place equal "london"');
   t.equal(result.filter.people.birthPlace[1], 'Paris', 'filter with place equal "Paris"');
-  t.equal(result.filter.people.birthDate.getFullYear(), 1800, 'filter by birthDate with 1800');
-  t.equal(result.filter.people.deathDate.getFullYear(), 1900, 'filter by deathDate with 1900');
+  t.equal(result.filter.people.birthDate, 1800, 'filter by birthDate with 1800');
+  t.equal(result.filter.people.deathDate, 1900, 'filter by deathDate with 1900');
   t.equal(result.filter.people.occupation[0], 'mathematician', 'filter by occupation mathematician');
   t.equal(result.filter.people.occupation[1], 'developer', 'filter by occupation developer');
   t.end();
