@@ -20,6 +20,7 @@
 
   &__title {
     font-size: 2rem;
+    letter-spacing: -0.02em;
     @include breakpoint(medium) {
       font-size: 3rem;
     }

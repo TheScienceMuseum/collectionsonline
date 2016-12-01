@@ -37,7 +37,7 @@ testWithServer(file + 'Should accept date[from] in format YYYY', {}, (t, ctx) =>
   });
 });
 
-testWithServer(file + 'Should accept date[from] in format YYYY-MM', {}, (t, ctx) => {
+testWithServer(file + 'Should not accept date[from] in format YYYY-MM', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -47,12 +47,12 @@ testWithServer(file + 'Should accept date[from] in format YYYY-MM', {}, (t, ctx)
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer(file + 'Should accept date[from] in format YYYY-MM-DD', {}, (t, ctx) => {
+testWithServer(file + 'Should not accept date[from] in format YYYY-MM-DD', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -62,7 +62,7 @@ testWithServer(file + 'Should accept date[from] in format YYYY-MM-DD', {}, (t, c
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
@@ -97,7 +97,7 @@ testWithServer(file + 'Should accept date[to] in format YYYY', {}, (t, ctx) => {
   });
 });
 
-testWithServer(file + 'Should accept date[to] in format YYYY-MM', {}, (t, ctx) => {
+testWithServer(file + 'Should not accept date[to] in format YYYY-MM', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -107,12 +107,12 @@ testWithServer(file + 'Should accept date[to] in format YYYY-MM', {}, (t, ctx) =
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
 
-testWithServer(file + 'Should accept date[to] in format YYYY-MM-DD', {}, (t, ctx) => {
+testWithServer(file + 'Should not accept date[to] in format YYYY-MM-DD', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -122,7 +122,7 @@ testWithServer(file + 'Should accept date[to] in format YYYY-MM-DD', {}, (t, ctx
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.equal(res.statusCode, 400, 'Status code was as expected');
     t.end();
   });
 });
@@ -592,126 +592,6 @@ testWithServer(file + 'Should not accept multiple array of birth[place] as json'
   });
 });
 
-testWithServer(file + 'Should accept birth[date] in format YYYY', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'birth[date]': '2016' }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer(file + 'Should accept birth[date] in format YYYY-MM', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'birth[date]': '2016-12' }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer(file + 'Should accept birth[date] in format YYYY-MM-DD', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'birth[date]': '2016-12-12' }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer(file + 'Should not accept invalid birth[date]', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'birth[date]': '2016-13-12' }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer(file + 'Should accept death[date] in format YYYY', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'death[date]': '2016' }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer(file + 'Should accept death[date] in format YYYY-MM', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'death[date]': '2016-12' }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer(file + 'Should accept death[date] in format YYYY-MM-DD', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'death[date]': '2016-12-12' }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer(file + 'Should not accept invalid death[date]', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'death[date]': '2016-13-12' }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
-});
-
 testWithServer(file + 'Should accept single occupation', {}, (t, ctx) => {
   t.plan(1);
 
@@ -847,12 +727,12 @@ testWithServer(file + 'Should accept array of multiple formats as json', {}, (t,
   });
 });
 
-testWithServer(file + 'Should accept single image_licences', {}, (t, ctx) => {
+testWithServer(file + 'Should accept single image_license', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'image_licences': 'CC BY-NC-SA' }),
+    url: '/search?' + QueryString.stringify({ q: 'test', 'image_license': 'true' }),
     headers: { Accept: 'text/html' }
   };
 
@@ -862,27 +742,12 @@ testWithServer(file + 'Should accept single image_licences', {}, (t, ctx) => {
   });
 });
 
-testWithServer(file + 'Should accept multiple image_licences', {}, (t, ctx) => {
+testWithServer(file + 'Should not accept array of multiple image_license as json', {}, (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'image_licences': ['CC BY-NC-SA', 'CC BY-SA'] }),
-    headers: { Accept: 'text/html' }
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
-});
-
-testWithServer(file + 'Should not accept array of multiple image_licences as json', {}, (t, ctx) => {
-  t.plan(1);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'image_licences': ['CC BY-NC-SA', 'CC BY-SA'] }),
+    url: '/search?' + QueryString.stringify({ q: 'test', 'image_license': ['CC BY-NC-SA', 'CC BY-SA'] }),
     headers: { Accept: 'application/vnd.api+json' }
   };
 
@@ -990,6 +855,44 @@ testWithServer(file + 'Should not return people or organisations as object type'
 
   ctx.server.inject(htmlRequest, (res) => {
     t.notOk(JSON.parse(res.payload).meta.filters.type.find(el => el.value === 'Turner Bros Asbestos Co'), 'Org does not appear in object type filter');
+    t.end();
+  });
+});
+
+testWithServer(file + 'Should filter by has image', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({
+      'q': '',
+      'filter[has_image]': 'true'
+    }),
+    headers: { Accept: 'application/vnd.api+json' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.ok(JSON.parse(res.payload).data.length > 0, 'returns some data with images');
+    t.end();
+  });
+});
+
+testWithServer(file + 'Should have image and license facets', {}, (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?' + QueryString.stringify({
+      'q': ''
+    }),
+    headers: { Accept: 'application/vnd.api+json' }
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    var result = JSON.parse(res.payload);
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.ok(result.meta.filters.has_image[0].count >= result.meta.filters.image_license[0].count, 'more images than images with licenses');
     t.end();
   });
 });
