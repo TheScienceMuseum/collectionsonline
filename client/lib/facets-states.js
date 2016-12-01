@@ -12,7 +12,8 @@ module.exports = {
     Type: 'close',
     Place: 'close',
     User: 'close',
-    Archive: 'close'
+    Archive: 'close',
+    Image: 'close'
   },
   people: {
     Dates: 'close',
@@ -28,10 +29,12 @@ module.exports = {
     Type: 'close',
     Place: 'close',
     User: 'close',
-    Material: 'close'
+    Material: 'close',
+    Image: 'close'
   },
   documents: {
     Archive: 'close',
-    Organisation: 'close'
+    Organisation: 'close',
+    Image: 'close'
   }
 };
