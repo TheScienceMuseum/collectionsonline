@@ -37,7 +37,6 @@ function load (ctx, next) {
       headers: { Accept: 'application/vnd.api+json' }
     };
     var qs = QueryString.parse(ctx.querystring);
-    qs.ajax = true;
 
     var queryParams = createQueryParams('html', {query: qs, params: {type: ctx.params.type}});
     getData(ctx.pathname + '?' + toJsonUrl(ctx.querystring), opts, function (err, json) {

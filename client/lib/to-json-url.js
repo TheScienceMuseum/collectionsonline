@@ -15,5 +15,6 @@ module.exports = function (queryString) {
       qs[k] = qs[k].replace(/,/g, '\\,');
     }
   });
+  qs.ajax = true;
   return QueryString.stringify(qs);
 };
