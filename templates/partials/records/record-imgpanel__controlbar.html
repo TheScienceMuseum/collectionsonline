@@ -33,9 +33,15 @@
 
       <button id="cite__button" class="cite__button" >{{> global/icon i="arrow_right" size="16" }} Use this image</button>
 
-      <div class="osd__toolbar" id="openseadragon-toolbar">
-        <button class="osd__button" id="osd-fullpage" aria-label="full screen"></button>
-      </div>
+      {{#each images}}
+        {{#if this.zoom}}
+          <div class="osd__toolbar-container" id="openseadragon-toolbar-{{@index}}">
+            <div class="osd__toolbar" id="openseadragon-toolbar">
+              <button class="osd__button" id="osd-fullpage" aria-label="full screen"></button>
+            </div>
+          </div>
+        {{/if}}
+      {{/each}}
 
       {{#each images}}
       <p id="record-imgpanel__caption-{{@index}}" class="record-imgpanel__caption">{{title}}<br />
