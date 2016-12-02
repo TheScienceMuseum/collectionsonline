@@ -38,18 +38,18 @@ module.exports = {
     title: 'Themes from our collection',
     collection: [{
       type: 'collection',
-      title: 'Locomotives and Rolling Stock',
-      description: 'Search within 280 locomotives and rolling stock from the collection',
-      figure: '/assets/img/example/collections/railways.jpg',
+      title: 'Information Age',
+      description: 'Search across a snapshot of objects representing the development of the internet',
+      figure: '/assets/img/home/collections/informationage.jpg',
       columns: 'small-6 medium-3',
-      link: '/search?filter[categories]=Locomotives and Rolling Stock'
+      link: '/search?filter%5Bmuseum%5D=Science%20Museum&filter%5Bgallery%5D=Information%20Age%20Gallery%3A%20Web&page%5Bsize%5D=50&page%5Btype%5D=search'
     }, {
       type: 'collection',
-      title: 'Art',
-      figure: '/assets/img/home/collections/art.jpg',
-      description: 'Artworks depicting the history of science, technology and medicine over time',
+      title: 'Cinematography',
+      figure: '/assets/img/home/collections/cinematography.jpg',
+      description: 'Objects representing the history of cinema: from magic lanterns to digital technologies',
       columns: 'small-6 medium-3',
-      link: '/search?filter[categories]=Art'
+      link: '/search?q=&filter%5Bcategories%5D=Cinematography'
     }, {
       type: 'collection',
       title: 'The Babbage Papers',
@@ -63,7 +63,7 @@ module.exports = {
       description: 'Explore the objects in Mathematics: The Winton Gallery ',
       figure: '/assets/img/home/collections/mathematics.jpg',
       columns: 'small-6 medium-3',
-      link: '/search?filter[gallery]=Winton Mathematics Gallery'
+      link: '/search?filter[gallery]=Mathematics:%20The%20Winton%20Gallery&filter[museum]=Science%20Museum'
     }]
   }]
 };
