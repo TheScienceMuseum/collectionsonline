@@ -63,7 +63,7 @@ module.exports = {
       description: 'Explore the objects in Mathematics: The Winton Gallery ',
       figure: '/assets/img/home/collections/mathematics.jpg',
       columns: 'small-6 medium-3',
-      link: '/search?filter[gallery]=Winton Mathematics Gallery'
+      link: '/search?filter[gallery]=Mathematics:%20The%20Winton%20Gallery&filter[museum]=Science%20Museum'
     }]
   }]
 };
