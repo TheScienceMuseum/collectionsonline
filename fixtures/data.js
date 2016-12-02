@@ -2,7 +2,7 @@ module.exports = {
   title: 'Science Museum Group Collection',
   titlePage: 'Science Museum Group Collection',
   strap: 'Search our collection',
-  intro: 'Explore over 150,000 objects and archives from the Science Museum, Museum of Science and Industry, National Media Museum and National Railway Museum.',
+  intro: 'Explore over 250,000 objects and archives from the Science Museum, Museum of Science and Industry, National Media Museum and National Railway Museum.',
   collectionGroup: [{
     title: 'See what’s on display',
     collection: [{
@@ -14,7 +14,7 @@ module.exports = {
       link: '/scm'
     }, {
       type: 'collection',
-      title: 'Museum of Science & Industry',
+      title: 'Museum of Science and Industry',
       figure: '/assets/img/home/collections/msi.jpg',
       description: 'The story of Manchester’s scientific and industrial past, present and future',
       columns: 'small-6 medium-3',
@@ -56,7 +56,7 @@ module.exports = {
       figure: '/assets/img/home/collections/babbage.jpg',
       description: 'The drawings and papers of mathematician and computer pioneer Charles Babbage',
       columns: 'small-6 medium-3',
-      link: '/search/documents?filter[archive]=The Babbage Papers'
+      link: '/search/documents?filter[archive]=The%20Babbage%20Papers'
     }, {
       type: 'collection',
       title: 'Mathematics',
