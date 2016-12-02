@@ -8,6 +8,7 @@ module.exports = (ctx) => {
     var thumbnails = document.getElementsByClassName('record-imgpanel__thumb');
     var captions = Array.prototype.slice.call(document.getElementsByClassName('record-imgpanel__caption'));
     var rights = Array.prototype.slice.call(document.getElementsByClassName('cite__menu__methods'));
+    var zooms = Array.prototype.slice.call(document.getElementsByClassName('osd__toolbar-container'));
 
     ctx.carousel = new Flickity('.carousel', {
       wrapAround: thumbnails.length >= 3,
@@ -30,6 +31,7 @@ module.exports = (ctx) => {
       Array.prototype.slice.call(thumbnails).forEach((el, i) => el.classList.remove('record-imgpanel__thumb--selected'));
       thumbnails[flkty.selectedIndex].classList.add('record-imgpanel__thumb--selected');
       captions.forEach(showHide.bind(null, 'record-imgpanel__caption', flkty));
+      zooms.forEach(showHide.bind(null, 'openseadragon-toolbar', flkty));
       rights.forEach(showHide.bind(null, 'cite__method', flkty));
     });
 

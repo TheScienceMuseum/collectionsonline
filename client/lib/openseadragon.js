@@ -2,9 +2,19 @@ require('openseadragon');
 
 module.exports = {
   init: function (ctx, imgUrl, cb) {
-    imgUrl = imgUrl || document.querySelectorAll('.carousel__image.is-selected')[0].dataset.osd;
     var openseadragon = document.querySelector('#openseadragon');
     if (!openseadragon) return;
+
+    var carouselImage = document.querySelectorAll('.carousel__image.is-selected');
+    var singleImage = document.querySelectorAll('.single_image');
+
+    if (!imgUrl) {
+      if (carouselImage) {
+        imgUrl = carouselImage[0].dataset.osd;
+      } else if (singleImage) {
+        imgUrl = singleImage[0].dataset.osd;
+      }
+    }
 
     if (!ctx.viewer) {
       ctx.viewer = OpenSeadragon({
