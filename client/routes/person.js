@@ -11,6 +11,8 @@ module.exports = function (page) {
 };
 
 function load (ctx, next) {
+  // console.log(dataLayer);
+  // console.log('#############################');
   if (!ctx.isInitialRender) {
     var opts = {
       headers: { Accept: 'application/vnd.api+json' }
@@ -25,6 +27,8 @@ function load (ctx, next) {
       }
       var data = JSONToHTML(json);
       ctx.state.data = data;
+      // analytics
+      window.dataLayer.push(data.layer);
       next();
     });
   } else {
