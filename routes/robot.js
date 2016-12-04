@@ -5,7 +5,7 @@ module.exports = () => ({
   path: '/robots.txt',
   config: {
     handler: function (req, reply) {
-      reply('sitemap: ' + config.sitemapUrl);
+      reply('sitemap: ' + config.sitemapUrl + '/sitemap.xml');
     }
   }
 });
