@@ -11,8 +11,6 @@ module.exports = function (page) {
 };
 
 function load (ctx, next) {
-  // console.log(dataLayer);
-  // console.log('#############################');
   if (!ctx.isInitialRender) {
     var opts = {
       headers: { Accept: 'application/vnd.api+json' }
