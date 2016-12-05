@@ -1,5 +1,4 @@
 var Templates = require('../templates');
-var exampleData = require('../../src/data/object.json');
 var initComp = require('../lib/init-components.js');
 var getData = require('../lib/get-data.js');
 var JSONToHTML = require('../../lib/transforms/json-to-html-data');
@@ -32,12 +31,12 @@ function load (ctx, next) {
         // analytics
         window.dataLayer.push(data.layer);
       }
-      ctx.state.data.slides = exampleData.slides;
+      ctx.state.data.page = 'object';
       next();
     });
   } else {
     ctx.state.data = {};
-    ctx.state.data.slides = exampleData.slides;
+    ctx.state.data.page = 'object';
     listeners(ctx, next);
   }
 }
