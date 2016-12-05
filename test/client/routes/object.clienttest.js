@@ -10,7 +10,7 @@ module.exports = {
       .assert.containsText('.details-Category', 'Locomotives')
       .assert.containsText('.details-Accession-Number', '1976-7000')
       .assert.containsText('.details-Measurements', '22511 mm')
-      .assert.containsText('.details-status', 'permanent collection')
+      .assert.containsText('.details-status', 'Permanent collection')
       .assert.containsText('.details-credit', 'Butlins')
       .assert.containsText('.details-type', 'steam locomotive')
       .assert.containsText('.details-taxonomy', 'vehicles and vehicle components')
