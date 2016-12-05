@@ -9,7 +9,7 @@ module.exports = {
       .assert.containsText('.fact-Made', 'Newcastle')
       .assert.containsText('.details-Category', 'Locomotives and Rolling Stock')
       .assert.containsText('.details-Object-Number', '1862-5')
-      .assert.containsText('.details-status', 'permanent collection')
+      .assert.containsText('.details-status', 'Permanent collection')
       .assert.containsText('.details-credit', 'Thompson and Sons')
       .assert.containsText('.details-type', 'steam locomotive')
       .end();
