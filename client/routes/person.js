@@ -25,9 +25,8 @@ function load (ctx, next) {
       }
       var data = JSONToHTML(json);
       ctx.state.data = data;
+      // analytics
       if (data.inProduction) {
-        console.log(data.inProduction);
-        // analytics
         window.dataLayer.push(data.layer);
       }
 
