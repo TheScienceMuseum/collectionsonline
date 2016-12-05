@@ -5,6 +5,7 @@ module.exports = {
     link: 'http://www.sciencemuseum.org.uk/'
   },
   links: [
+  /*
     {
       name: 'About the Science Museum Group',
       url: 'https://group.sciencemuseum.org.uk/about-us/'
@@ -21,5 +22,6 @@ module.exports = {
       name: 'Copyright and licensing',
       url: 'https://group.sciencemuseum.org.uk/business-services/picture-library/'
     }
+  */
   ]
 };
