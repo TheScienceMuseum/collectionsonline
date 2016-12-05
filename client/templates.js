@@ -210,6 +210,8 @@ Handlebars.registerHelper('or', require('../templates/helpers/or.js'));
 
 Handlebars.registerHelper('isequal', require('../templates/helpers/isequal.js'));
 
+Handlebars.registerHelper('formatnumber', require('../templates/helpers/formatnumber.js'));
+
 // Routes
 module.exports = {
   '404': Handlebars.compile(
