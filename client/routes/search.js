@@ -152,17 +152,19 @@ function listeners (ctx, next) {
   for (i = 0; i < filtersCheckbox.length; i++) {
     filtersCheckbox[i].addEventListener('click', function (e) {
       // analytics
-      if (e.target.checked) {
-        window.dataLayer.push({
-          'event': 'Filter',
-          'ga_event': {
-            'category': 'filter',
-            'action': ctx.params.type || 'all',
-            'label': e.target.name + ' | ' + e.target.value,
-            'value': e.target.value,
-            'non-interaction': 'false'
-          }
-        });
+      if (ctx.state.data.inProduction) {
+        if (e.target.checked) {
+          window.dataLayer.push({
+            'event': 'Filter',
+            'ga_event': {
+              'category': 'filter',
+              'action': ctx.params.type || 'all',
+              'label': e.target.name + ' | ' + e.target.value,
+              'value': e.target.value,
+              'non-interaction': 'false'
+            }
+          });
+        }
       }
 
       var museums = ['Science-Museum', 'National-Railway-Museum', 'National-Media-Museum', 'Museum-of-Science-and-Industry'];

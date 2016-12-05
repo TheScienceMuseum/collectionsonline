@@ -57,7 +57,7 @@ function HTMLResponse (request, reply, elastic, config) {
         return reply(elasticError(err));
       }
       var JSONData = buildJSONResponse(result, config);
-      var HTMLData = JSONToHTML(JSONData);
+      var HTMLData = JSONToHTML(JSONData, config);
       return reply.view('archive', Object.assign(HTMLData, {tree: data}));
     });
   });

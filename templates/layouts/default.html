@@ -28,22 +28,24 @@
     </script>
   </head>
   <body>
-    <!-- Data layer-->
-      <script>
-        window.dataLayer = window.dataLayer || []
-        dataLayer.push({{{layer}}})
-      </script>
-    <!-- End of Data layer -->
+    {{#if inProduction}}
+      <!-- Data layer-->
+        <script>
+          window.dataLayer = window.dataLayer || []
+          dataLayer.push({{{layer}}})
+        </script>
+      <!-- End of Data layer -->
 
-    <!-- Google Tag Manager -->
-    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MTBKW2"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-MTBKW2');</script>
-    <!-- End Google Tag Manager -->
+      <!-- Google Tag Manager -->
+      <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MTBKW2"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-MTBKW2');</script>
+      <!-- End Google Tag Manager -->
+    {{/if}}
     {{{content}}}
     <script src="/bundle.js"></script>
     <div class="grid-overlay row">
