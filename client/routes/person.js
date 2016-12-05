@@ -25,6 +25,11 @@ function load (ctx, next) {
       }
       var data = JSONToHTML(json);
       ctx.state.data = data;
+      // analytics
+      if (data.inProduction) {
+        window.dataLayer.push(data.layer);
+      }
+
       next();
     });
   } else {
