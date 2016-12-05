@@ -28,8 +28,10 @@
       {{/each}}
 
     </div>
-    <div class="columns medium-4">
-      {{> records/panel-cite }}
-    </div>
+    {{#ifpage 'object'}}
+      <div class="columns medium-4">
+        {{> records/panel-cite }}
+      </div>
+    {{/ifpage}}
   </div>
 </section>
