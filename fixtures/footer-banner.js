@@ -2,7 +2,7 @@ module.exports = {
   image: {
     url: '/assets/img/global/logo-smg.svg',
     alt: 'Science Museum Group',
-    link: 'http://www.sciencemuseum.org.uk/'
+    link: 'https://group.sciencemuseum.org.uk/'
   },
   links: [
     {
@@ -16,10 +16,6 @@ module.exports = {
     {
       name: 'Terms of use',
       url: 'https://group.sciencemuseum.org.uk/terms-and-conditions/'
-    },
-    {
-      name: 'Copyright and licensing',
-      url: 'https://group.sciencemuseum.org.uk/business-services/picture-library/'
     }
   ]
 };

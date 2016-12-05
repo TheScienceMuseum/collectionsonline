@@ -1,7 +1,7 @@
 {
-  "doc_count": 654,
+  "doc_count": 640,
   "occupation": {
-    "doc_count": 654,
+    "doc_count": 640,
     "occupation_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -14,29 +14,29 @@
     }
   },
   "count": {
-    "doc_count": 654,
+    "doc_count": 640,
     "count_filters": {
-      "value": 654
+      "value": 640
     }
   },
   "image_license": {
-    "doc_count": 654,
+    "doc_count": 640,
     "image_license_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "CC-BY-NC-SA 4.0",
-          "doc_count": 40
+          "doc_count": 26
         }
       ]
     }
   },
   "maker": {
-    "doc_count": 597,
+    "doc_count": 585,
     "maker_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 110,
+      "sum_other_doc_count": 104,
       "buckets": [
         {
           "key": "Hinde",
@@ -59,10 +59,6 @@
           "doc_count": 6
         },
         {
-          "key": "David Edward Hughes",
-          "doc_count": 5
-        },
-        {
           "key": "Margaret Lowenfeld",
           "doc_count": 4
         },
@@ -77,12 +73,16 @@
         {
           "key": "Wendy Ramshaw",
           "doc_count": 4
+        },
+        {
+          "key": "British Drug Houses Limited",
+          "doc_count": 3
         }
       ]
     }
   },
   "organisation": {
-    "doc_count": 654,
+    "doc_count": 640,
     "organisations_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -95,7 +95,7 @@
     }
   },
   "archive": {
-    "doc_count": 654,
+    "doc_count": 640,
     "archive_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -108,10 +108,10 @@
     }
   },
   "type": {
-    "doc_count": 650,
+    "doc_count": 636,
     "type_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 730,
+      "sum_other_doc_count": 700,
       "buckets": [
         {
           "key": "laboratory (apparatus)",
@@ -123,7 +123,7 @@
         },
         {
           "key": "ophthalmology (visual acuity)",
-          "doc_count": 47
+          "doc_count": 46
         },
         {
           "key": "psychological test",
@@ -131,22 +131,22 @@
         },
         {
           "key": "test types",
-          "doc_count": 38
+          "doc_count": 37
         },
         {
           "key": "diagnosis (genito-urinary)",
-          "doc_count": 18
+          "doc_count": 17
         },
         {
           "key": "psychometric test",
           "doc_count": 16
         },
         {
-          "key": "urine test kits",
-          "doc_count": 16
+          "key": "ophthalmology (astigmatism)",
+          "doc_count": 15
         },
         {
-          "key": "ophthalmology (astigmatism)",
+          "key": "urine test kits",
           "doc_count": 15
         },
         {
@@ -157,34 +157,34 @@
     }
   },
   "material": {
-    "doc_count": 654,
+    "doc_count": 640,
     "material_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 440,
+      "sum_other_doc_count": 405,
       "buckets": [
         {
           "key": "glass",
-          "doc_count": 95
+          "doc_count": 92
         },
         {
           "key": "paper",
-          "doc_count": 91
+          "doc_count": 90
         },
         {
           "key": "wood",
-          "doc_count": 56
+          "doc_count": 55
         },
         {
           "key": "cardboard",
           "doc_count": 46
         },
         {
-          "key": "metal",
-          "doc_count": 42
-        },
-        {
           "key": "plastic",
           "doc_count": 41
+        },
+        {
+          "key": "metal",
+          "doc_count": 40
         },
         {
           "key": "paper (fibre product)",
@@ -192,55 +192,55 @@
         },
         {
           "key": "steel",
-          "doc_count": 20
+          "doc_count": 19
+        },
+        {
+          "key": "metal (unknown)",
+          "doc_count": 16
         },
         {
           "key": "cloth",
-          "doc_count": 16
-        },
-        {
-          "key": "wood (unidentified)",
-          "doc_count": 16
+          "doc_count": 15
         }
       ]
     }
   },
   "museum": {
-    "doc_count": 654,
+    "doc_count": 640,
     "museum_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 1,
+      "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "Science Museum",
-          "doc_count": 23
-        },
-        {
-          "key": "Information Age Gallery: Exchange",
-          "doc_count": 7
-        },
-        {
-          "key": "Science Museum, Information Age Gallery: Exchange",
-          "doc_count": 7
+          "doc_count": 16
         },
         {
           "key": "Making the Modern World Gallery",
-          "doc_count": 6
+          "doc_count": 5
         },
         {
           "key": "Science Museum, Making the Modern World Gallery",
-          "doc_count": 6
-        },
-        {
-          "key": "Science Museum, Science & Art of Medicine Gallery",
-          "doc_count": 3
+          "doc_count": 5
         },
         {
           "key": "Information Age Gallery: Cell",
           "doc_count": 2
         },
         {
+          "key": "Information Age Gallery: Exchange",
+          "doc_count": 2
+        },
+        {
           "key": "Science Museum, Information Age Gallery: Cell",
+          "doc_count": 2
+        },
+        {
+          "key": "Science Museum, Information Age Gallery: Exchange",
+          "doc_count": 2
+        },
+        {
+          "key": "Science Museum, Science & Art of Medicine Gallery",
           "doc_count": 2
         },
         {
@@ -268,15 +268,15 @@
           "doc_count": 1
         },
         {
+          "key": "Mathematics: The Winton Gallery",
+          "doc_count": 1
+        },
+        {
           "key": "National Railway Museum",
           "doc_count": 1
         },
         {
           "key": "National Railway Museum, Great Hall",
-          "doc_count": 1
-        },
-        {
-          "key": "Science & Art of Medicine Gallery",
           "doc_count": 1
         },
         {
@@ -300,50 +300,50 @@
           "doc_count": 1
         },
         {
+          "key": "Science Museum, Mathematics: The Winton Gallery",
+          "doc_count": 1
+        },
+        {
           "key": "Science Museum, Science & Art of Medicine Gallery; Blythe House",
           "doc_count": 1
         },
         {
           "key": "Science Museum, Science & Art of Medicine Gallery; Science Museum, Blythe House",
           "doc_count": 1
-        },
-        {
-          "key": "Science Museum, Winton Mathematics Gallery",
-          "doc_count": 1
         }
       ]
     }
   },
   "has_image": {
-    "doc_count": 654,
+    "doc_count": 640,
     "has_image_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "1",
-          "doc_count": 40
+          "doc_count": 26
         }
       ]
     }
   },
   "place": {
-    "doc_count": 654,
+    "doc_count": 640,
     "place_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 100,
+      "sum_other_doc_count": 97,
       "buckets": [
         {
           "key": "London",
-          "doc_count": 50
+          "doc_count": 49
         },
         {
           "key": "United Kingdom",
-          "doc_count": 36
+          "doc_count": 35
         },
         {
           "key": "England",
-          "doc_count": 33
+          "doc_count": 25
         },
         {
           "key": "Exmoor, England, United Kingdom",
@@ -362,22 +362,22 @@
           "doc_count": 8
         },
         {
-          "key": "Europe",
-          "doc_count": 6
-        },
-        {
           "key": "France",
           "doc_count": 6
         },
         {
           "key": "Bedford",
           "doc_count": 5
+        },
+        {
+          "key": "Europe",
+          "doc_count": 5
         }
       ]
     }
   },
   "category": {
-    "doc_count": 654,
+    "doc_count": 640,
     "category_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 133,
@@ -387,28 +387,28 @@
           "doc_count": 163
         },
         {
-          "key": "Ophthalmology",
-          "doc_count": 98
+          "key": "Laboratory Medicine",
+          "doc_count": 96
         },
         {
-          "key": "Laboratory Medicine",
-          "doc_count": 97
+          "key": "Ophthalmology",
+          "doc_count": 96
         },
         {
           "key": "Public Health & Hygiene",
-          "doc_count": 33
+          "doc_count": 31
         },
         {
           "key": "Clinical Diagnosis",
-          "doc_count": 29
+          "doc_count": 27
         },
         {
           "key": "Farnborough",
-          "doc_count": 25
+          "doc_count": 23
         },
         {
           "key": "Telecommunications",
-          "doc_count": 24
+          "doc_count": 19
         },
         {
           "key": "Gas Industry",
@@ -426,7 +426,7 @@
     }
   },
   "place_born": {
-    "doc_count": 654,
+    "doc_count": 640,
     "place_born_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -439,10 +439,10 @@
     }
   },
   "user": {
-    "doc_count": 654,
+    "doc_count": 640,
     "user_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 45,
+      "sum_other_doc_count": 42,
       "buckets": [
         {
           "key": "Joseph Lister",
@@ -453,19 +453,15 @@
           "doc_count": 10
         },
         {
-          "key": "David Edward Hughes",
-          "doc_count": 5
-        },
-        {
           "key": "Nathaniel Bishop Harman",
           "doc_count": 5
         },
         {
-          "key": "null Brunton, Sir Thomas Lauder",
-          "doc_count": 4
+          "key": "William Picken Alexander",
+          "doc_count": 3
         },
         {
-          "key": "William Picken Alexander",
+          "key": "null Brunton, Sir Thomas Lauder",
           "doc_count": 3
         },
         {
@@ -483,46 +479,50 @@
         {
           "key": "Gertrude Lillian Baker",
           "doc_count": 2
+        },
+        {
+          "key": "MRC Common Cold Unit",
+          "doc_count": 2
         }
       ]
     }
   },
   "gallery": {
-    "doc_count": 654,
+    "doc_count": 640,
     "gallery_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "Science Museum",
-          "doc_count": 23
-        },
-        {
-          "key": "Information Age Gallery: Exchange",
-          "doc_count": 7
-        },
-        {
-          "key": "Science Museum, Information Age Gallery: Exchange",
-          "doc_count": 7
+          "doc_count": 16
         },
         {
           "key": "Making the Modern World Gallery",
-          "doc_count": 6
+          "doc_count": 5
         },
         {
           "key": "Science Museum, Making the Modern World Gallery",
-          "doc_count": 6
-        },
-        {
-          "key": "Science Museum, Science & Art of Medicine Gallery",
-          "doc_count": 3
+          "doc_count": 5
         },
         {
           "key": "Information Age Gallery: Cell",
           "doc_count": 2
         },
         {
+          "key": "Information Age Gallery: Exchange",
+          "doc_count": 2
+        },
+        {
           "key": "Science Museum, Information Age Gallery: Cell",
+          "doc_count": 2
+        },
+        {
+          "key": "Science Museum, Information Age Gallery: Exchange",
+          "doc_count": 2
+        },
+        {
+          "key": "Science Museum, Science & Art of Medicine Gallery",
           "doc_count": 2
         },
         {
@@ -550,15 +550,15 @@
           "doc_count": 1
         },
         {
+          "key": "Mathematics: The Winton Gallery",
+          "doc_count": 1
+        },
+        {
           "key": "National Railway Museum",
           "doc_count": 1
         },
         {
           "key": "National Railway Museum, Great Hall",
-          "doc_count": 1
-        },
-        {
-          "key": "Science & Art of Medicine Gallery",
           "doc_count": 1
         },
         {
@@ -582,19 +582,15 @@
           "doc_count": 1
         },
         {
+          "key": "Science Museum, Mathematics: The Winton Gallery",
+          "doc_count": 1
+        },
+        {
           "key": "Science Museum, Science & Art of Medicine Gallery; Blythe House",
           "doc_count": 1
         },
         {
           "key": "Science Museum, Science & Art of Medicine Gallery; Science Museum, Blythe House",
-          "doc_count": 1
-        },
-        {
-          "key": "Science Museum, Winton Mathematics Gallery",
-          "doc_count": 1
-        },
-        {
-          "key": "Winton Mathematics Gallery",
           "doc_count": 1
         }
       ]

@@ -1,4 +1,5 @@
 module.exports = [
+/*
   {
     image: null,
     title: 'Our collection',
@@ -14,6 +15,7 @@ module.exports = [
       }
     ]
   },
+*/
   {
     image: null,
     title: 'Library and archive',
@@ -55,7 +57,7 @@ module.exports = [
       },
       {
         name: 'Commercial licensing',
-        url: 'https://group.sciencemuseum.org.uk/business-services/brand-licensing/'
+        url: 'https://group.sciencemuseum.org.uk/business-services/picture-library/'
       }
     ]
   }
