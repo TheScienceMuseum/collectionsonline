@@ -28,6 +28,15 @@
     </script>
   </head>
   <body>
+      <!-- Data layer-->
+        <script>
+          window.dataLayer = window.dataLayer || []
+          {{#if inProduction}}
+            dataLayer.push({{{layer}}})
+          {{/if}}
+        </script>
+      <!-- End of Data layer -->
+
     <!-- Google Tag Manager -->
     <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MTBKW2"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -37,6 +46,7 @@
     '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-MTBKW2');</script>
     <!-- End Google Tag Manager -->
+
     {{{content}}}
     <script src="/bundle.js"></script>
     <div class="grid-overlay row">

@@ -28,6 +28,10 @@ function load (ctx, next) {
       }
       var data = JSONToHTML(json);
       ctx.state.data = data;
+      if (data.inProduction) {
+        // analytics
+        window.dataLayer.push(data.layer);
+      }
       ctx.state.data.slides = exampleData.slides;
       next();
     });
