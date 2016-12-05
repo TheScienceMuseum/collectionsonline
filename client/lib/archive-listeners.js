@@ -1,4 +1,5 @@
 var page = require('page');
+var QueryString = require('querystring');
 
 module.exports = () => {
   // 'Search this Archive' Listener
@@ -6,9 +7,11 @@ module.exports = () => {
   if (archiveSearch) {
     archiveSearch.addEventListener('submit', function (e) {
       e.preventDefault();
-      var q = encodeURIComponent(document.getElementById('archive-q').value);
-      var archive = encodeURIComponent(document.getElementById('archive-title').value);
-      var url = '/search/documents?q=' + q + '&archive=' + archive;
+      var q = document.getElementById('archive-q').value;
+      var qs = { q };
+      var archive = document.getElementById('archive-title').value;
+      qs['filter[archive]'] = archive;
+      var url = '/search/documents?' + QueryString.stringify(qs);
       page.show(url);
     });
   }
