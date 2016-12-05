@@ -65,7 +65,7 @@ function HTMLResponse (request, reply, elastic, config) {
       }
 
       const JSONData = buildJSONResponse(result, config, relatedItems);
-      const HTMLData = JSONToHTML(JSONData, config);
+      const HTMLData = JSONToHTML(JSONData);
 
       return reply.view('object', Object.assign(HTMLData, data));
     });
