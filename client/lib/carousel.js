@@ -44,15 +44,15 @@ module.exports = (ctx) => {
         openseadragon.init(ctx, e.target.src);
       }
     }));
+  }
 
-    var citeButton = document.getElementById('cite__button');
+  var citeButton = document.getElementById('cite__button');
 
-    if (citeButton) {
-      citeButton.addEventListener('click', function (e) {
-        document.getElementById('cite__menu').classList.toggle('cite__menu--active');
-        document.getElementById('cite__button').classList.toggle('cite__button--active');
-      });
-    }
+  if (citeButton) {
+    citeButton.addEventListener('click', function (e) {
+      document.getElementById('cite__menu').classList.toggle('cite__menu--active');
+      document.getElementById('cite__button').classList.toggle('cite__button--active');
+    });
   }
 };
 

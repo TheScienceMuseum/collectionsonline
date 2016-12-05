@@ -1,14 +1,17 @@
 module.exports = () => {
-  var download = document.querySelector('#download-image');
+  var download = document.querySelectorAll('.download-image');
   var a = document.createElement('a');
   if (download) {
-    download.addEventListener('submit', e => {
-      if (typeof a.download !== undefined) {
-        e.preventDefault();
-        a.href = download.action;
-        a.download = 'image.jpeg';
-        a.click();
-      }
+    Array.prototype.slice.call(download).forEach(e => {
+      e.addEventListener('submit', event => {
+        if (typeof a.download !== undefined) {
+          event.preventDefault();
+          a.href = e.action;
+          a.download = 'image.jpeg';
+          document.body.appendChild(a);
+          a.click();
+        }
+      });
     });
   }
 };
