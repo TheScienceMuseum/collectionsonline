@@ -17,7 +17,7 @@ module.exports = {
       .setValue('input[type=search]#archive-q', 'scheutz\'s')
       .click('.searchbox--archive button.searchbox__submit')
       .pause(1000)
-      .assert.urlEquals('http://localhost:8000/search/documents?q=scheutz%27s&archive=The%20Babbage%20Papers')
+      .assert.urlEquals('http://localhost:8000/search/documents?q=scheutz%27s&filter%5Barchive%5D=The%20Babbage%20Papers')
       .assert.containsText('.resultcard', 'Papers relating to the Scheutz\'s Differenc...')
       .end();
   }
