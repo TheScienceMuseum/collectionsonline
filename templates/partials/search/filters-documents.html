@@ -39,29 +39,18 @@
   </div>
 {{/if}}
 
-<!-- FORMAT -->
-
-<!-- DATE -->
-
 <!-- CREATOR -->
-
-<!-- TYPE -->
-
-<!-- PLACE -->
-
-<!-- ORGANISATION -->
-{{#if filters.organisation.length}}
-  {{#if (activeFacet selectedFilters 'organisations')}}
-    <div class="filter filter--active filter--open" data-filter="Organisation">
-      <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name">Organisation</a>
+{{#if filters.maker.length}}
+  {{#if (activeFacet selectedFilters 'makers')}}
+    <div class="filter filter--open filter--active" data-filter="Maker">
   {{else}}
-    <div class="filter filter--open" data-filter="Organisation">
-      <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name">Organisation</a>
+    <div class="filter filter--open" data-filter="Maker">
   {{/if}}
+    <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">People</a>
     <div class="filter__options">
       <ul>
-        {{#each filters.organisation}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[organisations]" value="{{value}}" {{isselected ../selectedFilters "organisations" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
+        {{#each filters.maker}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[makers]" value="{{value}}" {{isselected ../selectedFilters "makers" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
         {{/each}}
       </ul>
     </div>

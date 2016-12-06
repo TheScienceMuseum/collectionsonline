@@ -34,7 +34,7 @@ module.exports = {
   },
   documents: {
     Archive: 'close',
-    Organisation: 'close',
+    Maker: 'close',
     Image: 'close'
   }
 };
