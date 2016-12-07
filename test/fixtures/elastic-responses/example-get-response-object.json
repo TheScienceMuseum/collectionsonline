@@ -2,16 +2,15 @@
   "_index": "smg",
   "_type": "object",
   "_id": "co8245103",
-  "_version": 3,
+  "_version": 15,
   "found": true,
   "_source": {
     "admin": {
-      "SID": "o8245103",
       "created": 1322745566000,
       "id": "object-8245103",
       "language": "eng",
       "modified": 1427726164000,
-      "processed": 1478672588000,
+      "processed": 1481053922259,
       "source": "smgc",
       "stream": "smg-online",
       "uid": "co8245103",
@@ -72,15 +71,6 @@
         "name": "overall (est h, w, d,; act wt)"
       }
     ],
-    "condition": {
-      "date": {
-        "earliest": 2011,
-        "latest": 2011,
-        "value": "2011-11-24"
-      },
-      "examiner": "Molteno, Nick",
-      "value": "1 - Good"
-    },
     "description": [
       {
         "date": {
@@ -117,17 +107,9 @@
         {
           "date": [
             {
+              "earliest": 1981,
               "latest": 1981,
-              "note": [
-                {
-                  "value": "c"
-                }
-              ],
-              "role": [
-                {
-                  "value": "made"
-                }
-              ],
+              "primary": true,
               "value": "1981"
             }
           ],
@@ -170,26 +152,9 @@
         }
       ]
     },
-    "materials": [
-      "cardboard",
-      "glass",
-      "materia medica",
-      "metal (unknown)",
-      "paper (fibre product)",
-      "plastic (unidentified)"
-    ],
     "name": [
       {
-        "primary": true,
-        "value": "phial; packet; materia medica"
-      },
-      {
-        "value": "materia medica"
-      },
-      {
-        "value": "packet"
-      },
-      {
+        "type": "name",
         "value": "phial"
       }
     ],
