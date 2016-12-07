@@ -2,16 +2,15 @@
   "_index": "smg",
   "_type": "agent",
   "_id": "cp5207",
-  "_version": 3,
+  "_version": 7,
   "found": true,
   "_source": {
     "admin": {
-      "SID": "p5207",
       "created": 862591751000,
       "id": "agent-5207",
       "language": "eng",
       "modified": 1429787674000,
-      "processed": 1478669524000,
+      "processed": 1481050061040,
       "source": "smgc",
       "stream": "smg-online",
       "uid": "cp5207",
@@ -36,6 +35,12 @@
       }
     ],
     "approved": "Y",
+    "deduplication": [
+      {
+        "rule": "SAC normalised heading",
+        "value": "Royal Astronomical Society"
+      }
+    ],
     "description": [
       {
         "primary": true,
@@ -63,9 +68,6 @@
         "primary": true,
         "value": "1820 - Sir William Herschel agreed to be the titular first President, though he never actually took the Chair at a meeting.  1829 - the Monthly Notices (astronomical journal) started.  1831 -  Royal Charter signed by William IV.  1846 - absorbed the Spitalfields Mathematical Society.  1874 - moved to specially built premises in part of Burlington House, Piccadilly.  1960 - the Quarterly Journal started.  1970 - to commemorate the society's 150th anniversary, Royal Mail issued a postage stamp."
       }
-    ],
-    "occupation": [
-      "scientific society"
     ],
     "publish": "Y",
     "summary_title": "Royal Astronomical Society",
