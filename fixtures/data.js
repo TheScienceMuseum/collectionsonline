@@ -49,7 +49,7 @@ module.exports = {
       figure: '/assets/img/home/collections/cinematography.jpg',
       description: 'Objects representing the history of cinema: from magic lanterns to digital technologies',
       columns: 'small-6 medium-3',
-      link: '/search?q=&filter%5Bcategories%5D=Cinematography'
+      link: '/search?filter%5Bhas_image%5D=true&filter%5Bcategories%5D=Cinematography&page%5Bsize%5D=50&page%5Btype%5D=search'
     }, {
       type: 'collection',
       title: 'The Babbage Papers',
