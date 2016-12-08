@@ -2,16 +2,15 @@
   "_index": "smg",
   "_type": "agent",
   "_id": "cp86306",
-  "_version": 3,
+  "_version": 15,
   "found": true,
   "_source": {
     "admin": {
-      "SID": "p86306",
       "created": 1105005750000,
       "id": "agent-86306",
       "language": "eng",
       "modified": 1408552950000,
-      "processed": 1478669393000,
+      "processed": 1481049862706,
       "source": "smgc",
       "stream": "smg-online",
       "uid": "cp86306",
@@ -127,9 +126,6 @@
         "primary": true,
         "value": "Founded in 1833 after Parliamentary authorisation and opened for business on July 4, 1837 with the design being done by George Stephenson and Joseph Locke. It ran from Birmingham through Wolverhampton (via Perry Barr and Bescot), Stafford, Crewe, and Warrington, then via the existing Warrington and Newton Railway to join the Liverpool and Manchester Railway. The head engineering office was established at Crewe. They were the first railway to sort mail en route. In 1840 it  absorbed the Chester and Crewe Railway. They also invested in the Lancaster and Carlisle Railway and the Caledonian Railway. In 1845 the GJR merged with the Liverpool and Manchester Railway, and consolidated its position by buying the North Union Railway in association with the Manchester and Leeds Railway."
       }
-    ],
-    "occupation": [
-      "railway company"
     ],
     "places": [
       {
