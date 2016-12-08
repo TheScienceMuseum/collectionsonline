@@ -7,24 +7,29 @@ const searchResultsToTemplateData = require('../lib/transforms/search-results-to
 const search = require('../lib/search');
 const createQueryParams = require('../lib/query-params/query-params');
 const contentType = require('./route-helpers/content-type.js');
+const parseParameters = require('./route-helpers/parse-params');
+var Querystring = require('querystring');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
-  path: '/search/{type?}',
+  path: '/search/{cat*}',
   config: {
     handler: function (request, reply) {
       var responseType = contentType(request);
       if (responseType === 'json') {
-        Joi.validate({query: request.query, params: request.params},
+        Joi.validate({query: request.query},
           {
-            params: {
-              type: Joi.string().valid('objects', 'people', 'documents')
-            },
-            query: filterSchema('json').keys(searchSchema)
+            query: filterSchema('json').keys(searchSchema.query)
           }, (err, value) => {
             if (err) return reply(Boom.badRequest(err));
 
-            const params = value.params;
+            const params = parseParameters(request.params).params;
+            const categories = parseParameters(request.params).categories;
+
+            if (Object.keys(categories).length >= 1) {
+              reply.redirect('/search?' + Querystring.stringify(categories));
+            }
+
             const query = value.query;
             const queryParams = createQueryParams('json', {query: query, params: params});
             search(elastic, queryParams, (err, result) => {
@@ -37,16 +42,19 @@ module.exports = (elastic, config) => ({
       }
 
       if (responseType === 'html') {
-        Joi.validate({query: request.query, params: request.params},
+        Joi.validate({query: request.query},
           {
-            params: {
-              type: Joi.string().valid('objects', 'people', 'documents')
-            },
-            query: filterSchema('html').keys(searchSchema)
+            query: filterSchema('html').keys(searchSchema.query)
           }, (err, value) => {
             if (err) return reply(Boom.badRequest(err));
 
-            const params = value.params;
+            const params = parseParameters(request.params).params;
+            const categories = parseParameters(request.params).categories;
+
+            if (Object.keys(categories).length >= 1) {
+              reply.redirect('/search?' + Querystring.stringify(categories));
+            }
+
             const query = value.query;
             const queryParams = createQueryParams('html', {query: query, params: params});
             search(elastic, queryParams, (err, result) => {
