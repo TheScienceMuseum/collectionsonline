@@ -8,6 +8,7 @@ module.exports = {
       .pause(1000)
       .assert.urlEquals('http://localhost:8000/search?q=ada')
       .click('.resultcard')
+      .pause(1000)
       .assert.urlEquals('http://localhost:8000/people/cp38764/ada-lovelace')
       .waitForElementVisible('.record-top__title', 1000)
       .assert.containsText('.record-top__title', 'Lovelace')

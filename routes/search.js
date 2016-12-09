@@ -12,7 +12,7 @@ var Querystring = require('querystring');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
-  path: '/search/{cat*}',
+  path: '/search/{filters*}',
   config: {
     handler: function (request, reply) {
       var responseType = contentType(request);
@@ -27,7 +27,11 @@ module.exports = (elastic, config) => ({
             const categories = parseParameters(request.params).categories;
 
             if (Object.keys(categories).length >= 1) {
-              reply.redirect('/search?' + Querystring.stringify(categories));
+              if (params.type !== 'all') {
+                reply.redirect('/search' + '/' + params.type + '?' + Querystring.stringify(categories));
+              } else {
+                reply.redirect('/search?' + Querystring.stringify(categories));
+              }
             }
 
             const query = value.query;
@@ -52,7 +56,11 @@ module.exports = (elastic, config) => ({
             const categories = parseParameters(request.params).categories;
 
             if (Object.keys(categories).length >= 1) {
-              reply.redirect('/search?' + Querystring.stringify(categories));
+              if (params.type !== 'all') {
+                reply.redirect('/search' + '/' + params.type + '?' + Querystring.stringify(categories));
+              } else {
+                reply.redirect('/search?' + Querystring.stringify(categories));
+              }
             }
 
             const query = value.query;
