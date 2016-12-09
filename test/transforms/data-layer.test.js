@@ -1,7 +1,7 @@
 const test = require('tape');
 const dataLayer = require('../../lib/transforms/data-layer');
 
-test('data-layer return right object', (t) => {
+test('data-layer return right object for documnents', (t) => {
   t.plan(1);
   var data = [
     {
@@ -28,5 +28,33 @@ test('data-layer return right object', (t) => {
     'Level4': '1820'
   });
   t.equal(layer, expected, 'The layer for documents is ok');
+  t.end();
+});
+
+test('data-layer return right object for people', (t) => {
+  t.plan(1);
+  var data = [
+    {
+      key: 'occupation',
+      value: [{value: 'mathematician'}]
+    },
+    {
+      key: 'born in',
+      value: 'Southwark'
+    },
+    {
+      key: 'Nationality',
+      value: 'British'
+    }
+  ];
+
+  const layer = dataLayer('people', data);
+  const expected = JSON.stringify({
+    'Level1': 'people',
+    'Level2': ['mathematician'],
+    'Level3': 'British',
+    'Level4': 'Southwark'
+  });
+  t.equal(layer, expected, 'The layer for people is ok');
   t.end();
 });
