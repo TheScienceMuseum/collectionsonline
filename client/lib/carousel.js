@@ -9,6 +9,7 @@ module.exports = (ctx) => {
     var captions = Array.prototype.slice.call(document.getElementsByClassName('record-imgpanel__caption'));
     var rights = Array.prototype.slice.call(document.getElementsByClassName('cite__menu__methods'));
     var zooms = Array.prototype.slice.call(document.getElementsByClassName('osd__toolbar-container'));
+    var useImage = Array.prototype.slice.call(document.getElementsByClassName('cite__button'));
 
     ctx.carousel = new Flickity('.carousel', {
       wrapAround: thumbnails.length >= 3,
@@ -33,6 +34,7 @@ module.exports = (ctx) => {
       captions.forEach(showHide.bind(null, 'record-imgpanel__caption', flkty));
       zooms.forEach(showHide.bind(null, 'openseadragon-toolbar', flkty));
       rights.forEach(showHide.bind(null, 'cite__method', flkty));
+      useImage.forEach(showHide.bind(null, 'cite__button', flkty));
     });
 
     Array.prototype.slice.call(thumbnails).forEach((el, i) => el.addEventListener('click', function (e) {
@@ -46,13 +48,13 @@ module.exports = (ctx) => {
     }));
   }
 
-  var citeButton = document.getElementById('cite__button');
+  var citeButton = document.getElementsByClassName('cite__button');
 
   if (citeButton) {
-    citeButton.addEventListener('click', function (e) {
+    Array.prototype.slice.call(citeButton).forEach((el, i) => el.addEventListener('click', function (e) {
       document.getElementById('cite__menu').classList.toggle('cite__menu--active');
-      document.getElementById('cite__button').classList.toggle('cite__button--active');
-    });
+      document.getElementById('cite__button-' + i).classList.toggle('cite__button--active');
+    }));
   }
 };
 
