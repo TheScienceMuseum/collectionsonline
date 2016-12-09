@@ -1,7 +1,7 @@
 {
-  "doc_count": 662,
+  "doc_count": 666,
   "occupation": {
-    "doc_count": 662,
+    "doc_count": 666,
     "occupation_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -9,13 +9,13 @@
     }
   },
   "count": {
-    "doc_count": 662,
+    "doc_count": 666,
     "count_filters": {
-      "value": 662
+      "value": 666
     }
   },
   "image_license": {
-    "doc_count": 662,
+    "doc_count": 666,
     "image_license_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -28,7 +28,7 @@
     }
   },
   "maker": {
-    "doc_count": 606,
+    "doc_count": 611,
     "maker_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 107,
@@ -54,6 +54,10 @@
           "doc_count": 4
         },
         {
+          "key": "GEC Traction Limited",
+          "doc_count": 4
+        },
+        {
           "key": "National Institute of Industrial Psychology",
           "doc_count": 4
         },
@@ -68,16 +72,12 @@
         {
           "key": "Andrew H Baird",
           "doc_count": 3
-        },
-        {
-          "key": "Burroughs Wellcome and Company Limited",
-          "doc_count": 3
         }
       ]
     }
   },
   "organisation": {
-    "doc_count": 662,
+    "doc_count": 666,
     "organisations_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -90,23 +90,23 @@
     }
   },
   "archive": {
-    "doc_count": 662,
+    "doc_count": 666,
     "archive_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "GEC Traction Archive",
-          "doc_count": 3
+          "doc_count": 4
         }
       ]
     }
   },
   "type": {
-    "doc_count": 658,
+    "doc_count": 661,
     "type_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 696,
+      "sum_other_doc_count": 688,
       "buckets": [
         {
           "key": "laboratory (apparatus)",
@@ -152,14 +152,14 @@
     }
   },
   "material": {
-    "doc_count": 662,
+    "doc_count": 666,
     "material_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 321,
+      "sum_other_doc_count": 334,
       "buckets": [
         {
           "key": "glass",
-          "doc_count": 64
+          "doc_count": 65
         },
         {
           "key": "paper",
@@ -201,7 +201,7 @@
     }
   },
   "museum": {
-    "doc_count": 662,
+    "doc_count": 666,
     "museum_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -310,7 +310,7 @@
     }
   },
   "has_image": {
-    "doc_count": 662,
+    "doc_count": 666,
     "has_image_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -323,14 +323,14 @@
     }
   },
   "place": {
-    "doc_count": 662,
+    "doc_count": 666,
     "place_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 110,
+      "sum_other_doc_count": 109,
       "buckets": [
         {
           "key": "London",
-          "doc_count": 52
+          "doc_count": 49
         },
         {
           "key": "England",
@@ -372,14 +372,14 @@
     }
   },
   "category": {
-    "doc_count": 662,
+    "doc_count": 666,
     "category_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 141,
+      "sum_other_doc_count": 144,
       "buckets": [
         {
           "key": "Psychology, Psychiatry & Anthropometry",
-          "doc_count": 164
+          "doc_count": 163
         },
         {
           "key": "Laboratory Medicine",
@@ -391,7 +391,7 @@
         },
         {
           "key": "Telecommunications",
-          "doc_count": 33
+          "doc_count": 32
         },
         {
           "key": "Public Health & Hygiene",
@@ -403,25 +403,25 @@
         },
         {
           "key": "Farnborough",
-          "doc_count": 23
+          "doc_count": 26
         },
         {
           "key": "Gas Industry",
           "doc_count": 17
         },
         {
-          "key": "Photographs",
-          "doc_count": 16
+          "key": "Microbiology",
+          "doc_count": 15
         },
         {
-          "key": "Microbiology",
+          "key": "Photographs",
           "doc_count": 15
         }
       ]
     }
   },
   "place_born": {
-    "doc_count": 662,
+    "doc_count": 666,
     "place_born_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -434,7 +434,7 @@
     }
   },
   "user": {
-    "doc_count": 662,
+    "doc_count": 666,
     "user_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 42,
@@ -483,7 +483,7 @@
     }
   },
   "gallery": {
-    "doc_count": 662,
+    "doc_count": 666,
     "gallery_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
