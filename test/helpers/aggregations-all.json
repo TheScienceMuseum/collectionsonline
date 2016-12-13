@@ -1,45 +1,40 @@
 {
-  "doc_count": 640,
+  "doc_count": 666,
   "occupation": {
-    "doc_count": 640,
+    "doc_count": 666,
     "occupation_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
-      "buckets": [
-        {
-          "key": "testing station",
-          "doc_count": 1
-        }
-      ]
+      "buckets": []
     }
   },
   "count": {
-    "doc_count": 640,
+    "doc_count": 666,
     "count_filters": {
-      "value": 640
+      "value": 666
     }
   },
   "image_license": {
-    "doc_count": 640,
+    "doc_count": 666,
     "image_license_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "CC-BY-NC-SA 4.0",
-          "doc_count": 26
+          "doc_count": 98
         }
       ]
     }
   },
   "maker": {
-    "doc_count": 585,
+    "doc_count": 611,
     "maker_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 104,
+      "sum_other_doc_count": 107,
       "buckets": [
         {
-          "key": "Hinde",
+          "key": "David Edward Hughes",
           "doc_count": 9
         },
         {
@@ -47,19 +42,19 @@
           "doc_count": 9
         },
         {
-          "key": "John",
-          "doc_count": 9
-        },
-        {
-          "key": "C H Stoelting Company",
-          "doc_count": 6
-        },
-        {
           "key": "Unipath Limited",
           "doc_count": 6
         },
         {
-          "key": "Margaret Lowenfeld",
+          "key": "C H Stoelting Company",
+          "doc_count": 5
+        },
+        {
+          "key": "British Drug Houses Limited",
+          "doc_count": 4
+        },
+        {
+          "key": "GEC Traction Limited",
           "doc_count": 4
         },
         {
@@ -75,14 +70,14 @@
           "doc_count": 4
         },
         {
-          "key": "British Drug Houses Limited",
+          "key": "Andrew H Baird",
           "doc_count": 3
         }
       ]
     }
   },
   "organisation": {
-    "doc_count": 640,
+    "doc_count": 666,
     "organisations_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -95,23 +90,23 @@
     }
   },
   "archive": {
-    "doc_count": 640,
+    "doc_count": 666,
     "archive_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "GEC Traction Archive",
-          "doc_count": 3
+          "doc_count": 4
         }
       ]
     }
   },
   "type": {
-    "doc_count": 636,
+    "doc_count": 661,
     "type_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 700,
+      "sum_other_doc_count": 688,
       "buckets": [
         {
           "key": "laboratory (apparatus)",
@@ -123,7 +118,7 @@
         },
         {
           "key": "ophthalmology (visual acuity)",
-          "doc_count": 46
+          "doc_count": 42
         },
         {
           "key": "psychological test",
@@ -131,14 +126,14 @@
         },
         {
           "key": "test types",
-          "doc_count": 37
+          "doc_count": 33
         },
         {
           "key": "diagnosis (genito-urinary)",
-          "doc_count": 17
+          "doc_count": 18
         },
         {
-          "key": "psychometric test",
+          "key": "urine test kits",
           "doc_count": 16
         },
         {
@@ -146,7 +141,7 @@
           "doc_count": 15
         },
         {
-          "key": "urine test kits",
+          "key": "psychometric test",
           "doc_count": 15
         },
         {
@@ -157,70 +152,86 @@
     }
   },
   "material": {
-    "doc_count": 640,
+    "doc_count": 666,
     "material_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 405,
+      "sum_other_doc_count": 334,
       "buckets": [
         {
           "key": "glass",
-          "doc_count": 92
+          "doc_count": 65
         },
         {
           "key": "paper",
-          "doc_count": 90
-        },
-        {
-          "key": "wood",
-          "doc_count": 55
-        },
-        {
-          "key": "cardboard",
-          "doc_count": 46
+          "doc_count": 57
         },
         {
           "key": "plastic",
-          "doc_count": 41
+          "doc_count": 36
+        },
+        {
+          "key": "wood",
+          "doc_count": 35
         },
         {
           "key": "metal",
-          "doc_count": 40
+          "doc_count": 32
         },
         {
-          "key": "paper (fibre product)",
-          "doc_count": 26
+          "key": "case",
+          "doc_count": 14
         },
         {
-          "key": "steel",
-          "doc_count": 19
+          "key": "card",
+          "doc_count": 12
         },
         {
-          "key": "metal (unknown)",
-          "doc_count": 16
+          "key": "cardboard",
+          "doc_count": 12
         },
         {
-          "key": "cloth",
-          "doc_count": 15
+          "key": "cork",
+          "doc_count": 12
+        },
+        {
+          "key": "brass",
+          "doc_count": 11
         }
       ]
     }
   },
   "museum": {
-    "doc_count": 640,
+    "doc_count": 666,
     "museum_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "Science Museum",
-          "doc_count": 16
+          "doc_count": 31
+        },
+        {
+          "key": "Information Age Gallery: Exchange",
+          "doc_count": 11
+        },
+        {
+          "key": "Science Museum, Information Age Gallery: Exchange",
+          "doc_count": 11
         },
         {
           "key": "Making the Modern World Gallery",
-          "doc_count": 5
+          "doc_count": 7
         },
         {
           "key": "Science Museum, Making the Modern World Gallery",
+          "doc_count": 7
+        },
+        {
+          "key": "Information Age Gallery: Cable",
+          "doc_count": 5
+        },
+        {
+          "key": "Science Museum, Information Age Gallery: Cable",
           "doc_count": 5
         },
         {
@@ -228,15 +239,7 @@
           "doc_count": 2
         },
         {
-          "key": "Information Age Gallery: Exchange",
-          "doc_count": 2
-        },
-        {
           "key": "Science Museum, Information Age Gallery: Cell",
-          "doc_count": 2
-        },
-        {
-          "key": "Science Museum, Information Age Gallery: Exchange",
           "doc_count": 2
         },
         {
@@ -257,10 +260,6 @@
         },
         {
           "key": "Great Hall",
-          "doc_count": 1
-        },
-        {
-          "key": "Information Age Gallery: Cable",
           "doc_count": 1
         },
         {
@@ -289,10 +288,6 @@
         },
         {
           "key": "Science Museum, Blythe House",
-          "doc_count": 1
-        },
-        {
-          "key": "Science Museum, Information Age Gallery: Cable",
           "doc_count": 1
         },
         {
@@ -315,72 +310,72 @@
     }
   },
   "has_image": {
-    "doc_count": 640,
+    "doc_count": 666,
     "has_image_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "1",
-          "doc_count": 26
+          "doc_count": 98
         }
       ]
     }
   },
   "place": {
-    "doc_count": 640,
+    "doc_count": 666,
     "place_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 97,
+      "sum_other_doc_count": 109,
       "buckets": [
         {
           "key": "London",
           "doc_count": 49
         },
         {
-          "key": "United Kingdom",
+          "key": "England",
           "doc_count": 35
         },
         {
-          "key": "England",
-          "doc_count": 25
+          "key": "United Kingdom",
+          "doc_count": 35
         },
         {
           "key": "Exmoor, England, United Kingdom",
           "doc_count": 9
         },
         {
-          "key": "Chicago",
-          "doc_count": 8
+          "key": "United States",
+          "doc_count": 9
         },
         {
           "key": "Manchester",
           "doc_count": 8
         },
         {
-          "key": "United States",
-          "doc_count": 8
+          "key": "Chicago",
+          "doc_count": 7
+        },
+        {
+          "key": "Edinburgh",
+          "doc_count": 6
+        },
+        {
+          "key": "Europe",
+          "doc_count": 6
         },
         {
           "key": "France",
           "doc_count": 6
-        },
-        {
-          "key": "Bedford",
-          "doc_count": 5
-        },
-        {
-          "key": "Europe",
-          "doc_count": 5
         }
       ]
     }
   },
   "category": {
-    "doc_count": 640,
+    "doc_count": 666,
     "category_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 133,
+      "sum_other_doc_count": 144,
       "buckets": [
         {
           "key": "Psychology, Psychiatry & Anthropometry",
@@ -388,11 +383,15 @@
         },
         {
           "key": "Laboratory Medicine",
-          "doc_count": 96
+          "doc_count": 97
         },
         {
           "key": "Ophthalmology",
-          "doc_count": 96
+          "doc_count": 93
+        },
+        {
+          "key": "Telecommunications",
+          "doc_count": 32
         },
         {
           "key": "Public Health & Hygiene",
@@ -400,19 +399,15 @@
         },
         {
           "key": "Clinical Diagnosis",
-          "doc_count": 27
+          "doc_count": 28
         },
         {
           "key": "Farnborough",
-          "doc_count": 23
-        },
-        {
-          "key": "Telecommunications",
-          "doc_count": 19
+          "doc_count": 26
         },
         {
           "key": "Gas Industry",
-          "doc_count": 18
+          "doc_count": 17
         },
         {
           "key": "Microbiology",
@@ -426,7 +421,7 @@
     }
   },
   "place_born": {
-    "doc_count": 640,
+    "doc_count": 666,
     "place_born_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -439,7 +434,7 @@
     }
   },
   "user": {
-    "doc_count": 640,
+    "doc_count": 666,
     "user_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 42,
@@ -453,15 +448,19 @@
           "doc_count": 10
         },
         {
+          "key": "David Edward Hughes",
+          "doc_count": 9
+        },
+        {
           "key": "Nathaniel Bishop Harman",
           "doc_count": 5
         },
         {
-          "key": "William Picken Alexander",
-          "doc_count": 3
+          "key": "Brunton, Sir Thomas Lauder",
+          "doc_count": 4
         },
         {
-          "key": "null Brunton, Sir Thomas Lauder",
+          "key": "William Picken Alexander",
           "doc_count": 3
         },
         {
@@ -479,30 +478,42 @@
         {
           "key": "Gertrude Lillian Baker",
           "doc_count": 2
-        },
-        {
-          "key": "MRC Common Cold Unit",
-          "doc_count": 2
         }
       ]
     }
   },
   "gallery": {
-    "doc_count": 640,
+    "doc_count": 666,
     "gallery_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "Science Museum",
-          "doc_count": 16
+          "doc_count": 31
+        },
+        {
+          "key": "Information Age Gallery: Exchange",
+          "doc_count": 11
+        },
+        {
+          "key": "Science Museum, Information Age Gallery: Exchange",
+          "doc_count": 11
         },
         {
           "key": "Making the Modern World Gallery",
-          "doc_count": 5
+          "doc_count": 7
         },
         {
           "key": "Science Museum, Making the Modern World Gallery",
+          "doc_count": 7
+        },
+        {
+          "key": "Information Age Gallery: Cable",
+          "doc_count": 5
+        },
+        {
+          "key": "Science Museum, Information Age Gallery: Cable",
           "doc_count": 5
         },
         {
@@ -510,15 +521,7 @@
           "doc_count": 2
         },
         {
-          "key": "Information Age Gallery: Exchange",
-          "doc_count": 2
-        },
-        {
           "key": "Science Museum, Information Age Gallery: Cell",
-          "doc_count": 2
-        },
-        {
-          "key": "Science Museum, Information Age Gallery: Exchange",
           "doc_count": 2
         },
         {
@@ -539,10 +542,6 @@
         },
         {
           "key": "Great Hall",
-          "doc_count": 1
-        },
-        {
-          "key": "Information Age Gallery: Cable",
           "doc_count": 1
         },
         {
@@ -571,10 +570,6 @@
         },
         {
           "key": "Science Museum, Blythe House",
-          "doc_count": 1
-        },
-        {
-          "key": "Science Museum, Information Age Gallery: Cable",
           "doc_count": 1
         },
         {

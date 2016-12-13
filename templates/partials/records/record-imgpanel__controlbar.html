@@ -4,14 +4,16 @@
         <div class="cite__menu" id="cite__menu" >
           {{#each images}}
           <div class="cite__menu__methods" id="cite__method-{{@index}}">
-            <div class="cite__method">
-              <p>{{#if rights.cc}}<img src="/assets/img/global/{{rights.image}}" alt="Creative Commons License" width="80" height="15" />{{/if}}This image is released under a {{rights.usage_terms}} Licence</p>
-              {{#if rights.cc}}
-              <form class="download-image" method="get" action="{{large}}">
-                <button type="submit" class="">{{> global/icon i="download" size="16" }} Download</button>
-              </form>
-              {{/if}}
-            </div>
+            {{#if rights.usage_terms}}
+              <div class="cite__method">
+                <p>{{#if rights.cc}}<img src="/assets/img/global/{{rights.image}}" alt="Creative Commons License" width="80" height="15" />{{/if}}This image is released under a {{rights.usage_terms}} Licence</p>
+                {{#if rights.cc}}
+                <form class="download-image" method="get" action="{{large}}">
+                  <button type="submit" class="">{{> global/icon i="download" size="16" }} Download</button>
+                </form>
+                {{/if}}
+              </div>
+            {{/if}}
             {{#ifsmgrights rights.details}}
               <div class="cite__method">
                 <p>Buy this image as a print </p>
@@ -31,7 +33,11 @@
         </div>
       </div>
 
-      <button id="cite__button" class="cite__button" >{{> global/icon i="arrow_right" size="16" }} Use this image</button>
+      {{#each images}}
+        {{#ifsmgrights rights.details}}
+          <button id="cite__button-{{@index}}" class="cite__button" >{{> global/icon i="arrow_right" size="16" }} Use this image</button>
+        {{/ifsmgrights}}
+      {{/each}}
 
       {{#each images}}
         {{#if this.zoom}}

@@ -5,6 +5,11 @@
       {{#each fact}}
         <dl class="record-top__dl fact-{{classname this.key}}">
           <dt>{{ this.key }}:</dt>
+          {{#if this.makers}}
+            {{#each this.makers}}
+              <dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{ this.value }}{{#if this.link }}</a>{{/if}}</dd>{{comma this ../this.makers true}}
+            {{/each}}
+          {{/if}}
           {{#isequal this.key 'Made' this}}
             <dd>
               {{#if this.date.value}}

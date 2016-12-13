@@ -24,6 +24,8 @@ Async.parallel([
       { id: 'aa110000003', type: 'archive', filename: 'example-get-response-document' },
       { id: 'co8245103', type: 'object', filename: 'example-get-response-object' },
       { id: 'co205752', type: 'object', filename: 'example-get-response-object2' },
+      { id: 'co8447906', type: 'object', filename: 'example-get-response-object3' },
+      { id: 'co503422', type: 'object', filename: 'example-get-response-object4' },
       { id: 'cp5207', type: 'agent', filename: 'example-get-response-organisation' },
       { id: 'cp36993', type: 'agent', filename: 'example-get-response-person' },
       { id: 'cp86306', type: 'agent', filename: 'example-get-response-with-places' }

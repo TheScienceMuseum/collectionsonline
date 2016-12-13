@@ -5,7 +5,7 @@ const sharedSchema = {
   'filter[date[from]]': Joi.number().integer().min(0),
   'filter[date[to]]': Joi.number().integer().min(0),
   // Objects
-  'filter[on_display]': Joi.boolean(),
+  'filter[on_display]': Joi.boolean().truthy('true').falsy('false'),
   'filter[has_image]': Joi.string(),
   'filter[image_license]': Joi.string(),
   // People

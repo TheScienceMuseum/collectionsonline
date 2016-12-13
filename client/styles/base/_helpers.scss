@@ -134,6 +134,7 @@ $timing-defaults: 0.25s ease-out;
   $h: 36rem; // this might change after load?
   height: $h;
   transition: height $timing-defaults;
+  @include breakpoint(small only) {  height: 25rem } //  = 12px
 }
 
 //-----------------------------------------------------------------------------

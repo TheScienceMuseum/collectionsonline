@@ -108,7 +108,10 @@
   &__caption {
     margin: 1rem 0;
     line-height: 1.2;
-    @include breakpoint(small only) {  clear: right; }
+    @include breakpoint(small only) {
+      clear: right;
+      font-size: 12px;
+    }
   }
 
 }
