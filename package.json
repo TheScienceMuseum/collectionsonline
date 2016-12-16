@@ -18,7 +18,7 @@
     "flickity": "^2.0.3",
     "flickity-imagesloaded": "^2.0.0",
     "format-number": "^2.0.1",
-    "foundation-sites": "^6.2.3",
+    "foundation-sites": "6.2.3",
     "good": "^7.0.1",
     "good-console": "^6.1.2",
     "h2o2": "^5.1.0",
