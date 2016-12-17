@@ -5,7 +5,11 @@ module.exports = () => ({
   path: '/robots.txt',
   config: {
     handler: function (req, reply) {
-      reply('sitemap: ' + config.sitemapUrl + '/sitemap.xml');
+      reply(
+        'sitemap: ' + config.sitemapUrl + '/sitemap.xml\n' +
+        'User-agent: *\n' +
+        'Disallow: /api/'
+      ).type('text/plain');
     }
   }
 });
