@@ -13,7 +13,7 @@ testWithServer(file + 'Should suggest completion', {}, (t, ctx) => {
 
   ctx.server.inject(request, (res) => {
     t.equal(res.statusCode, 200, 'Status was OK');
-    t.ok(res.result.data.some((d) => d.attributes.summary_title === 'Rocket locomotive (steam locomotive)'), 'Autocompleted Rocket successfully');
+    t.ok(res.result.data.some((d) => d.attributes.summary_title === "Stephenson's Rocket (steam locomotive)"), 'Autocompleted Rocket successfully');
     t.end();
   });
 });
