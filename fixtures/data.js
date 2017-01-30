@@ -56,7 +56,7 @@ module.exports = {
       figure: '/assets/img/home/collections/babbage.jpg',
       description: 'The drawings and papers of mathematician and computer pioneer Charles Babbage',
       columns: 'small-6 medium-3',
-      link: '/search/documents?filter[archive]=The%20Babbage%20Papers'
+      link: '/documents/aa110000003/the-babbage-papers'
     }, {
       type: 'collection',
       title: 'Mathematics',
