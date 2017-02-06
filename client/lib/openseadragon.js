@@ -3,13 +3,14 @@ require('openseadragon');
 module.exports = {
   init: function (ctx, imgUrl, cb) {
     var openseadragon = document.querySelector('#openseadragon');
+    openseadragon.classList.remove('hidden');
     if (!openseadragon) return;
 
     var carouselImage = document.querySelectorAll('.carousel__image.is-selected');
     var singleImage = document.querySelectorAll('.single_image');
 
     if (!imgUrl) {
-      if (carouselImage) {
+      if (carouselImage.length) {
         imgUrl = carouselImage[0].dataset.osd;
       } else if (singleImage) {
         imgUrl = singleImage[0].dataset.osd;
@@ -46,6 +47,8 @@ module.exports = {
   },
 
   quit: function (ctx) {
+    var openseadragon = document.querySelector('#openseadragon');
+    openseadragon.classList.add('hidden');
     ctx.viewer.destroy();
     ctx.viewer = false;
     ctx.save();
