@@ -8,10 +8,18 @@ module.exports = (ctx) => {
 
   images.forEach(function (el) {
     el.addEventListener('click', function (e) {
+      var rotateButtons = document.querySelectorAll('.osd-rotate');
+
+      Array.prototype.slice.call(rotateButtons).forEach(function (el) {
+        el.classList.remove('hidden');
+      });
+
       if (!ctx.viewer) {
         openseadragon.init(ctx);
       }
+
       ctx.viewer.setFullScreen(true);
+
       if (e.target.id === 'osd-home') {
         openseadragon.quit(ctx);
       }

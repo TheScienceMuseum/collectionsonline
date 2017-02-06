@@ -26,11 +26,14 @@ module.exports = {
         zoomInButton: 'osd-zoomin',
         zoomOutButton: 'osd-zoomout',
         fullPageButton: 'osd-fullpage',
+        rotateRightButton: 'osd-rotate-right',
+        rotateLeftButton: 'osd-rotate-left',
         homeButton: 'osd-home',
         toolbar: 'openseadragon-toolbar',
         gestureSettingsMouse: {
           scrollToZoom: false
-        }
+        },
+        showRotationControl: true
       });
 
       ctx.viewer.addHandler('full-screen', function (e) {
@@ -48,7 +51,12 @@ module.exports = {
 
   quit: function (ctx) {
     var openseadragon = document.querySelector('#openseadragon');
+    var rotateButtons = document.querySelectorAll('.osd-rotate');
+
     openseadragon.classList.add('hidden');
+    Array.prototype.slice.call(rotateButtons).forEach(function (el) {
+      el.classList.add('hidden');
+    });
     ctx.viewer.destroy();
     ctx.viewer = false;
     ctx.save();
