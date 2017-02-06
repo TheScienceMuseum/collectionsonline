@@ -6,6 +6,7 @@ module.exports = {
     'page[number]': Joi.number().integer().min(0),
     'page[size]': Joi.number().integer().min(1),
     'page[type]': Joi.string().valid('search', 'results-list'),
-    'ajax': Joi.boolean().truthy('true').falsy('false')
+    'ajax': Joi.boolean().truthy('true').falsy('false'),
+    'random': Joi.number().integer().min(1).max(50)
   }
 };
