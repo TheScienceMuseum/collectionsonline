@@ -52,9 +52,11 @@ module.exports = {
   quit: function (ctx) {
     var openseadragon = document.querySelector('#openseadragon');
     var rotateButtons = document.querySelectorAll('.osd-rotate');
+    var zoomButtons = document.querySelectorAll('.osd-zoom');
+    var allButtons = Array.prototype.slice.call(rotateButtons).concat(Array.prototype.slice.call(zoomButtons));
 
     openseadragon.classList.add('hidden');
-    Array.prototype.slice.call(rotateButtons).forEach(function (el) {
+    allButtons.forEach(function (el) {
       el.classList.add('hidden');
     });
     ctx.viewer.destroy();

@@ -9,8 +9,10 @@ module.exports = (ctx) => {
   images.forEach(function (el) {
     el.addEventListener('click', function (e) {
       var rotateButtons = document.querySelectorAll('.osd-rotate');
+      var zoomButtons = document.querySelectorAll('.osd-zoom');
+      var allButtons = Array.prototype.slice.call(rotateButtons).concat(Array.prototype.slice.call(zoomButtons));
 
-      Array.prototype.slice.call(rotateButtons).forEach(function (el) {
+      allButtons.forEach(function (el) {
         el.classList.remove('hidden');
       });
 
