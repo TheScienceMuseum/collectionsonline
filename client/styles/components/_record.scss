@@ -234,6 +234,12 @@
 #osd-home {
   @include icon-before(osd-home, $size: 1.25rem);
 }
+#osd-rotate-left {
+  @include icon-before(osd-rotate-counterclockwise, $size: 1.25rem);
+}
+#osd-rotate-right {
+  @include icon-before(osd-rotate-clockwise, $size: 1.25rem);
+}
 
 .record-description {
   font-size: rem-calc(18);
