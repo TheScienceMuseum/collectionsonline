@@ -214,12 +214,19 @@
   }
 }
 
+.openseadragon {
+  background-color: rgba(33,33,33,1);
+}
+
 .osd {
   &__toolbar {
     float: right;
   }
   &__button { //todo: merge with cite__button
     @include toolbar-button;
+    &:hover {
+      background-color: rgba(0,0,0,1);
+    }
   }
 }
 #osd-zoomout {
