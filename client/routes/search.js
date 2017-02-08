@@ -20,10 +20,12 @@ var updateActiveStateFacets = require('../lib/update-active-states-facets.js');
 var loadingBar = require('../lib/loading-bar');
 var hideKeyboard = require('../lib/hide-keyboard');
 var i = 0;
+var parseParams = require('../../routes/route-helpers/parse-params.js');
+var paramify = require('../../lib/helpers/paramify.js');
 
 module.exports = function (page) {
   page('/search', load, render, listeners);
-  page('/search/:type', load, render, listeners);
+  page('/search/*', load, render, listeners);
 };
 /**
 * Ajax request to get the data of the url
@@ -37,9 +39,9 @@ function load (ctx, next) {
       headers: { Accept: 'application/vnd.api+json' }
     };
     var qs = QueryString.parse(ctx.querystring);
-
-    var queryParams = createQueryParams('html', {query: qs, params: {type: ctx.params.type}});
-    getData(ctx.pathname + '?' + toJsonUrl(ctx.querystring), opts, function (err, json) {
+    var p = parseParams({filters: ctx.pathname}).categories;
+    var queryParams = createQueryParams('html', {query: p, params: {type: ctx.params.type}});
+    getData('search' + paramify(p), opts, function (err, json) {
       if (err) {
         console.error(err);
         Snackbar.create('Error getting data from the server');

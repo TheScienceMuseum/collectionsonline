@@ -1,4 +1,7 @@
 var QueryString = require('querystring');
+
+var paramify = require('../../lib/helpers/paramify.js');
+
 module.exports = function (pageType) {
   /**
   * select all the input checkbox checked, all the other input but not the checkbox (already selected) and not fields[type] already on url
@@ -14,7 +17,5 @@ module.exports = function (pageType) {
   }
   // select result per page
   var rpp = document.querySelector('.control--rpp select') ? document.querySelector('.control--rpp select').value : 50;
-  params['page[size]'] = rpp;
-  params['page[type]'] = pageType;
-  return QueryString.stringify(params);
+  return paramify(params) + '?page[size]=' + rpp;
 };

@@ -7,6 +7,6 @@ var getQueryString = require('./get-qs');
 module.exports = function (ctx, page) {
   var currentQueryString = Querystring.parse(ctx.querystring);
   var pageType = currentQueryString['page[type]'] ? currentQueryString['page[type]'] : 'search';
-  var url = ctx.pathname + '?' + getQueryString(pageType);
+  var url = '/search' + getQueryString(pageType);
   page.show(url);
 };

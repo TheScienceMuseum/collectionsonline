@@ -4,6 +4,7 @@
 var QueryString = require('querystring');
 var page = require('page');
 var loadingBar = require('./loading-bar');
+var paramify = require('../../lib/helpers/paramify.js');
 
 module.exports = function () {
   var searchBoxEl = document.getElementById('searchbox');
@@ -38,7 +39,7 @@ module.exports = function () {
     if (imageLicenseFilter) {
       qs['filter[image_license]'] = imageLicenseFilter;
     }
-    var url = '/search?' + QueryString.stringify(qs);
+    var url = '/search' + paramify(qs);
     page.show(url);
   });
 };

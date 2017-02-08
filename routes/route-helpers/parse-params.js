@@ -21,7 +21,9 @@ module.exports = function (urlParams) {
         if (e === 'category' || e === 'category') {
           e = 'categories';
         }
-        categories[e] = urlCats[i + 1];
+        if (urlCats[i] !== 'search') {
+          categories[e] = urlCats[i + 1];
+        }
       }
     });
   }
@@ -30,7 +32,7 @@ module.exports = function (urlParams) {
     if (cat === 'museum') {
       categories[cat] = museumMap.toLong(categories[cat]);
     } else if (cat !== 'has_image') {
-      categories[cat] = utils.uppercaseFirstChar(categories[cat]);
+      categories[cat] = categories[cat];
     }
   }
 
