@@ -48,7 +48,7 @@ testWithServer('Trigger server error', {mock: {method: 'get', response: {error: 
 
   const htmlRequest = {
     method: 'GET',
-    url: '/oid/1234',
+    url: '/oid/1234'
   };
 
   ctx.server.inject(htmlRequest, (res) => {
