@@ -42,3 +42,17 @@ testWithServer(file + 'Request for object id with wrong id', {}, (t, ctx) => {
     t.end();
   });
 });
+
+testWithServer('Trigger server error', {mock: {method: 'get', response: {error: true}}}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/oid/1234',
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.statusCode, 503, 'server is unavailable');
+    t.end();
+  });
+});
