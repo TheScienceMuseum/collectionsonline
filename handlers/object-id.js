@@ -16,9 +16,6 @@ module.exports = function (elastic, config) {
     var jsonResult = {};
 
     elastic.search(searchOpts, function (error, result) {
-      if (error) {
-        return reply(Boom.serverUnavailable(error));
-      }
 
       // no object found
       if (result.hits.total === 0) {
