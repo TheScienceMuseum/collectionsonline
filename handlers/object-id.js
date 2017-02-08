@@ -24,9 +24,9 @@ module.exports = function (elastic, config) {
       if (result.hits.total === 0) {
         jsonResult.found = false;
         jsonResult.error = 'Not Found';
-        jsonResult.path = false;
+        jsonResult.path = '';
 
-        return result;
+        return reply(jsonResult).code(404);
       }
 
       jsonResult.found = true;
