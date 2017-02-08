@@ -6,6 +6,14 @@
   {{#if stickyFilters.length}}
     <div class="searchbox__filters">
       <div class="filterbadge--prefix">In</div>
+      {{#each imageFilters}}
+      <dl class="filterbadge" data-filter="Category">
+        <dt class="filterbadge__key">Image</dt>
+        <dd class="filterbadge__label">{{value}}</dd>
+        <a class="filterbadge__x" href="{{lookup ../links.clearImageLink name}}" title="remove">✕</a>
+        <input type="hidden" class='searchbox__{{name}}__filter' name="filter[{{name}}]" value="true">
+      </dl>
+      {{/each}}
       {{#each categoryFilters}}
       <dl class="filterbadge" data-filter="Category">
         <dt class="filterbadge__key">Category</dt>
