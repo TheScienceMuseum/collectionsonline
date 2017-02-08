@@ -1,7 +1,5 @@
 'use strict';
 
-var Boom = require('boom');
-
 module.exports = function (elastic, config) {
   return function (request, reply) {
     var body = {
@@ -16,11 +14,11 @@ module.exports = function (elastic, config) {
     var jsonResult = {};
 
     elastic.search(searchOpts, function (error, result) {
-
       // no object found
       if (result.hits.total === 0) {
         jsonResult.found = false;
         jsonResult.error = 'Not Found';
+        jsonResult.searchError = error;
         jsonResult.path = '';
 
         return reply(jsonResult).code(404);
@@ -28,6 +26,7 @@ module.exports = function (elastic, config) {
 
       jsonResult.found = true;
       jsonResult.error = null;
+      jsonResult.searchError = error;
       jsonResult.path = '/objects/' + result.hits.hits[0]._id;
 
       // check for redirect query parameter
