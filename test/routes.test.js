@@ -623,8 +623,6 @@ testWithServer('Robot.txt route', {}, (t, ctx) => {
 });
 
 testWithServer('Restful Style Search Routes: html', {}, (t, ctx) => {
-  t.plan(2);
-
   const htmlRequest = {
     method: 'GET',
     url: '/search/categories/art',
@@ -632,15 +630,12 @@ testWithServer('Restful Style Search Routes: html', {}, (t, ctx) => {
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 302, 'redirect status code');
-    t.equal(res.headers.location, '/search?categories=Art', 'restful url maps to query');
+    t.equal(res.statusCode, 200, 'redirect status code');
     t.end();
   });
 });
 
 testWithServer('Restful Style Search Routes: html', {}, (t, ctx) => {
-  t.plan(2);
-
   const htmlRequest = {
     method: 'GET',
     url: '/search/objects/categories/art',
@@ -648,15 +643,12 @@ testWithServer('Restful Style Search Routes: html', {}, (t, ctx) => {
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 302, 'redirect status code');
-    t.equal(res.headers.location, '/search/objects?categories=Art', 'restful url maps to query');
+    t.equal(res.statusCode, 200, 'redirect status code');
     t.end();
   });
 });
 
 testWithServer('Restful Style Search Routes: json', {}, (t, ctx) => {
-  t.plan(2);
-
   const htmlRequest = {
     method: 'GET',
     url: '/search/categories/art',
@@ -664,15 +656,12 @@ testWithServer('Restful Style Search Routes: json', {}, (t, ctx) => {
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 302, 'redirect status code');
-    t.equal(res.headers.location, '/search?categories=Art', 'restful url maps to query');
+    t.equal(res.statusCode, 200, 'redirect status code');
     t.end();
   });
 });
 
 testWithServer('Restful Style Search Routes: json', {}, (t, ctx) => {
-  t.plan(2);
-
   const htmlRequest = {
     method: 'GET',
     url: '/search/objects/categories/art',
@@ -680,8 +669,7 @@ testWithServer('Restful Style Search Routes: json', {}, (t, ctx) => {
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 302, 'redirect status code');
-    t.equal(res.headers.location, '/search/objects?categories=Art', 'restful url maps to query');
+    t.equal(res.statusCode, 200, 'redirect status code');
     t.end();
   });
 });

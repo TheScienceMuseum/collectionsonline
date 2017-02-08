@@ -8,7 +8,6 @@ const search = require('../lib/search');
 const createQueryParams = require('../lib/query-params/query-params');
 const contentType = require('./route-helpers/content-type.js');
 const parseParameters = require('./route-helpers/parse-params');
-var Querystring = require('querystring');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -16,70 +15,51 @@ module.exports = (elastic, config) => ({
   config: {
     handler: function (request, reply) {
       var responseType = contentType(request);
-      if (responseType === 'json') {
-        Joi.validate({query: request.query},
-          {
-            query: filterSchema('json').keys(searchSchema.query)
-          }, (err, value) => {
-            if (err) return reply(Boom.badRequest(err));
-
-            const params = parseParameters(request.params).params;
-            const categories = parseParameters(request.params).categories;
-
-            if (Object.keys(categories).length >= 1) {
-              if (params.type !== 'all') {
-                reply.redirect('/search' + '/' + params.type + '?' + Querystring.stringify(categories));
-              } else {
-                reply.redirect('/search?' + Querystring.stringify(categories));
-              }
-            }
-
-            const query = value.query;
-            const queryParams = createQueryParams('json', {query: query, params: params});
-            search(elastic, queryParams, (err, result) => {
-              if (err) return reply(Boom.serverUnavailable(err));
-              return reply(searchResultsToJsonApi(queryParams, result, config))
-                .header('content-type', 'application/vnd.api+json');
-            });
-          }
-        );
-      }
-
-      if (responseType === 'html') {
-        Joi.validate({query: request.query},
-          {
-            query: filterSchema('html').keys(searchSchema.query)
-          }, (err, value) => {
-            if (err) return reply(Boom.badRequest(err));
-
-            const params = parseParameters(request.params).params;
-            const categories = parseParameters(request.params).categories;
-
-            if (Object.keys(categories).length >= 1) {
-              if (params.type !== 'all') {
-                reply.redirect('/search' + '/' + params.type + '?' + Querystring.stringify(categories));
-              } else {
-                reply.redirect('/search?' + Querystring.stringify(categories));
-              }
-            }
-
-            const query = value.query;
-            const queryParams = createQueryParams('html', {query: query, params: params});
-            search(elastic, queryParams, (err, result) => {
-              if (err) return reply(Boom.serverUnavailable(err));
-
-              const jsonData = searchResultsToJsonApi(queryParams, result, config);
-              const tplData = searchResultsToTemplateData(queryParams, jsonData);
-
-              return reply.view('search', tplData);
-            });
-          }
-        );
-      }
 
       if (responseType === 'notAcceptable') {
         return reply('Not Acceptable').code(406);
       }
+
+      Joi.validate({query: request.query},
+        {
+          query: filterSchema(responseType).keys(searchSchema.query)
+        }, (err, value) => {
+          if (err) return reply(Boom.badRequest(err));
+
+          const params = parseParameters(request.params).params;
+          const categories = parseParameters(request.params).categories;
+
+          Joi.validate({params: params, categories: categories, query: value.query},
+            {
+              params: Joi.any(),
+              categories: filterSchema('html').keys(searchSchema.query),
+              query: filterSchema('html').keys(searchSchema.query)
+            }, (err, value) => {
+              if (err) return reply(Boom.badRequest(err));
+
+              const query = Object.assign(value.query, value.params, value.categories);
+              const queryParams = createQueryParams(responseType, {query: query, params: params});
+
+              if (responseType === 'html') {
+                search(elastic, queryParams, (err, result) => {
+                  if (err) return reply(Boom.serverUnavailable(err));
+
+                  const jsonData = searchResultsToJsonApi(queryParams, result, config);
+                  const tplData = searchResultsToTemplateData(queryParams, jsonData);
+
+                  return reply.view('search', tplData);
+                });
+              } else if (responseType === 'json') {
+                search(elastic, queryParams, (err, result) => {
+                  if (err) return reply(Boom.serverUnavailable(err));
+                  return reply(searchResultsToJsonApi(queryParams, result, config))
+                  .header('content-type', 'application/vnd.api+json');
+                });
+              }
+            }
+          );
+        }
+      );
     }
   }
 });
