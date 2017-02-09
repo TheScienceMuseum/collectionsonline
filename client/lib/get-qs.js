@@ -1,6 +1,7 @@
 var QueryString = require('querystring');
 
 var paramify = require('../../lib/helpers/paramify.js');
+var querify = require('../../lib/helpers/querify.js');
 
 module.exports = function (pageType) {
   /**
@@ -17,5 +18,6 @@ module.exports = function (pageType) {
   }
   // select result per page
   var rpp = document.querySelector('.control--rpp select') ? document.querySelector('.control--rpp select').value : 50;
-  return paramify(params) + '?page[size]=' + rpp;
+  params['page[size]'] = rpp;
+  return paramify(params) + querify(params);
 };

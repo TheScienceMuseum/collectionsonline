@@ -22,6 +22,7 @@ var hideKeyboard = require('../lib/hide-keyboard');
 var i = 0;
 var parseParams = require('../../routes/route-helpers/parse-params.js');
 var paramify = require('../../lib/helpers/paramify.js');
+var querify = require('../../lib/helpers/querify.js');
 
 module.exports = function (page) {
   page('/search', load, render, listeners);
@@ -40,8 +41,8 @@ function load (ctx, next) {
     };
     var qs = QueryString.parse(ctx.querystring);
     var p = parseParams({filters: ctx.pathname}).categories;
-    var queryParams = createQueryParams('html', {query: p, params: {type: ctx.params.type}});
-    getData('search' + paramify(p), opts, function (err, json) {
+    var queryParams = createQueryParams('html', {query: Object.assign(qs, p), params: {type: ctx.params.type}});
+    getData('/search' + paramify(p) + querify(queryParams), opts, function (err, json) {
       if (err) {
         console.error(err);
         Snackbar.create('Error getting data from the server');
