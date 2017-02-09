@@ -5,8 +5,13 @@
 
       {{#each details}}
         <dl class="record-details__dl details-{{classname this.key}}">
-          <dt>{{ this.key }}:</dt>
-          <dd>
+          <dt>{{key}}:</dt>
+          {{#toggleDetail this}}
+            <button type="button" name="button" class='hide-this'>Toggle</button>
+            <dd class="toggle-detail">
+          {{else}}
+            <dd>
+          {{/toggleDetail}}
             {{#taxonomy this}}
               <ul class="taxonomy">
                 {{#each value}}
