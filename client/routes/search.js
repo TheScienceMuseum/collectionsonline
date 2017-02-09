@@ -23,6 +23,7 @@ var i = 0;
 var parseParams = require('../../routes/route-helpers/parse-params.js');
 var paramify = require('../../lib/helpers/paramify.js');
 var querify = require('../../lib/helpers/querify.js');
+var findCategory = require('../lib/find-category.js');
 
 module.exports = function (page) {
   page('/search', load, render, listeners);
@@ -40,9 +41,10 @@ function load (ctx, next) {
       headers: { Accept: 'application/vnd.api+json' }
     };
     var qs = QueryString.parse(ctx.querystring);
-    var p = parseParams({filters: ctx.pathname}).categories;
-    var queryParams = createQueryParams('html', {query: Object.assign(qs, p), params: {type: ctx.params.type}});
-    getData('/search' + paramify(p) + querify(queryParams), opts, function (err, json) {
+    var p = Object.assign(parseParams({filters: ctx.pathname}).categories, parseParams({filters: ctx.pathname}).params);
+    var searchCategory = findCategory(ctx.pathname);
+    var queryParams = createQueryParams('html', {query: Object.assign(qs, p), params: {type: searchCategory}});
+    getData('/search' + (searchCategory ? '/' + searchCategory : '') + paramify(p) + querify(queryParams), opts, function (err, json) {
       if (err) {
         console.error(err);
         Snackbar.create('Error getting data from the server');

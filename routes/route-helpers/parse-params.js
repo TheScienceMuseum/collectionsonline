@@ -5,11 +5,15 @@ module.exports = function (urlParams) {
   var params = {};
   var categories = {};
   if (urlParams.filters) {
-    var urlCats = urlParams.filters.split('/');
-    if (urlCats[0] === 'objects' || urlCats[0] === 'people' || urlCats[0] === 'documents') {
-      params.type = urlCats[0];
-      urlCats.shift();
-    } else {
+    var urlCats = urlParams.filters.split('/').filter(function (el) {
+      if (el === 'objects' || el === 'people' || el === 'documents') {
+        params.type = el;
+        return false;
+      } else {
+        return true
+      }
+    });
+    if (!params.type) {
       params.type = 'all';
     }
     urlCats.forEach((e, i) => {
