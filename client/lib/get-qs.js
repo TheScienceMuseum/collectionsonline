@@ -1,5 +1,3 @@
-var QueryString = require('querystring');
-
 var paramify = require('../../lib/helpers/paramify.js');
 var querify = require('../../lib/helpers/querify.js');
 

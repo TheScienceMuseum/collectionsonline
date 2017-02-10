@@ -1,5 +1,4 @@
 const museumMap = require('../../lib/museum-mapping');
-const utils = require('../../lib/helpers/utils');
 
 module.exports = function (urlParams) {
   var params = {};
@@ -10,7 +9,7 @@ module.exports = function (urlParams) {
         params.type = el;
         return false;
       } else {
-        return true
+        return true;
       }
     });
     if (!params.type) {

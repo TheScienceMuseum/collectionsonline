@@ -19,7 +19,7 @@
 {{/if}}
 
 {{#if filters.place_born.length}}
-  {{#if (activeFacet selectedFilters 'birthPlace')}}
+  {{#if (activeFacet selectedFilters 'birth[place]')}}
     <div class="filter filter--active filter--open" data-filter="Place born">
       <a href="{{lookup links.clearFacet "filter[birth[place]]"}}" class="filter__name">Place born</a>
   {{else}}
@@ -29,7 +29,7 @@
     <div class="filter__options">
       <ul>
         {{#each filters.place_born}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[birth[place]]" value="{{value}}" {{isselected ../selectedFilters "birthPlace" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
+          <li><label><input type="checkbox" class="filter__box" name="filter[birth[place]]" value="{{value}}" {{isselected ../selectedFilters "birth[place]" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
         {{/each}}
       </ul>
     </div>

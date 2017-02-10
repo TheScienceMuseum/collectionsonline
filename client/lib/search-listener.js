@@ -1,7 +1,6 @@
 /**
 * Add event listener to the searchbox
 */
-var QueryString = require('querystring');
 var page = require('page');
 var loadingBar = require('./loading-bar');
 var paramify = require('../../lib/helpers/paramify.js');

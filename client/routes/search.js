@@ -4,7 +4,6 @@ var initComp = require('../lib/init-components');
 var Templates = require('../templates');
 var createQueryParams = require('../../lib/query-params/query-params');
 var getData = require('../lib/get-data.js');
-var toJsonUrl = require('../lib/to-json-url');
 var displayFilters = require('../lib/display-filters.js');
 var filterResults = require('../lib/filter-results');
 var page = require('page');
@@ -139,15 +138,15 @@ function listeners (ctx, next) {
     });
   }
 
-  updateActiveStateFacets(facetsStates, ctx.params.type);
+  updateActiveStateFacets(facetsStates, findCategory(ctx.pathname));
   // display the facet (close open or active)
-  displayFacet(facetsStates, ctx.params.type);
+  displayFacet(facetsStates, findCategory(ctx.pathname));
 
   // add event listener on the facet toggle
-  toggleFacets(facetsStates, ctx.params.type);
+  toggleFacets(facetsStates, findCategory(ctx.pathname));
 
   // add event listener when the filters of a facet are cleared to update the state
-  deleteFiltersFacets(facetsStates, ctx.params.type);
+  deleteFiltersFacets(facetsStates, findCategory(ctx.pathname));
   /**
   * Click to add/remove filters
   * Build a html url with the new filter selected (get the current url + new filter)

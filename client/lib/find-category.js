@@ -4,4 +4,4 @@ module.exports = function findCategory (path) {
   if (match) {
     return match[1];
   }
-}
+};
