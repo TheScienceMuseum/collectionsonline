@@ -82,18 +82,18 @@
 {{/if}}
 
 <!-- TYPE -->
-{{#if filters.type.length}}
-  {{#if (activeFacet selectedFilters 'type')}}
+{{#if filters.object_type.length}}
+  {{#if (activeFacet selectedFilters 'object_type')}}
     <div class="filter filter--open filter--active" data-filter="Type">
-      <a href="{{lookup links.clearFacet "filter[type]"}}" class="filter__name">Object type</a>
+      <a href="{{lookup links.clearFacet "filter[object_type]"}}" class="filter__name">Object type</a>
   {{else}}
     <div class="filter filter--open" data-filter="Type">
-      <a href="{{lookup links.clearFacet "filter[type]"}}" class="filter__name">Object type</a>
+      <a href="{{lookup links.clearFacet "filter[object_type]"}}" class="filter__name">Object type</a>
   {{/if}}
     <div class="filter__options">
       <ul>
-        {{#each filters.type}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[type]" value="{{value}}" {{isselected ../selectedFilters "type" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
+        {{#each filters.object_type}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[object_type]" value="{{value}}" {{isselected ../selectedFilters "object_type" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
         {{/each}}
       </ul>
     </div>
