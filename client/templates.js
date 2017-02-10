@@ -212,6 +212,8 @@ Handlebars.registerHelper('isequal', require('../templates/helpers/isequal.js'))
 
 Handlebars.registerHelper('formatnumber', require('../templates/helpers/formatnumber.js'));
 
+Handlebars.registerHelper('toggleDetail', require('../templates/helpers/toggleDetail.js'));
+
 // Routes
 module.exports = {
   '404': Handlebars.compile(
