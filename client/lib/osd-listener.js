@@ -18,12 +18,11 @@ module.exports = (ctx) => {
 
       if (!ctx.viewer) {
         openseadragon.init(ctx);
+        ctx.viewer.setFullScreen(true);
       }
 
-      ctx.viewer.setFullScreen(true);
-
-      if (e.target.id === 'osd-home') {
-        openseadragon.quit(ctx);
+      if (e.target.id !== 'osd-fullpage') {
+        ctx.viewer.setFullScreen(true);
       }
     });
   });
