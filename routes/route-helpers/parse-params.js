@@ -16,20 +16,22 @@ module.exports = function (urlParams) {
     if (!params.type) {
       params.type = 'all';
     }
-    urlCats.forEach((e, i) => {
-      if (i % 2 === 0) {
-        if (e === 'has_image' || e === 'images') {
-          urlCats.splice(i + 1, 0, 'true');
-          e = 'has_image';
-        }
-        if (e === 'category' || e === 'category') {
-          e = 'categories';
+    for (var i = 0; i < urlCats.length; i++) {
+      if (urlCats[i] === 'has_image' || urlCats[i] === 'images') {
+        urlCats.splice(i + 1, 0, 'true');
+        categories['has_image'] = 'has_image';
+      } else if (urlCats[i] === 'image_license') {
+        urlCats.splice(i + 1, 0, 'true');
+        categories['image_license'] = 'image_license';
+      } else if (i % 2 === 0) {
+        if (urlCats[i] === 'category') {
+          urlCats[i] = 'categories';
         }
         if (urlCats[i] !== 'search') {
-          categories[e] = urlCats[i + 1];
+          categories[urlCats[i]] = urlCats[i + 1];
         }
       }
-    });
+    }
   }
 
   for (var cat in categories) {
