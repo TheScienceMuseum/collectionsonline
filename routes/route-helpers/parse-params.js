@@ -27,7 +27,9 @@ module.exports = function (urlParams) {
         if (urlCats[i] === 'category') {
           urlCats[i] = 'categories';
         }
-        if (urlCats[i] !== 'search') {
+        if (urlCats[i + 1] && urlCats[i + 1].indexOf('+') > -1) {
+          categories[urlCats[i]] = urlCats[i + 1].split('+');
+        } else if (urlCats[i] !== 'search') {
           categories[urlCats[i]] = urlCats[i + 1];
         }
       }
