@@ -1,4 +1,5 @@
 const museumMap = require('../../lib/museum-mapping');
+const utils = require('../../lib/helpers/utils');
 
 module.exports = function (urlParams) {
   var params = {};
@@ -38,8 +39,8 @@ module.exports = function (urlParams) {
   for (var cat in categories) {
     if (cat === 'museum') {
       categories[cat] = museumMap.toLong(categories[cat]);
-    } else if (cat !== 'has_image') {
-      categories[cat] = categories[cat];
+    } else if (cat !== 'has_image' && cat !== 'object_type') {
+      categories[cat] = utils.uppercaseFirstChar(categories[cat]);
     }
   }
 

@@ -10,8 +10,8 @@ test(file + 'datefrom and birthdate filters', (t) => {
   const query = queryString.parse('q=ada&filter%5Bdate%5Bfrom%5D%5D=1800&page%5Bsize%5D=50');
   const queryParams = createQueryParams('html', {query: query, params: {type: 'objects'}});
   const filters = createFilters(queryParams);
-  const expected = { birthDate: ['1800'], dateFrom: ['1800'] };
-  t.deepEqual(filters, expected, 'The dates are the same');
+
+  t.equal(filters['date[from]'], '1800', 'The dates are the same');
   t.end();
 });
 
@@ -20,7 +20,7 @@ test(file + 'dateto and deathdate filters', (t) => {
   const query = queryString.parse('q=ada&filter%5Bdate%5Bto%5D%5D=1900&page%5Bsize%5D=50');
   const queryParams = createQueryParams('html', {query: query, params: {type: 'objects'}});
   const filters = createFilters(queryParams);
-  const expected = { deathDate: ['1900'], dateTo: ['1900'] };
-  t.deepEqual(filters, expected, 'The dates are the same');
+
+  t.equal(filters['date[to]'], '1900', 'The dates are the same');
   t.end();
 });

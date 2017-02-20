@@ -7,8 +7,8 @@ test('parsing url params', function (t) {
   t.deepEqual(parseParameters({filters: 'objects'}), {params: {type: 'objects'}, categories: {}}, 'parses type correctly');
   t.deepEqual(parseParameters({filters: 'people'}), {params: {type: 'people'}, categories: {}}, 'parses type correctly');
   t.deepEqual(parseParameters({filters: 'documents'}), {params: {type: 'documents'}, categories: {}}, 'parses type correctly');
-  t.deepEqual(parseParameters({filters: 'objects/images'}), {params: {type: 'objects'}, categories: {has_image: 'true'}}, 'parses type correctly');
-  t.deepEqual(parseParameters({filters: 'objects/categories/art/images'}), {params: {type: 'objects'}, categories: {has_image: 'true', categories: 'Art'}}, 'parses type correctly');
+  t.deepEqual(parseParameters({filters: 'objects/images'}), {params: {type: 'objects'}, categories: {has_image: 'has_image'}}, 'parses type correctly');
+  t.deepEqual(parseParameters({filters: 'objects/categories/art/images'}), {params: {type: 'objects'}, categories: {has_image: 'has_image', categories: 'Art'}}, 'parses type correctly');
   t.end();
 });
 
@@ -36,8 +36,8 @@ test('parsing museum params', function (t) {
 test('param order', function (t) {
   t.plan(2);
 
-  t.deepEqual(parseParameters({filters: 'objects/images/museum/scm/categories/art'}), {params: {type: 'objects'}, categories: {museum: 'Science Museum', categories: 'Art', has_image: 'true'}}, 'param order does not matter');
-  t.deepEqual(parseParameters({filters: 'objects/museum/scm/images/gallery/mathematics:%20the%20winton%20gallery/categories/art'}), {params: {type: 'objects'}, categories: {museum: 'Science Museum', gallery: 'Mathematics: The Winton Gallery', categories: 'Art', has_image: 'true'}}, 'param order does not matter');
+  t.deepEqual(parseParameters({filters: 'objects/images/museum/scm/categories/art'}), {params: {type: 'objects'}, categories: {museum: 'Science Museum', categories: 'Art', has_image: 'has_image'}}, 'param order does not matter');
+  t.deepEqual(parseParameters({filters: 'objects/museum/scm/images/gallery/mathematics:%20the%20winton%20gallery/categories/art'}), {params: {type: 'objects'}, categories: {museum: 'Science Museum', gallery: 'Mathematics: The Winton Gallery', categories: 'Art', has_image: 'has_image'}}, 'param order does not matter');
   t.end();
 });
 

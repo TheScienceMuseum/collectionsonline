@@ -222,7 +222,7 @@ testWithServer(file + 'Should accept single type', {}, (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', type: 'Model locomotive' }),
+    url: '/search?' + QueryString.stringify({ q: 'test', object_type: 'Model locomotive' }),
     headers: { Accept: 'text/html' }
   };
 
@@ -237,7 +237,7 @@ testWithServer(file + 'Should accept single type as json', {}, (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', type: 'Model locomotive' }),
+    url: '/search?' + QueryString.stringify({ q: 'test', object_type: 'Model locomotive' }),
     headers: { Accept: 'application/vnd.api+json' }
   };
 
@@ -252,7 +252,7 @@ testWithServer(file + 'Should accept multiple types', {}, (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', type: ['Model locomotive', 'Computer'] }),
+    url: '/search?' + QueryString.stringify({ q: 'test', object_type: ['Model locomotive', 'Computer'] }),
     headers: { Accept: 'text/html' }
   };
 
@@ -267,7 +267,7 @@ testWithServer(file + 'Should not accept array of types as json', {}, (t, ctx) =
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', type: ['Model locomotive', 'Computer'] }),
+    url: '/search?' + QueryString.stringify({ q: 'test', object_type: ['Model locomotive', 'Computer'] }),
     headers: { Accept: 'application/vnd.api+json' }
   };
 
@@ -854,7 +854,7 @@ testWithServer(file + 'Should not return people or organisations as object type'
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.notOk(JSON.parse(res.payload).meta.filters.type.find(el => el.value === 'Turner Bros Asbestos Co'), 'Org does not appear in object type filter');
+    t.notOk(JSON.parse(res.payload).meta.filters.object_type.find(el => el.value === 'Turner Bros Asbestos Co'), 'Org does not appear in object type filter');
     t.end();
   });
 });
