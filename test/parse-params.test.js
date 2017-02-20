@@ -2,12 +2,11 @@ const test = require('tape');
 const parseParameters = require('../routes/route-helpers/parse-params');
 
 test('parsing url params', function (t) {
-  t.plan(5);
-
   t.deepEqual(parseParameters({filters: 'objects'}), {params: {type: 'objects'}, categories: {}}, 'parses type correctly');
   t.deepEqual(parseParameters({filters: 'people'}), {params: {type: 'people'}, categories: {}}, 'parses type correctly');
   t.deepEqual(parseParameters({filters: 'documents'}), {params: {type: 'documents'}, categories: {}}, 'parses type correctly');
   t.deepEqual(parseParameters({filters: 'objects/images'}), {params: {type: 'objects'}, categories: {has_image: 'has_image'}}, 'parses type correctly');
+  t.deepEqual(parseParameters({filters: 'objects/image_license'}), {params: {type: 'objects'}, categories: {image_license: 'Image_license'}}, 'parses type correctly');
   t.deepEqual(parseParameters({filters: 'objects/categories/art/images'}), {params: {type: 'objects'}, categories: {has_image: 'has_image', categories: 'Art'}}, 'parses type correctly');
   t.end();
 });
@@ -46,5 +45,10 @@ test('alternative param names', function (t) {
 
   t.deepEqual(parseParameters({filters: 'categories/art'}), parseParameters({filters: 'category/art'}), 'category/categories gives same result');
   t.deepEqual(parseParameters({filters: 'images'}), parseParameters({filters: 'has_image'}), 'immges/has_images gives same result');
+  t.end();
+});
+
+test('multiple param names', function (t) {
+  t.deepEqual(parseParameters({filters: 'places/London+France'}), {params: {type: 'all'}, categories: {places: 'London,France'}}, 'immges/has_images gives same result');
   t.end();
 });

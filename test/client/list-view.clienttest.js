@@ -5,7 +5,7 @@ module.exports = {
       .waitForElementVisible('body', 1000)
       .click('#results-list')
       .pause(1000)
-      .assert.urlEquals('http://localhost:8000/search?q=ada&page%5Bsize%5D=50&page%5Btype%5D=results-list')
+      .assert.urlEquals('http://localhost:8000/search?q=ada&page[size]=50&page[type]=results-list')
       .end();
   }
 };

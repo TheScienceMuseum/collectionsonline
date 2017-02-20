@@ -1,5 +1,5 @@
 <!-- IMAGE -->
-{{#or filters.image_license.length filters.has_image.length}}
+{{#or filters.image_license.0.count filters.has_image.0.count}}
   {{#or (activeFacet selectedFilters 'imageLicense') (activeFacet selectedFilters 'hasImage')}}
     <div class="filter filter--active filter--open" data-filter="Image">
   {{else}}

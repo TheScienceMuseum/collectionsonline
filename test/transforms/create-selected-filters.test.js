@@ -6,7 +6,9 @@ const file = dir + __filename.replace(__dirname, '') + ' > ';
 test(file + 'Selected filters should be build from the queryParams', (t) => {
   var queryParams = {
     query: {
-      object_type: ['medals', 'photograph']
+      object_type: ['medals', 'photograph'],
+      has_image: true,
+      image_license: true
     }
   };
   t.plan(1);
@@ -15,7 +17,9 @@ test(file + 'Selected filters should be build from the queryParams', (t) => {
     object_type: {
       medals: true,
       photograph: true
-    }
+    },
+    hasImage: {true: true},
+    imageLicense: {true: true}
   };
   t.deepEqual(result, expected, 'The selected filters object is build correctly');
   t.end();

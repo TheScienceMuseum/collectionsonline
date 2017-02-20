@@ -37,9 +37,11 @@ module.exports = function (urlParams) {
   }
 
   for (var cat in categories) {
+    var exclude = ['has_image', 'object_type', 'material', 'occupation'];
+
     if (cat === 'museum') {
       categories[cat] = museumMap.toLong(categories[cat]);
-    } else if (cat !== 'has_image' && cat !== 'object_type') {
+    } else if (exclude.indexOf(cat) === -1) {
       categories[cat] = utils.uppercaseFirstChar(categories[cat]);
     }
   }

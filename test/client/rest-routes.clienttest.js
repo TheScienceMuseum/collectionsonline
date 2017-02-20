@@ -11,11 +11,6 @@ module.exports = {
     .waitForElementVisible('.resultcard', 1000)
     .assert.containsText('.filterbadge[data-filter="Museum"]', 'Science Museum', 1000)
     .assert.urlEquals('http://localhost:8000/search/objects/museum/scm')
-    .url('http://localhost:8000/search/gallery/Great%20Hall')
-    .waitForElementVisible('body', 1000)
-    .waitForElementVisible('.resultcard', 1000)
-    .assert.containsText('.filterbadge[data-filter="Museum"]', 'National Railway Museum - Great Hall', 1000)
-    .assert.urlEquals('http://localhost:8000/search/gallery/Great%20Hall')
     .end();
   }
 };

@@ -8,10 +8,10 @@ module.exports = {
       .waitForElementVisible('.filter__box[value="Great Hall"]', 1000)
       .click('.filter__box[value="Great Hall"]')
       .pause(1500)
-      .assert.urlEquals('http://localhost:8000/search?filter%5Bmuseum%5D=National%20Railway%20Museum&filter%5Bgallery%5D=Great%20Hall&page%5Bsize%5D=50&page%5Btype%5D=search')
+      .assert.urlEquals('http://localhost:8000/search/museum/National%20Railway%20Museum/gallery/Great%20Hall?page[size]=50')
       .setValue('input[type=search].searchbox__search', 'electric')
       .click('button.searchbox__submit')
-      .assert.urlEquals('http://localhost:8000/search?q=electric&filter%5Bmuseum%5D=National%20Railway%20Museum&filter%5Bgallery%5D=Great%20Hall')
+      .assert.urlEquals('http://localhost:8000/search/museum/National%20Railway%20Museum/gallery/Great%20Hall?q=electric')
       .end();
   }
 };
