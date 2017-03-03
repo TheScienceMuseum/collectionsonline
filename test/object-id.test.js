@@ -1,5 +1,7 @@
 'use strict';
 
+const config = require('../config');
+
 var testWithServer = require('./helpers/test-with-server');
 var dir = __dirname.split('/')[__dirname.split('/').length - 1];
 var file = dir + __filename.replace(__dirname, '') + ' > ';
@@ -12,7 +14,7 @@ testWithServer(file + 'Request for object id page 1970-54', {}, (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.equal(res.payload, '{"found":true,"error":null,"path":"/objects/co33448"}', 'The path found is /objects/co33448');
+    t.equal(res.payload, '{"found":true,"error":null,"path":"/objects/co33448/sample-of-deep-sea-section-of-first-transatlantic-cable-1857-1858-cable"}', 'The path found is /objects/co33448/sample-of-deep-sea-section-of-first-transatlantic-cable-1857-1858-cable');
     t.end();
   });
 });
@@ -24,8 +26,8 @@ testWithServer(file + 'Request for object id page 1970-54 with redirect true', {
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 302, 'Status code was as expected');
-    t.equal(res.headers.location, '/objects/co33448', 'redirect to /objects/co33448');
+    t.equal(res.statusCode, 301, 'Status code was as expected');
+    t.equal(res.headers.location, config.rootUrl + '/objects/co33448/sample-of-deep-sea-section-of-first-transatlantic-cable-1857-1858-cable', 'redirect to /objects/co33448/sample-of-deep-sea-section-of-first-transatlantic-cable-1857-1858-cable');
     t.end();
   });
 });
