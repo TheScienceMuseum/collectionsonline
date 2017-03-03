@@ -1,5 +1,7 @@
 'use strict';
 
+const slug = require('slugg');
+
 module.exports = function (elastic, config) {
   return function (request, reply) {
     var body = {
@@ -27,11 +29,15 @@ module.exports = function (elastic, config) {
       jsonResult.found = true;
       jsonResult.error = null;
       jsonResult.searchError = error;
-      jsonResult.path = '/objects/' + result.hits.hits[0]._id;
+
+      var obj = result.hits.hits[0];
+      var slugValue = obj._source.summary_title && slug(obj._source.summary_title).toLowerCase();
+      slugValue = slugValue ? ('/' + slugValue) : '';
+      jsonResult.path = '/objects/' + obj._id + slugValue;
 
       // check for redirect query parameter
       if (request.query.redirect === 'true') {
-        return reply.redirect(jsonResult.path);
+        return reply.redirect(config.rootUrl + jsonResult.path).permanent();
       }
 
       return reply(jsonResult);
