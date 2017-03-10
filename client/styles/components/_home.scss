@@ -112,7 +112,10 @@
       .ttb {display: block;}
     }
   }
-
+  a {
+    text-decoration:underline;
+    color: white;
+  }
   .icon {
     font-size: 2rem;
     @include breakpoint(medium up) {
