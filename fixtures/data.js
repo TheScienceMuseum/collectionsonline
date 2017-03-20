@@ -2,7 +2,7 @@ module.exports = {
   title: 'Science Museum Group Collection',
   titlePage: 'Science Museum Group Collection',
   strap: 'Search our collection',
-  intro: 'Explore over 250,000 objects and archives from the Science Museum, Museum of Science and Industry, National Media Museum and National Railway Museum.',
+  intro: 'Explore over 250,000 objects and archives from the Science Museum, Museum of Science and Industry, National Science and Media Museum and National Railway Museum.',
   collectionGroup: [{
     title: 'See what’s on display',
     collection: [{
@@ -21,7 +21,7 @@ module.exports = {
       link: '/msi'
     }, {
       type: 'collection',
-      title: 'National Media Museum',
+      title: 'National Science and Media Museum',
       figure: '/assets/img/home/collections/nmm.jpg',
       description: 'The science and culture of light and sound technologies, and their impact on our lives',
       columns: 'small-6 medium-3',
