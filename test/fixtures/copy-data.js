@@ -20,7 +20,8 @@ Async.parallel([
   */
   (cb) => {
     Async.each([
-      { id: 'cp108048', type: 'agent', filename: 'example-get-response-death' },
+      // no longer in index as he (Sinclair, James A) no longer has any public records on site
+      // { id: 'cp108048', type: 'agent', filename: 'example-get-response-death' },
       { id: 'aa110000003', type: 'archive', filename: 'example-get-response-document' },
       { id: 'co8245103', type: 'object', filename: 'example-get-response-object' },
       { id: 'co205752', type: 'object', filename: 'example-get-response-object2' },
