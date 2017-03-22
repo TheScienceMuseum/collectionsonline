@@ -50,7 +50,7 @@
     <div class="filter__options">
       <ul>
         {{#each filters.museum}}
-        <li><label><input type="checkbox" class="filter__box filter__museum__{{classname value}}" name="filter[museum]" value="{{value}}" {{isselected ../selectedFilters "museum" value galleries}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
+        <li><label><input type="checkbox" class="filter__box filter__museum__{{classname value}}" name="filter[museum]" value="{{value}}" {{isselected ../selectedFilters "museum" value galleries}}/>{{displayValue}}<span class="filter__count">{{formatnumber count}}</span></label></li>
           <ul class="nested-galleries">
             {{#each galleries}}
               <li><label><input type="checkbox" class="filter__box filter__gallery__{{classname ../value}}" name="filter[gallery]" value="{{key}}" {{isselected ../../selectedFilters "gallery" key}}/>{{key}}<span class="filter__count">{{doc_count}}</span></label></li>
