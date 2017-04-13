@@ -46,6 +46,10 @@
     @include icon-bullet(tree-item, $align: top, $top: 0.15rem); //obvs needs a better icon
   }
 
+  .museum-articles {
+    padding-left: 1em;
+  }
+
   &--cite {
     .icon { display: inline-block; }
   }
