@@ -685,3 +685,17 @@ testWithServer('Restful Style Search Routes: json', {}, (t, ctx) => {
     t.end();
   });
 });
+
+testWithServer(file + 'Request for Related Articles', {}, (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/articles/co18634',
+    headers: {'Accept': 'application/json'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(JSON.parse(res.payload), 'Result is JSON');
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});

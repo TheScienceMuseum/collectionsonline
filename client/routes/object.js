@@ -66,7 +66,7 @@ function getArticles (ctx) {
   getData(url, opts, function (err, data) {
     if (err) {
       console.error(err);
-    } else {
+    } else if (data.data.length >= 1) {
       var articles = document.getElementById('articles');
       articles.innerHTML = Templates['articles'](data);
     }
