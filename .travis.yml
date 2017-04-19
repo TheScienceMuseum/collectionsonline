@@ -5,6 +5,9 @@ node_js:
 
 addons:
   sauce_connect: true
+  apt:
+    packages:
+      - oracle-java8-set-default
 
 before_script:
   - npm run start &
