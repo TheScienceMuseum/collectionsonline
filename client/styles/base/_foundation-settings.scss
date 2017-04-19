@@ -210,10 +210,12 @@ $accordionmenu-arrow-color: $primary-color;
 // --------
 
 $badge-background: $primary-color;
-$badge-color: foreground($badge-background);
+$badge-color: $white;
+$badge-color-alt: $black;
 $badge-padding: 0.3em;
 $badge-minwidth: 2.1em;
 $badge-font-size: 0.6rem;
+$badge-palette: $foundation-palette;
 
 // 10. Breadcrumbs
 // ---------------
@@ -358,10 +360,12 @@ $input-radius: $global-radius;
 // ---------
 
 $label-background: $primary-color;
-$label-color: foreground($label-background);
+$label-color: $white;
+$label-color-alt: $black;
 $label-font-size: 1rem;
 $label-padding: 0.25rem 0.5rem;
 $label-radius: $global-radius;
+$label-palette: $foundation-palette;
 
 // 21. Media Object
 // ----------------
