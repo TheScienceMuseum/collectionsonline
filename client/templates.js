@@ -133,6 +133,11 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
+  'records/record-related-articles',
+  Fs.readFileSync('./templates/partials/records/record-related-articles.html', 'utf8')
+);
+
+Handlebars.registerPartial(
   'records/archive-tree',
   Fs.readFileSync('./templates/partials/records/archive-tree.html', 'utf8')
 );
@@ -254,5 +259,8 @@ module.exports = {
   ),
   'api': Handlebars.compile(
     Fs.readFileSync('./templates/pages/api.html', 'utf8')
+  ),
+  'articles': Handlebars.compile(
+    Fs.readFileSync('./templates/partials/records/record-related-articles.html', 'utf8')
   )
 };

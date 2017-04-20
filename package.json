@@ -33,6 +33,7 @@
     "openseadragon": "https://github.com/TheScienceMuseum/openseadragon/tarball/smg",
     "page": "^1.7.1",
     "rc": "^1.1.6",
+    "request": "^2.81.0",
     "slugg": "^1.1.0",
     "snackbarlightjs": "^1.1.2",
     "svg4everybody": "^2.1.0",

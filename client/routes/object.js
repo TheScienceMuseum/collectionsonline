@@ -55,4 +55,20 @@ function listeners (ctx, next) {
   searchListener();
   osdListener(ctx);
   downloadImageListener();
+  getArticles(ctx);
+}
+
+function getArticles (ctx) {
+  var url = '/articles/' + ctx.params.id;
+  var opts = {
+    headers: { Accept: 'application/vnd.api+json' }
+  };
+  getData(url, opts, function (err, data) {
+    if (err) {
+      console.error(err);
+    } else if (data.data.length >= 1) {
+      var articles = document.getElementById('articles');
+      articles.innerHTML = Templates['articles'](data);
+    }
+  });
 }
