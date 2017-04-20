@@ -51,7 +51,7 @@ button {
   text-align: center;
 
   &__logo {
-    @media #{$medium-up} { float: left; }
+    @include breakpoint(medium up) { float: left; }
   }
 
   ul {
