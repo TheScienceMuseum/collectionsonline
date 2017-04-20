@@ -19,7 +19,7 @@
 {{/if}}
 
 {{#if filters.place_born.length}}
-  {{#if (activeFacet selectedFilters 'birthPlace')}}
+  {{#if (activeFacet selectedFilters 'birth[place]')}}
     <div class="filter filter--active filter--open" data-filter="Place born">
       <a href="{{lookup links.clearFacet "filter[birth[place]]"}}" class="filter__name">Place born</a>
   {{else}}
@@ -29,7 +29,7 @@
     <div class="filter__options">
       <ul>
         {{#each filters.place_born}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[birth[place]]" value="{{value}}" {{isselected ../selectedFilters "birthPlace" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
+          <li><label><input type="checkbox" class="filter__box" name="filter[birth[place]]" value="{{value}}" {{isselected ../selectedFilters "birth[place]" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
         {{/each}}
       </ul>
     </div>
@@ -54,14 +54,15 @@
   </div>
 {{/if}}
 
-{{#or (lookup selectedFilters "dateFrom") (lookup selectedFilters "dateTo")}}
+{{#or (lookup selectedFilters "date[from]") (lookup selectedFilters "date[to]")}}
   <div class="filter filter--active filter--open" data-filter="Dates">
 {{ else }}
   <div class="filter filter--open" data-filter="Dates">
 {{/or}}
   <a href="{{lookup links.clearFacet "dates"}}" class="filter__name">Date (born / died)</a>
   <div class="filter__options filter__daterange">
-    <label>From <input type="number" placeholder="1600" name="filter[date[from]]" value="{{lookup selectedFilters "dateFrom"}}"/></label>
-    <label>To <input type="number" placeholder="2016" name="filter[date[to]]" value="{{lookup selectedFilters "dateTo"}}"/></label>
+    {{log selectedFilters}}
+    <label>From <input type="number" placeholder="1600" name="date[from]" value="{{lookup selectedFilters "date[from]"}}"/></label>
+    <label>To <input type="number" placeholder="2016" name="date[to]" value="{{lookup selectedFilters "date[to]"}}"/></label>
   </div>
 </div>

@@ -4,7 +4,6 @@ var initComp = require('../lib/init-components');
 var Templates = require('../templates');
 var createQueryParams = require('../../lib/query-params/query-params');
 var getData = require('../lib/get-data.js');
-var toJsonUrl = require('../lib/to-json-url');
 var displayFilters = require('../lib/display-filters.js');
 var filterResults = require('../lib/filter-results');
 var page = require('page');
@@ -20,10 +19,14 @@ var updateActiveStateFacets = require('../lib/update-active-states-facets.js');
 var loadingBar = require('../lib/loading-bar');
 var hideKeyboard = require('../lib/hide-keyboard');
 var i = 0;
+var parseParams = require('../../routes/route-helpers/parse-params.js');
+var paramify = require('../../lib/helpers/paramify.js');
+var querify = require('../../lib/helpers/querify.js');
+var findCategory = require('../lib/find-category.js');
 
 module.exports = function (page) {
   page('/search', load, render, listeners);
-  page('/search/:type', load, render, listeners);
+  page('/search/*', load, render, listeners);
 };
 /**
 * Ajax request to get the data of the url
@@ -37,9 +40,10 @@ function load (ctx, next) {
       headers: { Accept: 'application/vnd.api+json' }
     };
     var qs = QueryString.parse(ctx.querystring);
-
-    var queryParams = createQueryParams('html', {query: qs, params: {type: ctx.params.type}});
-    getData(ctx.pathname + '?' + toJsonUrl(ctx.querystring), opts, function (err, json) {
+    var p = Object.assign(parseParams({filters: ctx.pathname}).categories, parseParams({filters: ctx.pathname}).params);
+    var searchCategory = findCategory(ctx.pathname);
+    var queryParams = createQueryParams('html', {query: Object.assign(qs, p), params: {type: searchCategory}});
+    getData('/search' + (searchCategory ? '/' + searchCategory : '') + paramify(p) + querify(queryParams), opts, function (err, json) {
       if (err) {
         console.error(err);
         Snackbar.create('Error getting data from the server');
@@ -134,15 +138,15 @@ function listeners (ctx, next) {
     });
   }
 
-  updateActiveStateFacets(facetsStates, ctx.params.type);
+  updateActiveStateFacets(facetsStates, findCategory(ctx.pathname));
   // display the facet (close open or active)
-  displayFacet(facetsStates, ctx.params.type);
+  displayFacet(facetsStates, findCategory(ctx.pathname));
 
   // add event listener on the facet toggle
-  toggleFacets(facetsStates, ctx.params.type);
+  toggleFacets(facetsStates, findCategory(ctx.pathname));
 
   // add event listener when the filters of a facet are cleared to update the state
-  deleteFiltersFacets(facetsStates, ctx.params.type);
+  deleteFiltersFacets(facetsStates, findCategory(ctx.pathname));
   /**
   * Click to add/remove filters
   * Build a html url with the new filter selected (get the current url + new filter)

@@ -13,7 +13,7 @@ testWithServer(file + 'Should accept params in filter[PARAM_NAME] format for obj
       'filter[date[from]]': '1600',
       'filter[date[to]]': '2000',
       'filter[makers]': 'Cameron, Julia Margaret',
-      'filter[type]': 'Poster',
+      'filter[object_type]': 'Poster',
       'filter[places]': 'Kashmir',
       'filter[user]': 'Victoria'
     }),
@@ -35,7 +35,7 @@ testWithServer(file + 'Should accept params in filter[PARAM_NAME] format for obj
       q: 'rocket',
       'filter[categories]': 'Locomotives and Rolling Stock',
       'filter[date[to]]': '2000',
-      'filter[type]': 'steam locomotive',
+      'filter[object_type]': 'steam locomotive',
       'filter[user]': 'Liverpool & Manchester Railway'
     }),
     headers: { Accept: 'text/html' }

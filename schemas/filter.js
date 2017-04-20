@@ -18,7 +18,7 @@ const jsonSchema = {
   // All
   'filter[places]': Joi.string(),
   // Objects
-  'filter[type]': Joi.string(),
+  'filter[object_type]': Joi.string(),
   'filter[makers]': Joi.string(),
   'filter[people]': Joi.string(),
   'filter[organisations]': Joi.string(),
@@ -40,7 +40,7 @@ const htmlSchema = {
   // All
   'filter[places]': Joi.array().items(Joi.string()).single(),
   // Objects
-  'filter[type]': Joi.array().items(Joi.string()).single(),
+  'filter[object_type]': Joi.array().items(Joi.string()).single(),
   'filter[makers]': Joi.array().items(Joi.string()).single(),
   'filter[people]': Joi.array().items(Joi.string()).single(),
   'filter[organisations]': Joi.array().items(Joi.string()).single(),
@@ -74,7 +74,7 @@ module.exports = (contentType) => {
     .rename('date[from]', 'filter[date[from]]', {override: true, ignoreUndefined: true})
     .rename('date[to]', 'filter[date[to]]', {override: true, ignoreUndefined: true})
     .rename('places', 'filter[places]', {override: true, ignoreUndefined: true})
-    .rename('type', 'filter[type]', {override: true, ignoreUndefined: true})
+    .rename('object_type', 'filter[object_type]', {override: true, ignoreUndefined: true})
     .rename('makers', 'filter[makers]', {override: true, ignoreUndefined: true})
     .rename('people', 'filter[people]', {override: true, ignoreUndefined: true})
     .rename('organisations', 'filter[organisations]', {override: true, ignoreUndefined: true})
