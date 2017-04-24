@@ -223,3 +223,9 @@ Follow these steps to setup a new CI environment:
 Some scripts need to be run whenever the index is updated. To do this run the command:
 
 `npm run index-update`
+
+---
+
+Browser testing courtesy of [BrowserStack](https://www.browserstack.com/)
+![BrowserStack logo](https://raw.githubusercontent.com/theme-smith/accessible-nav-wp/master/docs/browserstack-logo.png "BrowserStack supports Open Source")
+
