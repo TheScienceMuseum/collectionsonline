@@ -10,11 +10,12 @@
   color: black;
   background-color: white;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(black,0.2);
+  box-shadow: 0 2px 8px rgba(black, 0.2);
   transition: background-color $timing-defaults, box-shadow $timing-defaults, transform $timing-defaults;
+
   &:hover {
     //background-color: grey(20);
-    box-shadow: 0 2px 8px rgba(black,0.4);
+    box-shadow: 0 2px 8px rgba(black, 0.4);
     //transform: scale3d(1.02,1.02,1);
     //top: -12px;
     transform: translate3d(0, -2px, 0);
@@ -62,9 +63,10 @@
 
   &__title {
     font-weight: 600;
-    font-size: rem-calc(14);
+    font-size: rem-calc(16);
+    text-transform: none;
     @include breakpoint(medium) {
-      font-size: rem-calc(16);
+      font-size: rem-calc(18);
     }
     line-height: rem-calc(18);
     margin: 0 0 0.25rem 0;
@@ -78,7 +80,7 @@
   }
   &__description {
     font-weight: 400;
-    font-size: rem-calc(14);
+    font-size: rem-calc(16);
     line-height: 1rem;
     color: grey(80);
     margin: 0;
@@ -178,6 +180,7 @@
   }
   &--related &__title {
     font-weight: 500;
+    font-size: 1rem;
   }
 
   // the final related result

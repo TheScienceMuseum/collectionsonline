@@ -5,6 +5,17 @@ body {
   background-color: grey(10);
 }
 
+p,
+li,
+dt,
+dd {
+  font-size: rem-calc(18);
+}
+
+h4 {
+  text-transform: uppercase;
+}
+
 abbr {
   @include small-caps;
   border: 0;
@@ -12,8 +23,9 @@ abbr {
 }
 
 button {
-  font-size: 1rem;
-.icon {
+  font-size: rem-calc(18);
+
+  .icon {
     position: relative;
     //@include vertical-center;
     //top: rem-calc(2);
@@ -72,15 +84,16 @@ button {
   .columns {
     padding-bottom: 1rem;
   }
+
   &__h {
     margin: 0;
-    font-weight: 500;
-    font-size: rem-calc(16);
+    font-size: rem-calc(18);
+    text-transform: uppercase;
   }
 
   a {
+    @include text-link;
     color: black;
-    &:hover { color: $c-blue; }
   }
 }
 
@@ -96,19 +109,20 @@ button {
   li {
     display: inline-block;
     border-right: 1px solid;
-    &:last-child { border-right: 0; }
-    padding: rem-calc(0 12 0 9);
-    &:first-child { padding-left: 0; }
     line-height: 1;
+    padding: rem-calc(0 12 0 9);
+    &:last-child { border-right: 0; }
+    &:first-child { padding-left: 0; }
   }
 }
 
 .ul-block {
   margin: 0 0 1rem 0;
   &:last-child { margin: 0; } // only bottom margin if something is following it
+
   li {
     display: block;
-    line-height: 1.2;
+    line-height: 1.25;
   }
 
   li+ li { margin-top: rem-calc(4); }

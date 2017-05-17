@@ -70,7 +70,7 @@
 //-----------------------------------------------------------------------------
 
 .record-imgpanel {
-  background: grey(80);
+  background: grey(100);
   color: white;
   border-top: 1px white solid;
 
@@ -108,19 +108,14 @@
 
   &__caption {
     margin: 1rem 0;
-    line-height: 1.2;
+    font-size: 1rem;
+    line-height: 1.25;
     @include breakpoint(small only) {
       clear: right;
-      font-size: 12px;
+      font-size: rem-calc(14);
     }
   }
 
-}
-
-.panel {
-  .panel__text .visit-contact {
-    margin-top: 1em;
-  }
 }
 
 .cite {
@@ -132,7 +127,7 @@
     color: white;
     border-color: white;
     //padding-left: 2rem;
-    font-size: 1rem;
+    font-size: rem-calc(18);
     line-height: 1.25rem; // needs to match icon sizes of other toolbar buttons
 
     .icon {
@@ -191,7 +186,7 @@
       float: right;
       margin-right: 0;
       //padding-left: 2rem;
-      font-size: 1rem;
+      font-size: rem-calc(18);
       .icon {
         top: rem-calc(2);
         left: rem-calc(-2);
@@ -229,21 +224,27 @@
     }
   }
 }
+
 #osd-zoomout {
   @include icon-before(osd-zoomout, $size: 1.25rem);
 }
+
 #osd-zoomin {
   @include icon-before(osd-zoomin, $size: 1.25rem);
 }
+
 #osd-fullpage {
   @include icon-before(img-expand, $size: 1.25rem);
 }
+
 #osd-home {
   @include icon-before(osd-home, $size: 1.25rem);
 }
+
 #osd-rotate-left {
   @include icon-before(osd-rotate-counterclockwise, $size: 1.25rem);
 }
+
 #osd-rotate-right {
   @include icon-before(osd-rotate-clockwise, $size: 1.25rem);
 }
@@ -251,10 +252,12 @@
 .record-description {
   font-size: rem-calc(18);
 }
+
 .record-longdesc {
   // this could be applied to a <p>
   // but may be safer to apply to wrapping <div> for bigger content
 }
+
 .record-details {
   padding-bottom: 2rem;
   border-bottom: 1px white solid;
@@ -291,6 +294,7 @@
       line-height: 1.5rem;
       //font-weight: 500;
     }
+
     a {
       @include text-link();
     }
@@ -298,6 +302,7 @@
     p {
       margin: 0;
     }
+
     p + p {
       margin-top: 1em;
     }
@@ -306,16 +311,20 @@
 
 .taxonomy {
   @include ul-icons;
+  margin-top: 0;
+  margin-bottom: 0;
+
   li {
-    &:not(:first-child) {
-      @include icon-bullet(taxonomy);
-    }
     margin-top: 0;
     margin-bottom: 0;
     @for $i from 0 to 5 {
       &:nth-child(#{$i}) {
-       margin-left: $i - 0.5rem;
+        margin-left: $i - 0.5rem;
       }
+    }
+
+    &:not(:first-child) {
+      @include icon-bullet(taxonomy);
     }
   }
 }

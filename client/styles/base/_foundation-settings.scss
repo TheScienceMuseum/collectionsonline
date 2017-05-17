@@ -62,12 +62,12 @@ $black: #000;
 $white: #fff;
 $body-background: $white;
 $body-font-color: $black;
-$body-font-family: 'sm-din', Roboto, Helvetica, Arial, sans-serif;
+$body-font-family: 'SMGSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 $body-antialiased: true;
 $global-margin: 1rem;
 $global-padding: 1rem;
-$global-weight-normal: normal;
-$global-weight-bold: 500;
+$global-weight-normal: 300;
+$global-weight-bold: 700;
 $global-radius: 0;
 $global-text-direction: ltr;
 $global-flexbox: false;
@@ -100,25 +100,25 @@ $block-grid-max: 8;
 // ------------------
 
 $header-font-family: $body-font-family;
-$header-font-weight: $global-weight-normal;
+$header-font-weight: $global-weight-bold;
 $header-font-style: normal;
 $font-family-monospace: Consolas, 'Liberation Mono', Courier, monospace;
 $header-sizes: (
   small: (
-    'h1': 30,
-    'h2': 24,
-    'h3': 20,
-    'h4': 18,
-    'h5': 16,
-    'h6': 14,
+    'h1': 34,
+    'h2': 28,
+    'h3': 22,
+    'h4': 20,
+    'h5': 18,
+    'h6': 16,
   ),
   medium: (
-    'h1': 30,
-    'h2': 24,
-    'h3': 20,
-    'h4': 18,
-    'h5': 16,
-    'h6': 14,
+    'h1': 34,
+    'h2': 28,
+    'h3': 22,
+    'h4': 20,
+    'h5': 18,
+    'h6': 16,
   ),
 );
 $header-color: inherit;
@@ -293,7 +293,7 @@ $drilldown-background: $white;
 
 $dropdown-padding: 1rem;
 $dropdown-border: 1px solid $medium-gray;
-$dropdown-font-size: 1rem;
+$dropdown-font-size: 1.125rem;
 $dropdown-width: 300px;
 $dropdown-radius: $global-radius;
 $dropdown-sizes: (
@@ -362,7 +362,7 @@ $input-radius: $global-radius;
 $label-background: $primary-color;
 $label-color: $white;
 $label-color-alt: $black;
-$label-font-size: 1rem;
+$label-font-size: 1.125rem;
 $label-padding: 0.25rem 0.5rem;
 $label-radius: $global-radius;
 $label-palette: $foundation-palette;

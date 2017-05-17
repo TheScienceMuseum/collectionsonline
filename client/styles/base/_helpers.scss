@@ -55,7 +55,7 @@ $timing-defaults: 0.25s ease-out;
 //  $align: top | center | bottom
 //-----------------------------------------------------------------------------
 
-@mixin icon-bullet($icon, $size:0.75rem, $left: 0, $top: null, $bottom: null, $align: center) {
+@mixin icon-bullet($icon, $size:0.75em, $left: 0, $top: null, $bottom: null, $align: center) {
   position: relative;
   padding-left: $size * 4/3 + $left;
   &:before {
@@ -105,6 +105,8 @@ $timing-defaults: 0.25s ease-out;
 @mixin small-caps {
   font-size: 75%;
   text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.015em;
 }
 
 @mixin control-base {

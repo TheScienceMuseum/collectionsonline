@@ -145,8 +145,8 @@
   &__h {
     font-size: 1.5rem;
     @include breakpoint(medium up) { font-size: 2rem; }
-    font-weight: 600;
     line-height: 1;
+    text-transform: uppercase;
     margin-bottom: 1em;
   }
 }
