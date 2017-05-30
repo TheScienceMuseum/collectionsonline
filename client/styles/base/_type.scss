@@ -24,4 +24,6 @@ $font-path: '//s3-eu-west-1.amazonaws.com/scimus/tmp'; // replace with proper CD
   }
 }
 
-// font-family declared universally in _foundation-settings.scss
+// font-family used in normalize & foundation-settings.scss
+// use system default if no webfont available
+$base-font-family: 'SMGSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;

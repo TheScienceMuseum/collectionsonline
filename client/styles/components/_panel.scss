@@ -5,15 +5,15 @@
 //-----------------------------------------------------------------------------
 
 .panel {
-  background-color: grey(10);
-  margin-bottom: 1rem;
-  margin-top: 1rem;
+  background-color: black;
+  color: white;
+  margin-bottom: 1px;
+  &:last-child { margin-bottom: 0; }
 
   .record-details & { //except if inside a grey panel
-    background-color: white;
+    // background-color: white;
   }
 
-  &:last-child { margin-bottom: 0; }
 
   &__text {
     padding: 1rem;
@@ -35,7 +35,9 @@
     }
   }
 
-  a { @include text-link; }
+  a {
+    @include text-link(white, $c-teal);
+  }
   ul {
     @include ul-icons;
   }

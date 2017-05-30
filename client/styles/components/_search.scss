@@ -4,9 +4,8 @@
 
 .searchbar {
   position: relative;
-  background-color: mix(grey(10), $c-cyan);
-  //border-bottom: 1px solid grey(20);
-  background-image: linear-gradient(45deg, mix(grey(10),$c-cyan), mix(grey(10),$c-blue) );
+  background-color: $c-teal;
+  @include sm-gradient($c-green $c-teal $c-blue);
 
   &__strap {
     font-size: rem-calc(24);
@@ -54,8 +53,8 @@
 .searchbox {
   position: relative;
   background-color: white;
-  margin: 1rem 0;
-  border: 1px solid mix(grey(20), $c-blue);
+  margin: 2rem 0;
+  border: 1px solid rgba(black, 0.5);
   border-radius: 0.25rem;
 
   &--focussed {
@@ -102,6 +101,7 @@
   &__filters {
     padding: rem-calc(4 8);
     border-top: 1px solid mix($c-blue, white, 25%);
+    display: flex;
   }
 
   //reused slightly smaller on archive section
@@ -127,58 +127,62 @@
 
 .searchtabs {
   overflow: visible;
+  display: flex;
 }
 
 .searchtab {
   display: block;
-  float: left;
-  padding: 0.5rem;
-  margin-bottom: -1px;
+  width: 25%;
+  padding: 0.75em 0.25em;
   font-weight: 500;
   font-size: rem-calc(14);
-  line-height: rem-calc(16); //match icn size
+  line-height: 1.25; //match icn size
+  text-align: center;
+  background-color: rgba(black, 0.6);
+  color: white;
   @include breakpoint(medium) {
-    padding: 0.5rem 1rem;
-    line-height: rem-calc(24);
     font-size: rem-calc(18);
   }
   @include breakpoint(large) {
-    padding: 0.5rem 2rem;
+    font-size: rem-calc(22);
   }
 
   &:hover {
-    background-color: rgba(0,0,0,0.1);
+    background-color: black;
   }
 
-  &--active, &--active:hover {
-    background-color: grey(10);
-    background-image: linear-gradient(white, grey(10) );
-    //border: 1px solid grey(20);
+  &--active,
+  &--active:hover {
+    background-color: white;
+    color: black;
     border-bottom: 0;
+    .searchtab__label { color: black; }
   }
 
-  &[aria-disabled="true"],
-  &[aria-disabled="true"]:hover {
-    opacity: 0.33;
-    background-color: transparent;
-    background-image: none;
+  &[aria-disabled=true],
+  &[aria-disabled=true]:hover {
+    background-color: black;
+    opacity: 0.6;
+    cursor: default;
   }
 
   .icon {
     position: relative;
-    font-size: rem-calc(12);
-    top: rem-calc(2);
+    display: block;
+    margin: auto;
+    vertical-align: middle;
+    top: -6%;
+    // font-size: rem-calc(12);
     @include breakpoint(medium) {
-      font-size: rem-calc(24);
-      top: rem-calc(6);
+      display: inline-block;
     }
   }
 
-  &__label { color: black; }
+  &__label { color: white; }
 
   &__count {
     @include small-caps;
-    color: mix($c-blue, grey(50));
+    opacity: 0.75;
     @include breakpoint(small only) { display: none; } // no room
   }
 }

@@ -6,7 +6,7 @@
 
 .filterpanel {
   background-color: white;
-  border: 1px grey(20) solid;
+  border: 1px black solid;
   box-shadow: 0 2px 8px grey(20);
   @include breakpoint(small only) {
     position: absolute;
@@ -23,18 +23,22 @@
 
 .filter {
   padding: 0.5rem;
-    & + & { border-top: 1px grey(20) solid; }
+  & + & { border-top: 1px black solid; }
+  &--clear { border-bottom: 1px black solid; }
 
   &__name {
     display: block;
     position: relative;
-    @include icon-bullet(arrow_right, 1.5rem, $left: -0.2rem);
-    padding-left: 1.5rem;
+    color: black;
+    font-size: rem-calc(18);
+    @include icon-bullet(arrow_right, 1.5rem, $top: 0.1rem, $left: -0.2rem);
+    padding-left: 1.5rem; // need to rewrite that mixin really
 
     .icon {
       font-size: rem-calc(24);
       position: absolute;
       left: -0.25rem;
+
       .filter--open & {
         transform: rotate(90deg);
       }
@@ -71,7 +75,8 @@
       padding-left: 1.5rem;
       margin: 0;
       line-height: rem-calc(16);
-      &:hover { color: mix($c-cyan, $c-blue); }
+      cursor: pointer;
+      // &:hover { color: mix($c-teal, $c-blue); }
     }
     .filter__box { //checkbox within label
       position: absolute; // relative to li
@@ -106,41 +111,51 @@
       left: 0;
       right: 0;
       bottom: 0;
-      border-bottom: 1px grey(20) dotted;
+      border-bottom: 1px grey(20) solid;
     }
   }
 
   &--active {
-    //border-left: 1px mix($c-cyan, $c-blue) solid;
-    background-color: mix(grey(5), $c-cyan,95);
-    color: red;
+    //border-left: 1px mix($c-teal, $c-blue) solid;
+    background-color: grey(80);
+    color: white;
+
     .filter__name {
+      color: white;
       font-weight: 500;
-      @include icon-bullet(cancel, 1.5rem, $left:-0.2rem);
-      padding-left: 1.5rem;
+      @include icon-bullet(cancel, 1.5rem, $top: -0.5rem, $left: -0.2rem);
+    }
+    .filter__name:after {
+      border-color: grey(70);
+    }
+
+    label {
+      color: white;
+      font-weight: 400;
     }
   }
 
   &--uncollapsible &__name {
-      @include icon-bullet(cancel, 1.5rem, $top: 0, $left: -0.2rem);
+    @include icon-bullet(cancel, 1.5rem, $top: 0.1rem, $left: -0.2rem);
   }
 
-  &:hover {
+  &:hover:not(&--active) {
     //background-image: linear-gradient(white, grey(5));
-    a { color: mix($c-cyan, $c-blue) }
+    // a { color: mix($c-teal, $c-blue) }
+    background-color: grey(10);
   }
 
   .filter__other {
     display: block;
-    @include icon-bullet(arrow_right, $size:1.25rem, $top:0.4rem);
-    &:before { opacity: 0.5; }
     color: grey(40);
     font-size: rem-calc(14);
     padding-left: 1.5rem;
     padding-top: rem-calc(4);
+    @include icon-bullet(arrow_right, $size: 1.25rem, $top: 0.1rem);
+    &:before { opacity: 0.5; }
 
     &--open {
-      @include icon-bullet(arrow_down, $size:1.25rem, $top:0.4rem);
+      @include icon-bullet(arrow_down, $size: 1.25rem, $top: 0.4rem);
       padding-left: 1.5rem;
     }
   }
@@ -179,7 +194,7 @@
 }
 
 $filtertypes: (
-  Category: $c-cyan,
+  Category: $c-teal,
   Museum: $c-purple,
   Archive: $c-green,
 );
@@ -229,7 +244,7 @@ $filtertypes: (
       background-image: svg-uri('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 28"><path stroke="#FFFFFF" fill="none" d="M1,0 7,15 1,28" vector-effect="non-scaling-stroke" ></path></svg>');
       background-repeat: no-repeat;
       background-size: 100% 100%;
-
+      background-position: left center;
     }
   }
 
@@ -253,25 +268,26 @@ $filtertypes: (
     @include small-caps;
     padding: rem-calc(4 8);
     border-radius: rem-calc(6 0 0 6);
-    margin: rem-calc(4 -4 4 0);
+    margin: rem-calc(4 0);
 
     &:after {
       content: '';
       position: absolute;
-      right: rem-calc(-6);
+      right: rem-calc(-7);
       overflow: visible;
       top: 0;
       bottom: 0;
       width: rem-calc(8);
-      background-image: svg-uri('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 28"><path stroke="#FFFFFF" stroke-width="2px" fill="#cccccc" d="M1,0 7,15 1,28" vector-effect="non-scaling-stroke" ></path></svg>');
+      background-image: svg-uri('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 28"><path fill="#cccccc" d="M0,0 1,0 7,15 1,28 0,28"></path><path fill="none" stroke="#FFFFFF" stroke-width="2px" d="M1,0 7,15 1,28" vector-effect="non-scaling-stroke" ></path></svg>');
       background-repeat: no-repeat;
       background-size: 100% 100%;
+      background-position: left center;
       z-index: 1;
     }
   }
   &--prefix + & { // the first badge after prefix
     border-radius: rem-calc(0 6 6 0);
-    padding-left: rem-calc(4);
+    padding-left: rem-calc(8);
     max-width: 80%;
   }
 }

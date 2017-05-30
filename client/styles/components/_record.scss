@@ -181,8 +181,8 @@
 
     button {
       @include button-base();
-      color: $c-cyan;
-      border-color: $c-cyan;
+      color: $c-teal;
+      border-color: $c-teal;
       float: right;
       margin-right: 0;
       //padding-left: 2rem;
@@ -259,10 +259,10 @@
 }
 
 .record-details {
+  padding-top: 2rem;
   padding-bottom: 2rem;
-  border-bottom: 1px white solid;
+  background-color: grey(10);
   margin-top: 2rem;
-  margin-bottom: 2rem;
   &__dl {
     @include grid-row($behavior: nest);
     padding: 0.75rem 0;
@@ -342,8 +342,9 @@
 //-----------------------------------------------------------------------------
 
 .record-related {
-  margin: 2rem 0;
-  //background: grey(10);
+  padding: 2rem 0;
+  background: black;
+  color: white;
 }
 
 .see-more {

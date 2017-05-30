@@ -36,7 +36,7 @@
     "request": "^2.81.0",
     "slugg": "^1.1.0",
     "snackbarlightjs": "^1.1.2",
-    "svg4everybody": "^2.1.0",
+    "svg4everybody": "^2.1.8",
     "vision": "^4.1.0"
   },
   "devDependencies": {
@@ -50,7 +50,7 @@
     "cssnano": "^3.7.0",
     "istanbul": "^0.4.3",
     "nightwatch": "^0.9.14",
-    "node-sass": "^3.7.0",
+    "node-sass": "^4.5.3",
     "nodemon": "^1.9.2",
     "npm-run-all": "^3.1.1",
     "postcss-cli": "^2.5.2",
@@ -79,7 +79,7 @@
     "build": "run-p build:*",
     "build:js": "browserify client/main.js -o public/bundle.js",
     "build:css": "run-s build:css:*",
-    "build:css:sass": "node-sass client/styles/main.scss public/bundle.css --include-path node_modules/foundation-sites/scss",
+    "build:css:sass": "node-sass client/styles/main.scss public/bundle.css --include-path node_modules/foundation-sites/scss --error-bell",
     "build:css:prefix": "postcss --u autoprefixer -b 'last 2 versions, ie >= 9' -i public/bundle.css -o public/bundle.css",
     "build:img": "cp client/icons/* public/assets/icons",
     "build:svg": "svg-sprite --view --vscss --view-sprite=svg/sprite.view.svg --symbol --symbol-example --symbol-sprite=svg/sprite.symbol.svg --dest=public/assets/icons client/icons/**/*.svg",

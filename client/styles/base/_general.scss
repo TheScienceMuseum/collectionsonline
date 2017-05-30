@@ -2,7 +2,7 @@
 // then our stuff
 
 body {
-  background-color: grey(10);
+  background-color: white;
 }
 
 p,
@@ -12,6 +12,7 @@ dd {
   font-size: rem-calc(18);
 }
 
+h2,
 h4 {
   text-transform: uppercase;
 }
@@ -63,6 +64,10 @@ button {
   text-align: center;
 
   &__logo {
+    img {
+      height: 3.5rem;
+      width: auto;
+    }
     @include breakpoint(medium up) { float: left; }
   }
 
