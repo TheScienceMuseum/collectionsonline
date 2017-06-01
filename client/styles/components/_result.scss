@@ -191,7 +191,7 @@
     }
   }
 
-  .resultcard__description {
+  &__description {
     color: grey(80);
   }
 
@@ -222,7 +222,8 @@
 
 
   // used as related results, slight smaller
-  &--related {
+  &--related,
+  &--seemore {
     color: white;
 
     &:hover {
@@ -231,59 +232,46 @@
       }
     }
 
+    .resultcard__info {
+      padding: 0.5rem 0;
+      color: white;
+    }
+
+    .resultcard__title {
+      font-weight: 500;
+      font-size: 1rem;
+      color: white;
+    }
+
   }
 
-  &--related &__info {
-    padding: 0.5rem 0;
-    color: white;
-  }
-
-  &--related &__title {
-    font-weight: 500;
-    font-size: 1rem;
-    color: white;
-  }
 
   // the final related result
   &--seemore {
-    text-align: center;
+    // text-align: center;
     //background-color: white;
 
-    &.see-more-objects {
-      background-image: linear-gradient(135deg, mix(grey(10), $c-teal), mix(grey(10), $c-blue));
+    &.see-more-objects .resultcard__figure {
+      background-color: map-deep-get($recordtypes, objects, bg);
+      @include sm-gradient(map-deep-get($recordtypes, objects, grad));
       border-color: map-deep-get($recordtypes, objects, bg);
     }
 
-    &.see-more-documents {
-      background-image: linear-gradient(135deg, mix(grey(10), $c-teal), mix(grey(10), $c-blue));
+    &.see-more-documents .resultcard__figure {
+      background-color: map-deep-get($recordtypes, documents, bg);
+      @include sm-gradient(map-deep-get($recordtypes, documents, grad));
       border-color: map-deep-get($recordtypes, documents, bg);
-    }
-
-    .resultcard__figure {
-      border-color: transparent;
-      background-color: transparent;
     }
 
     svg { // .search-icon
       position: absolute;
       display: block;
-      bottom: 1rem;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-50%) translateY(-50%);
       fill: white;
     }
 
-    .resultcard__info {
-      color: white;
-      font-weight: 600;
-      font-size: rem-calc(16);
-      line-height: rem-calc(18);
-      padding: 0.5rem;
-
-      &:after {
-        display: none;
-      }
-    }
   }
 
   //used on home page

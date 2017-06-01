@@ -140,9 +140,7 @@
   }
 
   &:hover:not(&--active) {
-    //background-image: linear-gradient(white, grey(5));
-    // a { color: mix($c-teal, $c-blue) }
-    background-color: grey(10);
+    @include control-hover;
   }
 
   .filter__other {

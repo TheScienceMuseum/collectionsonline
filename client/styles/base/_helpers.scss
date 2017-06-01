@@ -111,10 +111,12 @@ $timing-defaults: 0.25s ease-out;
 
 @mixin control-base {
   border: 1px black solid;
-  // box-shadow: 0 1px 1px rgba(black, 0.1);
-  // border-radius: 2px;
   background: white;
   color: black;
+}
+
+@mixin control-hover {
+  background-color: grey(10);
 }
 
 // used in imgpanel controls currently

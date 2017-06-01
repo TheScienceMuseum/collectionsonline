@@ -38,9 +38,7 @@
     border: 1px black solid;
     color: black;
     &:not(&--active):hover {
-      // border: 1px grey(30) solid;
-      // background-image: linear-gradient(to bottom right, $c-yellow, $c-orange);
-      background-color: grey(10);
+      @include control-hover;
     }
 
     .icon {
@@ -114,8 +112,7 @@
   }
 
   a:hover {
-    // border-color: grey(30);
-    background-image: grey(10);
+    @include control-hover;
   }
 }
 
@@ -136,7 +133,7 @@
 
     &:hover {
       // because F is already using bg image for disclosure triangle, to add extra bg on hover means retrieving existing properties first.
-      background-color: grey(10);
+      @include control-hover;
       background-image:
       svg-uri('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="24" viewBox="0 0 32 24"><polygon points="0,0 32,0 16,24" fill="#333"></polygon></svg>');
       background-size: 9px 6px, cover;
