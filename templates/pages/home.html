@@ -14,12 +14,9 @@
 
 <section class="home-features">
   {{!-- update /client/styles/components/_home.scss if no of images changes --}}
-  <img src="/assets/img/home/feature/1600/1878-0005_0004_A163_0002.jpg" srcset="/assets/img/home/feature/800/1878-0005_0004_A163_0002.jpg 800w, /assets/img/home/feature/1600/1878-0005_0004_A163_0002.jpg 1600w" />
-  <img src="/assets/img/home/feature/1600/1911-0346_0014.jpg" srcset="/assets/img/home/feature/800/1911-0346_0014.jpg 800w, /assets/img/home/feature/1600/1911-0346_0014.jpg 1600w" />
-  <img src="/assets/img/home/feature/1600/cd0274_008_070301.jpg" srcset="/assets/img/home/feature/800/cd0274_008_070301.jpg 800w, /assets/img/home/feature/1600/cd0274_008_070301.jpg 1600w" />
-  <img src="/assets/img/home/feature/1600/cd0634_030_100924_1988_242.jpg" srcset="/assets/img/home/feature/800/cd0634_030_100924_1988_242.jpg 800w, /assets/img/home/feature/1600/cd0634_030_100924_1988_242.jpg 1600w" />
-  <img src="/assets/img/home/feature/1600/cd0705_056_130311_1972_29.jpg" srcset="/assets/img/home/feature/800/cd0705_056_130311_1972_29.jpg 800w, /assets/img/home/feature/1600/cd0705_056_130311_1972_29.jpg 1600w" />
-  <img src="/assets/img/home/feature/1600/DS080056-61487.jpg" srcset="/assets/img/home/feature/800/DS080056-61487.jpg 800w, /assets/img/home/feature/1600/DS080056-61487.jpg 1600w" />
+  {{#each headerImages}}
+    <img src="/assets/img/home/feature/1600/{{this}}" srcset="/assets/img/home/feature/800/{{this}} 800w, /assets/img/home/feature/1600/{{this}} 1600w" />
+  {{/each}}
 
   <div class="row columns">
     <h2 class="home-features__intro">{{{intro}}}</h2>
