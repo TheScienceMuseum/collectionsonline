@@ -46,13 +46,14 @@ button {
 
   &__museumlink {
     @include grid-column(3);
+
     & + & { // all except first
       border-left: 1px grey(50) solid;
     }
+
     img {
       display: block;
       margin: 0 auto;
-      max-height: rem-calc(88);
     }
   }
 }
