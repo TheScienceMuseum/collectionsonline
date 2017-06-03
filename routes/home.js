@@ -13,7 +13,7 @@ module.exports = () => ({
       if (responseType === 'html') {
         const data = require('../fixtures/data');
         data.footer = require('../fixtures/footer');
-        data.footerBanner = require('../fixtures/footer-banner');
+        data.museums = require('../fixtures/museums');
         return reply.view('home', data);
       }
 

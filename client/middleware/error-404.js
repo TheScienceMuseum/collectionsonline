@@ -10,7 +10,7 @@ module.exports = function (page) {
       var pageEl = document.getElementsByTagName('main')[0];
       var data = {};
       data.footer = require('../../fixtures/footer');
-      data.footerBanner = require('../../fixtures/footer-banner');
+      data.museums = require('../../fixtures/museums');
       data.items = require('../../fixtures/404.js');
       pageEl.innerHTML = Templates['404'](data);
       // refresh the title of the page

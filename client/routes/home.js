@@ -10,7 +10,7 @@ module.exports = function (page) {
     if (!ctx.isInitialRender) {
       var pageEl = document.getElementsByTagName('main')[0];
       data.footer = require('../../fixtures/footer');
-      data.footerBanner = require('../../fixtures/footer-banner');
+      data.museums = require('../../fixtures/museums');
       pageEl.innerHTML = Templates['home'](data);
       // refresh the title of the page
       document.getElementsByTagName('title')[0].textContent = data.titlePage;
