@@ -4,8 +4,16 @@
 
 .searchbar {
   position: relative;
+  color: white;
   background-color: $c-teal;
-  @include sm-gradient($c-green $c-teal $c-blue);
+  @include sm-gradient($c-green $c-teal $c-blue); //default
+
+  @each $type, $props in $recordtypes {
+    .#{$type} & {
+      background-color: map-get($props, bg);
+      @include sm-gradient(map-get($props, grad));
+    }
+  }
 
   &__strap {
     font-size: rem-calc(24);

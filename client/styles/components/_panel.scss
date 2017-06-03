@@ -5,9 +5,10 @@
 //-----------------------------------------------------------------------------
 
 .panel {
-  background-color: black;
+  background-color: grey(75);
   color: white;
   margin-bottom: 1px;
+  font-weight: 400;
   &:last-child { margin-bottom: 0; }
 
   .record-details & { //except if inside a grey panel
@@ -22,7 +23,18 @@
       line-height: 1.25;
     }
 
+    p,
+    li,
+    dt,
+    dd {
+      font-size: 1rem;
+    }
+
     p + p {
+      margin-top: 1rem;
+    }
+
+    h4 {
       margin-top: 1rem;
     }
 
@@ -36,7 +48,7 @@
   }
 
   a {
-    @include text-link(white, $c-teal);
+    @include text-link($c-teal, $c-green);
   }
   ul {
     @include ul-icons;

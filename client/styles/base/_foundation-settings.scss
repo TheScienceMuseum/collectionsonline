@@ -103,28 +103,28 @@ $header-font-family: $body-font-family;
 $header-font-weight: $global-weight-bold;
 $header-font-style: normal;
 $font-family-monospace: Consolas, 'Liberation Mono', Courier, monospace;
-$header-sizes: (
-  small: (
-    'h1': 34,
-    'h2': 28,
-    'h3': 22,
-    'h4': 20,
-    'h5': 18,
-    'h6': 16,
-  ),
-  medium: (
-    'h1': 34,
-    'h2': 28,
-    'h3': 22,
-    'h4': 20,
-    'h5': 18,
-    'h6': 16,
-  ),
-);
 $header-color: inherit;
-$header-lineheight: 1.25;
+$header-lineheight: 1;
 $header-margin-bottom: 0.5rem;
 $header-text-rendering: optimizeLegibility;
+$header-styles: (
+  'small': (
+    'h1': ('font-size': 32, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
+    'h2': ('font-size': 24, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': 1em),
+    'h3': ('font-size': 20, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
+    'h4': ('font-size': 18, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
+    'h5': ('font-size': 18, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
+    'h6': ('font-size': 16, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom)
+  ),
+  'medium': (
+    'h1': ('font-size': 48, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
+    'h2': ('font-size': 36, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': 1em),
+    'h3': ('font-size': 30, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
+    'h4': ('font-size': 24, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
+    'h5': ('font-size': 20, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
+    'h6': ('font-size': 16, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom)
+  ),
+);
 $small-font-size: 75%;
 $header-small-font-color: $medium-gray;
 $paragraph-lineheight: 1.5;

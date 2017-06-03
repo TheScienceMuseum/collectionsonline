@@ -70,6 +70,7 @@
 //-----------------------------------------------------------------------------
 
 .record-imgpanel {
+  font-weight: 400;
   background: grey(100);
   color: white;
   border-top: 1px white solid;
@@ -160,48 +161,59 @@
     right: 0;
     width: 100%;
   }
+
   &__menu {
-    background: rgba(black,0.9);
+    background: rgba(black, 0.9);
     position: absolute;
     width: 75%;
     @include breakpoint(medium) { width: 50%; }
     @include breakpoint(large) { width: 25%; }
     right: 1rem;
     border: 1px white solid;
-    bottom: 0rem;
+    bottom: 0;
     padding: 1rem;
     color: white;
     z-index: 1;
     box-shadow: 0 -8px 16px rgba(black, 0.3);
-
     display: none;
+
     &--active {
       display: block;
     }
 
     button {
-      @include button-base();
+      @include button-base;
       color: $c-teal;
       border-color: $c-teal;
       float: right;
       margin-right: 0;
-      //padding-left: 2rem;
       font-size: rem-calc(18);
+
+      &:hover {
+        color: $c-green;
+        border-color: $c-green;
+      }
+
       .icon {
         top: rem-calc(2);
         left: rem-calc(-2);
       }
     }
+
     p {
+      font-size: 1rem;
       margin-bottom: 0.5rem;
     }
+
     img {
       display: block;
       margin-bottom: 0.25rem;
     }
   }
+
   &__method {
     overflow: auto;
+
     & + & {
       border-top: 1px grey(30) solid;
       padding-top: 1rem;
@@ -319,7 +331,7 @@
     margin-bottom: 0;
     @for $i from 0 to 5 {
       &:nth-child(#{$i}) {
-        margin-left: $i - 0.5rem;
+        margin-left: $i - 1rem;
       }
     }
 

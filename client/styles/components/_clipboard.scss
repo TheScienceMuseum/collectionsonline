@@ -7,7 +7,7 @@
 
 .clipboard {
   margin-bottom: 0.5rem;
-  
+
   &__input {
     vertical-align: middle;
     display: inline-block;
@@ -15,12 +15,13 @@
     margin: 0;
     height: 2rem;
     width: calc(100% - 2rem);
+    @include control-base;
     box-shadow: none;
   }
 
   &--copied &__input { // this class applied by js once contents copied to clipboard
     animation-name: copied;
-    animation-duration: 1.5s;
+    animation-duration: 2s;
     animation-timing-function: ease;
     animation-iteration-count: 1;
   }
@@ -31,21 +32,26 @@
     height: 2rem;
     width: 2rem;
     margin-left: -1px;
-    border: 1px grey(20) solid;
+    @include control-base;
     &:hover {
-      border: 1px grey(30) solid;
-      background-image: linear-gradient(white, grey(10));
+      @include control-hover;
     }
     &:active {
-      border: 1px grey(50) solid;
-      background-image: linear-gradient(grey(20), grey(10));
+      background: black;
+      color: white;
+      fill: white;
     }
   }
 }
 
 @keyframes copied {
   0% {
-    background-color: rgba($c-teal, 0.25);
+    background-color: $c-green;
+    // @include sm-gradient($c-yellow $c-green);
+  }
+
+  50% {
+    background-color: $c-yellow;
   }
 
   100% {
