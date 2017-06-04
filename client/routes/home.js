@@ -14,6 +14,7 @@ module.exports = function (page) {
       pageEl.innerHTML = Templates['home'](data);
       // refresh the title of the page
       document.getElementsByTagName('title')[0].textContent = data.titlePage;
+      document.body.className = ctx.state.data.type;
       next();
     } else {
       listeners();
