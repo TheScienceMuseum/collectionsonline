@@ -2,15 +2,16 @@
   "_index": "smg",
   "_type": "agent",
   "_id": "cp86306",
-  "_version": 15,
+  "_version": 2,
   "found": true,
   "_source": {
     "admin": {
+      "availabile": true,
       "created": 1105005750000,
       "id": "agent-86306",
       "language": "eng",
       "modified": 1408552950000,
-      "processed": 1481049862706,
+      "processed": 1496680011600,
       "source": "smgc",
       "stream": "smg-online",
       "uid": "cp86306",
@@ -19,6 +20,7 @@
     "approved": "Y",
     "date": [
       {
+        "earliest": 1833,
         "latest": 1833,
         "role": [
           {
@@ -28,15 +30,7 @@
         "value": "1833"
       },
       {
-        "latest": 1846,
-        "role": [
-          {
-            "value": "date of death"
-          }
-        ],
-        "value": "1846"
-      },
-      {
+        "earliest": 1833,
         "latest": 1846,
         "role": [
           {
@@ -44,6 +38,16 @@
           }
         ],
         "value": "1833 - 1846"
+      },
+      {
+        "earliest": 1846,
+        "latest": 1846,
+        "role": [
+          {
+            "value": "date of death"
+          }
+        ],
+        "value": "1846"
       }
     ],
     "description": [
@@ -82,6 +86,9 @@
                 "value": "Birmingham, Borough of Birmingham, West Midlands, England, United Kingdom"
               }
             ],
+            "summary": {
+              "value": "Birmingham, Borough of Birmingham, West Midlands, England, United Kingdom"
+            },
             "summary_title": "Birmingham, Borough of Birmingham, West Midlands, England, United Kingdom"
           }
         }
@@ -138,9 +145,13 @@
           "type": "reference"
         },
         "admin": {
+          "availabile": true,
           "id": "place-4251",
           "uid": "cd4251",
           "uuid": "1dc1e145-f203-37c1-a5c5-f64ca9f0ff06"
+        },
+        "summary": {
+          "value": "Crewe railway works"
         },
         "summary_title": "Crewe railway works"
       },
@@ -154,14 +165,21 @@
           "type": "reference"
         },
         "admin": {
+          "availabile": true,
           "id": "place-4596",
           "uid": "cd4596",
           "uuid": "9b557a7c-c903-3c94-bfd7-7aeb84d6f834"
+        },
+        "summary": {
+          "value": "Curzon Street Railway Station"
         },
         "summary_title": "Curzon Street Railway Station"
       }
     ],
     "publish": "Y",
+    "summary": {
+      "value": "Grand Junction Railway"
+    },
     "summary_title": "Grand Junction Railway",
     "type": {
       "base": "agent",

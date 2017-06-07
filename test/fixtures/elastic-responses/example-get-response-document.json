@@ -2,7 +2,7 @@
   "_index": "smg",
   "_type": "archive",
   "_id": "aa110000003",
-  "_version": 3,
+  "_version": 7,
   "found": true,
   "_source": {
     "access": {
@@ -13,11 +13,11 @@
       ]
     },
     "admin": {
-      "SID": "a110000003",
+      "availabile": true,
       "created": 1331826161000,
       "id": "archive-110000003",
-      "modified": 1477665343000,
-      "processed": 1478612112000,
+      "modified": 1491493968000,
+      "processed": 1491833245082,
       "source": "smga",
       "stream": "smg-online",
       "uid": "aa110000003",
@@ -29,9 +29,13 @@
           "type": "reference"
         },
         "admin": {
+          "availabile": true,
           "id": "archive-110000564",
           "uid": "aa110000564",
           "uuid": "deecaf19-edfe-32d1-9f39-dcf6f8be18a2"
+        },
+        "summary": {
+          "value": "The diplomas of Charles Babbage"
         },
         "summary_title": "The diplomas of Charles Babbage"
       },
@@ -40,9 +44,13 @@
           "type": "reference"
         },
         "admin": {
+          "availabile": true,
           "id": "archive-110065984",
           "uid": "aa110065984",
           "uuid": "c0cf163a-90fa-3b10-82a1-017bfd69b65d"
+        },
+        "summary": {
+          "value": "Letters from George Boole, Charles Babbage and other computer experts"
         },
         "summary_title": "Letters from George Boole, Charles Babbage and other computer experts"
       },
@@ -51,9 +59,13 @@
           "type": "reference"
         },
         "admin": {
+          "availabile": true,
           "id": "archive-110066735",
           "uid": "aa110066735",
           "uuid": "3d1ff055-700a-384f-be9a-164e1e4d79eb"
+        },
+        "summary": {
+          "value": "Social diary of Charles Babbage for the year 1844"
         },
         "summary_title": "Social diary of Charles Babbage for the year 1844"
       },
@@ -62,9 +74,13 @@
           "type": "reference"
         },
         "admin": {
+          "availabile": true,
           "id": "archive-110066997",
           "uid": "aa110066997",
           "uuid": "726d5390-5edf-3191-9d33-c97f13b95b81"
+        },
+        "summary": {
+          "value": "Collection of letters to Charles Babbage"
         },
         "summary_title": "Collection of letters to Charles Babbage"
       },
@@ -73,9 +89,13 @@
           "type": "reference"
         },
         "admin": {
+          "availabile": true,
           "id": "archive-110067592",
           "uid": "aa110067592",
           "uuid": "a06c34e4-fd83-3c1a-9a53-2dcd00a1e8bd"
+        },
+        "summary": {
+          "value": "Printed sheet: Babbage's calculating machine"
         },
         "summary_title": "Printed sheet: Babbage's calculating machine"
       },
@@ -84,9 +104,13 @@
           "type": "reference"
         },
         "admin": {
+          "availabile": true,
           "id": "archive-110067724",
           "uid": "aa110067724",
           "uuid": "efd1fc77-6297-3ac3-8207-75a770747f0e"
+        },
+        "summary": {
+          "value": "Ph.D. thesis in the history of science entitled: \"Un modello algoritmico: l'Analytical Engine di Charles Babbage\""
         },
         "summary_title": "Ph.D. thesis in the history of science entitled: \"Un modello algoritmico: l'Analytical Engine di Charles Babbage\""
       },
@@ -95,9 +119,13 @@
           "type": "reference"
         },
         "admin": {
+          "availabile": true,
           "id": "archive-110069380",
           "uid": "aa110069380",
           "uuid": "fd594f84-0ee9-3d10-b59e-f735a9722702"
+        },
+        "summary": {
+          "value": "Thesis entitled: \"The little engines that could've: the calculating machines of Charles Babbage\""
         },
         "summary_title": "Thesis entitled: \"The little engines that could've: the calculating machines of Charles Babbage\""
       },
@@ -106,28 +134,32 @@
           "type": "reference"
         },
         "admin": {
+          "availabile": true,
           "id": "archive-110069392",
           "uid": "aa110069392",
           "uuid": "88418031-d108-3cc5-9565-5a8a9e05a2bc"
+        },
+        "summary": {
+          "value": "PhD thesis entitled: \"The mathematical work of Charles Babbage\""
         },
         "summary_title": "PhD thesis entitled: \"The mathematical work of Charles Babbage\""
       }
     ],
     "arrangement": {
       "system": [
-        "Babbage’s work was divided into a series of distinct phases for the purposes of cataloguing. Work on the Difference Engine No. 1 was carried out from its conception in 1820 until the project was abruptly halted in 1833. Design of the Analytical Engine commenced immediately thereafter and the papers, covering a range of about thirty design plans, date from 1834 - 1848. The design of the Difference Engine No. 2 overlapped the last part of this period, from 1846 - 1848. Babbage’s active work on computing machinery then lapsed until about 1854. Serious work at constructing a simplified model of the Analytical Engine then occupied Babbage from about 1856 until his death in 1871. The papers were divided into 26 major groups identified by letters of the alphabet. These are essentially subdivisions of the three main types of material, arranged according to format. The groups generally correspond to Babbage’s original groupings of the papers. The large series of drawings was divided into three groups, A (Analytical Engine, 1833-1848); B (Difference Engine No 2) and P (Analytical Engine 1857-1870). There are miscellaneous groups which may include several small original groupings. The main series of drawings (Groups A, B and P) and Notations (Group F) were listed by H. P. Babbage in his published collection 'Babbage’s Calculating Engines', London, 1889. Bromley’s numbering corresponds with H. P. Babbage’s. However H. P. Babbage’s titles were taken from lists prepared by Charles Babbage, whilst Bromley’s were taken from the items themselves. H. P. Babbage’s lists are reproduced in the appendix of the published finding aid. Series headings provide detailed descriptions about the series content. In the vast majority of cases, papers were numbered by Babbage and this numbering system was followed. If no numbers were supplied originally by Babbage, items were numbered arbitrarily, namely for the miscellaneous papers, unnumbered sheets and notebooks. Babbage used the * suffix on the drawings to indicate multiple sheets where a drawing comprises more than one sheet, or printed or other versions of the same drawing. Bromley converted the star symbol to using an x as the suffix instead in the printed finding aid. In order to accommodate the technical requirements of the cataloguing software, we have used a forward slash followed by the appropriate number to represent the suffix. Inconsistencies in numbers and arrangement account for gaps in the number sequences."
+        "Babbage’s work was divided into a series of distinct phases for the purposes of cataloguing. \n\nWork on the Difference Engine No. 1 was carried out from its conception in 1820 until the project was abruptly halted in 1833. Design of the Analytical Engine commenced immediately thereafter and the papers, covering a range of about thirty design plans, date from 1834 - 1848. The design of the Difference Engine No. 2 overlapped the last part of this period, from 1846 - 1848. Babbage’s active work on computing machinery then lapsed until about 1854.  Serious work at constructing a simplified model of the Analytical Engine then occupied Babbage from about 1856 until his death in 1871. \n\nThe papers were divided into 26 major groups identified by letters of the alphabet. These are essentially subdivisions of the three main types of material, arranged according to format. The groups generally correspond to Babbage’s original groupings of the papers. The large series of drawings was divided into three groups, A (Analytical Engine, 1833-1848); B (Difference Engine No 2) and P (Analytical Engine 1857-1870). There are miscellaneous groups which may include several small original groupings.\n\nThe main series of drawings (Groups A, B and P) and Notations (Group F) were listed by H. P. Babbage in his published collection 'Babbage’s Calculating Engines', London, 1889. Bromley’s numbering corresponds with H. P. Babbage’s. However H. P. Babbage’s titles were taken from lists prepared by Charles Babbage, whilst Bromley’s were taken from the items themselves. H. P. Babbage’s lists are reproduced in the appendix of the published finding aid.\n\nSeries headings provide detailed descriptions about the series content.\n\nIn the vast majority of cases, papers were numbered by Babbage and this numbering system was followed. If no numbers were supplied originally by Babbage, items were numbered arbitrarily, namely for the miscellaneous papers, unnumbered sheets and notebooks.\n\nBabbage used the * suffix on the drawings to indicate multiple sheets where a drawing comprises more than one sheet, or printed or other versions of the same drawing. Bromley converted the star symbol to using an x as the suffix instead in the printed finding aid.  In order to accommodate the technical requirements of the cataloguing software, we have used a forward slash followed by the appropriate number to represent the suffix. \n\nInconsistencies in numbers and arrangement account for gaps in the number sequences."
       ]
     },
     "content": {
       "description": [
         {
-          "value": "The papers held by the Science Museum Library and Archives relate mostly to Babbage’s automatic calculating engines. This archive contains three main types of material: 1) Babbage’s notebooks, 2) engineering drawings and 3) notations which describe the way parts are intended to act and can be thought of as 'walk throughs' or 'traces' of micro-programs for various models or plans of the engines. THE CROSS REFERENCING SYSTEM. These three types of material are integrally linked with each other. Babbage used an extensive system of cross referencing between the design drawings, notations and scribbling books, which he indicated on each specific item. It is, therefore, possible to follow this system from examining the original material and this is probably the quickest and simplest way of doing it. Allan Bromley's published finding aid also identifies all of the individual items in the archive and establishes a uniform system of identification as well as explaining the method of construction and use of the item cross-referencing system and catalogue numbers. Unfortunately the cross referencing system is far too complex to replicate in this electronic catalogue at this time. It is hoped that this work will be undertaken as a separate project in the future. DIFFERENCE ENGINE MATERIAL This comprises engineering drawings and notations related to the two Difference Engines. They are arranged as follows. Working drawings of Difference Engine No. 1 – this sequence is only about 30% complete. Miscellaneous plans, drawings and notations relating to Difference Engine No. 1 (1822-1833). Drawings and tracings of Difference Engine No. 2 (1847-1848). Notation of units of Difference Engine No. 2 (1849). Original Notation of Units of Difference Engine No. 2 (1848-1849). Miscellaneous notations, some relating to Difference Engine No. 2 (1841; 1848). Miscellaneous papers relating to motions of the calculating parts and index of parts for Difference Engine No. 2 (1848). ANALYTICAL ENGINE MATERIAL This is made up of engineering drawings and notations. There are three series of drawings, known as 'plans'. They are arranged according to three chronological phases of work. Series A (1833-1848) shows details of the calculating mechanisms developed during the first phase of work, as well as a series of miscellaneous tracings relating to the first phase. Series D shows drawings from 1857-1858 and reflects the start of the second phase. Series P (1857-1870) shows the later part of the second phase in a quite distinct draughtsman’s hand. Notations of the Analytical Engine (1835-1848) provide the functional descriptions of the machine. The mechanical details are given in the series of drawings and explain the complex algorithms that Babbage used for the various arithmetic functions. Notations of Calculations (1837-1838) are 'walk throughs' or 'traces' of user or application programmes for the Analytical Engine. They show how the basic micro-programmed arithmetic functions of the Notations of the Analytical Engine are used in extended calculations. Cardboard drawings of the Analytical Engine (1866-1871) relate to the model of the Analytical Engine under construction at the time of Babbage’s death. Miscellaneous drawings, notations and abstracts relate to the Analytical Engine (1833-1871). There are also papers relating to H.P. Babbage’s construction of the 'Mill' of the Analytical Engine (1880-1905). History sheets (1834-1861) summarise the major developments and ideas in the Analytical Engine during a particular year. 26 NOTEBOOKS AND LOOSE PAPERS (1821-1870) These are manuscript bound volumes, described as both 'Sketch Books' and 'Scribbling Books' by Babbage. The notebooks contain Babbage’s rough sketches and notes, which show his thought processes and the development of the functions and design of his machines. The notebooks include other subjects as well as some personal and private matters. THE REST OF THE MATERIAL IN THE ARCHIVE This includes Stereotype Drawings (1836-1838) which are impressions from stereotype plates prepared for Babbage. They show his technique for preparing a series of printed drawings by successively removing detail from a stereotype plate. Formulae relating to programmes contain only algebraic developments that relate to various calculations the Analytical Engine may have been intended to perform. Drawings of Tools (1857-1861), relate in particular to a Universal Machine Tool whose design Babbage developed to construct his engines. There are also papers relating to the Scheutzs' Difference Engine (c. 1854)."
+          "value": "The papers held by the Science Museum Library and Archives relate mostly to Babbage’s automatic calculating engines. This archive contains three main types of material: 1) Babbage’s notebooks, 2) engineering drawings and 3) notations which describe the way parts are intended to act and can be thought of as 'walk throughs' or 'traces' of micro-programs for various models or plans of the engines.\n\nTHE CROSS REFERENCING SYSTEM. \n\nBabbage used an extensive system of cross referencing between the design drawings, notations and scribbling books, which he indicated on each specific item. Unfortunately the cross referencing system is far too complex to replicate in this electronic catalogue at this time. It is hoped that this work will be undertaken as a separate project in the future. \n\nAllan Bromley's published finding aid identifies all of the individual items in the archive and establishes a uniform system of identification as well as explaining the method of construction and use of the item cross-referencing system and catalogue numbers. However the quickest and simplest way to follow Babbage's cross referencing system is to examine the original materials. \n\n\nDIFFERENCE ENGINE MATERIAL  \n\nThis comprises engineering drawings and notations related to the two Difference Engines. They are arranged as follows.\n\nWorking drawings of Difference Engine No. 1 – this sequence is only about 30% complete.\n\nMiscellaneous plans, drawings and notations relating to Difference Engine No. 1 (1822-1833).\n\nDrawings and tracings of Difference Engine No. 2 (1847-1848). \n\nNotation of units of Difference Engine No. 2 (1849).\n\nOriginal Notation of Units of Difference Engine No. 2 (1848-1849).\n\nMiscellaneous notations, some relating to Difference Engine No. 2 (1841; 1848).\n\nMiscellaneous papers relating to motions of the calculating parts and index of parts for Difference Engine No. 2 (1848).\n\n\nANALYTICAL ENGINE MATERIAL \n\nThis is made up of engineering drawings and notations. There are three series of drawings, known as 'plans'. They are arranged according to three chronological phases of work. \n\nSeries A (1833-1848) shows details of the calculating mechanisms developed during the first phase of work, as well as a series of miscellaneous tracings relating to the first phase. \n\nSeries D shows drawings from 1857-1858 and reflects the start of the second phase. \n\nSeries P (1857-1870) shows the later part of the second phase in a quite distinct draughtsman’s hand. \n\nNotations of the Analytical Engine (1835-1848) provide the functional descriptions of the machine. The mechanical details are given in the series of drawings and explain the complex algorithms that Babbage used for the various arithmetic functions.  \n\nNotations of Calculations (1837-1838) are 'walk throughs' or 'traces' of user or application programmes for the Analytical Engine. They show how the basic micro-programmed arithmetic functions of the Notations of the Analytical Engine are used in extended calculations. \n\nCardboard drawings of the Analytical Engine (1866-1871) relate to the model of the Analytical Engine under construction at the time of Babbage’s death. \n\nMiscellaneous drawings, notations and abstracts relate to the Analytical Engine (1833-1871). There are also papers relating to H.P. Babbage’s construction of the 'Mill' of the Analytical Engine (1880-1905). \n\nHistory sheets (1834-1861) summarise the major developments and ideas in the Analytical Engine during a particular year.\n\n\n26 NOTEBOOKS AND LOOSE PAPERS (1821-1870)  \n\nThese are manuscript bound volumes, described as both 'Sketch Books' and 'Scribbling Books' by Babbage.  The notebooks contain Babbage’s rough sketches and notes, which show his thought processes and the development of the functions and design of his machines. The notebooks include other subjects as well as some personal and private matters. \n\n\nTHE REST OF THE MATERIAL IN THE ARCHIVE \n\nThis includes Stereotype Drawings (1836-1838) which are impressions from stereotype plates prepared for Babbage. They show his technique for preparing a series of printed drawings by successively removing detail from a stereotype plate. \n\nFormulae relating to programmes contain only algebraic developments that relate to various calculations the Analytical Engine may have been intended to perform. Drawings of Tools (1857-1861), relate in particular to a Universal Machine Tool whose design Babbage developed to construct his engines. There are also papers relating to the Scheutzs' Difference Engine (c. 1854)."
         }
       ]
     },
     "identifier": [
       {
-        "value": "1878-4; 1878-5; 1878-5/1-4; 1878-6; 1878-6/1-3; 1878-7; 1878"
+        "value": "1878-5; 1878-5/1-4; 1878-6; 1878-6/1-3; 1878-7; 1878"
       },
       {
         "primary": true,
@@ -170,11 +202,15 @@
                 "type": "reference"
               },
               "admin": {
+                "availabile": true,
                 "id": "agent-8",
                 "uid": "ap8",
                 "uuid": "d0b1788c-2748-35b8-b239-e225d7d90e34"
               },
-              "summary_title": "Babbage, Charles (1791-1871, mathematician)"
+              "summary": {
+                "value": "Babbage, Charles"
+              },
+              "summary_title": "Babbage, Charles"
             }
           ]
         }
@@ -189,14 +225,15 @@
     },
     "note": [
       {
-        "type": "disposal note",
         "value": "Not applicable"
       },
       {
-        "type": "history note",
-        "value": "The archive was arranged and described by Dr Allan G. Bromley, Professor of Computing Science at the University of Sydney and Visiting Research Fellow at the Science Museum, London at the time. During the course of his work, Bromley deciphered and identified each individual item, consolidated the uniform system of identification and recorded cross references. He prepared the finding aid to enable the study of Babbage's calculating engine designs. The cross-reference finding aid was extracted from a computer database for a more extensive and detailed catalogue of the Babbage material. Much of the latter was built up by David Keck, Bromley’s research assistant. The notebooks relating to the design of Difference Engine No. 1 were passed by Babbage to the government in 1842, but are now lost. The archive was digitised during September 2011."
+        "value": "The notebooks relating to the design of Difference Engine No. 1 were passed by Babbage to the government in 1842, but are now lost. \n\nThe archive was arranged and described by Dr Allan G. Bromley, Professor of Computing Science at the University of Sydney and Visiting Research Fellow at the Science Museum, London at the time. He published 'The Babbage Papers', a cross-referenced list in 1991. David Keck, Bromley’s research assistant, also contributed. \n\nThe Difference Engine No. 1 K and U series have also been listed and described by C. J. D. Roberts. https://sites.google.com/site/babbagedifferenceengine/de1archives\n\nThe archive was digitised during September 2011."
       }
     ],
+    "summary": {
+      "value": "The Babbage Papers"
+    },
     "summary_title": "The Babbage Papers",
     "title": [
       {

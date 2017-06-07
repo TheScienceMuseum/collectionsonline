@@ -2,15 +2,16 @@
   "_index": "smg",
   "_type": "object",
   "_id": "co8245103",
-  "_version": 15,
+  "_version": 2,
   "found": true,
   "_source": {
     "admin": {
+      "availabile": true,
       "created": 1322745566000,
       "id": "object-8245103",
       "language": "eng",
       "modified": 1427726164000,
-      "processed": 1481053922259,
+      "processed": 1496679972772,
       "source": "smgc",
       "stream": "smg-online",
       "uid": "co8245103",
@@ -124,9 +125,13 @@
                 "type": "reference"
               },
               "admin": {
+                "availabile": true,
                 "id": "agent-33399",
                 "uid": "cp33399",
                 "uuid": "2dc4868c-04b2-3d27-a38a-8769a1054abb"
+              },
+              "summary": {
+                "value": "Amersham International plc"
               },
               "summary_title": "Amersham International plc"
             }
@@ -142,9 +147,13 @@
                 "type": "reference"
               },
               "admin": {
+                "availabile": true,
                 "id": "place-1986",
                 "uid": "cd1986",
                 "uuid": "fe91d8bb-8e00-3084-9f50-d969c51ae126"
+              },
+              "summary": {
+                "value": "Little Chalfont"
               },
               "summary_title": "Little Chalfont"
             }
@@ -170,13 +179,20 @@
           "type": "reference"
         },
         "admin": {
+          "availabile": true,
           "id": "object-5191",
           "uid": "co5191",
           "uuid": "acc0de2f-9ad0-3520-b7a9-15b5343224fd"
         },
+        "summary": {
+          "value": "Six packets of 'Amerscan' agents (phial; packet; materia medica)"
+        },
         "summary_title": "Six packets of 'Amerscan' agents (phial; packet; materia medica)"
       }
     ],
+    "summary": {
+      "value": "Packet of Technetium (MDP) for bone scintigraphy 'Amerscan' agent (phial; packet; materia medica)"
+    },
     "summary_title": "Packet of Technetium (MDP) for bone scintigraphy 'Amerscan' agent (phial; packet; materia medica)",
     "terms": [
       {
@@ -189,6 +205,7 @@
           "type": "reference"
         },
         "admin": {
+          "availabile": true,
           "id": "term-262703",
           "uid": "ct262703",
           "uuid": "4442ec5b-30b3-307b-a4c0-7a0c88788c52"
@@ -200,7 +217,7 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
+              "availabile": true,
               "id": "term-265099",
               "status": "valid and published",
               "uid": "ct265099",
@@ -221,7 +238,7 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
+              "availabile": true,
               "id": "term-262537",
               "status": "valid and published",
               "uid": "ct262537",
@@ -242,7 +259,7 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
+              "availabile": true,
               "id": "term-265188",
               "status": "valid and published",
               "uid": "ct265188",
@@ -263,7 +280,7 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
+              "availabile": true,
               "id": "term-262384",
               "status": "valid and published",
               "uid": "ct262384",
@@ -279,6 +296,9 @@
             "sort": 3
           }
         ],
+        "summary": {
+          "value": "packet"
+        },
         "summary_title": "packet"
       },
       {
@@ -291,6 +311,7 @@
           "type": "reference"
         },
         "admin": {
+          "availabile": true,
           "id": "term-263821",
           "uid": "ct263821",
           "uuid": "ef52e1fe-b85c-3dd2-b78b-c1b2a7832b72"
@@ -302,7 +323,7 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
+              "availabile": true,
               "id": "term-262492",
               "status": "valid and published",
               "uid": "ct262492",
@@ -323,7 +344,7 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
+              "availabile": true,
               "id": "term-265239",
               "status": "valid and published",
               "uid": "ct265239",
@@ -344,7 +365,7 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
+              "availabile": true,
               "id": "term-265237",
               "status": "valid and published",
               "uid": "ct265237",
@@ -365,7 +386,7 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
+              "availabile": true,
               "id": "term-262384",
               "status": "valid and published",
               "uid": "ct262384",
@@ -381,6 +402,9 @@
             "sort": 3
           }
         ],
+        "summary": {
+          "value": "materia medica"
+        },
         "summary_title": "materia medica"
       },
       {
@@ -393,6 +417,7 @@
           "type": "reference"
         },
         "admin": {
+          "availabile": true,
           "id": "term-265331",
           "uid": "ct265331",
           "uuid": "e0761a7d-51ad-3c99-b8e5-9a478513ed74"
@@ -404,7 +429,7 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
+              "availabile": true,
               "id": "term-262525",
               "status": "valid and published",
               "uid": "ct262525",
@@ -425,7 +450,7 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
+              "availabile": true,
               "id": "term-265099",
               "status": "valid and published",
               "uid": "ct265099",
@@ -446,7 +471,7 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
+              "availabile": true,
               "id": "term-262537",
               "status": "valid and published",
               "uid": "ct262537",
@@ -467,7 +492,7 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
+              "availabile": true,
               "id": "term-265188",
               "status": "valid and published",
               "uid": "ct265188",
@@ -488,7 +513,7 @@
               "type": "reference"
             },
             "admin": {
-              "available": true,
+              "availabile": true,
               "id": "term-262384",
               "status": "valid and published",
               "uid": "ct262384",
@@ -504,6 +529,9 @@
             "sort": 4
           }
         ],
+        "summary": {
+          "value": "phial"
+        },
         "summary_title": "phial"
       }
     ],

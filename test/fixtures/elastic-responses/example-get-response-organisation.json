@@ -2,15 +2,16 @@
   "_index": "smg",
   "_type": "agent",
   "_id": "cp5207",
-  "_version": 15,
+  "_version": 2,
   "found": true,
   "_source": {
     "admin": {
+      "availabile": true,
       "created": 862591751000,
       "id": "agent-5207",
       "language": "eng",
       "modified": 1429787674000,
-      "processed": 1481050061040,
+      "processed": 1496679993649,
       "source": "smgc",
       "stream": "smg-online",
       "uid": "cp5207",
@@ -27,9 +28,13 @@
           "type": "reference"
         },
         "admin": {
+          "availabile": true,
           "id": "agent-43512",
           "uid": "cp43512",
           "uuid": "6899cac9-d0ea-3b8f-8831-1a10b69c4956"
+        },
+        "summary": {
+          "value": "William Herschel"
         },
         "summary_title": "William Herschel"
       }
@@ -70,6 +75,9 @@
       }
     ],
     "publish": "Y",
+    "summary": {
+      "value": "Royal Astronomical Society"
+    },
     "summary_title": "Royal Astronomical Society",
     "type": {
       "base": "agent",

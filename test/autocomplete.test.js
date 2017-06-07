@@ -7,13 +7,13 @@ testWithServer(file + 'Should suggest completion', {}, (t, ctx) => {
 
   const request = {
     method: 'GET',
-    url: '/autocomplete?' + QueryString.stringify({ q: 'rocket' }),
+    url: '/autocomplete?' + QueryString.stringify({ q: 'next' }),
     headers: { Accept: 'application/vnd.api+json' }
   };
 
   ctx.server.inject(request, (res) => {
     t.equal(res.statusCode, 200, 'Status was OK');
-    t.ok(res.result.data.some((d) => d.attributes.summary_title === "Stephenson's Rocket (steam locomotive)"), 'Autocompleted Rocket successfully');
+    t.ok(res.result.data.some((d) => d.attributes.summary_title === 'NeXT Computer (personal computer)'), 'Autocompleted Rocket successfully');
     t.end();
   });
 });
