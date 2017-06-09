@@ -202,7 +202,7 @@ testWithServer('Specific api endpoint error', {mock: {method: 'get', response: {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/api/objects/co8357578',
+    url: '/api/objects/co8094437',
     headers: {'Accept': 'application/json'}
   };
 
@@ -217,7 +217,7 @@ testWithServer('Search for similar objects error', {mock: {method: 'search', res
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/co8357578',
+    url: '/objects/co8094437',
     headers: {'Accept': 'application/json'}
   };
 
@@ -234,7 +234,7 @@ testWithServer('Search for similar objects error', {mock: {method: 'search', res
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/co8357578',
+    url: '/objects/co8094437',
     headers: {'Accept': 'text/html'}
   };
 

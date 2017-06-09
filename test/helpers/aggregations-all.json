@@ -1,7 +1,7 @@
 {
-  "doc_count": 693,
+  "doc_count": 702,
   "occupation": {
-    "doc_count": 693,
+    "doc_count": 702,
     "occupation_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -9,10 +9,10 @@
     }
   },
   "object_type": {
-    "doc_count": 687,
+    "doc_count": 691,
     "object_type_filters": {
       "doc_count_error_upper_bound": 5,
-      "sum_other_doc_count": 666,
+      "sum_other_doc_count": 675,
       "buckets": [
         {
           "key": "test tubes",
@@ -28,7 +28,7 @@
         },
         {
           "key": "test types",
-          "doc_count": 39
+          "doc_count": 40
         },
         {
           "key": "psychological test",
@@ -36,14 +36,14 @@
         },
         {
           "key": "diagnosis (genito-urinary)",
-          "doc_count": 18
-        },
-        {
-          "key": "psychometric test",
-          "doc_count": 16
+          "doc_count": 19
         },
         {
           "key": "urine test kits",
+          "doc_count": 17
+        },
+        {
+          "key": "psychometric test",
           "doc_count": 16
         },
         {
@@ -58,37 +58,33 @@
     }
   },
   "count": {
-    "doc_count": 693,
+    "doc_count": 702,
     "count_filters": {
-      "value": 693
+      "value": 702
     }
   },
   "image_license": {
-    "doc_count": 693,
+    "doc_count": 702,
     "image_license_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "CC-BY-NC-SA 4.0",
-          "doc_count": 176
+          "doc_count": 155
         }
       ]
     }
   },
   "maker": {
-    "doc_count": 634,
+    "doc_count": 701,
     "maker_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 116,
+      "sum_other_doc_count": 121,
       "buckets": [
         {
           "key": "David Edward Hughes",
           "doc_count": 11
-        },
-        {
-          "key": "Hinde, John",
-          "doc_count": 10
         },
         {
           "key": "C H Stoelting Company",
@@ -99,6 +95,10 @@
           "doc_count": 6
         },
         {
+          "key": "Margaret Lowenfeld",
+          "doc_count": 5
+        },
+        {
           "key": "British Drug Houses Limited",
           "doc_count": 4
         },
@@ -107,7 +107,7 @@
           "doc_count": 4
         },
         {
-          "key": "Margaret Lowenfeld",
+          "key": "GEC Traction Limited",
           "doc_count": 4
         },
         {
@@ -126,7 +126,7 @@
     }
   },
   "organisation": {
-    "doc_count": 693,
+    "doc_count": 702,
     "organisations_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -139,31 +139,35 @@
     }
   },
   "archive": {
-    "doc_count": 693,
+    "doc_count": 702,
     "archive_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "GEC Traction Archive",
-          "doc_count": 3
+          "doc_count": 4
         },
         {
           "key": "Business records of W. T. Glover & Co. Ltd",
+          "doc_count": 2
+        },
+        {
+          "key": "Company records of Beyer, Peacock & Co. Ltd",
           "doc_count": 2
         }
       ]
     }
   },
   "material": {
-    "doc_count": 693,
+    "doc_count": 702,
     "material_filters": {
-      "doc_count_error_upper_bound": 2,
-      "sum_other_doc_count": 253,
+      "doc_count_error_upper_bound": 4,
+      "sum_other_doc_count": 264,
       "buckets": [
         {
           "key": "glass",
-          "doc_count": 51
+          "doc_count": 52
         },
         {
           "key": "paper",
@@ -195,7 +199,7 @@
         },
         {
           "key": "cork",
-          "doc_count": 10
+          "doc_count": 11
         },
         {
           "key": "box",
@@ -205,22 +209,22 @@
     }
   },
   "museum": {
-    "doc_count": 693,
+    "doc_count": 702,
     "museum_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 10,
       "buckets": [
         {
           "key": "Science Museum",
-          "doc_count": 38
+          "doc_count": 41
         },
         {
           "key": "Information Age Gallery: Exchange",
-          "doc_count": 12
+          "doc_count": 14
         },
         {
           "key": "Science Museum, Information Age Gallery: Exchange",
-          "doc_count": 12
+          "doc_count": 14
         },
         {
           "key": "Making the Modern World Gallery",
@@ -247,20 +251,20 @@
           "doc_count": 5
         },
         {
+          "key": "Mathematics: The Winton Gallery",
+          "doc_count": 3
+        },
+        {
           "key": "Museum of Science and Industry",
+          "doc_count": 3
+        },
+        {
+          "key": "Science Museum, Mathematics: The Winton Gallery",
           "doc_count": 3
         },
         {
           "key": "Science Museum, Science & Art of Medicine Gallery",
           "doc_count": 3
-        },
-        {
-          "key": "Mathematics: The Winton Gallery",
-          "doc_count": 2
-        },
-        {
-          "key": "Science Museum, Mathematics: The Winton Gallery",
-          "doc_count": 2
         },
         {
           "key": "Science Museum, Who am I? Gallery",
@@ -314,47 +318,39 @@
     }
   },
   "has_image": {
-    "doc_count": 693,
+    "doc_count": 702,
     "has_image_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
       "buckets": [
         {
           "key": "1",
-          "doc_count": 176
+          "doc_count": 157
         }
       ]
     }
   },
   "place": {
-    "doc_count": 693,
+    "doc_count": 702,
     "place_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 113,
+      "sum_other_doc_count": 107,
       "buckets": [
         {
           "key": "London",
-          "doc_count": 55
+          "doc_count": 60
         },
         {
           "key": "England",
-          "doc_count": 43
+          "doc_count": 44
         },
         {
           "key": "United Kingdom",
-          "doc_count": 41
-        },
-        {
-          "key": "Exmoor, England, United Kingdom",
-          "doc_count": 10
+          "doc_count": 42
         },
         {
           "key": "Manchester",
           "doc_count": 10
-        },
-        {
-          "key": "South Kensington, London, England, United Kingdom",
-          "doc_count": 9
         },
         {
           "key": "United States",
@@ -362,7 +358,7 @@
         },
         {
           "key": "Chicago",
-          "doc_count": 6
+          "doc_count": 8
         },
         {
           "key": "Europe",
@@ -371,19 +367,27 @@
         {
           "key": "France",
           "doc_count": 6
+        },
+        {
+          "key": "Bedford",
+          "doc_count": 5
+        },
+        {
+          "key": "Edinburgh",
+          "doc_count": 5
         }
       ]
     }
   },
   "category": {
-    "doc_count": 693,
+    "doc_count": 702,
     "category_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 153,
+      "sum_other_doc_count": 150,
       "buckets": [
         {
           "key": "Psychology, Psychiatry & Anthropometry",
-          "doc_count": 165
+          "doc_count": 167
         },
         {
           "key": "Ophthalmology",
@@ -395,15 +399,15 @@
         },
         {
           "key": "Telecommunications",
-          "doc_count": 37
+          "doc_count": 40
         },
         {
           "key": "Public Health & Hygiene",
-          "doc_count": 36
+          "doc_count": 37
         },
         {
           "key": "Clinical Diagnosis",
-          "doc_count": 31
+          "doc_count": 33
         },
         {
           "key": "Farnborough",
@@ -414,8 +418,8 @@
           "doc_count": 18
         },
         {
-          "key": "Photographs",
-          "doc_count": 17
+          "key": "Experimental Chemistry",
+          "doc_count": 16
         },
         {
           "key": "Microbiology",
@@ -425,7 +429,7 @@
     }
   },
   "place_born": {
-    "doc_count": 693,
+    "doc_count": 702,
     "place_born_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 0,
@@ -438,10 +442,10 @@
     }
   },
   "user": {
-    "doc_count": 693,
+    "doc_count": 702,
     "user_filters": {
       "doc_count_error_upper_bound": 0,
-      "sum_other_doc_count": 47,
+      "sum_other_doc_count": 49,
       "buckets": [
         {
           "key": "Joseph Lister",
@@ -456,12 +460,12 @@
           "doc_count": 10
         },
         {
-          "key": "Nathaniel Bishop Harman",
+          "key": "Brunton, Sir Thomas Lauder",
           "doc_count": 5
         },
         {
-          "key": "Brunton, Sir Thomas Lauder",
-          "doc_count": 4
+          "key": "Nathaniel Bishop Harman",
+          "doc_count": 5
         },
         {
           "key": "William Picken Alexander",
@@ -487,22 +491,22 @@
     }
   },
   "gallery": {
-    "doc_count": 693,
+    "doc_count": 702,
     "gallery_filters": {
       "doc_count_error_upper_bound": 0,
       "sum_other_doc_count": 5,
       "buckets": [
         {
           "key": "Science Museum",
-          "doc_count": 38
+          "doc_count": 41
         },
         {
           "key": "Information Age Gallery: Exchange",
-          "doc_count": 12
+          "doc_count": 14
         },
         {
           "key": "Science Museum, Information Age Gallery: Exchange",
-          "doc_count": 12
+          "doc_count": 14
         },
         {
           "key": "Making the Modern World Gallery",
@@ -529,20 +533,20 @@
           "doc_count": 5
         },
         {
+          "key": "Mathematics: The Winton Gallery",
+          "doc_count": 3
+        },
+        {
           "key": "Museum of Science and Industry",
+          "doc_count": 3
+        },
+        {
+          "key": "Science Museum, Mathematics: The Winton Gallery",
           "doc_count": 3
         },
         {
           "key": "Science Museum, Science & Art of Medicine Gallery",
           "doc_count": 3
-        },
-        {
-          "key": "Mathematics: The Winton Gallery",
-          "doc_count": 2
-        },
-        {
-          "key": "Science Museum, Mathematics: The Winton Gallery",
-          "doc_count": 2
         },
         {
           "key": "Science Museum, Who am I? Gallery",
