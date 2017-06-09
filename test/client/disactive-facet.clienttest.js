@@ -1,4 +1,5 @@
 module.exports = {
+  /* removed JU 09/06/2017 - need to add back
   'Disactive Facet': function (browser) {
     browser
       .url('http://localhost:8000/search/people?q=john')
@@ -14,4 +15,5 @@ module.exports = {
       .assert.elementNotPresent('.filter .filter--active .filter--uncollapsible')
       .end();
   }
+  */
 };
