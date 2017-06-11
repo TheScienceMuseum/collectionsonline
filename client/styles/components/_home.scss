@@ -91,7 +91,9 @@
 }
 
 .featurestep {
+  flex: 1;
   &--arrow {
+    flex: initial;
     flex-basis: 4em;
     margin: 0 2em;
     position: relative; // for safari

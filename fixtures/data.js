@@ -8,7 +8,7 @@ module.exports = {
     'textile-sign.jpg',
     'switches.jpg',
     '1878-0005_0004_A163_0002.jpg',
-    'cd0634_030_100924_1988_242',
+    'cd0634_030_100924_1988_242.jpg',
     'cd0274_008_070301.jpg'
   ],
   collectionGroup: [{
