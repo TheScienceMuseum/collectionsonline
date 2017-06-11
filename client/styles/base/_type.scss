@@ -12,13 +12,13 @@ $fonts: (
   ('Fat', 900, normal)
 );
 
-$font-path: '//s3-eu-west-1.amazonaws.com/scimus/tmp'; // replace with proper CDN!!
+$font-path: '//smgco-images.s3.amazonaws.com/fonts/';
 
 @each $f in $fonts {
   @font-face {
     font-family: 'SMGSans';
     // src: url('../fonts/copy-#{nth($f,1)}-web.woff') format('woff');
-    src: url('#{$font-path}/SMGSans-#{nth($f,1)}.woff') format('woff');
+    src: url('#{$font-path}SMGSans-#{nth($f,1)}.woff') format('woff');
     font-weight: #{nth($f, 2)};
     font-style: #{nth($f, 3)};
   }
