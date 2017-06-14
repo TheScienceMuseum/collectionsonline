@@ -62,12 +62,12 @@ $black: #000;
 $white: #fff;
 $body-background: $white;
 $body-font-color: $black;
-$body-font-family: 'sm-din', Roboto, Helvetica, Arial, sans-serif;
+$body-font-family: $base-font-family;
 $body-antialiased: true;
 $global-margin: 1rem;
 $global-padding: 1rem;
-$global-weight-normal: normal;
-$global-weight-bold: 500;
+$global-weight-normal: 300;
+$global-weight-bold: 700;
 $global-radius: 0;
 $global-text-direction: ltr;
 $global-flexbox: false;
@@ -100,31 +100,31 @@ $block-grid-max: 8;
 // ------------------
 
 $header-font-family: $body-font-family;
-$header-font-weight: $global-weight-normal;
+$header-font-weight: $global-weight-bold;
 $header-font-style: normal;
 $font-family-monospace: Consolas, 'Liberation Mono', Courier, monospace;
-$header-sizes: (
-  small: (
-    'h1': 30,
-    'h2': 24,
-    'h3': 20,
-    'h4': 18,
-    'h5': 16,
-    'h6': 14,
-  ),
-  medium: (
-    'h1': 30,
-    'h2': 24,
-    'h3': 20,
-    'h4': 18,
-    'h5': 16,
-    'h6': 14,
-  ),
-);
 $header-color: inherit;
-$header-lineheight: 1.25;
+$header-lineheight: 1;
 $header-margin-bottom: 0.5rem;
 $header-text-rendering: optimizeLegibility;
+$header-styles: (
+  'small': (
+    'h1': ('font-size': 32, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
+    'h2': ('font-size': 24, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': 1em),
+    'h3': ('font-size': 20, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
+    'h4': ('font-size': 18, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
+    'h5': ('font-size': 18, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
+    'h6': ('font-size': 16, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom)
+  ),
+  'medium': (
+    'h1': ('font-size': 48, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
+    'h2': ('font-size': 36, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': 1em),
+    'h3': ('font-size': 30, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
+    'h4': ('font-size': 24, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
+    'h5': ('font-size': 20, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
+    'h6': ('font-size': 16, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom)
+  ),
+);
 $small-font-size: 75%;
 $header-small-font-color: $medium-gray;
 $paragraph-lineheight: 1.5;
@@ -293,7 +293,7 @@ $drilldown-background: $white;
 
 $dropdown-padding: 1rem;
 $dropdown-border: 1px solid $medium-gray;
-$dropdown-font-size: 1rem;
+$dropdown-font-size: 1.125rem;
 $dropdown-width: 300px;
 $dropdown-radius: $global-radius;
 $dropdown-sizes: (
@@ -362,7 +362,7 @@ $input-radius: $global-radius;
 $label-background: $primary-color;
 $label-color: $white;
 $label-color-alt: $black;
-$label-font-size: 1rem;
+$label-font-size: 1.125rem;
 $label-padding: 0.25rem 0.5rem;
 $label-radius: $global-radius;
 $label-palette: $foundation-palette;
@@ -427,11 +427,11 @@ $orbit-control-zindex: 10;
 
 $pagination-font-size: rem-calc(14);
 $pagination-margin-bottom: 0;
-$pagination-item-color: $c-blue;
+$pagination-item-color: black;
 $pagination-item-padding: rem-calc(12 16);
 $pagination-item-spacing: 0;
 $pagination-radius: $global-radius;
-$pagination-item-background-hover: $light-gray;
+$pagination-item-background-hover: grey(10);
 $pagination-item-background-current: grey(10);
 $pagination-item-color-current: grey(50);
 $pagination-item-color-disabled: grey(40);

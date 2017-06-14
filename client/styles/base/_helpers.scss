@@ -12,13 +12,13 @@ $timing-defaults: 0.25s ease-out;
   transform: translateY(-50%);
 }
 
-@mixin text-link {
-  color: $c-blue;
+@mixin text-link($color: $c-blue, $hover: $c-teal) {
+  color: $color;
   border-bottom: 1px solid transparent;
   transition: color $timing-defaults, border-color $timing-defaults;
   &:hover {
-    color: mix($c-cyan, $c-blue);
-    border-color: mix($c-cyan, $c-blue);
+    color: $hover;
+    border-color: $hover;
   }
 }
 
@@ -55,7 +55,7 @@ $timing-defaults: 0.25s ease-out;
 //  $align: top | center | bottom
 //-----------------------------------------------------------------------------
 
-@mixin icon-bullet($icon, $size:0.75rem, $left: 0, $top: null, $bottom: null, $align: center) {
+@mixin icon-bullet($icon, $size:0.75em, $left: 0, $top: null, $bottom: null, $align: center) {
   position: relative;
   padding-left: $size * 4/3 + $left;
   &:before {
@@ -94,9 +94,9 @@ $timing-defaults: 0.25s ease-out;
 }
 
 //certain icons used to represent recordtype should always be a mapped color.
-@each $type, $c in $recordtypes {
+@each $type, $props in $recordtypes {
   .icon-#{$type} {
-    color: $c;
+    color: map-get($props, bg);
   }
 }
 
@@ -105,13 +105,18 @@ $timing-defaults: 0.25s ease-out;
 @mixin small-caps {
   font-size: 75%;
   text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.015em;
 }
 
 @mixin control-base {
-  border: 1px grey(20) solid;
-  box-shadow: 0 1px 1px rgba(black, 0.1);
-  border-radius: 2px;
+  border: 1px black solid;
   background: white;
+  color: black;
+}
+
+@mixin control-hover {
+  background-color: grey(10);
 }
 
 // used in imgpanel controls currently

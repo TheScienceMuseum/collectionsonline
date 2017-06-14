@@ -45,6 +45,7 @@ function render (ctx, next) {
   var pageEl = document.getElementsByTagName('main')[0];
   pageEl.innerHTML = Templates['objects'](ctx.state.data);
   document.getElementsByTagName('title')[0].textContent = ctx.state.data.titlePage;
+  document.body.className = ctx.state.data.type;
   hideKeyboard();
   window.scrollTo(0, 0);
   next();

@@ -3,6 +3,14 @@ module.exports = {
   titlePage: 'Science Museum Group Collection',
   strap: 'Search our collection',
   intro: 'Explore over 250,000 objects and archives from the Science Museum, Museum of Science and Industry, National Science and Media Museum and National Railway Museum.',
+  headerImages: [
+    'handley.jpg',
+    'textile-sign.jpg',
+    'switches.jpg',
+    '1878-0005_0004_A163_0002.jpg',
+    'cd0634_030_100924_1988_242.jpg',
+    'cd0274_008_070301.jpg'
+  ],
   collectionGroup: [{
     title: 'See what’s on display',
     collection: [{

@@ -43,6 +43,7 @@ function render (ctx, next) {
   ctx.state.data.page = 'person';
   pageEl.innerHTML = Templates['people'](ctx.state.data);
   document.getElementsByTagName('title')[0].textContent = ctx.state.data.titlePage;
+  document.body.className = ctx.state.data.type;
   hideKeyboard();
   window.scrollTo(0, 0);
   next();

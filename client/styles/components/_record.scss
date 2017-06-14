@@ -70,7 +70,8 @@
 //-----------------------------------------------------------------------------
 
 .record-imgpanel {
-  background: grey(80);
+  font-weight: 400;
+  background: grey(100);
   color: white;
   border-top: 1px white solid;
 
@@ -108,19 +109,14 @@
 
   &__caption {
     margin: 1rem 0;
-    line-height: 1.2;
+    font-size: 1rem;
+    line-height: 1.25;
     @include breakpoint(small only) {
       clear: right;
-      font-size: 12px;
+      font-size: rem-calc(14);
     }
   }
 
-}
-
-.panel {
-  .panel__text .visit-contact {
-    margin-top: 1em;
-  }
 }
 
 .cite {
@@ -132,7 +128,7 @@
     color: white;
     border-color: white;
     //padding-left: 2rem;
-    font-size: 1rem;
+    font-size: rem-calc(18);
     line-height: 1.25rem; // needs to match icon sizes of other toolbar buttons
 
     .icon {
@@ -165,48 +161,59 @@
     right: 0;
     width: 100%;
   }
+
   &__menu {
-    background: rgba(black,0.9);
+    background: rgba(black, 0.9);
     position: absolute;
     width: 75%;
     @include breakpoint(medium) { width: 50%; }
     @include breakpoint(large) { width: 25%; }
     right: 1rem;
     border: 1px white solid;
-    bottom: 0rem;
+    bottom: 0;
     padding: 1rem;
     color: white;
     z-index: 1;
     box-shadow: 0 -8px 16px rgba(black, 0.3);
-
     display: none;
+
     &--active {
       display: block;
     }
 
     button {
-      @include button-base();
-      color: $c-cyan;
-      border-color: $c-cyan;
+      @include button-base;
+      color: $c-teal;
+      border-color: $c-teal;
       float: right;
       margin-right: 0;
-      //padding-left: 2rem;
-      font-size: 1rem;
+      font-size: rem-calc(18);
+
+      &:hover {
+        color: $c-green;
+        border-color: $c-green;
+      }
+
       .icon {
         top: rem-calc(2);
         left: rem-calc(-2);
       }
     }
+
     p {
+      font-size: 1rem;
       margin-bottom: 0.5rem;
     }
+
     img {
       display: block;
       margin-bottom: 0.25rem;
     }
   }
+
   &__method {
     overflow: auto;
+
     & + & {
       border-top: 1px grey(30) solid;
       padding-top: 1rem;
@@ -229,21 +236,27 @@
     }
   }
 }
+
 #osd-zoomout {
   @include icon-before(osd-zoomout, $size: 1.25rem);
 }
+
 #osd-zoomin {
   @include icon-before(osd-zoomin, $size: 1.25rem);
 }
+
 #osd-fullpage {
   @include icon-before(img-expand, $size: 1.25rem);
 }
+
 #osd-home {
   @include icon-before(osd-home, $size: 1.25rem);
 }
+
 #osd-rotate-left {
   @include icon-before(osd-rotate-counterclockwise, $size: 1.25rem);
 }
+
 #osd-rotate-right {
   @include icon-before(osd-rotate-clockwise, $size: 1.25rem);
 }
@@ -251,15 +264,17 @@
 .record-description {
   font-size: rem-calc(18);
 }
+
 .record-longdesc {
   // this could be applied to a <p>
   // but may be safer to apply to wrapping <div> for bigger content
 }
+
 .record-details {
+  padding-top: 2rem;
   padding-bottom: 2rem;
-  border-bottom: 1px white solid;
+  background-color: grey(10);
   margin-top: 2rem;
-  margin-bottom: 2rem;
   &__dl {
     @include grid-row($behavior: nest);
     padding: 0.75rem 0;
@@ -291,6 +306,7 @@
       line-height: 1.5rem;
       //font-weight: 500;
     }
+
     a {
       @include text-link();
     }
@@ -298,6 +314,7 @@
     p {
       margin: 0;
     }
+
     p + p {
       margin-top: 1em;
     }
@@ -306,16 +323,20 @@
 
 .taxonomy {
   @include ul-icons;
+  margin-top: 0;
+  margin-bottom: 0;
+
   li {
-    &:not(:first-child) {
-      @include icon-bullet(taxonomy);
-    }
     margin-top: 0;
     margin-bottom: 0;
     @for $i from 0 to 5 {
       &:nth-child(#{$i}) {
-       margin-left: $i - 0.5rem;
+        margin-left: $i - 1rem;
       }
+    }
+
+    &:not(:first-child) {
+      @include icon-bullet(taxonomy);
     }
   }
 }
@@ -333,8 +354,9 @@
 //-----------------------------------------------------------------------------
 
 .record-related {
-  margin: 2rem 0;
-  //background: grey(10);
+  padding: 2rem 0;
+  background: black;
+  color: white;
 }
 
 .see-more {

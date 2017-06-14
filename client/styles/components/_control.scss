@@ -35,10 +35,10 @@
     height: rem-calc(40);
     margin-top: -1px;
     margin-right: -1px;
-    border: 1px grey(20) solid;
+    border: 1px black solid;
+    color: black;
     &:not(&--active):hover {
-      border: 1px grey(30) solid;
-      background-image: linear-gradient(white, grey(10));
+      @include control-hover;
     }
 
     .icon {
@@ -47,9 +47,10 @@
       margin: rem-calc(8);
     }
 
-    &--active,&--active:hover {
-      background-color: grey(10);
-      color: grey(50);
+    &--active,
+    &--active:hover {
+      background-color: grey(80);
+      color: white;
     }
 
     label { //alt posiiton of label
@@ -61,10 +62,14 @@
 
   &--filters {
     width: 100%;
-    .control__button {
-      position: absolute;
-      right: 0;
-    }
+  }
+  &--filters &__label {
+    float: none;
+  }
+  &--filters &__button {
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 
   &--active:after {
@@ -96,17 +101,18 @@
 
   a,
   .current {
-    border: 1px grey(20) solid;
+    border: 1px black solid;
     border-width: 0 1px;
+    color: black;
   }
 
   .current {
-    background: grey(20);
+    background: grey(80);
+    color: white;
   }
 
   a:hover {
-    border-color: grey(30);
-    background-image: linear-gradient(white, grey(10));
+    @include control-hover;
   }
 }
 
@@ -122,12 +128,14 @@
     margin-right: -1px;
     line-height: 1rem;
     padding-right: 1.5rem;
-    border-radius: 0 2px 2px 0;
+    border-color: black;
     background-position: right -1rem center; //need to check support
+
     &:hover {
       // because F is already using bg image for disclosure triangle, to add extra bg on hover means retrieving existing properties first.
+      @include control-hover;
       background-image:
-      svg-uri('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="24" viewBox="0 0 32 24"><polygon points="0,0 32,0 16,24" fill="#333"></polygon></svg>'), linear-gradient(white, grey(10));
+      svg-uri('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="24" viewBox="0 0 32 24"><polygon points="0,0 32,0 16,24" fill="#333"></polygon></svg>');
       background-size: 9px 6px, cover;
       background-origin: content-box, border-box;
       background-repeat: no-repeat, repeat;

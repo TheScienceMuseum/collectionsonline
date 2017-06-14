@@ -1,27 +1,29 @@
-
 $fonts: (
-  ("light", 300, normal),
-  ("lightitalic", 300, italic),
-  ("regular", normal, normal),
-  ("italic", normal, italic),
-  ("medium", 500, normal),
-  ("mediumitalic", 500, italic),
-  ("bold", 600, normal),
-  ("bolditalic", 600, italic),
-  ("black", 900, normal),
-  ("blackitalic", 900, italic)
+  ('Thin', 100, normal),
+  ('ThinItalic', 100, italic),
+  ('Light', 300, normal),
+  ('LightItalic', 300, italic),
+  ('Regular', normal, normal),
+  ('RegularItalic', normal, italic),
+  ('Medium', 500, normal),
+  ('MediumItalic', 500, italic),
+  ('Bold', 700, normal),
+  ('BoldItalic', 700, italic),
+  ('Fat', 900, normal)
 );
 
+$font-path: '//smgco-images.s3.amazonaws.com/fonts/';
+
 @each $f in $fonts {
-
   @font-face {
-    font-family: 'sm-din';
-    src: url('/assets/fonts/sm-din-#{nth($f,1)}.woff2') format('woff2'),
-         url('/assets/fonts/sm-din-#{nth($f,1)}.woff') format('woff');
-    font-weight: #{nth($f,2)};
-    font-style: #{nth($f,3)};
+    font-family: 'SMGSans';
+    // src: url('../fonts/copy-#{nth($f,1)}-web.woff') format('woff');
+    src: url('#{$font-path}SMGSans-#{nth($f,1)}.woff') format('woff');
+    font-weight: #{nth($f, 2)};
+    font-style: #{nth($f, 3)};
   }
-
 }
 
-// font-family declared universally in _foundation-settings.scss
+// font-family used in normalize & foundation-settings.scss
+// use system default if no webfont available
+$base-font-family: 'SMGSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;

@@ -27,28 +27,49 @@
   @return blend-normal(rgba($bm-red, $bm-green, $bm-blue, opacity($foreground)), $background);
 }
 
-$c-red: #bc141a;
-$c-blue: #1F4191; // sci museum main blue
+// main brand colours
+$c-red: #e60060;
+$c-orange: #ec6408;
+$c-yellow: #ffee00;
+$c-green: #95c11f;
+$c-teal: #4bbecf;
+$c-blue: #004899;
+$c-purple: #af1280;
+
 $c-lightgrey: #DADADA;
-$c-whiteish: #fcfcfc;
-$c-dark: #2c2c2c;
-$c-cyan: rgb(0,174,239); // sci museum process cyan
-$c-cyan-mute: rgb(0,139,191); // time to make a map()??
-$c-magenta: rgb(236,0,140); // sci museum process magenta
-$c-purple: #6F558C;
-$c-green: #00888A;
 $c-turquoise: #40E0D0;
 $c-dark-green: #317873;
-$c-beta: #FFF69F;
 
-//colors mapped to recordypes for quick changes, and for for loops
+//colors mapped to recordtypes for quick changes, and for for loops
 $recordtypes: (
-  objects: $c-cyan-mute,
-  people: $c-purple,
-  documents: $c-green,
-  archive: $c-green,
-  archivedoc: $c-green,
-  collection: $c-blue
+  objects: (
+    bg: $c-teal,
+    grad: $c-teal $c-green $c-blue,
+  ),
+  people: (
+    bg: $c-orange,
+    grad: $c-yellow $c-orange $c-red,
+  ),
+  all: (
+    bg: $c-green,
+    grad: $c-yellow $c-green $c-teal,
+  ),
+  documents: (
+    bg: $c-purple,
+    grad: $c-red $c-purple $c-blue,
+  ),
+  archive: (
+    bg: $c-purple,
+    grad: $c-red $c-purple $c-blue,
+  ),
+  archivedoc: (
+    bg: $c-purple,
+    grad: $c-red $c-purple $c-blue,
+  ),
+  collection: (
+    bg: $c-blue,
+    grad: $c-teal $c-blue $c-purple,
+  )
 );
 
 /// Returns a grey color from 0-white to 100-black
@@ -65,4 +86,33 @@ $recordtypes: (
 /// @return {Color}
 @function tint($color, $percentage) {
   @return mix($color, white, $percentage);
+}
+
+/// create a Background gradient from the SMG palette
+/// @param {List} $stops - List of colors
+@mixin sm-gradient($stops) {
+
+  @each $stop in $stops {
+    @if type-of($stop) != color {
+      @warn '`#{$stop}` is not a color. I wish it was.';
+    }
+  }
+
+  @if length($stops) == 1 {
+    background-color: $stops;
+  }
+  @if length($stops) == 2 {
+    background-image: linear-gradient(135deg, nth($stops, 1) 0%, nth($stops, 2) 100%);
+  }
+  @if length($stops) > 2 {
+    background-image: radial-gradient(
+      ellipse at bottom left,
+      nth($stops, 1),
+      rgba(nth($stops, 1), 0) 50%
+    ), linear-gradient(
+      to right,
+      nth($stops, 2) 0%,
+      nth($stops, 3) 100%
+    );
+  }
 }

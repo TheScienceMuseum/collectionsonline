@@ -21,10 +21,10 @@
     <title>{{ normalise titlePage this }}</title>
     <link rel="stylesheet" href="/bundle.css">
     <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="/assets/img/favicon/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/assets/img/favicon/android-icon-192x192.png" sizes="192x192">
     <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-96x96.png" sizes="96x96">
     <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-16x16.png" sizes="16x16">
-    <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/img/favicon/apple-icon-180x180.png" sizes="180x180">
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@sciencemuseum" />
@@ -41,7 +41,7 @@
       {{{jsonLD}}}
     </script>
   </head>
-  <body>
+  <body class="{{type}}">
     <!-- Google Tag Manager -->
     <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MTBKW2"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -49,8 +49,5 @@
 
     {{{content}}}
     <script src="/bundle.js"></script>
-    <div class="grid-overlay row">
-      {{#repeat 12}}<div class="small-1 column"><div class="contents"></div></div>{{/repeat}}
-    </div>
   </body>
 </html>

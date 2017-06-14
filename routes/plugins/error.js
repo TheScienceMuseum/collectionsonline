@@ -26,7 +26,7 @@ exports.register = (server, options, next) => {
       if (error.output.statusCode === 404) {
         var data = {};
         data.footer = require('../../fixtures/footer');
-        data.footerBanner = require('../../fixtures/footer-banner');
+        data.museums = require('../../fixtures/museums');
         data.items = require('../../fixtures/404.js');
         return reply.view('404', data).code(404);
       }

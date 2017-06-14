@@ -15,6 +15,7 @@
   &__intro {
     font-weight: 600;
     margin-bottom: 2rem;
+    text-transform: none;
     @include breakpoint(small only) { display: none; }
     @include breakpoint(medium up) { margin-bottom: 4rem; }
     @include breakpoint(large up) { margin-bottom: 6rem; }
@@ -90,7 +91,9 @@
 }
 
 .featurestep {
+  flex: 1;
   &--arrow {
+    flex: initial;
     flex-basis: 4em;
     margin: 0 2em;
     position: relative; // for safari
@@ -113,9 +116,10 @@
     }
   }
   a {
-    text-decoration:underline;
+    text-decoration: underline;
     color: white;
   }
+
   .icon {
     font-size: 2rem;
     @include breakpoint(medium up) {
@@ -124,6 +128,7 @@
       font-size: 3rem;
     }
   }
+
   &__title {
     font-size: 2rem;
     @include breakpoint(medium up) { font-size: 3rem; }
@@ -131,6 +136,7 @@
     line-height: 1;
     margin-bottom: 1rem;
   }
+
   &__desc {
     font-size: rem-calc(18);
     font-weight: 500;
@@ -140,13 +146,14 @@
 
 .home-collections {
   background-color: #fff;
-  background-image: linear-gradient(white, grey(10));
 
   &__h {
     font-size: 1.5rem;
     @include breakpoint(medium up) { font-size: 2rem; }
-    font-weight: 600;
+    @include breakpoint(large up) { font-size: 2.5rem; }
     line-height: 1;
-    margin-bottom: 1em;
+    text-transform: uppercase;
+    margin: 0 0 1em 0;
+    @include breakpoint(medium up) { margin: 1em 0; }
   }
 }
