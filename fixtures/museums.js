@@ -12,7 +12,7 @@ module.exports = {
       image: '/assets/img/global/sml-logo.svg'
     },
     {
-      name: 'Science and Media Museum',
+      name: 'National Science and Media Museum',
       url: 'https://www.scienceandmediamuseum.org.uk',
       image: '/assets/img/global/smm-logo.svg'
     },
