@@ -77,10 +77,10 @@
 
   &__thumbs {
     position: relative;
-    height: 3rem;
     text-align: center;
     font-size: 0;
     overflow: hidden;
+    margin-bottom: -1px;
   }
 
   &__thumb {
@@ -88,15 +88,15 @@
     max-width: auto;
     height: 3rem;
     object-fit: cover;
-    border-color: grey(60);
-    border-style: solid;
-    border-width: 0 1px;
     opacity: 0.5;
-    margin-right: -1px;
+    margin-bottom: 1px;
+    margin-right: 1px;
 
     &--selected {
       opacity: 1;
-      border-color: white;
+      outline: 1px white solid;
+      margin-top: -1px;
+      margin-bottom: -1px;
       z-index: 1;
       position: relative;
     }
