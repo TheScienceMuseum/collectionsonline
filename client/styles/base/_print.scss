@@ -9,7 +9,8 @@
   .searchbar,
   .searchtabs,
   .sitefooter,
-  .globalfooter {
+  .globalfooter,
+  .record-related {
     display: none;
   }
 
@@ -19,15 +20,28 @@
   //images:
   .record-imgpanel {
     background-color: transparent !important;
+
     &__thumbs,
     &__controlbar,
     button {
-      display: none;
+      display: none !important;
     }
+
     // but do show the main image inside it:
     .carousel__image.is-selected {
       display: block;
       opacity: 1;
     }
   }
+
+  .record-details {
+    background-color: transparent !important;
+    border-top: 1px solid black;
+  }
+
+  .panel {
+    background-color: transparent !important;
+    border: 1px solid black;
+  }
+
 }
