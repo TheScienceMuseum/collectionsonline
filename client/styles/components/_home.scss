@@ -13,7 +13,7 @@
   overflow: hidden;
 
   &__intro {
-    font-weight: 600;
+    font-weight: 700;
     margin-bottom: 2rem;
     text-transform: none;
     @include breakpoint(small only) { display: none; }
