@@ -1,12 +1,12 @@
-
 //-----------------------------------------------------------------------------
 //
 // shared inheritance for .resultlist and .resultcard pattern
 //-----------------------------------------------------------------------------
 
-
 @mixin resultclass {
   position: relative;
+  min-height: 100%;
+  line-height: 1.2;
 
   &__figure {
     margin: 0;
@@ -47,43 +47,40 @@
     }
   }
 
-
   &__title {
     font-weight: 700;
     font-size: rem-calc(16);
     text-transform: none;
+    margin: 0;
     @include breakpoint(medium) {
       font-size: rem-calc(18);
     }
-    line-height: rem-calc(18);
-    margin: 0 0 0.25rem 0;
   }
 
   &__info {
-    padding: 0.5rem 0;
+    position: relative;
+    padding-top: 0.5rem;
     @include breakpoint(medium) {
-      padding: 1rem 0;
+      padding-top: 1rem;
     }
   }
 
   &__description {
     font-weight: 300;
     font-size: rem-calc(16);
-    line-height: 1.2rem;
     margin: 0;
   }
-  p { margin: 0; }
+
+  p {
+    margin: 0;
+    line-height: 1.2;
+  }
 
 
   @each $type, $props in $recordtypes {
-    &--#{$type} &__info {
-      // border-color: $c;
-    }
-
     &--#{$type} &__figure {
       background-color: map-get($props, bg);
       @include sm-gradient(map-get($props, grad));
-      // border-color: $c;
     }
 
     &--#{$type} .icon { color: map-get($props, bg); }
@@ -182,7 +179,6 @@
 .resultcard {
   @include resultclass;
   @include resulthover;
-  margin-bottom: 2rem;
   color: black;
 
   &:hover {
@@ -198,13 +194,6 @@
   &__figure {
     width: 100%; //aspect 4:3
     padding-top: 75%; //aspect 4:3
-    // border-top: 0.25rem grey(30) solid;
-  }
-
-  &__info {
-    height: 7 + 0.25rem; // = 2padding, 5 lines text, 1 margin!
-    overflow: hidden;
-    position: relative;
   }
 
   &__title {
