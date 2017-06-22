@@ -19,9 +19,11 @@
     font-size: rem-calc(24);
     text-transform: uppercase;
     margin: 1rem 0;
+    position: relative;
+    top: 1rem;
     @include breakpoint(medium) {
-      font-size: rem-calc(30);
-      margin: 1.5rem 0;
+      font-size: rem-calc(40);
+      margin: 2rem 0;
     }
   }
 

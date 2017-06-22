@@ -50,6 +50,7 @@
   &__title {
     font-weight: 700;
     font-size: rem-calc(16);
+    line-height: 1.2;
     text-transform: none;
     margin: 0;
     @include breakpoint(medium) {

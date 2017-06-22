@@ -16,14 +16,16 @@ $timing-defaults: 0.25s ease-out;
   color: $color;
   border-bottom: 1px solid transparent;
   transition: color $timing-defaults, border-color $timing-defaults;
+
   &:hover {
     color: $hover;
     border-color: $hover;
   }
 }
 
-@mixin icon-before($icon, $size:1rem) {
+@mixin icon-before($icon, $size: 1rem) {
   position: relative;
+
   &:before {
     content: ' ';
     display: block;
@@ -34,13 +36,14 @@ $timing-defaults: 0.25s ease-out;
   }
 }
 
-@mixin ul-icons() {
+@mixin ul-icons {
   margin: 0.5rem 0;
   padding: 0;
 
   li {
     display: block;
     margin: 0.5rem 0;
+
     &:last-child {
       margin-bottom: 0;
     }
