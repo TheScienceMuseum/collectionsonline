@@ -81,6 +81,8 @@
     font-size: 0;
     overflow: hidden;
     margin-bottom: -1px;
+    display: none;
+    @include breakpoint(medium) { display: block; }
   }
 
   &__thumb {
