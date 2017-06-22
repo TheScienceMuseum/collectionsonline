@@ -78,7 +78,7 @@
   }
   .row { // keep above images
     position: relative;
-    z-index: 99;
+    z-index: $no-of-slides + 1;
   }
 }
 
