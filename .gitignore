@@ -35,6 +35,7 @@ bower_components
 .node_repl_history
 
 public/bundle.js
+public/bundle.js.map
 public/bundle.css
 public/assets/icons/*
 !public/assets/icons/.gitkeep
