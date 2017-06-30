@@ -26,6 +26,7 @@ module.exports = function (type) {
 
 function load (ctx, next, type) {
   var pageType = type === 'people' ? type : type + 's';
+  var page = type === 'people' ? 'person' : type;
 
   if (!ctx.isInitialRender) {
     var opts = {
@@ -43,12 +44,13 @@ function load (ctx, next, type) {
       var data = JSONToHTML(json);
 
       ctx.state.data = data;
+      ctx.state.data.back = sessionStorage.getItem('backPath');
       // analytics
       if (data.inProduction) {
         window.dataLayer.push(data.layer);
       }
 
-      ctx.state.data.page = type;
+      ctx.state.data.page = page;
       next();
     });
   } else {

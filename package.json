@@ -120,7 +120,8 @@
   },
   "semistandard": {
     "globals": [
-      "OpenSeadragon"
+      "OpenSeadragon",
+      "sessionStorage"
     ],
     "ignore": [
       "client/lib/polyfills.js"

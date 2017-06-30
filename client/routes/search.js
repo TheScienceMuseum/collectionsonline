@@ -33,6 +33,7 @@ module.exports = function (page) {
 * assign ctx.state with an object representing the data displayed on the page
 */
 function load (ctx, next) {
+  sessionStorage.setItem('backPath', ctx.path);
   // only load the data if the page hasn't been loaded before
   if (!ctx.isInitialRender) {
     loadingBar.start();

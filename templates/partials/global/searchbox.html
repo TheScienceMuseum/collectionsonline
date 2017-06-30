@@ -1,4 +1,13 @@
 <form class="searchbox" id="searchbox" action="/search">
+  {{#isResourcePage}}
+    <a href="{{#if back}}{{back}}{{else}}/{{/if}}" aria-label="back" class="searchbox__back">
+      {{#if back}}
+        {{> global/icon i="back" size="32" }}
+      {{else}}
+        {{> global/icon i="home" size="32" }}
+      {{/if}}
+    </a>
+  {{/isResourcePage}}
   <input type="search" class="searchbox__search" placeholder="Search objects, people, categories, object numbers etc." name="q" value="{{q}}">
   <button aria-label="search" class="searchbox__submit">
     {{> global/icon i="search" size="32" }}
