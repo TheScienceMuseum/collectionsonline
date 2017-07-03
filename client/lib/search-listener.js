@@ -41,7 +41,7 @@ module.exports = function () {
     }
     var params = paramify(qs);
     var query = querify(qs);
-    var url = '/search' + params + query;
+    var url = '/search' + params.toLowerCase() + query;
     page.show(url);
   });
 };

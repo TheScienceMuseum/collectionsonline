@@ -10,7 +10,7 @@ module.exports = () => {
       var q = document.getElementById('archive-q').value;
       var qs = { q };
       var archive = document.getElementById('archive-title').value;
-      qs['filter[archive]'] = archive;
+      qs['filter[archive]'] = archive.toLowerCase();
       var url = '/search/documents?' + QueryString.stringify(qs);
       page.show(url);
     });

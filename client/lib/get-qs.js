@@ -17,5 +17,5 @@ module.exports = function (pageType) {
   // select result per page
   var rpp = document.querySelector('.control--rpp select') ? document.querySelector('.control--rpp select').value : 50;
   params['page[size]'] = rpp;
-  return paramify(params) + querify(params);
+  return paramify(params).toLowerCase() + querify(params);
 };
