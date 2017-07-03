@@ -30,7 +30,12 @@ module.exports = (elastic, config, cb) => {
     require('inert'),
     require('vision'),
     require('h2o2'),
-    require('./routes/plugins/error')
+    {
+      register: require('./routes/plugins/error'),
+      options: {
+        config: config
+      }
+    }
   ], (err) => {
     if (err) {
       return cb(err);
