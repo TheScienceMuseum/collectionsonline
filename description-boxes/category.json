@@ -1,0 +1,17 @@
+{
+  "Telecommunications": {
+    "description": "short description on telecommunications (1 or 2 lines max)",
+    "sub-categories": [
+      {
+        "title": "transistor radio",
+        "link": "https://trmpxl-sa0uow1t5yn.netdna-ssl.com/wp-content/uploads/2013/12/Subcategory-in-DropDown-Featured-Image.png"
+      }
+    ],
+    "related-articles": [
+      {
+        "title": "article name",
+        "link": "http://cloudpeermedia.com/wp-content/uploads/2014/08/article_writing_1.png"
+      }
+    ]
+  }
+}
