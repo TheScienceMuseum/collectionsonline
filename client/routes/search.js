@@ -1,28 +1,34 @@
 var QueryString = require('querystring');
 var fetch = require('fetch-ponyfill')().fetch;
-var initComp = require('../lib/init-components');
-var Templates = require('../templates');
-var createQueryParams = require('../../lib/query-params/query-params');
-var getData = require('../lib/get-data.js');
-var displayFilters = require('../lib/display-filters.js');
-var filterResults = require('../lib/filter-results');
 var page = require('page');
-var searchResultsToTemplateData = require('../../lib/transforms/search-results-to-template-data');
-var searchListener = require('../lib/search-listener');
 var Snackbar = require('snackbarlightjs');
+
+var Templates = require('../templates');
+
+var parseParams = require('../../routes/route-helpers/parse-params.js');
+
+var createQueryParams = require('../../lib/query-params/query-params');
+var paramify = require('../../lib/helpers/paramify.js');
+var querify = require('../../lib/helpers/querify.js');
+var searchResultsToTemplateData = require('../../lib/transforms/search-results-to-template-data');
+
+var getData = require('../lib/get-data.js');
+var filterResults = require('../lib/filter-results');
 var filterState = require('../lib/filter-state.js');
-var displayFacet = require('../lib/display-facet.js');
-var facetsStates = require('../lib/facets-states.js');
 var toggleFacets = require('../lib/toggle-facets.js');
-var deleteFiltersFacets = require('../lib/delete-filters-facets.js');
 var updateActiveStateFacets = require('../lib/update-active-states-facets.js');
 var loadingBar = require('../lib/loading-bar');
 var hideKeyboard = require('../lib/hide-keyboard');
-var i = 0;
-var parseParams = require('../../routes/route-helpers/parse-params.js');
-var paramify = require('../../lib/helpers/paramify.js');
-var querify = require('../../lib/helpers/querify.js');
 var findCategory = require('../lib/find-category.js');
+
+var displayFilters = require('../lib/listeners/display-filters.js');
+var searchListener = require('../lib/listeners/search-listener');
+var deleteFiltersFacets = require('../lib/listeners/delete-filters-facets.js');
+var displayFacet = require('../lib/listeners/display-facet.js');
+var facetsStates = require('../lib/listeners/facets-states.js');
+var initComp = require('../lib/listeners/init-components');
+
+var i = 0;
 
 module.exports = function (page) {
   page('/search', load, render, listeners);

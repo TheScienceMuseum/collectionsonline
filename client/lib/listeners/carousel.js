@@ -1,6 +1,6 @@
 var Flickity = require('flickity');
 require('flickity-imagesloaded');
-var openseadragon = require('./openseadragon');
+var openseadragon = require('../openseadragon');
 
 module.exports = (ctx) => {
   var carousel = document.querySelector('.carousel');

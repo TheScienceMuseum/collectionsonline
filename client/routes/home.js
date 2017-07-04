@@ -1,7 +1,9 @@
-var initComp = require('../lib/init-components');
-var data = require('../../fixtures/data');
 var Templates = require('../templates');
-var searchListener = require('../lib/search-listener');
+
+var data = require('../../fixtures/data');
+
+var searchListener = require('../lib/listeners/search-listener');
+var initComp = require('../lib/listeners/init-components');
 
 module.exports = function (page) {
   page('/', render, listeners);

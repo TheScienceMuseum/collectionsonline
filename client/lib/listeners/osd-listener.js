@@ -1,4 +1,4 @@
-var openseadragon = require('../lib/openseadragon');
+var openseadragon = require('../openseadragon');
 
 module.exports = (ctx) => {
   var osd = Array.prototype.slice.call(document.getElementsByClassName('osd__toolbar')) || [];
