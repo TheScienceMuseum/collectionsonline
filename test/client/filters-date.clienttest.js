@@ -9,7 +9,7 @@ module.exports = {
     .setValue('input[name="date[from]"]', '1700')
     .click('input[name="date[to]"]')
     .pause(10000)
-    .assert.urlEquals('http://localhost:8000/search/people/date[from]/1700?q=ada&page[size]=50')
+    .assert.urlEquals('http://localhost:8000/search/people/date[from]/1700?q=ada')
     .end();
   }
 };

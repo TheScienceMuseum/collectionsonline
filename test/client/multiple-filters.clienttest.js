@@ -9,7 +9,7 @@ module.exports = {
       .waitForElementVisible('.filter__box[value="aircraft engine"]', 5000)
       .click('.filter__box[value="aircraft engine"]')
       .pause(2000)
-      .assert.urlEquals('http://localhost:8000/search/object_type/aircraft%20engine?q=engine&page[size]=50')
+      .assert.urlEquals('http://localhost:8000/search/object_type/aircraft%20engine?q=engine')
       // removed JU (11/02/2017) - need to add back
       // .assert.containsText('.searchtab:nth-of-type(1)', '29')
       // .assert.containsText('.searchtab:nth-of-type(2)', '0')
