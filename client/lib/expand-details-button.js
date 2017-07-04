@@ -1,22 +1,21 @@
 'use strict';
 
-var toogle = function (elt, button) {
-  if (elt.style.display === 'none' || elt.style.display === '') {
-    elt.style.display = 'block';
-    button.innerText = 'Hide \u2192';
-  } else {
-    elt.style.display = 'none';
+function toggle (e) {
+  var button = e.target;
+  var detailElem = button.parentElement.querySelector('dd.toggle-detail');
+
+  if (detailElem.className.indexOf('hidden') === -1) {
+    detailElem.classList.add('hidden');
     button.innerText = 'Show \u2193';
+  } else {
+    detailElem.classList.remove('hidden');
+    button.innerText = 'Hide \u2192';
   }
-};
+}
 
 module.exports = function () {
-  var body = document.querySelector('body');
-
-  body.addEventListener('click', function (e) {
-    if (e.target && e.target.className === 'hide-this') {
-      toogle(e.target.parentElement.querySelector('dd'), e.target);
-    }
+  var hideThis = document.querySelectorAll('.hide-this');
+  [].forEach.call(hideThis, function (el) {
+    el.addEventListener('click', toggle);
   });
 };
-
