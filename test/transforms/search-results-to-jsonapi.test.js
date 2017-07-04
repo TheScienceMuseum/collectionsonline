@@ -1,4 +1,5 @@
-const QueryString = require('querystring');
+const paramify = require('../../lib/helpers/paramify.js');
+const querify = require('../../lib/helpers/querify.js');
 const test = require('tape');
 const searchResultsToJsonApi = require('../../lib/transforms/search-results-to-jsonapi');
 const queryParams = require('../../lib/query-params/query-params');
@@ -8,6 +9,8 @@ const aggregationsAll = require('../helpers/aggregations-all.json');
 const aggregationsPeople = require('../helpers/aggregations-all.json');
 const aggregationsObjects = require('../helpers/aggregations-all.json');
 const aggregationsDocuments = require('../helpers/aggregations-all.json');
+
+const queryString = (params) => paramify(params) + querify(params);
 
 test(file + 'Should create valid meta count numbers', (t) => {
   t.plan(7);
@@ -172,17 +175,17 @@ test(file + 'Should create valid links on first page', (t) => {
 
   var qs;
 
-  qs = QueryString.stringify({ q: 'test', 'page[number]': 0, 'page[size]': 1 });
-  t.equal(obj.links.self, '/search?' + qs, 'Self page link was correct');
+  qs = queryString({ q: 'test', 'page[number]': 0, 'page[size]': 1 });
+  t.equal(obj.links.self, '/search' + qs, 'Self page link was correct');
 
-  qs = QueryString.stringify({ q: 'test', 'page[number]': 0, 'page[size]': 1 });
-  t.equal(obj.links.first, '/search?' + qs, 'First page link was correct');
+  qs = queryString({ q: 'test', 'page[number]': 0, 'page[size]': 1 });
+  t.equal(obj.links.first, '/search' + qs, 'First page link was correct');
 
-  qs = QueryString.stringify({ q: 'test', 'page[number]': 4, 'page[size]': 1 });
-  t.equal(obj.links.last, '/search?' + qs, 'Last page link was correct');
+  qs = queryString({ q: 'test', 'page[number]': 4, 'page[size]': 1 });
+  t.equal(obj.links.last, '/search' + qs, 'Last page link was correct');
 
-  qs = QueryString.stringify({ q: 'test', 'page[number]': 1, 'page[size]': 1 });
-  t.equal(obj.links.next, '/search?' + qs, 'Next page link was correct');
+  qs = queryString({ q: 'test', 'page[number]': 1, 'page[size]': 1 });
+  t.equal(obj.links.next, '/search' + qs, 'Next page link was correct');
 
   t.equal(obj.links.prev, null, 'Previous page link was correct');
 
@@ -237,20 +240,20 @@ test(file + 'Should create valid links on middle page', (t) => {
 
   var qs;
 
-  qs = QueryString.stringify({ q: 'test', 'page[number]': 1, 'page[size]': 1 });
-  t.equal(obj.links.self, '/search?' + qs, 'Self page link was correct');
+  qs = queryString({ q: 'test', 'page[number]': 1, 'page[size]': 1 });
+  t.equal(obj.links.self, '/search' + qs, 'Self page link was correct');
 
-  qs = QueryString.stringify({ q: 'test', 'page[number]': 0, 'page[size]': 1 });
-  t.equal(obj.links.first, '/search?' + qs, 'First page link was correct');
+  qs = queryString({ q: 'test', 'page[number]': 0, 'page[size]': 1 });
+  t.equal(obj.links.first, '/search' + qs, 'First page link was correct');
 
-  qs = QueryString.stringify({ q: 'test', 'page[number]': 4, 'page[size]': 1 });
-  t.equal(obj.links.last, '/search?' + qs, 'Last page link was correct');
+  qs = queryString({ q: 'test', 'page[number]': 4, 'page[size]': 1 });
+  t.equal(obj.links.last, '/search' + qs, 'Last page link was correct');
 
-  qs = QueryString.stringify({ q: 'test', 'page[number]': 2, 'page[size]': 1 });
-  t.equal(obj.links.next, '/search?' + qs, 'Next page link was correct');
+  qs = queryString({ q: 'test', 'page[number]': 2, 'page[size]': 1 });
+  t.equal(obj.links.next, '/search' + qs, 'Next page link was correct');
 
-  qs = QueryString.stringify({ q: 'test', 'page[number]': 0, 'page[size]': 1 });
-  t.equal(obj.links.prev, '/search?' + qs, 'Previous page link was correct');
+  qs = queryString({ q: 'test', 'page[number]': 0, 'page[size]': 1 });
+  t.equal(obj.links.prev, '/search' + qs, 'Previous page link was correct');
 
   t.end();
 });
@@ -305,19 +308,19 @@ test(file + 'Should create valid links on last page', (t) => {
 
   var qs;
 
-  qs = QueryString.stringify({ q: 'test', 'page[number]': 4, 'page[size]': 1 });
-  t.equal(obj.links.self, '/search?' + qs, 'Self page link was correct');
+  qs = queryString({ q: 'test', 'page[number]': 4, 'page[size]': 1 });
+  t.equal(obj.links.self, '/search' + qs, 'Self page link was correct');
 
-  qs = QueryString.stringify({ q: 'test', 'page[number]': 0, 'page[size]': 1 });
-  t.equal(obj.links.first, '/search?' + qs, 'First page link was correct');
+  qs = queryString({ q: 'test', 'page[number]': 0, 'page[size]': 1 });
+  t.equal(obj.links.first, '/search' + qs, 'First page link was correct');
 
-  qs = QueryString.stringify({ q: 'test', 'page[number]': 4, 'page[size]': 1 });
-  t.equal(obj.links.last, '/search?' + qs, 'Last page link was correct');
+  qs = queryString({ q: 'test', 'page[number]': 4, 'page[size]': 1 });
+  t.equal(obj.links.last, '/search' + qs, 'Last page link was correct');
 
   t.equal(obj.links.next, null, 'Next page link was correct');
 
-  qs = QueryString.stringify({ q: 'test', 'page[number]': 3, 'page[size]': 1 });
-  t.equal(obj.links.prev, '/search?' + qs, 'Previous page link was correct');
+  qs = queryString({ q: 'test', 'page[number]': 3, 'page[size]': 1 });
+  t.equal(obj.links.prev, '/search' + qs, 'Previous page link was correct');
 
   t.end();
 });
