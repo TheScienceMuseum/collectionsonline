@@ -45,6 +45,6 @@ test('Missing fields should be dealt with', function (t) {
   t.doesNotThrow(() => {
     HTMLData = buildHTMLData(noBirthdayResponse);
   }, 'Transform did not throw error');
-  t.equal(HTMLData.date, 'Unknown - 1940', 'missing birthdate should change to unknown');
+  t.equal(HTMLData.date, 'Unknown - 1908', 'missing birthdate should change to unknown');
   t.end();
 });
