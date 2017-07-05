@@ -1,8 +1,26 @@
 {
   "Science Museum": {
-    "title": "The Science Museum",
-    "thumbnail": "https://www.artfund.org/assets/what-to-see/museums-and-galleries/q-s/science-museum/1536logols.jpg",
-    "description": "short description (1 or 2 lines max)",
+    "title": "Science Museum",
+    "thumbnail": "https://collection.sciencemuseum.org.uk/assets/img/home/collections/sciencemuseum.jpg",
+    "description": "As the home of human ingenuity, the Science Museum inspires visitors with award-winning exhibitions, incredible stories of scientific achievement and iconic objects from our world-class collection.",
     "link": "http://www.sciencemuseum.org.uk/"
+  },
+  "Museum of Science and Industry": {
+    "title": "Museum of Science and Industry",
+    "thumbnail": "https://collection.sciencemuseum.org.uk/assets/img/home/collections/msi.jpg",
+    "description": "Explore the place where science met industry and the modern world began. Discover the story of Manchester’s scientific past, present and future through outstanding collections celebrating pioneers and forward-thinkers.",
+    "link": "http://msimanchester.org.uk"
+  },
+  "National Media Museum": {
+    "title": "National Science and Media Museum",
+    "thumbnail": "https://collection.sciencemuseum.org.uk/assets/img/home/collections/nmm.jpg",
+    "description": "Explore the science and culture of light and sound technologies and their impact on our lives. Traditional and interactive galleries located across seven floors celebrate film, photography, television, animation and new media.",
+    "link": "https://www.scienceandmediamuseum.org.uk"
+  },
+  "National Railway Museum": {
+    "title": "National Railway Museum",
+    "thumbnail": "https://collection.sciencemuseum.org.uk/assets/img/home/collections/nrm.jpg",
+    "description": "Delve into the largest collection of railway objects in the world, spanning over 300 years of history. Marvel at iconic locomotives, watch engineering work in progress and discover the role of railways in shaping the modern world.",
+    "link": "http://www.nrm.org.uk"
   }
 }

@@ -1,18 +1,68 @@
 {
-  "Telecommunications": {
+  "Example entry": {
     "title": "Telecommunications",
     "description": "short description on telecommunications (1 or 2 lines max)",
     "sub-categories": [
       {
         "title": "transistor radio",
-        "link": "https://trmpxl-sa0uow1t5yn.netdna-ssl.com/wp-content/uploads/2013/12/Subcategory-in-DropDown-Featured-Image.png"
+        "link": "bar.html"
       }
     ],
     "related-articles": [
       {
         "title": "article name",
-        "link": "http://cloudpeermedia.com/wp-content/uploads/2014/08/article_writing_1.png"
+        "link": "foo.html"
       }
     ]
+  },
+  "Cinematography": {
+    "description": "Discover objects tracing the technological development of motion pictures, both professional and amateur. Explore significant items from pre-cinema optical toys and film pioneer Louis Le Prince’s cameras to contemporary technologies."
+  },
+  "Photographic Technology": {
+    "description": "Delve into the story of photography’s invention, from its myriad formats and processes to apparatus from decades of technological development. As well as cameras, browse stereoscopes, lenses, shutters, darkroom equipment and more."
+  },
+  "Photographs": {
+    "description": "Thousands of images bring to light over a century of photography produced by both professionals and amateurs. Explore photography as an artistic practice as well as a valuable tool in medicine, experimental science and industry."
+  },
+  "Locomotives and Rolling Stock": {
+    "description": "From record-breaking Mallard to experimental engines and a Japanese bullet train, discover important rail vehicles which tell the story of the railways at home and around the world."
+  },
+  "Railway Posters": {
+    "description": "Featuring the work of many well-known artists, posters advertising both the railways themselves and the destinations they served offer a fascinating record of railway style and graphic design."
+  },
+  "Classical & Medieval Medicine": {
+    "description": "Belonging to one of the most significant medical collections in the world, the Science Museum’s earliest objects date from antiquity, offering unique insights into early ideas about health and medicine."
+  },
+  "Radio Communication": {
+    "description": "Tune in to the technological development of wireless telegraphy and explore objects relating to the history of radio and television transmission and reception."
+  },
+  "Telecommunications": {
+    "description": "Explore objects reflecting major developments in how we communicate, including the BT Connected Earth collection, which comprises a wide range of telecommunications equipment.",
+    "sub-categories": [
+      {
+        "title": "Telephones",
+        "link": "/search/categories/telecommunications/object_type/telephone"
+      },
+      {
+        "title": "Mobile telephones",
+        "link": "/search/categories/telecommunications/object_type/mobile%20telephone"
+      },
+      {
+        "title": "Telephone handsets",
+        "link": "/search/categories/telecommunications/object_type/telephone%20handset"
+      }
+    ],
+    "related-articles": [
+      {
+        "title": "The Information Age",
+        "link": "http://www.sciencemuseum.org.uk/visitmuseum/Plan_your_visit/exhibitions/information_age"
+      }
+    ]
+  },
+  "Computer & Data Processing": {
+    "description": "From slide rules to Douglas Hartree’s differential analyser and Ferranti’s early computers, these objects trace the development of calculating and computing technology."
+  },
+  "Textile Industry": {
+    "description": "Machinery and other objects - from carding engines and looms to printing blocks and fabric specimens - tell the story of Britain’s role in textile manufacturing from the Industrial Revolution onwards."
   }
 }
