@@ -47,10 +47,10 @@ function load (ctx, next, type) {
       var data = JSONToHTML(json);
 
       ctx.state.data = data;
+
       // analytics
-      if (data.inProduction) {
-        window.dataLayer.push(data.layer);
-      }
+      window.dataLayer.push(JSON.parse(data.layer));
+      window.dataLayer.push({'Level5': data.title});
 
       ctx.state.data.page = type;
       next();
