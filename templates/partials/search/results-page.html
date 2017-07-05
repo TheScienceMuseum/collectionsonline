@@ -1,44 +1,6 @@
 {{!--  I'm hiding the filters by default for grid view, but showing for list. TBC --}}
 
 <div class="page" role="main">
-  {{#if descriptionBox}}
-    <div class="description-box">
-      {{#if descriptionBox.category}}
-        <h3>{{descriptionBox.category.title}}</h3>
-        <h4>{{descriptionBox.category.description}}</h4>
-        <h5>Popular Objects</h5>
-        <div>
-        {{#each descriptionBox.category.sub-categories}}
-          <a href="{{link}}">{{title}}</a>
-        {{/each}}
-        </div>
-        <h5>Read about</h5>
-        <div>
-        {{#each descriptionBox.category.related-articles}}
-          <a href="{{link}}">{{title}}</a>
-        {{/each}}
-        </div>
-      {{/if}}
-
-      {{#if descriptionBox.gallery}}
-        <h3>{{descriptionBox.gallery.title}}</h3>
-        <img src="{{descriptionBox.gallery.thumbnail}}">
-        <div>{{descriptionBox.gallery.description}}</div>
-        <a href="{{descriptionBox.gallery.link-to-gallery-page}}">
-          View this gallery
-        </a>
-      {{/if}}
-
-      {{#if descriptionBox.museum}}
-        <h3>{{descriptionBox.museum.title}}</h3>
-        <img src="{{descriptionBox.museum.thumbnail}}">
-        <div>{{descriptionBox.museum.description}}</div>
-        <a href="{{descriptionBox.museum.link}}">
-          View this museum
-        </a>
-      {{/if}}
-    </div>
-  {{/if}}
   <div class="controls row">
     <div class="large-9 medium-8 small-6 columns">
       {{#if results.length}}
