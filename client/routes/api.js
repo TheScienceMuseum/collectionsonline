@@ -1,6 +1,6 @@
-var getData = require('../lib/get-data.js');
 var Snackbar = require('snackbarlightjs');
 var Templates = require('../templates');
+var getData = require('../lib/get-data.js');
 
 module.exports = function (page) {
   page('/api/:type/:id', load, render);

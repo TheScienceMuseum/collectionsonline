@@ -1,5 +1,5 @@
-var getData = require('./get-data');
-var Templates = require('../templates');
+var getData = require('../get-data');
+var Templates = require('../../templates');
 
 module.exports = function (ctx) {
   var url = '/articles/' + ctx.params.id;
