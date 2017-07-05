@@ -23,7 +23,8 @@ test('createDescriptionBox - category', (t) => {
     categories: {Telecommunications: true}
   };
   const actual = Object.keys(createDescriptionBox(query).category);
-  const expected = ['title', 'description', 'sub-categories', 'related-articles'];
+  // const expected = ['title', 'description', 'sub-categories', 'related-articles'];
+  const expected = ['description', 'sub-categories', 'related-articles'];
 
   t.deepEqual(actual, expected);
   t.end();
@@ -38,7 +39,8 @@ test('createDescriptionBox - gallery', (t) => {
     museum: {'National Railway Museum': true}
   };
   const actual = Object.keys(createDescriptionBox(query).gallery);
-  const expected = ['title', 'thumbnail', 'description', 'link-to-gallery-page'];
+  // const expected = ['title', 'thumbnail', 'description', 'link-to-gallery-page'];
+  const expected = ['description'];
 
   t.deepEqual(actual, expected);
   t.end();
