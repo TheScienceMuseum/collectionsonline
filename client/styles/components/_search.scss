@@ -63,16 +63,34 @@
   background-color: white;
   margin: 2rem 0;
   border: 1px solid rgba(black, 0.5);
-  border-radius: 0.25rem;
 
   &--focussed {
-    border: 1px solid $c-blue;
+    border: 1px solid $black;
     box-shadow: 0 2px 8px rgba(black, 0.2);
     .icon-search { fill: $c-blue; }
   }
 
-  &--awesomplete-open {
-    border-radius: 0.25rem 0.25rem 0 0;
+  &--awesomplete-open {}
+
+  &__back + & { // if .searchbox preceded by back btn
+    margin-left: rem-calc(58);
+  }
+
+  &__back {
+    width: rem-calc(58); //3.5 + 2px border
+    height: rem-calc(58);
+    margin: 2rem 0;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: left;
+    background-color: rgba(black, 0.1);
+    transition: background-color $timing-defaults;
+
+    &:hover {
+      background-color: rgba(black, 0.2);
+    }
   }
 
   &__search {
@@ -80,13 +98,14 @@
     width: calc(100% - 3.5rem);
     height: 3.5rem;
     padding: 1rem;
-    border-radius: 0.25rem;
+    font-size: rem-calc(24);
+    font-weight: 500;
+
     &, &:focus {
       border: 0;
       box-shadow: none;
     }
-    font-size: rem-calc(24);
-    font-weight: 500;
+
     @include breakpoint(small only) {
       &::placeholder {
         color: transparent;
@@ -98,12 +117,17 @@
     height: 3.5rem;
     width: 3.5rem;
     position: absolute;
-    top:0;
+    top: 0;
     right: 0;
     border: 0;
     background-color: transparent;
     color: grey(50); // applied to svg fill via magic of currentColor!
-    &:hover { color: $c-blue; }
+    transition: all $timing-defaults;
+
+    &:hover {
+      color: $black;
+      transform: scale(1.1, 1.1);
+    }
   }
 
   &__filters {
@@ -115,11 +139,13 @@
   //reused slightly smaller on archive section
   &--archive {
     margin-top: 0;
+
     .searchbox__search {
       padding: 0.5rem;
       height: 2.5rem;
       font-size: rem-calc(16);
     }
+
     .searchbox__submit {
       height: 2.5rem;
       width: 2.5rem;
