@@ -1,6 +1,6 @@
 var Templates = require('../templates');
-var initComp = require('../lib/init-components');
-var searchListener = require('../lib/search-listener');
+var initComp = require('../lib/listeners/init-components');
+var searchListener = require('../lib/listeners/search-listener');
 
 module.exports = function (page) {
   page(render);
@@ -26,4 +26,3 @@ module.exports = function (page) {
     initComp();
   }
 };
-

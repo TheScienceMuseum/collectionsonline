@@ -23,7 +23,7 @@ module.exports = function (request) {
     }
   }
 
-  var twitterBot = request.headers['user-agent'] && (request.headers['user-agent'].indexOf('Twitterbot') > -1);
+  var twitterBot = (request.headers['user-agent'] || '').indexOf('Twitterbot') > -1;
   if (twitterBot) {
     return 'html';
   }
