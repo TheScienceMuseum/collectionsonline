@@ -57,6 +57,9 @@ function load (ctx, next) {
       }
       var data = searchResultsToTemplateData(queryParams, json);
       ctx.state.data = data;
+
+      window.dataLayer.push(JSON.parse(data.layer));
+
       next();
     });
   } else {
