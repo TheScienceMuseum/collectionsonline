@@ -38,6 +38,43 @@ test('Should set isCurrent on current page', (t) => {
   t.end();
 });
 
+test('Should not have break when <= 6 pages are available', (t) => {
+  t.plan(7);
+
+  const currentPageNumber = 0;
+  const totalPages = 6;
+  const opts = {
+    maxLinks: 6,
+    createPageLink: (p) => `http://example.org/${p.pageNumber}`
+  };
+
+  const pages = Pagination.pages(currentPageNumber, totalPages, opts);
+
+  t.equal(pages.length, 6, 'Total pages was 6');
+
+  pages.forEach((page, i) => {
+    t.notEqual(page, null, 'No break on page ' + i);
+  });
+
+  t.end();
+});
+
+test('Should not have break when current page is near end', (t) => {
+  t.plan(1);
+
+  const currentPageNumber = 7;
+  const totalPages = 10;
+  const opts = {
+    maxLinks: 6,
+    createPageLink: (p) => `http://example.org/${p.pageNumber}`
+  };
+
+  const pages = Pagination.pages(currentPageNumber, totalPages, opts);
+
+  t.equal(pages.length, 9, 'Total pages was 9');
+  t.end();
+});
+
 test('Should show 3 pages when only 3 pages are available', (t) => {
   t.plan(1);
 
