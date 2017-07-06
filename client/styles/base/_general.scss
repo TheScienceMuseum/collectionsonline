@@ -55,6 +55,7 @@ button {
     display: block;
     margin: 0 auto;
     height: 1.5rem;
+    max-width: none;
     margin: 1em 0;
 
     @include breakpoint(360) {
