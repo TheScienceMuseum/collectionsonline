@@ -7,7 +7,11 @@
       {{> global/searchbox filters="filters"}}
 
       {{#if descriptionBox}}
-        <div class="description-box">
+        {{#if descriptionBox.museum}}
+          <div class="description-box description-box--museum" style="background-image:url({{descriptionBox.museum.thumbnail}})">{{else}}
+          <div class="description-box">
+        {{/if}}
+        
           <div class="row">
             
             {{#if descriptionBox.category}}
@@ -55,19 +59,12 @@
             {{/if}}
 
             {{#if descriptionBox.museum}}
-              <div class="columns medium-6">
+              <div class="columns large-9">
                 <h3 class="description-box__main-title">{{descriptionBox.museum.title}}</h3>
                 <p>{{descriptionBox.museum.description}}</p>
-              </div>
-              <div class="columns medium-3">
-                <h5 class="description-box__list-title">&nbsp;</h5>
                 <ul class="description-box__list">
                   <li>{{> global/icon i="external" }}<a href="{{descriptionBox.museum.link}}">Visitor information</a></li>
                 </ul>
-              </div>
-              <div class="columns medium-3">
-                <h5 class="description-box__list-title">&nbsp;</h5>
-                <img src="{{descriptionBox.museum.thumbnail}}">
               </div>
             {{/if}}
             
