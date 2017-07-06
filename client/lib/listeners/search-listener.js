@@ -2,9 +2,10 @@
 * Add event listener to the searchbox
 */
 var page = require('page');
-var loadingBar = require('./loading-bar');
-var paramify = require('../../lib/helpers/paramify.js');
-var querify = require('../../lib/helpers/querify.js');
+
+var loadingBar = require('../loading-bar');
+var paramify = require('../../../lib/helpers/paramify.js');
+var querify = require('../../../lib/helpers/querify.js');
 
 module.exports = function () {
   var searchBoxEl = document.getElementById('searchbox');
@@ -41,7 +42,7 @@ module.exports = function () {
     }
     var params = paramify(qs);
     var query = querify(qs);
-    var url = '/search' + params + query;
+    var url = '/search' + params.toLowerCase() + query;
     page.show(url);
   });
 };

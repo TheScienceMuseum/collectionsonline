@@ -50,14 +50,14 @@ module.exports = {
       description: 'Search across a snapshot of objects representing the development of the internet',
       figure: '/assets/img/home/collections/informationage.jpg',
       columns: 'small-6 medium-3',
-      link: '/search?filter%5Bmuseum%5D=Science%20Museum&filter%5Bgallery%5D=Information%20Age%20Gallery%3A%20Web&page%5Bsize%5D=50&page%5Btype%5D=search'
+      link: '/search/gallery/information%20age%20gallery%3A%20web'
     }, {
       type: 'collection',
       title: 'Cinematography',
       figure: '/assets/img/home/collections/cinematography.jpg',
       description: 'Objects representing the history of cinema: from magic lanterns to digital technologies',
       columns: 'small-6 medium-3',
-      link: '/search?filter%5Bhas_image%5D=true&filter%5Bcategories%5D=Cinematography&page%5Bsize%5D=50&page%5Btype%5D=search'
+      link: '/search/categories/cinematography/images'
     }, {
       type: 'collection',
       title: 'The Babbage Papers',
@@ -71,7 +71,7 @@ module.exports = {
       description: 'Explore the objects in Mathematics: The Winton Gallery ',
       figure: '/assets/img/home/collections/mathematics.jpg',
       columns: 'small-6 medium-3',
-      link: '/search?filter[gallery]=Mathematics:%20The%20Winton%20Gallery&filter[museum]=Science%20Museum'
+      link: '/search/gallery/mathematics:%20the%20winton%20gallery'
     }]
   }]
 };
