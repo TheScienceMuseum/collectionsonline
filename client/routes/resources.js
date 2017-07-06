@@ -1,14 +1,18 @@
-var getData = require('../lib/get-data.js');
-var JSONToHTML = require('../../lib/transforms/json-to-html-data');
 var Snackbar = require('snackbarlightjs');
-var initComp = require('../lib/init-components.js');
-var searchListener = require('../lib/search-listener');
-var osdListener = require('../lib/osd-listener');
-var downloadImageListener = require('../lib/download-image');
-var archiveListeners = require('../lib/archive-listeners');
-var getArticles = require('../lib/get-articles');
-var hideKeyboard = require('../lib/hide-keyboard');
+
 var Templates = require('../templates');
+
+var JSONToHTML = require('../../lib/transforms/json-to-html-data');
+
+var getData = require('../lib/get-data.js');
+var hideKeyboard = require('../lib/hide-keyboard');
+
+var getArticles = require('../lib/listeners/get-articles');
+var searchListener = require('../lib/listeners/search-listener');
+var downloadImageListener = require('../lib/listeners/download-image');
+var osdListener = require('../lib/listeners/osd-listener');
+var archiveListeners = require('../lib/listeners/archive-listeners');
+var initComp = require('../lib/listeners/init-components.js');
 
 module.exports = function (type) {
   return {
@@ -43,10 +47,10 @@ function load (ctx, next, type) {
       var data = JSONToHTML(json);
 
       ctx.state.data = data;
+
       // analytics
-      if (data.inProduction) {
-        window.dataLayer.push(data.layer);
-      }
+      window.dataLayer.push(JSON.parse(data.layer));
+      window.dataLayer.push({'Level5': data.title});
 
       ctx.state.data.page = type;
       next();

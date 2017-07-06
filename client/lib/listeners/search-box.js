@@ -1,6 +1,6 @@
 const Awesomplete = require('awesomplete');
 const debounce = require('lodash.debounce');
-const getData = require('./get-data');
+const getData = require('../get-data');
 
 module.exports = function () {
   let currentRequestId = null;
