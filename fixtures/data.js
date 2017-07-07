@@ -68,7 +68,7 @@ module.exports = {
     }, {
       type: 'collection',
       title: 'Railway Posters',
-      description: 'Explore our colletion of railway posters',
+      description: 'Explore our collection of historic railway posters',
       figure: '/assets/img/home/collections/railway-posters.jpg',
       columns: 'small-6 medium-3',
       link: '/search/images/categories/railway%20posters,%20notices%20&%20handbills'
