@@ -6,7 +6,7 @@ test('createDescriptionBox - with category that doesn\'t have description yet', 
     q: {book: true},
     'page[size]': {'50': true},
     type: {all: true},
-    categories: {'Printed Books': true}
+    categories: {'Non existent category': true}
   };
   const actual = createDescriptionBox(query);
   const expected = undefined;
@@ -26,6 +26,20 @@ test('createDescriptionBox - category', (t) => {
   const expected = ['title', 'description', 'sub-categories', 'related-articles'];
 
   t.deepEqual(actual, expected);
+  t.end();
+});
+
+test('createDescriptionBox - with gallery which doesn\'t have description yet', (t) => {
+  const query = {
+    q: {book: true},
+    'page[size]': {'50': true},
+    type: {all: true},
+    gallery: {'Non existent gallery': true}
+  };
+  const actual = createDescriptionBox(query);
+  const expected = undefined;
+
+  t.equal(actual, expected);
   t.end();
 });
 
