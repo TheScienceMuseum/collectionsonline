@@ -3,8 +3,40 @@
   color: white;
   padding: 1rem 0.5rem;
   margin-bottom: 2rem;
+  position: relative;
+  @include breakpoint(small only) {
+    display: none;
+  }
 
-  p {
+  &--museum {
+    @include breakpoint(medium up) {
+      display: flex;
+    }
+    min-height: 15rem;
+    align-items: center;
+    background: {
+      repeat: no-repeat;
+      size: cover;
+      position: center center;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    right: 0.75rem;
+    top: 0.75rem;
+    color: white;
+    cursor: pointer;
+    font-size: 0;
+
+    svg {
+      font-size: 1.5rem;
+    }
+  }
+
+  p,
+  ul {
+    font-weight: 400; //never reverse out 300!
     margin: 0;
     line-height: 1.25;
   }
@@ -24,7 +56,9 @@
     @include ul-icons;
     svg {
       vertical-align: middle;
-      margin-bottom: rem-calc(2);
+      margin-bottom: rem-calc(4);
+      margin-right: rem-calc(4);
+      color: $c-teal;
     }
   }
 

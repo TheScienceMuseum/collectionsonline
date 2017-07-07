@@ -21,7 +21,9 @@
     "description": "How are satellites, far away in space, connected to our lives on earth? Discover how these networks relay information between earth and space, delivering data to parts of the world that other technologies cannot reach."
   },
   "Mathematics: The Winton Gallery": {
-    "description": "How has mathematics shaped our world? Explore stories spanning 400 years of human ingenuity, revealing the fundamental role mathematicians, their tools and ideas have played in building the world we live in."
+    "description": "How has mathematics shaped our world? Explore stories spanning 400 years of human ingenuity, revealing the fundamental role mathematicians, their tools and ideas have played in building the world we live in.",
+    "thumbnail": "https://static1.squarespace.com/static/5818888f5016e166cfa5e0af/t/5846c62b9de4bb2223a8c5c1/1481033266991/highlights.jpg",
+    "link-to-gallery-page": "https://beta.sciencemuseum.org.uk/mathematics"
   },
   "Making the Modern World Gallery": {
     "description": "Discover remarkable objects from 250 years of science and technology. Come face-to-face with iconic items, from Stephenson’s Rocket to the Apollo 10 command module and the first Apple computer."
