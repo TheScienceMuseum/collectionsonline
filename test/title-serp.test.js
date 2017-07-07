@@ -51,7 +51,7 @@ test(file + 'serp title - no filters selected', (t) => {
     museum: { 'National Railway Museum': true }
   };
   var title = getTitlePage('', selectedFilters);
-  t.equal(title, 'On display at the National Railway Museum : Warehouse | Science Museum Group Collection', 'filter museum & gallery - title ok');
+  t.equal(title, 'On display at the National Railway Museum: Warehouse | Science Museum Group Collection', 'filter museum & gallery - title ok');
   t.end();
 });
 
@@ -63,7 +63,6 @@ test(file + 'serp title - no filters selected', (t) => {
     museum: { 'National Railway Museum': true }
   };
   var title = getTitlePage('', selectedFilters);
-  t.equal(title, 'Railway Models on display at the National Railway Museum : Warehouse | Science Museum Group Collection', 'filter museum & gallery - title ok');
+  t.equal(title, 'Railway Models on display at the National Railway Museum: Warehouse | Science Museum Group Collection', 'filter museum & gallery - title ok');
   t.end();
 });
-
