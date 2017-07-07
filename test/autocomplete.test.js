@@ -13,7 +13,7 @@ testWithServer(file + 'Should suggest completion', {}, (t, ctx) => {
 
   ctx.server.inject(request, (res) => {
     t.equal(res.statusCode, 200, 'Status was OK');
-    t.ok(res.result.data.some((d) => d.attributes.summary_title === 'NeXT Computer (personal computer)'), 'Autocompleted Rocket successfully');
+    t.ok(res.result.data.some((d) => d.attributes.summary_title === 'NeXT cube computer, 1990 (personal computer)'), 'Autocompleted Rocket successfully');
     t.end();
   });
 });
