@@ -22,7 +22,7 @@
       {{#isequal this.type 'people' this}}
         {{#seemore related.objects}}
           <div class="large-2 medium-3 small-4 columns end">
-            <a href="/search/objects?filter[makers]={{normalise this.title this}}">
+            <a href="/search/objects/makers/{{normalise this.title this}}">
               <div class="resultcard resultcard--seemore see-more-objects">
                 <figure class="resultcard__figure">{{> global/icon i="search" size="48" }}</figure>
                 <div class="resultcard__info">
