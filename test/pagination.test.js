@@ -1,92 +1,158 @@
 const test = require('tape');
 const Pagination = require('../lib/pagination');
 
-test('Should have break when > 6 pages are available', (t) => {
-  t.plan(2);
+[
+  {
+    message: 'No ellipses for less than 10 pages',
+    currentPageNumber: 0,
+    totalPages: 9,
+    expected: [
+      {pageNumber: 0, isCurrent: true, link: 'http://example.org/0'},
+      {pageNumber: 1, isCurrent: false, link: 'http://example.org/1'},
+      {pageNumber: 2, isCurrent: false, link: 'http://example.org/2'},
+      {pageNumber: 3, isCurrent: false, link: 'http://example.org/3'},
+      {pageNumber: 4, isCurrent: false, link: 'http://example.org/4'},
+      {pageNumber: 5, isCurrent: false, link: 'http://example.org/5'},
+      {pageNumber: 6, isCurrent: false, link: 'http://example.org/6'},
+      {pageNumber: 7, isCurrent: false, link: 'http://example.org/7'},
+      {pageNumber: 8, isCurrent: false, link: 'http://example.org/8'}
+    ]
+  },
+  {
+    message: 'No ellipses for less than 10 pages, from any current page',
+    currentPageNumber: 4,
+    totalPages: 9,
+    expected: [
+      {pageNumber: 0, isCurrent: false, link: 'http://example.org/0'},
+      {pageNumber: 1, isCurrent: false, link: 'http://example.org/1'},
+      {pageNumber: 2, isCurrent: false, link: 'http://example.org/2'},
+      {pageNumber: 3, isCurrent: false, link: 'http://example.org/3'},
+      {pageNumber: 4, isCurrent: true, link: 'http://example.org/4'},
+      {pageNumber: 5, isCurrent: false, link: 'http://example.org/5'},
+      {pageNumber: 6, isCurrent: false, link: 'http://example.org/6'},
+      {pageNumber: 7, isCurrent: false, link: 'http://example.org/7'},
+      {pageNumber: 8, isCurrent: false, link: 'http://example.org/8'}
+    ]
+  },
+  {
+    message: 'Large number results, first page',
+    currentPageNumber: 0,
+    totalPages: 12,
+    expected: [
+      {pageNumber: 0, isCurrent: true, link: 'http://example.org/0'},
+      {pageNumber: 1, isCurrent: false, link: 'http://example.org/1'},
+      null,
+      {pageNumber: 10, isCurrent: false, link: 'http://example.org/10'},
+      {pageNumber: 11, isCurrent: false, link: 'http://example.org/11'}
+    ]
+  },
+  {
+    message: 'Ellipses either side for non edge cases',
+    currentPageNumber: 5,
+    totalPages: 10,
+    expected: [
+      {pageNumber: 0, isCurrent: false, link: 'http://example.org/0'},
+      {pageNumber: 1, isCurrent: false, link: 'http://example.org/1'},
+      null, // ellipses
+      {pageNumber: 4, isCurrent: false, link: 'http://example.org/4'},
+      {pageNumber: 5, isCurrent: true, link: 'http://example.org/5'},
+      {pageNumber: 6, isCurrent: false, link: 'http://example.org/6'},
+      null, // ellipses
+      {pageNumber: 8, isCurrent: false, link: 'http://example.org/8'},
+      {pageNumber: 9, isCurrent: false, link: 'http://example.org/9'}
+    ]
+  },
+  {
+    message: 'No beginning ellipses for numbers near the start',
+    currentPageNumber: 4,
+    totalPages: 10,
+    expected: [
+      {pageNumber: 0, isCurrent: false, link: 'http://example.org/0'},
+      {pageNumber: 1, isCurrent: false, link: 'http://example.org/1'},
+      {pageNumber: 2, isCurrent: false, link: 'http://example.org/2'},
+      {pageNumber: 3, isCurrent: false, link: 'http://example.org/3'},
+      {pageNumber: 4, isCurrent: true, link: 'http://example.org/4'},
+      {pageNumber: 5, isCurrent: false, link: 'http://example.org/5'},
+      null, // ellipses
+      {pageNumber: 8, isCurrent: false, link: 'http://example.org/8'},
+      {pageNumber: 9, isCurrent: false, link: 'http://example.org/9'}
+    ]
+  },
+  {
+    message: 'No ending ellipses for numbers near the end',
+    currentPageNumber: 6,
+    totalPages: 10,
+    expected: [
+      {pageNumber: 0, isCurrent: false, link: 'http://example.org/0'},
+      {pageNumber: 1, isCurrent: false, link: 'http://example.org/1'},
+      null, // ellipses
+      {pageNumber: 5, isCurrent: false, link: 'http://example.org/5'},
+      {pageNumber: 6, isCurrent: true, link: 'http://example.org/6'},
+      {pageNumber: 7, isCurrent: false, link: 'http://example.org/7'},
+      {pageNumber: 8, isCurrent: false, link: 'http://example.org/8'},
+      {pageNumber: 9, isCurrent: false, link: 'http://example.org/9'}
+    ]
+  }
+].forEach((testObj) => {
+  test(
+    (testObj.message || 'Pagination') + ' - ' +
+      'Current Page: ' + testObj.currentPageNumber + ', ' +
+      'Total Pages: ' + testObj.totalPages,
+    (t) => {
+      t.plan(1);
 
-  const currentPageNumber = 0;
-  const totalPages = 10;
-  const opts = {
-    maxLinks: 6,
-    createPageLink: (p) => `http://example.org/${p.pageNumber}`
-  };
+      const opts = {
+        maxLinks: 6,
+        createPageLink: (p) => `http://example.org/${p.pageNumber}`
+      };
 
-  const pages = Pagination.pages(currentPageNumber, totalPages, opts);
+      const currentPageNumber = testObj.currentPageNumber;
+      const totalPages = testObj.totalPages;
 
-  t.equal(pages.length, 7, 'Total pages was 7');
-  t.notOk(pages[4], 'Found break at position 4');
+      const actual = Pagination.pages(currentPageNumber, totalPages, opts);
+      const expected = testObj.expected;
 
-  t.end();
+      const message = constructTestMessage(actual, expected);
+
+      t.deepEqual(actual, expected, message);
+      t.end();
+    }
+  );
 });
 
-test('Should set isCurrent on current page', (t) => {
-  t.plan(2);
+function constructTestMessage (actual, expected) {
+  var isWrong;
 
-  const currentPageNumber = 3;
-  const totalPages = 10;
-  const opts = {
-    maxLinks: 6,
-    createPageLink: (p) => `http://example.org/${p.pageNumber}`
-  };
+  actual.forEach((obj, i) => {
+    if (isWrong) {
+      return;
+    }
 
-  const pages = Pagination.pages(currentPageNumber, totalPages, opts);
-  const currentPage = pages.find((p) => p && p.isCurrent);
+    if (obj === null || expected[i] === null) {
+      if (obj === null && expected[i] === null) {
+        return;
+      }
+      isWrong = true;
+      return;
+    }
 
-  t.ok(currentPage, 'Current page was found');
-  t.equal(currentPage.pageNumber, 3, 'Current page number was correct');
-
-  t.end();
-});
-
-test('Should not have break when <= 6 pages are available', (t) => {
-  t.plan(7);
-
-  const currentPageNumber = 0;
-  const totalPages = 6;
-  const opts = {
-    maxLinks: 6,
-    createPageLink: (p) => `http://example.org/${p.pageNumber}`
-  };
-
-  const pages = Pagination.pages(currentPageNumber, totalPages, opts);
-
-  t.equal(pages.length, 6, 'Total pages was 6');
-
-  pages.forEach((page, i) => {
-    t.notEqual(page, null, 'No break on page ' + i);
+    ['isCurrent', 'link', 'pageNumber'].forEach((key) => {
+      if (obj[key] !== expected[i][key]) {
+        isWrong = true;
+      }
+    });
   });
 
-  t.end();
-});
-
-test('Should not have break when current page is near end', (t) => {
-  t.plan(1);
-
-  const currentPageNumber = 7;
-  const totalPages = 10;
-  const opts = {
-    maxLinks: 6,
-    createPageLink: (p) => `http://example.org/${p.pageNumber}`
+  const constructReadable = (pageObjs) => {
+    return pageObjs
+      .map((pageObj) => pageObj === null ? '...' : pageObj.pageNumber)
+      .join(', ');
   };
 
-  const pages = Pagination.pages(currentPageNumber, totalPages, opts);
-
-  t.equal(pages.length, 9, 'Total pages was 9');
-  t.end();
-});
-
-test('Should show 3 pages when only 3 pages are available', (t) => {
-  t.plan(1);
-
-  const currentPageNumber = 0;
-  const totalPages = 3;
-  const opts = {
-    maxLinks: 6,
-    createPageLink: (p) => `http://example.org/${p.pageNumber}`
-  };
-
-  const pages = Pagination.pages(currentPageNumber, totalPages, opts);
-
-  t.equal(pages.length, 3, 'Total pages was 3');
-  t.end();
-});
+  if (isWrong) {
+    return 'Expected: ' + constructReadable(expected) + '\n' +
+           'Actually got: ' + constructReadable(actual);
+  } else {
+    return 'Pages match';
+  }
+}
