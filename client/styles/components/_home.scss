@@ -163,6 +163,15 @@
 .home-collections {
   background-color: #fff;
 
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .column:not(h2) {
+    margin-bottom: 2em;
+  }
+
   &__h {
     font-size: 1.5rem;
     @include breakpoint(medium up) { font-size: 2rem; }

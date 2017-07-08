@@ -51,12 +51,12 @@
 
 </section>
 
-{{#each collectionGroup}}
-  <section class="home-collections">
+<section class="home-collections">
+  {{#each collectionGroup}}
     <div class="row">
       <h2 class="home-collections__h columns">{{this.title}}</h2>
       {{#each this.collection}}
-        <div class="{{ this.columns }} columns end">
+        <div class="{{ this.columns }} columns">
           <a href="{{ this.link }}">
             <div class="resultcard {{#if type}}resultcard--{{ this.type }}{{/if}}">
               <figure class="resultcard__figure">
@@ -71,8 +71,8 @@
         </div>
       {{/each}}
     </div>
-  </section>
-{{/each}}
+  {{/each}}
+</section>
 
 
 {{> global/global-footer}}
