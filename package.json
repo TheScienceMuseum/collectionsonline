@@ -81,7 +81,7 @@
     "build:js": "browserify client/main.js --debug | exorcist public/bundle.js.map > public/bundle.js",
     "build:css": "run-s build:css:*",
     "build:css:sass": "node-sass client/styles/main.scss public/bundle.css --include-path node_modules/foundation-sites/scss --error-bell",
-    "build:css:prefix": "postcss --u autoprefixer -b 'last 2 versions, ie >= 9' -i public/bundle.css -o public/bundle.css",
+    "build:css:prefix": "postcss --u autoprefixer -i public/bundle.css -o public/bundle.css",
     "build:img": "cp client/icons/* public/assets/icons",
     "build:svg": "svg-sprite --view --vscss --view-sprite=svg/sprite.view.svg --symbol --symbol-example --symbol-sprite=svg/sprite.symbol.svg --dest=public/assets/icons client/icons/**/*.svg",
     "minify": "run-p minify:*",
@@ -126,5 +126,10 @@
     "ignore": [
       "client/lib/polyfills.js"
     ]
-  }
+  },
+  "browserslist": [
+    "last 2 versions",
+    ">1% in GB",
+    "ie >= 10"
+  ]
 }
