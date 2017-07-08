@@ -7,18 +7,6 @@
 
 @mixin resultclass {
   position: relative;
-  color: black;
-  background-color: white;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(black,0.2);
-  transition: background-color $timing-defaults, box-shadow $timing-defaults, transform $timing-defaults;
-  &:hover {
-    //background-color: grey(20);
-    box-shadow: 0 2px 8px rgba(black,0.4);
-    //transform: scale3d(1.02,1.02,1);
-    //top: -12px;
-    transform: translate3d(0, -2px, 0);
-  }
 
   &__figure {
     margin: 0;
@@ -36,6 +24,7 @@
       right: 0;
       bottom: 0;
       margin: auto;
+      object-fit: cover;
       object-position: center;
     }
 
@@ -61,38 +50,43 @@
 
   &__title {
     font-weight: 600;
-    font-size: rem-calc(14);
+    font-size: rem-calc(16);
+    text-transform: none;
     @include breakpoint(medium) {
-      font-size: rem-calc(16);
+      font-size: rem-calc(18);
     }
     line-height: rem-calc(18);
     margin: 0 0 0.25rem 0;
-    color: grey(90);
   }
+
   &__info {
-    padding: 0.5rem;
+    padding: 0.5rem 0;
     @include breakpoint(medium) {
-      padding: 1rem;
+      padding: 1rem 0;
     }
   }
+
   &__description {
-    font-weight: 400;
-    font-size: rem-calc(14);
-    line-height: 1rem;
-    color: grey(80);
+    font-weight: 300;
+    font-size: rem-calc(16);
+    line-height: 1.2rem;
     margin: 0;
   }
   p { margin: 0; }
 
 
-  @each $type, $c in $recordtypes {
-    &--#{$type} {
-      border-color: $c;
-      .resultcard__figure {
-        background-color: $c;
-      }
-      .icon { color: $c; }
+  @each $type, $props in $recordtypes {
+    &--#{$type} &__info {
+      // border-color: $c;
     }
+
+    &--#{$type} &__figure {
+      background-color: map-get($props, bg);
+      @include sm-gradient(map-get($props, grad));
+      // border-color: $c;
+    }
+
+    &--#{$type} .icon { color: map-get($props, bg); }
   }
 
   //used as related results, slight smaller
@@ -102,6 +96,44 @@
 
 }
 
+@mixin resulthover {
+  transition: background-color $timing-defaults, box-shadow $timing-defaults, transform $timing-defaults;
+
+  &:before {
+    content: '';
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    transition: background-color $timing-defaults, transform $timing-defaults;
+    position: absolute;
+    z-index: 0;
+  }
+
+  &:hover {
+    &:before {
+      transform: scale3d(1.06, 1.06, 1);
+    }
+
+    img,
+    figcaption {
+      transform: scale3d(1.06, 1.06, 1);
+    }
+  }
+
+  &__figure {
+    img {
+      transition: transform $timing-defaults;
+    }
+
+    figcaption {
+      transition: transform $timing-defaults;
+    }
+  }
+
+}
+
+
 //-----------------------------------------------------------------------------
 // .resultlist
 // The list view display of a result
@@ -109,9 +141,20 @@
 
 .resultlist {
   @include resultclass;
-  //border-bottom: 1px grey(30) solid;
-  border-left: 0.25rem grey(30) solid;
-  margin-bottom: 1px;
+  border: 1px solid black;
+  margin-bottom: -1px;
+  color: black;
+
+  &:hover {
+    background-color: rgba(black, 0.05);
+  }
+
+  &__info {
+    padding: 0.5rem;
+    @include breakpoint(medium) {
+      padding: 1rem;
+    }
+  }
 
   &__figure {
     width: 4rem; //aspect 4:3
@@ -119,6 +162,11 @@
     float: right;
     margin: 1rem;
   }
+
+  &__description {
+    line-height: 1.2;
+  }
+
   .icon {
     position: relative;
     top: 0.15rem;
@@ -133,28 +181,30 @@
 
 .resultcard {
   @include resultclass;
-  margin-bottom: 1rem;
-  border-bottom: 0.25rem grey(30) solid;
+  @include resulthover;
+  margin-bottom: 2rem;
+  color: black;
+
+  &:hover {
+    &:before {
+      background-color: rgba(black, 0.05);
+    }
+  }
+
+  &__description {
+    color: grey(80);
+  }
 
   &__figure {
     width: 100%; //aspect 4:3
     padding-top: 75%; //aspect 4:3
-    border-bottom: 1px white solid;
+    // border-top: 0.25rem grey(30) solid;
   }
 
   &__info {
     height: 7 + 0.25rem; // = 2padding, 5 lines text, 1 margin!
     overflow: hidden;
     position: relative;
-    &:after { // fade out overflow nicely
-      position: absolute;
-      bottom: 0;
-      height: 1rem;
-      left: 0;
-      right: 0;
-      background-image: linear-gradient(rgba(white,0), white);
-      content: '';
-    }
   }
 
   &__title {
@@ -172,55 +222,59 @@
 
 
   // used as related results, slight smaller
-  &--related &__info {
-    padding: 0.5rem;
+  &--related,
+  &--seemore {
+    color: white;
+
+    &:hover {
+      &:before {
+        background-color: grey(80);
+      }
+    }
+
+    .resultcard__info {
+      padding: 0.5rem 0;
+      color: white;
+    }
+
+    .resultcard__title {
+      font-weight: 500;
+      font-size: 1rem;
+      color: white;
+    }
+
   }
-  &--related &__title {
-    font-weight: 500;
-  }
+
 
   // the final related result
   &--seemore {
+    // text-align: center;
     //background-color: white;
-    &.see-more-objects {
-      background-image: linear-gradient(135deg, mix(grey(10),$c-cyan), mix(grey(10),$c-blue) );
-      border-color: map-get($recordtypes, objects);
+
+    &.see-more-objects .resultcard__figure {
+      background-color: map-deep-get($recordtypes, objects, bg);
+      @include sm-gradient(map-deep-get($recordtypes, objects, grad));
+      border-color: map-deep-get($recordtypes, objects, bg);
     }
 
-    &.see-more-documents {
-      background-image: linear-gradient(135deg, mix(grey(10),$c-turquoise), mix(grey(10),$c-dark-green) );
-      border-color: map-get($recordtypes, documents);
-    }
-
-    text-align: center;
-
-    .resultcard__figure {
-      border-color: transparent;
-      background-color: transparent;
+    &.see-more-documents .resultcard__figure {
+      background-color: map-deep-get($recordtypes, documents, bg);
+      @include sm-gradient(map-deep-get($recordtypes, documents, grad));
+      border-color: map-deep-get($recordtypes, documents, bg);
     }
 
     svg { // .search-icon
       position: absolute;
       display: block;
-      bottom: 1rem;
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-50%) translateY(-50%);
       fill: white;
     }
 
-    .resultcard__info {
-      color: white;
-      font-weight: 600;
-      font-size: rem-calc(16);
-      line-height: rem-calc(18);
-      padding: 0.5rem;
-      &:after {
-        display: none;
-      }
-    }
   }
 
   //used on home page
-  &--collection { }
+  // &--collection { }
 
 }

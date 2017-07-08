@@ -22,8 +22,7 @@
     @include icon-bullet(arrow_right, $size: 1rem, $left: 0.5rem, $top: 0);
 
     &:hover {
-      border: 1px grey(30) solid;
-      background-image: linear-gradient(white, grey(10));
+      @include control-hover;
     }
   }
 

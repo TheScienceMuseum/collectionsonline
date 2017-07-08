@@ -3,79 +3,78 @@
 // https://leaverou.github.io/awesomplete
 //-----------------------------------------------------------------------------
 
-[hidden] { display: none; }
+[hidden] {
+  display: none;
+}
 
 .visually-hidden {
-	position: absolute;
-	clip: rect(0, 0, 0, 0);
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
 }
 
 .awesomplete {
-	display: inline-block;
-	position: relative;
+  display: inline-block;
+  position: relative;
   width: 100%;
 
-	ul {
-		position: absolute;
-		left: -1px;
-		right: -1px;
-		z-index: 99;
-		min-width: 100%;
-		list-style: none;
-		padding: 0;
-		border-radius: 0 0 0.25rem 0.25rem;
-		margin: 0;
-		background: white;
-		border: 1px solid $c-blue;
-		border-top: 1px solid mix($c-blue, white, 25%);
-		box-shadow: 0 2px 8px rgba(black, 0.2);
-		text-shadow: none;
-	}
+  ul {
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    z-index: 99;
+    min-width: 100%;
+    list-style: none;
+    padding: 0;
+    border-radius: 0 0 0.25rem 0.25rem;
+    margin: 0;
+    background: white;
+    border: 1px solid black;
+    border-top: 1px solid grey(20);
+    box-shadow: 0 2px 8px rgba(black, 0.2);
+    text-shadow: none;
+  }
 
-	ul[hidden],
-	ul:empty {
-		display: none;
-	}
+  ul:empty,
+  ul[hidden] {
+    display: none;
+  }
 
-	li {
-		position: relative;
-		padding: .625rem 1rem;
-		cursor: pointer;
+  li {
+    position: relative;
+    padding: 0.625rem 1rem;
+    cursor: pointer;
+    color: black;
 
-		&:hover {
-			background-color: grey(10);
-			background-image: linear-gradient(grey(10) 0, grey(10) 1px, grey(5) 1px, grey(10) 100%);
-		  color: $c-blue;
-		}
+    &:hover,
+    &[aria-selected=true] {
+      background-color: black;
+      // background-image: linear-gradient(grey(10) 0, grey(10) 1px, grey(5) 1px, grey(10) 100%);
+      color: white;
+      mark { color: white; }
+    }
 
-		&[aria-selected="true"] {
-			background:	mix(white, $c-cyan,75);
-		}
+    &:last-child,
+    &:last-child:hover {
+      border-radius: 0 0 0.25rem 0.25rem;
+    }
+  }
 
-		&:last-child,
-		&:last-child:hover {
-		  border-radius: 0 0 0.25rem 0.25rem;
-		}
-	}
+  mark {
+    font-weight: 700;
+    background-color: inherit;
+  }
 
+  @supports (transform: scale(0)) {
+    ul {
+      transition: $timing-defaults;
+      transform-origin: 0 0;
+    }
 
-	mark {
-    font-weight: 500;
-		background-color: inherit;
-	}
-
-	@supports (transform: scale(0)) {
-		ul {
-			transition: $timing-defaults;
-			transform-origin: 0 0;
-		}
-
-		ul[hidden],
-		ul:empty {
-			opacity: 0;
-			transform: scale(1 0);
-			display: block;
-		}
-	}
-
+    ul:empty,
+    ul[hidden] {
+      opacity: 0;
+      transform: scale(1 0);
+      display: block;
+    }
+  }
 }

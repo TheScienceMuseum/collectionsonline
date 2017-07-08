@@ -3,9 +3,14 @@
 //
 //-----------------------------------------------------------------------------
 
+.archive-section {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  background-color: grey(10);
+}
+
 .archive-tree {
   background-color: grey(10);
-  margin-bottom: 1rem;
 
   &__title {
     line-height: 2.5rem; // match searchbox probably to right
@@ -36,18 +41,19 @@
     display: block;
   }
 
-  input[type="checkbox"] {
+  input[type=checkbox] {
     position: fixed;
     opacity: 0;
     height: 0;
     width: 0;
   }
 
-  input[type="checkbox"]:checked + .children {
+  input[type=checkbox]:checked + .children {
     display: block;
   }
 
-  button, label {
+  button,
+  label {
     width: rem-calc(40);
     height: rem-calc(40);
     outline: 0 red solid;
@@ -59,14 +65,16 @@
     background-position: center center;
     background-repeat: no-repeat;
     position: absolute;
+
     &:not([disabled]):hover {
-      background-color: $c-cyan;
+      background-color: $c-teal;
     }
   }
-  [aria-expanded="true"] button {
+
+  [aria-expanded=true] button {
     background-image: url(/assets/icons/tree-contract.svg);
   }
-  [aria-expanded="false"] button, label {
+  [aria-expanded=false] button, label {
     background-image: url(/assets/icons/tree-expand.svg);
   }
   button[disabled] {
@@ -99,52 +107,49 @@
   .current button,
   .current label,
   .current a:hover {
-      background-color: $c-cyan;
-      color: black;
+    background-color: $c-teal;
+    color: black;
 
-  }
-
-  &--fond > button {
-    height: rem-calc(46);
-    width: rem-calc(46);
   }
 
   &__label {
-    overflow: auto;
+    @include clearfix;
     border-top: 1px white solid;
     position: relative;
   }
 
   &__label--root { //toppermost
-    font-size: 1.25rem;
+    button {
+      // height: rem-calc(46);
+      // width: rem-calc(46);
+    }
+
+    a {
+      font-size: rem-calc(22);
+      font-weight: 500;
+    }
   }
 
   &__label a {
     display: block;
     margin-left: rem-calc(40);
-    padding: rem-calc(8 16 7 16);
+    padding: rem-calc(9 16 8 16);
+    line-height: rem-calc(22);
     border-left: 1px white solid;
     border-bottom: 1px white solid;
     color: black;
 
     &:hover {
-      background-color: blend-multiply( rgba($c-cyan,0.1),grey(20) );
+      background-color: blend-multiply(rgba($c-teal,0.1), grey(20) );
     }
+
     li li &:hover {
-      background-color: blend-multiply( rgba($c-cyan,0.1),grey(30) );
+      background-color: blend-multiply(rgba($c-teal,0.1), grey(30) );
     }
+
     li li li &:hover {
-      background-color: blend-multiply( rgba($c-cyan,0.1),grey(40) );
+      background-color: blend-multiply(rgba($c-teal,0.1), grey(40) );
     }
   }
 
-  &--fond a {
-    margin-left: rem-calc(46);
-  }
-
-  #group1 {
-    > li {
-      margin-left: rem-calc(46);
-    }
-  }
 }

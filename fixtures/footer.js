@@ -1,21 +1,6 @@
 module.exports = [
   {
     image: null,
-    title: 'Our collection',
-    url: '',
-    links: [
-      {
-        name: 'About the collection',
-        url: 'https://group.sciencemuseum.org.uk/about-us/collection'
-      },
-      {
-        name: 'Contact us',
-        url: 'https://group.sciencemuseum.org.uk/about-us/collection/contact'
-      }
-    ]
-  },
-  {
-    image: null,
     title: 'Library and archive',
     url: '',
     links: [
@@ -55,7 +40,22 @@ module.exports = [
       },
       {
         name: 'Commercial licensing',
-        url: 'https://group.sciencemuseum.org.uk/business-services/brand-licensing/'
+        url: 'https://group.sciencemuseum.org.uk/business-services/picture-library/'
+      }
+    ]
+  },
+  {
+    image: null,
+    title: 'Policies',
+    url: '',
+    links: [
+      {
+        name: 'Privacy and Cookies',
+        url: 'https://group.sciencemuseum.org.uk/privacy-policy/'
+      },
+      {
+        name: 'Terms and conditions',
+        url: 'https://group.sciencemuseum.org.uk/terms-and-conditions/'
       }
     ]
   }

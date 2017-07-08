@@ -1,8 +1,11 @@
 <header class="globalheader">
-  <div class="row">
-    <a href="//www.sciencemuseum.org.uk/" class="globalheader__museumlink"><img src="/assets/img/global/logo-scm.svg" alt="Science Museum" /></a>
-    <a href="//www.nrm.org.uk/" class="globalheader__museumlink"><img src="/assets/img/global/logo-nrm.svg" alt="Science Museum" /></a>
-    <a href="//www.nationalmediamuseum.org.uk/" class="globalheader__museumlink"><img src="/assets/img/global/logo-nmm.svg" alt="Science Museum" /></a>
-    <a href="//msimanchester.org.uk/" class="globalheader__museumlink"><img src="/assets/img/global/logo-msi.svg" alt="Science Museum" /></a>
+  <div class="row columns">
+    <div class="globalheader__items">
+      {{#each museums.links}}
+        <a href="{{url}}" class="globalheader__item">
+          <img src="{{image}}" alt="{{name}}">
+        </a>
+      {{/each}}
+    </div>
   </div>
 </header>

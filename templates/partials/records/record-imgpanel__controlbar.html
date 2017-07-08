@@ -3,15 +3,17 @@
       <div class="cite__menu-pos-wrap">
         <div class="cite__menu" id="cite__menu" >
           {{#each images}}
-          <div class="cite__menu__methods hidden" id="cite__method-{{@index}}">
-            <div class="cite__method">
-              <p>{{#if rights.cc}}<img src="/assets/img/global/{{rights.image}}" alt="Creative Commons License" width="80" height="15" />{{/if}}This image is released under a {{rights.usage_terms}} Licence</p>
-              {{#if rights.cc}}
-              <form id="download-image" method="get" action="{{large}}">
-                <button type="submit" class="">{{> global/icon i="download" size="16" }} Download</button>
-              </form>
-              {{/if}}
-            </div>
+          <div class="cite__menu__methods" id="cite__method-{{@index}}">
+            {{#if rights.usage_terms}}
+              <div class="cite__method">
+                <p>{{#if rights.cc}}<img src="/assets/img/global/{{rights.image}}" alt="Creative Commons License" width="80" height="15" />{{/if}}This image is released under a {{rights.usage_terms}} Licence</p>
+                {{#if rights.cc}}
+                <form class="download-image" method="get" action="{{large}}">
+                  <button type="submit" class="">{{> global/icon i="download" size="16" }} Download</button>
+                </form>
+                {{/if}}
+              </div>
+            {{/if}}
             {{#ifsmgrights rights.details}}
               <div class="cite__method">
                 <p>Buy this image as a print </p>
@@ -20,9 +22,9 @@
                 </a>
               </div>
               <div class="cite__method">
-                <p>Licence this image for commercial use at Science and Society Picture Library</p>
+                <p>License this image for commercial use at Science and Society Picture Library</p>
                 <a href="http://www.scienceandsociety.co.uk/results.asp?search=1&searchtxtkeys={{title}}">
-                  <button class="">{{> global/icon i="external" size="16" }} Licence</button>
+                  <button class="">{{> global/icon i="external" size="16" }} License</button>
                 </a>
               </div>
             {{/ifsmgrights}}
@@ -31,14 +33,28 @@
         </div>
       </div>
 
-      <button id="cite__button" class="cite__button" >{{> global/icon i="arrow_right" size="16" }} Use this image</button>
-
-      <div class="osd__toolbar" id="openseadragon-toolbar">
-        <button class="osd__button" id="osd-fullpage" aria-label="full screen"></button>
-      </div>
+      {{#each images}}
+        {{#ifsmgrights rights.details}}
+          <button id="cite__button-{{@index}}" class="cite__button" >{{> global/icon i="arrow_right" size="16" }} Use this image</button>
+        {{/ifsmgrights}}
+      {{/each}}
 
       {{#each images}}
-      <p id="record-imgpanel__caption-{{@index}}" class="hidden record-imgpanel__caption">{{title}}<br />
+        {{#if this.zoom}}
+          <div class="osd__toolbar-container" id="openseadragon-toolbar-{{@index}}">
+            <div class="osd__toolbar" id="openseadragon-toolbar">
+              <button class="osd__button" id="osd-fullpage" aria-label="full screen"></button>
+              <button class="osd__button osd-rotate hidden" id="osd-rotate-right" aria-label="rotate image right"></button>
+              <button class="osd__button osd-rotate hidden" id="osd-rotate-left" aria-label="rotate image left"></button>
+              <button class="osd__button osd-zoom hidden" id="osd-zoomout" aria-label="zoom out"></button>
+              <button class="osd__button osd-zoom hidden" id="osd-zoomin" aria-label="zoom in"></button>
+            </div>
+          </div>
+        {{/if}}
+      {{/each}}
+
+      {{#each images}}
+      <p id="record-imgpanel__caption-{{@index}}" class="record-imgpanel__caption">{{title}}<br />
       {{credit}}<br />
       {{rights.details}}
       </p>

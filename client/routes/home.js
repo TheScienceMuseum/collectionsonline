@@ -1,7 +1,9 @@
-var initComp = require('../lib/init-components');
-var data = require('../../fixtures/data');
 var Templates = require('../templates');
-var searchListener = require('../lib/search-listener');
+
+var data = require('../../fixtures/data');
+
+var searchListener = require('../lib/listeners/search-listener');
+var initComp = require('../lib/listeners/init-components');
 
 module.exports = function (page) {
   page('/', render, listeners);
@@ -10,10 +12,11 @@ module.exports = function (page) {
     if (!ctx.isInitialRender) {
       var pageEl = document.getElementsByTagName('main')[0];
       data.footer = require('../../fixtures/footer');
-      data.footerBanner = require('../../fixtures/footer-banner');
+      data.museums = require('../../fixtures/museums');
       pageEl.innerHTML = Templates['home'](data);
       // refresh the title of the page
       document.getElementsByTagName('title')[0].textContent = data.titlePage;
+      document.body.className = ctx.state.data.type;
       next();
     } else {
       listeners();

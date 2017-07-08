@@ -1,6 +1,8 @@
 <div class="panel panel__text panel--cite">
   <h4>Cite this page</h4>
-  <input type="text" class="clipboard" value="Science Museum Group. {{title}}. {{getinventorynumber details}}Science Museum Group Collection Online. Accessed {{gettodaysdate}}. {{links.self}}." data-clipboard-text="Science Museum Group. {{title}}. {{getinventorynumber details}}Science Museum Group Collection Online. Accessed {{gettodaysdate}}. {{links.self}}."></input><br>
+  <div class="clipboard">
+    <input type="text" class="clipboard__input" id="clipboardjs" value="Science Museum Group. {{title}}. {{getinventorynumber details}}Science Museum Group Collection Online. Accessed {{gettodaysdate}}. {{links.self}}." data-clipboard-text="Science Museum Group. {{title}}. {{getinventorynumber details}}Science Museum Group Collection Online. Accessed {{gettodaysdate}}. {{links.self}}." /><button class="clipboard__button" data-clipboard-target="#clipboardjs">{{> global/icon i="clipboard" size="12"}}</button>
+  </div>
 
   <h4>Rights</h4>
   <p>
@@ -26,7 +28,7 @@
 
   <h4>Download</h4>
 
-  <p>Download data as <a href="{{links.api}}"><abbr title="Javascript Object Notation">json</abbr></a></p>
+  <p>Download catalogue entry as <a href="{{links.api}}" rel="nofollow"><abbr title="Javascript Object Notation">json</abbr></a></p>
 
   <p>
     Our records are constantly being enhanced and improved, but please note that we cannot guarantee the accuracy of any information shown on this website.

@@ -1,0 +1,16 @@
+<div class="panel panel__text">
+  <h4>Related Articles</h4>
+  <div class="museum-articles">
+    <h5>{{this.museum}}</h5>
+    <ul class="related-article">
+      {{#each data}}
+      <li>
+        {{> global/icon i="tree-item" }}
+        <a href={{this.url}}>
+          {{this.title}}
+        </a>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+</div>

@@ -8,7 +8,7 @@
           <a href="{{link}}">
             <div class="resultcard resultcard--related {{#if type}}resultcard--{{ this.type }}{{/if}}">
               <figure class="resultcard__figure">
-                {{#if this.figure}}<img src="{{ this.figure }}" /> {{/if}}
+                {{#if this.attributes.figure}}<img src="{{ this.attributes.figure }}" /> {{/if}}
               </figure>
               <div class="resultcard__info">
                 <h4 class="resultcard__title">{{this.attributes.summary_title}}</h4>
@@ -25,7 +25,7 @@
           <div class="resultcard resultcard--seemore see-more-documents">
             <figure class="resultcard__figure">{{> global/icon i="search" size="48" }}</figure>
             <div class="resultcard__info">
-              See more related documents
+              <h4 class="resultcard__title">See more related documents</h4>
             </div>
           </div>
         </a>

@@ -1,29 +1,38 @@
 var QueryString = require('querystring');
 var fetch = require('fetch-ponyfill')().fetch;
-var initComp = require('../lib/init-components');
-var Templates = require('../templates');
-var createQueryParams = require('../../lib/query-params/query-params');
-var getData = require('../lib/get-data.js');
-var toJsonUrl = require('../lib/to-json-url');
-var displayFilters = require('../lib/display-filters.js');
-var filterResults = require('../lib/filter-results');
 var page = require('page');
-var searchResultsToTemplateData = require('../../lib/transforms/search-results-to-template-data');
-var searchListener = require('../lib/search-listener');
 var Snackbar = require('snackbarlightjs');
+
+var Templates = require('../templates');
+
+var parseParams = require('../../routes/route-helpers/parse-params.js');
+
+var createQueryParams = require('../../lib/query-params/query-params');
+var paramify = require('../../lib/helpers/paramify.js');
+var querify = require('../../lib/helpers/querify.js');
+var searchResultsToTemplateData = require('../../lib/transforms/search-results-to-template-data');
+
+var getData = require('../lib/get-data.js');
+var filterResults = require('../lib/filter-results');
 var filterState = require('../lib/filter-state.js');
-var displayFacet = require('../lib/display-facet.js');
-var facetsStates = require('../lib/facets-states.js');
 var toggleFacets = require('../lib/toggle-facets.js');
-var deleteFiltersFacets = require('../lib/delete-filters-facets.js');
 var updateActiveStateFacets = require('../lib/update-active-states-facets.js');
 var loadingBar = require('../lib/loading-bar');
 var hideKeyboard = require('../lib/hide-keyboard');
+var findCategory = require('../lib/find-category.js');
+
+var displayFilters = require('../lib/listeners/display-filters.js');
+var searchListener = require('../lib/listeners/search-listener');
+var deleteFiltersFacets = require('../lib/listeners/delete-filters-facets.js');
+var displayFacet = require('../lib/listeners/display-facet.js');
+var facetsStates = require('../lib/listeners/facets-states.js');
+var initComp = require('../lib/listeners/init-components');
+
 var i = 0;
 
 module.exports = function (page) {
   page('/search', load, render, listeners);
-  page('/search/:type', load, render, listeners);
+  page('/search/*', load, render, listeners);
 };
 /**
 * Ajax request to get the data of the url
@@ -37,10 +46,10 @@ function load (ctx, next) {
       headers: { Accept: 'application/vnd.api+json' }
     };
     var qs = QueryString.parse(ctx.querystring);
-    qs.ajax = true;
-
-    var queryParams = createQueryParams('html', {query: qs, params: {type: ctx.params.type}});
-    getData(ctx.pathname + '?' + toJsonUrl(ctx.querystring), opts, function (err, json) {
+    var p = Object.assign(parseParams({filters: ctx.pathname}).categories, parseParams({filters: ctx.pathname}).params);
+    var searchCategory = findCategory(ctx.pathname);
+    var queryParams = createQueryParams('html', {query: Object.assign(qs, p), params: {type: searchCategory}});
+    getData('/search' + (searchCategory ? '/' + searchCategory : '') + paramify(p) + querify(queryParams), opts, function (err, json) {
       if (err) {
         console.error(err);
         Snackbar.create('Error getting data from the server');
@@ -48,6 +57,9 @@ function load (ctx, next) {
       }
       var data = searchResultsToTemplateData(queryParams, json);
       ctx.state.data = data;
+
+      window.dataLayer.push(JSON.parse(data.layer));
+
       next();
     });
   } else {
@@ -104,6 +116,7 @@ function render (ctx, next) {
 
   // refresh the title of the page
   document.getElementsByTagName('title')[0].textContent = ctx.state.data.titlePage;
+  document.body.className = ctx.state.data.type;
   next();
 }
 
@@ -135,15 +148,15 @@ function listeners (ctx, next) {
     });
   }
 
-  updateActiveStateFacets(facetsStates, ctx.params.type);
+  updateActiveStateFacets(facetsStates, findCategory(ctx.pathname));
   // display the facet (close open or active)
-  displayFacet(facetsStates, ctx.params.type);
+  displayFacet(facetsStates, findCategory(ctx.pathname));
 
   // add event listener on the facet toggle
-  toggleFacets(facetsStates, ctx.params.type);
+  toggleFacets(facetsStates, findCategory(ctx.pathname));
 
   // add event listener when the filters of a facet are cleared to update the state
-  deleteFiltersFacets(facetsStates, ctx.params.type);
+  deleteFiltersFacets(facetsStates, findCategory(ctx.pathname));
   /**
   * Click to add/remove filters
   * Build a html url with the new filter selected (get the current url + new filter)
@@ -151,6 +164,22 @@ function listeners (ctx, next) {
   var filtersCheckbox = document.querySelectorAll('.filter:not(.filter--uncollapsible) [type=checkbox]');
   for (i = 0; i < filtersCheckbox.length; i++) {
     filtersCheckbox[i].addEventListener('click', function (e) {
+      // analytics
+      if (ctx.state.data.inProduction) {
+        if (e.target.checked) {
+          window.dataLayer.push({
+            'event': 'Filter',
+            'ga_event': {
+              'category': 'filter',
+              'action': ctx.params.type || 'all',
+              'label': e.target.name + ' | ' + e.target.value,
+              'value': e.target.value,
+              'non-interaction': 'false'
+            }
+          });
+        }
+      }
+
       var museums = ['Science-Museum', 'National-Railway-Museum', 'National-Media-Museum', 'Museum-of-Science-and-Industry'];
       loadingBar.start();
       museums.forEach(function (m) {
@@ -176,6 +205,12 @@ function listeners (ctx, next) {
   for (i = 0; i < filtersDate.length; i++) {
     filtersDate[i].addEventListener('blur', function () {
       filterResults(ctx, page);
+    });
+    filtersDate[i].addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.keyCode === 13) {
+        e.preventDefault();
+        filterResults(ctx, page);
+      }
     });
   }
 

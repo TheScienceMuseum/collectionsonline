@@ -133,6 +133,11 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
+  'records/record-related-articles',
+  Fs.readFileSync('./templates/partials/records/record-related-articles.html', 'utf8')
+);
+
+Handlebars.registerPartial(
   'records/archive-tree',
   Fs.readFileSync('./templates/partials/records/archive-tree.html', 'utf8')
 );
@@ -204,9 +209,15 @@ Handlebars.registerHelper('seemore', require('../templates/helpers/seemore.js'))
 
 Handlebars.registerHelper('normalise', require('../templates/helpers/normalise.js'));
 
-Handlebars.registerHelper('museumlinks', require('../templates/helpers/museumlinks.js'));
+Handlebars.registerHelper('truncate', require('../templates/helpers/truncate.js'));
+
+Handlebars.registerHelper('or', require('../templates/helpers/or.js'));
 
 Handlebars.registerHelper('isequal', require('../templates/helpers/isequal.js'));
+
+Handlebars.registerHelper('formatnumber', require('../templates/helpers/formatnumber.js'));
+
+Handlebars.registerHelper('toggleDetail', require('../templates/helpers/toggleDetail.js'));
 
 // Routes
 module.exports = {
@@ -248,5 +259,8 @@ module.exports = {
   ),
   'api': Handlebars.compile(
     Fs.readFileSync('./templates/pages/api.html', 'utf8')
+  ),
+  'articles': Handlebars.compile(
+    Fs.readFileSync('./templates/partials/records/record-related-articles.html', 'utf8')
   )
 };

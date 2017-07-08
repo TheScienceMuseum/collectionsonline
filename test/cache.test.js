@@ -8,13 +8,32 @@ const archiveTree = require('../lib/archive-tree');
 test('Cache Error when starting', function (t) {
   t.plan(2);
   var cacheStart = stub(cache, 'start', function (cb) {
-    return cb(new Error());
+    return cb({code: 'ECONNREFUSED'});
   });
 
   cachedDocument(elastic, 'smga-documents-110000013', 'smga-documents-110000003', function (err, data) {
     t.ok(err, 'Error returned from cache start');
     t.notOk(data, 'no data');
     cacheStart.restore();
+    t.end();
+  });
+});
+
+test('Cache Error when starting and getting data', function (t) {
+  t.plan(2);
+  var cacheStart = stub(cache, 'start', function (cb) {
+    return cb({code: 'ECONNREFUSED'});
+  });
+
+  var cacheGet = stub(cache, 'get', function (options, cb) {
+    return cb(new Error());
+  });
+
+  cachedDocument(elastic, 'aa110000013', 'aa110000003', function (err, data) {
+    t.notOk(err, 'Error not returned');
+    t.ok(data, 'gets data');
+    cacheStart.restore();
+    cacheGet.restore();
     t.end();
   });
 });

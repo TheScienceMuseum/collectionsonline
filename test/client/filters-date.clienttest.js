@@ -6,10 +6,10 @@ module.exports = {
     .pause(5000)
     .waitForElementVisible('.filter[data-filter="Dates"] a', 20000)
     .click('.filter[data-filter="Dates"] a')
-    .setValue('input[name="filter[birth[date]]"]', '1700')
-    .click('input[name="filter[death[date]]"]')
+    .setValue('input[name="date[from]"]', '1700')
+    .click('input[name="date[to]"]')
     .pause(10000)
-    .assert.urlEquals('http://localhost:8000/search/people?q=ada&filter%5Bbirth%5Bdate%5D%5D=1700&page%5Bsize%5D=50&page%5Btype%5D=search')
+    .assert.urlEquals('http://localhost:8000/search/people/date[from]/1700?q=ada&page[size]=50')
     .end();
   }
 };

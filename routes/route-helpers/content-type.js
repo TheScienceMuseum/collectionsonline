@@ -3,7 +3,7 @@
 */
 module.exports = function (request) {
   var jsonAcceptHeaders = ['application/vnd.api+json', 'application/json'];
-  var htmlAcceptHeaders = ['text/html'];
+  var htmlAcceptHeaders = ['text/html', '*/*'];
 
   if (request.headers.accept) {
     var accept = request.headers.accept;
@@ -23,7 +23,7 @@ module.exports = function (request) {
     }
   }
 
-  var twitterBot = request.headers['user-agent'] && (request.headers['user-agent'] === 'Twitterbot');
+  var twitterBot = (request.headers['user-agent'] || '').indexOf('Twitterbot') > -1;
   if (twitterBot) {
     return 'html';
   }

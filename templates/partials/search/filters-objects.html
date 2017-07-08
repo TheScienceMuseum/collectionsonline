@@ -1,4 +1,24 @@
 <input type="hidden" name="fields[type]" value="objects">
+<!-- IMAGE -->
+{{#or filters.image_license.length filters.has_image.length}}
+  {{#or (activeFacet selectedFilters 'imageLicense') (activeFacet selectedFilters 'hasImage')}}
+    <div class="filter filter--active filter--open" data-filter="Image">
+  {{else}}
+    <div class="filter filter--open" data-filter="Image">
+  {{/or}}
+    <a href="{{lookup links.clearFacet "filter[images]"}}" class="filter__name">Image</a>
+    <div class="filter__options">
+      <ul>
+        {{#each filters.has_image}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[has_image]" value="true" {{isselected ../selectedFilters "hasImage" true}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
+        {{/each}}
+        {{#each filters.image_license}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[image_license]" value="true" {{isselected ../selectedFilters "imageLicense" true}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+{{/or}}
 
 {{#if filters.category.length}}
   {{#if (activeFacet selectedFilters 'categories')}}
@@ -11,7 +31,7 @@
     <div class="filter__options">
       <ul>
         {{#each filters.category}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[categories]" value="{{value}}" {{isselected ../selectedFilters "categories" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+          <li><label><input type="checkbox" class="filter__box" name="filter[categories]" value="{{value}}" {{isselected ../selectedFilters "categories" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
         {{/each}}
       </ul>
     </div>
@@ -30,7 +50,7 @@
     <div class="filter__options">
       <ul>
         {{#each filters.maker}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[makers]" value="{{value}}" {{isselected ../selectedFilters "makers" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+          <li><label><input type="checkbox" class="filter__box" name="filter[makers]" value="{{value}}" {{isselected ../selectedFilters "makers" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
         {{/each}}
       </ul>
     </div>
@@ -49,7 +69,7 @@
     <div class="filter__options">
       <ul>
         {{#each filters.museum}}
-        <li><label><input type="checkbox" class="filter__box filter__museum__{{classname value}}" name="filter[museum]" value="{{value}}" {{isselected ../selectedFilters "museum" value galleries}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        <li><label><input type="checkbox" class="filter__box filter__museum__{{classname value}}" name="filter[museum]" value="{{value}}" {{isselected ../selectedFilters "museum" value galleries}}/>{{displayValue}}<span class="filter__count">{{formatnumber count}}</span></label></li>
           <ul class="nested-galleries">
             {{#each galleries}}
               <li><label><input type="checkbox" class="filter__box filter__gallery__{{classname ../value}}" name="filter[gallery]" value="{{key}}" {{isselected ../../selectedFilters "gallery" key}}/>{{key}}<span class="filter__count">{{doc_count}}</span></label></li>
@@ -62,18 +82,18 @@
 {{/if}}
 
 <!-- TYPE -->
-{{#if filters.type.length}}
-  {{#if (activeFacet selectedFilters 'type')}}
+{{#if filters.object_type.length}}
+  {{#if (activeFacet selectedFilters 'object_type')}}
     <div class="filter filter--open filter--active" data-filter="Type">
-      <a href="{{lookup links.clearFacet "filter[type]"}}" class="filter__name">Object type</a>
+      <a href="{{lookup links.clearFacet "filter[object_type]"}}" class="filter__name">Object type</a>
   {{else}}
     <div class="filter filter--open" data-filter="Type">
-      <a href="{{lookup links.clearFacet "filter[type]"}}" class="filter__name">Object type</a>
+      <a href="{{lookup links.clearFacet "filter[object_type]"}}" class="filter__name">Object type</a>
   {{/if}}
     <div class="filter__options">
       <ul>
-        {{#each filters.type}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[type]" value="{{value}}" {{isselected ../selectedFilters "type" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{#each filters.object_type}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[object_type]" value="{{value}}" {{isselected ../selectedFilters "object_type" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
         {{/each}}
       </ul>
     </div>
@@ -92,17 +112,15 @@
     <div class="filter__options">
       <ul>
         {{#each filters.place}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[places]" value="{{value}}" {{isselected ../selectedFilters "places" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+          <li><label><input type="checkbox" class="filter__box" name="filter[places]" value="{{value}}" {{isselected ../selectedFilters "places" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
         {{/each}}
       </ul>
     </div>
   </div>
 {{/if}}
 
-<!-- IMAGE -->
-
 <!-- USER -->
-{{#if filters.user.length}}
+<!-- {{#if filters.user.length}}
   {{#if (activeFacet selectedFilters 'user')}}
     <div class="filter filter--active filter--open" data-filter="User">
       <a href="{{lookup links.clearFacet "filter[user]"}}" class="filter__name">User</a>
@@ -113,12 +131,12 @@
     <div class="filter__options">
       <ul>
         {{#each filters.user}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[user]" value="{{value}}" {{isselected ../selectedFilters "user" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+          <li><label><input type="checkbox" class="filter__box" name="filter[user]" value="{{value}}" {{isselected ../selectedFilters "user" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
         {{/each}}
       </ul>
     </div>
   </div>
-{{/if}}
+{{/if}} -->
 
 {{#if filters.material.length}}
   {{#if (activeFacet selectedFilters 'material')}}
@@ -131,7 +149,7 @@
     <div class="filter__options">
       <ul>
         {{#each filters.material}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[material]" value="{{value}}" {{isselected ../selectedFilters "material" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+          <li><label><input type="checkbox" class="filter__box" name="filter[material]" value="{{value}}" {{isselected ../selectedFilters "material" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
         {{/each}}
       </ul>
     </div>
@@ -139,10 +157,14 @@
 {{/if}}
 
 <!-- DATE -->
-<div class="filter filter--open" data-filter="Dates">
+{{#or (lookup selectedFilters "date[from]") (lookup selectedFilters "date[to]")}}
+  <div class="filter filter--active filter--open" data-filter="Dates">
+{{ else }}
+  <div class="filter filter--open" data-filter="Dates">
+{{/or}}
   <a href="{{lookup links.clearFacet "dates"}}" class="filter__name">Date</a>
   <div class="filter__options filter__daterange">
-    <label>From <input type="number" placeholder="1600" name="filter[date[from]]" value="{{lookup selectedFilters "dateFrom"}}"/></label>
-    <label>To <input type="number" placeholder="2016" name="filter[date[to]]" value="{{lookup selectedFilters "dateTo"}}"/></label>
+    <label>From <input type="number" placeholder="1600" name="filter[date[from]]" value="{{lookup selectedFilters "date[from]"}}"/></label>
+    <label>To <input type="number" placeholder="2016" name="filter[date[to]]" value="{{lookup selectedFilters "date[to]"}}"/></label>
   </div>
 </div>

@@ -1,4 +1,25 @@
 <input type="hidden" name="fields[type]" value="documents">
+<!-- IMAGE -->
+{{#or filters.image_license.length filters.has_image.length}}
+  {{#or (activeFacet selectedFilters 'imageLicense') (activeFacet selectedFilters 'hasImage')}}
+    <div class="filter filter--active filter--open" data-filter="Image">
+  {{else}}
+    <div class="filter filter--open" data-filter="Image">
+  {{/or}}
+    <a href="{{lookup links.clearFacet "filter[images]"}}" class="filter__name">Image</a>
+    <div class="filter__options">
+      <ul>
+        {{#each filters.has_image}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[has_image]" value="true" {{isselected ../selectedFilters "hasImage" true}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
+        {{/each}}
+        {{#each filters.image_license}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[image_license]" value="true" {{isselected ../selectedFilters "imageLicense" true}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+{{/or}}
+
 <!-- ARCHIVE -->
 {{#if filters.archive.length}}
   {{#if (activeFacet selectedFilters 'archive')}}
@@ -11,40 +32,27 @@
     <div class="filter__options">
       <ul>
         {{#each filters.archive}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[archive]" value="{{value}}" {{isselected ../selectedFilters "archive" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+          <li><label><input type="checkbox" class="filter__box" name="filter[archive]" value="{{value}}" {{isselected ../selectedFilters "archive" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
         {{/each}}
       </ul>
     </div>
   </div>
 {{/if}}
-
-<!-- FORMAT -->
-
-<!-- DATE -->
 
 <!-- CREATOR -->
-
-<!-- TYPE -->
-
-<!-- PLACE -->
-
-<!-- ORGANISATION -->
-{{#if filters.organisation.length}}
-  {{#if (activeFacet selectedFilters 'organisations')}}
-    <div class="filter filter--active filter--open" data-filter="Organisation">
-      <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name">Organisation</a>
+{{#if filters.maker.length}}
+  {{#if (activeFacet selectedFilters 'makers')}}
+    <div class="filter filter--open filter--active" data-filter="Maker">
   {{else}}
-    <div class="filter filter--open" data-filter="Organisation">
-      <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name">Organisation</a>
+    <div class="filter filter--open" data-filter="Maker">
   {{/if}}
+    <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">People</a>
     <div class="filter__options">
       <ul>
-        {{#each filters.organisation}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[organisations]" value="{{value}}" {{isselected ../selectedFilters "organisations" value}}/>{{value}}<span class="filter__count">{{count}}</span></label></li>
+        {{#each filters.maker}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[makers]" value="{{value}}" {{isselected ../selectedFilters "makers" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
         {{/each}}
       </ul>
     </div>
   </div>
 {{/if}}
-
-<!-- IMAGE -->

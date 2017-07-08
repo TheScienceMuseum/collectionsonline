@@ -10,6 +10,6 @@ test('All makers should be found', function (t) {
   t.doesNotThrow(() => {
     HTMLData = buildHTMLData(JSONAPIResponse);
   }, 'Transform did not throw error');
-  t.equal(HTMLData.fact.find((el) => el.key === 'maker').value, 'Cameron, Julia Margaret', 'Facts should contain a maker');
+  t.equal(HTMLData.fact.find((el) => el.key === 'photographer').makers[0].value, 'Julia Margaret Cameron', 'Facts should contain a maker');
   t.end();
 });

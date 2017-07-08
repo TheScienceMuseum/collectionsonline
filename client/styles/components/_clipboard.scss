@@ -6,33 +6,55 @@
 //-----------------------------------------------------------------------------
 
 .clipboard {
-  padding: rem-calc(6 20 4 4);
-  margin: 0.35rem 0;
-  height: auto;
-  box-shadow: 0;
-  background-image: url(/assets/icons/clipboard.svg);
-  background-size: 8px 8px;
-  background-position: right 6px center;
-  background-repeat: no-repeat;
+  margin-bottom: 0.5rem;
 
-  &--copied { // this class applied by js once contents copied to clipboard
+  &__input {
+    vertical-align: middle;
+    display: inline-block;
+    padding: rem-calc(6 4 5 4);
+    margin: 0;
+    height: 2rem;
+    width: calc(100% - 2rem);
+    @include control-base;
+    box-shadow: none;
+  }
+
+  &--copied &__input { // this class applied by js once contents copied to clipboard
     animation-name: copied;
-    animation-duration: 1.5s;
+    animation-duration: 2s;
     animation-timing-function: ease;
     animation-iteration-count: 1;
   }
 
-  @keyframes copied {
-    0% {
-      background-color: rgba($c-cyan, 0.25);
-      background-size: 12px 12px;
-      background-position: right 4px center;
+  &__button {
+    vertical-align: middle;
+    display: inline-block;
+    height: 2rem;
+    width: 2rem;
+    margin-left: -1px;
+    @include control-base;
+    &:hover {
+      @include control-hover;
     }
+    &:active {
+      background: black;
+      color: white;
+      fill: white;
+    }
+  }
+}
 
-    100% {
-      background-color: white;
-      background-size: 8px 8px;
-      background-position: right 6px center;
-    }
+@keyframes copied {
+  0% {
+    background-color: $c-green;
+    // @include sm-gradient($c-yellow $c-green);
+  }
+
+  50% {
+    background-color: $c-yellow;
+  }
+
+  100% {
+    background-color: white;
   }
 }

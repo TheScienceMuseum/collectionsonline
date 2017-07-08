@@ -1,44 +1,51 @@
 <!doctype html>
 <html class="no-js" lang="en">
   <head>
+    <!-- Data layer-->
+      <script>
+        window.dataLayer = window.dataLayer || []
+        dataLayer.push({{{layer}}})
+      </script>
+    <!-- End of Data layer -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MTBKW2');</script>
+
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ normalise titlePage this }}</title>
     <link rel="stylesheet" href="/bundle.css">
     <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="/assets/img/favicon/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/assets/img/favicon/android-icon-192x192.png" sizes="192x192">
     <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-96x96.png" sizes="96x96">
     <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-16x16.png" sizes="16x16">
-    <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/img/favicon/apple-icon-180x180.png" sizes="180x180">
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@sciencemuseum" />
     <meta name="twitter:title" content="{{titlePage}}" />
     <meta name="twitter:description" content="{{description.primary.initialDescription}}" />
+    <meta name="twitter:image" content="{{images.0.medium}}" />
     <!-- Open Graph data -->
     <meta property="og:title" content="{{titlePage}}" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="{{links.self}}" />
     <meta property="og:description" content="{{description.primary.initialDescription}}" />
+    <meta property="og:image" content="{{images.0.card}}" />
     <script type="application/ld+json">
       {{{jsonLD}}}
     </script>
   </head>
-  <body>
+  <body class="{{type}}">
     <!-- Google Tag Manager -->
     <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MTBKW2"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-MTBKW2');</script>
     <!-- End Google Tag Manager -->
+
     {{{content}}}
     <script src="/bundle.js"></script>
-    <div class="grid-overlay row">
-      {{#repeat 12}}<div class="small-1 column"><div class="contents"></div></div>{{/repeat}}
-    </div>
   </body>
 </html>

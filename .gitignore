@@ -35,6 +35,7 @@ bower_components
 .node_repl_history
 
 public/bundle.js
+public/bundle.js.map
 public/bundle.css
 public/assets/icons/*
 !public/assets/icons/.gitkeep
@@ -44,3 +45,5 @@ public/assets/icons/*
 
 #database test
 test/fixtures/elastic-responses/database.json
+test/helpers/aggregations-all.json
+test/fixtures/elastic-responses/example-*

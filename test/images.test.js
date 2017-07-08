@@ -5,7 +5,7 @@ testWithServer('Request for Object Page with image', {}, (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/co26704',
+    url: '/objects/co8094437',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -24,7 +24,7 @@ testWithServer('Search for Object Page with image', {}, (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search/objects?q=rocket%20locomotive',
+    url: '/search/objects?q=Soyuz',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
@@ -32,8 +32,8 @@ testWithServer('Search for Object Page with image', {}, (t, ctx) => {
     var response = JSON.parse(res.payload);
 
     t.equal(res.statusCode, 200, 'Succesful request');
-    t.ok(response.data[0], 'Got results');
-    t.ok(response.data[0].attributes.multimedia, 'First result has image');
+    t.ok(response.data[1], 'Got results');
+    t.ok(response.data[1].attributes.multimedia, 'First result has image');
     t.end();
   });
 });
@@ -43,7 +43,7 @@ testWithServer('Object Page with no image', {}, (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/co114820',
+    url: '/objects/co217511',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 

@@ -2,7 +2,19 @@
 // then our stuff
 
 body {
-  background-color: grey(10);
+  background-color: white;
+}
+
+p,
+li,
+dt,
+dd {
+  font-size: rem-calc(18);
+}
+
+h2,
+h4 {
+  text-transform: uppercase;
 }
 
 abbr {
@@ -12,8 +24,9 @@ abbr {
 }
 
 button {
-  font-size: 1rem;
-.icon {
+  font-size: rem-calc(18);
+
+  .icon {
     position: relative;
     //@include vertical-center;
     //top: rem-calc(2);
@@ -31,60 +44,121 @@ button {
 .globalheader {
   background-color: black;
 
-  &__museumlink {
-    @include grid-column(3);
-    & + & { // all except first
-      border-left: 1px grey(50) solid;
+  &__items {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  img {
+    display: block;
+    margin: 0 auto;
+    height: 1.5rem;
+    margin: 1em 0;
+
+    @include breakpoint(360) {
+      height: 2rem;
+      margin: 1.5em 0;
     }
-    img {
-      display: block;
-      margin: 0 auto;
-      max-height: rem-calc(88);
+    @include breakpoint(medium up) {
+      height: 3.5rem;
+    }
+    @include breakpoint(large up) {
+      height: 4.5rem;
     }
   }
 }
 
 .globalfooter {
-  background-color: black;
-  color: grey(50);
+  @include sm-gradient($c-teal $c-blue $c-purple);
+  color: white;
   padding: 1rem 0;
-  text-align: center;
-
-  &__logo {
-    @media #{$medium-up} { float: left; }
+  @include breakpoint(medium up) {
+    padding: 2rem 0;
+  }
+  @include breakpoint(large up) {
+    padding: 3rem 0;
   }
 
-  ul {
+  a { color: inherit; }
+
+  &__strap {
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    @include breakpoint(medium up) {
+      margin-bottom: 2rem;
+    }
+    @include breakpoint(large up) {
+      margin-bottom: 3rem;
+    }
+  }
+
+  &__items {
+    @include breakpoint(medium up) {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
     margin-top: 1rem;
   }
 
-  a {
-    color: white;
-  }
-}
+  &__text {
+    display: block;
+    margin: 0.4rem 0;
 
-.hidden {
-  display: none;
+    @include breakpoint(medium up) {
+      display: none;
+    }
+  }
+
+  img,
+  svg {
+    display: none;
+    height: 3rem;
+    width: auto;
+
+    @include breakpoint(medium up) {
+      display: block;
+    }
+    @include breakpoint(large up) {
+      height: 4.5rem;
+    }
+  }
+
+  // &__item [alt='Science Museum'] {
+  //   // this one a little big bigger, until new logo
+  //   height: 4rem;
+  //   @include breakpoint(large up) {
+  //     height: 6rem;
+  //   }
+  // }
+
 }
 
 .sitefooter {
-  background-color: grey(20);
   padding-top: 2rem;
-  padding-bottom: 1rem;
+  padding-bottom: 2rem;
   font-size: rem-calc(14);
 
   .columns {
     padding-bottom: 1rem;
   }
+
   &__h {
     margin: 0;
-    font-weight: 500;
     font-size: rem-calc(16);
+    text-transform: uppercase;
+  }
+
+  li {
+    font-size: 1rem;
   }
 
   a {
-    color: black;
-    &:hover { color: $c-blue; }
+    @include text-link;
+    color: grey(80);
   }
 }
 
@@ -100,19 +174,20 @@ button {
   li {
     display: inline-block;
     border-right: 1px solid;
-    &:last-child { border-right: 0; }
-    padding: rem-calc(0 12 0 9);
-    &:first-child { padding-left: 0; }
     line-height: 1;
+    padding: rem-calc(0 12 0 9);
+    &:last-child { border-right: 0; }
+    &:first-child { padding-left: 0; }
   }
 }
 
 .ul-block {
   margin: 0 0 1rem 0;
   &:last-child { margin: 0; } // only bottom margin if something is following it
+
   li {
     display: block;
-    line-height: 1.2;
+    line-height: 1.25;
   }
 
   li+ li { margin-top: rem-calc(4); }

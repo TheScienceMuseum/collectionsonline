@@ -1,7 +1,7 @@
 <div class="filterpanel">
   {{#if (clearAllFilters selectedFilters)}}
-  <div class="filter filter--active filter--uncollapsible">
-    <a class="filter__name filter__clear" href="{{links.clearFilter}}">Clear all filters</a>
+  <div class="filter filter--active filter--uncollapsible filter--clear">
+    <a class="filter__name" href="{{links.clearFilter}}">Clear all filters</a>
   </div>
   {{/if}}
   <form class="" id="search-form" action="/search" method="get">

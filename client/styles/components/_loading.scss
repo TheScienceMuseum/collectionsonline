@@ -15,7 +15,7 @@
     left: 0;
     right: 0;
     height: 0.5rem;
-    background-image: repeating-linear-gradient(135deg, $c-cyan, $c-blue, $c-purple, $c-blue, $c-cyan );
+    background-image: repeating-linear-gradient(135deg, $c-teal, $c-blue, $c-purple, $c-blue, $c-teal );
     animation: loadingrad 2s linear infinite,
       loadingmove 0.707s ease-out 1;
     background-size: 300% 100%;

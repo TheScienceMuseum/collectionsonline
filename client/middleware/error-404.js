@@ -1,6 +1,6 @@
 var Templates = require('../templates');
-var initComp = require('../lib/init-components');
-var searchListener = require('../lib/search-listener');
+var initComp = require('../lib/listeners/init-components');
+var searchListener = require('../lib/listeners/search-listener');
 
 module.exports = function (page) {
   page(render);
@@ -10,7 +10,7 @@ module.exports = function (page) {
       var pageEl = document.getElementsByTagName('main')[0];
       var data = {};
       data.footer = require('../../fixtures/footer');
-      data.footerBanner = require('../../fixtures/footer-banner');
+      data.museums = require('../../fixtures/museums');
       data.items = require('../../fixtures/404.js');
       pageEl.innerHTML = Templates['404'](data);
       // refresh the title of the page
@@ -26,4 +26,3 @@ module.exports = function (page) {
     initComp();
   }
 };
-
