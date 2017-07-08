@@ -4,7 +4,7 @@
 
       {{#each related.objects}}
         {{#formatrelated ../related.objects @index this}}
-          <div class="large-2 medium-3 small-4 columns end">
+          <div class="large-2 medium-3 small-4 columns">
             <a href="{{link}}">
               <div class="resultcard resultcard--related {{#if type}}resultcard--{{ this.type }}{{/if}}">
                 <figure class="resultcard__figure">
@@ -21,7 +21,7 @@
 
       {{#isequal this.type 'people' this}}
         {{#seemore related.objects}}
-          <div class="large-2 medium-3 small-4 columns end">
+          <div class="large-2 medium-3 small-4 columns">
             <a href="/search/objects?filter[makers]={{normalise this.title this}}">
               <div class="resultcard resultcard--seemore see-more-objects">
                 <figure class="resultcard__figure">{{> global/icon i="search" size="48" }}</figure>

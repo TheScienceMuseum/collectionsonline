@@ -354,6 +354,14 @@
   padding: 2rem 0;
   background: black;
   color: white;
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .column {
+    margin-bottom: 2em;
+  }
 }
 
 .see-more {
