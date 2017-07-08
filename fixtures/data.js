@@ -67,11 +67,11 @@ module.exports = {
       link: '/documents/aa110000003/the-babbage-papers'
     }, {
       type: 'collection',
-      title: 'Mathematics',
-      description: 'Explore the objects in Mathematics: The Winton Gallery ',
-      figure: '/assets/img/home/collections/mathematics.jpg',
+      title: 'Railway Posters',
+      description: 'Explore our collection of historic railway posters',
+      figure: '/assets/img/home/collections/railway-posters.jpg',
       columns: 'small-6 medium-3',
-      link: '/search/gallery/mathematics:%20the%20winton%20gallery'
+      link: '/search/images/categories/railway%20posters,%20notices%20&%20handbills'
     }]
   }]
 };
