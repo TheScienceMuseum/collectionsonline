@@ -14,12 +14,13 @@ module.exports = () => ({
   method: 'get',
   path: '/wiki/{name}',
   config: {
-    handler: (name) => new Promise((resolve, reject) => {
-      let url, mainImage, summary;
+    handler: (req, reply) => {
+      let url, mainImage, summary, title;
 
-      return wikijs().page(name)
+      wikijs().page(req.params.name)
         .then((page) => {
           url = page.raw.fullurl;
+          title = page.raw.title;
           page.summary()
             .then((summaryRes) => {
               summary = summaryRes;
@@ -27,20 +28,20 @@ module.exports = () => ({
                 .then((mainImageRes) => {
                   mainImage = mainImageRes;
 
-                  resolve({url, mainImage, summary});
+                  reply({url, mainImage, summary, title});
                 })
                 .catch((err) => {
                   const noImageErr = 'Cannot read property \'imageinfo\' of undefined';
                   if (err.message === noImageErr) {
-                    resolve({url, summary});
+                    reply({url, summary, title});
                   } else {
-                    reject(err);
+                    reply(err);
                   }
                 });
             })
-            .catch(reject);
+            .catch(reply);
         })
-        .catch(reject);
-    })
+        .catch(reply);
+    }
   }
 });
