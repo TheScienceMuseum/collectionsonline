@@ -689,3 +689,17 @@ testWithServer(file + 'Request for Related Articles', {}, (t, ctx) => {
     t.end();
   });
 });
+
+testWithServer(file + 'Request for Results list page', {}, (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?page[type]=results-list',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.ok(res.payload.indexOf('resultlist__info') > -1);
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
