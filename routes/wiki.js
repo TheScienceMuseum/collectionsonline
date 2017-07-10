@@ -23,15 +23,12 @@ const wikipedia = (name) => new Promise((resolve, reject) => {
           page.mainImage()
             .then((mainImageRes) => {
               mainImage = mainImageRes;
-
               resolve({url, mainImage, summary, title});
             })
             .catch((err) => {
               const noImageErr = 'Cannot read property \'imageinfo\' of undefined';
               if (err.message === noImageErr) {
                 resolve({url, summary, title});
-              } else {
-                reject(err);
               }
             });
         })
@@ -45,12 +42,7 @@ module.exports = () => ({
   path: '/wiki/{name}',
   config: {
     handler: (req, reply) => {
-      wikipedia(req.params.name)
-        .then(reply)
-        .catch((err) => {
-          console.log('Wikipedia error: ', err);
-          reply();
-        });
+      wikipedia(req.params.name).then(reply);
     }
   }
 });

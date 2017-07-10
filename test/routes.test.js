@@ -703,3 +703,59 @@ testWithServer(file + 'Request for Results list page', {}, (t, ctx) => {
     t.end();
   });
 });
+
+testWithServer(file + 'Request for Wikipedia Data', {}, (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/wiki/Albert_Einstein'
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    var result = JSON.parse(res.payload);
+    t.equal(result.url, 'https://en.wikipedia.org/wiki/Albert_Einstein', 'gets Einsteins wikipedia page');
+    t.ok(result.mainImage, 'returns an image from wikipedia');
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer(file + 'Request for Wikipedia in record Data', {}, (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/people/cp37054',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer(file + 'Request for Wikipedia Data with no image', {}, (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/wiki/De_Havilland'
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    var result = JSON.parse(res.payload);
+    t.equal(result.url, 'https://en.wikipedia.org/wiki/De_Havilland', 'gets De Havillands wikipedia page');
+    t.notOk(result.mainImage, 'returns no image from wikipedia');
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer(file + 'bad', {}, (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search/bad/request',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusMessage, 'Bad Request');
+    t.end();
+  });
+});
