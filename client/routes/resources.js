@@ -50,7 +50,8 @@ function load (ctx, next, type) {
 
       // analytics
       window.dataLayer.push(JSON.parse(data.layer));
-      window.dataLayer.push({'Level5': data.title});
+      window.dataLayer.push({'recordTitle': data.title});
+      window.dataLayer.push({'event': 'recordEvent'});
 
       ctx.state.data.page = type;
       next();
