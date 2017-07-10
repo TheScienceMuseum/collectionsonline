@@ -58,7 +58,7 @@ function load (ctx, next, type) {
     });
   } else {
     ctx.state.data = {};
-    ctx.state.data.page = type;
+    ctx.state.data.page = page;
     listeners(ctx, next, type);
   }
 }
