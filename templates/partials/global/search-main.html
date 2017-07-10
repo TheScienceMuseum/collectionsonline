@@ -73,9 +73,11 @@
         </div>
       {{/if}}
 
-      <nav class="searchtabs" id="searchnav">
-        {{> global/search-nav}}
-      </nav>
+      {{#ifpage 'noresults'}}{{else}}
+        <nav class="searchtabs" id="searchnav">
+          {{> global/search-nav}}
+        </nav>
+      {{/ifpage}}
     {{/unless}}
 
     {{#if reduced}}
