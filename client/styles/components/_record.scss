@@ -54,7 +54,7 @@
     }
 
     a {
-      @include text-link();
+      @include text-link;
     }
   }
 
@@ -126,35 +126,18 @@
   // inside record-imgpanel__controlbar
 
   &__button {
-    @include button-base();
-    color: white;
-    border-color: white;
-    //padding-left: 2rem;
+    @include button-base;
+    @include toolbar-button;
     font-size: rem-calc(18);
-    line-height: 1.25rem; // needs to match icon sizes of other toolbar buttons
 
     .icon {
-      top: rem-calc(2);
+      top: rem-calc(-2);
       left: rem-calc(-2);
     }
+
     &--active .icon {
-    transform: rotate(270deg);
+      transform: rotate(270deg);
     }
-  }
-
-  &__expand {
-    @include icon-before(img-expand, $size: 1.25rem);
-    top:auto;
-    left: auto;
-
-    &--expanded {
-      @include icon-before(img-contract, $size: 1.25rem);
-    }
-  }
-
-  &__button,
-  &__expand {
-    @include toolbar-button;
   }
 
   &__menu-pos-wrap { //wraps __menu to anchor position from top
@@ -224,43 +207,22 @@
 }
 
 .openseadragon {
-  background-color: rgba(33,33,33,1);
+  background-color: grey(90);
+  color: white;
 }
 
 .osd {
   &__toolbar {
     float: right;
   }
-  &__button { //todo: merge with cite__button
+
+  &__button {
     @include toolbar-button;
+
     &:hover {
-      background-color: rgba(0,0,0,1);
+      background-color: rgba(black, 1);
     }
   }
-}
-
-#osd-zoomout {
-  @include icon-before(osd-zoomout, $size: 1.25rem);
-}
-
-#osd-zoomin {
-  @include icon-before(osd-zoomin, $size: 1.25rem);
-}
-
-#osd-fullpage {
-  @include icon-before(img-expand, $size: 1.25rem);
-}
-
-#osd-home {
-  @include icon-before(osd-home, $size: 1.25rem);
-}
-
-#osd-rotate-left {
-  @include icon-before(osd-rotate-counterclockwise, $size: 1.25rem);
-}
-
-#osd-rotate-right {
-  @include icon-before(osd-rotate-clockwise, $size: 1.25rem);
 }
 
 .record-description {
