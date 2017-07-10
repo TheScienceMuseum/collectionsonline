@@ -59,6 +59,7 @@ function load (ctx, next) {
       ctx.state.data = data;
 
       window.dataLayer.push(JSON.parse(data.layer));
+      window.dataLayer.push({'event': 'serpEvent'});
 
       next();
     });
