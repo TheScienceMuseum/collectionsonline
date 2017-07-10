@@ -28,13 +28,13 @@
     <meta name="twitter:site" content="@sciencemuseum" />
     <meta name="twitter:title" content="{{titlePage}}" />
     <meta name="twitter:description" content="{{description.primary.initialDescription}}" />
-    <meta name="twitter:image" content="{{images.0.medium}}" />
+    <meta name="twitter:image" content="{{#unless images.0.medium}}/assets/img/global/smgco-default.png{{/unless}}{{#if images.0.medium}}{{images.0.medium}}{{/if}}">
     <!-- Open Graph data -->
     <meta property="og:title" content="{{titlePage}}" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="{{links.self}}" />
     <meta property="og:description" content="{{description.primary.initialDescription}}" />
-    <meta property="og:image" content="{{images.0.card}}" />
+    <meta property="og:image" content="{{#unless images.0.card}}/assets/img/global/smgco-default.png{{/unless}}{{#if images.0.medium}}{{images.0.card}}{{/if}}">
     <script type="application/ld+json">
       {{{jsonLD}}}
     </script>
