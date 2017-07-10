@@ -6,9 +6,11 @@
       <h1 class="searchbar__strap">Search our collection</h1>
       {{> global/searchbox filters="filters"}}
 
-      <nav class="searchtabs" id="searchnav">
-        {{> global/search-nav}}
-      </nav>
+      {{#ifpage 'noresults'}}{{else}}
+        <nav class="searchtabs" id="searchnav">
+          {{> global/search-nav}}
+        </nav>
+      {{/ifpage}}
     {{/unless}}
 
     {{#if reduced}}
