@@ -4,9 +4,7 @@
     <!-- Data layer-->
       <script>
         window.dataLayer = window.dataLayer || []
-        {{#if inProduction}}
-          dataLayer.push({{{layer}}})
-        {{/if}}
+        dataLayer.push({{{layer}}})
       </script>
     <!-- End of Data layer -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
