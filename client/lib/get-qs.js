@@ -16,6 +16,12 @@ module.exports = function (pageType) {
   }
   // select result per page
   var rpp = document.querySelector('.control--rpp select') ? document.querySelector('.control--rpp select').value : 50;
-  params['page[size]'] = rpp;
+
+  if (parseInt(rpp) !== 50) {
+    params['page[size]'] = rpp;
+  } else {
+    delete params['page[size]'];
+  }
+
   return paramify(params).toLowerCase() + querify(params);
 };
