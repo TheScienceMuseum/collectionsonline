@@ -23,6 +23,7 @@ var findCategory = require('../lib/find-category.js');
 
 var displayFilters = require('../lib/listeners/display-filters.js');
 var searchListener = require('../lib/listeners/search-listener');
+var descriptionBoxCloseListener = require('../lib/listeners/close-description-box.js');
 var deleteFiltersFacets = require('../lib/listeners/delete-filters-facets.js');
 var displayFacet = require('../lib/listeners/display-facet.js');
 var facetsStates = require('../lib/listeners/facets-states.js');
@@ -127,6 +128,7 @@ function render (ctx, next) {
 */
 function listeners (ctx, next) {
   searchListener();
+  descriptionBoxCloseListener();
   initComp();
   // hide the filter button
   var filterButton = document.querySelector('button.filterpanel__button');
