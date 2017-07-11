@@ -7,7 +7,7 @@ module.exports = {
       .waitForElementVisible('.filter__box[value="Great Hall"]', 5000)
       .click('.filter__box[value="Great Hall"]')
       .pause(3000)
-      .assert.urlEquals('http://localhost:8000/search/museum/national%20railway%20museum/gallery/great%20hall?page[size]=50')
+      .assert.urlEquals('http://localhost:8000/search/museum/national%20railway%20museum/gallery/great%20hall')
       .setValue('input[type=search].searchbox__search', 'electric')
       .click('button.searchbox__submit')
       .pause(3000)
