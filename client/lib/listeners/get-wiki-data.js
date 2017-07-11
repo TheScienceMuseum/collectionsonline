@@ -9,9 +9,8 @@ module.exports = function (ctx) {
       headers: { Accept: 'application/vnd.api+json' }
     };
 
-    getData(url, opts, function (err, data) {
-      if (err) {
-      } else if (data.mainImage) {
+    getData(url, opts, function (_err, data) {
+      if (data.mainImage) {
         wikiImage.innerHTML = Templates['wikiImage'](data);
       }
     });
