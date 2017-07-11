@@ -13,7 +13,7 @@
   overflow: hidden;
 
   &__intro {
-    font-weight: 600;
+    font-weight: 700;
     margin-bottom: 2rem;
     text-transform: none;
     @include breakpoint(small only) { display: none; }
@@ -78,7 +78,7 @@
   }
   .row { // keep above images
     position: relative;
-    z-index: 99;
+    z-index: $no-of-slides + 1;
   }
 }
 
@@ -98,8 +98,8 @@
     margin: 0 2em;
     position: relative; // for safari
     @include breakpoint(small only) {
-      height: 3rem;
-      margin: 1rem 33%;
+      height: 2rem;
+      margin: 1rem 37.5%;
     }
   }
   &__arrow {
@@ -122,6 +122,7 @@
 
   .icon {
     font-size: 2rem;
+    vertical-align: top;
     @include breakpoint(medium up) {
       display: block;
       margin-bottom: 1rem;
@@ -131,21 +132,45 @@
 
   &__title {
     font-size: 2rem;
-    @include breakpoint(medium up) { font-size: 3rem; }
-    font-weight: 600;
     line-height: 1;
-    margin-bottom: 1rem;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    @include breakpoint(medium up) {
+      font-size: 3rem;
+      text-align: left;
+      margin-bottom: 1rem;
+    }
+  }
+  &--1 &__title {
+    font-weight: 900;
+  }
+  &--3 &__title {
+    font-weight: 300;
   }
 
   &__desc {
     font-size: rem-calc(18);
     font-weight: 500;
     margin: 0;
+    text-align: center;
+    @include breakpoint(medium up) {
+      text-align: left;
+    }
   }
 }
 
 .home-collections {
   background-color: #fff;
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .column:not(h2) {
+    margin-bottom: 2em;
+  }
 
   &__h {
     font-size: 1.5rem;

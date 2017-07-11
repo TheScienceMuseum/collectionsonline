@@ -37,7 +37,8 @@
     display: none;
   }
 
-  .current ~ .children, .open ~ .children {
+  .current ~ .children,
+  .open ~ .children {
     display: block;
   }
 
@@ -140,15 +141,15 @@
     color: black;
 
     &:hover {
-      background-color: blend-multiply(rgba($c-teal,0.1), grey(20) );
+      background-color: blend-multiply(rgba($c-teal, 0.1), grey(20));
     }
 
     li li &:hover {
-      background-color: blend-multiply(rgba($c-teal,0.1), grey(30) );
+      background-color: blend-multiply(rgba($c-teal, 0.1), grey(30));
     }
 
     li li li &:hover {
-      background-color: blend-multiply(rgba($c-teal,0.1), grey(40) );
+      background-color: blend-multiply(rgba($c-teal, 0.1), grey(40));
     }
   }
 

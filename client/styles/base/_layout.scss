@@ -14,17 +14,17 @@
   padding: 0;
   margin: 0 !important;
   position: relative;
+  display: flex;
+  flex-wrap: wrap;
 
   &__column {
+    margin-bottom: 2em;
     @include grid-column(6);
-    @include grid-column-end;
     @include breakpoint(medium) {
       @include grid-column(4);
-      @include grid-column-end;
     }
     @include breakpoint(large) {
       @include grid-column(3);
-      @include grid-column-end;
     }
 
   }

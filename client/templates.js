@@ -219,6 +219,8 @@ Handlebars.registerHelper('formatnumber', require('../templates/helpers/formatnu
 
 Handlebars.registerHelper('toggleDetail', require('../templates/helpers/toggleDetail.js'));
 
+Handlebars.registerHelper('isResourcePage', require('../templates/helpers/isResourcePage.js'));
+
 // Routes
 module.exports = {
   '404': Handlebars.compile(
