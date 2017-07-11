@@ -6,15 +6,17 @@ function toggle (e) {
 
   if (detailElem.className.indexOf('hidden') === -1) {
     detailElem.classList.add('hidden');
-    button.innerText = 'Show \u2193';
+    button.innerText = 'Show';
+    button.setAttribute('aria-expanded', false);
   } else {
     detailElem.classList.remove('hidden');
-    button.innerText = 'Hide \u2192';
+    button.innerText = 'Hide';
+    button.setAttribute('aria-expanded', true);
   }
 }
 
 module.exports = function () {
-  var hideThis = document.querySelectorAll('.hide-this');
+  var hideThis = document.querySelectorAll('.record-details__toggler');
   [].forEach.call(hideThis, function (el) {
     el.addEventListener('click', toggle);
   });
