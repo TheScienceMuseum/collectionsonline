@@ -119,6 +119,7 @@ button {
     display: none;
     height: 3rem;
     width: auto;
+    max-width: none;
 
     @include breakpoint(medium up) {
       display: block;
