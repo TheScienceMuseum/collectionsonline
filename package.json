@@ -49,6 +49,7 @@
     "codecov": "^1.0.1",
     "cssnano": "^3.7.0",
     "exorcist": "^0.4.0",
+    "faucet": "0.0.1",
     "istanbul": "^0.4.3",
     "nightwatch": "^0.9.14",
     "node-sass": "^4.5.3",
@@ -75,7 +76,7 @@
     "test:lint": "semistandard",
     "test:unit": "run-s test:unit:*",
     "test:unit:sync": "node test/fixtures/copy-data.js",
-    "test:unit:tape": "istanbul cover -x **/bin/** tape 'test/**/*.test.js'",
+    "test:unit:tape": "istanbul cover -x **/bin/** tape 'test/**/*.test.js' | faucet",
     "test:endtoend": "nightwatch --retries 3 --env ${NW_ENV}",
     "build": "run-p build:*",
     "build:js": "browserify client/main.js --debug | exorcist public/bundle.js.map > public/bundle.js",
@@ -88,7 +89,7 @@
     "minify:js": "uglifyjs public/bundle.js -o public/bundle.js",
     "minify:css": "postcss -u cssnano -i public/bundle.css -o public/bundle.css",
     "watch": "npm-run-all build --parallel watch:*",
-    "watch:js": "watchify client/main.js -o public/bundle.js -v",
+    "watch:js": "watchify client/main.js -o 'exorcist public/bundle.js.map > public/bundle.js ' -d -v",
     "watch:css": "nodemon -e scss -x 'npm run build:css'",
     "watch:svg": "nodemon -e svg --ignore public/ -x 'npm run build:svg'",
     "watch:server": "nodemon --watch . --ignore node_modules/ --ignore public/ -e js,html -x 'npm start'"
@@ -121,7 +122,8 @@
   },
   "semistandard": {
     "globals": [
-      "OpenSeadragon"
+      "OpenSeadragon",
+      "sessionStorage"
     ],
     "ignore": [
       "client/lib/polyfills.js"

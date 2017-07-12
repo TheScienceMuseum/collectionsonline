@@ -9,6 +9,10 @@ addons:
     packages:
       - oracle-java8-set-default
 
+cache:
+  directories:
+    - node_modules
+
 before_script:
   - npm run start &
 

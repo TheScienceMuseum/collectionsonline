@@ -35,7 +35,7 @@
 
       {{#each images}}
         {{#ifsmgrights rights.details}}
-          <button id="cite__button-{{@index}}" class="cite__button" >{{> global/icon i="arrow_right" size="16" }} Use this image</button>
+          <button id="cite__button-{{@index}}" class="cite__button" >{{> global/icon i="arrow_right" size="16" }} <span>Use this image</span></button>
         {{/ifsmgrights}}
       {{/each}}
 
@@ -43,11 +43,11 @@
         {{#if this.zoom}}
           <div class="osd__toolbar-container" id="openseadragon-toolbar-{{@index}}">
             <div class="osd__toolbar" id="openseadragon-toolbar">
-              <button class="osd__button" id="osd-fullpage" aria-label="full screen"></button>
-              <button class="osd__button osd-rotate hidden" id="osd-rotate-right" aria-label="rotate image right"></button>
-              <button class="osd__button osd-rotate hidden" id="osd-rotate-left" aria-label="rotate image left"></button>
-              <button class="osd__button osd-zoom hidden" id="osd-zoomout" aria-label="zoom out"></button>
-              <button class="osd__button osd-zoom hidden" id="osd-zoomin" aria-label="zoom in"></button>
+              <button class="osd__button" id="osd-fullpage" aria-label="full screen">{{> global/icon i="img-expand" size="20" }}</button>
+              <button class="osd__button osd-rotate hidden" id="osd-rotate-right" aria-label="rotate image right">{{> global/icon i="osd-rotate-clockwise" size="20" }}</button>
+              <button class="osd__button osd-rotate hidden" id="osd-rotate-left" aria-label="rotate image left">{{> global/icon i="osd-rotate-counterclockwise" size="20" }}</button>
+              <button class="osd__button osd-zoom hidden" id="osd-zoomout" aria-label="zoom out">{{> global/icon i="osd-zoomout" size="20" }}</button>
+              <button class="osd__button osd-zoom hidden" id="osd-zoomin" aria-label="zoom in">{{> global/icon i="osd-zoomin" size="20" }}</button>
             </div>
           </div>
         {{/if}}

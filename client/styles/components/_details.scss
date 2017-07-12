@@ -35,7 +35,7 @@
     display: none; //default
   }
 
-  &[aria-expanded="true"] &__content,
+  &[aria-expanded=true] &__content,
   &:target &__content {
     display: block;
   }

@@ -1,5 +1,4 @@
 module.exports = {
-  /* removed JU 09/06/2017 - need to add back
   'Search from home Page': function (browser) {
     browser
       .url('http://localhost:8000/')
@@ -10,9 +9,9 @@ module.exports = {
       .assert.urlEquals('http://localhost:8000/search?q=ada')
       .click('.resultcard')
       .pause(1000)
-      .assert.urlEquals('http://localhost:8000/people/cp38764/ada-lovelace')
+      .assert.urlEquals('http://localhost:8000/objects/co8228143/fort-ada-alexandria-photograph')
       .waitForElementVisible('.record-top__title', 1000)
-      .assert.containsText('.record-top__title', 'Lovelace')
+      .assert.containsText('.record-top__title', 'Fort Ada, Alexandria')
       .back()
       .assert.urlEquals('http://localhost:8000/search?q=ada')
       .pause(1000)
@@ -25,11 +24,10 @@ module.exports = {
       .assert.urlEquals('http://localhost:8000/search?q=charles%20babbage')
       .click('.resultcard')
       .pause(1000)
-      .assert.urlEquals('http://localhost:8000/people/cp36993')
+      .assert.urlEquals('http://localhost:8000/documents/aa110000564/the-diplomas-of-charles-babbage')
       .assert.containsText('.record-top__title', 'Charles Babbage')
       .back()
       .assert.urlEquals('http://localhost:8000/search?q=charles%20babbage')
       .end();
   }
-  */
 };

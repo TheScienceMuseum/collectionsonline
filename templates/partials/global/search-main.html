@@ -6,9 +6,78 @@
       <h1 class="searchbar__strap">Search our collection</h1>
       {{> global/searchbox filters="filters"}}
 
-      <nav class="searchtabs" id="searchnav">
-        {{> global/search-nav}}
-      </nav>
+      {{#if descriptionBox}}
+        {{#if descriptionBox.museum}}
+          <div class="description-box description-box--museum" style="background-image:url({{descriptionBox.museum.thumbnail}})">{{else}}
+          <div class="description-box">
+        {{/if}}
+        
+          <div class="row">
+            
+            {{#if descriptionBox.category}}
+              <div class="columns {{#if descriptionBox.category.sub-categories}} medium-6 {{else}} medium-9 {{/if}}{{#if descriptionBox.category.related-articles}} medium-6 {{else}} medium-9 {{/if}}">
+                <h3 class="description-box__main-title">{{descriptionBox.category.title}}</h3>
+                <p>{{descriptionBox.category.description}}</p>              
+              </div>
+              {{#if descriptionBox.category.sub-categories}}
+                <div class="columns medium-3">
+                  <h5 class="description-box__list-title">Topics</h5>
+                  <ul class="description-box__list">
+                    {{#each descriptionBox.category.sub-categories}}
+                      <li>{{> global/icon i="objects" }}<a href="{{link}}">{{title}}</a></li>
+                    {{/each}}
+                  </ul>
+                </div>
+              {{/if}}
+              {{#if descriptionBox.category.related-articles}}
+                <div class="columns medium-3">
+                  <h5 class="description-box__list-title">Read about</h5>
+                  <ul class="description-box__list">
+                    {{#each descriptionBox.category.related-articles}}
+                      <li>{{> global/icon i="external" }}<a href="{{link}}">{{title}}</a></li>
+                    {{/each}}                
+                  </ul>
+                </div>
+              {{/if}}
+            {{/if}}
+
+            {{#if descriptionBox.gallery}}
+              <div class="columns medium-6">
+                <h3 class="description-box__main-title">{{descriptionBox.gallery.title}}</h3>
+                <p>{{descriptionBox.gallery.description}}</p>
+              </div>
+              <div class="columns medium-3">
+                <h5 class="description-box__list-title">&nbsp;</h5>
+                <ul class="description-box__list">
+                  <li>{{> global/icon i="external" }}<a href="{{descriptionBox.gallery.link-to-gallery-page}}">Visitor information</a></li>
+                </ul>
+              </div>
+              <div class="columns medium-3">
+                <h5 class="description-box__list-title">&nbsp;</h5>
+                <img src="{{descriptionBox.gallery.thumbnail}}">
+              </div>
+            {{/if}}
+
+            {{#if descriptionBox.museum}}
+              <div class="columns large-9">
+                <h3 class="description-box__main-title">{{descriptionBox.museum.title}}</h3>
+                <p>{{descriptionBox.museum.description}}</p>
+                <ul class="description-box__list">
+                  <li>{{> global/icon i="external" }}<a href="{{descriptionBox.museum.link}}">Visitor information</a></li>
+                </ul>
+              </div>
+            {{/if}}
+            
+          </div>
+          <button name="close-description-box" class="description-box__close">{{> global/icon i="close" }} close</button>
+        </div>
+      {{/if}}
+
+      {{#ifpage 'noresults'}}{{else}}
+        <nav class="searchtabs" id="searchnav">
+          {{> global/search-nav}}
+        </nav>
+      {{/ifpage}}
     {{/unless}}
 
     {{#if reduced}}
