@@ -125,9 +125,9 @@ $timing-defaults: 0.25s ease-out;
 // used in imgpanel controls currently
 @mixin toolbar-button {
   float: right;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
   cursor: pointer;
   color: white;
   border: 1px white solid;
