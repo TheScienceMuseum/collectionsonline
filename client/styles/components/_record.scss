@@ -329,18 +329,11 @@
   color: white;
 
   .row {
-    display: flex;
-    flex-wrap: wrap;
-
-    &::before,
-    &::after { // clear the row clearfix for Safari, if in flexmode
-      flex-basis: 0;
-      order: 1;
-    }
+    @include flexcards-container;
   }
 
   .column {
-    margin-bottom: 2em;
+    @include flexcards-item;
   }
 }
 
