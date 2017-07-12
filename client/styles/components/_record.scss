@@ -275,6 +275,7 @@
       color: grey(80);
       line-height: 1rem;
       padding-top: 0.25rem; // to match dd line-height
+      @include hyphenate;
     }
     dd {
       @include grid-column(9);
