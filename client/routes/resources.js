@@ -30,6 +30,7 @@ module.exports = function (type) {
 
 function load (ctx, next, type) {
   var pageType = type === 'people' ? type : type + 's';
+  var page = type === 'people' ? 'person' : type;
 
   if (!ctx.isInitialRender) {
     var opts = {
@@ -47,17 +48,18 @@ function load (ctx, next, type) {
       var data = JSONToHTML(json);
 
       ctx.state.data = data;
-
+      ctx.state.data.back = sessionStorage.getItem('backPath');
       // analytics
       window.dataLayer.push(JSON.parse(data.layer));
-      window.dataLayer.push({'Level5': data.title});
+      window.dataLayer.push({'recordTitle': data.title});
+      window.dataLayer.push({'event': 'recordEvent'});
 
-      ctx.state.data.page = type;
+      ctx.state.data.page = page;
       next();
     });
   } else {
     ctx.state.data = {};
-    ctx.state.data.page = type;
+    ctx.state.data.page = page;
     listeners(ctx, next, type);
   }
 }

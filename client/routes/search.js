@@ -23,6 +23,7 @@ var findCategory = require('../lib/find-category.js');
 
 var displayFilters = require('../lib/listeners/display-filters.js');
 var searchListener = require('../lib/listeners/search-listener');
+var descriptionBoxCloseListener = require('../lib/listeners/close-description-box.js');
 var deleteFiltersFacets = require('../lib/listeners/delete-filters-facets.js');
 var displayFacet = require('../lib/listeners/display-facet.js');
 var facetsStates = require('../lib/listeners/facets-states.js');
@@ -39,6 +40,7 @@ module.exports = function (page) {
 * assign ctx.state with an object representing the data displayed on the page
 */
 function load (ctx, next) {
+  sessionStorage.setItem('backPath', ctx.path);
   // only load the data if the page hasn't been loaded before
   if (!ctx.isInitialRender) {
     loadingBar.start();
@@ -59,6 +61,7 @@ function load (ctx, next) {
       ctx.state.data = data;
 
       window.dataLayer.push(JSON.parse(data.layer));
+      window.dataLayer.push({'event': 'serpEvent'});
 
       next();
     });
@@ -125,6 +128,7 @@ function render (ctx, next) {
 */
 function listeners (ctx, next) {
   searchListener();
+  descriptionBoxCloseListener();
   initComp();
   // hide the filter button
   var filterButton = document.querySelector('button.filterpanel__button');

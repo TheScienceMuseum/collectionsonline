@@ -53,8 +53,8 @@ button {
 
   img {
     display: block;
-    margin: 0 auto;
     height: 1.5rem;
+    max-width: none;
     margin: 1em 0;
 
     @include breakpoint(360) {
@@ -118,6 +118,7 @@ button {
     display: none;
     height: 3rem;
     width: auto;
+    max-width: none;
 
     @include breakpoint(medium up) {
       display: block;
