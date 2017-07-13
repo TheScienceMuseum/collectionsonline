@@ -690,6 +690,25 @@ testWithServer(file + 'Request for Related Articles', {}, (t, ctx) => {
   });
 });
 
+testWithServer(file + 'rdf request', {}, (t, ctx) => {
+  const request = {
+    method: 'GET',
+    url: '/objects/co62243',
+    headers: {'Accept': 'application/rdf+xml'}
+  };
+
+  var regex = [
+    /<attribute:object_type>.+<\/attribute:object_type>/,
+    /<attribute:category>.+<\/attribute:category>/
+  ];
+
+  ctx.server.inject(request, (res) => {
+    t.ok(regex.every(r => r.test(res.payload)));
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
 testWithServer(file + 'Request for Results list page', {}, (t, ctx) => {
   const htmlRequest = {
     method: 'GET',

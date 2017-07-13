@@ -1,0 +1,11 @@
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:attribute="{{data.links.root}}/search/">
+  <rdf:Description rdf:about="{{data.links.self}}">
+    {{#each data.attributes}}
+      {{#build-rdf @key this ../this.data.type as |key value|}}
+        <attribute:{{key}}>{{value}}</attribute:{{key}}>
+      {{/build-rdf}}
+    {{/each}}
+  </rdf:Description>
+</rdf:RDF>
