@@ -264,5 +264,8 @@ module.exports = {
   ),
   'articles': Handlebars.compile(
     Fs.readFileSync('./templates/partials/records/record-related-articles.html', 'utf8')
+  ),
+  'wikiImage': Handlebars.compile(
+    Fs.readFileSync('./templates/partials/records/wiki-image.html', 'utf8')
   )
 };

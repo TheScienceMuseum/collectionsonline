@@ -8,6 +8,7 @@ var getData = require('../lib/get-data.js');
 var hideKeyboard = require('../lib/hide-keyboard');
 
 var getArticles = require('../lib/listeners/get-articles');
+var getWikiData = require('../lib/listeners/get-wiki-data');
 var searchListener = require('../lib/listeners/search-listener');
 var downloadImageListener = require('../lib/listeners/download-image');
 var osdListener = require('../lib/listeners/osd-listener');
@@ -91,6 +92,8 @@ function listeners (ctx, next, type) {
     funcs.push(getArticles);
   } else if (type === 'document') {
     funcs.push(archiveListeners);
+  } else if (type === 'people') {
+    funcs.push(getWikiData);
   }
 
   funcs.forEach(function (el) {
