@@ -6,6 +6,7 @@
 @mixin resultclass {
   position: relative;
   min-height: 100%;
+  width: 100%;
   line-height: 1.2;
 
   &__figure {
