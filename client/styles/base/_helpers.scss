@@ -50,6 +50,32 @@ $timing-defaults: 0.25s ease-out;
   }
 }
 
+@mixin flexcards-container {
+  display: flex;
+  flex-wrap: wrap;
+
+  &::before,
+  &::after { // clear the row clearfix for Safari, if in flexmode
+    flex-basis: 0;
+    order: 1;
+  }
+}
+
+@mixin flexcards-item {
+  margin-bottom: 2em;
+  &, & > a { display: flex; }
+  a { width: 100%; }
+}
+
+// wrap long text strings
+@mixin hyphenate {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
+}
+
 //-----------------------------------------------------------------------------
 // icon-bullet
 // replacing a bulleted list • with an svg icon
@@ -125,9 +151,9 @@ $timing-defaults: 0.25s ease-out;
 // used in imgpanel controls currently
 @mixin toolbar-button {
   float: right;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
   cursor: pointer;
   color: white;
   border: 1px white solid;
