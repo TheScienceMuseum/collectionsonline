@@ -29,7 +29,9 @@ module.exports = (ctx) => {
 
     var flkty = Flickity.data(carousel);
     ctx.carousel.on('select', function () {
-      document.querySelector('#openseadragon').style.width = '100%';
+      if (navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)) {
+        document.querySelector('#openseadragon').style.width = '100%';
+      }
       thumbnails.forEach((el) => {
         el.classList.remove('record-imgpanel__thumb--selected');
       });
