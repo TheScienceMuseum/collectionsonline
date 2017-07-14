@@ -9,6 +9,6 @@ test(file + 'paramify transforms query', (t) => {
     categories: 'Art'
   };
 
-  t.equal(paramify(query), '/images/categories/Art', 'Query becomes param string');
+  t.equal(paramify(query), '/images/categories/art', 'Query becomes param string');
   t.end();
 });

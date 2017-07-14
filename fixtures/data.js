@@ -50,7 +50,7 @@ module.exports = {
       description: 'Search across a snapshot of objects representing the development of the internet',
       figure: '/assets/img/home/collections/informationage.jpg',
       columns: 'small-6 medium-3',
-      link: '/search/gallery/information%20age%20gallery%3A%20web'
+      link: '/search/gallery/information-age-gallery%3A-web'
     }, {
       type: 'collection',
       title: 'Cinematography',
@@ -71,7 +71,7 @@ module.exports = {
       description: 'Explore our collection of historic railway posters',
       figure: '/assets/img/home/collections/railway-posters.jpg',
       columns: 'small-6 medium-3',
-      link: '/search/images/categories/railway%20posters,%20notices%20&%20handbills'
+      link: '/search/images/categories/railway-posters,-notices-&-handbills'
     }]
   }]
 };
