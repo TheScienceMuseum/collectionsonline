@@ -43,7 +43,7 @@ function load (ctx, next, type) {
     getData(url, opts, function (err, json) {
       if (err) {
         console.error(err);
-        Snackbar.create('Error getting data from the server. Please check your internet connection or try again shortly');
+        Snackbar.create('Error getting data from the server.\n<br>Please check your internet connection or try again shortly');
         return;
       }
       var data = JSONToHTML(json);
