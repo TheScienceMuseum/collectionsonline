@@ -5,7 +5,7 @@ var openseadragon = require('../openseadragon');
 module.exports = (ctx) => {
   var carousel = document.querySelector('.carousel');
   if (carousel) {
-    var thumbnails = Array.prototype.slice.call(document.getElementsByClassName('record-imgpanel__thumb'));
+    var thumbnails = document.getElementsByClassName('record-imgpanel__thumb');
     var captions = Array.prototype.slice.call(document.getElementsByClassName('record-imgpanel__caption'));
     var rights = Array.prototype.slice.call(document.getElementsByClassName('cite__menu__methods'));
     var zooms = Array.prototype.slice.call(document.getElementsByClassName('osd__toolbar-container'));
@@ -32,7 +32,7 @@ module.exports = (ctx) => {
       if (navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)) {
         document.querySelector('#openseadragon').style.width = '100%';
       }
-      thumbnails.forEach((el) => {
+      Array.prototype.slice.call(thumbnails).forEach((el) => {
         el.classList.remove('record-imgpanel__thumb--selected');
       });
       if (thumbnails[flkty.selectedIndex]) {
@@ -44,7 +44,7 @@ module.exports = (ctx) => {
       useImage.forEach((el) => showHide('cite__button', flkty, el));
     });
 
-    thumbnails.forEach((el, i) => el.addEventListener('click', function (e) {
+    Array.prototype.slice.call(thumbnails).forEach((el, i) => el.addEventListener('click', function (e) {
       ctx.carousel.select(i);
       if (ctx.viewer) {
         ctx.viewer.destroy();
