@@ -37,12 +37,17 @@ const wikipedia = (name) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-module.exports = () => ({
+module.exports = (config) => ({
   method: 'get',
   path: '/wiki/{name}',
   config: {
     handler: (req, reply) => {
-      wikipedia(req.params.name).then(reply);
+      var inProduction = config && config.NODE_ENV === 'production';
+
+      if (!inProduction) {
+        return wikipedia(req.params.name).then(reply);
+      }
+      return reply();
     }
   }
 });
