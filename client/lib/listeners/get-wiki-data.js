@@ -10,7 +10,7 @@ module.exports = function (ctx) {
     };
 
     getData(url, opts, function (_err, data) {
-      if (data.mainImage) {
+      if (data && data.mainImage) {
         wikiImage.innerHTML = Templates['wikiImage'](data);
       }
     });
