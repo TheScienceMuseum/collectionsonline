@@ -22,7 +22,7 @@ testWithServer('Search request for Object with "Purchased" in credit line', {}, 
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search/objects?q=stephen-hawking-painting&filter[categories]=Art',
+    url: '/search/objects?q=stephen-hawking&filter[categories]=Art',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 

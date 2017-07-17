@@ -32,8 +32,8 @@ testWithServer('Search for Object Page with image', {}, (t, ctx) => {
     var response = JSON.parse(res.payload);
 
     t.equal(res.statusCode, 200, 'Succesful request');
-    t.ok(response.data[1], 'Got results');
-    t.ok(response.data[1].attributes.multimedia, 'First result has image');
+    t.ok(response.data[0], 'Got results');
+    t.ok(response.data[0].attributes.multimedia, 'First result has image');
     t.end();
   });
 });

@@ -15,5 +15,6 @@ module.exports = (elastic, config) => ([
   require('./api')(elastic, config),
   require('./object-id')(elastic, config),
   require('./robot')(),
-  require('./articles')()
+  require('./articles')(),
+  require('./wiki')(config)
 ]);

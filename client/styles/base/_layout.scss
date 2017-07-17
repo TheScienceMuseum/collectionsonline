@@ -11,14 +11,13 @@
 //-----------------------------------------------------------------------------
 
 .searchresults {
+  @include flexcards-container;
   padding: 0;
   margin: 0 !important;
   position: relative;
-  display: flex;
-  flex-wrap: wrap;
 
   &__column {
-    margin-bottom: 2em;
+    @include flexcards-item;
     @include grid-column(6);
     @include breakpoint(medium) {
       @include grid-column(4);
@@ -26,11 +25,10 @@
     @include breakpoint(large) {
       @include grid-column(3);
     }
-
   }
 
   &__list {
-    @include grid-column();
+    @include grid-column;
   }
 
   &--filtersactive {

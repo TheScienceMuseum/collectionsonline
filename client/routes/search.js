@@ -54,7 +54,7 @@ function load (ctx, next) {
     getData('/search' + (searchCategory ? '/' + searchCategory : '') + paramify(p) + querify(queryParams), opts, function (err, json) {
       if (err) {
         console.error(err);
-        Snackbar.create('Error getting data from the server');
+        Snackbar.create('Error getting data from the server.\n<br>Please check your internet connection or try again shortly');
         return;
       }
       var data = searchResultsToTemplateData(queryParams, json);

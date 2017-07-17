@@ -164,12 +164,11 @@
   background-color: #fff;
 
   .row {
-    display: flex;
-    flex-wrap: wrap;
+    @include flexcards-container;
   }
 
   .column:not(h2) {
-    margin-bottom: 2em;
+    @include flexcards-item;
   }
 
   &__h {
