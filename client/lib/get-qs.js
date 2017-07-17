@@ -23,5 +23,5 @@ module.exports = function (pageType) {
     delete params['page[size]'];
   }
 
-  return paramify(params).toLowerCase() + querify(params);
+  return paramify(params) + querify(params);
 };

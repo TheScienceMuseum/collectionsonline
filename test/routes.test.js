@@ -426,7 +426,7 @@ testWithServer('SCM Short url', {}, (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=Science%20Museum', 'redirects to search on Science Museum');
+    t.equal(res.headers.location, '/search/museum/science-museum', 'redirects to search on Science Museum');
     t.end();
   });
 });
@@ -442,39 +442,7 @@ testWithServer('NRM Short url', {}, (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=National%20Railway%20Museum', 'redirects to search on Railway Museum');
-    t.end();
-  });
-});
-
-testWithServer('SCM Short url', {}, (t, ctx) => {
-  t.plan(2);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/scm',
-    headers: {'Accept': 'text/html'}
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=Science%20Museum', 'redirects to search on Science Museum');
-    t.end();
-  });
-});
-
-testWithServer('NRM Short url', {}, (t, ctx) => {
-  t.plan(2);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/nrm',
-    headers: {'Accept': 'text/html'}
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=National%20Railway%20Museum', 'redirects to search on Railway Museum');
+    t.equal(res.headers.location, '/search/museum/national-railway-museum', 'redirects to search on Railway Museum');
     t.end();
   });
 });
@@ -490,7 +458,7 @@ testWithServer('NMEM Short url', {}, (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=National%20Media%20Museum', 'redirects to search on Media Museum');
+    t.equal(res.headers.location, '/search/museum/national-media-museum', 'redirects to search on Media Museum');
     t.end();
   });
 });
@@ -506,7 +474,7 @@ testWithServer('MSI Short url', {}, (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=Museum%20of%20Science%20and%20Industry', 'redirects to search on Museum of Science and Industry');
+    t.equal(res.headers.location, '/search/museum/museum-of-science-and-industry', 'redirects to search on Museum of Science and Industry');
     t.end();
   });
 });
@@ -531,7 +499,7 @@ testWithServer('One gallery selected', {}, (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?q=locomotive&filter[gallery]=Station%20Hall',
+    url: '/search?q=locomotive&filter[gallery]=Station-Hall',
     headers: {'Accept': 'application/json'}
   };
 

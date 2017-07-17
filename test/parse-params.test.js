@@ -26,9 +26,9 @@ test('parsing museum params', function (t) {
   t.deepEqual(parseParameters({filters: 'objects/museum/msi'}), {params: {type: 'objects'}, categories: {museum: 'Museum of Science and Industry'}}, 'should convert short museum name');
   t.deepEqual(parseParameters({filters: 'objects/museum/nrm'}), {params: {type: 'objects'}, categories: {museum: 'National Railway Museum'}}, 'should convert short museum name');
   t.deepEqual(parseParameters({filters: 'objects/museum/nmem'}), {params: {type: 'objects'}, categories: {museum: 'National Media Museum'}}, 'should convert short museum name');
-  t.deepEqual(parseParameters({filters: 'objects/museum/Science%20Museum'}), {params: {type: 'objects'}, categories: {museum: 'Science Museum'}}, 'should keep long museum name');
-  t.deepEqual(parseParameters({filters: 'objects/museum/National%20Railway%20Museum'}), {params: {type: 'objects'}, categories: {museum: 'National Railway Museum'}}, 'should keep long museum name');
-  t.deepEqual(parseParameters({filters: 'objects/museum/museum%20of%20science%20and%20industry'}), {params: {type: 'objects'}, categories: {museum: 'Museum of Science and Industry'}}, 'should convert museum name to correct case');
+  t.deepEqual(parseParameters({filters: 'objects/museum/Science-Museum'}), {params: {type: 'objects'}, categories: {museum: 'Science Museum'}}, 'should keep long museum name');
+  t.deepEqual(parseParameters({filters: 'objects/museum/National-Railway-Museum'}), {params: {type: 'objects'}, categories: {museum: 'National Railway Museum'}}, 'should keep long museum name');
+  t.deepEqual(parseParameters({filters: 'objects/museum/museum-of-science-and-industry'}), {params: {type: 'objects'}, categories: {museum: 'Museum of Science and Industry'}}, 'should convert museum name to correct case');
   t.end();
 });
 
@@ -36,7 +36,7 @@ test('param order', function (t) {
   t.plan(2);
 
   t.deepEqual(parseParameters({filters: 'objects/images/museum/scm/categories/art'}), {params: {type: 'objects'}, categories: {museum: 'Science Museum', categories: 'Art', has_image: 'has_image'}}, 'param order does not matter');
-  t.deepEqual(parseParameters({filters: 'objects/museum/scm/images/gallery/mathematics:%20the%20winton%20gallery/categories/art'}), {params: {type: 'objects'}, categories: {museum: 'Science Museum', gallery: 'Mathematics: The Winton Gallery', categories: 'Art', has_image: 'has_image'}}, 'param order does not matter');
+  t.deepEqual(parseParameters({filters: 'objects/museum/scm/images/gallery/mathematics:-the-winton-gallery/categories/art'}), {params: {type: 'objects'}, categories: {museum: 'Science Museum', gallery: 'Mathematics: The Winton Gallery', categories: 'Art', has_image: 'has_image'}}, 'param order does not matter');
   t.end();
 });
 
