@@ -35,11 +35,13 @@ module.exports = (ctx) => {
       Array.prototype.slice.call(thumbnails).forEach((el) => {
         el.classList.remove('record-imgpanel__thumb--selected');
       });
-      thumbnails[flkty.selectedIndex].classList.add('record-imgpanel__thumb--selected');
-      captions.forEach((el) => showHide('record-imgpanel__caption', flkty, el));
-      zooms.forEach((el) => showHide('openseadragon-toolbar', flkty, el));
-      rights.forEach((el) => showHide('cite__method', flkty, el));
-      useImage.forEach((el) => showHide('cite__button', flkty, el));
+      if (thumbnails[flkty.selectedIndex]) {
+        thumbnails[flkty.selectedIndex].classList.add('record-imgpanel__thumb--selected');
+        captions.forEach((el) => showHide('record-imgpanel__caption', flkty, el));
+        zooms.forEach((el) => showHide('openseadragon-toolbar', flkty, el));
+        rights.forEach((el) => showHide('cite__method', flkty, el));
+        useImage.forEach((el) => showHide('cite__button', flkty, el));
+      }
     });
 
     Array.prototype.slice.call(thumbnails).forEach((el, i) => el.addEventListener('click', function (e) {
