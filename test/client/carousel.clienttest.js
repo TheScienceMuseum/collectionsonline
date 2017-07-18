@@ -5,7 +5,7 @@ module.exports = {
       .waitForElementVisible('body', 1000)
       .click('.resultcard')
       .pause(2000)
-      .url('http://localhost:8000/search?q=plumed%20hat')
+      .url('http://localhost:8000/search?q=plumed-hat')
       .waitForElementVisible('body', 1000)
       .click('.resultcard')
       .pause(2000)

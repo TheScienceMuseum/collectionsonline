@@ -19,50 +19,31 @@ test(file + 'The filters date are included in the array filter', (t) => {
   const filtersAll = createFilterAll(queryParams, filters);
   var expected = {
     bool: {
-      must: [{terms: {'type.base': ['agent', 'object']}}],
-      should: [
+      must: [
+        {
+          terms: {'type.base': ['agent', 'object']}
+        },
         {
           bool: {
-            must: [
-              {term: {'type.base': 'agent'}},
-              {
-                bool: {
-                  must: [
-                    {'or': [{'range': {'lifecycle.death.date.latest': {'gte': ['1800']}}}, {'range': {'lifecycle.creation.date.latest': {'gte': ['1800']}}}]},
-                    {'or': [{'range': {'lifecycle.birth.date.latest': {'lte': ['1900']}}}, {'range': {'lifecycle.creation.date.latest': {'lte': ['1900']}}}]}
-                  ]
-                }
-              }
+            should: [
+              {'range': {'lifecycle.death.date.latest': {'gte': ['1800']}}}, {'range': {'lifecycle.creation.date.latest': {'gte': ['1800']}}},
+              {'range': {'lifecycle.birth.date.latest': {'lte': ['1900']}}}, {'range': {'lifecycle.creation.date.latest': {'lte': ['1900']}}}
             ]
           }
         },
         {
           bool: {
-            must: [
-              {term: {'type.base': 'object'}},
-              {
-                bool: {
-                  must: [
-                    {'or': [{'range': {'lifecycle.death.date.latest': {'gte': ['1800']}}}, {'range': {'lifecycle.creation.date.latest': {'gte': ['1800']}}}]},
-                    {'or': [{'range': {'lifecycle.birth.date.latest': {'lte': ['1900']}}}, {'range': {'lifecycle.creation.date.latest': {'lte': ['1900']}}}]}
-                  ]
-                }
-              }
+            should: [
+              {'range': {'lifecycle.death.date.latest': {'gte': ['1800']}}}, {'range': {'lifecycle.creation.date.latest': {'gte': ['1800']}}},
+              {'range': {'lifecycle.birth.date.latest': {'lte': ['1900']}}}, {'range': {'lifecycle.creation.date.latest': {'lte': ['1900']}}}
             ]
           }
         },
         {
           bool: {
-            must: [
-              {term: {'type.base': 'archive'}},
-              {
-                bool: {
-                  must: [
-                    {'or': [{'range': {'lifecycle.death.date.latest': {'gte': ['1800']}}}, {'range': {'lifecycle.creation.date.latest': {'gte': ['1800']}}}]},
-                    {'or': [{'range': {'lifecycle.birth.date.latest': {'lte': ['1900']}}}, {'range': {'lifecycle.creation.date.latest': {'lte': ['1900']}}}]}
-                  ]
-                }
-              }
+            should: [
+              {'range': {'lifecycle.death.date.latest': {'gte': ['1800']}}}, {'range': {'lifecycle.creation.date.latest': {'gte': ['1800']}}},
+              {'range': {'lifecycle.birth.date.latest': {'lte': ['1900']}}}, {'range': {'lifecycle.creation.date.latest': {'lte': ['1900']}}}
             ]
           }
         }

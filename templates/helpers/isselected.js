@@ -3,7 +3,7 @@ module.exports = (selected, facet, name) => {
 
   if (selected[facet] && typeof name === 'string') {
     for (var filterName in selected[facet]) {
-      if (filterName.toLowerCase() === name.toLowerCase()) {
+      if (filterName.toLowerCase().split(' ').join('-') === name.toLowerCase().split(' ').join('-')) {
         isSelected = true;
       }
     }

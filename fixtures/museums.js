@@ -8,7 +8,7 @@ module.exports = {
   links: [
     {
       name: 'Science Museum',
-      url: 'https://www.sciencemuseum.org.uk',
+      url: 'http://www.sciencemuseum.org.uk',
       image: '/assets/img/global/sml-logo.svg'
     },
     {

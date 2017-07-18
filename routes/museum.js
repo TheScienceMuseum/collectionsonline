@@ -10,7 +10,7 @@ module.exports = {
       method: 'GET',
       path: '/scm',
       handler: function (request, reply) {
-        museumRedirect(request, reply, 'Science Museum');
+        museumRedirect(request, reply, 'science-museum');
       }
     };
   },
@@ -19,7 +19,7 @@ module.exports = {
       method: 'GET',
       path: '/msi',
       handler: function (request, reply) {
-        museumRedirect(request, reply, 'Museum of Science and Industry');
+        museumRedirect(request, reply, 'museum-of-science-and-industry');
       }
     };
   },
@@ -28,7 +28,7 @@ module.exports = {
       method: 'GET',
       path: '/nrm',
       handler: function (request, reply) {
-        museumRedirect(request, reply, 'National Railway Museum');
+        museumRedirect(request, reply, 'national-railway-museum');
       }
     };
   },
@@ -37,7 +37,7 @@ module.exports = {
       method: 'GET',
       path: '/nmem',
       handler: function (request, reply) {
-        museumRedirect(request, reply, 'National Media Museum');
+        museumRedirect(request, reply, 'national-media-museum');
       }
     };
   }
@@ -50,8 +50,7 @@ function museumRedirect (request, reply, museum) {
     }, (err, value) => {
       if (err) return reply(Boom.badRequest(err));
 
-      request.query['filter[museum]'] = museum;
-      reply.redirect('/search?' + Querystring.stringify(request.query));
+      reply.redirect('/search/museum/' + museum + Querystring.stringify(request.query));
     }
   );
 }

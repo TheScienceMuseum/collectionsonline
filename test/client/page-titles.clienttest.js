@@ -13,7 +13,7 @@ module.exports = {
       .waitForElementVisible('body', 1000)
       .pause(1000)
       .assert.title('Ada Lovelace | Science Museum Group Collection')
-      .url('http://localhost:8000/search/museum/science%20museum/gallery/information%20age%20gallery:%20cable?page[size]=50')
+      .url('http://localhost:8000/search/museum/science-museum/gallery/information-age-gallery:-cable?page[size]=50')
       .waitForElementVisible('body', 1000)
       .pause(1000)
       .assert.title('On display at the Science Museum: Information Age Gallery: Cable | Science Museum Group Collection')

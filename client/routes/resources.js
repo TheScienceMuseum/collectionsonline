@@ -8,6 +8,7 @@ var getData = require('../lib/get-data.js');
 var hideKeyboard = require('../lib/hide-keyboard');
 
 var getArticles = require('../lib/listeners/get-articles');
+var getWikiData = require('../lib/listeners/get-wiki-data');
 var searchListener = require('../lib/listeners/search-listener');
 var downloadImageListener = require('../lib/listeners/download-image');
 var osdListener = require('../lib/listeners/osd-listener');
@@ -42,7 +43,7 @@ function load (ctx, next, type) {
     getData(url, opts, function (err, json) {
       if (err) {
         console.error(err);
-        Snackbar.create('Error getting data from the server');
+        Snackbar.create('Error getting data from the server.\n<br>Please check your internet connection or try again shortly');
         return;
       }
       var data = JSONToHTML(json);
@@ -91,6 +92,8 @@ function listeners (ctx, next, type) {
     funcs.push(getArticles);
   } else if (type === 'document') {
     funcs.push(archiveListeners);
+  } else if (type === 'people') {
+    funcs.push(getWikiData);
   }
 
   funcs.forEach(function (el) {

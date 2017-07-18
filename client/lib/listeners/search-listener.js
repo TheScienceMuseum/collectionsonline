@@ -42,7 +42,7 @@ module.exports = function () {
     }
     var params = paramify(qs);
     var query = querify(qs);
-    var url = '/search' + params.toLowerCase() + query;
-    page.show(url);
+    var url = '/search' + params + query;
+    page.show(url.split(' ').join('-'));
   });
 };

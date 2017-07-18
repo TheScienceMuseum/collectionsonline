@@ -426,7 +426,7 @@ testWithServer('SCM Short url', {}, (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=Science%20Museum', 'redirects to search on Science Museum');
+    t.equal(res.headers.location, '/search/museum/science-museum', 'redirects to search on Science Museum');
     t.end();
   });
 });
@@ -442,39 +442,7 @@ testWithServer('NRM Short url', {}, (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=National%20Railway%20Museum', 'redirects to search on Railway Museum');
-    t.end();
-  });
-});
-
-testWithServer('SCM Short url', {}, (t, ctx) => {
-  t.plan(2);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/scm',
-    headers: {'Accept': 'text/html'}
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=Science%20Museum', 'redirects to search on Science Museum');
-    t.end();
-  });
-});
-
-testWithServer('NRM Short url', {}, (t, ctx) => {
-  t.plan(2);
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/nrm',
-    headers: {'Accept': 'text/html'}
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=National%20Railway%20Museum', 'redirects to search on Railway Museum');
+    t.equal(res.headers.location, '/search/museum/national-railway-museum', 'redirects to search on Railway Museum');
     t.end();
   });
 });
@@ -490,7 +458,7 @@ testWithServer('NMEM Short url', {}, (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=National%20Media%20Museum', 'redirects to search on Media Museum');
+    t.equal(res.headers.location, '/search/museum/national-media-museum', 'redirects to search on Media Museum');
     t.end();
   });
 });
@@ -506,7 +474,7 @@ testWithServer('MSI Short url', {}, (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(res.headers.location, '/search?filter%5Bmuseum%5D=Museum%20of%20Science%20and%20Industry', 'redirects to search on Museum of Science and Industry');
+    t.equal(res.headers.location, '/search/museum/museum-of-science-and-industry', 'redirects to search on Museum of Science and Industry');
     t.end();
   });
 });
@@ -531,7 +499,7 @@ testWithServer('One gallery selected', {}, (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?q=locomotive&filter[gallery]=Station%20Hall',
+    url: '/search?q=locomotive&filter[gallery]=Station-Hall',
     headers: {'Accept': 'application/json'}
   };
 
@@ -690,6 +658,25 @@ testWithServer(file + 'Request for Related Articles', {}, (t, ctx) => {
   });
 });
 
+testWithServer(file + 'rdf request', {}, (t, ctx) => {
+  const request = {
+    method: 'GET',
+    url: '/objects/co62243',
+    headers: {'Accept': 'application/rdf+xml'}
+  };
+
+  var regex = [
+    /<attribute:object_type>.+<\/attribute:object_type>/,
+    /<attribute:category>.+<\/attribute:category>/
+  ];
+
+  ctx.server.inject(request, (res) => {
+    t.ok(regex.every(r => r.test(res.payload)));
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
 testWithServer(file + 'Request for Results list page', {}, (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
@@ -700,6 +687,62 @@ testWithServer(file + 'Request for Results list page', {}, (t, ctx) => {
   ctx.server.inject(htmlRequest, (res) => {
     t.ok(res.payload.indexOf('resultlist__info') > -1);
     t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer(file + 'Request for Wikipedia Data', {}, (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/wiki/Albert_Einstein'
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    var result = JSON.parse(res.payload);
+    t.equal(result.url, 'https://en.wikipedia.org/wiki/Albert_Einstein', 'gets Einsteins wikipedia page');
+    t.ok(result.mainImage, 'returns an image from wikipedia');
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer(file + 'Request for Wikipedia in record Data', {}, (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/people/cp37054',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer(file + 'Request for Wikipedia Data with no image', {}, (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/wiki/De_Havilland'
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    var result = JSON.parse(res.payload);
+    t.equal(result.url, 'https://en.wikipedia.org/wiki/De_Havilland', 'gets De Havillands wikipedia page');
+    t.notOk(result.mainImage, 'returns no image from wikipedia');
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.end();
+  });
+});
+
+testWithServer(file + 'bad', {}, (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search/bad/request',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusMessage, 'Bad Request');
     t.end();
   });
 });
