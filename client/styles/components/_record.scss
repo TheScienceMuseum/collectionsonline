@@ -128,6 +128,9 @@
   &__button {
     @include button-base;
     @include toolbar-button;
+    @include breakpoint(small only) {
+      padding: .5em .75em;
+    }
     font-size: rem-calc(18);
 
     .icon {
