@@ -71,7 +71,8 @@
     "description": "The objects on display in the Kodak Gallery explore the history of photography, from the invention of photography to the digital revolution.",
     "link-to-gallery-page": "https://www.scienceandmediamuseum.org.uk/whats-on/kodak-gallery"
   },
-  "TV Heaven Gallery": {How has the small screen shaped our lives? Discover the objects on display in the TV Heaven Gallery charting the development, significance and cultural impact of the television.How has the small screen shaped our lives? Explore the development, significance and cultural impact of the most influential invention of the 20th century: television.",
+  "TV Heaven Gallery": {
+    "description": "How has the small screen shaped our lives? Discover the objects on display in the TV Heaven Gallery charting the development, significance and cultural impact of the television.How has the small screen shaped our lives? Explore the development, significance and cultural impact of the most influential invention of the 20th century: television.",
     "link-to-gallery-page": "https://www.scienceandmediamuseum.org.uk/whats-on/tv-gallery"
   },
   "Animation Gallery": {
