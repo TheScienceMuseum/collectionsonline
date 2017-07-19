@@ -7,7 +7,7 @@ module.exports = {
       .assert.containsText('.fact-Nationality', 'English')
       .assert.containsText('.fact-born-in', 'Southwark')
       .assert.containsText('.record-top__date', '1791 - 1871')
-      .assert.containsText('.related-people > li > a', 'Lovelace')
+      .assert.containsText('.related-people > li > a', 'Edward Daniel Clarke')
       .url('http://localhost:8000/people/ap260')
       .waitForElementVisible('body', 1000)
       .assert.containsText('.record-top__title', 'Pease, John (1797-1868) Industrialist Quaker')
