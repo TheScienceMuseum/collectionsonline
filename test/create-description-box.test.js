@@ -52,7 +52,7 @@ test('createDescriptionBox - gallery', (t) => {
     museum: {'National Railway Museum': true}
   };
   const actual = Object.keys(createDescriptionBox(query).gallery);
-  const expected = ['description', 'title', 'link-to-gallery-page'];
+  const expected =  ['description', 'link-to-gallery-page', 'title'];
 
   t.deepEqual(actual, expected);
   t.end();
