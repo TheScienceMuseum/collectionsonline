@@ -6,86 +6,97 @@
     "link-to-gallery-page": "http://www.sciencemuseum.org.uk/"
   },
   "Information Age Gallery: Cable": {
-    "description": "The telegraph gave rise to the first global communication network, radically shrinking our world. Explore its impact on society, as well as the ways cable still plays a vital role in an increasingly wireless world."
+    "description": "The telegraph gave rise to the first global communication network, radically shrinking our world. Explore the objects on display in the Information Age Gallery and discover the ways cable still plays a vital role in an increasingly wireless world.",
+    "link-to-gallery-page": "http://www.sciencemuseum.org.uk/visitmuseum/Plan_your_visit/exhibitions/information_age"
   },
   "Information Age Gallery: Broadcast": {
-    "description": "Television and radio networks transformed the spread of information, connecting millions of people watching or listening to the same programme at the same time. Find out about thermionic valves, the first radio transmitter, televisionâ€™s digital transformation and more."
+    "description": "Television and radio networks transformed the spread of information. Discover thermionic valves, the first radio transmitter, television’s digital transformation and more on display in the Information Age Gallery.",
+    "link-to-gallery-page": "http://www.sciencemuseum.org.uk/visitmuseum/Plan_your_visit/exhibitions/information_age"
   },
   "Information Age Gallery: Exchange": {
-    "description": "Discover how the telephone gave rise to new forms of behaviour and social etiquette, transforming working lives and relationships. Explore the stories of the pioneers behind this world-changing technology."
+    "description": "The telephone gave rise to new forms of behaviour and social etiquette, transforming working lives and relationships. Explore the objects and pioneers behind this world-changing technology on display in the Information Age Gallery.",
+    "link-to-gallery-page": "http://www.sciencemuseum.org.uk/visitmuseum/Plan_your_visit/exhibitions/information_age"
   },
   "Information Age Gallery: Cell": {
-    "description": "Mobile phones have transformed from communication machines into versatile computing devices. Discover how they enable users to create and consume unprecedented quantities of personal data, wherever they are in the world."
+    "description": "Mobile phones have transformed from communication machines into versatile computing devices. Discover their development in the Information Age Gallery.",
+    "link-to-gallery-page": "http://www.sciencemuseum.org.uk/visitmuseum/Plan_your_visit/exhibitions/information_age"
+  },
+  "Information Age Gallery: Web": {
+    "description": "Computer networks criss-cross the planet, transmitting vast amounts of data at high speed. Explore the objects that have revolutionised the flow of information on display in the Information Age Gallery.",
+    "link-to-gallery-page": "http://www.sciencemuseum.org.uk/visitmuseum/Plan_your_visit/exhibitions/information_age"
   },
   "Information Age Gallery: Constellation": {
-    "description": "How are satellites, far away in space, connected to our lives on earth? Discover how these networks relay information between earth and space, delivering data to parts of the world that other technologies cannot reach."
+    "description": "Explore the objects on display in the Information Age Gallery which tell the story of the satellite networks relaying information between earth and space, delivering data to parts of the world that other technologies cannot reach.",
+    "link-to-gallery-page": "http://www.sciencemuseum.org.uk/visitmuseum/Plan_your_visit/exhibitions/information_age"
   },
   "Mathematics: The Winton Gallery": {
-    "description": "How has mathematics shaped our world? Explore stories spanning 400 years of human ingenuity, revealing the fundamental role mathematicians, their tools and ideas have played in building the world we live in.",
+    "description": "Explore the objects on display in Mathematics: The Winton Gallery and discover the fundamental role mathematicians, their tools and ideas have played in building the world we live in.",
     "thumbnail": "https://static1.squarespace.com/static/5818888f5016e166cfa5e0af/t/5846c62b9de4bb2223a8c5c1/1481033266991/highlights.jpg",
     "link-to-gallery-page": "https://beta.sciencemuseum.org.uk/mathematics"
   },
   "Making the Modern World Gallery": {
-    "description": "Discover remarkable objects from 250 years of science and technology. Come face-to-face with iconic items, from Stephensonâ€™s Rocket to the Apollo 10 command module and the first Apple computer."
+    "description": "Spanning 250 years of science and technology, the iconic objects on display in Making the Modern World have helped to shape the world we see today.",
+    "link-to-gallery-page": "http://www.sciencemuseum.org.uk/visitmuseum/plan_your_visit/exhibitions/making_the_modern_world"
   },
   "Journeys through Medicine: Henry Wellcome's Legacy": {
-    "description": "Medicine shapes all our lives. From pacemakers to paracetamol and prehistoric surgical tools to modern medical equipment, discover the myriad ways people have thought about health throughout history."
+    "description": "Medicine touches all our lives. From pacemakers to paracetamol and prehistoric surgical tools to modern medical equipment, discover the different objects tackling health throughout history on display in Journeys through Medicine: Henry Wellcome's Legacy.",
+    "link-to-gallery-page": "http://www.sciencemuseum.org.uk/visitmuseum/plan_your_visit/exhibitions/journeys-through-medicine"
   },
   "Energy Hall: James Watt and Our World": {
-    "description": "Trace the remarkable story of steam and how it shaped the world we live in today. Discover an unparalleled collection of engines and models, including the oldest surviving and unaltered atmospheric engine."
+    "description": "Trace the remarkable story of steam and how it shaped the world we live in today. Discover an unparalleled collection of engines and models on display in the Energy Hall: James Watt and Our World.",
+    "link-to-gallery-page": "http://www.sciencemuseum.org.uk/visitmuseum/plan_your_visit/exhibitions/energy_hall"
   },
   "Special Exhibition Gallery 1: Robots": {
-    "description": "From the dawn of mechanised human forms to cutting-edge technology, explore the astonishing 500-year quest to make machines human. Uncover the insights they offer into our position in a rapidly changing world."
+    "title": "Robots",
+    "description": "From the dawn of mechanised human forms to cutting-edge technology, explore the astonishing 500-year quest to make machines human in our Robots exhibition.",
+    "link-to-gallery-page": "https://beta.sciencemuseum.org.uk/robots/"
   },
   "Who Am I?": {
-    "description": "What makes you uniquely you? Reflect on the big questions that new scientific techniques are raising and explore the science of who you are through intriguing objects, provocative artworks and hands-on exhibits."
+    "description": "What makes you uniquely you? Reflect on the big questions that new scientific techniques are raising and explore the science of who you are through intriguing objects on display in Who Am I?",
+    "link-to-gallery-page": "http://www.sciencemuseum.org.uk/visitmuseum/plan_your_visit/exhibitions/who_am_i"
   },
   "Great Western Warehouse": {
-    "description": "Explore the beginnings of a revolution. The worldâ€™s first railway warehouse is now home to the story of Manchesterâ€™s industrial innovations, scientific discoveries and ideas that changed the world."
+    "description": "Explore the beginnings of a revolution. The world’s first railway warehouse is home to objects telling the story of Manchester’s industrial innovations, scientific discoveries and ideas that changed the world.",
+    "link-to-gallery-page": "http://msimanchester.org.uk/"
   },
   "Air and Space Hall": {
-    "description": "Manchesterâ€™s inventors and engineers made a big impact on the way we travel today, whether by road or air. See the cars, bikes and aeroplanes that got the industrial city moving."
+    "description": "Manchester’s inventors and engineers made a big impact on the way we travel today, whether by road or air. See the cars, bikes and aeroplanes that got the industrial city moving on display in the Air and Space Hall.",
+    "link-to-gallery-page": "http://msimanchester.org.uk/whats-on/gallery/air-and-space"
   },
   "Power Hall": {
-    "description": "What makes you uniquely you? Reflect on the big questions that new scientific techniques are raising and explore the science of who you are through intriguing objects, provocative artworks and hands-on exhibits."
+    "description": "Explore the steam engines that powered mills all over North West England on display in the Power Hall. This former railway transit shed is also home to locomotives and rolling stock.",
+    "link-to-gallery-page": "http://msimanchester.org.uk/whats-on/gallery/power-hall"
   },
   "Kodak Gallery": {
-    "description": "Take a journey through the history of photography. Step into a 19th century portrait studio, see hundreds of incredible objects from our collections and watch the worldâ€™s first moving colour film."
-  },
-  "Gallery One": {
-    "title": "National Science and Media Musuem, Gallery One",
-    "description": "See innovatively curated works from our world-class collections in our dedicated space for temporary exhibitions."
-  },
-  "Gallery Two": {
-    "title": "National Science and Media Musuem, Gallery Two",
-    "description": "See innovatively curated works from our world-class collections in our dedicated space for temporary exhibitions."
+    "description": "The objects on display in the Kodak Gallery explore the history of photography, from the invention of photography to the digital revolution.",
+    "link-to-gallery-page": "https://www.scienceandmediamuseum.org.uk/whats-on/kodak-gallery"
   },
   "TV Heaven Gallery": {
-    "description": "How has the small screen shaped our lives? Explore the development, significance and cultural impact of the most influential invention of the 20th century: television."
+    "description": "How has the small screen shaped our lives? Discover the objects on display in the TV Heaven Gallery charting the development, significance and cultural impact of the television.How has the small screen shaped our lives? Explore the development, significance and cultural impact of the most influential invention of the 20th century: television.",
+    "link-to-gallery-page": "https://www.scienceandmediamuseum.org.uk/whats-on/tv-gallery"
   },
   "Animation Gallery": {
-    "description": "See science in action as still images come to life. Explore the history of animated images, learn about animation techniques from cut-outs to CGI and discover original models and artwork."
+    "description": "Explore the history of animated images, animation techniques from cut-outs to CGI, and discover original models and artworks on display in the Animation Gallery.",
+    "link-to-gallery-page": "https://www.scienceandmediamuseum.org.uk/whats-on/animation-gallery"
+  },
+  "Warehouse": {
+    "description": "Uncover every aspect of railway history, from dinner services and station signs to twentieth century burger boxes in our Warehouse.",
+    "link-to-gallery-page": "http://www.nrm.org.uk/planavisit/visityork/museumareas/warehouse"
   },
   "Great Hall": {
-    "description": "Rub shoulders with railway legends, from history-makers to record-breakers. This former engine shed is home to over 300 years of railway history, including some of the biggest locomotives in the National Collection."
+    "description": "The Great Hall, a former engine shed, is home to over 300 years of railway history, including the biggest locomotives in the collection.",
+    "link-to-gallery-page": "http://www.nrm.org.uk/planavisit/visityork/museumareas/greathall"
   },
   "Station Hall": {
-    "title": "National Science and Media Musuem, Gallery One",
-    "description": "Soak up the atmosphere of this historic building, once home to Yorkâ€™s main goods station and now filled with vehicles spanning a century of railway history."
+    "description": "This historic Station Hall, once home to York’s main goods station, is now home to vehicles spanning a century of railway history.",
+    "link-to-gallery-page": "http://www.nrm.org.uk/planavisit/visityork/museumareas/stationhall"
   },
   "Search Engine Exhibition Area": {
-    "description": "See displays of archive material from our collections, from engineering drawings and historical photographs to advertising posters and royal train ephemera."
+    "description": "Displays of archive material, from engineering drawings and historical photographs to advertising posters and royal train ephemera.",
+    "link-to-gallery-page": "http://www.nrm.org.uk/planavisit/visityork/museumareas/searchengine"
   },
   "South Yard": {
-    "description": "Home to both giant locomotives and our fantastic miniature railway, the Museumâ€™s outdoor area is the perfect place to let off steam."
-  },
-  "Learning Platform": {
-    "description": "Next stop, our dedicated space for engaging science education. Learn about the wonders of railway engineering through live shows and workshops for audiences of all ages."
-  },
-  "Art Gallery": {
-    "description": "Experience a stimulating programme of temporary exhibitions inspired by the railways, showcasing works from our own art collection and across the world."
-  },
-  "Foyer": {
-    "description": "Step straight back into the history of the railways. The Museumâ€™s entrance hall is home to diminutive steam locomotive and tender Wren, as well as intriguing ephemera to tempt you into Station Hall."
+    "description": "Explore the objects on display in the South Yard at the National Railway Museum.",
+    "link-to-gallery-page": "http://www.nrm.org.uk/planavisit/visityork/museumareas/southyard"
   }
 }
