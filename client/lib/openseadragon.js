@@ -4,8 +4,9 @@ module.exports = {
   init: function (ctx, imgUrl, cb) {
     var openseadragon = document.querySelector('#openseadragon');
     openseadragon.classList.remove('hidden');
-    if (!openseadragon) return;
-
+    if (!openseadragon) {
+      return;
+    }
     var carouselImage = document.querySelectorAll('.carousel__image.is-selected');
     var singleImage = document.querySelectorAll('.single_image');
 
@@ -44,6 +45,11 @@ module.exports = {
           this.quit(ctx);
         }
       }.bind(this));
+
+      ctx.viewer.addHandler('full-page', function (e) {
+        console.log('FIRE FULL PAGE');
+        console.log('Event: ', e);
+      });
 
       ctx.save();
     }
