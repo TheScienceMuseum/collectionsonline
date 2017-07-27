@@ -1,9 +1,10 @@
 <div class="panel panel__text">
   <h4>Related Articles</h4>
+  {{#each data}}
   <div class="museum-articles">
     <h5>{{this.museum}}</h5>
     <ul class="related-article">
-      {{#each data}}
+      {{#each this.data}}
       <li>
         {{> global/icon i="external" }}
         <a href={{this.url}}>
@@ -13,4 +14,5 @@
       {{/each}}
     </ul>
   </div>
+  {{/each}}
 </div>
