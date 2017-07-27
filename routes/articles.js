@@ -17,7 +17,7 @@ module.exports = () => ({
         var data = JSON.parse(body).filter(e => e.collection_objects.indexOf(req.params.id) > -1);
         if (data.length) {
           articles.push({
-            museum: 'Science and Media Museum',
+            museum: 'National Science and Media Museum',
             data: data
           });
         }
@@ -33,7 +33,7 @@ module.exports = () => ({
         var data = JSON.parse(body).filter(e => e.collection_objects.indexOf(req.params.id) > -1);
         if (data.length) {
           articles.push({
-            museum: 'MSI Manchester',
+            museum: 'Museum of Science and Industry',
             data: data
           });
         }
