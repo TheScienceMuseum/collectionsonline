@@ -12,7 +12,18 @@ test(file + 'The filters date are included in the array filter', (t) => {
     bool: {
       must: [
         {term: {'type.base': 'agent'}},
-        {bool: {should: [{'range': {'lifecycle.birth.date.latest': {'gte': ['1800']}}}, {'range': {'lifecycle.creation.date.latest': {'gte': ['1800']}}}]}}
+        {
+          bool: {
+            should: [
+              { 'bool': { 'filter': [
+                { 'range': { 'lifecycle.creation.date.earliest': { 'gte': ['1800'] } } }
+              ] } },
+              { 'bool': { 'filter': [
+                { 'range': { 'lifecycle.birth.date.earliest': { 'gte': ['1800'] } } }
+              ] } }
+            ]
+          }
+        }
       ]
     }
   };

@@ -26,24 +26,42 @@ test(file + 'The filters date are included in the array filter', (t) => {
         {
           bool: {
             should: [
-              {'range': {'lifecycle.death.date.latest': {'gte': ['1800']}}}, {'range': {'lifecycle.creation.date.latest': {'gte': ['1800']}}},
-              {'range': {'lifecycle.birth.date.latest': {'lte': ['1900']}}}, {'range': {'lifecycle.creation.date.latest': {'lte': ['1900']}}}
+              { 'bool': { 'filter': [
+                { 'range': { 'lifecycle.creation.date.earliest': { 'gte': ['1800'] } } },
+                { 'range': { 'lifecycle.creation.date.latest': { 'lte': ['1900'] } } }
+              ] } },
+              { 'bool': { 'filter': [
+                { 'range': { 'lifecycle.birth.date.earliest': { 'gte': ['1800'] } } },
+                { 'range': { 'lifecycle.birth.date.latest': { 'lte': ['1900'] } } }
+              ] } }
             ]
           }
         },
         {
           bool: {
             should: [
-              {'range': {'lifecycle.death.date.latest': {'gte': ['1800']}}}, {'range': {'lifecycle.creation.date.latest': {'gte': ['1800']}}},
-              {'range': {'lifecycle.birth.date.latest': {'lte': ['1900']}}}, {'range': {'lifecycle.creation.date.latest': {'lte': ['1900']}}}
+              { 'bool': { 'filter': [
+                { 'range': { 'lifecycle.creation.date.earliest': { 'gte': ['1800'] } } },
+                { 'range': { 'lifecycle.creation.date.latest': { 'lte': ['1900'] } } }
+              ] } },
+              { 'bool': { 'filter': [
+                { 'range': { 'lifecycle.birth.date.earliest': { 'gte': ['1800'] } } },
+                { 'range': { 'lifecycle.birth.date.latest': { 'lte': ['1900'] } } }
+              ] } }
             ]
           }
         },
         {
           bool: {
             should: [
-              {'range': {'lifecycle.death.date.latest': {'gte': ['1800']}}}, {'range': {'lifecycle.creation.date.latest': {'gte': ['1800']}}},
-              {'range': {'lifecycle.birth.date.latest': {'lte': ['1900']}}}, {'range': {'lifecycle.creation.date.latest': {'lte': ['1900']}}}
+              { 'bool': { 'filter': [
+                { 'range': { 'lifecycle.creation.date.earliest': { 'gte': ['1800'] } } },
+                { 'range': { 'lifecycle.creation.date.latest': { 'lte': ['1900'] } } }
+              ] } },
+              { 'bool': { 'filter': [
+                { 'range': { 'lifecycle.birth.date.earliest': { 'gte': ['1800'] } } },
+                { 'range': { 'lifecycle.birth.date.latest': { 'lte': ['1900'] } } }
+              ] } }
             ]
           }
         }
