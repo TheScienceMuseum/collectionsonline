@@ -9,7 +9,7 @@ module.exports = () => ({
       var called = 0;
 
       // NMeM Bradford
-      request('https://www.scienceandmediamuseum.org.uk/collection-media/collection-usage/objects', (err, res, body) => {
+      request('http://www.scienceandmediamuseum.org.uk/collection-media/collection-usage/objects', (err, res, body) => {
         called++;
         if (err) {
           console.error(err);
@@ -25,7 +25,7 @@ module.exports = () => ({
       });
 
       // MSI Manchester
-      request('https://www.msimanchester.org.uk/collection-media/collection-usage/objects', (err, res, body) => {
+      request('http://www.msimanchester.org.uk/collection-media/collection-usage/objects', (err, res, body) => {
         called++;
         if (err) {
           console.error(err);
