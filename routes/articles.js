@@ -21,7 +21,7 @@ module.exports = () => ({
             return callback('Cannot parse related objects feed from ' + endpoint.url);
           }
           if (data.length) {
-            return callback(err, {
+            return callback(null, {
               museum: endpoint.label,
               data: data
             });
