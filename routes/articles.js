@@ -14,8 +14,12 @@ module.exports = () => ({
     handler: function (req, reply) {
       async.concat(endpoints, function (endpoint, callback) {
         request(endpoint.url, (err, res, body) => {
-          var data = JSON.parse(body).filter(e => e.collection_objects.indexOf(req.params.id) > -1);
           if (err) return callback(err);
+          try {
+            var data = JSON.parse(body).filter(e => e.collection_objects.indexOf(req.params.id) > -1);
+          } catch (e) {
+            return callback('Cannot parse related objects feed from ' + endpoint.url);
+          }
           if (data.length) {
             return callback(err, {
               museum: endpoint.label,
@@ -31,6 +35,5 @@ module.exports = () => ({
       });
     }
   }
-
 });
 
