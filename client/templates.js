@@ -181,6 +181,8 @@ Handlebars.registerHelper('isselected', require('../templates/helpers/isselected
 
 Handlebars.registerHelper('getinventorynumber', require('../templates/helpers/getinventorynumber.js'));
 
+Handlebars.registerHelper('geturlsafeinventorynumber', require('../templates/helpers/geturlsafeinventorynumber.js'));
+
 Handlebars.registerHelper('gettodaysdate', require('../templates/helpers/gettodaysdate.js'));
 
 Handlebars.registerHelper('ifmultiple', require('../templates/helpers/ifmultiple.js'));

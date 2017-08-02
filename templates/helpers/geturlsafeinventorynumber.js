@@ -7,5 +7,5 @@ module.exports = function (details) {
       }
     });
   }
-  return accession ? accession + '. ' : '';
+  return accession ? encodeURIComponent(accession) : '';
 };
