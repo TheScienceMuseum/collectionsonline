@@ -12,7 +12,7 @@ module.exports = {
       .click('.filter__box[value=artist]')
       .pause(1000)
       .assert.urlEquals('http://localhost:8000/search/people/occupation/artist?q=charles')
-      .assert.containsText('.resultcard', '1873-1928, artist; painter; poster artist, British')
+      .assert.containsText('.resultcard', '1875-1961, artist; painter; poster artist, British')
       .click('.filter__box')
       .pause(3000)
       .assert.urlEquals('http://localhost:8000/search/people?q=charles')
