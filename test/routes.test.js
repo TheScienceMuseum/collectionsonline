@@ -736,7 +736,7 @@ testWithServer(file + 'Request for Wikipedia in record Data', {}, (t, ctx) => {
 testWithServer(file + 'Request for Wikipedia Data with no image', {}, (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
-    url: '/wiki/De_Havilland'
+    url: '/wiki/wiki/Accession_number_(library_science)'
   };
 
   ctx.server.inject(htmlRequest, (res) => {
