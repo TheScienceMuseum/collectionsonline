@@ -736,12 +736,12 @@ testWithServer(file + 'Request for Wikipedia in record Data', {}, (t, ctx) => {
 testWithServer(file + 'Request for Wikipedia Data with no image', {}, (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
-    url: '/wiki/wiki/Accession_number_(library_science)'
+    url: '/wiki/Accession_number_(library_science)'
   };
 
   ctx.server.inject(htmlRequest, (res) => {
     var result = JSON.parse(res.payload);
-    t.equal(result.url, 'https://en.wikipedia.org/wiki/De_Havilland', 'gets De Havillands wikipedia page');
+    t.equal(result.url, 'https://en.wikipedia.org/wiki/Accession_number_(library_science)', 'gets Accession_number_(library_science) Wikipedia page');
     t.notOk(result.mainImage, 'returns no image from wikipedia');
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.end();
