@@ -60,6 +60,30 @@
       }
     ]
   },
+  "Art": {
+    "title": "Art",
+    "description": "Take a look at how both artists and scientists make scientific activity visual and shape how we see science. Our artworks range across painting, drawing, print and sculpture from the 1500s to today.",
+    "sub-categories": [
+      {
+        "title": "Contemporary art",
+        "link": "/search/categories/contemporary-art-collection"
+      },
+      {
+        "title": "Photography",
+        "link": "/search/categories/photography"
+      }
+    ]
+  },
+  "Contemporary Art Collection": {
+    "title": "Contemporary Art",
+    "description": "Explore the ways that contemporary artists engage with science and society in works commissioned for the Science Museum galleries.",
+    "sub-categories": [
+      {
+        "title": "Art",
+        "link": "/search/categories/art"
+      }
+    ]
+  },
   "Computing & Data Processing": {
     "description": "From slide rules to Douglas Hartree’s differential analyser and Ferranti’s early computers, these objects trace the development of calculating and computing technology."
   },
