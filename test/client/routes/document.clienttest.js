@@ -10,7 +10,7 @@ module.exports = {
       .click('label[for=aa110000009]')
       .assert.urlEquals('http://localhost:8000/documents/aa110000003')
       .pause(1000)
-      .assert.containsText('.archive-tree', 'cardboard model')
+      .assert.containsText('.archive-tree', 'Cardboard drawings')
       .setValue('input[type=search]#archive-q', 'scheutz\'s')
       .click('.searchbox--archive button.searchbox__submit')
       .pause(1000)
