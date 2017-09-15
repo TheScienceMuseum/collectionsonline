@@ -195,6 +195,8 @@ Handlebars.registerHelper('displayFilters', require('../templates/helpers/displa
 
 Handlebars.registerHelper('ifsmgrights', require('../templates/helpers/ifsmgrights.js'));
 
+Handlebars.registerHelper('ifsmgorccrights', require('../templates/helpers/ifsmgorccrights.js'));
+
 Handlebars.registerHelper('taxonomy', require('../templates/helpers/taxonomy.js'));
 
 Handlebars.registerHelper('activeFacet', require('../templates/helpers/activeFacet.js'));
