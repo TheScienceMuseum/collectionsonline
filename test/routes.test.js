@@ -7,7 +7,7 @@ testWithServer(file + 'Request for Archive HTML Page', {}, (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/documents/aa110000316',
+    url: '/documents/aa110071448',
     headers: {'Accept': 'text/html'}
   };
 
@@ -22,7 +22,7 @@ testWithServer(file + 'Attempt to request for Archive HTML Page with wrong accep
 
   const htmlRequest = {
     method: 'GET',
-    url: '/documents/aa110000316',
+    url: '/documents/aa110071448',
     headers: {'Accept': 'wrongContent'}
   };
 
@@ -37,7 +37,7 @@ testWithServer(file + 'Request for Archive JSON Page', {}, (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/documents/aa110000316',
+    url: '/documents/aa110071448',
     headers: {'Accept': 'application/vnd.api+json'}
   };
 

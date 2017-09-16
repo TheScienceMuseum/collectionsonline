@@ -34,9 +34,9 @@
       </div>
 
       {{#each images}}
-        {{#ifsmgrights rights.details}}
+        {{#ifsmgorccrights rights}}
           <button id="cite__button-{{@index}}" class="cite__button" >{{> global/icon i="arrow_right" size="16" }} <span>Use this image</span></button>
-        {{/ifsmgrights}}
+        {{/ifsmgorccrights}}
       {{/each}}
 
       {{#each images}}
@@ -54,8 +54,8 @@
       {{/each}}
 
       {{#each images}}
-      <p id="record-imgpanel__caption-{{@index}}" class="record-imgpanel__caption">{{title}}<br />
-      {{credit}}<br />
+      <p id="record-imgpanel__caption-{{@index}}" class="record-imgpanel__caption">{{#if title}}{{title}}<br />{{/if}}
+      {{#if credit}}{{credit}}<br />{{/if}}
       {{rights.details}}
       </p>
       {{/each}}
