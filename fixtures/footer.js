@@ -35,7 +35,7 @@ module.exports = [
     url: '',
     links: [
       {
-        name: 'Non-Commercial Use',
+        name: 'Non-commercial use',
         url: 'https://group.sciencemuseum.org.uk/creative-commons/'
       },
       {
@@ -50,7 +50,7 @@ module.exports = [
     url: '',
     links: [
       {
-        name: 'Privacy and Cookies',
+        name: 'Privacy and cookies',
         url: 'https://group.sciencemuseum.org.uk/privacy-policy/'
       },
       {
