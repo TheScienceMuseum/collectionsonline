@@ -21,7 +21,7 @@
     "foundation-sites": "6.4.3",
     "good": "^7.0.1",
     "good-console": "^6.1.2",
-    "h2o2": "^5.1.0",
+    "h2o2": "^6.0.1",
     "handlebars": "^4.0.5",
     "hapi": "^16.1.1",
     "hapi-auth-jwt2": "^7.0.1",
