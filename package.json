@@ -17,7 +17,7 @@
     "fetch-ponyfill": "^4.0.0",
     "flickity": "^2.0.3",
     "flickity-imagesloaded": "^2.0.0",
-    "format-number": "^2.0.1",
+    "format-number": "^3.0.0",
     "foundation-sites": "6.3.1",
     "good": "^7.0.1",
     "good-console": "^6.1.2",
