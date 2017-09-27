@@ -28,7 +28,7 @@
     "inert": "^4.0.0",
     "joi": "^11.1.1",
     "json-beautify": "^1.0.1",
-    "jsonwebtoken": "^7.1.7",
+    "jsonwebtoken": "^8.0.1",
     "lodash": "^4.17.4",
     "lodash.debounce": "^4.0.8",
     "openseadragon": "https://github.com/TheScienceMuseum/openseadragon/tarball/smg",
