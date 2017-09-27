@@ -39,7 +39,7 @@
     "snackbarlightjs": "^1.1.2",
     "svg4everybody": "^2.1.8",
     "vision": "^4.1.0",
-    "wikijs": "^3.1.1"
+    "wikijs": "^4.2.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
