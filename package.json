@@ -9,7 +9,7 @@
   "dependencies": {
     "async": "^2.0.0",
     "awesomplete": "^1.1.1",
-    "boom": "^5.1.0",
+    "boom": "^6.0.0",
     "catbox": "^7.1.2",
     "catbox-redis": "^3.0.1",
     "clipboard": "^1.5.12",
