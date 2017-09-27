@@ -31,7 +31,7 @@
     "jsonwebtoken": "^7.1.7",
     "lodash": "^4.17.4",
     "lodash.debounce": "^4.0.8",
-    "openseadragon": "https://github.com/TheScienceMuseum/openseadragon/tarball/smg",
+    "openseadragon": "2.3.1",
     "page": "^1.7.1",
     "rc": "^1.1.6",
     "request": "^2.81.0",
