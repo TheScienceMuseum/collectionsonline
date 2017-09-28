@@ -1,5 +1,5 @@
 module.exports = {
-/* commented out due to selenium issues / add back 16:9:2017 JU
+  'Sticky filters persist after new search': function (browser) {
     browser
       .url('http://localhost:8000/search')
       .waitForElementVisible('.filter[data-filter="Museum"] a', 5000)
@@ -14,5 +14,4 @@ module.exports = {
       .assert.urlEquals('http://localhost:8000/search/museum/national-railway-museum/gallery/great-hall?q=electric')
       .end();
   }
-*/
 };

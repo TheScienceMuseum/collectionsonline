@@ -47,9 +47,6 @@ module.exports = (ctx) => {
     Array.prototype.slice.call(thumbnails).forEach((el, i) => el.addEventListener('click', function (e) {
       ctx.carousel.select(i);
       if (ctx.viewer) {
-        ctx.viewer.destroy();
-        ctx.viewer = false;
-        ctx.save();
         openseadragon.init(ctx, e.target.src);
       }
     }));
