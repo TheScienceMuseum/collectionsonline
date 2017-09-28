@@ -16,14 +16,8 @@ module.exports = (ctx) => {
         el.classList.remove('hidden');
       });
 
-      if (!ctx.viewer) {
-        openseadragon.init(ctx);
-        ctx.viewer.setFullScreen(true);
-      }
-
-      if (e.target.id !== 'osd-fullpage') {
-        ctx.viewer.setFullScreen(true);
-      }
+      openseadragon.init(ctx);
+      ctx.viewer.setFullScreen(true);
     });
   });
 };

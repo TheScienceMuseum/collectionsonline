@@ -572,7 +572,7 @@ testWithServer('Multiple Makers', {}, (t, ctx) => {
 
   ctx.server.inject(htmlRequest, (res) => {
     t.equal(res.statusCode, 200, 'status is ok');
-    t.ok(res.payload.indexOf('Germany</a> and') > -1, 'Renders multiple makers correctly');
+    t.ok(res.payload.indexOf('Germany') > -1 && res.payload.indexOf('Spain') > -1, 'Renders multiple makers correctly');
     t.end();
   });
 });
