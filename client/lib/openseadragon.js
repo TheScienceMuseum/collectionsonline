@@ -1,4 +1,4 @@
-require('openseadragon');
+var OpenSeadragon = require('openseadragon');
 
 module.exports = {
   init: function (ctx, imgUrl, cb) {
@@ -17,7 +17,9 @@ module.exports = {
       }
     }
 
-    if (!ctx.viewer) {
+    if (ctx.viewer) {
+      ctx.viewer.open(imgUrl + '.dzi');
+    } else {
       ctx.viewer = OpenSeadragon({
         id: 'openseadragon',
         prefixUrl: '/assets/img/openseadragon/',
@@ -59,8 +61,5 @@ module.exports = {
     allButtons.forEach(function (el) {
       el.classList.add('hidden');
     });
-    ctx.viewer.destroy();
-    ctx.viewer = false;
-    ctx.save();
   }
 };
