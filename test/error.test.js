@@ -149,24 +149,6 @@ testWithServer(file + 'Request for Archive JSON with children', {mock: {method: 
   const htmlRequest = {
     method: 'GET',
     url: '/documents/aa110000003',
-    headers: {'Accept': 'application/vnd.api+json'}
-  };
-
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 503, 'Status code was as expected, 503');
-    cacheGet.restore();
-    t.end();
-  });
-});
-
-testWithServer(file + 'Request for Archive JSON with children', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
-  t.plan(1);
-
-  var cacheGet = stub(cache, 'get').rejects(new Error());
-
-  const htmlRequest = {
-    method: 'GET',
-    url: '/documents/aa110000003',
     headers: {'Accept': 'text/html'}
   };
 

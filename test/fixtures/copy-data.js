@@ -22,6 +22,7 @@ Async.parallel([
     Async.each([
       { id: 'cp50417', type: 'agent', filename: 'example-get-response-death' },
       { id: 'aa110000003', type: 'archive', filename: 'example-get-response-document' },
+      { id: 'aa110014918', type: 'archive', filename: 'example-get-response-document2' },
       { id: 'co8245103', type: 'object', filename: 'example-get-response-object' },
       { id: 'co205752', type: 'object', filename: 'example-get-response-object2' },
       { id: 'co8447906', type: 'object', filename: 'example-get-response-object3' },
