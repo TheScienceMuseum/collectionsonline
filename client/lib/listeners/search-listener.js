@@ -7,6 +7,8 @@ var loadingBar = require('../loading-bar');
 var paramify = require('../../../lib/helpers/paramify.js');
 var querify = require('../../../lib/helpers/querify.js');
 
+var keyCategories = require('../../../fixtures/key-categories.js');
+
 module.exports = function () {
   var searchBoxEl = document.getElementById('searchbox');
   searchBoxEl.addEventListener('submit', function (e) {
@@ -40,8 +42,27 @@ module.exports = function () {
     if (imageLicenseFilter) {
       qs['filter[image_license]'] = imageLicenseFilter;
     }
+
+    if (!qs['filter[categories]'] && qs.q) {
+      var lq = qs.q.toLowerCase();
+      var qMatch;
+
+      if (keyCategories.some(el => {
+        if (el.category === lq || el.synonyms.indexOf(lq) > -1) {
+          qMatch = el.category;
+          return true;
+        } else {
+          return false;
+        }
+      })) {
+        qs['filter[categories]'] = qMatch;
+        qs.q = '';
+      }
+    }
+
     var params = paramify(qs);
     var query = querify(qs);
+
     var url = '/search' + params + query;
     page.show(url.split(' ').join('-'));
   });
