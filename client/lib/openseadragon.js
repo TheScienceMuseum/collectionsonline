@@ -1,4 +1,4 @@
-var OpenSeadragon = require('openseadragon');
+require('openseadragon');
 
 module.exports = {
   init: function (ctx, imgUrl, cb) {
@@ -17,9 +17,9 @@ module.exports = {
       }
     }
 
-    if (ctx.viewer) {
+    if (ctx.viewer && imgUrl) {
       ctx.viewer.open(imgUrl + '.dzi');
-    } else {
+    } else if (!ctx.viewer) {
       ctx.viewer = OpenSeadragon({
         id: 'openseadragon',
         prefixUrl: '/assets/img/openseadragon/',

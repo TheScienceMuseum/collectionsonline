@@ -144,9 +144,7 @@ testWithServer(file + 'Search for HTML', {mock: {method: 'search', response: {er
 testWithServer(file + 'Request for Archive JSON with children', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
   t.plan(1);
 
-  var cacheGet = stub(cache, 'get', function (options, cb) {
-    return cb(new Error());
-  });
+  var cacheGet = stub(cache, 'get').rejects(new Error());
 
   const htmlRequest = {
     method: 'GET',
@@ -164,9 +162,7 @@ testWithServer(file + 'Request for Archive JSON with children', {mock: {method: 
 testWithServer(file + 'Request for Archive JSON with children', {mock: {method: 'search', response: {error: true}}}, (t, ctx) => {
   t.plan(1);
 
-  var cacheGet = stub(cache, 'get', function (options, cb) {
-    return cb(new Error());
-  });
+  var cacheGet = stub(cache, 'get').rejects(new Error());
 
   const htmlRequest = {
     method: 'GET',

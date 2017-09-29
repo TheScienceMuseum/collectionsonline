@@ -8,6 +8,7 @@ const search = require('../lib/search');
 const createQueryParams = require('../lib/query-params/query-params');
 const contentType = require('./route-helpers/content-type.js');
 const parseParameters = require('./route-helpers/parse-params');
+const keyCategories = require('../fixtures/key-categories');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -36,6 +37,22 @@ module.exports = (elastic, config) => ({
               query: filterSchema('html').keys(searchSchema.query)
             }, (err, value) => {
               if (err) return reply(Boom.badRequest(err));
+
+              if (value.query.q && (!value.categories['filter[categories]'])) {
+                var q = value.query.q.toLowerCase();
+                var qMatch;
+
+                if (keyCategories.some(el => {
+                  if (el.category === q || el.synonyms.indexOf(q) > -1) {
+                    qMatch = el.category;
+                    return true;
+                  } else {
+                    return false;
+                  }
+                })) {
+                  return reply.redirect(request.path + '/categories/' + qMatch);
+                }
+              }
 
               const query = Object.assign(value.query, value.params, value.categories);
               const queryParams = createQueryParams(responseType, {query: query, params: params});
