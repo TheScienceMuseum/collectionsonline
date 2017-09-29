@@ -133,6 +133,11 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
+  'records/record-related-documents-primary',
+  Fs.readFileSync('./templates/partials/records/record-related-documents-primary.html', 'utf8')
+);
+
+Handlebars.registerPartial(
   'records/record-related-articles',
   Fs.readFileSync('./templates/partials/records/record-related-articles.html', 'utf8')
 );
