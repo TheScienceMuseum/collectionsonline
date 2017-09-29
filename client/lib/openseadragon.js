@@ -1,4 +1,4 @@
-require('openseadragon');
+var OpenSeadragon = require('openseadragon');
 
 module.exports = {
   init: function (ctx, imgUrl, cb) {
