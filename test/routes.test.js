@@ -760,3 +760,29 @@ testWithServer(file + 'bad', {}, (t, ctx) => {
     t.end();
   });
 });
+
+testWithServer(file + 'Key category search', {}, (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?q=art',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.headers.location, '/search/categories/art');
+    t.end();
+  });
+});
+
+testWithServer(file + 'Key category search - synonym', {}, (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search?q=telephones',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.headers.location, '/search/categories/telecommunications');
+    t.end();
+  });
+});
