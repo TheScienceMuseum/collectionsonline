@@ -8,7 +8,7 @@
 module.exports = [
   {
     category: 'art',
-    synonyms: []
+    synonyms: ['artworks', 'paintings', 'painting']
   },
   {
     category: 'telecommunications',
@@ -19,42 +19,42 @@ module.exports = [
   },
   {
     category: 'cinematography',
-    synonyms: []
+    synonyms: ['cinema']
   },
   {
     category: 'photographic technology',
-    synonyms: []
+    synonyms: ['cameras']
   },
   {
     category: 'photographs',
-    synonyms: []
+    synonyms: ['photography', 'photograph', 'photo', 'photos']
   },
   {
     category: 'locomotives and rolling stock',
-    synonyms: []
+    synonyms: ['locomotives', 'train', 'trains', 'rolling stock']
   },
   {
-    category: 'railway posters',
-    synonyms: []
+    category: 'Railway Posters, Notices & Handbills',
+    synonyms: ['railway posters', 'railway poster', 'handbills', 'notices']
   },
   {
     category: 'radio communication',
-    synonyms: []
+    synonyms: ['radio']
   },
   {
     category: 'contemporary art collection',
-    synonyms: []
+    synonyms: ['contemporary art']
   },
   {
     category: 'computing & data processing',
-    synonyms: []
+    synonyms: ['computing']
   },
   {
     category: 'classical & medieval medicine',
-    synonyms: []
+    synonyms: ['medicine']
   },
   {
     category: 'textile industry',
-    synonyms: []
+    synonyms: ['textiles']
   }
 ];
