@@ -3,8 +3,8 @@ var async = require('async');
 
 // Article endpoints on each musuem website
 var endpoints = [
-  { label: 'National Science and Media Museum', url: 'http://www.scienceandmediamuseum.org.uk/collection-media/collection-usage/objects' },
-  { label: 'Museum of Science and Industry', url: 'http://www.msimanchester.org.uk/collection-media/collection-usage/objects' },
+  { label: 'National Science and Media Museum', url: 'https://www.scienceandmediamuseum.org.uk/collection-media/collection-usage/objects' },
+  { label: 'Museum of Science and Industry', url: 'https://www.msimanchester.org.uk/collection-media/collection-usage/objects' },
   { label: 'Science Museum', url: 'https://www.sciencemuseum.org.uk/collection-media/collection-usage/objects' }
 ];
 
