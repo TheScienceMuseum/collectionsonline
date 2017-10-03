@@ -19,7 +19,7 @@ module.exports = [
   },
   {
     category: 'cinematography',
-    synonyms: ['cinema']
+    synonyms: ['cinema', 'film']
   },
   {
     category: 'photographic technology',
@@ -31,7 +31,7 @@ module.exports = [
   },
   {
     category: 'locomotives and rolling stock',
-    synonyms: ['locomotives', 'train', 'trains', 'rolling stock']
+    synonyms: ['locomotives', 'train', 'trains', 'rolling stock', 'choo choo']
   },
   {
     category: 'Railway Posters, Notices & Handbills',
@@ -39,7 +39,7 @@ module.exports = [
   },
   {
     category: 'radio communication',
-    synonyms: ['radio']
+    synonyms: ['radio', 'wireless']
   },
   {
     category: 'contemporary art collection',
@@ -47,14 +47,42 @@ module.exports = [
   },
   {
     category: 'computing & data processing',
-    synonyms: ['computing']
+    synonyms: ['computing', 'data processing', 'computer', 'computers']
   },
   {
     category: 'classical & medieval medicine',
-    synonyms: ['medicine']
+    synonyms: ['medieval medicine', 'classical medicine']
   },
   {
     category: 'textile industry',
     synonyms: ['textiles']
+  },
+  {
+    category: 'laboratory medicine',
+    synonyms: []
+  },
+  {
+    category: 'radiomedicine',
+    synonyms: ['radiology']
+  },
+  {
+    category: 'therapeutics',
+    synonyms: ['medicine', 'therapy', 'drugs']
+  },
+  {
+    category: 'orthopaedics',
+    synonyms: ['artificial limbs', 'artificial limb', 'artificial arm', 'artificial hand', 'prosthesis', 'prosthetic', 'prosthetics']
+  },
+  {
+    category: 'anatomy & pathology',
+    synonyms: ['anatomy', 'pathology']
+  },
+  {
+    category: 'astronomy',
+    synonyms: ['planetaria']
+  },
+  {
+    category: 'acoustics',
+    synonyms: ['synthesizers', 'music']
   }
 ];
