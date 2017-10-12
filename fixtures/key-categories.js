@@ -42,6 +42,10 @@ module.exports = [
     synonyms: ['radio', 'wireless']
   },
   {
+    category: 'television',
+    synonyms: ['tv']
+  },
+  {
     category: 'contemporary art collection',
     synonyms: ['contemporary art']
   },
