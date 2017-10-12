@@ -4,7 +4,7 @@
 
 ## Getting started
 
-1. Install [Node.js](https://nodejs.org/en/) 4.x
+1. Install [Node.js](https://nodejs.org/en/) version 7 or 8
 2. Install dependencies: `npm install`
 3. Copy `.corc.template` to `.corc` in the project route
 4. Add required config values to `.corc`
