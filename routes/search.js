@@ -24,7 +24,7 @@ module.exports = (elastic, config) => ({
       Joi.validate({query: request.query},
         {
           query: filterSchema(responseType).keys(searchSchema.query)
-        }, (err, value) => {
+        }, {allowUnknown: true}, (err, value) => {
           if (err) return reply(Boom.badRequest(err));
 
           const params = parseParameters(request.params).params;
@@ -35,7 +35,7 @@ module.exports = (elastic, config) => ({
               params: Joi.any(),
               categories: filterSchema('html').keys(searchSchema.query),
               query: filterSchema('html').keys(searchSchema.query)
-            }, (err, value) => {
+            }, {allowUnknown: true}, (err, value) => {
               if (err) return reply(Boom.badRequest(err));
 
               if (value.query.q && (!value.categories['filter[categories]'])) {

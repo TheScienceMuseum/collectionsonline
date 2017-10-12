@@ -748,15 +748,15 @@ testWithServer(file + 'Request for Wikipedia Data with no image', {}, (t, ctx) =
   });
 });
 
-testWithServer(file + 'bad', {}, (t, ctx) => {
+testWithServer(file + 'Not found', {}, (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
-    url: '/search/bad/request',
+    url: '/bad/request',
     headers: {'Accept': 'text/html'}
   };
 
   ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusMessage, 'Bad Request');
+    t.equal(res.statusMessage, 'Not Found');
     t.end();
   });
 });
