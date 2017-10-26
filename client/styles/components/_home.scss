@@ -20,6 +20,7 @@
     @include breakpoint(medium up) { margin-bottom: 4rem; }
     @include breakpoint(large up) { margin-bottom: 6rem; }
     a { color: white; }
+    a:hover { text-decoration: underline; }
   }
 
   /* --------- CONFIG ---------  */
@@ -116,10 +117,13 @@
     }
   }
   a {
+    text-decoration: none;
+    color: white;
+  }
+  a:hover {
     text-decoration: underline;
     color: white;
   }
-
   .icon {
     font-size: 2rem;
     vertical-align: top;
@@ -157,6 +161,9 @@
     @include breakpoint(medium up) {
       text-align: left;
     }
+  }
+  &__desc a {
+    text-decoration: underline;
   }
 }
 

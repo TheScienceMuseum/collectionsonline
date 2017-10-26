@@ -2,7 +2,7 @@ module.exports = {
   title: 'Science Museum Group Collection',
   titlePage: 'Science Museum Group Collection',
   strap: 'Search our collection',
-  intro: 'Explore over 250,000 objects and archives from the Science Museum, Museum of Science and Industry, National Science and Media Museum and National Railway Museum.',
+  intro: 'Explore over 250,000 <a href="/search/objects">objects</a> and <a href="/search/documents">archives</a> from the <a href="/search/museum/science-museum">Science Museum</a>, <a href="/search/museum/museum-of-science-and-industry">Museum of Science and Industry</a>, <a href="/search/museum/national-media-museum">National Science and Media Museum</a> and <a href="/search/museum/national-railway-museum">National Railway Museum</a>.',
   headerImages: [
     'handley.jpg',
     'textile-sign.jpg',
@@ -19,28 +19,28 @@ module.exports = {
       description: 'The home of human ingenuity, exploring stories of scientific achievement',
       figure: '/assets/img/home/collections/sciencemuseum.jpg',
       columns: 'small-6 medium-3',
-      link: '/scm'
+      link: '/search/museum/science-museum'
     }, {
       type: 'collection',
       title: 'Museum of Science and Industry',
       figure: '/assets/img/home/collections/msi.jpg',
       description: 'The story of Manchester’s scientific and industrial past, present and future',
       columns: 'small-6 medium-3',
-      link: '/msi'
+      link: '/search/museum/museum-of-science-and-industry'
     }, {
       type: 'collection',
       title: 'National Science and Media Museum',
       figure: '/assets/img/home/collections/nmm.jpg',
       description: 'The science and culture of light and sound technologies, and their impact on our lives',
       columns: 'small-6 medium-3',
-      link: '/nmem'
+      link: '/search/museum/national-media-museum'
     }, {
       type: 'collection',
       title: 'National Railway Museum',
       figure: '/assets/img/home/collections/nrm.jpg',
       description: 'Home to the largest collection of railway objects in the world',
       columns: 'small-6 medium-3',
-      link: '/nrm'
+      link: '/search/museum/national-railway-museum'
     }]
   }, {
     title: 'Themes from our collection',
