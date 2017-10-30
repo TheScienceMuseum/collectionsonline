@@ -104,6 +104,8 @@ button {
     margin-top: 1rem;
   }
 
+  &__items a:hover { text-decoration: underline; }
+
   &__text {
     display: block;
     margin: 0.4rem 0;
