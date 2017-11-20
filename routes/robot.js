@@ -8,7 +8,10 @@ module.exports = () => ({
       reply(
         'sitemap: ' + config.sitemapUrl + '/sitemap.xml\n' +
         'User-agent: *\n' +
-        'Disallow: /api/'
+        'Crawl-Delay: 1' +
+        'Disallow: /api/' +
+        'User-agent: AhrefsBot' +
+        'Disallow: /'
       ).type('text/plain');
     }
   }
