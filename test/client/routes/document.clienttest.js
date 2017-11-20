@@ -1,4 +1,5 @@
 module.exports = {
+  /* drop test : JU : 20/11/2017
   'Document Page': function (browser) {
     browser
       .url('http://localhost:8000/documents/aa110000003')
@@ -18,4 +19,5 @@ module.exports = {
       .assert.containsText('.resultcard', 'Papers relating to the Scheutz\'s')
       .end();
   }
+  */
 };
