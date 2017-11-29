@@ -25,6 +25,11 @@ module.exports = {
       name: 'National Railway Museum',
       url: 'http://www.nrm.org.uk',
       image: '/assets/img/global/nrm-logo.svg'
+    },
+    {
+      name: 'Locomotion',
+      url: 'https://www.locomotion.org.uk/',
+      image: '/assets/img/global/loco-logo.svg'
     }
   ]
 };
