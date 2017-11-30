@@ -1,4 +1,3 @@
-
 // then our stuff
 
 body {
@@ -62,10 +61,10 @@ button {
       margin: 1.5em 0;
     }
     @include breakpoint(medium up) {
-      height: 3.5rem;
+      height: 3rem;
     }
     @include breakpoint(large up) {
-      height: 4.5rem;
+      height: 4rem;
     }
   }
 }
@@ -81,7 +80,9 @@ button {
     padding: 3rem 0;
   }
 
-  a { color: inherit; }
+  a {
+    color: inherit;
+  }
 
   &__strap {
     margin-bottom: 1rem;
@@ -104,7 +105,9 @@ button {
     margin-top: 1rem;
   }
 
-  &__items a:hover { text-decoration: underline; }
+  &__items a:hover {
+    text-decoration: underline;
+  }
 
   &__text {
     display: block;
@@ -126,18 +129,9 @@ button {
       display: block;
     }
     @include breakpoint(large up) {
-      height: 4.5rem;
+      height: 4rem;
     }
   }
-
-  // &__item [alt='Science Museum'] {
-  //   // this one a little big bigger, until new logo
-  //   height: 4rem;
-  //   @include breakpoint(large up) {
-  //     height: 6rem;
-  //   }
-  // }
-
 }
 
 .sitefooter {
@@ -165,7 +159,8 @@ button {
   }
 }
 
-.white { //section
+.white {
+  //section
   background: white;
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -179,21 +174,29 @@ button {
     border-right: 1px solid;
     line-height: 1;
     padding: rem-calc(0 12 0 9);
-    &:last-child { border-right: 0; }
-    &:first-child { padding-left: 0; }
+    &:last-child {
+      border-right: 0;
+    }
+    &:first-child {
+      padding-left: 0;
+    }
   }
 }
 
 .ul-block {
   margin: 0 0 1rem 0;
-  &:last-child { margin: 0; } // only bottom margin if something is following it
+  &:last-child {
+    margin: 0;
+  } // only bottom margin if something is following it
 
   li {
     display: block;
     line-height: 1.25;
   }
 
-  li+ li { margin-top: rem-calc(4); }
+  li + li {
+    margin-top: rem-calc(4);
+  }
 }
 
 .ul-icons {
@@ -210,7 +213,7 @@ button {
   position: relative;
   margin-right: $icnsize;
   &:after {
-    content: ' ';
+    content: " ";
     display: block;
     position: absolute;
     right: -$icnsize+(-$icnsize/4);
@@ -230,7 +233,8 @@ button {
 
 //utility classes:
 
-.bleed { //probably for img
+.bleed {
+  //probably for img
   width: 100%;
   max-width: auto;
 }
