@@ -1,8 +1,11 @@
 <header class="globalheader">
   <div class="row columns">
     <div class="globalheader__items">
+      <a href="https://group.sciencemuseum.org.uk/" class="globalheader__item show-for-small-only">
+        <img src="/assets/img/global/smg-logo.svg" alt="Science Museum Group">
+      </a>
       {{#each museums.links}}
-        <a href="{{url}}" class="globalheader__item">
+        <a href="{{url}}" class="globalheader__item hide-for-small-only">
           <img src="{{image}}" alt="{{name}}">
         </a>
       {{/each}}
