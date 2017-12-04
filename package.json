@@ -31,7 +31,6 @@
     "jsonwebtoken": "^8.1.0",
     "lodash": "^4.17.4",
     "lodash.debounce": "^4.0.8",
-    "moment": "^2.19.3",
     "openseadragon": "2.3.1",
     "page": "^1.7.1",
     "rc": "^1.2.2",
