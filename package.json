@@ -32,6 +32,7 @@
     "lodash": "^4.17.4",
     "lodash.debounce": "^4.0.8",
     "openseadragon": "2.3.1",
+    "moment": "^2.19.3",
     "page": "^1.7.1",
     "rc": "^1.2.2",
     "request": "^2.81.0",
