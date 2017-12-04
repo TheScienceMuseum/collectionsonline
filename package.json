@@ -18,10 +18,10 @@
     "flickity": "^2.0.3",
     "flickity-imagesloaded": "^2.0.0",
     "format-number": "^3.0.0",
-    "foundation-sites": "6.4.3",
+    "foundation-sites": "^6.4.3",
     "good": "^7.0.1",
     "good-console": "^6.1.2",
-    "h2o2": "^6.0.1",
+    "h2o2": "^6.1.0",
     "handlebars": "^4.0.11",
     "hapi": "^16.1.1",
     "hapi-auth-jwt2": "^7.0.1",
@@ -31,6 +31,7 @@
     "jsonwebtoken": "^8.1.0",
     "lodash": "^4.17.4",
     "lodash.debounce": "^4.0.8",
+    "moment": "^2.19.3",
     "openseadragon": "2.3.1",
     "page": "^1.7.1",
     "rc": "^1.2.2",
@@ -39,7 +40,7 @@
     "snackbarlightjs": "^1.1.2",
     "svg4everybody": "^2.1.8",
     "vision": "^4.1.0",
-    "wikijs": "^4.3.4"
+    "wikijs": "^4.5.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
@@ -54,7 +55,7 @@
     "faucet": "0.0.1",
     "istanbul": "^0.4.3",
     "nightwatch": "^0.9.16",
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.7.2",
     "nodemon": "^1.9.2",
     "npm-run-all": "^3.1.1",
     "postcss-cli": "^2.5.2",
