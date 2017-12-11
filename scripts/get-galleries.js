@@ -5,21 +5,15 @@ const elastic = new Client(config.elasticsearch);
 const path = require('path');
 
 const body = {
-  query: {
-    match_all: {}
-  },
-  filter: {
-    exists: {
-      field: 'locations.name'
-    }
+  'query': {
+    'exists': { 'field': 'locations.name' }
   }
 };
 
 const searchOpts = {
   index: 'smg',
   body: body,
-  scroll: '30s',
-  search_type: 'scan'
+  scroll: '30s'
 };
 
 var allGalleries = [];
