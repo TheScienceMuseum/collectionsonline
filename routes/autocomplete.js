@@ -3,6 +3,7 @@ const Boom = require('boom');
 const autocomplete = require('../lib/autocomplete');
 const autocompleteResultsToJsonApi = require('../lib/transforms/autocomplete-results-to-jsonapi');
 const contentType = require('./route-helpers/content-type.js');
+const whatis = require('../fixtures/whatis');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -22,6 +23,11 @@ module.exports = (elastic, config) => ({
 
       if (responseType === 'json') {
         const queryParams = Object.assign({}, request.params, request.query);
+
+        // display an autocomple list of 'What is' questions
+        if (queryParams.q.startsWith('what')) {
+          return reply(whatis);
+        }
 
         autocomplete(elastic, queryParams, (err, results) => {
           if (err) return reply(Boom.serverUnavailable(err));
