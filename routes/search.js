@@ -9,6 +9,7 @@ const createQueryParams = require('../lib/query-params/query-params');
 const contentType = require('./route-helpers/content-type.js');
 const parseParameters = require('./route-helpers/parse-params');
 const keyCategories = require('../fixtures/key-categories');
+const whatis = require('../fixtures/whatis');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -38,6 +39,16 @@ module.exports = (elastic, config) => ({
             }, {allowUnknown: true}, (err, value) => {
               if (err) return reply(Boom.badRequest(err));
 
+              // match and answer 'what is' questions
+              if (value.query.q && value.query.q.startsWith('What')) {
+                var answer = whatis.data.filter((a) => a.attributes.summary_title === value.query.q);
+                if (answer) {
+                  answer = answer.pop();
+                  return reply.redirect(answer.links.self);
+                }
+              }
+
+              // match categories
               if (value.query.q && (!value.categories['filter[categories]'])) {
                 var q = value.query.q.toLowerCase();
                 var qMatch;
