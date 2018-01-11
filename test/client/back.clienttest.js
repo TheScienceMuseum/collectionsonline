@@ -1,4 +1,4 @@
-
+/*
 module.exports = {
   'Search from home Page': function (browser) {
     browser
@@ -15,3 +15,4 @@ module.exports = {
     .end();
   }
 };
+*/
