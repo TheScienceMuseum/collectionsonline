@@ -44,6 +44,8 @@ module.exports = (elastic, config) => ({
                 var answer = whatis.data.filter((a) => a.attributes.summary_title === value.query.q);
                 if (answer) {
                   answer = answer.pop();
+                  console.log('***' + answer.links.self + '***');
+                  // return reply.redirect('https://www.sciencemuseum.org.uk');
                   return reply.redirect(answer.links.self);
                 }
               }

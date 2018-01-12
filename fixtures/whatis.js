@@ -1,6 +1,6 @@
 module.exports = {
   links: {
-    self: 'http://localhost:8000/autocomplete?q=what'
+    self: 'autocomplete?q=what'
   },
   data: [{
     id: 'co8015917',
@@ -9,7 +9,7 @@ module.exports = {
       summary_title: 'What is the smallest object?'
     },
     links: {
-      self: 'http://localhost:8000/objects/co8015917'
+      self: '/objects/co8015917'
     }
   },
   {
@@ -19,7 +19,7 @@ module.exports = {
       summary_title: 'What is the largest object?'
     },
     links: {
-      self: 'https://collection.sciencemuseum.org.uk/objects/co8448331'
+      self: '/objects/co8448331'
     }
   }]
 };
