@@ -45,8 +45,8 @@ module.exports = (elastic, config) => ({
                 if (answer) {
                   answer = answer.pop();
                   console.log('***' + answer.links.self + '***');
-                  // return reply.redirect(answer.links.self);
-                  return reply.redirect('https://www.sciencemuseum.org.uk');
+                  // return reply.redirect('https://www.sciencemuseum.org.uk');
+                  return reply.redirect(answer.links.self);
                 }
               }
 
