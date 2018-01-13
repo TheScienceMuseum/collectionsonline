@@ -47,3 +47,5 @@ public/assets/icons/*
 test/fixtures/elastic-responses/database.json
 test/helpers/aggregations-all.json
 test/fixtures/elastic-responses/example-*
+
+package-lock.json
