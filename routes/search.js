@@ -39,17 +39,6 @@ module.exports = (elastic, config) => ({
             }, {allowUnknown: true}, (err, value) => {
               if (err) return reply(Boom.badRequest(err));
 
-              // match and answer 'what is' questions
-              if (value.query.q && value.query.q.startsWith('What')) {
-                var answer = whatis.data.filter((a) => a.attributes.summary_title === value.query.q);
-                if (answer) {
-                  answer = answer.pop();
-                  console.log('***' + answer.links.self + '***');
-                  // return reply.redirect('https://www.sciencemuseum.org.uk');
-                  return reply.redirect(answer.links.self);
-                }
-              }
-
               // match categories
               if (value.query.q && (!value.categories['filter[categories]'])) {
                 var q = value.query.q.toLowerCase();
@@ -71,6 +60,14 @@ module.exports = (elastic, config) => ({
               const queryParams = createQueryParams(responseType, {query: query, params: params});
 
               if (responseType === 'html') {
+                // match and answer 'what is' questions
+                if (value.query.q && value.query.q.toLowerCase().startsWith('what')) {
+                  var answer = whatis.data.filter((a) => a.attributes.summary_title.toLowerCase() === value.query.q.toLowerCase());
+                  if (answer.length > 0) {
+                    return reply.redirect(answer[0].links.self);
+                  }
+                }
+
                 search(elastic, queryParams, (err, result) => {
                   if (err) return reply(Boom.serverUnavailable(err));
 

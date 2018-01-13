@@ -29,6 +29,8 @@ var displayFacet = require('../lib/listeners/display-facet.js');
 var facetsStates = require('../lib/listeners/facets-states.js');
 var initComp = require('../lib/listeners/init-components');
 
+const whatis = require('../../fixtures/whatis');
+
 var i = 0;
 
 module.exports = function (page) {
@@ -51,6 +53,18 @@ function load (ctx, next) {
     var p = Object.assign(parseParams({filters: ctx.pathname}).categories, parseParams({filters: ctx.pathname}).params);
     var searchCategory = findCategory(ctx.pathname);
     var queryParams = createQueryParams('html', {query: Object.assign(qs, p), params: {type: searchCategory}});
+
+    // match and answer 'what is' questions
+    if (qs.q && qs.q.toLowerCase().startsWith('what')) {
+      var answer = whatis.data.filter(function (a) {
+        return a.attributes.summary_title.toLowerCase() === qs.q.toLowerCase();
+      });
+
+      if (answer.length > 0) {
+        return page.redirect(answer[0].links.self);
+      }
+    }
+
     getData('/search' + (searchCategory ? '/' + searchCategory : '') + paramify(p) + querify(queryParams), opts, function (err, json) {
       if (err) {
         console.error(err);
