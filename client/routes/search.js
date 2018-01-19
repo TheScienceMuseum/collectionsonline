@@ -55,7 +55,7 @@ function load (ctx, next) {
     var queryParams = createQueryParams('html', {query: Object.assign(qs, p), params: {type: searchCategory}});
 
     // match and answer 'what is' questions
-    if (qs.q && qs.q.toLowerCase().startsWith('what')) {
+    if (qs.q && qs.q.toLowerCase().lastIndexOf('what', 0) === 0) {
       var answer = whatis.data.filter(function (a) {
         return a.attributes.summary_title.toLowerCase() === qs.q.toLowerCase();
       });
