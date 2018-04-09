@@ -18,13 +18,23 @@ module.exports = {
     }
 
     if (ctx.viewer && imgUrl) {
-      ctx.viewer.open(imgUrl + '.dzi');
+      ctx.viewer.open(imgUrl);
     } else if (!ctx.viewer) {
       ctx.viewer = OpenSeadragon({
         id: 'openseadragon',
+        crossOriginPolicy: 'Anonymous',
         prefixUrl: '/assets/img/openseadragon/',
         showZoomControl: true,
-        tileSources: imgUrl + '.dzi',
+        // immediateRender: true,
+        // iOSDevice: true
+        maxZoomPixelRatio: 6,
+        defaultZoomLevel: 0.75,
+        minZoomLevel: 0.75,
+        visibilityRatio: 1,
+        preload: true,
+        blendTime: 0,
+        tileSources: imgUrl,
+        // tileSources: imgUrl + '.dzi',
         zoomInButton: 'osd-zoomin',
         zoomOutButton: 'osd-zoomout',
         fullPageButton: 'osd-fullpage',
