@@ -18,22 +18,24 @@ module.exports = {
     }
 
     if (ctx.viewer && imgUrl) {
-      ctx.viewer.open(imgUrl);
+      ctx.viewer.open(imgUrl + '/info.json');
     } else if (!ctx.viewer) {
       ctx.viewer = OpenSeadragon({
         id: 'openseadragon',
         crossOriginPolicy: 'Anonymous',
         prefixUrl: '/assets/img/openseadragon/',
         showZoomControl: true,
-        // immediateRender: true,
-        // iOSDevice: true
-        defaultZoomLevel: 0.75,
-        minZoomLevel: 0.01,
-        visibilityRatio: 1,
-        preload: true,
+        animationTime: 0.15,
         blendTime: 0,
+        constrainDuringPan: false,
+        controlsFadeAfterInactive: 1500,
+        controlsFadeDelay: 250,
+        controlsFadeLength: 250,
+        defaultZoomLever: 0,
+        immediateRender: false,
+        maxZoomPixelRatio: 1.25,
+        preload: false,
         tileSources: imgUrl + '/info.json',
-        // tileSources: imgUrl + '.dzi',
         zoomInButton: 'osd-zoomin',
         zoomOutButton: 'osd-zoomout',
         fullPageButton: 'osd-fullpage',
