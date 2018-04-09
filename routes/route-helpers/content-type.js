@@ -4,13 +4,11 @@
 module.exports = function (request) {
   var jsonAcceptHeaders = ['application/vnd.api+json', 'application/json'];
   var htmlAcceptHeaders = ['text/html', '*/*'];
-  var rdfAcceptHeaders = ['application/rdf+xml'];
 
   if (request.headers.accept) {
     var accept = request.headers.accept;
     var jsonContent = typesInHeaders(accept, jsonAcceptHeaders);
     var htmlContent = typesInHeaders(accept, htmlAcceptHeaders);
-    var rdfContent = typesInHeaders(accept, rdfAcceptHeaders);
     // if accept header has both json and html return notAcceptable
     if (jsonContent && htmlContent) {
       return 'notAcceptable';
@@ -22,10 +20,6 @@ module.exports = function (request) {
 
     if (jsonContent) {
       return 'json';
-    }
-
-    if (rdfContent) {
-      return 'rdf';
     }
   }
 
