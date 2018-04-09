@@ -24,12 +24,11 @@ module.exports = (elastic, config) => ({
 
         var apiData = buildJSONResponse(result, config);
         var iiifData = apiData;
-        iiifData.urlprefix = 'https://collection.sciencemuseum.org.uk';
-        iiifData.self = iiifData.urlprefix + '/iiif/' + iiifData.data.type + '/' + iiifData.data.id;
+        iiifData.self = config.rootUrl + '/iiif/' + iiifData.data.type + '/' + iiifData.data.id;
 
         return reply(
           Handlebars.compile(
-            fs.readFileSync(path.join(__dirname, '/../templates/iiif/iiif.json'), 'utf8')
+            fs.readFileSync(path.join(__dirname, '/../templates/iiif/iiifmanifest.json'), 'utf8')
           )(iiifData)
         ).header('content-type', 'application/json');
       });
