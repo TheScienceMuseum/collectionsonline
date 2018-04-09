@@ -2,7 +2,6 @@
     "@context": "http://iiif.io/api/presentation/2/context.json",
     "@id": "{{self}}/manifest",
     "@type": "sc:Manifest",
-
     "label": "{{data.attributes.summary_title}}",
     "description": "{{data.attributes.description.0.value}}",
     "metadata": [
@@ -20,12 +19,10 @@
             {{#unless @last}},{{/unless}}
         {{/each}}   
     ],
-    "thumbnail": {
-        "@id": "{{data.attributes.multimedia.0.processed.zoom.location}}/full/80,100/0/default.jpg"
-    },
 
-    "viewingDirection": "right-to-left",
-    "viewingHint": "paged",
+    "thumbnail": {
+        "@id": "{{data.attributes.multimedia.0.processed.zoom.location}}/full/{{data.attributes.multimedia.0.processed.medium_thumbnail.measurements.dimensions.1.value}},{{data.attributes.multimedia.0.processed.medium_thumbnail.measurements.dimensions.1.value}}/0/default.jpg"
+    },
 
     "sequences": [
         {
@@ -36,25 +33,28 @@
                 {
                     "@id": "{{self}}/canvas",
                     "@type": "sc:Canvas",
+                    "height": 4000,
                     "label": "{{data.attributes.summary_title}}",
                     "images": [
                         {{#each data.attributes.multimedia}}
                             {
+                                "@id": "{{processed.zoom.location}}",
                                 "@type": "oa:Annotation",
                                 "motivation": "sc:painting",
+                                "on": "{{../self}}/canvas"
                                 "resource":{
                                     "@id": "{{processed.zoom.location}}/full/{{processed.large.measurements.dimensions.1.value}},{{processed.large.measurements.dimensions.0.value}}/0/default.jpg",
                                     "@type": "dctypes:Image",
                                     "format": "image/jpeg",
+                                    "label": "{{source.title.0.value}}",
                                     "service": {
+                                        "@id": "{{processed.zoom.location}}/",
                                         "@context": "http://iiif.io/api/image/2/context.json",
-                                        "@id": "{{processed.zoom.location}}",
                                         "profile": "http://iiif.io/api/image/2/level1.json"
                                     },
                                     "height": {{processed.large.measurements.dimensions.0.value}},
                                     "width": {{processed.large.measurements.dimensions.1.value}}
                                 },
-                                "on": "{{../self}}/canvas"
                             }
                         {{#unless @last}},{{/unless}}
                         {{/each}}
