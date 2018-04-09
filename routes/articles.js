@@ -18,14 +18,14 @@ module.exports = () => ({
           if (err) return callback(err);
           try {
             var data = JSON.parse(body).filter(e => e.collection_objects.indexOf(req.params.id) > -1);
+            if (data.length) {
+              return callback(null, {
+                museum: endpoint.label,
+                data: data
+              });
+            }
           } catch (e) {
             return callback('Cannot parse related objects feed from ' + endpoint.url);
-          }
-          if (data.length) {
-            return callback(null, {
-              museum: endpoint.label,
-              data: data
-            });
           }
           callback();
         });

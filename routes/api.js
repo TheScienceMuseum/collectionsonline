@@ -6,7 +6,7 @@ var contentType = require('./route-helpers/content-type.js');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
-  path: '/api/{type}/{id}',
+  path: '/api/{type}/{id}/{slug?}',
   config: {
     handler: function (request, reply) {
       elastic.get({index: 'smg', type: TypeMapping.toInternal(request.params.type), id: TypeMapping.toInternal(request.params.id)}, (err, result) => {

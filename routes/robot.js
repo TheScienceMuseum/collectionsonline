@@ -10,6 +10,7 @@ module.exports = () => ({
         'User-agent: *\n' +
         'Crawl-Delay: 1\n' +
         'Disallow: /api/\n' +
+        'Disallow: /iiif/\n' +
         'User-agent: AhrefsBot\n' +
         'Disallow: /'
       ).type('text/plain');
