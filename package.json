@@ -9,6 +9,7 @@
   "dependencies": {
     "async": "^2.0.0",
     "awesomplete": "^1.1.1",
+    "aws-sdk": "^2.223.1",
     "boom": "^6.0.0",
     "catbox": "^8.0.1",
     "catbox-redis": "^3.1.1",
