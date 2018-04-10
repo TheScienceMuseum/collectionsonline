@@ -7,8 +7,9 @@
     "attribution": "Science Museum Group",
     "logo": "https://group.sciencemuseum.org.uk/wp-content/themes/smg-wp-base-theme/assets/img/smg-logo.svg",
     "metadata": [
-        {"label": "Indentifier", "value": "{{data.attributes.identifier.0.value}}"},
-        {{#each data.attributes.lifecycle.creation}} 
+        {"label": "Indentifier", "value": "{{data.attributes.identifier.0.value}}"}
+        {{#each data.attributes.lifecycle.creation}}
+            {{#if date}},{{/if}}   
             {{#each date}}
                 {"label": "Date made", "value": "{{value}}"}
                 {{#unless @last}},{{/unless}}
