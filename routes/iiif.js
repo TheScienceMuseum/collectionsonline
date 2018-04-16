@@ -22,8 +22,7 @@ module.exports = (elastic, config) => ({
           return reply(Boom.serverUnavailable('unavailable'));
         }
 
-        var apiData = buildJSONResponse(result, config);
-        var iiifData = apiData;
+        var iiifData = buildJSONResponse(result, config);
         iiifData.self = config.rootUrl + '/iiif/' + iiifData.data.type + '/' + iiifData.data.id;
 
         return reply(
