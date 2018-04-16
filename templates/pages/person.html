@@ -12,6 +12,14 @@
       <div class="columns medium-8">
 
         {{> records/record-description}}
+
+        {{#if wikipedia}}
+          <div id="wikiSummary" data-name="{{wikipedia}}"></div>
+        {{/if}}
+        
+        {{#if wikipedia}}
+          <div id="wikiInfo" data-name="{{wikipedia}}"></div>
+        {{/if}}
       </div>
       <div class="columns medium-4">
 

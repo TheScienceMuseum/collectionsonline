@@ -1,8 +1,58 @@
 {{#unless inProduction}}
-  <div class="panel">
+  <div class="panel" style="margin-bottom: 10px">
     <img class="bleed" src="{{mainImage}}">
     <div class="panel__text">
-      <h4>{{title}}</h4>
+      {{#if infoBox.general.caption}}<b>{{infoBox.general.caption}}</b>{{/if}}
+      {{#if infoBox.general.imageCaption}}<b>{{infoBox.general.imageCaption}}</b>{{/if}}
+      <p style="font-size: small">Image supplied by <a href="{{url}}">Wikipedia</a></p>
+    </div>
+  </div>
+{{/unless}}
+
+{{#unless inProduction}}
+  <div class="panel" style="margin-bottom: 10px">
+    <div class="panel__text">
+
+      {{#if infoBox.general.knownFor}}
+      <b>Known for</b>
+      <p>
+        {{#each infoBox.general.knownFor}}
+          {{{this}}}{{#unless @last}}<br>{{/unless}}
+        {{/each}}
+      </p>
+      {{/if}}
+
+      {{#if infoBox.general.education}}
+      <hr>
+      <b>Education</b>
+      <p>
+        {{#each infoBox.general.education}}
+          {{{this}}}{{#unless @last}}<br>{{/unless}}
+        {{/each}}
+      </p>
+      {{/if}} 
+
+      {{#if infoBox.general.workplaces}}
+      <b>Workplace</b>
+      <p>
+        {{#each infoBox.general.workplaces}}
+          {{{this}}}{{#unless @last}}<br>{{/unless}}
+        {{/each}}
+      </p>
+      {{/if}} 
+
+      {{#if infoBox.general.influenced}}
+      <hr>
+      <b>Influenced</b>
+      <p>
+        {{#each infoBox.general.influenced}}
+          {{{this}}}{{#unless @last}}<br>{{/unless}}
+        {{/each}}
+      </p>
+      {{/if}} 
+
+      <p style="font-size: small">Additional data supplied by <a href="{{url}}">Wikipedia</a></p>
+
     </div>
   </div>
 {{/unless}}
