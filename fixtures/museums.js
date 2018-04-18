@@ -23,7 +23,7 @@ module.exports = {
     },
     {
       name: 'National Railway Museum',
-      url: 'http://www.nrm.org.uk',
+      url: 'http://www.railwaymuseum.org.uk',
       image: '/assets/img/global/nrm-logo.svg'
     },
     {
