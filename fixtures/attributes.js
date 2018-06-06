@@ -51,5 +51,6 @@ module.exports = [
   'date',
   'display_date',
   'duration',
-  'occurance_type'
+  'occurance_type',
+  'enhancement'
 ];

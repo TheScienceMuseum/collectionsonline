@@ -1,5 +1,6 @@
 module.exports = (elastic, config) => ([
   require('./home')(),
+  require('./screensaver')(),
   require('./search')(elastic, config),
   require('./public')(),
   require('./archive')(elastic, config),
