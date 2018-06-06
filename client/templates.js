@@ -177,6 +177,21 @@ Handlebars.registerPartial(
   Fs.readFileSync('./templates/partials/records/single-image.html', 'utf8')
 );
 
+Handlebars.registerPartial(
+  'records/sketchfab',
+    Fs.readFileSync('./templates/partials/records/sketchfab.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'records/youtube',
+    Fs.readFileSync('./templates/partials/records/youtube.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'records/rotational',
+    Fs.readFileSync('./templates/partials/records/rotational.html', 'utf8')
+);
+
 // Helpers
 Handlebars.registerHelper('classname', require('../templates/helpers/classname.js'));
 
