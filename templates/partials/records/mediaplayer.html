@@ -1,0 +1,31 @@
+{{#unless inProduction}}
+  <section>
+    <div class="row columns">
+      <div class="mediaplayer">
+        <div class="mediaplayer__show">
+          {{#each youtube}}
+          <div class="mediaplayer__embed" id="{{platform}}{{id}}">
+            <iframe src="https://www.youtube.com/embed/{{id}}?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          </div>
+          {{/each}}
+          {{#each sketchfab}}
+          <div class="mediaplayer__embed" id="{{platform}}{{id}}">
+            <iframe src="https://sketchfab.com/models/{{id}}/embed?preload=1" frameborder="0" allow="autoplay; fullscreen; vr" allowfullscreen></iframe>
+          </div>
+          {{/each}}
+          {{#each rotational}}
+          <div class="mediaplayer__embed" id="{{platform}}{{id}}">
+            <!-- 360 photography viewer -->
+          </div>
+          {{/each}}
+        </div>
+        <div class="mediaplayer__list">
+          <h4 class="mediaplayer__h">Look closer</h4>
+          {{#each youtube}}{{> records/mediaplayer__listitem }}{{/each}}
+          {{#each sketchfab}}{{> records/mediaplayer__listitem }}{{/each}}
+          {{#each rotational}}{{> records/mediaplayer__listitem }}{{/each}}
+        </div>
+      </div>
+    </div>
+  </section>
+{{/unless}}

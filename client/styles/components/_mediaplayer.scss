@@ -1,0 +1,47 @@
+.mediaplayer {
+  background-color: grey(80);
+  color: white;
+
+  @include breakpoint(medium) {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    &__show {
+      width: calc(#{percentage(2/3)} - #{(1/3)}rem);
+    }
+  }
+
+  &__embed {
+    @include responsive-embed(16 by 9);
+    display: none;
+    &.--active {
+      display: block;
+    }
+  }
+
+  &__list {
+    flex-grow: 1;
+  }
+
+  &__h {
+    padding: 1rem;
+    margin: 0;
+  }
+
+  &__listitem {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: white;
+    font-weight: 400;
+
+    &.--active {
+      background-color: grey(60);
+    }
+
+    .icon {
+      padding-right: 1rem;
+    }
+  }
+}

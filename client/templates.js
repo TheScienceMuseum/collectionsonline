@@ -244,6 +244,7 @@ Handlebars.registerHelper('formatnumber', require('../templates/helpers/formatnu
 Handlebars.registerHelper('toggleDetail', require('../templates/helpers/toggleDetail.js'));
 
 Handlebars.registerHelper('isResourcePage', require('../templates/helpers/isResourcePage.js'));
+Handlebars.registerHelper('concat', require('../templates/helpers/concat.js'));
 
 // Routes
 module.exports = {

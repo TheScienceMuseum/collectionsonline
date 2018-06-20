@@ -35,10 +35,8 @@
       </div>
     </div>
   </section>
-
-  {{> records/sketchfab}}
-  {{> records/youtube}}
-  {{> records/rotational}}
+  
+  {{#if (or youtube sketchfab rotational)}}{{> records/mediaplayer}}{{/if}}
 
   {{> records/record-details }}
 
