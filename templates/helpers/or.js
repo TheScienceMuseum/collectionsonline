@@ -1,6 +1,5 @@
-module.exports = function (a, b, options) {
-  if (a || b) {
-    return options.fn(this);
-  }
-  return options.inverse(this);
+module.exports = function () {
+  return Array.prototype.slice
+    .call(arguments, 0, arguments.length - 1)
+    .some(Boolean);
 };

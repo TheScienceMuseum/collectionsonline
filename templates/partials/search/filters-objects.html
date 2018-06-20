@@ -1,11 +1,11 @@
 <input type="hidden" name="fields[type]" value="objects">
 <!-- IMAGE -->
-{{#or filters.image_license.length filters.has_image.length}}
-  {{#or (activeFacet selectedFilters 'imageLicense') (activeFacet selectedFilters 'hasImage')}}
+{{#if (or filters.image_license.length filters.has_image.length)}}
+  {{#if (or (activeFacet selectedFilters 'imageLicense') (activeFacet selectedFilters 'hasImage'))}}
     <div class="filter filter--active filter--open" data-filter="Image">
   {{else}}
     <div class="filter filter--open" data-filter="Image">
-  {{/or}}
+  {{/if}}
     <a href="{{lookup links.clearFacet "filter[images]"}}" class="filter__name">Image</a>
     <div class="filter__options">
       <ul>
@@ -18,7 +18,7 @@
       </ul>
     </div>
   </div>
-{{/or}}
+{{/if}}
 
 {{#if filters.category.length}}
   {{#if (activeFacet selectedFilters 'categories')}}
@@ -157,11 +157,11 @@
 {{/if}}
 
 <!-- DATE -->
-{{#or (lookup selectedFilters "date[from]") (lookup selectedFilters "date[to]")}}
+{{#if (or (lookup selectedFilters "date[from]") (lookup selectedFilters "date[to]"))}}
   <div class="filter filter--active filter--open" data-filter="Dates">
 {{ else }}
   <div class="filter filter--open" data-filter="Dates">
-{{/or}}
+{{/if}}
   <a href="{{lookup links.clearFacet "dates"}}" class="filter__name">Date</a>
   <div class="filter__options filter__daterange">
     <label>From <input type="number" placeholder="1600" name="filter[date[from]]" value="{{lookup selectedFilters "date[from]"}}"/></label>
