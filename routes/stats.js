@@ -13,7 +13,7 @@ module.exports = (elastic, config) => ({
           objectsWithImages: results.responses[1].hits.total,
           documents: results.responses[2].hits.total,
           documentWithImages: results.responses[3].hits.total,
-          agents: results.responses[4].hits.total,
+          agents: results.responses[4].hits.total
         });
       });
     }
