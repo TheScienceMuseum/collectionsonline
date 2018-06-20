@@ -20,5 +20,6 @@ module.exports = (elastic, config) => ([
   require('./robot')(),
   require('./articles')(),
   require('./wiki')(config),
-  require('./iris')(elastic, config)
+  require('./iris')(elastic, config),
+  require('./stats')(elastic, config)
 ]);
