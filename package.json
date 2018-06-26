@@ -89,7 +89,7 @@
     "build:css": "run-s build:css:*",
     "build:css:sass": "node-sass client/styles/main.scss public/bundle.css --include-path node_modules/foundation-sites/scss --error-bell",
     "build:css:prefix": "postcss --u autoprefixer -i public/bundle.css -o public/bundle.css",
-    "build:img": "cp client/icons/* public/assets/icons",
+    "build:img": "cp -R client/icons/* public/assets/icons",
     "build:svg": "svg-sprite --view --vscss --view-sprite=svg/sprite.view.svg --symbol --symbol-example --symbol-sprite=svg/sprite.symbol.svg --dest=public/assets/icons client/icons/**/*.svg",
     "minify": "run-p minify:*",
     "minify:js": "uglifyjs public/bundle.js -o public/bundle.js",

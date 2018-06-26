@@ -1,7 +1,7 @@
 // Garden Gnome Software - Skin
 // Object2VR 3.1.5/10768
 // Filename: SMG-skin.ggsk
-// Generated Mon Jun 25 17:40:05 2018
+// Generated Tue Jun 26 13:37:11 2018
 
 function object2vrSkin (player, base) {
   var me = this;
@@ -162,7 +162,7 @@ function object2vrSkin (player, base) {
     this._toolbarbggrad__img.className = 'ggskin ggskin_image';
     this._toolbarbggrad__img.setAttribute(
       'src',
-      basePath + 'skinimg/toolbarbggrad.png'
+      basePath + '/toolbarbggrad.png'
     );
     this._toolbarbggrad__img.setAttribute(
       'style',
@@ -194,12 +194,13 @@ function object2vrSkin (player, base) {
     hs += 'width: 48px;';
     hs += 'height: 48px;';
     hs += cssPrefix + 'transform-origin: 50% 50%;';
+    hs += 'opacity: 0.75;';
     hs += 'visibility: inherit;';
     hs += 'cursor: pointer;';
     this._left.setAttribute('style', hs);
     this._left__img = document.createElement('img');
     this._left__img.className = 'ggskin ggskin_svg';
-    this._left__img.setAttribute('src', basePath + 'skinimg/left.svg');
+    this._left__img.setAttribute('src', basePath + '/left.svg');
     this._left__img.setAttribute(
       'style',
       'position: absolute;top: 0px;left: 0px;width: 48px;height: 48px;-webkit-user-drag:none;'
@@ -209,13 +210,23 @@ function object2vrSkin (player, base) {
     };
     this._left.appendChild(this._left__img);
     this._left.onmouseover = function () {
-      me._left__img.src = basePath + 'skinimg/left__o.svg';
+      me.elementMouseOver['left'] = true;
     };
     this._left.onmouseout = function () {
-      me._left__img.src = basePath + 'skinimg/left.svg';
+      if (me.player.transitionsDisabled) {
+        me._left.style[domTransition] = 'none';
+      } else {
+        me._left.style[domTransition] = 'all 500ms ease-out 0ms';
+      }
+      me._left.style.opacity = '0.75';
+      me._left.style.visibility = me._left.ggVisible ? 'inherit' : 'hidden';
+      me.elementMouseOver['left'] = false;
     };
     this._left.onmousedown = function () {
       me.player.changePanLog(1, true);
+    };
+    this._left.ontouchend = function () {
+      me.elementMouseOver['left'] = false;
     };
     this._controller.appendChild(this._left);
     this._right = document.createElement('div');
@@ -230,12 +241,13 @@ function object2vrSkin (player, base) {
     hs += 'width: 48px;';
     hs += 'height: 48px;';
     hs += cssPrefix + 'transform-origin: 50% 50%;';
+    hs += 'opacity: 0.75;';
     hs += 'visibility: inherit;';
     hs += 'cursor: pointer;';
     this._right.setAttribute('style', hs);
     this._right__img = document.createElement('img');
     this._right__img.className = 'ggskin ggskin_svg';
-    this._right__img.setAttribute('src', basePath + 'skinimg/right.svg');
+    this._right__img.setAttribute('src', basePath + '/right.svg');
     this._right__img.setAttribute(
       'style',
       'position: absolute;top: 0px;left: 0px;width: 48px;height: 48px;-webkit-user-drag:none;'
@@ -245,13 +257,23 @@ function object2vrSkin (player, base) {
     };
     this._right.appendChild(this._right__img);
     this._right.onmouseover = function () {
-      me._right__img.src = basePath + 'skinimg/right__o.svg';
+      me.elementMouseOver['right'] = true;
     };
     this._right.onmouseout = function () {
-      me._right__img.src = basePath + 'skinimg/right.svg';
+      if (me.player.transitionsDisabled) {
+        me._right.style[domTransition] = 'none';
+      } else {
+        me._right.style[domTransition] = 'all 500ms ease-out 0ms';
+      }
+      me._right.style.opacity = '0.75';
+      me._right.style.visibility = me._right.ggVisible ? 'inherit' : 'hidden';
+      me.elementMouseOver['right'] = false;
     };
     this._right.onmousedown = function () {
       me.player.changePanLog(-1, true);
+    };
+    this._right.ontouchend = function () {
+      me.elementMouseOver['right'] = false;
     };
     this._controller.appendChild(this._right);
     this._zoomin = document.createElement('div');
@@ -266,12 +288,13 @@ function object2vrSkin (player, base) {
     hs += 'width: 48px;';
     hs += 'height: 48px;';
     hs += cssPrefix + 'transform-origin: 50% 50%;';
+    hs += 'opacity: 0.75;';
     hs += 'visibility: inherit;';
     hs += 'cursor: pointer;';
     this._zoomin.setAttribute('style', hs);
     this._zoomin__img = document.createElement('img');
     this._zoomin__img.className = 'ggskin ggskin_svg';
-    this._zoomin__img.setAttribute('src', basePath + 'skinimg/zoomin.svg');
+    this._zoomin__img.setAttribute('src', basePath + '/zoomin.svg');
     this._zoomin__img.setAttribute(
       'style',
       'position: absolute;top: 0px;left: 0px;width: 48px;height: 48px;-webkit-user-drag:none;'
@@ -281,10 +304,22 @@ function object2vrSkin (player, base) {
     };
     this._zoomin.appendChild(this._zoomin__img);
     this._zoomin.onmouseover = function () {
-      me._zoomin__img.src = basePath + 'skinimg/zoomin__o.svg';
+      if (me.player.transitionsDisabled) {
+        me._zoomin.style[domTransition] = 'none';
+      } else {
+        me._zoomin.style[domTransition] = 'all 500ms ease-out 0ms';
+      }
+      me._zoomin.style.opacity = '1';
+      me._zoomin.style.visibility = me._zoomin.ggVisible ? 'inherit' : 'hidden';
     };
     this._zoomin.onmouseout = function () {
-      me._zoomin__img.src = basePath + 'skinimg/zoomin.svg';
+      if (me.player.transitionsDisabled) {
+        me._zoomin.style[domTransition] = 'none';
+      } else {
+        me._zoomin.style[domTransition] = 'all 500ms ease-out 0ms';
+      }
+      me._zoomin.style.opacity = '0.75';
+      me._zoomin.style.visibility = me._zoomin.ggVisible ? 'inherit' : 'hidden';
       me.elementMouseDown['zoomin'] = false;
     };
     this._zoomin.onmousedown = function () {
@@ -309,12 +344,13 @@ function object2vrSkin (player, base) {
     hs += 'width: 48px;';
     hs += 'height: 48px;';
     hs += cssPrefix + 'transform-origin: 50% 50%;';
+    hs += 'opacity: 0.75;';
     hs += 'visibility: inherit;';
     hs += 'cursor: pointer;';
     this._zoomout.setAttribute('style', hs);
     this._zoomout__img = document.createElement('img');
     this._zoomout__img.className = 'ggskin ggskin_svg';
-    this._zoomout__img.setAttribute('src', basePath + 'skinimg/zoomout.svg');
+    this._zoomout__img.setAttribute('src', basePath + '/zoomout.svg');
     this._zoomout__img.setAttribute(
       'style',
       'position: absolute;top: 0px;left: 0px;width: 48px;height: 48px;-webkit-user-drag:none;'
@@ -324,10 +360,26 @@ function object2vrSkin (player, base) {
     };
     this._zoomout.appendChild(this._zoomout__img);
     this._zoomout.onmouseover = function () {
-      me._zoomout__img.src = basePath + 'skinimg/zoomout__o.svg';
+      if (me.player.transitionsDisabled) {
+        me._zoomout.style[domTransition] = 'none';
+      } else {
+        me._zoomout.style[domTransition] = 'all 500ms ease-out 0ms';
+      }
+      me._zoomout.style.opacity = '1';
+      me._zoomout.style.visibility = me._zoomout.ggVisible
+        ? 'inherit'
+        : 'hidden';
     };
     this._zoomout.onmouseout = function () {
-      me._zoomout__img.src = basePath + 'skinimg/zoomout.svg';
+      if (me.player.transitionsDisabled) {
+        me._zoomout.style[domTransition] = 'none';
+      } else {
+        me._zoomout.style[domTransition] = 'all 500ms ease-out 0ms';
+      }
+      me._zoomout.style.opacity = '0.75';
+      me._zoomout.style.visibility = me._zoomout.ggVisible
+        ? 'inherit'
+        : 'hidden';
       me.elementMouseDown['zoomout'] = false;
     };
     this._zoomout.onmousedown = function () {
@@ -352,15 +404,13 @@ function object2vrSkin (player, base) {
     hs += 'width: 48px;';
     hs += 'height: 48px;';
     hs += cssPrefix + 'transform-origin: 50% 50%;';
+    hs += 'opacity: 0.75;';
     hs += 'visibility: inherit;';
     hs += 'cursor: pointer;';
     this._autorotate.setAttribute('style', hs);
     this._autorotate__img = document.createElement('img');
     this._autorotate__img.className = 'ggskin ggskin_svg';
-    this._autorotate__img.setAttribute(
-      'src',
-      basePath + 'skinimg/autorotate.svg'
-    );
+    this._autorotate__img.setAttribute('src', basePath + '/autorotate.svg');
     this._autorotate__img.setAttribute(
       'style',
       'position: absolute;top: 0px;left: 0px;width: 48px;height: 48px;-webkit-user-drag:none;'
@@ -373,10 +423,26 @@ function object2vrSkin (player, base) {
       me.player.toggleAutorotate();
     };
     this._autorotate.onmouseover = function () {
-      me._autorotate__img.src = basePath + 'skinimg/autorotate__o.svg';
+      if (me.player.transitionsDisabled) {
+        me._autorotate.style[domTransition] = 'none';
+      } else {
+        me._autorotate.style[domTransition] = 'all 500ms ease-out 0ms';
+      }
+      me._autorotate.style.opacity = '1';
+      me._autorotate.style.visibility = me._autorotate.ggVisible
+        ? 'inherit'
+        : 'hidden';
     };
     this._autorotate.onmouseout = function () {
-      me._autorotate__img.src = basePath + 'skinimg/autorotate.svg';
+      if (me.player.transitionsDisabled) {
+        me._autorotate.style[domTransition] = 'none';
+      } else {
+        me._autorotate.style[domTransition] = 'all 500ms ease-out 0ms';
+      }
+      me._autorotate.style.opacity = '0.75';
+      me._autorotate.style.visibility = me._autorotate.ggVisible
+        ? 'inherit'
+        : 'hidden';
     };
     this._controller.appendChild(this._autorotate);
     this._fullscreen = document.createElement('div');
@@ -391,15 +457,13 @@ function object2vrSkin (player, base) {
     hs += 'width: 48px;';
     hs += 'height: 48px;';
     hs += cssPrefix + 'transform-origin: 50% 50%;';
+    hs += 'opacity: 0.75;';
     hs += 'visibility: inherit;';
     hs += 'cursor: pointer;';
     this._fullscreen.setAttribute('style', hs);
     this._fullscreen__img = document.createElement('img');
     this._fullscreen__img.className = 'ggskin ggskin_svg';
-    this._fullscreen__img.setAttribute(
-      'src',
-      basePath + 'skinimg/fullscreen.svg'
-    );
+    this._fullscreen__img.setAttribute('src', basePath + '/fullscreen.svg');
     this._fullscreen__img.setAttribute(
       'style',
       'position: absolute;top: 0px;left: 0px;width: 48px;height: 48px;-webkit-user-drag:none;'
@@ -412,10 +476,26 @@ function object2vrSkin (player, base) {
       me.player.toggleFullscreen();
     };
     this._fullscreen.onmouseover = function () {
-      me._fullscreen__img.src = basePath + 'skinimg/fullscreen__o.svg';
+      if (me.player.transitionsDisabled) {
+        me._fullscreen.style[domTransition] = 'none';
+      } else {
+        me._fullscreen.style[domTransition] = 'all 500ms ease-out 0ms';
+      }
+      me._fullscreen.style.opacity = '1';
+      me._fullscreen.style.visibility = me._fullscreen.ggVisible
+        ? 'inherit'
+        : 'hidden';
     };
     this._fullscreen.onmouseout = function () {
-      me._fullscreen__img.src = basePath + 'skinimg/fullscreen.svg';
+      if (me.player.transitionsDisabled) {
+        me._fullscreen.style[domTransition] = 'none';
+      } else {
+        me._fullscreen.style[domTransition] = 'all 500ms ease-out 0ms';
+      }
+      me._fullscreen.style.opacity = '0.75';
+      me._fullscreen.style.visibility = me._fullscreen.ggVisible
+        ? 'inherit'
+        : 'hidden';
     };
     this._controller.appendChild(this._fullscreen);
     this.divSkin.appendChild(this._controller);
@@ -601,6 +681,24 @@ function object2vrSkin (player, base) {
     setTimeout(function () {
       me.skinTimerEvent();
     }, 10);
+    if (me.elementMouseOver['left']) {
+      if (me.player.transitionsDisabled) {
+        me._left.style[domTransition] = 'none';
+      } else {
+        me._left.style[domTransition] = 'all 500ms ease-out 0ms';
+      }
+      me._left.style.opacity = '1';
+      me._left.style.visibility = me._left.ggVisible ? 'inherit' : 'hidden';
+    }
+    if (me.elementMouseOver['right']) {
+      if (me.player.transitionsDisabled) {
+        me._right.style[domTransition] = 'none';
+      } else {
+        me._right.style[domTransition] = 'all 500ms ease-out 0ms';
+      }
+      me._right.style.opacity = '1';
+      me._right.style.visibility = me._right.ggVisible ? 'inherit' : 'hidden';
+    }
     if (me.elementMouseDown['zoomin']) {
       me.player.changeFovLog(-1, true);
     }
