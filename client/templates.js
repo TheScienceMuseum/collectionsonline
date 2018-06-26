@@ -275,7 +275,10 @@ module.exports = {
   'error': Handlebars.compile(
     Fs.readFileSync('./templates/pages/error.html', 'utf8')
   ),
-  'archiveTree': Handlebars.compile(
+  rotational: Handlebars.compile(
+    Fs.readFileSync('./templates/pages/rotational.html', 'utf8')
+  ),
+  archiveTree: Handlebars.compile(
     Fs.readFileSync('./templates/partials/records/archive-tree.html', 'utf8')
   ),
   'search-results': Handlebars.compile(
