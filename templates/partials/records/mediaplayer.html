@@ -4,13 +4,13 @@
       <div class="mediaplayer">
         <div class="mediaplayer__show">
           {{#each youtube}}
-          <div class="mediaplayer__embed" id="{{platform}}{{id}}">
-            <iframe src="https://www.youtube.com/embed/{{id}}?modestbranding=1&rel=0&showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <div class="mediaplayer__embed" data-type="{{platform}}">
+            <iframe id="{{platform}}{{id}}" src="https://www.youtube.com/embed/{{id}}?modestbranding=1&rel=0&showinfo=0&enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
           </div>
           {{/each}}
           {{#each sketchfab}}
-          <div class="mediaplayer__embed" id="{{platform}}{{id}}">
-            <iframe src="https://sketchfab.com/models/{{id}}/embed?preload=1" frameborder="0" allow="autoplay; fullscreen; vr" allowfullscreen></iframe>
+          <div class="mediaplayer__embed">
+            <iframe id="{{platform}}{{id}}" src="https://sketchfab.com/models/{{id}}/embed?preload=1" frameborder="0" allow="autoplay; fullscreen; vr" allowfullscreen></iframe>
           </div>
           {{/each}}
           {{#each rotational}}

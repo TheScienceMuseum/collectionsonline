@@ -8,16 +8,6 @@ module.exports = () => {
       mediaplayer.querySelectorAll('.mediaplayer__listitem')
     );
 
-    var swapActive = function (event, el, i) {
-      event.preventDefault();
-      var current = mediaplayer.querySelectorAll('.--active');
-      [].forEach.call(current, function (el) {
-        el.classList.remove('--active');
-      });
-      el.classList.add('--active');
-      embeds[i].classList.add('--active');
-    };
-
     playlist.forEach(function (el, i) {
       if (i === 0) {
         el.classList.add('--active');
@@ -27,5 +17,42 @@ module.exports = () => {
         swapActive(event, el, i);
       });
     });
+
+    var swapActive = function (event, el, i) {
+      event.preventDefault();
+      var current = mediaplayer.querySelectorAll('.--active');
+      [].forEach.call(current, function (el) {
+        el.classList.remove('--active');
+      });
+      el.classList.add('--active');
+      embeds[i].classList.add('--active');
+
+      // pause videos on inactive tabs, play them on select.
+      if (players) {
+        Object.keys(players).forEach(function (key) {
+          players[key].pauseVideo();
+        });
+      }
+      if (embeds[i].dataset.type == 'youtube') {
+        var thisPlayer = embeds[i].querySelector('iframe').id;
+        players[thisPlayer].playVideo();
+      }
+    };
+
+    // Only if we have youtubes, add the API to be able to control play state.
+    var videos = document.querySelectorAll('[data-type=youtube] iframe');
+    if (videos) {
+      var tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      var players = [];
+      window.onYouTubeIframeAPIReady = function () {
+        [].forEach.call(videos, function (el) {
+          players[el.id] = new YT.Player(el);
+        });
+      };
+    }
   }
 };
