@@ -90,12 +90,11 @@
   // add the skin object
   skin=new object2vrSkin(obj, '/assets/icons/object2vr');
   // load the configuration
-  obj.readConfigUrl("/tmp/settings.xml");
+  // This will be replaced with //somepath/{{id}}
+  obj.readConfigUrl("https://smgco-rotational.s3-eu-west-1.amazonaws.com/object2vrtest/object2vrtest_out.xml");
   // hide the URL bar on the iPhone
   setTimeout(function() { hideUrlBar(); }, 10);
 </script>
 <noscript>
   <p>This player requires Javascript.</p>
 </noscript>
-
-my id = {{id}}
