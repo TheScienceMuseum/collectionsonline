@@ -178,18 +178,8 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
-  'records/sketchfab',
-    Fs.readFileSync('./templates/partials/records/sketchfab.html', 'utf8')
-);
-
-Handlebars.registerPartial(
-  'records/youtube',
-    Fs.readFileSync('./templates/partials/records/youtube.html', 'utf8')
-);
-
-Handlebars.registerPartial(
-  'records/rotational',
-    Fs.readFileSync('./templates/partials/records/rotational.html', 'utf8')
+  'records/mediaplayer',
+    Fs.readFileSync('./templates/partials/records/mediaplayer.html', 'utf8')
 );
 
 // Helpers
