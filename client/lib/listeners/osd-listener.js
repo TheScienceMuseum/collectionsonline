@@ -1,7 +1,7 @@
 var openseadragon = require('../openseadragon');
 
 module.exports = (ctx) => {
-  var osd = Array.prototype.slice.call(document.getElementsByClassName('osd__toolbar')) || [];
+  // var osd = Array.prototype.slice.call(document.getElementsByClassName('osd__toolbar')) || [];
   var singleImages = Array.prototype.slice.call(document.getElementsByClassName('single_image')) || [];
 
   var initOSD = function () {

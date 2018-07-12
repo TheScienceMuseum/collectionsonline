@@ -33,7 +33,7 @@ module.exports = () => {
           players[key].pauseVideo();
         });
       }
-      if (embeds[i].dataset.type == 'youtube') {
+      if (embeds[i].dataset.type === 'youtube') {
         var thisPlayer = embeds[i].querySelector('iframe').id;
         players[thisPlayer].playVideo();
       }
@@ -48,6 +48,7 @@ module.exports = () => {
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
       var players = [];
+      var YT;
       window.onYouTubeIframeAPIReady = function () {
         [].forEach.call(videos, function (el) {
           players[el.id] = new YT.Player(el);

@@ -5,7 +5,7 @@ module.exports = function (page) {
 
   function render (ctx, next) {
     var pageEl = document.getElementsByTagName('body')[0];
-    pageEl.innerHTML = Templates['rotational'](data);
+    pageEl.innerHTML = Templates['rotational']();
   }
 
   function listeners (ctx, next) {}

@@ -132,7 +132,9 @@
       "sessionStorage"
     ],
     "ignore": [
-      "client/lib/polyfills.js"
+      "client/lib/polyfills.js",
+      "public/vendor/object2vr/skin.js",
+      "public/vendor/object2vr/object2vr_player.js"
     ]
   },
   "browserslist": [

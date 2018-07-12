@@ -1,11 +1,13 @@
+var getRotational = require('../lib/get-rotational');
+
 module.exports = () => ({
   method: 'GET',
-  path: '/embed/rotational/{id}',
+  path: '/embed/rotational/{coid}',
   config: {
     handler: function (request, reply) {
       return reply.view(
         'rotational',
-        { id: request.params.id },
+        { configurl: getRotational(request.params.coid) },
         { layout: 'embed' }
       );
     }
