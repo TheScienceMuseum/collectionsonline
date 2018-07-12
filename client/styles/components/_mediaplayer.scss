@@ -39,7 +39,9 @@
     &.--active {
       background-color: grey(60);
     }
-
+    &:hover:not(.--active) {
+      background-color: grey(90);
+    }
     .icon {
       padding-right: 1rem;
     }
