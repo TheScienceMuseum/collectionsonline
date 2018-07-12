@@ -8,10 +8,16 @@ module.exports = () => {
       mediaplayer.querySelectorAll('.mediaplayer__listitem')
     );
 
+    var setActive = function (el, i) {
+      el.classList.add('--active');
+      var iframe = embeds[i].querySelector('iframe');
+      iframe.src = iframe.dataset.src;
+      embeds[i].classList.add('--active');
+    };
+
     playlist.forEach(function (el, i) {
       if (i === 0) {
-        el.classList.add('--active');
-        embeds[i].classList.add('--active');
+        setActive(el, i);
       }
       el.addEventListener('click', function (event) {
         swapActive(event, el, i);
@@ -24,8 +30,7 @@ module.exports = () => {
       [].forEach.call(current, function (el) {
         el.classList.remove('--active');
       });
-      el.classList.add('--active');
-      embeds[i].classList.add('--active');
+      setActive(el, i);
 
       // pause videos on inactive tabs, play them on select.
       if (players) {
