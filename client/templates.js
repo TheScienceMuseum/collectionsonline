@@ -179,7 +179,15 @@ Handlebars.registerPartial(
 
 Handlebars.registerPartial(
   'records/mediaplayer',
-    Fs.readFileSync('./templates/partials/records/mediaplayer.html', 'utf8')
+  Fs.readFileSync('./templates/partials/records/mediaplayer.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'records/mediaplayer__listitem',
+  Fs.readFileSync(
+    './templates/partials/records/mediaplayer__listitem.html',
+    'utf8'
+  )
 );
 
 // Helpers
