@@ -11,7 +11,7 @@ module.exports = () => {
     var setActive = function (el, i) {
       el.classList.add('--active');
       var iframe = embeds[i].querySelector('iframe');
-      iframe.src = iframe.dataset.src;
+      if (!iframe.src) iframe.src = iframe.dataset.src;
       embeds[i].classList.add('--active');
     };
 
@@ -53,10 +53,9 @@ module.exports = () => {
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
       var players = [];
-      var YT;
       window.onYouTubeIframeAPIReady = function () {
         [].forEach.call(videos, function (el) {
-          players[el.id] = new YT.Player(el);
+          players[el.id] = new YT.Player(el); // eslint-disable-line
         });
       };
     }
