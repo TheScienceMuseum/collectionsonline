@@ -5,7 +5,7 @@
         <div class="mediaplayer__show">
           {{#each youtube}}
           <div class="mediaplayer__embed" data-type="{{platform}}">
-            <iframe id="{{platform}}{{id}}" src="https://www.youtube-nocookie.com/embed/{{id}}?modestbranding=1&rel=0&showinfo=0&enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <iframe id="{{platform}}{{id}}" data-src="https://www.youtube-nocookie.com/embed/{{id}}?modestbranding=1&rel=0&showinfo=0&enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
           </div>
           {{/each}}
           {{#each sketchfab}}
@@ -15,7 +15,7 @@
           {{/each}}
           {{#each rotational}}
           <div class="mediaplayer__embed" id="{{platform}}{{id}}">
-            <iframe src="/embed/rotational/{{id}}" frameborder="0" allow="autoplay; fullscreen; vr" allowfullscreen></iframe>
+            <iframe data-src="/embed/rotational/{{id}}" frameborder="0" allow="autoplay; fullscreen; vr" allowfullscreen></iframe>
           </div>
           {{/each}}
         </div>
