@@ -27,6 +27,7 @@ elastic.search(searchOpts, function getMoreUntilDone (err, result) {
       galName = hit._source.locations[0].name.find(e => e.type === 'gallery');
       musName = hit._source.locations[0].name.find(e => e.type === 'museum');
       if (galName && musName) {
+        if (musName.value === 'National Media Museum') { musName.value = 'National Science and Media Museum'; }
         allGalleries.push({gallery: galName.value, museum: musName.value});
       } else {
         allGalleries.push(false);
