@@ -20,7 +20,7 @@ module.exports = {
       .setValue('input[type=search].searchbox__search', 'charles babbage')
       .pause(1000)
       .click('button.searchbox__submit')
-      .pause(1000)
+      .pause(2000)
       .assert.urlEquals('http://localhost:8000/search?q=charles%20babbage')
       .click('.resultcard')
       .pause(3000)
