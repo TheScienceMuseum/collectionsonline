@@ -25,7 +25,7 @@ test('parsing museum params', function (t) {
   t.deepEqual(parseParameters({filters: 'objects/museum/scm'}), {params: {type: 'objects'}, categories: {museum: 'Science Museum'}}, 'should convert short museum name');
   t.deepEqual(parseParameters({filters: 'objects/museum/msi'}), {params: {type: 'objects'}, categories: {museum: 'Museum of Science and Industry'}}, 'should convert short museum name');
   t.deepEqual(parseParameters({filters: 'objects/museum/nrm'}), {params: {type: 'objects'}, categories: {museum: 'National Railway Museum'}}, 'should convert short museum name');
-  t.deepEqual(parseParameters({filters: 'objects/museum/nmem'}), {params: {type: 'objects'}, categories: {museum: 'National Media Museum'}}, 'should convert short museum name');
+  t.deepEqual(parseParameters({filters: 'objects/museum/nmem'}), {params: {type: 'objects'}, categories: {museum: 'National Science and Media Museum'}}, 'should convert short museum name');
   t.deepEqual(parseParameters({filters: 'objects/museum/Science-Museum'}), {params: {type: 'objects'}, categories: {museum: 'Science Museum'}}, 'should keep long museum name');
   t.deepEqual(parseParameters({filters: 'objects/museum/National-Railway-Museum'}), {params: {type: 'objects'}, categories: {museum: 'National Railway Museum'}}, 'should keep long museum name');
   t.deepEqual(parseParameters({filters: 'objects/museum/museum-of-science-and-industry'}), {params: {type: 'objects'}, categories: {museum: 'Museum of Science and Industry'}}, 'should convert museum name to correct case');
