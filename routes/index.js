@@ -22,4 +22,5 @@ module.exports = (elastic, config) => ([
   require('./wiki')(config),
   require('./iris')(elastic, config),
   require('./embed')()
+  require('./stats')(elastic, config)
 ]);
