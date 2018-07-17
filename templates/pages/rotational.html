@@ -1,0 +1,100 @@
+<script type="text/javascript">
+  // hide URL field on the iPhone/iPod touch
+  function hideUrlBar() {
+    // hide URL field on the iPhone/iPod touch
+    var p = String(navigator.platform);
+
+    container = document.getElementById("container");
+    if( p === 'iPad' || p === 'iPhone' || p === 'iPod touch' ){
+      var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+      if (parseInt(v[1], 10)>=7) {
+        // iOS >=7
+        if (container) {
+          container.style.top=(0) + "px";
+          container.style.left=(0) + "px";
+          container.style.width=(window.innerWidth) + "px";
+          container.style.height=(window.innerHeight) + "px";
+        }
+        if (obj) {
+          obj.setViewerSize(window.innerWidth, window.innerHeight);
+        }						
+        window.scrollTo(0, 0);
+      } else {
+        if (container) {
+          var cheight;
+          switch(window.innerHeight) {
+            case 208:cheight=268; break; // landscape
+            case 260:cheight=320; break; // landscape, fullscreen
+            case 336:cheight=396; break; // portrait, in call status bar
+            case 356:cheight=416; break; // portrait 
+            case 424:cheight=484; break; // portrait iPhone5, in call status bar
+            case 444:cheight=504; break; // portrait iPhone5 
+            default: cheight=window.innerHeight;
+          }
+          if ((cheight) && ((container.offsetHeight!=cheight) || (window.innerHeight!=cheight))) {
+            container.style.height=cheight + "px";
+          }
+        }
+        document.getElementsByTagName("body")[0].style.marginTop="1px";
+        window.scrollTo(0, 1);
+      }
+    }
+  }            
+  if (window.addEventListener) {
+    window.addEventListener("load", hideUrlBar);
+    window.addEventListener("resize", hideUrlBar);
+    window.addEventListener("orientationchange", hideUrlBar);
+  }
+
+</script>
+<style>
+  body, div, h1, h2, h3, span, p {
+  }
+  /* fullscreen */
+  html {
+    height: 100%;
+  }
+  body {
+    height: 100%;
+    margin: 0px;
+    overflow: hidden; /* disable scrollbars */
+    font-size: 10pt;
+    font-family: 'SMGSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #000; 
+    color: #fff;
+  }
+  .warning { 
+    font-weight: bold;
+  }
+  #container {
+    width:100%;
+    height:100%;
+  }
+  .requirements {
+    text-align: center;
+  }
+</style>	
+<script type="text/javascript" src="/vendor/object2vr/object2vr_player.js">
+</script>
+<script type="text/javascript" src="/vendor/object2vr/skin.js">
+</script>
+<div id="container">
+<p class="requirements">
+  This content requires HTML5 &amp; Javascript or Adobe Flash Player Version 9 or higher.
+</p>
+</div>
+<script type="text/javascript">
+
+  // create the object player with the container
+  obj=new object2vrPlayer("container");
+  // add the skin object
+  skin=new object2vrSkin(obj, '/assets/icons/object2vr');
+  // load the configuration
+  // This will be replaced with //somepath/{{id}}
+  obj.readConfigUrl("{{configurl}}");
+  // hide the URL bar on the iPhone
+  setTimeout(function() { hideUrlBar(); }, 10);
+</script>
+<noscript>
+  <p>This player requires Javascript.</p>
+</noscript>

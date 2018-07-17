@@ -54,11 +54,11 @@
   </div>
 {{/if}}
 
-{{#or (lookup selectedFilters "date[from]") (lookup selectedFilters "date[to]")}}
+{{#if (or (lookup selectedFilters "date[from]") (lookup selectedFilters "date[to]"))}}
   <div class="filter filter--active filter--open" data-filter="Dates">
 {{ else }}
   <div class="filter filter--open" data-filter="Dates">
-{{/or}}
+{{/if}}
   <a href="{{lookup links.clearFacet "dates"}}" class="filter__name">Date (born / died)</a>
   <div class="filter__options filter__daterange">
     {{log selectedFilters}}

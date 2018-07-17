@@ -178,18 +178,16 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
-  'records/sketchfab',
-    Fs.readFileSync('./templates/partials/records/sketchfab.html', 'utf8')
+  'records/mediaplayer',
+  Fs.readFileSync('./templates/partials/records/mediaplayer.html', 'utf8')
 );
 
 Handlebars.registerPartial(
-  'records/youtube',
-    Fs.readFileSync('./templates/partials/records/youtube.html', 'utf8')
-);
-
-Handlebars.registerPartial(
-  'records/rotational',
-    Fs.readFileSync('./templates/partials/records/rotational.html', 'utf8')
+  'records/mediaplayer__listitem',
+  Fs.readFileSync(
+    './templates/partials/records/mediaplayer__listitem.html',
+    'utf8'
+  )
 );
 
 // Helpers
@@ -244,6 +242,7 @@ Handlebars.registerHelper('formatnumber', require('../templates/helpers/formatnu
 Handlebars.registerHelper('toggleDetail', require('../templates/helpers/toggleDetail.js'));
 
 Handlebars.registerHelper('isResourcePage', require('../templates/helpers/isResourcePage.js'));
+Handlebars.registerHelper('concat', require('../templates/helpers/concat.js'));
 
 // Routes
 module.exports = {
@@ -274,7 +273,10 @@ module.exports = {
   'error': Handlebars.compile(
     Fs.readFileSync('./templates/pages/error.html', 'utf8')
   ),
-  'archiveTree': Handlebars.compile(
+  rotational: Handlebars.compile(
+    Fs.readFileSync('./templates/pages/rotational.html', 'utf8')
+  ),
+  archiveTree: Handlebars.compile(
     Fs.readFileSync('./templates/partials/records/archive-tree.html', 'utf8')
   ),
   'search-results': Handlebars.compile(

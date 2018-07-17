@@ -20,7 +20,7 @@
 //  15. Drilldown
 //  16. Dropdown
 //  17. Dropdown Menu
-//  18. Flex Video
+//  18. Responsive Embed
 //  19. Forms
 //  20. Label
 //  21. Media Object
@@ -311,12 +311,14 @@ $dropdownmenu-min-width: 200px;
 $dropdownmenu-background: $white;
 $dropdownmenu-border: 1px solid $medium-gray;
 
-// 18. Flex Video
+// 18. Responsive Embed
 // --------------
 
-$flexvideo-margin-bottom: rem-calc(16);
-$flexvideo-ratio: 4 by 3;
-$flexvideo-ratio-widescreen: 16 by 9;
+$responsive-embed-margin-bottom: 0;
+$responsive-embed-ratios: (
+  default: 4 by 3,
+  widescreen: 16 by 9
+);
 
 // 19. Forms
 // ---------
