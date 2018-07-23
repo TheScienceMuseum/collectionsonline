@@ -4,7 +4,7 @@ module.exports = {
       .url('http://localhost:8000/search?q=rocket')
       .waitForElementVisible('body', 1000)
       .waitForElementVisible('.resultcard__figure', 1000)
-      .assert.attributeEquals('.resultcard__figure img', 'src', 'http://smgco-images.s3.amazonaws.com/media/I/A/A/large_thumbnail_1949_0049_0003__0001_.jpg')
+      .assert.attributeEquals('.resultcard__figure img', 'src', 'http://smgco-images.s3.amazonaws.com/media/W/P/A/large_thumbnail_1909_0003.jpg')
       .url('http://localhost:8000/search?q=calculating-machine')
       .click('.searchtab:nth-of-type(4)')
       .pause(2000)
