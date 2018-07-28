@@ -72,7 +72,7 @@ module.exports = {
       figure: '/assets/img/home/collections/railway-photographic-collections.jpg',
       description: 'Explore railway history--from technological to social change--using our photographic collection',
       columns: 'small-6 medium-3',
-      link: '/search/categories/photographic-collections-(railway)'
+      link: '/search/categories/photographic-collections-(railway)/images'
     }
     /*
     {
