@@ -65,13 +65,25 @@ module.exports = {
       description: 'The drawings and papers of mathematician and computer pioneer Charles Babbage',
       columns: 'small-6 medium-3',
       link: '/documents/aa110000003/the-babbage-papers'
-    }, {
+    },
+    {
+      type: 'collection',
+      title: 'Railway Photographic Collection',
+      figure: '/assets/img/home/collections/railway-photographic-collections.jpg',
+      description: 'Explore railway history--from technological to social change--using our photographic collection',
+      columns: 'small-6 medium-3',
+      link: '/search/categories/photographic-collections-(railway)'
+    }
+    /*
+    {
       type: 'collection',
       title: 'Railway Posters',
       description: 'Explore our collection of historic railway posters',
       figure: '/assets/img/home/collections/railway-posters.jpg',
       columns: 'small-6 medium-3',
       link: '/search/images/categories/railway-posters,-notices-&-handbills'
-    }]
+    }
+    */
+    ]
   }]
 };
