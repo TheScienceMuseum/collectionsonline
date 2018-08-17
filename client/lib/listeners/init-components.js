@@ -5,6 +5,7 @@ var moreButton = require('./more-button');
 var carousel = require('./carousel');
 var moreDetails = require('./expand-details-button');
 var mediaplayer = require('./mediaplayer');
+var headerMenu = require('./header-menu');
 
 module.exports = (ctx) => {
   svg4everybody();
@@ -14,4 +15,5 @@ module.exports = (ctx) => {
   moreDetails();
   carousel(ctx);
   mediaplayer();
+  headerMenu();
 };

@@ -3,8 +3,7 @@
 //-----------------------------------------------------------------------------
 
 @media print {
-
-  .globalheader,
+  .c-masthead,
   .searchbox,
   .searchbar,
   .searchtabs,
@@ -15,7 +14,9 @@
   }
 
   // Don't 'Display the URL of a link after the text, like foundation is want to do. nice idea but this site is too linky.
-  a[href]:after { content: '' !important; }
+  a[href]:after {
+    content: '' !important;
+  }
 
   //images:
   .record-imgpanel {
@@ -43,5 +44,4 @@
     background-color: transparent !important;
     border: 1px solid black;
   }
-
 }

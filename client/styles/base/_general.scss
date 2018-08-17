@@ -40,35 +40,6 @@ button {
   fill: currentColor;
 }
 
-.globalheader {
-  background-color: black;
-
-  &__items {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  img {
-    display: block;
-    height: 1.5rem;
-    max-width: none;
-    margin: 1em 0;
-
-    @include breakpoint(360) {
-      height: 2rem;
-      margin: 1.5em 0;
-    }
-    @include breakpoint(medium up) {
-      height: 3rem;
-    }
-    @include breakpoint(large up) {
-      height: 4rem;
-    }
-  }
-}
-
 .globalfooter {
   @include sm-gradient($c-teal $c-blue $c-purple);
   color: white;
@@ -213,10 +184,10 @@ button {
   position: relative;
   margin-right: $icnsize;
   &:after {
-    content: " ";
+    content: ' ';
     display: block;
     position: absolute;
-    right: -$icnsize+(-$icnsize/4);
+    right: -$icnsize + (-$icnsize/4);
     top: 0;
     bottom: 0;
     margin: auto; // top, bottom, height, auto = vertical align!

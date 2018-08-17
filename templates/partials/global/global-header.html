@@ -1,14 +1,28 @@
-<header class="globalheader">
+<header class="c-masthead">
   <div class="row columns">
-    <div class="globalheader__items">
-      <a href="https://group.sciencemuseum.org.uk/" class="globalheader__item show-for-small-only">
+    <a href="https://group.sciencemuseum.org.uk/" class="c-masthead__logo">
         <img src="/assets/img/global/smg-logo.svg" alt="Science Museum Group">
-      </a>
-      {{#each museums.links}}
-        <a href="{{url}}" class="globalheader__item hide-for-small-only">
-          <img src="{{image}}" alt="{{name}}">
-        </a>
-      {{/each}}
-    </div>
+    </a>
+    <nav class="c-masthead__nav">
+      <div class="c-menu">
+        <button class="c-menu__button" aria-controls="primary-menu" aria-expanded="false">Menu</button>
+        <div class="c-menu__wrapper">
+          <nav id="site-navigation" class="c-menu__nav" aria-expanded="false">
+            <ul id="primary-menu" class="c-menu__primary-ul">
+              <li class="menu-item"><a href="/search">Collection search</a></li>
+              <li class="menu-item menu-item-has-children" aria-haspopup="true">
+                <a href="#">Visit our museums</a>
+                <button aria-expanded="false" class="dropdown-toggle"><span class="screen-readers">Expand child menu</span></button>
+                <ul class="sub-menu">
+                  {{#each museums.links}}
+                  <li class="menu-item"><a href="{{url}}">{{name}}</a></li>
+                  {{/each}}
+                </ul>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </nav>
   </div>
 </header>
