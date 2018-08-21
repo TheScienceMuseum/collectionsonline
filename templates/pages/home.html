@@ -1,25 +1,25 @@
 <main id="main-page">
 {{> global/global-header}}
 
-<section class="searchbar searchbar--home">
-  <div class="row columns">
-
-    <h1 class="searchbar__strap">{{strap}}</h1>
-
-    {{> global/searchbox}}
-
-  </div>
-</section>
-
-
-<section class="home-features">
+<section class="home-banner">
   {{!-- update /client/styles/components/_home.scss if no of images changes --}}
   {{#each headerImages}}
     <img src="/assets/img/home/feature/1600/{{this}}" srcset="/assets/img/home/feature/800/{{this}} 800w, /assets/img/home/feature/1600/{{this}} 1600w" />
   {{/each}}
 
+  <div class="searchbar searchbar--home">
+    <div class="row columns">
+      <h1 class="searchbar__strap js-illuminate">{{strap}}</h1>
+      {{> global/searchbox}}
+      <h2 class="home-banner__intro">{{{intro}}}</h2>
+    </div>
+  </div>
+
+</section>
+
+<section class="home-features">
+
   <div class="row columns">
-    <h2 class="home-features__intro">{{{intro}}}</h2>
 
     <div class="featuresteps">
       <div class="featurestep featurestep--1">

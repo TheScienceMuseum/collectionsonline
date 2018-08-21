@@ -2,29 +2,46 @@
 // Theres no place like /
 //-----------------------------------------------------------------------------
 
+.home-banner,
 .home-features {
   background-color: black;
   color: white;
-  text-shadow: rgba(0,0,0,0.5) 0 0 1rem;
+  text-shadow: rgba(0, 0, 0, 0.5) 0 0 1rem;
   padding: 2rem 0;
-  @include breakpoint(medium up) { padding: 4rem 0; }
-  @include breakpoint(large up) { padding: 6rem 0; }
+  @include breakpoint(medium up) {
+    padding: 3rem 0;
+  }
+  @include breakpoint(large up) {
+    padding: 4rem 0;
+  }
   position: relative;
   overflow: hidden;
-
+}
+.home-banner {
   &__intro {
-    font-weight: 700;
-    margin-bottom: 2rem;
+    font-weight: 500;
+    margin-bottom: 0;
     text-transform: none;
-    @include breakpoint(small only) { display: none; }
-    @include breakpoint(medium up) { margin-bottom: 4rem; }
-    @include breakpoint(large up) { margin-bottom: 6rem; }
-    a { color: white; }
-    a:hover { text-decoration: underline; }
+    @include breakpoint(small only) {
+      display: none;
+    }
+    @include breakpoint(medium up) {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+    @include breakpoint(large up) {
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+    }
+    a {
+      color: white;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
   }
-
   /* --------- CONFIG ---------  */
-  $no-of-slides: 6; // sadly, this number is not deducable by css alone.
+  $no-of-slides: 8; // sadly, this number is not deducable by css alone.
   $slide-duration: 6s;
   $scale-factor: 1.1;
   $pan: true; //or false
@@ -47,19 +64,28 @@
   $slide-fade: 50% / $no-of-slides;
   $slide-end: 200% / $no-of-slides;
   @keyframes slide {
-    0% { // initial state - topmost, and transparent
+    0% {
+      // initial state - topmost, and transparent
       opacity: 0;
-      transform: scale3d(1,1,1);
+      transform: scale3d(1, 1, 1);
       z-index: $no-of-slides;
     }
     #{$slide-fade} {
       opacity: 1; // now, the next slide will start in front
     }
     #{$slide-end} {
-      transform: scale3d(#{$scale-factor},#{$scale-factor},1); // but we keep scaling until fully obscured
+      transform: scale3d(
+        #{$scale-factor},
+        #{$scale-factor},
+        1
+      ); // but we keep scaling until fully obscured
     }
     100% {
-      transform: scale3d(#{$scale-factor},#{$scale-factor},1); //hold until all slides are done
+      transform: scale3d(
+        #{$scale-factor},
+        #{$scale-factor},
+        1
+      ); //hold until all slides are done
       z-index: 0;
     }
   }
@@ -73,14 +99,21 @@
     img:nth-child(#{$child}) {
       animation-delay: #{$delay};
       @if $pan {
-        transform-origin: nth($dx,random(length($dx))) nth($dy,random(length($dy))) 0;
+        transform-origin: nth($dx, random(length($dx)))
+          nth($dy, random(length($dy)))
+          0;
       }
     }
   }
-  .row { // keep above images
+  .row {
+    // keep above images
     position: relative;
     z-index: $no-of-slides + 1;
   }
+}
+
+.home-features {
+  @include sm-gradient($c-teal $c-blue $c-purple);
 }
 
 .featuresteps {
@@ -110,10 +143,16 @@
     stroke-width: 1;
     stroke: #fff;
     fill: none;
-    .ttb {display: none;}
+    .ttb {
+      display: none;
+    }
     @include breakpoint(small only) {
-      .ltr {display: none;}
-      .ttb {display: block;}
+      .ltr {
+        display: none;
+      }
+      .ttb {
+        display: block;
+      }
     }
   }
   a {
@@ -180,11 +219,17 @@
 
   &__h {
     font-size: 1.5rem;
-    @include breakpoint(medium up) { font-size: 2rem; }
-    @include breakpoint(large up) { font-size: 2.5rem; }
+    @include breakpoint(medium up) {
+      font-size: 2rem;
+    }
+    @include breakpoint(large up) {
+      font-size: 2.5rem;
+    }
     line-height: 1;
     text-transform: uppercase;
     margin: 0 0 1em 0;
-    @include breakpoint(medium up) { margin: 1em 0; }
+    @include breakpoint(medium up) {
+      margin: 1em 0;
+    }
   }
 }
