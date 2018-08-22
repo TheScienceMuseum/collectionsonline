@@ -55,17 +55,55 @@ module.exports = {
           link: '/search/museum/national-railway-museum'
         }
       ]
-    },
+    }
+  ],
+  collectionCarousel: [
     {
-      title: 'Themes from our collection',
+      title: 'Themes in a carousel',
       collection: [
+        {
+          type: 'collection',
+          title: 'Science Museum',
+          description:
+            'The home of human ingenuity, exploring stories of scientific achievement',
+          figure: '/assets/img/home/collections/sciencemuseum.jpg',
+          columns: '',
+          link: '/search/museum/science-museum'
+        },
+        {
+          type: 'collection',
+          title: 'Museum of Science and Industry',
+          figure: '/assets/img/home/collections/msi.jpg',
+          description:
+            'The story of Manchester’s scientific and industrial past, present and future',
+          columns: '',
+          link: '/search/museum/museum-of-science-and-industry'
+        },
+        {
+          type: 'collection',
+          title: 'National Science and Media Museum',
+          figure: '/assets/img/home/collections/nmm.jpg',
+          description:
+            'The science and culture of light and sound technologies, and their impact on our lives',
+          columns: '',
+          link: '/search/museum/national-media-museum'
+        },
+        {
+          type: 'collection',
+          title: 'National Railway Museum',
+          figure: '/assets/img/home/collections/nrm.jpg',
+          description:
+            'Home to the largest collection of railway objects in the world',
+          columns: '',
+          link: '/search/museum/national-railway-museum'
+        },
         {
           type: 'collection',
           title: 'Information Age',
           description:
             'Search across a snapshot of objects representing the development of the internet',
           figure: '/assets/img/home/collections/informationage.jpg',
-          columns: 'small-6 medium-3',
+          columns: '',
           link: '/search/gallery/information-age-gallery%3A-web'
         },
         {
@@ -74,7 +112,7 @@ module.exports = {
           figure: '/assets/img/home/collections/cinematography.jpg',
           description:
             'Objects representing the history of cinema: from magic lanterns to digital technologies',
-          columns: 'small-6 medium-3',
+          columns: '',
           link: '/search/categories/cinematography/images'
         },
         {
@@ -83,7 +121,7 @@ module.exports = {
           figure: '/assets/img/home/collections/babbage.jpg',
           description:
             'The drawings and papers of mathematician and computer pioneer Charles Babbage',
-          columns: 'small-6 medium-3',
+          columns: '',
           link: '/documents/aa110000003/the-babbage-papers'
         },
         {
@@ -93,19 +131,17 @@ module.exports = {
             '/assets/img/home/collections/railway-photographic-collections.jpg',
           description:
             'Explore railway history\u2014from technological to social change\u2014using our photographic collection',
-          columns: 'small-6 medium-3',
+          columns: '',
           link: '/search/categories/photographic-collections-(railway)/images'
+        },
+        {
+          type: 'collection',
+          title: 'Railway Posters',
+          description: 'Explore our collection of historic railway posters',
+          figure: '/assets/img/home/collections/railway-posters.jpg',
+          columns: 'small-6 medium-3',
+          link: '/search/images/categories/railway-posters,-notices-&-handbills'
         }
-        /*
-    {
-      type: 'collection',
-      title: 'Railway Posters',
-      description: 'Explore our collection of historic railway posters',
-      figure: '/assets/img/home/collections/railway-posters.jpg',
-      columns: 'small-6 medium-3',
-      link: '/search/images/categories/railway-posters,-notices-&-handbills'
-    }
-    */
       ]
     }
   ]

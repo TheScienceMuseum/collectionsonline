@@ -1,31 +1,73 @@
 //-----------------------------------------------------------------------------
-// CAROUSEL - a flickity instance inside .record-imgpanel
+// CAROUSEL - Flickity instances:
+// On records page .carousel
+// On home page .home-carousel
 //-----------------------------------------------------------------------------
+
+.is-draggable .flickity-viewport {
+  cursor: ew-resize;
+}
 
 .carousel {
   border: 1px white solid;
   border-width: 1px 0;
   @include imgpanel-h;
   overflow: hidden;
-	outline: black;
-}
+  outline: black;
 
-.carousel__image {
-  @include imgpanel-h;
-  object-fit: cover;
-  opacity: 0;
+  &__image {
+    @include imgpanel-h;
+    object-fit: cover;
+    opacity: 0;
 
-  &.is-selected {
-    outline: 1px white solid;
+    &.is-selected {
+      outline: 1px white solid;
+    }
+
+    &.flickity-lazyloaded {
+      opacity: 1;
+      transition: opacity 1s;
+
+      &:not(.is-selected) {
+        filter: blur(2px);
+        opacity: 0.5;
+      }
+    }
   }
 
-  &.flickity-lazyloaded {
-    opacity: 1;
-    transition: opacity 1s;
+  .flickity-prev-next-button {
+    width: 6rem;
+    height: 100%;
+    position: relative;
+    opacity: 0.6;
+    padding: 1rem;
+    fill: white;
+    color: white;
 
-    &:not(.is-selected) {
-      filter: blur(2px);
-      opacity: 0.5;
+    &.previous {
+      left: 0;
+      cursor: w-resize;
+      &:hover {
+        opacity: 1;
+        background-image: linear-gradient(
+          270deg,
+          rgba(0, 0, 0, 0),
+          rgba(0, 0, 0, 0.4)
+        );
+      }
+    }
+
+    &.next {
+      float: right;
+      cursor: e-resize;
+      &:hover {
+        opacity: 1;
+        background-image: linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0),
+          rgba(0, 0, 0, 0.4)
+        );
+      }
     }
   }
 }
@@ -42,30 +84,34 @@
   }
 }
 
+.home-carousel {
+  .flickity-enabled {
+    &:focus {
+      outline: none;
+    }
+  }
+  .flickity-viewport {
+    overflow: hidden;
+  }
 
-
-.flickity-prev-next-button {
-  width: 6rem;
-	height: 100%;
-  position: relative;
-  opacity: 0.6;
-  padding: 1rem;
-  fill: white;
-  color: white;
-
-  &.previous {
-    left: 0;
+  .flickity-prev-next-button {
+    width: 1.5rem;
+    padding: 1rem 0;
+    opacity: 0.6;
+    fill: white;
+    color: white;
     &:hover {
       opacity: 1;
-      background-image: linear-gradient(270deg, rgba(0,0,0,0), rgba(0,0,0,0.4) )
+    }
+    &.next {
+      float: none;
+      margin-left: 1rem;
     }
   }
 
-  &.next {
-    float: right;
-      &:hover {
-        opacity: 1;
-        background-image: linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,0.4) )
-      }
+  &__cell {
+    max-width: 30%;
+    padding: 0.5rem;
+    width: rem-calc(288);
   }
 }

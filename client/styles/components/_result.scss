@@ -78,25 +78,26 @@
     line-height: 1.2;
   }
 
-
   @each $type, $props in $recordtypes {
     &--#{$type} &__figure {
       background-color: map-get($props, bg);
       @include sm-gradient(map-get($props, grad));
     }
 
-    &--#{$type} .icon { color: map-get($props, bg); }
+    &--#{$type} .icon {
+      color: map-get($props, bg);
+    }
   }
 
   //used as related results, slight smaller
   &--related {
     //background-color: white;
   }
-
 }
 
 @mixin resulthover {
-  transition: background-color $timing-defaults, box-shadow $timing-defaults, transform $timing-defaults;
+  transition: background-color $timing-defaults, box-shadow $timing-defaults,
+    transform $timing-defaults;
 
   &:before {
     content: '';
@@ -129,9 +130,7 @@
       transition: transform $timing-defaults;
     }
   }
-
 }
-
 
 //-----------------------------------------------------------------------------
 // .resultlist
@@ -170,7 +169,6 @@
     position: relative;
     top: 0.15rem;
   }
-
 }
 
 //-----------------------------------------------------------------------------
@@ -211,10 +209,7 @@
     }
   }
 
-
-  // used as related results, slight smaller
-  &--related,
-  &--seemore {
+  @mixin reversed {
     color: white;
 
     &:hover {
@@ -223,19 +218,31 @@
       }
     }
 
+    .resultcard__info,
+    .resultcard__title,
+    .resultcard__description {
+      color: white;
+    }
+  }
+
+  // used as related results, slight smaller
+  &--related,
+  &--seemore {
+    @include reversed;
+
     .resultcard__info {
       padding: 0.5rem 0;
-      color: white;
     }
 
     .resultcard__title {
       font-weight: 500;
       font-size: 1rem;
-      color: white;
     }
-
   }
 
+  &--dark {
+    @include reversed;
+  }
 
   // the final related result
   &--seemore {
@@ -254,7 +261,8 @@
       border-color: map-deep-get($recordtypes, documents, bg);
     }
 
-    svg { // .search-icon
+    svg {
+      // .search-icon
       position: absolute;
       display: block;
       top: 50%;
@@ -262,10 +270,8 @@
       transform: translateX(-50%) translateY(-50%);
       fill: white;
     }
-
   }
 
   //used on home page
   // &--collection { }
-
 }

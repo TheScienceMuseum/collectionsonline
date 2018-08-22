@@ -206,8 +206,40 @@
   }
 }
 
-.home-collections {
+//-----------------------------------------------------------------------------
+// home page variation
+//-----------------------------------------------------------------------------
+
+@mixin home-section {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  @include breakpoint(medium up) {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  @include breakpoint(large up) {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  &__h {
+    font-size: 1.5rem;
+    line-height: 1;
+    text-transform: uppercase;
+    margin: 0 0 1em 0;
+    @include breakpoint(medium up) {
+      margin: 1em 0;
+      font-size: 2rem;
+    }
+    @include breakpoint(large up) {
+      font-size: 2.5rem;
+    }
+  }
+}
+
+.home-cards {
   background-color: #fff;
+  @include home-section;
 
   .row {
     @include flexcards-container;
@@ -216,20 +248,10 @@
   .column:not(h2) {
     @include flexcards-item;
   }
+}
 
-  &__h {
-    font-size: 1.5rem;
-    @include breakpoint(medium up) {
-      font-size: 2rem;
-    }
-    @include breakpoint(large up) {
-      font-size: 2.5rem;
-    }
-    line-height: 1;
-    text-transform: uppercase;
-    margin: 0 0 1em 0;
-    @include breakpoint(medium up) {
-      margin: 1em 0;
-    }
-  }
+.home-carousel {
+  background-color: #000;
+  color: #fff;
+  @include home-section;
 }

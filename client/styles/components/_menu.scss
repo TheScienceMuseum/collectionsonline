@@ -42,7 +42,7 @@
   -webkit-font-smoothing: antialiased; // Match drupal sites. It does render reversed text better.
 
   &__wrapper {
-    z-index: 9;
+    z-index: 10;
     display: none;
     height: 100%;
 
@@ -108,7 +108,7 @@
     padding: 0 0 0.5rem;
     list-style: none;
     background: black;
-    z-index: 9;
+    z-index: 10;
     position: absolute;
     top: 100%;
     left: 0;

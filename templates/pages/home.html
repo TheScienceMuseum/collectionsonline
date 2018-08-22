@@ -51,10 +51,10 @@
 
 </section>
 
-<section class="home-collections">
+<section class="home-cards">
   {{#each collectionGroup}}
     <div class="row">
-      <h2 class="home-collections__h columns">{{this.title}}</h2>
+      <h2 class="home-cards__h columns">{{this.title}}</h2>
       {{#each this.collection}}
         <div class="{{ this.columns }} columns">
           <a href="{{ this.link }}">
@@ -73,6 +73,33 @@
     </div>
   {{/each}}
 </section>
+
+{{#collectionCarousel}}
+  <section class="home-carousel">
+    <div class="row">
+      <h2 class="home-carousel__h columns">{{this.title}}</h2>
+      <div class="columns flickity-buttonholder"></div>
+    </div>
+    <div class="home-carousel__flickity">
+      {{#each this.collection}}
+        <div class="{{ this.columns }} home-carousel__cell">
+          <a href="{{ this.link }}">
+            <div class="resultcard resultcard--dark {{#if type}}resultcard--{{ this.type }}{{/if}}">
+              <figure class="resultcard__figure">
+                <img src="{{ this.figure }}" />
+              </figure>
+              <div class="resultcard__info">
+                <h4 class="resultcard__title">{{ this.title }}</h4>
+                <p class="resultcard__description">{{ this.description }}</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      {{/each}}
+      
+    </div>
+  </section>
+{{/collectionCarousel}}
 
 
 {{> global/global-footer}}

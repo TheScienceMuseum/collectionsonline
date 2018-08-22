@@ -63,7 +63,7 @@ $timing-defaults: 0.25s ease-out;
 }
 
 @mixin flexcards-item {
-  margin-bottom: 2em;
+  margin-bottom: 2rem;
   &,
   & > a {
     display: flex;
