@@ -17,14 +17,8 @@ module.exports = (ctx) => {
       pageDots: false,
       imagesLoaded: true,
       lazyLoad: 1,
-      arrowShape: {
-        x0: 30,
-        x1: 63.5,
-        y1: 50,
-        x2: 70,
-        y2: 45.5,
-        x3: 40
-      }
+      arrowShape:
+        'M 0,50 L 45.67,4.33 L 52.5,11.16 L 18.49,45.17 L 100,45.17 L 100,54.83 L 18.49,54.83 L 52.5,88.84 45.67,95.67 Z'
     });
 
     var flkty = Flickity.data(carousel);
