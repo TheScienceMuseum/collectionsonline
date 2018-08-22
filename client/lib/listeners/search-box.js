@@ -37,10 +37,29 @@ module.exports = function () {
   searchinput.addEventListener('blur', function (e) {
     searchbox.classList.remove('searchbox--focussed');
   });
-  searchinput.addEventListener('awesomplete-open', function (e) {
-    searchbox.classList.add('searchbox--awesomplete-open');
-  }, false);
-  searchinput.addEventListener('awesomplete-close', function (e) {
-    searchbox.classList.remove('searchbox--awesomplete-open');
-  }, false);
+  searchinput.addEventListener(
+    'awesomplete-open',
+    function (e) {
+      searchbox.classList.add('searchbox--awesomplete-open');
+    },
+    false
+  );
+  searchinput.addEventListener(
+    'awesomplete-close',
+    function (e) {
+      searchbox.classList.remove('searchbox--awesomplete-open');
+    },
+    false
+  );
+
+  if (document.location.pathname === '/') {
+    var focused = document.activeElement;
+    if (
+      !focused ||
+      focused === document.body ||
+      focused === document.documentElement
+    ) {
+      searchinput.focus();
+    }
+  }
 };
