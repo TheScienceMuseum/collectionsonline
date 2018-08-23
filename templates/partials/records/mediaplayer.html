@@ -25,7 +25,9 @@
           <h4 class="mediaplayer__h">Look closer</h4>
           {{#each youtube}}{{> records/mediaplayer__listitem }}{{/each}}
           {{#each sketchfab}}{{> records/mediaplayer__listitem }}{{/each}}
-          {{#each rotational}}{{> records/mediaplayer__listitem }}{{/each}}
+          {{#unless inProduction}}
+            {{#each rotational}}{{> records/mediaplayer__listitem }}{{/each}}
+          {{/unless}}
         </div>
       </div>
     </div>
