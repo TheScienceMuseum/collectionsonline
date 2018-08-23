@@ -19,12 +19,12 @@ module.exports = {
   rotationalDirect () {
     return {
       method: 'GET',
-      path: '/embed/rotational/rid/{rid}',
+      path: '/embed/rotational/smgco-360/{rid}',
       config: {
         handler: function (request, reply) {
           return reply.view(
             'rotational',
-            { configurl: 'https://s3-eu-west-1.amazonaws.com/' + request.params.rid + '/object.xml' },
+            { configurl: 'https://s3-eu-west-1.amazonaws.com/smgco-360/' + request.params.rid + '/object.xml' },
             { layout: 'embed' }
           );
         }
