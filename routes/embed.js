@@ -18,6 +18,7 @@ module.exports = {
             }
             var res = buildJSONResponse(result, config);
             if (res.data.attributes.enhancement) {
+              // only disoplay the first rotational we find as an embed
               res.data.attributes.enhancement.web.find((el) => {
                 // if (el.platform === 'rotational') {
                 var rid = 'smgco-360/28f0ba52-6deb-43c0-a2e5-1fb82c5247cd'; // dummy test data
