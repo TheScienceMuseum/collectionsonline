@@ -21,6 +21,7 @@ module.exports = (elastic, config) => ([
   require('./articles')(),
   require('./wiki')(config),
   require('./iris')(elastic, config),
-  require('./embed')(),
+  require('./embed').rotational(),
+  require('./embed').rotationalDirect(),
   require('./stats')(elastic, config)
 ]);
