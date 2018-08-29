@@ -2,7 +2,7 @@ module.exports = {
   title: 'Science Museum Group Collection',
   titlePage: 'Science Museum Group Collection',
   strap: 'Search our collection',
-  intro: 'Explore over 250,000 <a href="/search/objects">objects</a> and <a href="/search/documents">archives</a> from the <a href="/search/museum/science-museum">Science Museum</a>, <a href="/search/museum/museum-of-science-and-industry">Museum of Science and Industry</a>, <a href="/search/museum/national-media-museum">National Science and Media Museum</a> and <a href="/search/museum/national-railway-museum">National Railway Museum</a>.',
+  intro: 'Explore over 250,000 <a href="/search/objects">objects</a> and <a href="/search/documents">archives</a> from the <a href="/search/museum/science-museum">Science Museum</a>, <a href="/search/museum/museum-of-science-and-industry">Science and Industry Museum</a>, <a href="/search/museum/national-media-museum">National Science and Media Museum</a> and <a href="/search/museum/national-railway-museum">National Railway Museum</a>.',
   headerImages: [
     'handley.jpg',
     'textile-sign.jpg',
@@ -22,11 +22,11 @@ module.exports = {
       link: '/search/museum/science-museum'
     }, {
       type: 'collection',
-      title: 'Museum of Science and Industry',
+      title: 'Science and Industry Museum',
       figure: '/assets/img/home/collections/msi.jpg',
       description: 'The story of Manchester’s scientific and industrial past, present and future',
       columns: 'small-6 medium-3',
-      link: '/search/museum/museum-of-science-and-industry'
+      link: '/search/museum/museum-science-and-industry'
     }, {
       type: 'collection',
       title: 'National Science and Media Museum',
