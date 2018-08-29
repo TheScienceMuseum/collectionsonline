@@ -26,7 +26,7 @@ module.exports = {
       figure: '/assets/img/home/collections/msi.jpg',
       description: 'The story of Manchester’s scientific and industrial past, present and future',
       columns: 'small-6 medium-3',
-      link: '/search/museum/museum-science-and-industry'
+      link: '/search/museum/museum-of-science-and-industry'
     }, {
       type: 'collection',
       title: 'National Science and Media Museum',
