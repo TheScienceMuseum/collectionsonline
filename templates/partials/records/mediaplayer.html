@@ -13,13 +13,11 @@
             <iframe id="{{platform}}{{id}}" src="https://sketchfab.com/models/{{id}}/embed?preload=1" frameborder="0" allow="autoplay; fullscreen; vr" allowfullscreen></iframe>
           </div>
           {{/each}}
-          {{#unless inProduction}}
-            {{#each rotational}}
-            <div class="mediaplayer__embed" id="{{platform}}{{id}}">
-              <iframe data-src="/embed/rotational/{{id}}" frameborder="0" allow="autoplay; fullscreen; vr" allowfullscreen></iframe>
-            </div>
-            {{/each}}
-          {{/unless}}
+          {{#each rotational}}
+          <div class="mediaplayer__embed" id="{{platform}}{{id}}">
+            <iframe data-src="/embed/rotational/{{id}}" frameborder="0" allow="autoplay; fullscreen; vr" allowfullscreen></iframe>
+          </div>
+          {{/each}}
         </div>
         <div class="mediaplayer__list">
           <h4 class="mediaplayer__h">Look closer</h4>
