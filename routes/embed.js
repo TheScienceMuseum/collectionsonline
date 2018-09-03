@@ -18,17 +18,16 @@ module.exports = {
             }
             var res = buildJSONResponse(result, config);
             if (res.data.attributes.enhancement) {
-              // only disoplay the first rotational we find as an embed
               res.data.attributes.enhancement.web.find((el) => {
-                // if (el.platform === 'rotational') {
-                var rid = 'smgco-360/28f0ba52-6deb-43c0-a2e5-1fb82c5247cd'; // dummy test data
-                var configUrl = 'https://s3-eu-west-1.amazonaws.com/' + rid + '/object.xml';
-                return reply.view(
-                    'rotational',
-                    { configurl: configUrl },
-                    { layout: 'embed' }
-                );
-                // }
+                if (el.platform === '3D') {
+                  var rid = el.id;
+                  var configUrl = 'https://s3-eu-west-1.amazonaws.com/' + rid + '/object.xml';
+                  return reply.view(
+                      'rotational',
+                      { configurl: configUrl },
+                      { layout: 'embed' }
+                  );
+                }
               });
             }
           });
