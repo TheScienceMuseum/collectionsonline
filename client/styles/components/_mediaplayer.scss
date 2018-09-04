@@ -15,7 +15,7 @@
   &__embed {
     @include responsive-embed(16 by 9);
     display: none;
-    &.--active {
+    &.mediaplayer--active {
       display: block;
     }
   }
@@ -36,10 +36,10 @@
     color: white;
     font-weight: 400;
 
-    &.--active {
+    &.mediaplayer--active {
       background-color: grey(60);
     }
-    &:hover:not(.--active) {
+    &:hover:not(.mediaplayer--active) {
       background-color: grey(90);
     }
     .icon {
