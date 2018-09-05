@@ -299,5 +299,8 @@ module.exports = {
   ),
   'wikiSummary': Handlebars.compile(
     Fs.readFileSync('./templates/partials/records/wiki-summary.html', 'utf8')
+  ),
+  about: Handlebars.compile(
+    Fs.readFileSync('./templates/pages/about.html', 'utf8')
   )
 };

@@ -3,7 +3,7 @@
 // mixins, functions and other settings
 //-----------------------------------------------------------------------------
 
-$timing-defaults: 0.25s ease-out;
+$transition-default: 0.2s ease-in-out;
 
 // http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/
 @mixin vertical-align {
@@ -15,7 +15,7 @@ $timing-defaults: 0.25s ease-out;
 @mixin text-link($color: $c-blue, $hover: $c-teal) {
   color: $color;
   border-bottom: 1px solid transparent;
-  transition: color $timing-defaults, border-color $timing-defaults;
+  transition: color $transition-default, border-color $transition-default;
 
   &:hover {
     color: $hover;
@@ -196,7 +196,7 @@ $timing-defaults: 0.25s ease-out;
 @mixin imgpanel-h {
   $h: 36rem; // this might change after load?
   height: $h;
-  transition: height $timing-defaults;
+  transition: height $transition-default;
   @include breakpoint(small only) {
     height: 25rem;
   } //  = 12px
