@@ -17,8 +17,8 @@ module.exports = {
       image: '/assets/img/global/smm-logo.svg'
     },
     {
-      name: 'Museum of Science and Industry',
-      url: 'http://www.msimanchester.org.uk',
+      name: 'Science and Industry Museum',
+      url: 'https://www.scienceandindustrymuseum.org.uk',
       image: '/assets/img/global/msi-logo.svg'
     },
     {
