@@ -12,6 +12,7 @@ module.exports = () => ({
         'Disallow: /api/\n' +
         'Disallow: /iiif/\n' +
         'Disallow: /iris/\n' +
+        'Disallow: /categories/\n' +
         'User-agent: AhrefsBot\n' +
         'Disallow: /'
       ).type('text/plain');
