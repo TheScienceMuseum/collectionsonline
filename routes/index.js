@@ -23,5 +23,6 @@ module.exports = (elastic, config) => ([
   require('./iris')(elastic, config),
   require('./embed').rotational(elastic, config),
   require('./embed').rotationalDirect(),
-  require('./stats')(elastic, config)
+  require('./stats')(elastic, config),
+  require('./categories')(elastic, config)
 ]);
