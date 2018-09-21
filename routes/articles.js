@@ -1,7 +1,7 @@
 var request = require('request');
 var async = require('async');
 
-// Article endpoints on each musuem website
+// Article endpoints on each museum website
 var endpoints = [
   { label: 'National Science and Media Museum', url: 'https://www.scienceandmediamuseum.org.uk/collection-media/collection-usage/objects' },
   { label: 'Science and Industry Musem', url: 'https://www.scienceandindustrymuseum.org.uk/collection-media/collection-usage/objects' },
