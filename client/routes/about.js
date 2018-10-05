@@ -1,4 +1,4 @@
-var page = require('page');
+// var page = require('page');
 var Templates = require('../templates');
 var initComp = require('../lib/listeners/init-components');
 
@@ -21,6 +21,7 @@ module.exports = function (page) {
   function render (ctx, next) {
     if (!ctx.isInitialRender) {
       var pageEl = document.getElementsByTagName('main')[0];
+      var data;
       data.footer = require('../../fixtures/footer');
       data.museums = require('../../fixtures/museums');
       pageEl.innerHTML = Templates['about'](data);
@@ -34,7 +35,7 @@ module.exports = function (page) {
   }
 
   function listeners (ctx, next) {
-    searchListener();
+    // searchListener();
     initComp();
   }
 };
