@@ -57,9 +57,103 @@ module.exports = {
       ]
     }
   ],
+  collectionThemes: [
+    {
+      title: 'Themes from the collection',
+      theme: [
+        {
+          title: 'Photographic Collections',
+          description: 'A one-sentence description of the collection theme. ',
+          figure: '/assets/img/home/collections/cinematography.jpg',
+          links: [
+            {
+              title: 'Daily Herald Photographic Collection',
+              link: '/search?q=daily%20herald'
+            },
+            {
+              title: 'Railway Photographic Collection',
+              link:
+                '/search/categories/photographic-collections-(railway)/images'
+            },
+            {
+              title: 'Contemporary Photography',
+              link: '/search'
+            }
+          ]
+        },
+        {
+          title: 'Railway Ephemera',
+          description: 'A one-sentence description of the collection theme. ',
+          figure: '/assets/img/home/collections/railway-posters.jpg',
+          links: [
+            {
+              title: 'Posters and handbills',
+              link: '/search/categories/railway-posters,-notices-&-handbills'
+            },
+            {
+              title: 'Fixtures and fittings',
+              link:
+                '/search/categories/fixtures-&-fittings-from-railway-buildings/museum/national-railway-museum'
+            },
+            {
+              title: 'Tableware',
+              link:
+                '/search/categories/passenger-comforts/museum/national-railway-museum'
+            },
+            {
+              title: 'Curiosities',
+              link:
+                '/search/categories/miscellanea-&-curiosities/museum/national-railway-museum'
+            }
+          ]
+        },
+        {
+          title: 'Theme 3',
+          description: 'A one-sentence description of the collection theme. ',
+          figure: '/assets/img/home/collections/sciencemuseum.jpg',
+          links: [
+            {
+              title: 'Posters and handbills',
+              link: '/search/categories/railway-posters,-notices-&-handbills'
+            },
+            {
+              title: 'Fixtures and fittings',
+              link:
+                '/search/categories/fixtures-&-fittings-from-railway-buildings/museum/national-railway-museum'
+            },
+            {
+              title: 'Tableware',
+              link:
+                '/search/categories/passenger-comforts/museum/national-railway-museum'
+            },
+            {
+              title: 'Curiosities',
+              link:
+                '/search/categories/miscellanea-&-curiosities/museum/national-railway-museum'
+            }
+          ]
+        },
+        {
+          title: 'An undescribable theme',
+          figure: '/assets/img/home/collections/sciencemuseum.jpg',
+          links: [
+            {
+              title: 'Posters and handbills',
+              link: '/search/categories/railway-posters,-notices-&-handbills'
+            },
+            {
+              title: 'Fixtures and fittings',
+              link:
+                '/search/categories/fixtures-&-fittings-from-railway-buildings/museum/national-railway-museum'
+            }
+          ]
+        }
+      ]
+    }
+  ],
   collectionCarousel: [
     {
-      title: 'Themes in a carousel',
+      title: 'Highlights',
       collection: [
         {
           type: 'collection',

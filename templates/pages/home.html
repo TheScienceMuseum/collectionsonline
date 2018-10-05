@@ -52,22 +52,27 @@
 </section>
 
 <section class="home-cards">
-  {{#each collectionGroup}}
+  {{#each collectionThemes}}
     <div class="row">
       <h2 class="home-cards__h columns">{{this.title}}</h2>
-      {{#each this.collection}}
-        <div class="{{ this.columns }} columns">
-          <a href="{{ this.link }}">
-            <div class="resultcard {{#if type}}resultcard--{{ this.type }}{{/if}}">
+      {{#each this.theme}}
+        <div class="small-6 medium-3 columns">
+            <div class="resultcard resultcard--collection">
               <figure class="resultcard__figure">
                 <img src="{{ this.figure }}" />
               </figure>
               <div class="resultcard__info">
                 <h4 class="resultcard__title">{{ this.title }}</h4>
                 <p class="resultcard__description">{{ this.description }}</p>
+                <ul>
+                  {{#each this.links}}
+                    <li>{{> global/icon i="search" }}
+                      <a href="{{ this.link }}">{{ this.title }}</a>
+                    </li>
+                  {{/each}}
+                </ul>
               </div>
             </div>
-          </a>
         </div>
       {{/each}}
     </div>

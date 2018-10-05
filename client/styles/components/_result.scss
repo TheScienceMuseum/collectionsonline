@@ -67,7 +67,10 @@
     }
   }
 
-  &__description {
+  &__description,
+  p,
+  ul,
+  li {
     font-weight: 300;
     font-size: rem-calc(16);
     margin: 0;
@@ -76,6 +79,14 @@
   p {
     margin: 0;
     line-height: 1.2;
+  }
+
+  ul {
+    @include ul-icons;
+    svg {
+      vertical-align: middle;
+      margin-bottom: rem-calc(2);
+    }
   }
 
   @each $type, $props in $recordtypes {
@@ -96,8 +107,8 @@
 }
 
 @mixin resulthover {
-  transition: background-color $transition-default, box-shadow $transition-default,
-    transform $transition-default;
+  transition: background-color $transition-default,
+    box-shadow $transition-default, transform $transition-default;
 
   &:before {
     content: '';
@@ -105,7 +116,8 @@
     bottom: 0;
     right: 0;
     left: 0;
-    transition: background-color $transition-default, transform $transition-default;
+    transition: background-color $transition-default,
+      transform $transition-default;
     position: absolute;
     z-index: 0;
   }
@@ -178,8 +190,10 @@
 
 .resultcard {
   @include resultclass;
-  @include resulthover;
   color: black;
+  a & {
+    @include resulthover;
+  }
 
   &:hover {
     &:before {
