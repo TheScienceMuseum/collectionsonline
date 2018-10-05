@@ -1,4 +1,4 @@
-module.exports = (elastic, config) => [
+module.exports = (elastic, config) => ([
   require('./home')(),
   require('./screensaver')(),
   require('./random')(),
@@ -24,5 +24,6 @@ module.exports = (elastic, config) => [
   require('./embed').rotational(elastic, config),
   require('./embed').rotationalDirect(),
   require('./about')(),
-  require('./stats')(elastic, config)
-];
+  require('./stats')(elastic, config),
+  require('./categories')(elastic, config)
+]);

@@ -9,10 +9,10 @@ module.exports = () => {
     );
 
     var setActive = function (el, i) {
-      el.classList.add('--active');
+      el.classList.add('mediaplayer--active');
       var iframe = embeds[i].querySelector('iframe');
       if (!iframe.src) iframe.src = iframe.dataset.src;
-      embeds[i].classList.add('--active');
+      embeds[i].classList.add('mediaplayer--active');
     };
 
     playlist.forEach(function (el, i) {
@@ -26,9 +26,9 @@ module.exports = () => {
 
     var swapActive = function (event, el, i) {
       event.preventDefault();
-      var current = mediaplayer.querySelectorAll('.--active');
+      var current = mediaplayer.querySelectorAll('.mediaplayer--active');
       [].forEach.call(current, function (el) {
-        el.classList.remove('--active');
+        el.classList.remove('mediaplayer--active');
       });
       setActive(el, i);
 

@@ -5,7 +5,7 @@
     "label": "{{data.attributes.summary_title}}",
     "description": "{{data.attributes.description.0.value}}",
     "attribution": "Science Museum Group",
-    "logo": "https://group.sciencemuseum.org.uk/wp-content/themes/smg-wp-base-theme/assets/img/smg-logo.svg",
+    "logo": "http://collection.sciencemuseum.org.uk/assets/img/global/smg-logo.svg",
     "metadata": [
         {"label": "Indentifier", "value": "{{data.attributes.identifier.0.value}}"}
         {{#each data.attributes.lifecycle.creation}}
