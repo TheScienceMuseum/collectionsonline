@@ -1,4 +1,4 @@
-var contentType = require('./route-helpers/content-type.js');
+// var contentType = require('./route-helpers/content-type.js');
 module.exports = () => ({
   method: 'GET',
   path: '/about',
