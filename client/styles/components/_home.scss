@@ -255,3 +255,61 @@
   color: #fff;
   @include home-section;
 }
+
+.home-map {
+  @include home-section;
+}
+
+.smg-map {
+  &__imgratio {
+    height: percentage(340 / 400);
+  }
+  &__map {
+    margin: 0 10% 10%;
+  }
+  &__intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__logo {
+    width: 118px * 0.75;
+    height: 71px * 0.75;
+    @include breakpoint(large up) {
+      width: 118px;
+      height: 71px;
+    }
+  }
+  &__desc {
+    margin-top: 1rem;
+    @include breakpoint(large up) {
+      margin-top: 2rem;
+      font-size: 1.5em;
+      line-height: 1.2;
+    }
+  }
+
+  @include breakpoint(small up) {
+  }
+  @include breakpoint(medium up) {
+    display: flex;
+    &__imgratio,
+    &__intro {
+      width: 50%;
+    }
+    &__map {
+      margin: 0;
+    }
+
+    &__divider {
+      width: 2px;
+      flex-shrink: 0;
+      background-color: black;
+      margin: 1rem 2rem;
+      @include breakpoint(large up) {
+        margin: 1rem 4rem;
+      }
+    }
+  }
+}
