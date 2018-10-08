@@ -190,6 +190,11 @@ Handlebars.registerPartial(
   )
 );
 
+Handlebars.registerPartial(
+  'global/smg-map',
+  Fs.readFileSync('./templates/partials/global/smg-map.html', 'utf8')
+);
+
 // Helpers
 Handlebars.registerHelper('classname', require('../templates/helpers/classname.js'));
 
