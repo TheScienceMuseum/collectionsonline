@@ -4,6 +4,8 @@ module.exports = {
   strap: 'Search our collection',
   intro:
     'Explore over 250,000 <a href="/search/objects">objects</a> and <a href="/search/documents">archives</a> from the <a href="/search/museum/science-museum">Science Museum</a>, <a href="/search/museum/museum-of-science-and-industry">Science and Industry Museum</a>, <a href="/search/museum/national-media-museum">National Science and Media Museum</a> and <a href="/search/museum/national-railway-museum">National Railway Museum</a>.',
+  smg__description:
+    'As the world’s leading group of science museums, we share our unparalleled collection spanning science, technology, engineering, mathematics and medicine with over five million visitors each year.',
   headerImages: [
     '_D819175-ret.jpg',
     '1970-0025_0007.jpg',

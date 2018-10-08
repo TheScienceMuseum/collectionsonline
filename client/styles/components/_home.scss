@@ -128,12 +128,16 @@
   flex: 1;
   &--arrow {
     flex: initial;
-    flex-basis: 4em;
-    margin: 0 2em;
+    flex-basis: 3em;
+    margin: 0 1em;
     position: relative; // for safari
     @include breakpoint(small only) {
       height: 2rem;
       margin: 1rem 37.5%;
+    }
+    @include breakpoint(large up) {
+      flex-basis: 4em;
+      margin: 0 2em;
     }
   }
   &__arrow {
@@ -180,9 +184,11 @@
     text-align: center;
     margin-bottom: 0.5rem;
     @include breakpoint(medium up) {
-      font-size: 3rem;
       text-align: left;
       margin-bottom: 1rem;
+    }
+    @include breakpoint(large up) {
+      font-size: 3rem;
     }
   }
   &--1 &__title {
@@ -210,16 +216,16 @@
 // home page variation
 //-----------------------------------------------------------------------------
 
-@mixin home-section {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+@mixin home-section($top: 2rem, $bottom: 2rem) {
+  padding-top: $top;
+  padding-bottom: $bottom;
   @include breakpoint(medium up) {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+    padding-top: $top * 1.5;
+    padding-bottom: $bottom * 1.5;
   }
   @include breakpoint(large up) {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+    padding-top: $top * 2;
+    padding-bottom: $bottom * 2;
   }
 
   &__h {
@@ -257,20 +263,30 @@
 }
 
 .home-map {
-  @include home-section;
+  @include home-section($top: 2rem, $bottom: 0);
+  // no bottom padding cos we have 2 white sections in a row
 }
 
 .smg-map {
+  display: flex;
+
   &__imgratio {
     height: percentage(340 / 400);
+    width: 50%;
   }
   &__map {
-    margin: 0 10% 10%;
+    @include breakpoint(376px) {
+      margin-left: 25%;
+    }
+    @include breakpoint(medium up) {
+      margin-left: 0;
+    }
   }
   &__intro {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 50%;
   }
 
   &__logo {
@@ -281,35 +297,42 @@
       height: 71px;
     }
   }
-  &__desc {
+  &__desc--inline {
     margin-top: 1rem;
+    display: none;
+    @include breakpoint(medium up) {
+      display: block;
+    }
     @include breakpoint(large up) {
       margin-top: 2rem;
       font-size: 1.5em;
       line-height: 1.2;
     }
   }
+  &__desc--after {
+    margin-top: 1rem;
+    @include breakpoint(medium up) {
+      display: none;
+    }
+  }
+
+  &__divider {
+    width: 2px;
+    flex-shrink: 0;
+    background-color: black;
+    margin: 1rem 2rem;
+    @include breakpoint(large up) {
+      margin: 1rem 4rem;
+    }
+  }
 
   @include breakpoint(small up) {
   }
   @include breakpoint(medium up) {
-    display: flex;
-    &__imgratio,
     &__intro {
-      width: 50%;
     }
     &__map {
-      margin: 0;
-    }
-
-    &__divider {
-      width: 2px;
-      flex-shrink: 0;
-      background-color: black;
-      margin: 1rem 2rem;
-      @include breakpoint(large up) {
-        margin: 1rem 4rem;
-      }
+      // margin: 0;
     }
   }
 }
