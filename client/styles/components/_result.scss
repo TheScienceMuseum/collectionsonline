@@ -81,11 +81,32 @@
     line-height: 1.2;
   }
 
-  ul {
+  &__linklist {
     @include ul-icons;
-    svg {
-      vertical-align: middle;
-      margin-bottom: rem-calc(2);
+    $icnsize: 1rem;
+    li {
+      position: relative;
+      padding-left: 1.25rem;
+      line-height: 1.25;
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: $icnsize/8;
+        margin: auto; // top, bottom, height, auto = vertical align!
+        height: $icnsize;
+        width: $icnsize;
+        background-image: url(/assets/icons/search.svg);
+        background-size: $icnsize $icnsize;
+      }
+    }
+    a {
+      color: grey(80);
+      &:hover {
+        color: black;
+        text-decoration: underline;
+      }
     }
   }
 

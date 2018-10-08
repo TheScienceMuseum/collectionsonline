@@ -84,9 +84,9 @@
               <div class="resultcard__info">
                 <h4 class="resultcard__title">{{ this.title }}</h4>
                 <p class="resultcard__description">{{ this.description }}</p>
-                <ul>
+                <ul class="resultcard__linklist">
                   {{#each this.links}}
-                    <li>{{> global/icon i="search" }}
+                    <li>
                       <a href="{{ this.link }}">{{ this.title }}</a>
                     </li>
                   {{/each}}
