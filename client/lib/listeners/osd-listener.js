@@ -1,8 +1,15 @@
 var openseadragon = require('../openseadragon');
 
-module.exports = (ctx) => {
-  // var osd = Array.prototype.slice.call(document.getElementsByClassName('osd__toolbar')) || [];
-  var singleImages = Array.prototype.slice.call(document.getElementsByClassName('single_image')) || [];
+module.exports = ctx => {
+  var osd =
+    Array.prototype.slice.call(
+      document.getElementsByClassName('osd__toolbar')
+    ) || [];
+  var singleImages =
+    Array.prototype.slice.call(
+      document.getElementsByClassName('single_image')
+    ) || [];
+  var thingsToInit = osd.concat(singleImages);
 
   var initOSD = function () {
     var rotateButtons = document.querySelectorAll('.osd-rotate');
@@ -25,9 +32,9 @@ module.exports = (ctx) => {
     });
   }
 
-  singleImages.forEach(function (el) {
+  thingsToInit.forEach(function (el) {
     el.addEventListener('click', () => {
-      initOSD();
+      if (!ctx.viewer) initOSD();
     });
   });
 };
