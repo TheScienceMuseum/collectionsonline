@@ -114,6 +114,7 @@
 
 .home-features {
   @include sm-gradient($c-teal $c-blue $c-purple);
+  @include sm-gradient-animated($layers: 2);
 }
 
 .featuresteps {

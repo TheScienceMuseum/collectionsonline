@@ -5,26 +5,32 @@
 // Normal
 //-----------------------------------------------------------------------------
 
-@function blend-normal ($foreground, $background) {
+@function blend-normal($foreground, $background) {
   $opacity: opacity($foreground);
   $background-opacity: opacity($background);
 
   // calculate opacity
-  $bm-red: red($foreground) * $opacity + red($background) * $background-opacity * (1 - $opacity);
-  $bm-green: green($foreground) * $opacity + green($background) * $background-opacity * (1 - $opacity);
-  $bm-blue: blue($foreground) * $opacity + blue($background) * $background-opacity * (1 - $opacity);
+  $bm-red: red($foreground) * $opacity + red($background) * $background-opacity *
+    (1 - $opacity);
+  $bm-green: green($foreground) * $opacity + green($background) *
+    $background-opacity * (1 - $opacity);
+  $bm-blue: blue($foreground) * $opacity + blue($background) *
+    $background-opacity * (1 - $opacity);
   @return rgb($bm-red, $bm-green, $bm-blue);
 }
 
 //--------------------------------
 // Multiply
 //--------------------------------
-@function blend-multiply ($foreground, $background) {
+@function blend-multiply($foreground, $background) {
   $bm-red: red($background) * red($foreground) / 255;
   $bm-green: green($background) * green($foreground) / 255;
   $bm-blue: blue($background) * blue($foreground) / 255;
 
-  @return blend-normal(rgba($bm-red, $bm-green, $bm-blue, opacity($foreground)), $background);
+  @return blend-normal(
+    rgba($bm-red, $bm-green, $bm-blue, opacity($foreground)),
+    $background
+  );
 }
 
 // main brand colours
@@ -36,39 +42,39 @@ $c-teal: #4bbecf;
 $c-blue: #004899;
 $c-purple: #af1280;
 
-$c-lightgrey: #DADADA;
-$c-turquoise: #40E0D0;
+$c-lightgrey: #dadada;
+$c-turquoise: #40e0d0;
 $c-dark-green: #317873;
 
 //colors mapped to recordtypes for quick changes, and for for loops
 $recordtypes: (
   objects: (
     bg: $c-teal,
-    grad: $c-teal $c-green $c-blue,
+    grad: $c-teal $c-green $c-blue
   ),
   people: (
     bg: $c-orange,
-    grad: $c-yellow $c-orange $c-red,
+    grad: $c-yellow $c-orange $c-red
   ),
   all: (
     bg: $c-green,
-    grad: $c-yellow $c-green $c-teal,
+    grad: $c-yellow $c-green $c-teal
   ),
   documents: (
     bg: $c-purple,
-    grad: $c-red $c-purple $c-blue,
+    grad: $c-red $c-purple $c-blue
   ),
   archive: (
     bg: $c-purple,
-    grad: $c-red $c-purple $c-blue,
+    grad: $c-red $c-purple $c-blue
   ),
   archivedoc: (
     bg: $c-purple,
-    grad: $c-red $c-purple $c-blue,
+    grad: $c-red $c-purple $c-blue
   ),
   collection: (
     bg: $c-blue,
-    grad: $c-teal $c-blue $c-purple,
+    grad: $c-teal $c-blue $c-purple
   )
 );
 
@@ -76,7 +82,7 @@ $recordtypes: (
 /// @example grey(20) = #ccc
 /// @param {Number} $tint - number between 0-100
 @function grey($tint) {
-  @return rgb(255 - $tint * 2.55, 255 - $tint * 2.55, 255 - $tint * 2.55)
+  @return rgb(255 - $tint * 2.55, 255 - $tint * 2.55, 255 - $tint * 2.55);
 }
 
 /// lighten a color
@@ -84,6 +90,7 @@ $recordtypes: (
 /// @param {Color} $color - color to tint
 /// @param {Number} $percentage - percentage of `$color` in returned color
 /// @return {Color}
+
 @function tint($color, $percentage) {
   @return mix($color, white, $percentage);
 }
@@ -91,7 +98,6 @@ $recordtypes: (
 /// create a Background gradient from the SMG palette
 /// @param {List} $stops - List of colors
 @mixin sm-gradient($stops) {
-
   @each $stop in $stops {
     @if type-of($stop) != color {
       @warn '`#{$stop}` is not a color. I wish it was.';
@@ -102,17 +108,59 @@ $recordtypes: (
     background-color: $stops;
   }
   @if length($stops) == 2 {
-    background-image: linear-gradient(135deg, nth($stops, 1) 0%, nth($stops, 2) 100%);
+    background-image: linear-gradient(
+      135deg,
+      nth($stops, 1) 0%,
+      nth($stops, 2) 100%
+    );
   }
   @if length($stops) > 2 {
     background-image: radial-gradient(
-      ellipse at bottom left,
-      nth($stops, 1),
-      rgba(nth($stops, 1), 0) 50%
-    ), linear-gradient(
-      to right,
-      nth($stops, 2) 0%,
-      nth($stops, 3) 100%
-    );
+        ellipse at bottom left,
+        nth($stops, 1),
+        rgba(nth($stops, 1), 0) 50%
+      ),
+      linear-gradient(to right, nth($stops, 2) 0%, nth($stops, 3) 100%);
   }
+}
+
+/// Animates background gradients
+/// @access public
+/// @param {String} $duration - time + s
+/// @param {Number} $layers - if multiple properties, number of
+/// @return {String}
+
+@mixin sm-gradient-animated($duration: 5s, $layers: 1) {
+  $name: sm-grad-fade-#{$duration}-#{$layers}; // if these variables change, we'd need to ouput a different name at root.
+  animation-name: $name;
+  animation-duration: $duration;
+  animation-timing-function: ease-in-out;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+
+  @at-root {
+    @keyframes #{$name} {
+      0% {
+        background-size: repeat(100% 100%, $layers);
+      }
+      100% {
+        background-size: repeat(200% 200%, $layers);
+      }
+    }
+  }
+}
+
+/// repeats a value. For properties that take comma-separated lists
+/// @access public
+/// @param {String} $value - initial value to repeat
+/// @param {Number} $repetitions - number of repetitions
+/// @return {String}
+
+@function repeat($value, $repetitions) {
+  $values: ();
+  @for $i from 1 through $repetitions {
+    $next_value: $value;
+    $values: append($values, $next_value, comma);
+  }
+  @return $values;
 }

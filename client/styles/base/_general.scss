@@ -42,6 +42,7 @@ button {
 
 .globalfooter {
   @include sm-gradient($c-teal $c-blue $c-purple);
+  @include sm-gradient-animated($layers: 2);
   color: white;
   padding: 1rem 0;
   @include breakpoint(medium up) {
