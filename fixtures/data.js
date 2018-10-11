@@ -112,7 +112,7 @@ module.exports = {
         {
           title: 'Art',
           description: 'A one-sentence description of the collection theme. ',
-          figure: '/assets/img/home/collections/art.jpg',
+          figure: '/assets/img/home/collections/art-theme.jpg',
           links: [
             {
               title: 'Artworks',
@@ -182,8 +182,7 @@ module.exports = {
           type: 'collection',
           title: 'Cinematography',
           figure: '/assets/img/home/collections/cinematography.jpg',
-          description:
-            'Objects representing the history of cinema: from magic lanterns to digital technologies',
+          description: 'Objects representing the history of cinema: from magic lanterns to digital technologies',
           columns: '',
           link: '/search/categories/cinematography/images'
         },
