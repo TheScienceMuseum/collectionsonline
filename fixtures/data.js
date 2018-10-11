@@ -64,89 +64,94 @@ module.exports = {
       title: 'Themes from the collection',
       theme: [
         {
-          title: 'Photographic Collections',
+          title: 'Medicine',
           description: 'A one-sentence description of the collection theme. ',
-          figure: '/assets/img/home/collections/cinematography.jpg',
+          figure: '/assets/img/home/collections/medicine.jpg',
           links: [
             {
-              title: 'Daily Herald Photographic Collection',
-              link: '/search?q=daily%20herald'
+              title: 'Pharmacology',
+              link: '/search/categories/materia-medica-&-pharmacology'
             },
             {
-              title: 'Railway Photographic Collection',
-              link:
-                '/search/categories/photographic-collections-(railway)/images'
+              title: 'Surgery',
+              link: '/search/categories/surgery'
             },
             {
-              title: 'Contemporary Photography',
-              link: '/search'
+              title: 'Oriental medicine',
+              link: '/search/categories/oriental-medicine'
+            },
+            {
+              title: 'Therapeutics',
+              link: '/search/categories/therapeutics'
             }
           ]
         },
         {
-          title: 'Railway Ephemera',
+          title: 'Railways',
           description: 'A one-sentence description of the collection theme. ',
-          figure: '/assets/img/home/collections/railway-posters.jpg',
+          figure: '/assets/img/home/collections/railway.jpg',
           links: [
             {
               title: 'Posters and handbills',
               link: '/search/categories/railway-posters,-notices-&-handbills'
             },
             {
-              title: 'Fixtures and fittings',
-              link:
-                '/search/categories/fixtures-&-fittings-from-railway-buildings/museum/national-railway-museum'
+              title: 'Passenger comforts',
+              link: '/search/categories/passenger-comforts'
             },
             {
-              title: 'Tableware',
-              link:
-                '/search/categories/passenger-comforts/museum/national-railway-museum'
+              title: 'Railway photographic collection',
+              link: '/search/categories/photographic-collections-(railway)/images'
             },
             {
-              title: 'Curiosities',
-              link:
-                '/search/categories/miscellanea-&-curiosities/museum/national-railway-museum'
+              title: 'Infrastructure',
+              link: '/search/categories/railway-infrastructure'
             }
           ]
         },
         {
-          title: 'Theme 3',
+          title: 'Art',
           description: 'A one-sentence description of the collection theme. ',
-          figure: '/assets/img/home/collections/sciencemuseum.jpg',
+          figure: '/assets/img/home/collections/art.jpg',
           links: [
             {
-              title: 'Posters and handbills',
-              link: '/search/categories/railway-posters,-notices-&-handbills'
+              title: 'Artworks',
+              link: '/search/categories/art'
             },
             {
-              title: 'Fixtures and fittings',
-              link:
-                '/search/categories/fixtures-&-fittings-from-railway-buildings/museum/national-railway-museum'
+              title: 'Posters',
+              link: '/search/objects/object_type/poster'
             },
             {
-              title: 'Tableware',
+              title: 'Photographs',
               link:
-                '/search/categories/passenger-comforts/museum/national-railway-museum'
+                '/search/categories/photographs'
             },
             {
-              title: 'Curiosities',
-              link:
-                '/search/categories/miscellanea-&-curiosities/museum/national-railway-museum'
+              title: 'Daily Herald photographic archive',
+              link: '/objects/co205344/the-photographic-library-of-the-daily-herald-newspaper-1911-1965'
             }
           ]
         },
         {
-          title: 'An undescribable theme',
-          figure: '/assets/img/home/collections/sciencemuseum.jpg',
+          title: 'Industrial Revolution',
+          figure: '/assets/img/home/collections/industrial-revolution.jpg',
           links: [
             {
-              title: 'Posters and handbills',
-              link: '/search/categories/railway-posters,-notices-&-handbills'
+              title: 'Textile industry',
+              link: '/search/categories/textile-industry'
             },
             {
-              title: 'Fixtures and fittings',
-              link:
-                '/search/categories/fixtures-&-fittings-from-railway-buildings/museum/national-railway-museum'
+              title: 'Textiles machinery',
+              link: '/search/categories/textiles-machinery'
+            },
+            {
+              title: 'Motive power',
+              link: '/search/categories/motive-power'
+            },
+            {
+              title: 'Coal mining',
+              link: '/search/categories/coal-mining'
             }
           ]
         }
@@ -159,48 +164,19 @@ module.exports = {
       collection: [
         {
           type: 'collection',
-          title: 'Science Museum',
-          description:
-            'The home of human ingenuity, exploring stories of scientific achievement',
-          figure: '/assets/img/home/collections/sciencemuseum.jpg',
+          title: 'The Babbage Papers',
+          description: 'The drawings and papers of mathematician and computer pioneer Charles Babbage',
+          figure: '/assets/img/home/collections/babbage.jpg',
           columns: '',
-          link: '/search/museum/science-museum'
+          link: '/documents/aa110000003/the-babbage-papers'
         },
         {
           type: 'collection',
-          title: 'Museum of Science and Industry',
-          figure: '/assets/img/home/collections/msi.jpg',
-          description:
-            'The story of Manchester’s scientific and industrial past, present and future',
+          title: 'Toys & games',
+          figure: '/assets/img/home/collections/toys.jpg',
+          description: 'Intro paragraph',
           columns: '',
-          link: '/search/museum/museum-of-science-and-industry'
-        },
-        {
-          type: 'collection',
-          title: 'National Science and Media Museum',
-          figure: '/assets/img/home/collections/nmm.jpg',
-          description:
-            'The science and culture of light and sound technologies, and their impact on our lives',
-          columns: '',
-          link: '/search/museum/national-media-museum'
-        },
-        {
-          type: 'collection',
-          title: 'National Railway Museum',
-          figure: '/assets/img/home/collections/nrm.jpg',
-          description:
-            'Home to the largest collection of railway objects in the world',
-          columns: '',
-          link: '/search/museum/national-railway-museum'
-        },
-        {
-          type: 'collection',
-          title: 'Information Age',
-          description:
-            'Search across a snapshot of objects representing the development of the internet',
-          figure: '/assets/img/home/collections/informationage.jpg',
-          columns: '',
-          link: '/search/gallery/information-age-gallery%3A-web'
+          link: '/search?q=toy'
         },
         {
           type: 'collection',
@@ -209,34 +185,87 @@ module.exports = {
           description:
             'Objects representing the history of cinema: from magic lanterns to digital technologies',
           columns: '',
-          link: '/search/categories/cinematography/images'
+          link: '/search/museum/museum-of-science-and-industry'
         },
         {
           type: 'collection',
-          title: 'The Babbage Papers',
-          figure: '/assets/img/home/collections/babbage.jpg',
-          description:
-            'The drawings and papers of mathematician and computer pioneer Charles Babbage',
+          title: 'Information Age',
+          figure: '/assets/img/home/collections/informationage.jpg',
+          description: 'Search across a snapshot of objects representing the development of the internet',
           columns: '',
-          link: '/documents/aa110000003/the-babbage-papers'
+          link: '/search/gallery/information-age-gallery%3A-web'
         },
         {
           type: 'collection',
-          title: 'Railway Photographic Collection',
-          figure:
-            '/assets/img/home/collections/railway-photographic-collections.jpg',
-          description:
-            'Explore railway history\u2014from technological to social change\u2014using our photographic collection',
+          title: 'Mathematics',
+          figure: '/assets/img/home/collections/mathematics-highlights.jpg',
+          description: 'Intro paragraph',
           columns: '',
-          link: '/search/categories/photographic-collections-(railway)/images'
+          link: '/search/categories/mathematics'
         },
         {
           type: 'collection',
-          title: 'Railway Posters',
-          description: 'Explore our collection of historic railway posters',
-          figure: '/assets/img/home/collections/railway-posters.jpg',
-          columns: 'small-6 medium-3',
-          link: '/search/images/categories/railway-posters,-notices-&-handbills'
+          title: 'Smoking',
+          figure: '/assets/img/home/collections/smoking.jpg',
+          description: 'Intro paragraph',
+          columns: '',
+          link: '/search/categories/smoking'
+        },
+        {
+          type: 'collection',
+          title: 'Television',
+          figure: '/assets/img/home/collections/television.jpg',
+          description: 'Intro paragraph',
+          columns: '',
+          link: '/search/categories/television'
+        },
+        {
+          type: 'collection',
+          title: 'Radiomedicine',
+          figure: '/assets/img/home/collections/radiomedicine.jpg',
+          description: 'Intro paragraph',
+          columns: '',
+          link: '/search/categories/radiomedicine'
+        },
+        {
+          type: 'collection',
+          title: 'Creative industries',
+          figure: '/assets/img/home/collections/creative-industries.jpg',
+          description: 'Intro paragraph',
+          columns: '',
+          link: '/search/categories/creative-industries'
+        },
+        {
+          type: 'collection',
+          title: 'Astronomy',
+          figure: '/assets/img/home/collections/astronomy.jpg',
+          description: 'Intro paragraph',
+          columns: '',
+          link: '/search/categories/astronomy'
+        },
+        {
+          type: 'collection',
+          title: 'Computing and Data processing',
+          figure: '/assets/img/home/collections/computing.jpg',
+          description: 'Intro paragraph',
+          columns: '',
+          link: '/search/categories/computing-&-data-processing'
+        },
+        {
+          type: 'collection',
+          title: 'Time measurement',
+          figure: '/assets/img/home/collections/time-measurement.jpg',
+          description: 'Intro paragraph',
+          columns: '',
+          link: '/search/categories/time-measurement'
+        },
+        {
+          type: 'collection',
+          title: 'Radio communication',
+          figure: '/assets/img/home/collections/radio-communication.jpg',
+          description: 'Intro paragraph',
+          columns: '',
+          link: '/search/categories/radio-communication'
         }
       ]
     }
