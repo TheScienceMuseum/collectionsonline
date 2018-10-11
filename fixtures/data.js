@@ -185,7 +185,7 @@ module.exports = {
           description:
             'Objects representing the history of cinema: from magic lanterns to digital technologies',
           columns: '',
-          link: '/search/museum/museum-of-science-and-industry'
+          link: '/search/categories/cinematography/images'
         },
         {
           type: 'collection',
