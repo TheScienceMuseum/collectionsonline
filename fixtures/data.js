@@ -180,14 +180,6 @@ module.exports = {
         },
         {
           type: 'collection',
-          title: 'Cinematography',
-          figure: '/assets/img/home/collections/cinematography.jpg',
-          description: 'Objects representing the history of cinema: from magic lanterns to digital technologies',
-          columns: '',
-          link: '/search/categories/cinematography/images'
-        },
-        {
-          type: 'collection',
           title: 'Information Age',
           figure: '/assets/img/home/collections/informationage.jpg',
           description: 'Search across a snapshot of objects representing the development of the internet',
@@ -201,6 +193,14 @@ module.exports = {
           description: 'Intro paragraph',
           columns: '',
           link: '/search/categories/mathematics'
+        },
+        {
+          type: 'collection',
+          title: 'Cinematography',
+          figure: '/assets/img/home/collections/cinematography.jpg',
+          description: 'Objects representing the history of cinema: from magic lanterns to digital technologies',
+          columns: '',
+          link: '/search/categories/cinematography/images'
         },
         {
           type: 'collection',
