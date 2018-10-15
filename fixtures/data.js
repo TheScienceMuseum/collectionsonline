@@ -65,7 +65,7 @@ module.exports = {
       theme: [
         {
           title: 'Medicine',
-          description: 'A one-sentence description of the collection theme. ',
+          description: 'Explore global medical advances over time',
           figure: '/assets/img/home/collections/medicine.jpg',
           links: [
             {
@@ -83,12 +83,16 @@ module.exports = {
             {
               title: 'Therapeutics',
               link: '/search/categories/therapeutics'
+            },
+            {
+              title: 'Orthopaedics',
+              link: '/search/categories/orthopaedics'
             }
           ]
         },
         {
           title: 'Railways',
-          description: 'A one-sentence description of the collection theme. ',
+          description: 'The changing use of the railways from engineering advances to seaside posters',
           figure: '/assets/img/home/collections/railway.jpg',
           links: [
             {
@@ -111,7 +115,7 @@ module.exports = {
         },
         {
           title: 'Art',
-          description: 'A one-sentence description of the collection theme. ',
+          description: 'From innovative processes to depicting our connection with science',
           figure: '/assets/img/home/collections/art-theme.jpg',
           links: [
             {
@@ -135,6 +139,7 @@ module.exports = {
         },
         {
           title: 'Industrial Revolution',
+          description: 'The machines and industries that powered the Industrial Revolution',
           figure: '/assets/img/home/collections/industrial-revolution.jpg',
           links: [
             {
