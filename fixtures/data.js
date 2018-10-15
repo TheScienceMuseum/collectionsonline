@@ -179,7 +179,6 @@ module.exports = {
           type: 'collection',
           title: 'Toys & games',
           figure: '/assets/img/home/collections/toys.jpg',
-          description: 'Intro paragraph',
           columns: '',
           link: '/search?q=toy'
         },
@@ -195,7 +194,6 @@ module.exports = {
           type: 'collection',
           title: 'Mathematics',
           figure: '/assets/img/home/collections/mathematics-highlights.jpg',
-          description: 'Intro paragraph',
           columns: '',
           link: '/search/categories/mathematics'
         },
@@ -211,7 +209,6 @@ module.exports = {
           type: 'collection',
           title: 'Smoking',
           figure: '/assets/img/home/collections/smoking.jpg',
-          description: 'Intro paragraph',
           columns: '',
           link: '/search/categories/smoking'
         },
@@ -219,7 +216,6 @@ module.exports = {
           type: 'collection',
           title: 'Television',
           figure: '/assets/img/home/collections/television.jpg',
-          description: 'Intro paragraph',
           columns: '',
           link: '/search/categories/television'
         },
@@ -227,7 +223,6 @@ module.exports = {
           type: 'collection',
           title: 'Radiomedicine',
           figure: '/assets/img/home/collections/radiomedicine.jpg',
-          description: 'Intro paragraph',
           columns: '',
           link: '/search/categories/radiomedicine'
         },
@@ -235,7 +230,6 @@ module.exports = {
           type: 'collection',
           title: 'Creative industries',
           figure: '/assets/img/home/collections/creative-industries.jpg',
-          description: 'Intro paragraph',
           columns: '',
           link: '/search/categories/creative-industries'
         },
@@ -243,7 +237,6 @@ module.exports = {
           type: 'collection',
           title: 'Astronomy',
           figure: '/assets/img/home/collections/astronomy.jpg',
-          description: 'Intro paragraph',
           columns: '',
           link: '/search/categories/astronomy'
         },
@@ -251,7 +244,6 @@ module.exports = {
           type: 'collection',
           title: 'Computing and Data processing',
           figure: '/assets/img/home/collections/computing.jpg',
-          description: 'Intro paragraph',
           columns: '',
           link: '/search/categories/computing-&-data-processing'
         },
@@ -259,7 +251,6 @@ module.exports = {
           type: 'collection',
           title: 'Time measurement',
           figure: '/assets/img/home/collections/time-measurement.jpg',
-          description: 'Intro paragraph',
           columns: '',
           link: '/search/categories/time-measurement'
         },
@@ -267,7 +258,6 @@ module.exports = {
           type: 'collection',
           title: 'Radio communication',
           figure: '/assets/img/home/collections/radio-communication.jpg',
-          description: 'Intro paragraph',
           columns: '',
           link: '/search/categories/radio-communication'
         }
