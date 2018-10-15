@@ -1,6 +1,7 @@
 var svg4everybody = require('svg4everybody');
 var searchBox = require('./search-box');
 var clipboard = require('./clipboard');
+var map = require('./map');
 var moreButton = require('./more-button');
 var moreCordion = require('./accordion');
 var carousel = require('./carousel');
@@ -13,6 +14,7 @@ module.exports = ctx => {
   svg4everybody();
   searchBox();
   clipboard();
+  map();
   moreButton();
   moreCordion();
   moreDetails();
