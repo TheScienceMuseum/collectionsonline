@@ -46,10 +46,6 @@ module.exports = [
     synonyms: ['tv']
   },
   {
-    category: 'contemporary art collection',
-    synonyms: ['contemporary art']
-  },
-  {
     category: 'computing & data processing',
     synonyms: ['computing', 'data processing', 'computer', 'computers']
   },

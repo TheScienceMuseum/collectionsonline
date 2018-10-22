@@ -26,10 +26,18 @@
       margin: 2rem 0;
     }
   }
+  &--home &__strap {
+    @include breakpoint(medium) {
+      font-size: rem-calc(64);
+      margin-bottom: 3.5rem;
+    }
+  }
 
   &__intro {
     font-size: rem-calc(18);
-    @include breakpoint(medium) { font-size: rem-calc(24); }
+    @include breakpoint(medium) {
+      font-size: rem-calc(24);
+    }
     line-height: 1.25;
     font-weight: 500;
     margin: 1rem 0 1.5rem 0;
@@ -41,20 +49,22 @@
   //searchbox placeholder text gets hidden for small, and this shown instead
   &__placeholder-for-small {
     line-height: 1.25;
-    @include breakpoint(medium) { display: none; }
+    @include breakpoint(medium) {
+      display: none;
+    }
     margin: 1rem 0.125rem -0.5rem;
   }
 
   &__strap + &__placeholder-for-small,
-  &__intro + &__placeholder-for-small  {
+  &__intro + &__placeholder-for-small {
     margin: -1rem 0.125rem -0.5rem;
   }
 
   &--home {
-    padding-bottom: 1rem;
+    background-color: transparent;
+    background-image: none;
   }
 }
-
 
 //-----------------------------------------------------------------------------
 // .searchbox - main search input and associated controls
@@ -69,12 +79,16 @@
   &--focussed {
     border: 1px solid $black;
     box-shadow: 0 2px 8px rgba(black, 0.2);
-    .icon-search { fill: $c-blue; }
+    .icon-search {
+      fill: $c-blue;
+    }
   }
 
-  &--awesomplete-open {}
+  &--awesomplete-open {
+  }
 
-  &__back + & { // if .searchbox preceded by back btn
+  &__back + & {
+    // if .searchbox preceded by back btn
     margin-left: rem-calc(58);
   }
 
@@ -88,7 +102,7 @@
     align-items: center;
     float: left;
     background-color: rgba(black, 0.1);
-    transition: background-color $timing-defaults;
+    transition: background-color $transition-default;
 
     &:hover {
       background-color: rgba(black, 0.2);
@@ -103,7 +117,8 @@
     font-size: rem-calc(24);
     font-weight: 500;
 
-    &, &:focus {
+    &,
+    &:focus {
       border: 0;
       box-shadow: none;
     }
@@ -124,7 +139,7 @@
     border: 0;
     background-color: transparent;
     color: grey(50); // applied to svg fill via magic of currentColor!
-    transition: all $timing-defaults;
+    transition: all $transition-default;
 
     &:hover {
       color: $black;
@@ -192,11 +207,13 @@
     background-color: white;
     color: black;
     border-bottom: 0;
-    .searchtab__label { color: black; }
+    .searchtab__label {
+      color: black;
+    }
   }
 
-  &[aria-disabled=true],
-  &[aria-disabled=true]:hover {
+  &[aria-disabled='true'],
+  &[aria-disabled='true']:hover {
     background-color: black;
     opacity: 0.6;
     cursor: default;
@@ -214,11 +231,15 @@
     }
   }
 
-  &__label { color: white; }
+  &__label {
+    color: white;
+  }
 
   &__count {
     @include small-caps;
     opacity: 0.75;
-    @include breakpoint(small only) { display: none; } // no room
+    @include breakpoint(small only) {
+      display: none;
+    } // no room
   }
 }

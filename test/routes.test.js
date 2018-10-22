@@ -730,6 +730,7 @@ testWithServer(file + 'Request for Wikipedia in record Data', {}, (t, ctx) => {
   });
 });
 
+/*
 testWithServer(file + 'Request for Wikipedia Data with no image', {}, (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
@@ -744,6 +745,7 @@ testWithServer(file + 'Request for Wikipedia Data with no image', {}, (t, ctx) =
     t.end();
   });
 });
+*/
 
 testWithServer(file + 'Not found', {}, (t, ctx) => {
   const htmlRequest = {

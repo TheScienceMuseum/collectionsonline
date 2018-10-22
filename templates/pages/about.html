@@ -1,0 +1,96 @@
+<main id="main-page">
+  {{> global/global-header}}
+  {{!-- 
+  {{> global/search-main reduced="reduced"}}
+   --}}
+
+  <section class="white">
+    <div class="row">
+      <div class="columns medium-8">
+        <h1>ABOUT THE ONLINE COLLECTION</h1>
+
+        <br>
+
+        <h3>What’s in the Science Museum Group collection?</h3>
+        
+        <p>
+          The Science Museum Group cares for a diverse and internationally significant collection of 7.3 million items from science, technology, engineering, medicine, transport and media.
+        </p>
+        <p>
+          <a href="https://group.sciencemuseum.org.uk/about-us/collection/">More about our collection and how we care for it</a>
+        </p>
+
+        <h3>What material is published online?</h3>
+        
+        <p>
+          On the Science Museum Group collection website, you can find material published from our object and archival collections.
+        </P>
+        <p>
+          We have over 250,000 objects and 29,000 archival documents published online. 
+        </P>
+        <p>
+          Over the next 5 years, we are undergoing an ambitious project to move to a new <a href="link https://group.sciencemuseum.org.uk/about-us/collection/national-collections-centre/">National Collections Centre</a>. 
+        </P>
+        <p>
+          We also have separate websites to browse:
+          <ul>
+            <li><a href="http://archives.sciencemuseumgroup.ac.uk/search/simple">Our archive collection in depth</a></li>
+            <li><a href="https://smg.koha-ptfs.co.uk/">Our library collection</a></li>
+          </ul>
+        </p>
+
+        <h3>How to use the website?</h3>
+        <p>
+          The Science Museum Group collection website enables you to search and browse material published online.
+        </p>
+
+        <h3>Searching and filtering</h3>
+        <p>
+          You can search the collection for:
+          <ul>
+            <li><a href="/search/objects">Objects </a></li>
+            <li><a href="/search/people">People</a></li>
+            <li><a href="/search/documents">Documents</a></li>
+          </ul>
+        </p>
+
+        <h3>Searching and filtering</h3>
+        <p>
+          You can filter the collection by:
+          <ul>
+            <li>Category</li>
+            <li>Date</li>
+            <li>Maker</li>
+          </ul>
+        </p>
+
+        <h3>Objects on display</h3>
+        <p>Where an object is on display in one of our five museums, you will see its location highlighted on the page</p>
+        <p>We regularly update objects on display.</p>
+        <p>If you are planning a visit to see a specific object, please <a href="https://group.sciencemuseum.org.uk/about-us/contact-us">contact us</a> in advance to make sure that it will be on display.</p>
+
+        <h3>Collection data and API</h3>
+        <p>All our collection data and images, where possible, are made avaliable under a <a href="https://creativecommons.org/licenses/">Creative Commons licence</a> and can be accessed via our <a href="https://group.sciencemuseum.org.uk/about-us/collection/using-our-collection-api/">Collection API</a>.</p>
+
+      </div>
+      <div class="columns medium-4">
+        <!--sidebar-->
+        <div class="panel panel__text">
+          <h4>Side panel</h4>
+          <p>
+            This might contain some text, or a list of links: You probably want to give that ul a class of 
+            related-people, related-organisation, related-document,
+            or related-article
+          </p>
+          <ul class="related-document">
+            <li>{{> global/icon i="people" }}<a href="#">a link to a place</a></li>
+            <li>{{> global/icon i="documents" }}<a href="#">a link to a place</a></li>
+            <li>{{> global/icon i="external" }}<a href="#">a link to a place</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{> global/global-footer}}
+</main>

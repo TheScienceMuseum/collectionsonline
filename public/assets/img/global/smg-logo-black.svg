@@ -1,0 +1,3 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="118" height="71" viewBox="0 0 118 71">
+<defs><mask id="logo"><image xlink:href="smg-logo.svg" width="118px" height="71px" /></mask></defs>
+<rect x="0" y="0" width="118px" height="71px" fill="black" style="mask:url(#logo)" /></svg>

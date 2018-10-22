@@ -60,7 +60,7 @@
 
   @supports (transform: scale(0)) {
     ul {
-      transition: $timing-defaults;
+      transition: $transition-default;
       transform-origin: 0 0;
     }
 

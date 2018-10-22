@@ -1,0 +1,260 @@
+// based on https://github.com/TheScienceMuseum/wordpress-themes/blob/master/smgwptheme/src/scss/components/_menu.scss
+.c-menu {
+  @mixin button {
+    background-color: transparent;
+    border: 0;
+    appearance: none;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+  }
+
+  @mixin toplink {
+    text-transform: uppercase;
+    font-weight: bold;
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      height: 2px;
+      bottom: 5px;
+      background: white;
+      left: 1rem;
+      right: 1rem;
+      visibility: hidden;
+      transform: scaleX(0);
+      transition: transform 0.3s ease-in-out 0s;
+      margin: 0 auto;
+    }
+
+    &:hover:before {
+      visibility: visible;
+      transform: scaleX(1);
+    }
+  }
+
+  font-size: 18px;
+  @include clearfix;
+  position: absolute;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-font-smoothing: antialiased; // Match drupal sites. It does render reversed text better.
+
+  &__wrapper {
+    z-index: 10;
+    display: none;
+    height: 100%;
+
+    &.toggled-on {
+      display: block;
+    }
+    @include breakpoint(medium) {
+      display: block;
+    }
+  }
+
+  &__button {
+    float: right;
+    margin-right: $grid-column-gutter;
+    color: #fff;
+    @include button;
+    @include toplink;
+    top: 50%;
+    transform: translateY(-50%);
+
+    &:after {
+      @include triangle(bottom, $color: grey(50), $size: 10px);
+      position: absolute;
+      right: 0;
+      transform: translateY(50%);
+    }
+
+    &[aria-expanded='true'] {
+      &:after {
+        transform: translateY(50%) scaleY(-1);
+      }
+    }
+
+    @include breakpoint(medium) {
+      display: none;
+    }
+  }
+
+  &__nav {
+    height: 100%;
+    @include breakpoint(medium) {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  .menu-item {
+    position: relative;
+    display: block;
+
+    a {
+      padding: 0.5rem 1rem;
+      display: block;
+      text-decoration: none;
+      color: white;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+  }
+
+  &__primary-ul {
+    margin: 0;
+    padding: 0 0 0.5rem;
+    list-style: none;
+    background: black;
+    z-index: 10;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+
+    @include breakpoint(medium) {
+      padding: 0;
+      position: relative;
+      background: transparent;
+      display: flex;
+      justify-content: flex-end;
+      top: auto;
+      left: auto;
+      right: auto;
+    }
+
+    & > .menu-item {
+      //top level
+      & .has-sub-menu .sub-menu {
+        // third level
+        padding-left: 1rem;
+      }
+      @include breakpoint(medium) {
+        // padding-bottom: 2rem;
+        display: flex;
+        align-items: center;
+
+        & .sub-menu {
+          //second level
+          transform: scaleY(0);
+          visibility: hidden;
+          transition: all 0.1s ease-out;
+          padding: 0 0 1rem 1rem;
+        }
+
+        & .has-sub-menu .sub-menu {
+          // third level
+          position: absolute;
+          left: 100%;
+          top: -1rem;
+          padding-top: 1rem;
+          margin-bottom: 0;
+        }
+
+        & > a {
+          @include toplink;
+        }
+      }
+    }
+  }
+
+  .menu-item-has-children > a {
+    //extra space to account for .dropdown-toggle
+    margin-right: -0.5rem;
+  }
+
+  .sub-menu {
+    // applies to 2nd & 3rd level
+    background-color: black;
+    margin: 0;
+    padding: 0;
+    display: none;
+
+    @include breakpoint(medium) {
+      position: absolute;
+      display: block;
+      top: 100%;
+      left: -1rem;
+      padding-bottom: 0.5rem;
+      padding-left: 1rem;
+      z-index: 9;
+      transform-origin: top;
+      transition: transform 0.3s ease-in-out;
+      width: 16rem;
+    }
+
+    a {
+      font-size: 16px;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .dropdown-toggle {
+    position: absolute;
+    right: 0.5rem;
+    top: 0;
+    @include button;
+    @include breakpoint(medium) {
+      position: relative;
+      right: auto;
+      top: auto;
+      padding-left: 0;
+      padding-right: 1rem;
+    }
+
+    &:after {
+      @include triangle(bottom, $color: grey(50), $size: 10px);
+      display: inline-block;
+    }
+
+    &[aria-expanded='true'] {
+      transform: scaleY(-1);
+    }
+  }
+
+  .menu-item .menu-item .dropdown-toggle {
+    position: absolute;
+    right: 10px;
+    top: 0;
+  }
+
+  @include breakpoint(medium) {
+    .c-menu__nav ul .has-sub-menu > li {
+      padding-right: 40px;
+    }
+
+    .c-menu__nav ul ul ul {
+      position: relative;
+      display: block;
+    }
+
+    .sub-menu .dropdown-toggle {
+      // transform: rotate(-90deg);
+    }
+
+    .menu-item:hover > .sub-menu,
+    [aria-expanded='true'] + .sub-menu {
+      transform: scaleY(1);
+      visibility: visible;
+    }
+  }
+}
+
+.c-menu__nav ul .sub-menu.toggled-on {
+  display: block;
+}
+
+.c-menu__nav a:focus,
+button.dropdown-toggle:focus,
+button.c-menu__button:focus {
+  outline: 1px dotted grey;
+  outline-offset: 2px;
+}
+
+.screen-readers {
+  @include for-screen-readers;
+}

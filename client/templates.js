@@ -190,6 +190,11 @@ Handlebars.registerPartial(
   )
 );
 
+Handlebars.registerPartial(
+  'global/smg-map',
+  Fs.readFileSync('./templates/partials/global/smg-map.html', 'utf8')
+);
+
 // Helpers
 Handlebars.registerHelper('classname', require('../templates/helpers/classname.js'));
 
@@ -299,5 +304,8 @@ module.exports = {
   ),
   'wikiSummary': Handlebars.compile(
     Fs.readFileSync('./templates/partials/records/wiki-summary.html', 'utf8')
+  ),
+  about: Handlebars.compile(
+    Fs.readFileSync('./templates/pages/about.html', 'utf8')
   )
 };

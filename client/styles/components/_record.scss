@@ -82,7 +82,9 @@
     overflow: hidden;
     margin-bottom: -1px;
     display: none;
-    @include breakpoint(medium) { display: block; }
+    @include breakpoint(medium) {
+      display: block;
+    }
   }
 
   &__thumb {
@@ -93,6 +95,7 @@
     opacity: 0.5;
     margin-bottom: 1px;
     margin-right: 1px;
+    cursor: pointer;
 
     &--selected {
       opacity: 1;
@@ -101,6 +104,7 @@
       margin-bottom: -1px;
       z-index: 1;
       position: relative;
+      cursor: default;
     }
   }
 
@@ -118,7 +122,6 @@
       font-size: rem-calc(14);
     }
   }
-
 }
 
 .cite {
@@ -129,7 +132,7 @@
     @include button-base;
     @include toolbar-button;
     @include breakpoint(small only) {
-      padding: .5em .75em;
+      padding: 0.5em 0.75em;
     }
     font-size: rem-calc(18);
 
@@ -143,7 +146,8 @@
     }
   }
 
-  &__menu-pos-wrap { //wraps __menu to anchor position from top
+  &__menu-pos-wrap {
+    //wraps __menu to anchor position from top
     position: absolute;
     top: 0;
     right: 0;
@@ -154,8 +158,12 @@
     background: rgba(black, 0.9);
     position: absolute;
     width: 75%;
-    @include breakpoint(medium) { width: 50%; }
-    @include breakpoint(large) { width: 25%; }
+    @include breakpoint(medium) {
+      width: 50%;
+    }
+    @include breakpoint(large) {
+      width: 25%;
+    }
     right: 1rem;
     border: 1px white solid;
     bottom: 0;
@@ -248,7 +256,7 @@
     padding-left: 1rem;
     @include icon-bullet(arrow_right, $size: 1.125rem, $left: 0.5rem, $top: 0);
 
-    &[aria-expanded=true]  {
+    &[aria-expanded='true'] {
       @include icon-bullet(arrow_down, $size: 1.125rem, $left: 0.5rem, $top: 0);
     }
   }
@@ -319,7 +327,6 @@
     }
   }
 }
-
 
 //-----------------------------------------------------------------------------
 // .record-related

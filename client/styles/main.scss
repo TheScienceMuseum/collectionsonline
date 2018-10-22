@@ -13,6 +13,7 @@
 // our base styles, then all components
 @import 'base/general';
 @import 'base/layout';
+@import 'components/accordion';
 @import 'components/awesomplete';
 @import 'components/archive-tree';
 @import 'components/betabar';
@@ -26,6 +27,8 @@
 @import 'components/home';
 @import 'components/loading';
 @import 'components/mediaplayer';
+@import 'components/masthead';
+@import 'components/menu';
 @import 'components/panel';
 @import 'components/record';
 @import 'components/result';

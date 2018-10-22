@@ -1,25 +1,25 @@
 <main id="main-page">
 {{> global/global-header}}
 
-<section class="searchbar searchbar--home">
-  <div class="row columns">
-
-    <h1 class="searchbar__strap">{{strap}}</h1>
-
-    {{> global/searchbox}}
-
-  </div>
-</section>
-
-
-<section class="home-features">
+<section class="home-banner">
   {{!-- update /client/styles/components/_home.scss if no of images changes --}}
   {{#each headerImages}}
     <img src="/assets/img/home/feature/1600/{{this}}" srcset="/assets/img/home/feature/800/{{this}} 800w, /assets/img/home/feature/1600/{{this}} 1600w" />
   {{/each}}
 
+  <div class="searchbar searchbar--home">
+    <div class="row columns">
+      <h1 class="searchbar__strap js-illuminate">{{strap}}</h1>
+      {{> global/searchbox}}
+      <h2 class="home-banner__intro">{{{intro}}}</h2>
+    </div>
+  </div>
+
+</section>
+
+<section class="home-features">
+
   <div class="row columns">
-    <h2 class="home-features__intro">{{{intro}}}</h2>
 
     <div class="featuresteps">
       <div class="featurestep featurestep--1">
@@ -51,14 +51,64 @@
 
 </section>
 
-<section class="home-collections">
-  {{#each collectionGroup}}
+<section class="home-map">
+  <div class="row columns">
+    <div class="smg-map">
+      <div class="smg-map__imgratio">
+        {{> global/smg-map}}    
+      </div>
+      <div class="smg-map__divider"></div>
+      <div class="smg-map__intro">
+        <svg class="smg-map__logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="118" height="71" viewBox="0 0 118 71">
+          <title>Science Museum Group</title>
+          <defs><mask id="logo"><image xlink:href="/assets/img/global/smg-logo.svg" width="118px" height="71px" /></mask></defs>
+          <rect x="0" y="0" width="118px" height="71px" fill="black" style="mask:url(#logo)" />
+        </svg>
+        <p class="smg-map__desc">{{{ smg__description }}}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="home-cards">
+  {{#each collectionThemes}}
     <div class="row">
-      <h2 class="home-collections__h columns">{{this.title}}</h2>
+      <h2 class="home-cards__h columns">{{this.title}}</h2>
+      {{#each this.theme}}
+        <div class="small-6 medium-3 columns">
+            <div class="resultcard resultcard--collection">
+              <figure class="resultcard__figure">
+                <img src="{{ this.figure }}" />
+              </figure>
+              <div class="resultcard__info">
+                <h4 class="resultcard__title">{{ this.title }}</h4>
+                <p class="resultcard__description">{{ this.description }}</p>
+                <ul class="resultcard__linklist">
+                  {{#each this.links}}
+                    <li>
+                      <a href="{{ this.link }}">{{ this.title }}</a>
+                    </li>
+                  {{/each}}
+                </ul>
+              </div>
+            </div>
+        </div>
+      {{/each}}
+    </div>
+  {{/each}}
+</section>
+
+{{#collectionCarousel}}
+  <section class="home-carousel">
+    <div class="row">
+      <h2 class="home-carousel__h columns">{{this.title}}</h2>
+      <div class="columns flickity-buttonholder"></div>
+    </div>
+    <div class="home-carousel__flickity">
       {{#each this.collection}}
-        <div class="{{ this.columns }} columns">
+        <div class="{{ this.columns }} home-carousel__cell">
           <a href="{{ this.link }}">
-            <div class="resultcard {{#if type}}resultcard--{{ this.type }}{{/if}}">
+            <div class="resultcard resultcard--dark {{#if type}}resultcard--{{ this.type }}{{/if}}">
               <figure class="resultcard__figure">
                 <img src="{{ this.figure }}" />
               </figure>
@@ -70,9 +120,10 @@
           </a>
         </div>
       {{/each}}
+      
     </div>
-  {{/each}}
-</section>
+  </section>
+{{/collectionCarousel}}
 
 
 {{> global/global-footer}}
