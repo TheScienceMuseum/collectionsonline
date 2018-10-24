@@ -1,6 +1,6 @@
 {
   "name": "collectionsonline",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Science Museum Group : Collections Online",
   "main": "index.js",
   "directories": {
