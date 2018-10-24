@@ -33,8 +33,8 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
-  'global/footer-banner',
-  Fs.readFileSync('./templates/partials/global/footer-banner.html', 'utf8')
+  'global/logo-panel',
+  Fs.readFileSync('./templates/partials/global/logo-panel.html', 'utf8')
 );
 
 Handlebars.registerPartial(

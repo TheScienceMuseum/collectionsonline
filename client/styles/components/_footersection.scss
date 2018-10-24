@@ -1,0 +1,31 @@
+.c-footersection {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  font-size: rem-calc(14);
+
+  &__h {
+    margin: 0;
+    font-size: rem-calc(16);
+    text-transform: uppercase;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    display: inline-block;
+    list-style: none;
+    margin: 0 1rem 0.5rem 0;
+    font-size: 1rem;
+  }
+
+  a {
+    color: grey(60);
+    text-decoration: underline;
+    &:hover {
+      color: black;
+    }
+  }
+}
