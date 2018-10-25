@@ -65,7 +65,7 @@ module.exports = {
       theme: [
         {
           title: 'Medicine',
-          description: 'Explore global medical advances over time',
+          description: 'Explore global medical developments and advances over time',
           figure: '/assets/img/home/collections/medicine.jpg',
           links: [
             {
@@ -92,7 +92,7 @@ module.exports = {
         },
         {
           title: 'Railways',
-          description: 'The changing use of the railways from engineering advances to seaside posters',
+          description: 'The development of railways from goods transport to commuter travel',
           figure: '/assets/img/home/collections/railway.jpg',
           links: [
             {

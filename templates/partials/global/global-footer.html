@@ -1,16 +1,11 @@
-{{>global/footer-banner}}
+{{>global/logo-panel}}
 
-<footer class="sitefooter">
-  <div class="row">
-  {{#each footer}}
-    <div class="small-6 medium-3 columns">
-      <ul class="ul-block">
-        <li><h6 class="sitefooter__h">{{title}}</h6></li>
-        {{#each links}}
-          <li><a href="{{url}}">{{name}}</a></li>
-        {{/each}}
-      </ul>
-    </div>
-  {{/each}}
+<footer class="c-footersection">
+  <div class="row columns">
+    <ul>
+      {{#each footer}}
+        <li><a href="{{url}}">{{name}}</a></li>
+      {{/each}}
+    </ul>
   </div>
 </footer>
