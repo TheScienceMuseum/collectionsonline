@@ -308,6 +308,9 @@
     // @include breakpoint(medium up) {
     //   display: block;
     // }
+    h3 {
+      font-size: 1em;
+    }
     @include breakpoint(large up) {
       margin-top: 2rem;
       font-size: 1.5em;
