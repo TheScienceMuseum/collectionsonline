@@ -290,7 +290,7 @@
     max-width: 512px;
   }
 
-  &__logo {
+  &__logo svg {
     width: 118px * 0.75;
     height: 71px * 0.75;
     display: none;
@@ -308,6 +308,9 @@
     // @include breakpoint(medium up) {
     //   display: block;
     // }
+    h3 {
+      font-size: 1em;
+    }
     @include breakpoint(large up) {
       margin-top: 2rem;
       font-size: 1.5em;

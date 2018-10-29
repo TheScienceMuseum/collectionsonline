@@ -170,7 +170,6 @@ module.exports = {
         {
           type: 'collection',
           title: 'The Babbage Papers',
-          description: 'The drawings and papers of mathematician and computer pioneer Charles Babbage',
           figure: '/assets/img/home/collections/babbage.jpg',
           columns: '',
           link: '/documents/aa110000003/the-babbage-papers'
@@ -186,7 +185,6 @@ module.exports = {
           type: 'collection',
           title: 'Information Age',
           figure: '/assets/img/home/collections/informationage.jpg',
-          description: 'Search across a snapshot of objects representing the development of the internet',
           columns: '',
           link: '/search/gallery/information-age-gallery%3A-web'
         },
@@ -201,7 +199,6 @@ module.exports = {
           type: 'collection',
           title: 'Cinematography',
           figure: '/assets/img/home/collections/cinematography.jpg',
-          description: 'Objects representing the history of cinema: from magic lanterns to digital technologies',
           columns: '',
           link: '/search/categories/cinematography/images'
         },

@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="108" height="57" viewBox="0 0 108 57">
+  <defs><mask id="smm-logo"><image xlink:href="/assets/img/global/smm-logo.svg" width="108" height="57" /></mask></defs>
+  <rect width="108" height="57" style="mask:url(#smm-logo)" />
+</svg>
