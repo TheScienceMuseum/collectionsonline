@@ -204,10 +204,10 @@ module.exports = {
         },
         {
           type: 'collection',
-          title: 'Smoking',
-          figure: '/assets/img/home/collections/smoking.jpg',
+          title: 'Psychometric Tests',
+          figure: '/assets/img/home/collections/psychometric-tests.jpg',
           columns: '',
-          link: '/search/categories/smoking'
+          link: '/search/objects/object_type/psychometric-test'
         },
         {
           type: 'collection',
