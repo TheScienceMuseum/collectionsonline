@@ -5,6 +5,10 @@
     "description": "Short description (1 or 2 lines max)",
     "link-to-gallery-page": "http://www.sciencemuseum.org.uk/"
   },
+  "Special Exhibition Gallery 1:  The Sun": {
+    "description": "Discover the incredible story of our closest star—the Sun—through fun hands-on experiences, unique objects, and stunning imagery in our latest exhibition.",
+    "link-to-gallery-page": "https://www.sciencemuseum.org.uk/see-and-do/the-sun-living-with-our-star"
+  },
   "Information Age Gallery: Cable": {
     "description": "The telegraph gave rise to the first global communication network, radically shrinking our world. Explore the objects on display in the Information Age Gallery and discover the ways cable still plays a vital role in an increasingly wireless world.",
     "link-to-gallery-page": "http://www.sciencemuseum.org.uk/visitmuseum/Plan_your_visit/exhibitions/information_age"
