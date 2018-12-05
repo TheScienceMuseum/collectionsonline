@@ -27,6 +27,7 @@ const wikipedia = (name) => new Promise((resolve, reject) => {
               page.mainImage()
                 .then((mainImageRes) => {
                   mainImage = mainImageRes;
+                  console.log(mainImage);
                   resolve({url, mainImage, infoBox, summary, title});
                 })
                 .catch((err) => {
