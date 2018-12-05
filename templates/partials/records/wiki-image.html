@@ -1,13 +1,11 @@
-{{#unless inProduction}}
-  <div class="panel" style="margin-bottom: 10px">
-    <img class="bleed" src="{{mainImage}}">
-    <div class="panel__text">
-      {{#if infoBox.general.caption}}<b>{{infoBox.general.caption}}</b>{{/if}}
-      {{#if infoBox.general.imageCaption}}<b>{{infoBox.general.imageCaption}}</b>{{/if}}
-      <p style="font-size: small">Image supplied by <a href="{{url}}">Wikipedia</a></p>
-    </div>
+<div class="panel" style="margin-bottom: 10px">
+  <img class="bleed" src="{{mainImage}}">
+  <div class="panel__text">
+    {{#if infoBox.general.caption}}<b>{{infoBox.general.caption}}</b>{{/if}}
+    {{#if infoBox.general.imageCaption}}<b>{{infoBox.general.imageCaption}}</b>{{/if}}
+    <p style="font-size: smaller"><i>We’re testing a new feature to show images of people and companies on our records. The images come from <a href="https://commons.wikimedia.org">Wikimedia Commons</a>. If you have a question or feedback please <a href="mailto:web.team@sciencemuseum.ac.uk">contact us</a></i></p>
   </div>
-{{/unless}}
+</div>
 
 {{#unless inProduction}}
   <div class="panel" style="margin-bottom: 10px">

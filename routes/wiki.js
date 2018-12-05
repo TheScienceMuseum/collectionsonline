@@ -23,6 +23,7 @@ const wikipedia = (name) => new Promise((resolve, reject) => {
           page.fullInfo()
             .then((infoBoxRes) => {
               infoBox = infoBoxRes;
+              if (!infoBox.general.caption) { infoBox.general.caption = 'Third party image from Wikimedia Commons'; }
               page.mainImage()
                 .then((mainImageRes) => {
                   mainImage = mainImageRes;
