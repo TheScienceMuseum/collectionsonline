@@ -27,10 +27,12 @@ const wikipedia = (name) => new Promise((resolve, reject) => {
               page.mainImage()
                 .then((mainImageRes) => {
                   mainImage = mainImageRes;
+                  console.log(mainImage);
                   resolve({url, mainImage, infoBox, summary, title});
                 })
                 .catch((err) => {
                   const noImageErr = 'Cannot read property \'imageinfo\' of undefined';
+                  console.log(noImageErr);
                   if (err.message === noImageErr) {
                     resolve({url, infoBox, summary, title});
                   }
