@@ -21,24 +21,25 @@ test(file + 'Sort a list of images by position, priority and date upload(sort pr
     {sort: '2015-05-05'}
   ];
 
-  /* images are now sorted by 'modification' field */
+  /* images are now sorted by 'modification' field - we should update test to reflect */
   const expected = [
-    { position: 1, sort: '2015-07-07' },
     { position: 1, sort: '2016-07-07' },
+    { position: 1, sort: '2015-07-07' },
     { position: 2, sort: '2016-07-07' },
     { position: 3, sort: '2016-07-07' },
-    { priority: 2, sort: '2015-05-07 16:10:41.0' },
     { priority: 2, sort: '2015-06-07 13:10:41.0' },
-    { priority: 1, sort: '2015-06-07 10:10:40.0' },
+    { priority: 2, sort: '2015-05-07 16:10:41.0' },
+    { priority: 1, sort: '2016-07-07' },
     { priority: 1, sort: '2015-06-07 13:10:41.0' },
     { priority: 1, sort: '2016-06-07 13:10:41.0' },
-    { priority: 1, sort: '2016-07-07' },
+    { priority: 1, sort: '2015-06-07 10:10:40.0' },
     { priority: 1, sort: '2016-07-07' },
     { sort: '2015-05-05' },
     { sort: '2015-06-06' }
+
   ];
 
-  /* images are now sorted by 'modification' field
+  /*
   const expected = [
     { position: 1, sort: '2015-07-07' },
     { position: 1, sort: '2016-07-07' },
