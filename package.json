@@ -15,6 +15,7 @@
     "catbox-redis": "^3.1.1",
     "clipboard": "^1.5.12",
     "elasticsearch": "^15.2.0",
+    "elasticsearch-sanitize": "^2.0.0",
     "fetch-ponyfill": "^4.0.0",
     "flickity": "^2.1.2",
     "flickity-imagesloaded": "^2.0.0",
