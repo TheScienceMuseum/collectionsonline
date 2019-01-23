@@ -16,11 +16,6 @@ module.exports = function (config) {
       link: '/objects/co56834'
     },
     {
-      figure: config.mediaPath + 'S/O/W/medium_A747.jpg',
-      caption: 'Human skin, tattooed with an eye ',
-      link: '/objects/co77622'
-    },
-    {
       figure: config.mediaPath + 'S/O/O/medium_a600027__0002_.jpg',
       caption: 'Model of an eye',
       link: '/objects/co77088'
