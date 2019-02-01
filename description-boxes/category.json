@@ -1129,13 +1129,7 @@
       }
     ]
   },
-  "Textile Machinery": {
-    "description": "Machinery and other objects - from carding engines and looms to printing blocks and fabric specimens - tell the story of Britain's role in textile manufacturing from the Industrial Revolution onwards.",
-    "sub-categories": [
-      {
-        "title": "Textile machinery",
-        "link": "/search/categories/textiles-machinery"
-      }
-    ]
+  "Textiles Machinery": {
+    "description": "Machinery and other objects - from carding engines and looms to printing blocks and fabric specimens - tell the story of Britain's role in textile manufacturing from the Industrial Revolution onwards."
   }
 }
