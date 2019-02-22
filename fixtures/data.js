@@ -77,8 +77,8 @@ module.exports = {
               link: '/search/categories/surgery'
             },
             {
-              title: 'Oriental medicine',
-              link: '/search/categories/oriental-medicine'
+              title: 'Asian medicine',
+              link: '/search/categories/asian-medicine'
             },
             {
               title: 'Therapeutics',
