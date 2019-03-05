@@ -7,8 +7,8 @@
     "attribution": "Science Museum Group",
     "logo": "http://collection.sciencemuseum.org.uk/assets/img/global/smg-logo.svg",
     "metadata": [
-        {"label": "Indentifier", "value": "{{data.attributes.identifier.0.value}}"}
-        {{#each data.attributes.lifecycle.creation}}
+        {"label": "Identifier", "value": "{{data.attributes.identifier.0.value}}"}
+        {{#each data.attributes.lifecycle.creation}}    
             {{#if date}},{{/if}}   
             {{#each date}}
                 {"label": "Date made", "value": "{{value}}"}
@@ -39,8 +39,7 @@
                     "@type": "sc:Canvas",
                     "label": "{{data.attributes.summary_title}}",
                     "height": {{processed.large.measurements.dimensions.0.value}},
-                    "width": {{processed.large.measurements.dimensions.1.value}},
-                    
+                    "width": {{processed.large.measurements.dimensions.1.value}},  
                     "images": [
                         {
                             "@id": "{processed.zoom.location}}",
@@ -53,7 +52,7 @@
                                 "format": "image/jpeg",
                                 "label": "{{source.title.0.value}}",
                                 "service": {
-                                    "@id": "{{processed.zoom.location}}",
+                                    "@id": {{processed.zoom.location}},
                                     "@context": "http://iiif.io/api/image/2/context.json",
                                     "profile": "http://iiif.io/api/image/2/level1.json"
                                 },
