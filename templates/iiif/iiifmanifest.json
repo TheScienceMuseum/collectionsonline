@@ -52,7 +52,7 @@
                                 "format": "image/jpeg",
                                 "label": "{{source.title.0.value}}",
                                 "service": {
-                                    "@id": {{processed.zoom.location}},
+                                    "@id": "{{processed.zoom.location}}",
                                     "@context": "http://iiif.io/api/image/2/context.json",
                                     "profile": "http://iiif.io/api/image/2/level1.json"
                                 },
