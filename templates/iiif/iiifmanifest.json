@@ -42,7 +42,7 @@
                     "width": {{processed.large.measurements.dimensions.1.value}},  
                     "images": [
                         {
-                            "@id": "{processed.zoom.location}}",
+                            "@id": "{{processed.zoom.location}}",
                             "@type": "oa:Annotation",
                             "motivation": "sc:painting",
                             "on": "{{../self}}/canvas/{{@index}}",
