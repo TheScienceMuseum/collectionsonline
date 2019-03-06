@@ -35,7 +35,7 @@
             "canvases": [
                 {{#each data.attributes.multimedia}}
                 {
-                    "@id": "{{self}}/canvas/{{@index}}",
+                    "@id": "{{../self}}/canvas/{{@index}}",
                     "@type": "sc:Canvas",
                     "label": "{{data.attributes.summary_title}}",
                     "height": {{processed.large.measurements.dimensions.0.value}},
