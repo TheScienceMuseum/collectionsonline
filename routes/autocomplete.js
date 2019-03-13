@@ -18,7 +18,7 @@ module.exports = (elastic, config) => ({
         size: Joi.number().integer().min(1).max(10).default(3)
       }
     },
-    handler: function (request, reply) {
+    handler: async function (request, h) {
       var responseType = contentType(request);
 
       if (responseType === 'json') {
@@ -26,15 +26,18 @@ module.exports = (elastic, config) => ({
 
         // display an autocomple list of 'What is' questions
         if (queryParams.q.startsWith('what')) {
-          return reply(whatis);
+          return h.response(whatis);
         }
 
-        autocomplete(elastic, queryParams, (err, results) => {
-          if (err) return reply(Boom.serverUnavailable(err));
-          return reply(autocompleteResultsToJsonApi(queryParams, results, config));
-        });
+        try {
+          const results = await autocomplete(elastic, queryParams);
+          return h.response(autocompleteResultsToJsonApi(queryParams, results, config));
+
+        } catch (err) {
+          return Boom.serverUnavailable(err);
+        }
       } else {
-        return reply();
+        return h.response();
       }
     }
   }
