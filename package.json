@@ -10,6 +10,7 @@
     "async": "^2.6.1",
     "awesomplete": "^1.1.1",
     "aws-sdk": "^2.350.0",
+    "axios": "^0.18.0",
     "boom": "^7.3.0",
     "catbox": "^10.0.6",
     "catbox-redis": "^4.2.4",
