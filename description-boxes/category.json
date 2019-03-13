@@ -657,7 +657,7 @@
       }
     ]
   },
-  "Penn-Gaskell": {
+  "Penn-Gaskell Collection": {
     "description": "This unique collection comprises hundreds of objects related to early aeronautica—from balloons to airmail—amassed by Miss Winifred Penn-Gaskell and donated on her death in 1949.",
     "sub-categories": [
       {
@@ -891,8 +891,7 @@
     ]
   },
   "Wellcome medals": {
-    "description": "This unique collection of numismatica with medical themes tells a range of stories, from the history of medical education and service to portraiture and industrial history."
-    ,
+    "description": "This unique collection of numismatica with medical themes tells a range of stories, from the history of medical education and service to portraiture and industrial history.",
     "sub-categories": [
       {
         "title": "Railway medals and tokens",
@@ -1008,7 +1007,6 @@
       }
     ]
   },
-
   "Photographic technology": {
     "description": "Explore objects that trace the invention of and innovation in photography from the 19th century onwards, including a huge selection of cameras spanning decades of technological development.",
     "sub-categories": [
