@@ -10,32 +10,27 @@ module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/objects/{id}/{slug?}',
   config: {
-    handler: function (request, reply) {
+    handler: async function (request, h) {
       var responseType = contentType(request);
 
       if (responseType !== 'notAcceptable') {
-        elastic.get({index: 'smg', type: 'object', id: TypeMapping.toInternal(request.params.id)}, (err, result) => {
-          if (err) {
-            if (err.status === 404) {
-              return reply(Boom.notFound());
-            }
-            return reply(Boom.serverUnavailable('unavailable'));
+        try {
+          const result = await elastic.get({ index: 'smg', type: 'object', id: TypeMapping.toInternal(request.params.id) });
+
+          const relatedItems = await getSimilarObjects(result, elastic);
+
+          const sortedRelatedItems = sortRelated(relatedItems);
+          const JSONData = buildJSONResponse(result, config, sortedRelatedItems);
+
+          return response(h, JSONData, 'object', responseType);
+        } catch (err) {
+          if (err.status === 404) {
+            return Boom.notFound(err);
           }
-
-          getSimilarObjects(result, elastic, function (err, relatedItems) {
-            if (err) {
-              relatedItems = null;
-            } else {
-              relatedItems = sortRelated(relatedItems);
-            }
-
-            const JSONData = buildJSONResponse(result, config, relatedItems);
-
-            return response(reply, JSONData, 'object', responseType);
-          });
-        });
+          return Boom.serverUnavailable('unavailable');
+        }
       } else {
-        return reply('Not Acceptable').code(406);
+        return h.response('Not Acceptable').code(406);
       }
     }
   }
