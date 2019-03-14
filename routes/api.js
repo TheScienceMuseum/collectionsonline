@@ -8,24 +8,24 @@ module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/api/{type}/{id}/{slug?}',
   config: {
-    handler: function (request, reply) {
-      elastic.get({index: 'smg', type: TypeMapping.toInternal(request.params.type), id: TypeMapping.toInternal(request.params.id)}, (err, result) => {
-        if (err) {
-          if (err.status === 404) {
-            return reply(Boom.notFound());
-          }
-          return reply(Boom.serverUnavailable('unavailable'));
-        }
+    handler: async function (request, h) {
+      try {
+        const result = await elastic.get({ index: 'smg', type: TypeMapping.toInternal(request.params.type), id: TypeMapping.toInternal(request.params.id) });
 
         var responseType = contentType(request);
-
         var apiData = beautify(buildJSONResponse(result, config), null, 2, 80);
+
         if (responseType === 'json') {
-          return reply(apiData).header('content-type', 'application/vnd.api+json');
+          return h.response(apiData).header('content-type', 'application/vnd.api+json');
         } else {
-          return reply.view('api', {api: apiData});
+          return h.view('api', { api: apiData });
         }
-      });
+      } catch (err) {
+        if (err.status === 404) {
+          return Boom.notFound();
+        }
+        return Boom.serverUnavailable('unavailable');
+      }
     }
   }
 });
