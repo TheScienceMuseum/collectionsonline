@@ -49,6 +49,6 @@ test('alternative param names', function (t) {
 });
 
 test('multiple param names', function (t) {
-  t.deepEqual(parseParameters({filters: 'places/London+France'}), {params: {type: 'all'}, categories: {places: 'London,France'}}, 'immges/has_images gives same result');
+  t.deepEqual(parseParameters({filters: 'places/London+France'}), {params: {type: 'all'}, categories: {places: ['London', 'France']}}, 'immges/has_images gives same result');
   t.end();
 });
