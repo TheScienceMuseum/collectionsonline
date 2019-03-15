@@ -97,7 +97,8 @@
     "watch:js": "watchify client/main.js -o 'exorcist public/bundle.js.map > public/bundle.js ' -d -v",
     "watch:css": "nodemon -e scss -x 'npm run build:css'",
     "watch:svg": "nodemon -e svg --ignore public/ -x 'npm run build:svg'",
-    "watch:server": "nodemon --watch . --ignore node_modules/ --ignore public/ -e js,html -x 'npm start'"
+    "watch:server": "nodemon --watch . --ignore node_modules/ --ignore public/ -e js,html -x 'npm start'",
+    "fix-semistandard": "semistandard --fix"
   },
   "repository": {
     "type": "git",
