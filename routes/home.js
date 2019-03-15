@@ -3,22 +3,21 @@ module.exports = () => ({
   method: 'GET',
   path: '/',
   config: {
-    handler: function (request, reply) {
+    handler: function (request, h) {
       var responseType = contentType(request);
       if (responseType === 'json') {
-        return reply('See https://github.com/TheScienceMuseum/collectionsonline/wiki/Collections-Online-API on how to use the api')
-        .header('content-type', 'application/vnd.api+json');
+        return h.response('See https://github.com/TheScienceMuseum/collectionsonline/wiki/Collections-Online-API on how to use the api')
       }
 
       if (responseType === 'html') {
         const data = require('../fixtures/data');
         data.footer = require('../fixtures/footer');
         data.museums = require('../fixtures/museums');
-        return reply.view('home', data);
+        return h.view('home', data);
       }
 
       if (responseType === 'notAcceptable') {
-        return reply('Not Acceptable').code(406);
+        return h.response('Not Acceptable').code(406);
       }
     }
   }

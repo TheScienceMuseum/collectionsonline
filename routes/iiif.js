@@ -9,28 +9,28 @@ module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/iiif/{type}/{id}/{slug?}',
   config: {
-    handler: function (request, reply) {
+    handler: async function (request, h) {
       if (!(request.params.type === 'objects' || request.params.type === 'documents')) {
-        return reply(Boom.notFound());
+        return Boom.notFound();
       }
 
-      elastic.get({index: 'smg', type: TypeMapping.toInternal(request.params.type), id: TypeMapping.toInternal(request.params.id)}, (err, result) => {
-        if (err) {
-          if (err.status === 404) {
-            return reply(Boom.notFound());
-          }
-          return reply(Boom.serverUnavailable('unavailable'));
-        }
+      try {
+        const result = await elastic.get({ index: 'smg', type: TypeMapping.toInternal(request.params.type), id: TypeMapping.toInternal(request.params.id) });
 
         var iiifData = buildJSONResponse(result, config);
         iiifData.self = config.rootUrl + '/iiif/' + iiifData.data.type + '/' + iiifData.data.id;
 
-        return reply(
+        return h.response(
           Handlebars.compile(
             fs.readFileSync(path.join(__dirname, '/../templates/iiif/iiifmanifest.json'), 'utf8')
           )(iiifData)
         ).header('content-type', 'application/json');
-      });
+      } catch (err) {
+        if (err.status === 404) {
+          return Boom.notFound();
+        }
+        return Boom.serverUnavailable('unavailable');
+      }
     }
   }
 });

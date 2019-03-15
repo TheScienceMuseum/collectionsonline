@@ -8,24 +8,21 @@ module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/iris/{type}/{id}/{slug?}',
   config: {
-    handler: function (request, reply) {
+    handler: async function (request, h) {
       if (!(request.params.type === 'objects' || request.params.type === 'documents')) {
-        return reply(Boom.notFound());
+        return Boom.notFound();
       }
 
-      elastic.get({index: 'smg', type: TypeMapping.toInternal(request.params.type), id: TypeMapping.toInternal(request.params.id)}, (err, result) => {
-        if (err) {
-          if (err.status === 404) {
-            return reply(Boom.notFound());
-          }
-          return reply(Boom.serverUnavailable('unavailable'));
-        }
+      try {
+        const result = await elastic.get({ index: 'smg', type: TypeMapping.toInternal(request.params.type), id: TypeMapping.toInternal(request.params.id) });
+
         var apiData = buildJSONResponse(result, config);
 
         var inProduction = config && config.NODE_ENV === 'production';
+
         if (!inProduction) {
           // AWS Rekogition
-          var rekognition = new AWS.Rekognition({region: 'eu-west-1'});
+          var rekognition = new AWS.Rekognition({ region: 'eu-west-1' });
           var imageURL = apiData.data.attributes.multimedia[0].processed.medium_thumbnail.location;
           var s3path = 'media/' + imageURL.slice(config.mediaPath.length);
 
@@ -37,15 +34,19 @@ module.exports = (elastic, config) => ({
               }
             }
           };
-          rekognition.detectLabels(params, function (err, data) {
-            if (err) {
-              console.log(err, err.stack);
-            }
-            data = beautify(data, null, 2, 80);
-            return reply(data).header('content-type', 'application/json');
-          });
+
+          const data = await rekognition.detectLabels(params).promise();
+
+          beautifiedData = beautify(data, null, 2, 80);
+
+          return h.response(beautifiedData).header('content-type', 'application/json');
         }
-      });
+      } catch (err) {
+        if (err.status === 404) {
+          return Boom.notFound();
+        }
+        return Boom.serverUnavailable('unavailable');
+      }
     }
   }
 });

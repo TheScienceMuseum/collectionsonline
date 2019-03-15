@@ -14,7 +14,7 @@ module.exports = (elastic, config) => ({
     handler: function (request, h) {
       var responseType = contentType(request);
       if (responseType === 'json') {
-        h.response().code(204);
+        return h.response().code(204);
       } else {
         return h.response();
       }
