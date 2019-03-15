@@ -17,9 +17,16 @@ module.exports = (elastic, config) => ({
         try {
           const result = await elastic.get({ index: 'smg', type: 'agent', id: TypeMapping.toInternal(request.params.id) });
 
-          const relatedItems = await getRelatedItems(elastic, request.params.id);
+          let relatedItems;
+          let sortedRelatedItems;
 
-          const sortedRelatedItems = sortRelated(relatedItems);
+          try {
+            relatedItems = await getRelatedItems(elastic, request.params.id);
+            sortedRelatedItems = sortRelated(relatedItems);
+          } catch (err) {
+            sortedRelatedItems = null;
+          }
+
           const JSONData = buildJSONResponse(result, config, sortedRelatedItems);
 
           return response(h, JSONData, 'person', responseType);
@@ -27,6 +34,7 @@ module.exports = (elastic, config) => ({
           if (err.status === 404) {
             return Boom.notFound();
           }
+
           return Boom.serverUnavailable('unavailable');
         }
       } else {

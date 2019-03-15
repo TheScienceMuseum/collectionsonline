@@ -2,67 +2,66 @@ const testWithServer = require('./helpers/test-with-server');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
 
-testWithServer(file + 'Request for Archive HTML Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Archive HTML Page', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/documents/aa110071448',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Attempt to request for Archive HTML Page with wrong accept header', {}, (t, ctx) => {
+testWithServer(file + 'Attempt to request for Archive HTML Page with wrong accept header', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/documents/aa110071448',
-    headers: {'Accept': 'wrongContent'}
+    headers: { 'Accept': 'wrongContent' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 406, 'Wrong accept header');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 406, 'Wrong accept header');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Archive JSON Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Archive JSON Page', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/documents/aa110071448',
-    headers: {'Accept': 'application/vnd.api+json'}
+    headers: { 'Accept': 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Archive HTML Page for a wrong id', {}, (t, ctx) => {
+testWithServer(file + 'Request for Archive HTML Page for a wrong id', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/documents/aawrongid',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 404, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 404, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-// testWithServer(file + 'Request for Archive HTML Page with expanded children', {}, (t, ctx) => {
+// testWithServer(file + 'Request for Archive HTML Page with expanded children', {}, async (t, ctx) => {
 //   t.plan(1);
 //
 //   const htmlRequest = {
@@ -71,75 +70,76 @@ testWithServer(file + 'Request for Archive HTML Page for a wrong id', {}, (t, ct
 //     headers: {'Accept': 'text/html'}
 //   };
 //
-//   ctx.server.inject(htmlRequest, (res) => {
+//   const res = await ctx.server.inject(htmlRequest);
 //     t.equal(res.statusCode, 200, 'Status code was as expected');
+//     await ctx.server.stop();
 //     t.end();
 //   });
 // });
 
-testWithServer(file + 'Request for Object HTML Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object HTML Page', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/objects/co503905',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Object HTML Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object HTML Page', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/objects/co185953',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Object HTML Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object HTML Page', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/objects/co129834',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Object HTML Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object HTML Page', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
     url: '/objects/co429651',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.ok(res.payload.indexOf('<dd>Unidentified</dd>' > -1), '');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.ok(res.payload.indexOf('<dd>Unidentified</dd>' > -1), '');
+  await ctx.server.stop();
+  t.end();
 });
 
 /* This is failing due to 'Unknown maker' no longer appeaing in index and should be fixed
-testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
+testWithServer('Request for Object HTML Page', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
@@ -148,436 +148,436 @@ testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
     headers: {'Accept': 'text/html'}
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
+  const res = await ctx.server.inject(htmlRequest);
     t.equal(res.statusCode, 200, 'Status code was as expected');
     t.ok(res.payload.indexOf('<dd>Unknown</dd>' > -1), '');
+    await ctx.server.stop();
     t.end();
-  });
 });
 */
 
-testWithServer('Request for Object HTML Page', {}, (t, ctx) => {
+testWithServer('Request for Object HTML Page', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/objects/co77088',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Object HTML Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object HTML Page', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/objects/co77128',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Object HTML Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object HTML Page', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/objects/co62243',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Object HTML Page for a wrong id', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object HTML Page for a wrong id', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/objects/cowrongid',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 404, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 404, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Person HTML Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Person HTML Page', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/people/cp17351',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Person HTML Page who doesn\'t exists', {}, (t, ctx) => {
+testWithServer(file + 'Request for Person HTML Page who doesn\'t exists', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/people/cpwrongid',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 404, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 404, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Person HTML Page with related items', {}, (t, ctx) => {
+testWithServer(file + 'Request for Person HTML Page with related items', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
     url: '/people/ap8',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.ok(res.payload.indexOf('Babbage') > -1, 'Page loaded correctly');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.ok(res.payload.indexOf('Babbage') > -1, 'Page loaded correctly');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Person JSON Page with no related items', {}, (t, ctx) => {
+testWithServer(file + 'Request for Person JSON Page with no related items', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/people/ap24329',
-    headers: {'Accept': 'application/vnd.api+json'}
+    headers: { 'Accept': 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Archive JSON', {}, (t, ctx) => {
+testWithServer(file + 'Request for Archive JSON', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
     url: '/documents/aa110000003',
-    headers: {'Accept': 'application/vnd.api+json'}
+    headers: { 'Accept': 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.equal(res.headers['content-type'], 'application/vnd.api+json', 'JSONAPI response header should be application/vnd.api+json');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.equal(res.headers['content-type'], 'application/vnd.api+json', 'JSONAPI response header should be application/vnd.api+json');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Archive JSON with error', {}, (t, ctx) => {
+testWithServer(file + 'Request for Archive JSON with error', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/documents/aawrongid',
-    headers: {'Accept': 'application/vnd.api+json'}
+    headers: { 'Accept': 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 404, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 404, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Object JSON Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object JSON Page', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
     url: '/objects/co37959',
-    headers: {'Accept': 'application/vnd.api+json'}
+    headers: { 'Accept': 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.ok(res.headers['content-type'].indexOf('application/vnd.api+json') > -1, 'JSONAPI response header should be application/vnd.api+json');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.ok(res.headers['content-type'].indexOf('application/vnd.api+json') > -1, 'JSONAPI response header should be application/vnd.api+json');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Object JSON Page for a wrong id', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object JSON Page for a wrong id', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/objects/cowrongid',
-    headers: {'Accept': 'application/vnd.api+json'}
+    headers: { 'Accept': 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 404, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 404, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Object Page with wrong accept headers', {}, (t, ctx) => {
+testWithServer(file + 'Request for Object Page with wrong accept headers', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/objects/cowrongid',
-    headers: {'Accept': 'wrongContent'}
+    headers: { 'Accept': 'wrongContent' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 406, 'Status code was as expected, 406');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 406, 'Status code was as expected, 406');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Person JSON Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Person JSON Page', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
     url: '/people/cp17351',
-    headers: {'Accept': 'application/vnd.api+json'}
+    headers: { 'Accept': 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.ok(res.headers['content-type'].indexOf('application/vnd.api+json') > -1, 'JSONAPI response header should be application/vnd.api+json');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.ok(res.headers['content-type'].indexOf('application/vnd.api+json') > -1, 'JSONAPI response header should be application/vnd.api+json');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Person JSON Page for a wrong id', {}, (t, ctx) => {
+testWithServer(file + 'Request for Person JSON Page for a wrong id', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/people/cpwrongid',
-    headers: {'Accept': 'application/vnd.api+json'}
+    headers: { 'Accept': 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.statusCode, 404, 'status is 404');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.ok(res.statusCode, 404, 'status is 404');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Person JSON Page with the wrong accept headers', {}, (t, ctx) => {
+testWithServer(file + 'Request for Person JSON Page with the wrong accept headers', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/people/cp17351',
-    headers: {'Accept': 'wrongContent'}
+    headers: { 'Accept': 'wrongContent' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 406, 'Status code was as expected as 406');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 406, 'Status code was as expected as 406');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for home JSON Page', {}, (t, ctx) => {
+testWithServer(file + 'Request for home JSON Page', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
     url: '/',
-    headers: {'Accept': 'application/vnd.api+json'}
+    headers: { 'Accept': 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.statusCode, 200, 'status is 200');
-    t.ok(res.payload === 'See https://github.com/TheScienceMuseum/collectionsonline/wiki/Collections-Online-API on how to use the api', 'Response json home page ok');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.ok(res.statusCode, 200, 'status is 200');
+  t.ok(res.payload === 'See https://github.com/TheScienceMuseum/collectionsonline/wiki/Collections-Online-API on how to use the api', 'Response json home page ok');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer('SCM Short url', {}, (t, ctx) => {
+testWithServer('SCM Short url', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
     url: '/scm',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(res.headers.location, '/search/museum/science-museum', 'redirects to search on Science Museum');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.ok(res.statusCode, 200, 'status is 200');
+  t.equal(res.headers.location, '/search/museum/science-museum', 'redirects to search on Science Museum');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer('NRM Short url', {}, (t, ctx) => {
+testWithServer('NRM Short url', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
     url: '/nrm',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(res.headers.location, '/search/museum/national-railway-museum', 'redirects to search on Railway Museum');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.ok(res.statusCode, 200, 'status is 200');
+  t.equal(res.headers.location, '/search/museum/national-railway-museum', 'redirects to search on Railway Museum');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer('NMEM Short url', {}, (t, ctx) => {
+testWithServer('NMEM Short url', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
     url: '/nmem',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(res.headers.location, '/search/museum/national-media-museum', 'redirects to search on Media Museum');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.ok(res.statusCode, 200, 'status is 200');
+  t.equal(res.headers.location, '/search/museum/national-media-museum', 'redirects to search on Media Museum');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer('MSI Short url', {}, (t, ctx) => {
+testWithServer('MSI Short url', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
     url: '/msi',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(res.headers.location, '/search/museum/museum-of-science-and-industry', 'redirects to search on Museum of Science and Industry');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.ok(res.statusCode, 200, 'status is 200');
+  t.equal(res.headers.location, '/search/museum/museum-of-science-and-industry', 'redirects to search on Museum of Science and Industry');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer('Short url with bad request', {}, (t, ctx) => {
+testWithServer('Short url with bad request', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/msi?123=456',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.statusCode, 400, 'status is 400, bad request');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.ok(res.statusCode, 400, 'status is 400, bad request');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer('One gallery selected', {}, (t, ctx) => {
+testWithServer('One gallery selected', {}, async (t, ctx) => {
   t.plan(3);
 
   const htmlRequest = {
     method: 'GET',
     url: '/search?q=locomotive&filter[gallery]=Station-Hall',
-    headers: {'Accept': 'application/json'}
+    headers: { 'Accept': 'application/json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    var result = JSON.parse(res.payload).meta.filters.museum;
-    t.ok(res.statusCode, 200, 'status is 200');
-    t.equal(result.length, 1);
-    t.equal(result[0].value, 'National Railway Museum', 'Selects relevant museum for gallery');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  var result = JSON.parse(res.payload).meta.filters.museum;
+  t.ok(res.statusCode, 200, 'status is 200');
+  t.equal(result.length, 1);
+  t.equal(result[0].value, 'National Railway Museum', 'Selects relevant museum for gallery');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer('Specific api endpoint', {}, (t, ctx) => {
+testWithServer('Specific api endpoint', {}, async (t, ctx) => {
   t.plan(3);
 
   const htmlRequest = {
     method: 'GET',
     url: '/api/objects/co8094437',
-    headers: {'Accept': 'application/json'}
+    headers: { 'Accept': 'application/json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    var result = JSON.parse(res.payload);
-    t.ok(res.statusCode, 200, 'status is 200');
-    t.ok(result, 'Result was json');
-    t.equal(result.data.attributes.admin.uid, 'co8094437', 'Correct object returned');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  var result = JSON.parse(res.payload);
+  t.ok(res.statusCode, 200, 'status is 200');
+  t.ok(result, 'Result was json');
+  t.equal(result.data.attributes.admin.uid, 'co8094437', 'Correct object returned');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer('Specific api endpoint, html response', {}, (t, ctx) => {
+testWithServer('Specific api endpoint, html response', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
     url: '/api/objects/co8094437',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.statusCode, 200, 'status is 200');
-    t.ok(res.headers['content-type'].indexOf('text/html') > -1, 'html response');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.ok(res.statusCode, 200, 'status is 200');
+  t.ok(res.headers['content-type'].indexOf('text/html') > -1, 'html response');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer('non-existent api endpoint', {}, (t, ctx) => {
+testWithServer('non-existent api endpoint', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
     url: '/api/objects/cowrongid',
-    headers: {'Accept': 'application/json'}
+    headers: { 'Accept': 'application/json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 404, 'status is 404');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 404, 'status is 404');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer('Multiple Makers', {}, (t, ctx) => {
+testWithServer('Multiple Makers', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
     url: '/objects/co63869',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'status is ok');
-    t.ok(res.payload.indexOf('Germany') > -1 && res.payload.indexOf('Spain') > -1, 'Renders multiple makers correctly');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'status is ok');
+  t.ok(res.payload.indexOf('Germany') > -1 && res.payload.indexOf('Spain') > -1, 'Renders multiple makers correctly');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer('Robot.txt route', {}, (t, ctx) => {
+testWithServer('Robot.txt route', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
@@ -585,95 +585,95 @@ testWithServer('Robot.txt route', {}, (t, ctx) => {
     url: '/robots.txt'
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'status is ok');
-    t.ok(res.payload.indexOf('sitemap: ') > -1, 'The /robot.txt contains the sitemap url');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'status is ok');
+  t.ok(res.payload.indexOf('sitemap: ') > -1, 'The /robot.txt contains the sitemap url');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer('Restful Style Search Routes: html', {}, (t, ctx) => {
+testWithServer('Restful Style Search Routes: html', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/search/categories/art',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'redirect status code');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'redirect status code');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer('Restful Style Search Routes: html', {}, (t, ctx) => {
+testWithServer('Restful Style Search Routes: html', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/search/objects/categories/art',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'redirect status code');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'redirect status code');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer('Restful Style Search Routes: json', {}, (t, ctx) => {
+testWithServer('Restful Style Search Routes: json', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/search/categories/art',
-    headers: {'Accept': 'application/json'}
+    headers: { 'Accept': 'application/json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'redirect status code');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'redirect status code');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer('Restful Style Search Routes: json', {}, (t, ctx) => {
+testWithServer('Restful Style Search Routes: json', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/search/objects/categories/art',
-    headers: {'Accept': 'application/json'}
+    headers: { 'Accept': 'application/json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'redirect status code');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'redirect status code');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Related Articles from NSMM', {}, (t, ctx) => {
+testWithServer(file + 'Request for Related Articles from NSMM', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/articles/co18634',
-    headers: {'Accept': 'application/json'}
+    headers: { 'Accept': 'application/json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.ok(JSON.parse(res.payload), 'Result is JSON');
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.ok(JSON.parse(res.payload), 'Result is JSON');
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Related Articles from MSI', {}, (t, ctx) => {
+testWithServer(file + 'Request for Related Articles from MSI', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/articles/co8406299',
-    headers: {'Accept': 'application/json'}
+    headers: { 'Accept': 'application/json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.ok(JSON.parse(res.payload), 'Result is JSON');
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.ok(JSON.parse(res.payload), 'Result is JSON');
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
 /*
-testWithServer(file + 'iiif request', {}, (t, ctx) => {
+testWithServer(file + 'iiif request', {}, async (t, ctx) => {
   const request = {
     method: 'GET',
     url: '/iiif/objects/co62243',
@@ -683,105 +683,105 @@ testWithServer(file + 'iiif request', {}, (t, ctx) => {
   ctx.server.inject(request, (res) => {
     t.ok(JSON.parse(res.payload), 'Result is JSON');
     t.equal(res.statusCode, 200, 'Status code was as expected');
+    await ctx.server.stop();
     t.end();
-  });
 });
 */
 
-testWithServer(file + 'Request for Results list page', {}, (t, ctx) => {
+testWithServer(file + 'Request for Results list page', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/search?page[type]=results-list',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.payload.indexOf('resultlist__info') > -1);
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.ok(res.payload.indexOf('resultlist__info') > -1);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Wikipedia Data', {}, (t, ctx) => {
+testWithServer(file + 'Request for Wikipedia Data', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/wiki/Albert_Einstein'
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    var result = JSON.parse(res.payload);
-    t.equal(result.url, 'https://en.wikipedia.org/wiki/Albert_Einstein', 'gets Einsteins wikipedia page');
-    t.ok(result.mainImage, 'returns an image from wikipedia');
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  var result = JSON.parse(res.payload);
+  t.equal(result.url, 'https://en.wikipedia.org/wiki/Albert_Einstein', 'gets Einsteins wikipedia page');
+  t.ok(result.mainImage, 'returns an image from wikipedia');
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Request for Wikipedia in record Data', {}, (t, ctx) => {
+testWithServer(file + 'Request for Wikipedia in record Data', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/people/cp37054',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
 });
 
 /*
-testWithServer(file + 'Request for Wikipedia Data with no image', {}, (t, ctx) => {
+testWithServer(file + 'Request for Wikipedia Data with no image', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/wiki/Accession_number_(library_science)'
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
+  const res = await ctx.server.inject(htmlRequest);
     var result = JSON.parse(res.payload);
     t.equal(result.url, 'https://en.wikipedia.org/wiki/Accession_number_(library_science)', 'gets Accession_number_(library_science) Wikipedia page');
     t.notOk(result.mainImage, 'returns no image from wikipedia');
     t.equal(res.statusCode, 200, 'Status code was as expected');
+    await ctx.server.stop();
     t.end();
-  });
 });
 */
 
-testWithServer(file + 'Not found', {}, (t, ctx) => {
+testWithServer(file + 'Not found', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/bad/request',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusMessage, 'Not Found');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusMessage, 'Not Found');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Key category search', {}, (t, ctx) => {
+testWithServer(file + 'Key category search', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/search?q=art',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.headers.location, '/search/categories/art');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.headers.location, '/search/categories/art');
+  await ctx.server.stop();
+  t.end();
 });
 
-testWithServer(file + 'Key category search - synonym', {}, (t, ctx) => {
+testWithServer(file + 'Key category search - synonym', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/search?q=telephones',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.headers.location, '/search/categories/telecommunications');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.headers.location, '/search/categories/telecommunications');
+  await ctx.server.stop();
+  t.end();
 });

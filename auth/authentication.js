@@ -1,19 +1,17 @@
 const validateToken = require('./validate-token');
 const config = require('../config');
-exports.register = function (server, options, next) {
-  server.state('token', {
-    isSecure: false
-  });
-  server.auth.strategy('jwt', 'jwt', false,
-    {
-      key: config.JWT_SECRET,
-      validateFunc: validateToken,
-      verifyOptions: { ignoreExpiration: true }
+exports.plugin = {
+  name: 'Authentication',
+  register: async function (server, options) {
+    server.state('token', {
+      isSecure: false
     });
-  server.auth.default('jwt');
-  return next();
-};
-
-exports.register.attributes = {
-  name: 'Authentication'
-};
+    server.auth.strategy('jwt', 'jwt',
+      {
+        key: config.JWT_SECRET,
+        validate: validateToken,
+        verifyOptions: { ignoreExpiration: true }
+      });
+    server.auth.default('jwt');
+  }
+}

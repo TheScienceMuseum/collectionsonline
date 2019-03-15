@@ -29,7 +29,6 @@ module.exports = function (elastic, config) {
 
       jsonResult.found = true;
       jsonResult.error = null;
-      jsonResult.searchError = null;
     } catch (error) {
       jsonResult.error = error;
     }

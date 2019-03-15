@@ -50,7 +50,7 @@ exports.plugin = {
         };
       }
 
-      h.continue; // Whatever Hapi wants to do...
+      return h.continue; // Whatever Hapi wants to do...
     });
   }
 };

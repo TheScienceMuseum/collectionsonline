@@ -83,7 +83,11 @@ module.exports = (elastic, config) => ({
             .header('content-type', 'application/vnd.api+json');
         }
       } catch (err) {
-        return Boom.badRequest(err);
+        if (err.isJoi) {
+          return Boom.badRequest();
+        }
+
+        return Boom.serverUnavailable();
       }
     }
   }

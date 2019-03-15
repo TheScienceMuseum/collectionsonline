@@ -41,58 +41,58 @@ Async.parallel([
     }, cb);
   },
 
-/**
-* Create mock elasticsaerch database for get and search tests
-*/
+  /**
+  * Create mock elasticsaerch database for get and search tests
+  */
   (cb) => {
     const dataToCopy = [
       { type: 'archive', id: 'aa110000316' },
       { type: 'archive', id: 'aawrongid' },
-      {type: 'archive', id: 'aa110069402'},
-      {type: 'archive', id: 'aa110000003'},
-      {type: 'archive', id: 'aa110066453'},
-      {type: 'object', id: 'co37959'},
-      {type: 'object', id: 'cowrongid'},
-      {type: 'object', id: 'co67812'},
-      {type: 'object', id: 'co520148'},
-      {type: 'object', id: 'co8229027'},
-      {type: 'object', id: 'co114820'},
-      {type: 'agent', id: 'cp17351'},
-      {type: 'agent', id: 'cp36993'},
-      {type: 'agent', id: 'cpwrongid'},
-      {type: 'agent', id: 'ap24329'}
+      { type: 'archive', id: 'aa110069402' },
+      { type: 'archive', id: 'aa110000003' },
+      { type: 'archive', id: 'aa110066453' },
+      { type: 'object', id: 'co37959' },
+      { type: 'object', id: 'cowrongid' },
+      { type: 'object', id: 'co67812' },
+      { type: 'object', id: 'co520148' },
+      { type: 'object', id: 'co8229027' },
+      { type: 'object', id: 'co114820' },
+      { type: 'agent', id: 'cp17351' },
+      { type: 'agent', id: 'cp36993' },
+      { type: 'agent', id: 'cpwrongid' },
+      { type: 'agent', id: 'ap24329' }
     ];
 
     const searchToCopy = [
-      {q: 'babbage', params: {type: 'documents'}},
-      {q: 'test', params: {}},
-      {q: 'test people', params: {type: 'people'}},
-      {q: 'test objects', params: {type: 'objects'}},
-      {q: 'test documents', params: {type: 'documents'}},
-      {q: 'ada', params: {}},
-      {q: 'rocket', params: {type: 'objects'}},
-      {q: 'ada objects', params: {type: 'objects'}},
-      {q: '2016-5008/49', params: {type: 'objects'}},
-      {q: 'ada people', params: {type: 'people'}},
-      {q: 'Lumière', params: {type: 'people'}},
-      {q: 'Lumière filmmaker', queryParams: {'filter[occupation]': 'filmmaker'}, params: {type: 'people'}},
-      {q: 'hawking painting', params: {}},
-      {q: 'all', params: {}},
-      {q: 'plumed hat', params: {type: 'objects'}}
+      { q: 'babbage', params: { type: 'documents' } },
+      { q: 'test', params: {} },
+      { q: 'test people', params: { type: 'people' } },
+      { q: 'test objects', params: { type: 'objects' } },
+      { q: 'test documents', params: { type: 'documents' } },
+      { q: 'ada', params: {} },
+      { q: 'rocket', params: { type: 'objects' } },
+      { q: 'ada objects', params: { type: 'objects' } },
+      { q: '2016-5008/49', params: { type: 'objects' } },
+      { q: 'ada people', params: { type: 'people' } },
+      { q: 'Lumière', params: { type: 'people' } },
+      { q: 'Lumière filmmaker', queryParams: { 'filter[occupation]': 'filmmaker' }, params: { type: 'people' } },
+      { q: 'hawking painting', params: {} },
+      { q: 'all', params: {} },
+      { q: 'plumed hat', params: { type: 'objects' } }
     ];
 
     const related = [
-      {id: 'cp36993'},
-      {id: 'cp17351'},
-      {id: 'cp2735'}
+      { id: 'cp36993' },
+      { id: 'cp17351' },
+      { id: 'cp2735' }
     ];
 
     const children = [
-      {id: 'aa110000003'},
-      {id: 'aa110000316'},
-      {id: 'aa110000036'},
-      {id: 'aa110066453'},
-      {id: 'aa110000009'}
+      { id: 'aa110000003' },
+      { id: 'aa110000316' },
+      { id: 'aa110000036' },
+      { id: 'aa110066453' },
+      { id: 'aa110000009' }
     ];
 
     const autocompletes = [
@@ -114,11 +114,12 @@ Async.parallel([
   },
 
   // Aggregations
-  (cb) => {
-    search(elastic, createQueryParams('html', {query: {q: 'test'}, params: {}}), (err, response) => {
-      if (err) throw err;
+  async (cb) => {
+    try {
+      const response = await search(elastic, createQueryParams('html', { query: { q: 'test' }, params: {} }));
       Fs.writeFile(dirData + '/../../helpers/aggregations-all.json', JSON.stringify(response.aggregations.all, null, 2), 'utf-8', cb);
-    });
+    }
+    catch (err) { throw err }
   }
 ], (err) => {
   if (err) throw err;

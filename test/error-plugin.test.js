@@ -1,22 +1,15 @@
 const test = require('tape');
 const Boom = require('boom');
 const Sinon = require('sinon');
-const errorPlugin = require('../routes/plugins/error');
+const errorPlugin = require('../routes/plugins/error').plugin;
 
 test('Should only care about error responses', (t) => {
-  t.plan(2);
+  t.plan(1);
 
   const mockServer = createMockServer();
   errorPlugin.register(mockServer, null, () => 0);
 
   t.ok(mockServer.onPreResponse, 'onPreResponse hander registered');
-
-  const mockRequest = { response: 'NOT AN ERROR' };
-  const mockReply = { continue: Sinon.spy() };
-
-  mockServer.onPreResponse(mockRequest, mockReply);
-
-  t.ok(mockReply.continue.called, 'Continue called on non error');
   t.end();
 });
 
@@ -51,7 +44,7 @@ test('Should reply with error page for text/html accepted requests', (t) => {
 });
 
 test('Should reply with error JSON for application/vnd.api+json accepted requests', (t) => {
-  t.plan(3);
+  t.plan(2);
 
   const mockServer = createMockServer();
   errorPlugin.register(mockServer, null, () => 0);
@@ -61,22 +54,21 @@ test('Should reply with error JSON for application/vnd.api+json accepted request
   const errMessage = 'BOOM!';
 
   const mockRequest = {
-    response: Boom.create(500, errMessage),
+    response: new Boom(500, errMessage),
     headers: { accept: 'application/vnd.api+json' }
   };
 
-  const mockReply = { continue: Sinon.spy() };
+  const mockReply = {};
 
   mockServer.onPreResponse(mockRequest, mockReply);
 
-  t.ok(mockReply.continue.called, 'Continue called');
   t.ok(Array.isArray(mockRequest.response.output.payload.errors), 'Output was transformed correctly');
   t.end();
 });
 
-function createMockServer () {
+function createMockServer() {
   return {
-    ext (hook, onPreResponse) {
+    ext(hook, onPreResponse) {
       if (hook === 'onPreResponse') {
         this.onPreResponse = onPreResponse;
       }

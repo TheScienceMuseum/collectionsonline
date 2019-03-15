@@ -3,7 +3,7 @@ const testWithServer = require('./helpers/test-with-server');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
 
-testWithServer(file + 'Should accept params in filter[PARAM_NAME] format', {}, (t, ctx) => {
+testWithServer(file + 'Should accept params in filter[PARAM_NAME] format', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -16,13 +16,13 @@ testWithServer(file + 'Should accept params in filter[PARAM_NAME] format', {}, (
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept date[from] in format YYYY', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept date[from] in format YYYY', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -31,13 +31,13 @@ testWithServer(file + 'Should accept date[from] in format YYYY', {}, (t, ctx) =>
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should not accept date[from] in format YYYY-MM', {}, (t, ctx) => {
+
+testWithServer(file + 'Should not accept date[from] in format YYYY-MM', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -46,13 +46,13 @@ testWithServer(file + 'Should not accept date[from] in format YYYY-MM', {}, (t, 
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 400, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should not accept date[from] in format YYYY-MM-DD', {}, (t, ctx) => {
+
+testWithServer(file + 'Should not accept date[from] in format YYYY-MM-DD', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -61,13 +61,13 @@ testWithServer(file + 'Should not accept date[from] in format YYYY-MM-DD', {}, (
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 400, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should not accept invalid date[from]', {}, (t, ctx) => {
+
+testWithServer(file + 'Should not accept invalid date[from]', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -76,13 +76,13 @@ testWithServer(file + 'Should not accept invalid date[from]', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 400, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept date[to] in format YYYY', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept date[to] in format YYYY', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -91,13 +91,13 @@ testWithServer(file + 'Should accept date[to] in format YYYY', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should not accept date[to] in format YYYY-MM', {}, (t, ctx) => {
+
+testWithServer(file + 'Should not accept date[to] in format YYYY-MM', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -106,13 +106,13 @@ testWithServer(file + 'Should not accept date[to] in format YYYY-MM', {}, (t, ct
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 400, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should not accept date[to] in format YYYY-MM-DD', {}, (t, ctx) => {
+
+testWithServer(file + 'Should not accept date[to] in format YYYY-MM-DD', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -121,13 +121,13 @@ testWithServer(file + 'Should not accept date[to] in format YYYY-MM-DD', {}, (t,
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 400, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should not accept invalid date[to]', {}, (t, ctx) => {
+
+testWithServer(file + 'Should not accept invalid date[to]', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -136,13 +136,13 @@ testWithServer(file + 'Should not accept invalid date[to]', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 400, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept single places for html', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept single places for html', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -151,13 +151,13 @@ testWithServer(file + 'Should accept single places for html', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept single places for json', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept single places for json', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -166,13 +166,13 @@ testWithServer(file + 'Should accept single places for json', {}, (t, ctx) => {
     headers: { Accept: 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept multiple places for html', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept multiple places for html', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -181,13 +181,13 @@ testWithServer(file + 'Should accept multiple places for html', {}, (t, ctx) => 
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should not accept multiple places as array for json', {}, (t, ctx) => {
+
+testWithServer(file + 'Should not accept multiple places as array for json', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -196,13 +196,13 @@ testWithServer(file + 'Should not accept multiple places as array for json', {},
     headers: { Accept: 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 400, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept multiple places as csv for json', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept multiple places as csv for json', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -211,13 +211,13 @@ testWithServer(file + 'Should accept multiple places as csv for json', {}, (t, c
     headers: { Accept: 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept single type', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept single type', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -226,13 +226,13 @@ testWithServer(file + 'Should accept single type', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept single type as json', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept single type as json', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -241,13 +241,13 @@ testWithServer(file + 'Should accept single type as json', {}, (t, ctx) => {
     headers: { Accept: 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept multiple types', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept multiple types', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -256,13 +256,13 @@ testWithServer(file + 'Should accept multiple types', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should not accept array of types as json', {}, (t, ctx) => {
+
+testWithServer(file + 'Should not accept array of types as json', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -271,13 +271,13 @@ testWithServer(file + 'Should not accept array of types as json', {}, (t, ctx) =
     headers: { Accept: 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 400, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept single makers', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept single makers', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -286,13 +286,13 @@ testWithServer(file + 'Should accept single makers', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept multiple makers', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept multiple makers', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -301,13 +301,13 @@ testWithServer(file + 'Should accept multiple makers', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept single people', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept single people', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -316,13 +316,13 @@ testWithServer(file + 'Should accept single people', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept multiple people', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept multiple people', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -331,13 +331,13 @@ testWithServer(file + 'Should accept multiple people', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept single organisations', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept single organisations', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -346,13 +346,13 @@ testWithServer(file + 'Should accept single organisations', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept multiple organisations', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept multiple organisations', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -361,13 +361,13 @@ testWithServer(file + 'Should accept multiple organisations', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept single categories', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept single categories', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -376,13 +376,13 @@ testWithServer(file + 'Should accept single categories', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept multiple categories', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept multiple categories', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -391,13 +391,13 @@ testWithServer(file + 'Should accept multiple categories', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept valid museum NRM', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept valid museum NRM', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -406,13 +406,13 @@ testWithServer(file + 'Should accept valid museum NRM', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept valid museum SMG', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept valid museum SMG', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -421,13 +421,13 @@ testWithServer(file + 'Should accept valid museum SMG', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept valid museum NMeM', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept valid museum NMeM', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -436,13 +436,13 @@ testWithServer(file + 'Should accept valid museum NMeM', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept valid museum MSI', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept valid museum MSI', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -451,13 +451,13 @@ testWithServer(file + 'Should accept valid museum MSI', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept on_display true', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept on_display true', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -466,13 +466,13 @@ testWithServer(file + 'Should accept on_display true', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept on_display false', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept on_display false', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -481,13 +481,13 @@ testWithServer(file + 'Should accept on_display false', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should not accept invalid on_display', {}, (t, ctx) => {
+
+testWithServer(file + 'Should not accept invalid on_display', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -496,13 +496,13 @@ testWithServer(file + 'Should not accept invalid on_display', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 400, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept single location', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept single location', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -511,13 +511,13 @@ testWithServer(file + 'Should accept single location', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept multiple location', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept multiple location', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -526,13 +526,13 @@ testWithServer(file + 'Should accept multiple location', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should not accept array of multiple locations for json', {}, (t, ctx) => {
+
+testWithServer(file + 'Should not accept array of multiple locations for json', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -541,13 +541,13 @@ testWithServer(file + 'Should not accept array of multiple locations for json', 
     headers: { Accept: 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 400, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept single birth[place]', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept single birth[place]', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -556,13 +556,13 @@ testWithServer(file + 'Should accept single birth[place]', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept multiple birth[place]', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept multiple birth[place]', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -571,13 +571,13 @@ testWithServer(file + 'Should accept multiple birth[place]', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should not accept multiple array of birth[place] as json', {}, (t, ctx) => {
+
+testWithServer(file + 'Should not accept multiple array of birth[place] as json', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -586,13 +586,13 @@ testWithServer(file + 'Should not accept multiple array of birth[place] as json'
     headers: { Accept: 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 400, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept single occupation', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept single occupation', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -601,13 +601,13 @@ testWithServer(file + 'Should accept single occupation', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept multiple occupation', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept multiple occupation', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -616,13 +616,13 @@ testWithServer(file + 'Should accept multiple occupation', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should not accept array of multiple occupations as json', {}, (t, ctx) => {
+
+testWithServer(file + 'Should not accept array of multiple occupations as json', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -631,13 +631,13 @@ testWithServer(file + 'Should not accept array of multiple occupations as json',
     headers: { Accept: 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 400, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept single archive', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept single archive', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -646,13 +646,13 @@ testWithServer(file + 'Should accept single archive', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept multiple archive', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept multiple archive', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -661,13 +661,13 @@ testWithServer(file + 'Should accept multiple archive', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should not accept array of multiple archives as json', {}, (t, ctx) => {
+
+testWithServer(file + 'Should not accept array of multiple archives as json', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -676,13 +676,13 @@ testWithServer(file + 'Should not accept array of multiple archives as json', {}
     headers: { Accept: 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 400, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept single formats', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept single formats', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -691,13 +691,13 @@ testWithServer(file + 'Should accept single formats', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept multiple formats', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept multiple formats', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -706,13 +706,13 @@ testWithServer(file + 'Should accept multiple formats', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept array of multiple formats as json', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept array of multiple formats as json', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -721,13 +721,13 @@ testWithServer(file + 'Should accept array of multiple formats as json', {}, (t,
     headers: { Accept: 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 400, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept single image_license', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept single image_license', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -736,13 +736,13 @@ testWithServer(file + 'Should accept single image_license', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should not accept array of multiple image_license as json', {}, (t, ctx) => {
+
+testWithServer(file + 'Should not accept array of multiple image_license as json', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -751,14 +751,14 @@ testWithServer(file + 'Should not accept array of multiple image_license as json
     headers: { Accept: 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 400, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 400, 'Status code was as expected');
+  t.end();
 });
 
+
 // AND logic for the filters
-testWithServer(file + 'Number of filters for the occupation facet should be greater than 1', {}, (t, ctx) => {
+testWithServer(file + 'Number of filters for the occupation facet should be greater than 1', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -767,15 +767,15 @@ testWithServer(file + 'Number of filters for the occupation facet should be grea
     headers: { Accept: 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    const response = JSON.parse(res.payload);
-    const test = response.meta.filters.organisation.length > 1;
-    t.ok(test, 'The facet organisation has more than 1 filter');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  const response = JSON.parse(res.payload);
+  const test = response.meta.filters.organisation.length > 1;
+  t.ok(test, 'The facet organisation has more than 1 filter');
+  t.end();
 });
 
-// testWithServer(file + 'Number of filters for the occupation facet should be greater than 1', {}, (t, ctx) => {
+
+// testWithServer(file + 'Number of filters for the occupation facet should be greater than 1', {}, async (t, ctx) => {
 //   t.plan(1);
 //
 //   const htmlRequest = {
@@ -784,7 +784,7 @@ testWithServer(file + 'Number of filters for the occupation facet should be grea
 //     headers: { Accept: 'application/vnd.api+json' }
 //   };
 //
-//   ctx.server.inject(htmlRequest, (res) => {
+//   const res = await ctx.server.inject(htmlRequest);
 //     const response = JSON.parse(res.payload);
 //     const test = response.meta.filters.occupation.length === 1;
 //     t.equal(test, true, 'The facet occupation has now just 1 filter');
@@ -792,7 +792,7 @@ testWithServer(file + 'Number of filters for the occupation facet should be grea
 //   });
 // });
 
-testWithServer(file + 'Should accept no query', {}, (t, ctx) => {
+testWithServer(file + 'Should accept no query', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -801,13 +801,13 @@ testWithServer(file + 'Should accept no query', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept params and no query', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept params and no query', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -819,13 +819,13 @@ testWithServer(file + 'Should accept params and no query', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should accept user params', {}, (t, ctx) => {
+
+testWithServer(file + 'Should accept user params', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -836,13 +836,13 @@ testWithServer(file + 'Should accept user params', {}, (t, ctx) => {
     headers: { Accept: 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
 });
 
-testWithServer(file + 'Should not return people or organisations as object type', {}, (t, ctx) => {
+
+testWithServer(file + 'Should not return people or organisations as object type', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
@@ -853,13 +853,13 @@ testWithServer(file + 'Should not return people or organisations as object type'
     headers: { Accept: 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.notOk(JSON.parse(res.payload).meta.filters.object_type.find(el => el.value === 'Turner Bros Asbestos Co'), 'Org does not appear in object type filter');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.notOk(JSON.parse(res.payload).meta.filters.object_type.find(el => el.value === 'Turner Bros Asbestos Co'), 'Org does not appear in object type filter');
+  t.end();
 });
 
-testWithServer(file + 'Should filter by has image', {}, (t, ctx) => {
+
+testWithServer(file + 'Should filter by has image', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
@@ -871,14 +871,14 @@ testWithServer(file + 'Should filter by has image', {}, (t, ctx) => {
     headers: { Accept: 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.ok(JSON.parse(res.payload).data.length > 0, 'returns some data with images');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.ok(JSON.parse(res.payload).data.length > 0, 'returns some data with images');
+  t.end();
 });
 
-testWithServer(file + 'Should have image and license facets', {}, (t, ctx) => {
+
+testWithServer(file + 'Should have image and license facets', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
@@ -889,10 +889,10 @@ testWithServer(file + 'Should have image and license facets', {}, (t, ctx) => {
     headers: { Accept: 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    var result = JSON.parse(res.payload);
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.ok(result.meta.filters.has_image[0].count >= result.meta.filters.image_license[0].count, 'more images than images with licenses');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  var result = JSON.parse(res.payload);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.ok(result.meta.filters.has_image[0].count >= result.meta.filters.image_license[0].count, 'more images than images with licenses');
+  t.end();
 });
+
