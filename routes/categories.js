@@ -1,3 +1,5 @@
+const Boom = require('boom');
+
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/categories',

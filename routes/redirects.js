@@ -8,7 +8,7 @@ var Querystring = require('querystring');
 // https://github.com/lob/hapi-permanent-redirect
 
 module.exports = {
-  medicine() {
+  medicine () {
     return {
       method: 'GET',
       path: '/search/categories/oriental-medicine',
@@ -19,11 +19,11 @@ module.exports = {
   }
 };
 
-async function redirect(request, h, path) {
+async function redirect (request, h, path) {
   try {
     await Joi.validate({ query: request.query }, { query: filterSchema('json').keys(searchSchema) });
 
     h.redirect(path + Querystring.stringify(request.query));
-  } catch (err) { return Boom.badRequest(err) };
+  } catch (err) { return Boom.badRequest(err); }
 }
 

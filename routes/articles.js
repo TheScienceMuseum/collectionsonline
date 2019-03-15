@@ -24,7 +24,7 @@ module.exports = () => ({
   }
 });
 
-async function fetchArticles(endpoint, id) {
+async function fetchArticles (endpoint, id) {
   try {
     const response = await axios.get(endpoint.url);
 

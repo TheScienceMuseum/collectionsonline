@@ -30,14 +30,13 @@ module.exports = (elastic, config) => ({
       } catch (err) {
         return elasticError(err);
       }
-
     } else {
       return h.response('Not Acceptable').code(406);
     }
   }
 });
 
-function elasticError(err) {
+function elasticError (err) {
   if (err.status === 404) {
     return Boom.notFound();
   } else {

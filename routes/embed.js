@@ -3,7 +3,7 @@ const buildJSONResponse = require('../lib/jsonapi-response');
 const TypeMapping = require('../lib/type-mapping');
 
 module.exports = {
-  rotational(elastic, config) {
+  rotational (elastic, config) {
     return {
       method: 'GET',
       path: '/embed/rotational/{coid}',
@@ -37,7 +37,7 @@ module.exports = {
       }
     };
   },
-  rotationalDirect() {
+  rotationalDirect () {
     return {
       method: 'GET',
       path: '/embed/rotational/smgco-360/{rid}',

@@ -76,7 +76,6 @@ module.exports = (elastic, config) => ({
           const tplData = searchResultsToTemplateData(queryParams, jsonData);
 
           return h.view('search', tplData);
-
         } else if (responseType === 'json') {
           const res = await search(elastic, queryParams);
 

@@ -37,7 +37,7 @@ module.exports = (elastic, config) => ({
 
           const data = await rekognition.detectLabels(params).promise();
 
-          beautifiedData = beautify(data, null, 2, 80);
+          const beautifiedData = beautify(data, null, 2, 80);
 
           return h.response(beautifiedData).header('content-type', 'application/json');
         }

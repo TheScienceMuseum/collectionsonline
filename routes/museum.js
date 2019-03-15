@@ -5,7 +5,7 @@ const searchSchema = require('../schemas/search');
 var Querystring = require('querystring');
 
 module.exports = {
-  scm() {
+  scm () {
     return {
       method: 'GET',
       path: '/scm',
@@ -14,7 +14,7 @@ module.exports = {
       }
     };
   },
-  msi() {
+  msi () {
     return {
       method: 'GET',
       path: '/msi',
@@ -23,7 +23,7 @@ module.exports = {
       }
     };
   },
-  nrm() {
+  nrm () {
     return {
       method: 'GET',
       path: '/nrm',
@@ -32,7 +32,7 @@ module.exports = {
       }
     };
   },
-  nmem() {
+  nmem () {
     return {
       method: 'GET',
       path: '/nmem',
@@ -43,12 +43,12 @@ module.exports = {
   }
 };
 
-async function museumRedirect(request, h, museum) {
+async function museumRedirect (request, h, museum) {
   try {
     await Joi.validate({ query: request.query }, { query: filterSchema('json').keys(searchSchema) });
 
     return h.redirect('/search/museum/' + museum + Querystring.stringify(request.query));
   } catch (err) {
     return Boom.badRequest(err);
-  };
+  }
 }

@@ -6,7 +6,7 @@ module.exports = () => ({
     handler: function (request, h) {
       var responseType = contentType(request);
       if (responseType === 'json') {
-        return h.response('See https://github.com/TheScienceMuseum/collectionsonline/wiki/Collections-Online-API on how to use the api')
+        return h.response('See https://github.com/TheScienceMuseum/collectionsonline/wiki/Collections-Online-API on how to use the api');
       }
 
       if (responseType === 'html') {

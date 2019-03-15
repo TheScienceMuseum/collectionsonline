@@ -17,7 +17,7 @@ module.exports = (elastic, config) => ({
           agents: results.responses[4].hits.total,
           date: date
         });
-      } catch (err) { return reply(Boom.serverUnavailable(err)) }
+      } catch (err) { return Boom.serverUnavailable(err); }
     }
   }
 });

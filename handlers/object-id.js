@@ -22,7 +22,6 @@ module.exports = function (elastic, config) {
       if (result.hits.total === 0) {
         jsonResult.found = false;
         jsonResult.error = 'Not Found';
-        jsonResult.searchError = error;
         jsonResult.path = '';
 
         return h.response(jsonResult).code(404);
@@ -32,7 +31,7 @@ module.exports = function (elastic, config) {
       jsonResult.error = null;
       jsonResult.searchError = null;
     } catch (error) {
-      jsonResult.searchError = error;
+      jsonResult.error = error;
     }
 
     var obj = result.hits.hits[0];

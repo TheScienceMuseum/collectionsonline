@@ -32,7 +32,6 @@ module.exports = (elastic, config) => ({
         try {
           const results = await autocomplete(elastic, queryParams);
           return h.response(autocompleteResultsToJsonApi(queryParams, results, config));
-
         } catch (err) {
           return Boom.serverUnavailable(err);
         }
