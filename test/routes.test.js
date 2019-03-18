@@ -1,9 +1,14 @@
 const testWithServer = require('./helpers/test-with-server');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
+const stub = require('sinon').stub;
+const cache = require('../bin/cache.js');
 
 testWithServer(file + 'Request for Archive HTML Page', {}, async (t, ctx) => {
   t.plan(1);
+
+  let cacheStart = stub(cache, 'start').resolves();
+  let cacheGet = stub(cache, 'get').resolves();
 
   const htmlRequest = {
     method: 'GET',
@@ -13,6 +18,8 @@ testWithServer(file + 'Request for Archive HTML Page', {}, async (t, ctx) => {
 
   const res = await ctx.server.inject(htmlRequest);
   t.equal(res.statusCode, 200, 'Status code was as expected');
+  cacheStart.restore();
+  cacheGet.restore();
   t.end();
 });
 
@@ -33,6 +40,8 @@ testWithServer(file + 'Attempt to request for Archive HTML Page with wrong accep
 
 testWithServer(file + 'Request for Archive JSON Page', {}, async (t, ctx) => {
   t.plan(1);
+  let cacheStart = stub(cache, 'start').resolves();
+  let cacheGet = stub(cache, 'get').resolves();
 
   const htmlRequest = {
     method: 'GET',
@@ -43,6 +52,8 @@ testWithServer(file + 'Request for Archive JSON Page', {}, async (t, ctx) => {
   const res = await ctx.server.inject(htmlRequest);
   t.equal(res.statusCode, 200, 'Status code was as expected');
   await ctx.server.stop();
+  cacheStart.restore();
+  cacheGet.restore();
   t.end();
 });
 
@@ -64,6 +75,9 @@ testWithServer(file + 'Request for Archive HTML Page for a wrong id', {}, async 
 testWithServer(file + 'Request for Archive HTML Page with expanded children', {}, async (t, ctx) => {
   t.plan(1);
 
+  let cacheStart = stub(cache, 'start').resolves();
+  let cacheGet = stub(cache, 'get').resolves();
+
   const htmlRequest = {
     method: 'GET',
     url: '/documents/aa110000003?expanded=aa110000036',
@@ -72,6 +86,8 @@ testWithServer(file + 'Request for Archive HTML Page with expanded children', {}
 
   const res = await ctx.server.inject(htmlRequest);
   t.equal(res.statusCode, 200, 'Status code was as expected');
+  cacheStart.restore();
+  cacheGet.restore();
   t.end();
 });
 
@@ -276,6 +292,9 @@ testWithServer(file + 'Request for Person JSON Page with no related items', {}, 
 testWithServer(file + 'Request for Archive JSON', {}, async (t, ctx) => {
   t.plan(2);
 
+  let cacheStart = stub(cache, 'start').resolves();
+  let cacheGet = stub(cache, 'get').resolves();
+
   const htmlRequest = {
     method: 'GET',
     url: '/documents/aa110000003',
@@ -286,6 +305,8 @@ testWithServer(file + 'Request for Archive JSON', {}, async (t, ctx) => {
   t.equal(res.statusCode, 200, 'Status code was as expected');
   t.equal(res.headers['content-type'], 'application/vnd.api+json', 'JSONAPI response header should be application/vnd.api+json');
   await ctx.server.stop();
+  cacheStart.restore();
+  cacheGet.restore();
   t.end();
 });
 
@@ -307,6 +328,9 @@ testWithServer(file + 'Request for Archive JSON with error', {}, async (t, ctx) 
 testWithServer(file + 'Request for Object JSON Page', {}, async (t, ctx) => {
   t.plan(2);
 
+  let cacheStart = stub(cache, 'start').resolves();
+  let cacheGet = stub(cache, 'get').resolves();
+
   const htmlRequest = {
     method: 'GET',
     url: '/objects/co37959',
@@ -317,6 +341,8 @@ testWithServer(file + 'Request for Object JSON Page', {}, async (t, ctx) => {
   t.equal(res.statusCode, 200, 'Status code was as expected');
   t.ok(res.headers['content-type'].indexOf('application/vnd.api+json') > -1, 'JSONAPI response header should be application/vnd.api+json');
   await ctx.server.stop();
+  cacheStart.restore();
+  cacheGet.restore();
   t.end();
 });
 
@@ -778,5 +804,42 @@ testWithServer(file + 'Key category search - synonym', {}, async (t, ctx) => {
   const res = await ctx.server.inject(htmlRequest);
   t.equal(res.headers.location, '/search/categories/telecommunications');
   await ctx.server.stop();
+  t.end();
+});
+
+testWithServer(file + 'Random', {}, async (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/random',
+    headers: { 'Accept': 'text/html' }
+  };
+
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 302);
+  t.end();
+});
+
+testWithServer(file + 'Screensaver', {}, async (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/screensaver',
+    headers: { 'Accept': 'text/html' }
+  };
+
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 302);
+  t.end();
+});
+
+testWithServer(file + 'About', {}, async (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/about',
+    headers: { 'Accept': 'text/html' }
+  };
+
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200);
+  t.ok(res.payload.indexOf('ABOUT') > -1);
   t.end();
 });
