@@ -10,7 +10,7 @@ module.exports = {
       method: 'GET',
       path: '/scm',
       handler: function (request, h) {
-        museumRedirect(request, h, 'science-museum');
+        return museumRedirect(request, h, 'science-museum');
       }
     };
   },
@@ -19,7 +19,7 @@ module.exports = {
       method: 'GET',
       path: '/msi',
       handler: function (request, h) {
-        museumRedirect(request, h, 'museum-of-science-and-industry');
+        return museumRedirect(request, h, 'museum-of-science-and-industry');
       }
     };
   },
@@ -28,7 +28,7 @@ module.exports = {
       method: 'GET',
       path: '/nrm',
       handler: function (request, h) {
-        museumRedirect(request, h, 'national-railway-museum');
+        return museumRedirect(request, h, 'national-railway-museum');
       }
     };
   },
@@ -37,7 +37,7 @@ module.exports = {
       method: 'GET',
       path: '/nmem',
       handler: function (request, h) {
-        museumRedirect(request, h, 'national-media-museum');
+        return museumRedirect(request, h, 'national-media-museum');
       }
     };
   }

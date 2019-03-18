@@ -5,7 +5,7 @@ module.exports = () => ({
   path: '/robots.txt',
   config: {
     handler: function (req, h) {
-      h.response(
+      return h.response(
         'sitemap: ' + config.sitemapUrl + '/sitemap.xml\n' +
         'User-agent: *\n' +
         'Crawl-Delay: 1\n' +

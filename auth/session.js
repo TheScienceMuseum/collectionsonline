@@ -7,13 +7,17 @@ module.exports = () => ({
   config: {
     auth: false
   },
-  handler: (request, reply) => {
+  handler: (request, h) => {
     if (validate(request.payload.username, request.payload.password)) {
-      const session = {valid: true};
+      const session = { valid: true };
       const jwt = JWT.sign(session, config.JWT_SECRET);
-      return reply.redirect('/').state('token', jwt, {ttl: 5 * 3600 * 1000});
+      console.log('GOOD');
+
+      return h.redirect('/').state('token', jwt, { ttl: 5 * 3600 * 1000 });
     } else {
-      return reply.view('login', {error: 'wrong credentials, sorry'}, {layout: 'auth'});
+      console.log('BAD');
+
+      return h.view('login', { error: 'wrong credentials, sorry' }, { layout: 'auth' });
     }
   }
 });

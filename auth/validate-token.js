@@ -1,3 +1,3 @@
 module.exports = function (decoded, request) {
-  return decoded.valid && decoded;
+  return { isValid: decoded.valid === true && decoded };
 };
