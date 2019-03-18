@@ -66,9 +66,9 @@ test('Should reply with error JSON for application/vnd.api+json accepted request
   t.end();
 });
 
-function createMockServer() {
+function createMockServer () {
   return {
-    ext(hook, onPreResponse) {
+    ext (hook, onPreResponse) {
       if (hook === 'onPreResponse') {
         this.onPreResponse = onPreResponse;
       }

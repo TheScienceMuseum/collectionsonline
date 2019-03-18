@@ -118,8 +118,7 @@ Async.parallel([
     try {
       const response = await search(elastic, createQueryParams('html', { query: { q: 'test' }, params: {} }));
       Fs.writeFile(dirData + '/../../helpers/aggregations-all.json', JSON.stringify(response.aggregations.all, null, 2), 'utf-8', cb);
-    }
-    catch (err) { throw err }
+    } catch (err) { throw err; }
   }
 ], (err) => {
   if (err) throw err;

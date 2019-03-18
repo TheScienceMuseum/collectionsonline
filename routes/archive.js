@@ -40,7 +40,6 @@ function elasticError (err) {
   if (err.status === 404) {
     return Boom.notFound();
   } else {
-    console.log(err);
     return Boom.serverUnavailable('unavailable');
   }
 }

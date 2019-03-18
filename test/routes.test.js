@@ -61,21 +61,19 @@ testWithServer(file + 'Request for Archive HTML Page for a wrong id', {}, async 
   t.end();
 });
 
-// testWithServer(file + 'Request for Archive HTML Page with expanded children', {}, async (t, ctx) => {
-//   t.plan(1);
-//
-//   const htmlRequest = {
-//     method: 'GET',
-//     url: '/documents/aa110000003?expanded=aa110000036',
-//     headers: {'Accept': 'text/html'}
-//   };
-//
-//   const res = await ctx.server.inject(htmlRequest);
-//     t.equal(res.statusCode, 200, 'Status code was as expected');
-//     await ctx.server.stop();
-//     t.end();
-//   });
-// });
+testWithServer(file + 'Request for Archive HTML Page with expanded children', {}, async (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/documents/aa110000003?expanded=aa110000036',
+    headers: { 'Accept': 'text/html' }
+  };
+
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
+});
 
 testWithServer(file + 'Request for Object HTML Page', {}, async (t, ctx) => {
   t.plan(1);
@@ -88,7 +86,6 @@ testWithServer(file + 'Request for Object HTML Page', {}, async (t, ctx) => {
 
   const res = await ctx.server.inject(htmlRequest);
   t.equal(res.statusCode, 200, 'Status code was as expected');
-  await ctx.server.stop();
   t.end();
 });
 
@@ -654,7 +651,6 @@ testWithServer(file + 'Request for Related Articles from NSMM', {}, async (t, ct
   const res = await ctx.server.inject(htmlRequest);
   t.ok(JSON.parse(res.payload), 'Result is JSON');
   t.equal(res.statusCode, 200, 'Status code was as expected');
-  await ctx.server.stop();
   t.end();
 });
 
@@ -668,7 +664,6 @@ testWithServer(file + 'Request for Related Articles from MSI', {}, async (t, ctx
   const res = await ctx.server.inject(htmlRequest);
   t.ok(JSON.parse(res.payload), 'Result is JSON');
   t.equal(res.statusCode, 200, 'Status code was as expected');
-  await ctx.server.stop();
   t.end();
 });
 

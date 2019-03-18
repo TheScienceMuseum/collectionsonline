@@ -13,25 +13,29 @@ module.exports = async (elastic, config, cb) => {
     await server.register(require('./auth/authentication'));
   }
 
-  await server.register([
-    {
-      plugin: require('good'),
-      options: {
-        reporters: {
-          console: [{ module: 'good-console' }, 'stdout']
+  try {
+    await server.register([
+      {
+        plugin: require('good'),
+        options: {
+          reporters: {
+            console: [{ module: 'good-console' }, 'stdout']
+          }
+        }
+      },
+      require('inert'),
+      require('vision'),
+      require('h2o2'),
+      {
+        plugin: require('./routes/plugins/error'),
+        options: {
+          config: config
         }
       }
-    },
-    require('inert'),
-    require('vision'),
-    require('h2o2'),
-    {
-      plugin: require('./routes/plugins/error'),
-      options: {
-        config: config
-      }
-    }
-  ]);
+    ]);
+  } catch (err) {
+    return cb(err);
+  }
 
   server.views({
     engines: { html: { module: require('handlebars'), compileMode: 'sync' } },

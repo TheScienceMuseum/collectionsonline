@@ -29,7 +29,7 @@ testWithServer('Attempt to access a page with a wrong cookie', {}, async (t, ctx
     headers: { cookie: 'token=' + token, 'Accept': 'text/html' }
   };
 
-  const res = await ctx.server.inject(htmlRequest)
+  const res = await ctx.server.inject(htmlRequest);
   t.equal(res.statusCode, 302, 'Not authorized to access the page with a wrong cookie');
   t.equal(res.headers.location, '/login', 'Redirect to login page');
   config.JWT_SECRET = jwtSecret;

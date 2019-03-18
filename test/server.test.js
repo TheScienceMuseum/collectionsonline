@@ -11,7 +11,7 @@ test(file + 'Should build a query param object from a html request', (t) => {
   t.plan(1);
 
   server(elastic, config, (err, ctx) => {
-    t.notOk(err)
+    t.notOk(err);
     t.end();
   });
 });

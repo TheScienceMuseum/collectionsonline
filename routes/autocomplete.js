@@ -15,17 +15,16 @@ module.exports = (elastic, config) => ({
       },
       query: {
         q: Joi.string().min(3).required(),
-        size: Joi.number().integer().min(1).max(10).default(3),
+        size: Joi.number().integer().min(1).max(10).default(3)
       },
       failAction: function (request, h, err) {
         if (err.output.statusCode === 400) {
-          return h.response(err.output.payload.message).code(400).takeover()
+          return h.response(err.output.payload.message).code(400).takeover();
         }
       }
     }
   },
   handler: async function (request, h) {
-
     var responseType = contentType(request);
     if (responseType === 'json') {
       const queryParams = Object.assign({}, request.params, request.query);
