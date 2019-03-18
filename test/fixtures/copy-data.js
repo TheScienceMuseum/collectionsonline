@@ -108,7 +108,9 @@ Async.parallel([
       (cb) => copyEsChildren(elastic, children, database, cb),
       (cb) => copyEsAutocompletes(elastic, autocompletes, database, cb)
     ], (err) => {
-      if (err) throw err;
+      if (err) {
+        throw err;
+      }
       Fs.writeFile(dirData + '/database.json', JSON.stringify(database, null, 2), 'utf-8', cb);
     });
   },
