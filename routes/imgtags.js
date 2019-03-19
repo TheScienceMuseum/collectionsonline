@@ -12,9 +12,9 @@ module.exports = (elastic, config) => ({
         const imgTags = result.aggregations.img_tags_aggs.imgtags.buckets;
         const imgTagsParents = result.aggregations.img_tags_aggs.imgtagsParents.buckets;
         var imgTagSet = new Set();
-        imgTags.concat(imgTagsParents).forEach( t => {
+        imgTags.concat(imgTagsParents).forEach(t => {
           imgTagSet.add(t.key.toLowerCase());
-        })
+        });
         const tags = Array.from(imgTagSet).sort();
 
         return reply.view('imgtags', {tags: tags});
