@@ -3,7 +3,7 @@
 const slug = require('slugg');
 
 module.exports = function (elastic, config) {
-  return function (request, reply) {
+  return async function (request, h) {
     var body = {
       query: {
         bool: { filter: { term: { 'identifier.value': request.params.idObject } } }
@@ -14,33 +14,35 @@ module.exports = function (elastic, config) {
       body: body
     };
     var jsonResult = {};
+    let result;
 
-    elastic.search(searchOpts, function (error, result) {
-      // no object found
+    try {
+      result = await elastic.search(searchOpts);
+
       if (result.hits.total === 0) {
         jsonResult.found = false;
         jsonResult.error = 'Not Found';
-        jsonResult.searchError = error;
         jsonResult.path = '';
 
-        return reply(jsonResult).code(404);
+        return h.response(jsonResult).code(404);
       }
 
       jsonResult.found = true;
       jsonResult.error = null;
-      jsonResult.searchError = error;
+    } catch (error) {
+      jsonResult.error = error;
+    }
 
-      var obj = result.hits.hits[0];
-      var slugValue = obj._source.summary_title && slug(obj._source.summary_title).toLowerCase();
-      slugValue = slugValue ? ('/' + slugValue) : '';
-      jsonResult.path = '/objects/' + obj._id + slugValue;
+    var obj = result.hits.hits[0];
+    var slugValue = obj._source.summary_title && slug(obj._source.summary_title).toLowerCase();
+    slugValue = slugValue ? ('/' + slugValue) : '';
+    jsonResult.path = '/objects/' + obj._id + slugValue;
 
-      // check for redirect query parameter
-      if (request.query.redirect === 'true') {
-        return reply.redirect(config.rootUrl + jsonResult.path).permanent();
-      }
+    // check for redirect query parameter
+    if (request.query.redirect === 'true') {
+      return h.redirect(config.rootUrl + jsonResult.path).permanent();
+    }
 
-      return reply(jsonResult);
-    });
+    return h.response(jsonResult);
   };
 };

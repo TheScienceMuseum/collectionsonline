@@ -1,5 +1,5 @@
-var request = require('request');
-var async = require('async');
+const axios = require('axios');
+const Boom = require('boom');
 
 // Article endpoints on each museum website
 var endpoints = [
@@ -12,32 +12,29 @@ module.exports = () => ({
   method: 'GET',
   path: '/articles/{id}',
   config: {
-    handler: function (req, reply) {
-      async.concat(endpoints, function (endpoint, callback) {
-        request({
-          'rejectUnauthorized': false,
-          'url': endpoint.url
-        }, (err, res, body) => {
-          if (err) return callback(err);
-          try {
-            var data = JSON.parse(body).filter(e => e.collection_objects.indexOf(req.params.id) > -1);
-            if (data.length) {
-              return callback(null, {
-                museum: endpoint.label,
-                data: data
-              });
-            }
-          } catch (e) {
-            return callback('Cannot parse related objects feed from ' + endpoint.url);
-          }
-          callback();
-        });
-      },
-      function (err, articles) {
-        if (err) { console.error(err); }
-        return reply({ data: articles });
-      });
+    handler: async function (req, h) {
+      try {
+        const articles = await Promise.all(endpoints.map(e => fetchArticles(e, req.params.id)));
+
+        return h.response({ data: articles.filter(e => e.data.length > 0) });
+      } catch (err) {
+        return new Boom('Cannot parse related objects feed:', err);
+      }
     }
   }
 });
 
+async function fetchArticles (endpoint, id) {
+  try {
+    const response = await axios.get(endpoint.url);
+
+    const data = response.data.filter(e => e.collection_objects.indexOf(id) > -1);
+
+    return {
+      museum: endpoint.label,
+      data: data
+    };
+  } catch (err) {
+    throw err;
+  }
+}

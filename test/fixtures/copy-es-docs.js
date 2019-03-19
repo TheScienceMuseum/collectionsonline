@@ -15,9 +15,9 @@ module.exports = function (elastic, dataToCopy, database, next) {
   database.object[TypeMapping.toInternal('cobadRequest')] = { error: { 'status': 400, 'displayName': 'BadRequest', 'message': 'Bad Request' } };
 
   // Error fixtures no error but also no result
-  database.archive[TypeMapping.toInternal('aanoResult')] = {error: { status: 404, displayName: 'NotFound', message: 'Not Found' }, response: null};
-  database.agent[TypeMapping.toInternal('cpnoResult')] = {error: { status: 404, displayName: 'NotFound', message: 'Not Found' }, response: null};
-  database.object[TypeMapping.toInternal('conoResult')] = {error: { status: 404, displayName: 'NotFound', message: 'Not Found' }, response: null};
+  database.archive[TypeMapping.toInternal('aanoResult')] = { error: { status: 404, displayName: 'NotFound', message: 'Not Found' }, response: null };
+  database.agent[TypeMapping.toInternal('cpnoResult')] = { error: { status: 404, displayName: 'NotFound', message: 'Not Found' }, response: null };
+  database.object[TypeMapping.toInternal('conoResult')] = { error: { status: 404, displayName: 'NotFound', message: 'Not Found' }, response: null };
 
   var count = 0;
   console.log('copy database to fixtures');
@@ -27,7 +27,7 @@ module.exports = function (elastic, dataToCopy, database, next) {
         console.log('Error get data for ', data.id);
       }
       database[data.type] = database[data.type] || {};
-      database[data.type][TypeMapping.toInternal(data.id)] = {error: error, response: response};
+      database[data.type][TypeMapping.toInternal(data.id)] = { error: error, response: response };
       count += 1;
       if (count === dataToCopy.length) {
         return next();

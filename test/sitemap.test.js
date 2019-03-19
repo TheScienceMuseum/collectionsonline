@@ -7,42 +7,41 @@ const createMockDatabase = require('./helpers/mock-database');
 const createServer = require('../server');
 const config = require('../config');
 
-test(file + 'Should proxy to sitemap', (t) => {
+test(file + 'Should proxy to sitemap', async (t) => {
   t.plan(3);
 
   const sitemapPath = Path.join(__dirname, '..', 'public', 'sitemap.xml');
   const sitemapXml = Fs.readFileSync(sitemapPath, 'utf8');
 
   const upstream = new Hapi.Server();
-  upstream.connection();
-  upstream.register(require('inert'), () => {});
+
+  await upstream.register(require('inert'));
   upstream.route({
     method: 'GET',
     path: '/sitemap.xml',
-    handler: (request, reply) => reply.file(sitemapPath)
+    handler: (request, h) => h.file(sitemapPath)
   });
 
-  upstream.start(() => {
-    // Set sitemap URL to upstream
-    const testConfig = Object.assign({}, config, {
-      sitemapUrl: `http://localhost:${upstream.info.port}`
-    });
+  await upstream.start();
 
-    createServer(createMockDatabase(), testConfig, (err, ctx) => {
-      t.ifError(err, 'No error creating server');
+  // Set sitemap URL to upstream
+  const testConfig = Object.assign({}, config, {
+    sitemapUrl: `http://localhost:${upstream.info.port}`
+  });
 
-      const request = {
-        method: 'GET',
-        url: '/sitemap.xml'
-      };
+  createServer(createMockDatabase(), testConfig, async (err, ctx) => {
+    t.ifError(err, 'No error creating server');
 
-      ctx.server.inject(request, (res) => {
-        t.equal(res.statusCode, 200, 'Status was OK');
-        t.equal(res.payload, sitemapXml, 'Sitemap XML was sent');
-        upstream.stop();
-        t.end();
-      });
-    });
+    const request = {
+      method: 'GET',
+      url: '/sitemap.xml'
+    };
+
+    const res = await ctx.server.inject(request);
+    t.equal(res.statusCode, 200, 'Status was OK');
+    t.equal(res.payload, sitemapXml, 'Sitemap XML was sent');
+    await upstream.stop();
+    t.end();
   });
 });
 
@@ -54,7 +53,7 @@ test(file + 'Should serve local sitemap if no sitemap URL configured', (t) => {
 
   const testConfig = Object.assign({}, config, { sitemapUrl: '' });
 
-  createServer(createMockDatabase(), testConfig, (err, ctx) => {
+  createServer(createMockDatabase(), testConfig, async (err, ctx) => {
     t.ifError(err, 'No error creating server');
 
     const request = {
@@ -62,11 +61,10 @@ test(file + 'Should serve local sitemap if no sitemap URL configured', (t) => {
       url: '/sitemap.xml'
     };
 
-    ctx.server.inject(request, (res) => {
-      t.equal(res.statusCode, 200, 'Status was OK');
-      t.equal(res.payload, sitemapXml, 'Sitemap XML was sent');
-      t.end();
-    });
+    const res = await ctx.server.inject(request);
+    t.equal(res.statusCode, 200, 'Status was OK');
+    t.equal(res.payload, sitemapXml, 'Sitemap XML was sent');
+    t.end();
   });
 });
 
@@ -78,7 +76,7 @@ test(file + 'Should serve local sitemap if sitemap URL is same as base URL', (t)
 
   const testConfig = Object.assign({}, config, { sitemapUrl: config.baseUrl });
 
-  createServer(createMockDatabase(), testConfig, (err, ctx) => {
+  createServer(createMockDatabase(), testConfig, async (err, ctx) => {
     t.ifError(err, 'No error creating server');
 
     const request = {
@@ -86,10 +84,9 @@ test(file + 'Should serve local sitemap if sitemap URL is same as base URL', (t)
       url: '/sitemap.xml'
     };
 
-    ctx.server.inject(request, (res) => {
-      t.equal(res.statusCode, 200, 'Status was OK');
-      t.equal(res.payload, sitemapXml, 'Sitemap XML was sent');
-      t.end();
-    });
+    const res = await ctx.server.inject(request);
+    t.equal(res.statusCode, 200, 'Status was OK');
+    t.equal(res.payload, sitemapXml, 'Sitemap XML was sent');
+    t.end();
   });
 });

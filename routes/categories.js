@@ -1,28 +1,30 @@
+const Boom = require('boom');
+
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/categories',
   config: {
-    handler: function (request, reply) {
-      elastic.search({
-        index: 'smg',
-        type: 'object',
-        body: {
-          size: 0,
-          aggs: {
-            categories: {
-              terms: {
-                field: 'categories.name',
-                size: 500,
-                order: { '_count': 'desc' }
+    handler: async function (request, h) {
+      try {
+        const result = await elastic.search({
+          index: 'smg',
+          type: 'object',
+          body: {
+            size: 0,
+            aggs: {
+              categories: {
+                terms: {
+                  field: 'categories.name',
+                  size: 500,
+                  order: { '_count': 'desc' }
+                }
               }
             }
           }
-        }
-      }, (err, result) => {
-        if (err) {
-          return reply(err);
-        }
-        var categories = [];
+        });
+
+        let categories = [];
+
         if (result.aggregations.categories.buckets) {
           result.aggregations.categories.buckets.forEach(e => {
             categories.push({
@@ -32,9 +34,11 @@ module.exports = (elastic, config) => ({
             });
           });
         }
-        console.log(categories);
-        return reply.view('categories', {categories: categories});
-      });
+
+        return h.view('categories', { categories: categories });
+      } catch (err) {
+        return new Boom(err);
+      }
     }
   }
 });

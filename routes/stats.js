@@ -5,11 +5,11 @@ module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/stats',
   config: {
-    handler: function (request, reply) {
-      stats(elastic, (err, results) => {
-        if (err) return reply(Boom.serverUnavailable(err));
+    handler: async function (request, h) {
+      try {
+        const results = await stats(elastic);
         var date = new Date().toLocaleDateString();
-        return reply({
+        return h.response({
           objects: results.responses[0].hits.total,
           objectsWithImages: results.responses[1].hits.total,
           documents: results.responses[2].hits.total,
@@ -17,7 +17,7 @@ module.exports = (elastic, config) => ({
           agents: results.responses[4].hits.total,
           date: date
         });
-      });
+      } catch (err) { return Boom.serverUnavailable(err); }
     }
   }
 });

@@ -1,7 +1,3 @@
-module.exports = function (decoded, request, callback) {
-  if (decoded.valid === true) {
-    return callback(null, true, decoded);
-  } else {
-    return callback(null, false);
-  }
+module.exports = function (decoded, request) {
+  return { isValid: decoded.valid === true && decoded };
 };

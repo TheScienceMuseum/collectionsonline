@@ -1,7 +1,7 @@
 const testWithServer = require('./helpers/test-with-server');
 const file = require('path').relative(process.cwd(), __filename) + ' > ';
 
-testWithServer(file + 'Should process RESULT_CLICK analytics event', {}, (t, ctx) => {
+testWithServer(file + 'Should process RESULT_CLICK analytics event', {}, async (t, ctx) => {
   t.plan(1);
 
   const request = {
@@ -14,13 +14,12 @@ testWithServer(file + 'Should process RESULT_CLICK analytics event', {}, (t, ctx
     payload: JSON.stringify({ event: 'RESULT_CLICK', data: 'smg-objects-12345' })
   };
 
-  ctx.server.inject(request, (res) => {
-    t.equal(res.statusCode, 204, 'Status was OK');
-    t.end();
-  });
+  const res = await ctx.server.inject(request);
+  t.equal(res.statusCode, 204, 'Status was OK');
+  t.end();
 });
 
-testWithServer(file + 'empty response if not a json request', {}, (t, ctx) => {
+testWithServer(file + 'empty response if not a json request', {}, async (t, ctx) => {
   t.plan(1);
 
   const request = {
@@ -29,8 +28,7 @@ testWithServer(file + 'empty response if not a json request', {}, (t, ctx) => {
     payload: JSON.stringify({ event: 'RESULT_CLICK', data: 'smg-objects-12345' })
   };
 
-  ctx.server.inject(request, (res) => {
-    t.equal(res.statusCode, 200, 'Nothing special');
-    t.end();
-  });
+  const res = await ctx.server.inject(request);
+  t.equal(res.statusCode, 200, 'Nothing special');
+  t.end();
 });

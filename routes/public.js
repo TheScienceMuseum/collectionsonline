@@ -4,8 +4,8 @@ module.exports = () => ({
   method: 'GET',
   path: '/{path*}',
   config: {
-    handler: function (req, reply) {
-      reply.file(Path.resolve(__dirname, '..', 'public', req.params.path));
+    handler: function (req, h) {
+      return h.file(Path.resolve(__dirname, '..', 'public', req.params.path));
     }
   }
 });

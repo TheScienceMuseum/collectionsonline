@@ -3,11 +3,11 @@ module.exports = () => ({
   method: 'GET',
   path: '/about',
   config: {
-    handler: function (request, reply) {
+    handler: function (request, h) {
       const data = require('../fixtures/data');
       data.footer = require('../fixtures/footer');
       data.museums = require('../fixtures/museums');
-      return reply.view('about', data);
+      return h.view('about', data);
     }
   }
 });
