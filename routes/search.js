@@ -58,7 +58,6 @@ module.exports = (elastic, config) => ({
 
               const query = Object.assign(value.query, value.params, value.categories);
               const queryParams = createQueryParams(responseType, {query: query, params: params});
-
               if (responseType === 'html') {
                 // match and answer 'what is' questions
                 if (value.query.q && value.query.q.toLowerCase().startsWith('what')) {

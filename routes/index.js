@@ -26,5 +26,6 @@ module.exports = (elastic, config) => ([
   require('./embed').rotationalDirect(),
   require('./about')(),
   require('./stats')(elastic, config),
-  require('./categories')(elastic, config)
+  require('./categories')(elastic, config),
+  require('./imgtags')(elastic, config)
 ]);

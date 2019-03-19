@@ -28,6 +28,7 @@ const jsonSchema = {
   'filter[gallery]': Joi.string(),
   'filter[user]': Joi.string(),
   'filter[material]': Joi.string(),
+  'filter[imgtag]': Joi.string(),
   // People
   'filter[birth[place]]': Joi.string(),
   'filter[occupation]': Joi.string(),
@@ -50,6 +51,7 @@ const htmlSchema = {
   'filter[location]': Joi.array().items(Joi.string()).single(),
   'filter[user]': Joi.array().items(Joi.string()).single(),
   'filter[material]': Joi.array().items(Joi.string()).single(),
+  'filter[imgtag]': Joi.string(),
   // People
   'filter[birth[place]]': Joi.array().items(Joi.string()).single(),
   'filter[occupation]': Joi.array().items(Joi.string()).single(),
@@ -92,5 +94,6 @@ module.exports = (contentType) => {
     .rename('has_image', 'filter[has_image]', {override: true, ignoreUndefined: true})
     .rename('image_license', 'filter[image_license]', {override: true, ignoreUndefined: true})
     .rename('user', 'filter[user]', {override: true, ignoreUndefined: true})
+    .rename('imgtag', 'filter[imgtag]', {override: true, ignoreUndefined: true})
     .rename('material', 'filter[material]', {override: true, ignoreUndefined: true});
 };
