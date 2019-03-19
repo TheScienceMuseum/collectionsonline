@@ -785,3 +785,32 @@ testWithServer(file + 'Key category search - synonym', {}, (t, ctx) => {
     t.end();
   });
 });
+
+testWithServer('Get all image tags: html', {}, (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/imgtags',
+    headers: {'Accept': 'text/html'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'status code ok');
+    t.end();
+  });
+});
+
+testWithServer(file + 'Request for image tags JSON Page', {}, (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/imgtags',
+    headers: {'Accept': 'application/vnd.api+json'}
+  };
+
+  ctx.server.inject(htmlRequest, (res) => {
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    t.equal(res.headers['content-type'], 'application/vnd.api+json', 'JSONAPI response header ok');
+    t.end();
+  });
+});

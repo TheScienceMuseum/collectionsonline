@@ -1,12 +1,18 @@
 const getImgTags = require('../lib/getImgTags');
 const Boom = require('boom');
+const contentType = require('./route-helpers/content-type.js');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/imgtags',
   config: {
     handler: function (req, reply) {
-      // get all the image tags
+      var responseType = contentType(req);
+
+      if (responseType === 'notAcceptable') {
+        return reply('Not Acceptable').code(406);
+      }
+
       getImgTags(elastic, (err, result) => {
         if (err) return reply(Boom.serverUnavailable(err));
         const imgTags = result.aggregations.img_tags_aggs.imgtags.buckets;
@@ -17,7 +23,12 @@ module.exports = (elastic, config) => ({
         });
         const tags = Array.from(imgTagSet).sort();
 
-        return reply.view('imgtags', {tags: tags});
+        if (responseType === 'html') {
+          return reply.view('imgtags', {tags: tags});
+        } else if (responseType === 'json') {
+          return reply(tags)
+          .header('content-type', 'application/vnd.api+json');
+        }
       });
     }
   }
