@@ -6,15 +6,16 @@ module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/imgtags',
   config: {
-    handler: function (req, reply) {
-      var responseType = contentType(req);
+    handler: async function (request, h) {
+      var responseType = contentType(request);
 
       if (responseType === 'notAcceptable') {
-        return reply('Not Acceptable').code(406);
+        return h.response('Not Acceptable').code(406);
       }
 
-      getImgTags(elastic, (err, result) => {
-        if (err) return reply(Boom.serverUnavailable(err));
+      try {
+        const result = await getImgTags(elastic);
+
         const imgTags = result.aggregations.img_tags_aggs.imgtags.buckets;
         const imgTagsParents = result.aggregations.img_tags_aggs.imgtagsParents.buckets;
         var imgTagSet = new Set();
@@ -24,12 +25,14 @@ module.exports = (elastic, config) => ({
         const tags = Array.from(imgTagSet).sort();
 
         if (responseType === 'html') {
-          return reply.view('imgtags', {tags: tags});
+          return h.view('imgtags', {tags: tags});
         } else if (responseType === 'json') {
-          return reply(tags)
+          return h.response(tags)
           .header('content-type', 'application/vnd.api+json');
         }
-      });
+      } catch (err) {
+        Boom.serverUnavailable(err);
+      }
     }
   }
 });

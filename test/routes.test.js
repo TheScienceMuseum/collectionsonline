@@ -844,21 +844,20 @@ testWithServer(file + 'About', {}, async (t, ctx) => {
   t.end();
 });
 
-testWithServer('Get all image tags: html', {}, (t, ctx) => {
+testWithServer('Get all image tags: html', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/imgtags',
     headers: {'Accept': 'text/html'}
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'status code ok');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'status code ok');
+  t.end();
 });
 
-testWithServer(file + 'Request for image tags JSON Page', {}, (t, ctx) => {
-  t.plan(1);
+testWithServer(file + 'Request for image tags JSON Page', {}, async (t, ctx) => {
+  t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
@@ -866,9 +865,8 @@ testWithServer(file + 'Request for image tags JSON Page', {}, (t, ctx) => {
     headers: {'Accept': 'application/vnd.api+json'}
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    t.equal(res.headers['content-type'], 'application/vnd.api+json', 'JSONAPI response header ok');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.equal(res.headers['content-type'], 'application/vnd.api+json', 'JSONAPI response header ok');
+  t.end();
 });

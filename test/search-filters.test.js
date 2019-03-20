@@ -845,16 +845,14 @@ testWithServer(file + 'Should filter by image tag cat - json', {}, async (t, ctx
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search/imgtag/cat' + QueryString.stringify({
-      'q': ''
-    }),
+    url: '/search/imgtag/cat',
     headers: { Accept: 'application/vnd.api+json' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
   var result = JSON.parse(res.payload);
   t.equal(res.statusCode, 200, 'Status code was as expected');
-  t.ok(result.length > 1, 'There is at least one image tag');
+  t.ok(result.data.length > 1, 'There is at least one image tag');
   t.end();
 });
 
