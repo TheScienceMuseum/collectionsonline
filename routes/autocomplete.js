@@ -8,7 +8,7 @@ const whatis = require('../fixtures/whatis');
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/autocomplete/{type?}',
-  config: {
+  options: {
     validate: {
       params: {
         type: Joi.string().valid('objects', 'people', 'documents')
@@ -16,26 +16,35 @@ module.exports = (elastic, config) => ({
       query: {
         q: Joi.string().min(3).required(),
         size: Joi.number().integer().min(1).max(10).default(3)
-      }
-    },
-    handler: function (request, reply) {
-      var responseType = contentType(request);
-
-      if (responseType === 'json') {
-        const queryParams = Object.assign({}, request.params, request.query);
-
-        // display an autocomple list of 'What is' questions
-        if (queryParams.q.startsWith('what')) {
-          return reply(whatis);
+      },
+      failAction: function (request, h, err) {
+        if (err.output.statusCode === 400) {
+          return h.response(err.output.payload.message).code(400).takeover();
         }
-
-        autocomplete(elastic, queryParams, (err, results) => {
-          if (err) return reply(Boom.serverUnavailable(err));
-          return reply(autocompleteResultsToJsonApi(queryParams, results, config));
-        });
-      } else {
-        return reply();
       }
+    }
+  },
+  handler: async function (request, h) {
+    var responseType = contentType(request);
+    if (responseType === 'json') {
+      const queryParams = Object.assign({}, request.params, request.query);
+
+      // display an autocomple list of 'What is' questions
+      if (queryParams.q.startsWith('what')) {
+        return h.response(whatis);
+      }
+
+      try {
+        const results = await autocomplete(elastic, queryParams);
+
+        const apiResults = autocompleteResultsToJsonApi(queryParams, results, config);
+
+        return h.response(apiResults);
+      } catch (err) {
+        return Boom.serverUnavailable(err);
+      }
+    } else {
+      return h.response();
     }
   }
 });

@@ -10,31 +10,35 @@ module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/people/{id}/{slug?}',
   config: {
-    handler: function (request, reply) {
+    handler: async function (request, h) {
       var responseType = contentType(request);
+
       if (responseType !== 'notAcceptable') {
-        elastic.get({index: 'smg', type: 'agent', id: TypeMapping.toInternal(request.params.id)}, (err, result) => {
-          if (err) {
-            if (err.status === 404) {
-              return reply(Boom.notFound());
-            }
-            return reply(Boom.serverUnavailable('unavailable'));
+        try {
+          const result = await elastic.get({ index: 'smg', type: 'agent', id: TypeMapping.toInternal(request.params.id) });
+
+          let relatedItems;
+          let sortedRelatedItems;
+
+          try {
+            relatedItems = await getRelatedItems(elastic, request.params.id);
+            sortedRelatedItems = sortRelated(relatedItems);
+          } catch (err) {
+            sortedRelatedItems = null;
           }
 
-          getRelatedItems(elastic, request.params.id, (err, relatedItems) => {
-            if (err) {
-              relatedItems = null;
-            } else {
-              relatedItems = sortRelated(relatedItems);
-            }
+          const JSONData = buildJSONResponse(result, config, sortedRelatedItems);
 
-            const JSONData = buildJSONResponse(result, config, relatedItems);
+          return response(h, JSONData, 'person', responseType);
+        } catch (err) {
+          if (err.status === 404) {
+            return Boom.notFound();
+          }
 
-            return response(reply, JSONData, 'person', responseType);
-          });
-        });
+          return Boom.serverUnavailable('unavailable');
+        }
       } else {
-        return reply('Not Acceptable').code(406);
+        return h.response('Not Acceptable').code(406);
       }
     }
   }

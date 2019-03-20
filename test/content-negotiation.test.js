@@ -2,23 +2,22 @@ const testWithServer = require('./helpers/test-with-server');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
 
-testWithServer(file + 'Request for HTML Content', {}, (t, ctx) => {
+testWithServer(file + 'Request for HTML Content', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
     url: '/',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
-  ctx.server.inject(htmlRequest, (res) => {
-    t.ok(res.payload.toLowerCase().indexOf('<!doctype html>') > -1, 'HTML request should respond with HTML');
-    t.ok(res.headers['content-type'].indexOf('text/html') > -1, 'Response header should be text/html');
-    t.end();
-  });
+  const res = await ctx.server.inject(htmlRequest);
+  t.ok(res.payload.toLowerCase().indexOf('<!doctype html>') > -1, 'HTML request should respond with HTML');
+  t.ok(res.headers['content-type'].indexOf('text/html') > -1, 'Response header should be text/html');
+  t.end();
 });
 
-testWithServer(file + 'Request for JSONAPI Content', {}, (t, ctx) => {
+testWithServer(file + 'Request for JSONAPI Content', {}, async (t, ctx) => {
   // http://jsonapi.org/format/#content-negotiation-servers
   //
   // Servers MUST send all JSON API data in response documents with the header
@@ -28,31 +27,29 @@ testWithServer(file + 'Request for JSONAPI Content', {}, (t, ctx) => {
   const jsonRequest = {
     method: 'GET',
     url: '/search?q=test',
-    headers: {'Accept': 'application/vnd.api+json'}
+    headers: { 'Accept': 'application/vnd.api+json' }
   };
 
-  ctx.server.inject(jsonRequest, (res) => {
-    t.ok(res.headers['content-type'].indexOf('application/vnd.api+json') > -1, 'JSONAPI response header should be application/vnd.api+json');
-    t.end();
-  });
+  const res = await ctx.server.inject(jsonRequest);
+  t.ok(res.headers['content-type'].indexOf('application/vnd.api+json') > -1, 'JSONAPI response header should be application/vnd.api+json');
+  t.end();
 });
 
-testWithServer(file + 'Request with multiple instances of JSONAPI media type, one without parameters', {}, (t, ctx) => {
+testWithServer(file + 'Request with multiple instances of JSONAPI media type, one without parameters', {}, async (t, ctx) => {
   t.plan(1);
 
   const acceptableJSONRequest = {
     method: 'GET',
     url: '/search?q=test',
-    headers: {'Accept': 'application/vnd.api+json; charset=utf-8, application/vnd.api+json'}
+    headers: { 'Accept': 'application/vnd.api+json; charset=utf-8, application/vnd.api+json' }
   };
 
-  ctx.server.inject(acceptableJSONRequest, (res) => {
-    t.equal(res.statusCode, 200, 'At least one JSONAPI without parameters should work');
-    t.end();
-  });
+  const res = await ctx.server.inject(acceptableJSONRequest);
+  t.equal(res.statusCode, 200, 'At least one JSONAPI without parameters should work');
+  t.end();
 });
 
-testWithServer(file + 'Not acceptable request when to accept header', {}, (t, ctx) => {
+testWithServer(file + 'Not acceptable request when to accept header', {}, async (t, ctx) => {
   t.plan(1);
 
   const acceptableJSONRequest = {
@@ -60,53 +57,49 @@ testWithServer(file + 'Not acceptable request when to accept header', {}, (t, ct
     url: '/'
   };
 
-  ctx.server.inject(acceptableJSONRequest, (res) => {
-    t.equal(res.statusCode, 406, 'Not acceptable request when no accept header is defined');
-    t.end();
-  });
+  const res = await ctx.server.inject(acceptableJSONRequest);
+  t.equal(res.statusCode, 406, 'Not acceptable request when no accept header is defined');
+  t.end();
 });
 
-testWithServer(file + 'Not acceptable if json and html header are defined at the same time', {}, (t, ctx) => {
+testWithServer(file + 'Not acceptable if json and html header are defined at the same time', {}, async (t, ctx) => {
   t.plan(1);
 
   const acceptableJSONRequest = {
     method: 'GET',
     url: '/',
-    headers: {'Accept': 'text/html, application/json'}
+    headers: { 'Accept': 'text/html, application/json' }
   };
 
-  ctx.server.inject(acceptableJSONRequest, (res) => {
-    t.equal(res.statusCode, 406, 'Not acceptable request when a json and html header are defined at the same time');
-    t.end();
-  });
+  const res = await ctx.server.inject(acceptableJSONRequest);
+  t.equal(res.statusCode, 406, 'Not acceptable request when a json and html header are defined at the same time');
+  t.end();
 });
 
-testWithServer(file + 'Return html if user agent is twitter bot', {}, (t, ctx) => {
+testWithServer(file + 'Return html if user agent is twitter bot', {}, async (t, ctx) => {
   t.plan(1);
 
   const acceptableJSONRequest = {
     method: 'GET',
     url: '/',
-    headers: {'user-agent': 'Twitterbot'}
+    headers: { 'user-agent': 'Twitterbot' }
   };
 
-  ctx.server.inject(acceptableJSONRequest, (res) => {
-    t.equal(res.statusCode, 200, 'return some html for twitter');
-    t.end();
-  });
+  const res = await ctx.server.inject(acceptableJSONRequest);
+  t.equal(res.statusCode, 200, 'return some html for twitter');
+  t.end();
 });
 
-testWithServer(file + 'Not acceptable if no accept header and no user-agent twitter', {}, (t, ctx) => {
+testWithServer(file + 'Not acceptable if no accept header and no user-agent twitter', {}, async (t, ctx) => {
   t.plan(1);
 
   const acceptableJSONRequest = {
     method: 'GET',
     url: '/',
-    headers: {'user-agent': 'bot'}
+    headers: { 'user-agent': 'bot' }
   };
 
-  ctx.server.inject(acceptableJSONRequest, (res) => {
-    t.equal(res.statusCode, 406, 'not acceptage if user-agent is not twitter');
-    t.end();
-  });
+  const res = await ctx.server.inject(acceptableJSONRequest);
+  t.equal(res.statusCode, 406, 'not acceptage if user-agent is not twitter');
+  t.end();
 });

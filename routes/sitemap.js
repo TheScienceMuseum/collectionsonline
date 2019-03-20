@@ -5,12 +5,12 @@ module.exports = (config) => ({
   path: '/sitemap.xml',
 
   config: {
-    handler: (request, reply) => {
+    handler: (request, h) => {
       if (!config.sitemapUrl || config.sitemapUrl === config.rootUrl) {
-        return reply.file(Path.join(__dirname, '..', 'public', 'sitemap.xml'));
+        return h.file(Path.join(__dirname, '..', 'public', 'sitemap.xml'));
       }
 
-      return reply.proxy({ uri: `${config.sitemapUrl}/sitemap.xml`, passThrough: true });
+      return h.proxy({ uri: `${config.sitemapUrl}/sitemap.xml`, passThrough: true });
     }
   }
 });

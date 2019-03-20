@@ -12,20 +12,18 @@ module.exports = {
     return {
       method: 'GET',
       path: '/search/categories/oriental-medicine',
-      handler: function (request, reply) {
-        redirect(request, reply, '/search/categories/asian-medicine');
+      handler: function (request, h) {
+        redirect(request, h, '/search/categories/asian-medicine');
       }
     };
   }
 };
 
-function redirect (request, reply, path) {
-  Joi.validate({query: request.query},
-    {
-      query: filterSchema('json').keys(searchSchema)
-    }, (err, value) => {
-      if (err) return reply(Boom.badRequest(err));
-      reply.redirect(path + Querystring.stringify(request.query));
-    }
-  );
+async function redirect (request, h, path) {
+  try {
+    await Joi.validate({ query: request.query }, { query: filterSchema('json').keys(searchSchema) });
+
+    h.redirect(path + Querystring.stringify(request.query));
+  } catch (err) { return Boom.badRequest(err); }
 }
+

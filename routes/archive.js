@@ -8,16 +8,13 @@ const response = require('./route-helpers/response');
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/documents/{id}/{slug?}',
-  handler: function (request, reply) {
+  handler: async function (request, h) {
     var responseType = contentType(request);
 
     if (responseType !== 'notAcceptable') {
-      elastic.get({index: 'smg', type: 'archive', id: TypeMapping.toInternal(request.params.id)}, function (err, result) {
-        var fondsId;
-
-        if (err) {
-          return reply(elasticError(err));
-        }
+      try {
+        const result = await elastic.get({ index: 'smg', type: 'archive', id: TypeMapping.toInternal(request.params.id) });
+        let fondsId;
 
         if (result._source.fonds) {
           fondsId = result._source.fonds[0].admin.uid;
@@ -25,18 +22,16 @@ module.exports = (elastic, config) => ({
           fondsId = result._source.admin.uid;
         }
 
-        getCachedDocument(elastic, TypeMapping.toInternal(request.params.id), fondsId, function (err, data) {
-          if (err) {
-            return reply(elasticError(err));
-          }
+        const data = await getCachedDocument(elastic, TypeMapping.toInternal(request.params.id), fondsId);
 
-          const JSONData = Object.assign(buildJSONResponse(result, config), {tree: data});
+        const JSONData = Object.assign(buildJSONResponse(result, config), { tree: data });
 
-          return response(reply, JSONData, 'archive', responseType);
-        });
-      });
+        return response(h, JSONData, 'archive', responseType);
+      } catch (err) {
+        return elasticError(err);
+      }
     } else {
-      return reply('Not Acceptable').code(406);
+      return h.response('Not Acceptable').code(406);
     }
   }
 });
@@ -45,7 +40,6 @@ function elasticError (err) {
   if (err.status === 404) {
     return Boom.notFound();
   } else {
-    console.log(err);
     return Boom.serverUnavailable('unavailable');
   }
 }

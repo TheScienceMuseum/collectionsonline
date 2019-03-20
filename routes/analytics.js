@@ -11,12 +11,12 @@ module.exports = (elastic, config) => ({
         data: Joi.string()
       }
     },
-    handler: function (request, reply) {
+    handler: function (request, h) {
       var responseType = contentType(request);
       if (responseType === 'json') {
-        reply().code(204);
+        return h.response().code(204);
       } else {
-        return reply();
+        return h.response();
       }
     }
   }

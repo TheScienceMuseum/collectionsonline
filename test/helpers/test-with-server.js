@@ -32,11 +32,11 @@ module.exports = (description, options, cb, auth) => {
         throw new Error('Mock needs to include a method');
       }
 
-      stub(elastic, options.mock.method, function (params, cb) {
-        process.nextTick(function () {
-          cb(options.mock.response.error, options.mock.response.data);
-        });
-      });
+      if (options.mock.response.error) {
+        stub(elastic, options.mock.method).rejects(options.mock.response.error);
+      } else {
+        stub(elastic, options.mock.method).resolves(options.mock.response.data);
+      }
     }
 
     tape(description, (t) => {
