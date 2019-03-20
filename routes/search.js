@@ -41,27 +41,27 @@ module.exports = (elastic, config) => ({
           { allowUnknown: true }
         );
 
-        // match categories
-        if (result.query.q && (!result.categories['filter[categories]'])) {
-          var q = result.query.q.toLowerCase();
-          var qMatch;
-
-          if (keyCategories.some(el => {
-            if (el.category === q || el.synonyms.indexOf(q) > -1) {
-              qMatch = el.category;
-              return true;
-            } else {
-              return false;
-            }
-          })) {
-            return h.redirect(request.path + '/categories/' + qMatch);
-          }
-        }
-
         const query = Object.assign(result.query, result.params, result.categories);
         const queryParams = createQueryParams(responseType, { query: query, params: params });
 
         if (responseType === 'html') {
+          // match categories
+          if (result.query.q && (!result.categories['filter[categories]'])) {
+            var q = result.query.q.toLowerCase();
+            var qMatch;
+
+            if (keyCategories.some(el => {
+              if (el.category === q || el.synonyms.indexOf(q) > -1) {
+                qMatch = el.category;
+                return true;
+              } else {
+                return false;
+              }
+            })) {
+              return h.redirect(request.path + '/categories/' + qMatch);
+            }
+          }
+
           // match and answer 'what is' questions
           if (result.query.q && result.query.q.toLowerCase().startsWith('what')) {
             var answer = whatis.data.filter((a) => a.attributes.summary_title.toLowerCase() === result.query.q.toLowerCase());
