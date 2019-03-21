@@ -116,10 +116,16 @@ Async.parallel([
   },
 
   // Aggregations
-  async (cb) => {
+  async () => {
     try {
       const response = await search(elastic, createQueryParams('html', { query: { q: 'test' }, params: {} }));
-      Fs.writeFile(dirData + '/../../helpers/aggregations-all.json', JSON.stringify(response.aggregations.all, null, 2), 'utf-8', cb);
+      Fs.writeFile(dirData + '/../../helpers/aggregations-all.json',
+                   JSON.stringify(response.aggregations.all, null, 2),
+                   'utf-8',
+                   (err) => {
+                     if (err) throw err;
+                     console.log('The file has been saved!');
+                   });
     } catch (err) { throw err; }
   }
 ], (err) => {

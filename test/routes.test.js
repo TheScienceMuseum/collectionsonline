@@ -843,3 +843,30 @@ testWithServer(file + 'About', {}, async (t, ctx) => {
   t.ok(res.payload.indexOf('ABOUT') > -1);
   t.end();
 });
+
+testWithServer('Get all image tags: html', {}, async (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/imgtags',
+    headers: {'Accept': 'text/html'}
+  };
+
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'status code ok');
+  t.end();
+});
+
+testWithServer(file + 'Request for image tags JSON Page', {}, async (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/imgtags',
+    headers: {'Accept': 'application/vnd.api+json'}
+  };
+
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.equal(res.headers['content-type'], 'application/vnd.api+json', 'JSONAPI response header ok');
+  t.end();
+});

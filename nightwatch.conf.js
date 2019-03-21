@@ -38,6 +38,9 @@ module.exports = {
       },
       desiredCapabilities: {
         browserName: 'chrome',
+        chromeOptions: {
+          args: ['--disable-dev-shm-usage']
+        },
         javascriptEnabled: true,
         acceptSslCerts: true,
         build: `build-${TRAVIS_JOB_NUMBER}`,
@@ -59,6 +62,9 @@ module.exports = {
       },
       desiredCapabilities: {
         browserName: 'chrome',
+        chromeOptions: {
+          args: ['--disable-dev-shm-usage']
+        },
         javascriptEnabled: true,
         acceptSslCerts: true
       }
@@ -67,6 +73,9 @@ module.exports = {
     chrome: {
       desiredCapabilities: {
         browserName: 'chrome',
+        chromeOptions: {
+          args: ['--disable-dev-shm-usage']
+        },
         javascriptEnabled: true,
         acceptSslCerts: true
       }
