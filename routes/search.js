@@ -10,6 +10,7 @@ const contentType = require('./route-helpers/content-type.js');
 const parseParameters = require('./route-helpers/parse-params');
 const keyCategories = require('../fixtures/key-categories');
 const whatis = require('../fixtures/whatis');
+const searchResultsToSlideshow = require('../lib/transforms/slideshow');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -42,9 +43,21 @@ module.exports = (elastic, config) => ({
         );
 
         const query = Object.assign(result.query, result.params, result.categories);
-        const queryParams = createQueryParams(responseType, { query: query, params: params });
+        let queryParams = createQueryParams(responseType, { query: query, params: params });
 
         if (responseType === 'html') {
+          // slideshow
+          if (request.params.filters && request.params.filters.indexOf('slideshow') > -1) {
+            queryParams.filter.objects.hasImage = ['has_image'];
+            queryParams.filter.all.hasImage = ['has_image'];
+
+            const query = Object.assign(queryParams, { type: 'objects', random: 100 });
+            const res = await search(elastic, query);
+            const data = searchResultsToSlideshow(queryParams, res, config);
+
+            return h.view('slideshow', { data: data, stringData: JSON.stringify(data) });
+          }
+
           // match categories
           if (result.query.q && (!result.categories['filter[categories]'])) {
             var q = result.query.q.toLowerCase();

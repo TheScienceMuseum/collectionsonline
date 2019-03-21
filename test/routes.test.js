@@ -843,3 +843,16 @@ testWithServer(file + 'About', {}, async (t, ctx) => {
   t.ok(res.payload.indexOf('ABOUT') > -1);
   t.end();
 });
+
+testWithServer(file + 'Slideshow', {}, async (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search/categories/locomotives-and-rolling-stock-components/slideshow',
+    headers: { 'Accept': 'text/html' }
+  };
+
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200);
+  t.ok(res.payload.indexOf('slideshow') > -1);
+  t.end();
+});
