@@ -840,3 +840,34 @@ testWithServer(file + 'Should have image and license facets', {}, async (t, ctx)
   t.end();
 });
 
+testWithServer(file + 'Should filter by image tag cat - json', {}, async (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search/imgtag/cat',
+    headers: { Accept: 'application/vnd.api+json' }
+  };
+
+  const res = await ctx.server.inject(htmlRequest);
+  var result = JSON.parse(res.payload);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.ok(result.data.length > 1, 'There is at least one image tag');
+  t.end();
+});
+
+testWithServer(file + 'Should filter by image tag - html', {}, async (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search/imgtag/cat' + QueryString.stringify({
+      'q': ''
+    }),
+    headers: { Accept: 'text/html' }
+  };
+
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.end();
+});
