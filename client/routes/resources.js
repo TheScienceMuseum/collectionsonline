@@ -11,7 +11,6 @@ var getArticles = require('../lib/listeners/get-articles');
 var getWikiData = require('../lib/listeners/get-wiki-data');
 var searchListener = require('../lib/listeners/search-listener');
 var downloadImageListener = require('../lib/listeners/download-image');
-var osdListener = require('../lib/listeners/osd-listener');
 var archiveListeners = require('../lib/listeners/archive-listeners');
 var initComp = require('../lib/listeners/init-components.js');
 
@@ -52,8 +51,8 @@ function load (ctx, next, type) {
       ctx.state.data.back = sessionStorage.getItem('backPath');
       // analytics
       window.dataLayer.push(JSON.parse(data.layer));
-      window.dataLayer.push({'recordTitle': data.title});
-      window.dataLayer.push({'event': 'recordEvent'});
+      window.dataLayer.push({ 'recordTitle': data.title });
+      window.dataLayer.push({ 'event': 'recordEvent' });
 
       ctx.state.data.page = page;
       next();
@@ -85,7 +84,7 @@ function listeners (ctx, next, type) {
   var funcs = [initComp, searchListener];
 
   if (type === 'object' || type === 'document') {
-    funcs.push(osdListener, downloadImageListener);
+    funcs.push(downloadImageListener);
   }
 
   if (type === 'object') {

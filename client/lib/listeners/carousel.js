@@ -1,6 +1,5 @@
 var Flickity = require('flickity');
 require('flickity-imagesloaded');
-var openseadragon = require('../openseadragon');
 
 module.exports = ctx => {
   var carousel = document.querySelector('.carousel');
@@ -46,14 +45,17 @@ module.exports = ctx => {
         rights.forEach(el => showHide('cite__method', flkty, el));
         useImage.forEach(el => showHide('cite__button', flkty, el));
       }
+
+      let carouselImage = document.querySelectorAll('.carousel__image.is-selected');
+
+      if (carouselImage.length) {
+        ctx.imgUrl = carouselImage[0].dataset.osd;
+      }
     });
 
     Array.prototype.slice.call(thumbnails).forEach((el, i) =>
       el.addEventListener('click', function (e) {
         ctx.carousel.select(i);
-        if (ctx.viewer) {
-          openseadragon.init(ctx, e.target.src);
-        }
       })
     );
   }
