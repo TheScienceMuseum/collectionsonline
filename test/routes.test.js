@@ -844,11 +844,24 @@ testWithServer(file + 'About', {}, async (t, ctx) => {
   t.end();
 });
 
+testWithServer(file + 'Slideshow', {}, async (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/search/categories/locomotives-and-rolling-stock-components/slideshow',
+    headers: { 'Accept': 'text/html' }
+  };
+
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200);
+  t.ok(res.payload.indexOf('slideshow') > -1);
+  t.end();
+});
+
 testWithServer('Get all image tags: html', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/imgtags',
-    headers: {'Accept': 'text/html'}
+    headers: { 'Accept': 'text/html' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -862,7 +875,7 @@ testWithServer(file + 'Request for image tags JSON Page', {}, async (t, ctx) => 
   const htmlRequest = {
     method: 'GET',
     url: '/imgtags',
-    headers: {'Accept': 'application/vnd.api+json'}
+    headers: { 'Accept': 'application/vnd.api+json' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
