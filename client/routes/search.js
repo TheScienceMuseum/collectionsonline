@@ -116,7 +116,6 @@ function render (ctx, next) {
   if (filterButton) {
     filterButton.style.display = 'none';
   }
-
   // Hides filterpanel by default if javascript is enabled
   if (!ctx.isFilterOpen) {
     var searchresults = document.querySelector('.searchresults');
@@ -261,5 +260,13 @@ function listeners (ctx, next) {
 
   for (let i = 0; i < resultLinks.length; i++) {
     resultLinks[i].addEventListener('click', onResultClick);
+  }
+
+  // close filters on mobile when no filter selected
+  var onMobile = window.getComputedStyle(document.getElementById('filtercolumn')).position === 'absolute';
+  var noFilterSelected = ['/search', '/search/people', '/search/objects', '/search/documents'].lastIndexOf(ctx.canonicalPath) !== -1;
+  if (onMobile && noFilterSelected) {
+    displayFilters(false);
+    filterState.isFilterOpen = false;
   }
 }
