@@ -9,6 +9,7 @@ var moreDetails = require('./expand-details-button');
 var mediaplayer = require('./mediaplayer');
 var headerMenu = require('./header-menu');
 var illuminate = require('./illuminate');
+var osd = require('./osd');
 
 module.exports = ctx => {
   svg4everybody();
@@ -22,4 +23,5 @@ module.exports = ctx => {
   mediaplayer();
   headerMenu();
   illuminate();
+  osd(ctx);
 };
