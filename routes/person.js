@@ -22,7 +22,7 @@ module.exports = (elastic, config) => ({
 
           try {
             relatedItems = await getRelatedItems(elastic, request.params.id);
-            sortedRelatedItems = sortRelated(relatedItems);
+            sortedRelatedItems = sortRelated(relatedItems, request.params.id);
           } catch (err) {
             sortedRelatedItems = null;
           }
