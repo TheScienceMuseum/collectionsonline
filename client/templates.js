@@ -249,6 +249,8 @@ Handlebars.registerHelper('toggleDetail', require('../templates/helpers/toggleDe
 Handlebars.registerHelper('isResourcePage', require('../templates/helpers/isResourcePage.js'));
 Handlebars.registerHelper('concat', require('../templates/helpers/concat.js'));
 
+Handlebars.registerHelper('ifcreator', require('../templates/helpers/ifcreator.js'));
+
 // Routes
 module.exports = {
   '404': Handlebars.compile(

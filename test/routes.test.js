@@ -899,3 +899,34 @@ testWithServer(file + 'Request for Person with non-creator related items', {}, a
   await ctx.server.stop();
   t.end();
 });
+
+testWithServer(file + 'Request for Person with creator related items', {}, async (t, ctx) => {
+  t.plan(2);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/people/cp2735',
+    headers: { 'Accept': 'text/html' }
+  };
+
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  t.ok(res.payload.indexOf('/search/objects/makers') > -1);
+  await ctx.server.stop();
+  t.end();
+});
+
+testWithServer(file + 'Request for Person with no related items', {}, async (t, ctx) => {
+  t.plan(1);
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/people/cp88238',
+    headers: { 'Accept': 'application/vnd.api+json' }
+  };
+
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  await ctx.server.stop();
+  t.end();
+});
