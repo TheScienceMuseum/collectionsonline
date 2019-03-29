@@ -807,30 +807,6 @@ testWithServer(file + 'Key category search - synonym', {}, async (t, ctx) => {
   t.end();
 });
 
-testWithServer(file + 'Random', {}, async (t, ctx) => {
-  const htmlRequest = {
-    method: 'GET',
-    url: '/random',
-    headers: { 'Accept': 'text/html' }
-  };
-
-  const res = await ctx.server.inject(htmlRequest);
-  t.equal(res.statusCode, 302);
-  t.end();
-});
-
-testWithServer(file + 'Screensaver', {}, async (t, ctx) => {
-  const htmlRequest = {
-    method: 'GET',
-    url: '/screensaver',
-    headers: { 'Accept': 'text/html' }
-  };
-
-  const res = await ctx.server.inject(htmlRequest);
-  t.equal(res.statusCode, 302);
-  t.end();
-});
-
 testWithServer(file + 'About', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
