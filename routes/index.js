@@ -1,4 +1,5 @@
 module.exports = (elastic, config) => ([
+  require('./redirects').random(),
   require('./redirects').medicine(),
   require('./home')(),
   require('./search')(elastic, config),
