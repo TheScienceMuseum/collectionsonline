@@ -5,7 +5,8 @@ var async = require('async');
 var endpoints = [
   { label: 'National Science and Media Museum', url: 'https://www.scienceandmediamuseum.org.uk/collection-media/collection-usage/objects' },
   { label: 'Science and Industry Musem', url: 'https://www.scienceandindustrymuseum.org.uk/collection-media/collection-usage/objects' },
-  { label: 'Science Museum', url: 'https://www.sciencemuseum.org.uk/collection-media/collection-usage/objects' }
+  { label: 'Science Museum', url: 'https://www.sciencemuseum.org.uk/collection-media/collection-usage/objects' },
+  { label: 'Railway Museum', url: 'https://www.railwaymuseum.org.uk/collection-media/collection-usage/objects' }
 ];
 
 module.exports = () => ({
