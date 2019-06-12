@@ -39,7 +39,8 @@ module.exports = {
       desiredCapabilities: {
         browserName: 'chrome',
         chromeOptions: {
-          args: ['--disable-dev-shm-usage']
+          args: ['--disable-dev-shm-usage'],
+          w3c: false
         },
         javascriptEnabled: true,
         acceptSslCerts: true,
@@ -63,7 +64,8 @@ module.exports = {
       desiredCapabilities: {
         browserName: 'chrome',
         chromeOptions: {
-          args: ['--disable-dev-shm-usage']
+          args: ['--disable-dev-shm-usage'],
+          w3c: false
         },
         javascriptEnabled: true,
         acceptSslCerts: true
@@ -74,7 +76,8 @@ module.exports = {
       desiredCapabilities: {
         browserName: 'chrome',
         chromeOptions: {
-          args: ['--disable-dev-shm-usage']
+          args: ['--disable-dev-shm-usage'],
+          w3c: false
         },
         javascriptEnabled: true,
         acceptSslCerts: true
