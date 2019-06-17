@@ -22,8 +22,9 @@ module.exports = {
   },
 
   test_settings: {
-    travis: {
-      launch_url: 'http://ondemand.saucelabs.com:80',
+
+    default: {
+      launch_url: 'http://localhost',
       selenium_port: 80,
       selenium_host: 'ondemand.saucelabs.com',
       silent: true,
@@ -49,7 +50,7 @@ module.exports = {
       }
     },
 
-    default: {
+    old-default: {
       launch_url: 'http://localhost',
       selenium_port: 4444,
       selenium_host: 'localhost',
