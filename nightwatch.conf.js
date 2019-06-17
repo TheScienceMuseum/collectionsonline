@@ -23,7 +23,7 @@ module.exports = {
 
   test_settings: {
     travis: {
-      launch_url: 'http://localhost',
+      launch_url: 'localhost',
       selenium_port: 80,
       selenium_host: 'ondemand.saucelabs.com',
       silent: true,
@@ -51,7 +51,7 @@ module.exports = {
 
     default: {
       launch_url: 'http://localhost',
-      selenium_port: 4444,
+      selenium_port: 4445,
       selenium_host: 'localhost',
       silent: true,
       screenshots: {
@@ -76,8 +76,8 @@ module.exports = {
       desiredCapabilities: {
         browserName: 'chrome',
         chromeOptions: {
-          args: ['--disable-dev-shm-usage'],
-          w3c: false
+          w3c: false,
+          args: ['--disable-dev-shm-usage']
         },
         javascriptEnabled: true,
         acceptSslCerts: true
