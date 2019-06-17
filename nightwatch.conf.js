@@ -23,8 +23,8 @@ module.exports = {
 
   test_settings: {
     travis: {
-      launch_url: 'http://localhost',
-      selenium_port: 4445,
+      launch_url: 'http://ondemand.saucelabs.com:80',
+      selenium_port: 80,
       selenium_host: 'ondemand.saucelabs.com',
       silent: true,
       username: process.env.SAUCE_USERNAME,
@@ -34,7 +34,7 @@ module.exports = {
         path: ''
       },
       globals: {
-        waitForConditionTimeout: 20000
+        waitForConditionTimeout: 10000
       },
       desiredCapabilities: {
         browserName: 'chrome',
