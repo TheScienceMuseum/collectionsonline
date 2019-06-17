@@ -23,8 +23,8 @@ module.exports = {
 
   test_settings: {
     travis: {
-      launch_url: 'localhost',
-      selenium_port: 80,
+      launch_url: 'http://localhost',
+      selenium_port: 4445,
       selenium_host: 'ondemand.saucelabs.com',
       silent: true,
       username: process.env.SAUCE_USERNAME,
@@ -51,7 +51,7 @@ module.exports = {
 
     default: {
       launch_url: 'http://localhost',
-      selenium_port: 4445,
+      selenium_port: 4444,
       selenium_host: 'localhost',
       silent: true,
       screenshots: {
