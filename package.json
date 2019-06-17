@@ -39,7 +39,7 @@
     "page": "^1.11.4",
     "rc": "^1.2.8",
     "request": "^2.87.0",
-    "selenium-standalone": "^6.16.0",
+    "selenium-standalone": "^6.15.0",
     "selenium-webdriver": "^4.0.0-alpha.1",
     "slugg": "^1.1.0",
     "snackbarlightjs": "^1.1.2",
