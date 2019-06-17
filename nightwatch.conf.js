@@ -1,6 +1,7 @@
 const fs = require('fs');
 const binpath = './node_modules/nightwatch/bin/';
 const TRAVIS_JOB_NUMBER = process.env.TRAVIS_JOB_NUMBER;
+const SELENIUM_PORT = process.env.NW_ENV === 'travis' ? 4445 : 4444;
 
 module.exports = {
   src_folders: ['test/client'],
@@ -15,7 +16,7 @@ module.exports = {
     server_path: binpath + 'selenium.jar',
     log_path: '',
     host: '127.0.0.1',
-    port: 4445,
+    port: SELENIUM_PORT,
     cli_args: {
       'webdriver.chrome.driver': binpath + 'chromedriver'
     }
