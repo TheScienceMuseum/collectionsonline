@@ -15,7 +15,7 @@ module.exports = {
     server_path: binpath + 'selenium.jar',
     log_path: '',
     host: '127.0.0.1',
-    port: 4444,
+    port: 4445,
     cli_args: {
       'webdriver.chrome.driver': binpath + 'chromedriver'
     }
@@ -34,11 +34,12 @@ module.exports = {
         path: ''
       },
       globals: {
-        waitForConditionTimeout: 20000
+        waitForConditionTimeout: 10000
       },
       desiredCapabilities: {
         browserName: 'chrome',
         chromeOptions: {
+          w3c: false,
           args: ['--disable-dev-shm-usage']
         },
         javascriptEnabled: true,
@@ -63,6 +64,7 @@ module.exports = {
       desiredCapabilities: {
         browserName: 'chrome',
         chromeOptions: {
+          w3c: false,
           args: ['--disable-dev-shm-usage']
         },
         javascriptEnabled: true,
@@ -74,6 +76,7 @@ module.exports = {
       desiredCapabilities: {
         browserName: 'chrome',
         chromeOptions: {
+          w3c: false,
           args: ['--disable-dev-shm-usage']
         },
         javascriptEnabled: true,

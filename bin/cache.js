@@ -1,5 +1,5 @@
-const Catbox = require('catbox');
-const CatboxRedis = require('catbox-redis');
+const Catbox = require('@hapi/catbox');
+const CatboxRedis = require('@hapi/catbox-redis');
 var elasticacheHost = '127.0.0.1';
 var elasticachePort = '6379';
 
