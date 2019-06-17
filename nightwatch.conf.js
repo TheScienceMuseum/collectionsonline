@@ -15,7 +15,7 @@ module.exports = {
     server_path: binpath + 'selenium.jar',
     log_path: '',
     host: '127.0.0.1',
-    port: 4444,
+    port: 4445,
     cli_args: {
       'webdriver.chrome.driver': binpath + 'chromedriver'
     }
@@ -23,7 +23,7 @@ module.exports = {
 
   test_settings: {
     travis: {
-      launch_url: 'http://' + process.env.SAUCE_USERNAME + ':' + process.env.SAUCE_ACCESS_KEY + '@ondemand.saucelabs.com:80/wd/hub',
+      launch_url: 'ondemand.saucelabs.com:80',
       selenium_port: 80,
       selenium_host: 'ondemand.saucelabs.com',
       silent: true,
