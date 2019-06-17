@@ -23,7 +23,7 @@ module.exports = {
 
   test_settings: {
     travis: {
-      launch_url: 'ondemand.saucelabs.com:80',
+      launch_url: 'http://localhost',
       selenium_port: 80,
       selenium_host: 'ondemand.saucelabs.com',
       silent: true,
