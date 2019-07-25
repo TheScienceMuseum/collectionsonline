@@ -1,3 +1,4 @@
+
 language: node_js
 
 node_js:
@@ -23,7 +24,7 @@ after_script:
   - pkill node
 
 before_deploy:
-  - zip -q -x .git\* node_modules/\* -r collectionsonline *
+  - zip -q -x .git\* node_modules/\* -r collectionsonline . 
 
 deploy:
   - provider: elasticbeanstalk
