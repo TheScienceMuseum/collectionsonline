@@ -5,6 +5,12 @@
     "description": "Short description (1 or 2 lines max)",
     "link-to-gallery-page": "http://www.sciencemuseum.org.uk/"
   },
+  "Science City": {
+    "title": "Science City 1550 -1800: The Linbury Gallery",
+    "thumbnail": "https://www.sciencemuseumgroup.org.uk//assets/img/description-box/gallery/londonsciencecity.jpeg",
+    "description": "Explore the objects on display in Science City and discover how London grew from a bustling capital city to a global hub for trade, commerce, and scientific enquiry between 1550 and 1800.",
+    "link-to-gallery-page": "https://www.sciencemuseum.org.uk/see-and-do/science-city-1550-1800-linbury-gallery"
+  },
   "Special Exhibition Gallery 1:  The Sun": {
     "description": "Discover the incredible story of our closest star—the Sun—through fun hands-on experiences, unique objects, and stunning imagery in our latest exhibition.",
     "link-to-gallery-page": "https://www.sciencemuseum.org.uk/see-and-do/the-sun-living-with-our-star"
