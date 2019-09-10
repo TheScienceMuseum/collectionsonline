@@ -1,18 +1,14 @@
 @charset 'utf-8';
 
-// redefined to add 'zero' for foundation compat
-$breakpoints: (
-  zero: 0,
-  tiny: 320px,
-  phone: 375px,
-  small: 580px,
-  // point of single column layout. Numiko use 580 but too tight here?
-    medium: 768px,
-  // desktop: 1024px,
-    large: 1152px
-);
-
 @import "smg-web-design-system/src/scss/lib";
+
+// redefined to add 'zero' for foundation compat
+$breakpoints: map-merge(
+  (
+    "zero": 0
+  ),
+  $breakpoints
+);
 
 // general settings and variables, required before foundation
 @import "base/colour";
@@ -24,26 +20,27 @@ $breakpoints: (
 @import "base/foundation-components";
 
 // our base styles, then all components
-@import 'base/general';
-@import 'base/layout';
-@import 'components/accordion';
-@import 'components/awesomplete';
-@import 'components/archive-tree';
-@import 'components/betabar';
-@import 'components/carousel';
-@import 'components/clipboard';
-@import 'components/completeness';
-@import 'components/control';
-@import 'components/description-box';
-@import 'components/details';
-@import 'components/filter';
-@import 'components/footersection';
-@import 'components/home';
-@import 'components/loading';
-@import 'components/logo-panel';
-@import 'components/mediaplayer';
-@import 'components/masthead';
+@import "base/general";
+@import "base/layout";
+@import "smg-web-design-system/src/scss/components/accordion";
+@import "components/awesomplete";
+@import "components/archive-tree";
+@import "components/betabar";
+@import "components/carousel";
+@import "components/clipboard";
+@import "components/completeness";
+@import "components/control";
+@import "components/description-box";
+@import "components/details";
+@import "components/filter";
+@import "components/footersection";
+@import "components/home";
 @import 'components/internal-header';
+@import "smg-web-design-system/src/scss/components/loading";
+@import "components/logo-panel";
+@import "components/mediaplayer";
+@import "components/masthead";
+@import "components/menu";
 @import 'components/menu';
 @import "components/panel";
 @import "components/record";

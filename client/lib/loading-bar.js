@@ -7,11 +7,11 @@ var loadingEl = function () {
 };
 
 module.exports = {
-  start: function () {
-    loadingEl().classList.add('loading');
+  start: function() {
+    loadingEl().classList.add("c-loading");
   },
 
-  end: function () {
-    loadingEl().classList.remove('loading');
+  end: function() {
+    loadingEl().classList.remove("c-loading");
   }
 };
