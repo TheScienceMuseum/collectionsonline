@@ -1,39 +1,39 @@
 @charset 'utf-8';
 
 // general settings and variables, required before foundation
-@import 'base/colour';
-@import 'base/type';
-@import 'base/helpers';
-@import 'base/print';
+@import "base/colour";
+@import "base/type";
+@import "base/helpers";
+@import "base/print";
 
 // foundation _settings file, and component extensions
-@import 'base/foundation-settings';
-@import 'base/foundation-components';
+@import "base/foundation-settings";
+@import "base/foundation-components";
 
 // our base styles, then all components
-@import 'base/general';
-@import 'base/layout';
-@import 'components/accordion';
-@import 'components/awesomplete';
-@import 'components/archive-tree';
-@import 'components/betabar';
-@import 'components/carousel';
-@import 'components/clipboard';
-@import 'components/completeness';
-@import 'components/control';
-@import 'components/description-box';
-@import 'components/details';
-@import 'components/filter';
-@import 'components/footersection';
-@import 'components/home';
-@import 'components/loading';
-@import 'components/logo-panel';
-@import 'components/mediaplayer';
-@import 'components/masthead';
-@import 'components/menu';
-@import 'components/panel';
-@import 'components/record';
-@import 'components/result';
-@import 'components/search';
-@import '../../node_modules/snackbarlightjs/src/css/snackbarlight';
-@import 'base/hidden';
+@import "base/general";
+@import "base/layout";
+@import "components/accordion";
+@import "components/awesomplete";
+@import "components/archive-tree";
+@import "components/betabar";
+@import "components/carousel";
+@import "components/clipboard";
+@import "components/completeness";
+@import "components/control";
+@import "components/description-box";
+@import "components/details";
+@import "components/filter";
+@import "components/footersection";
+@import "components/home";
+@import "components/loading";
+@import "components/logo-panel";
+@import "components/mediaplayer";
+@import "components/masthead";
+@import "components/menu";
+@import "components/panel";
+@import "components/record";
+@import "components/result";
+@import "components/search";
+@import "snackbarlightjs/src/css/snackbarlight";
+@import "base/hidden";

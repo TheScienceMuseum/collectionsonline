@@ -1,4 +1,4 @@
-@import 'foundation';
+@import "foundation-sites/scss/foundation";
 //@import 'motion-ui';
 
 @include foundation-global-styles;
@@ -51,7 +51,8 @@ textarea {
   margin-bottom: 0;
 }
 
-.row { // half a gutter for top-level, why doesn't foundation do this?
+.row {
+  // half a gutter for top-level, why doesn't foundation do this?
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }

@@ -40,7 +40,7 @@
 //  35. Tooltip
 //  36. Top Bar
 
-@import 'util/util';
+@import "foundation-sites/scss/util/util";
 
 // 1. Global
 // ---------
@@ -53,7 +53,7 @@ $foundation-palette: (
   secondary: #777,
   success: #3adb76,
   warning: #ffae00,
-  alert: #ec5840,
+  alert: #ec5840
 );
 $light-gray: grey(10);
 $medium-gray: grey(20);
@@ -83,7 +83,7 @@ $breakpoints: (
   medium: 640px,
   large: 1024px,
   xlarge: 1200px,
-  xxlarge: 1440px,
+  xxlarge: 1440px
 );
 $breakpoint-classes: (small medium large xlarge);
 
@@ -102,28 +102,88 @@ $block-grid-max: 8;
 $header-font-family: $body-font-family;
 $header-font-weight: $global-weight-bold;
 $header-font-style: normal;
-$font-family-monospace: Consolas, 'Liberation Mono', Courier, monospace;
+$font-family-monospace: Consolas, "Liberation Mono", Courier, monospace;
 $header-color: inherit;
 $header-lineheight: 1;
 $header-margin-bottom: 0.5rem;
 $header-text-rendering: optimizeLegibility;
 $header-styles: (
-  'small': (
-    'h1': ('font-size': 32, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
-    'h2': ('font-size': 24, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': 1em),
-    'h3': ('font-size': 20, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
-    'h4': ('font-size': 18, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
-    'h5': ('font-size': 18, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
-    'h6': ('font-size': 16, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom)
+  "small": (
+    "h1": (
+      "font-size": 32,
+      "line-height": $header-lineheight,
+      "margin-top": 0,
+      "margin-bottom": $header-margin-bottom
+    ),
+    "h2": (
+      "font-size": 24,
+      "line-height": $header-lineheight,
+      "margin-top": 0,
+      "margin-bottom": 1em
+    ),
+    "h3": (
+      "font-size": 20,
+      "line-height": $header-lineheight,
+      "margin-top": 0,
+      "margin-bottom": $header-margin-bottom
+    ),
+    "h4": (
+      "font-size": 18,
+      "line-height": $header-lineheight,
+      "margin-top": 0,
+      "margin-bottom": $header-margin-bottom
+    ),
+    "h5": (
+      "font-size": 18,
+      "line-height": $header-lineheight,
+      "margin-top": 0,
+      "margin-bottom": $header-margin-bottom
+    ),
+    "h6": (
+      "font-size": 16,
+      "line-height": $header-lineheight,
+      "margin-top": 0,
+      "margin-bottom": $header-margin-bottom
+    )
   ),
-  'medium': (
-    'h1': ('font-size': 48, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
-    'h2': ('font-size': 36, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': 1em),
-    'h3': ('font-size': 30, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
-    'h4': ('font-size': 24, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
-    'h5': ('font-size': 20, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom),
-    'h6': ('font-size': 16, 'line-height': $header-lineheight, 'margin-top': 0, 'margin-bottom': $header-margin-bottom)
-  ),
+  "medium": (
+    "h1": (
+      "font-size": 48,
+      "line-height": $header-lineheight,
+      "margin-top": 0,
+      "margin-bottom": $header-margin-bottom
+    ),
+    "h2": (
+      "font-size": 36,
+      "line-height": $header-lineheight,
+      "margin-top": 0,
+      "margin-bottom": 1em
+    ),
+    "h3": (
+      "font-size": 30,
+      "line-height": $header-lineheight,
+      "margin-top": 0,
+      "margin-bottom": $header-margin-bottom
+    ),
+    "h4": (
+      "font-size": 24,
+      "line-height": $header-lineheight,
+      "margin-top": 0,
+      "margin-bottom": $header-margin-bottom
+    ),
+    "h5": (
+      "font-size": 20,
+      "line-height": $header-lineheight,
+      "margin-top": 0,
+      "margin-bottom": $header-margin-bottom
+    ),
+    "h6": (
+      "font-size": 16,
+      "line-height": $header-lineheight,
+      "margin-top": 0,
+      "margin-bottom": $header-margin-bottom
+    )
+  )
 );
 $small-font-size: 75%;
 $header-small-font-color: $medium-gray;
@@ -244,7 +304,7 @@ $button-sizes: (
   tiny: 0.6rem,
   small: 0.75rem,
   default: 0.9rem,
-  large: 1.25rem,
+  large: 1.25rem
 );
 $button-opacity-disabled: 0.25;
 
@@ -253,7 +313,7 @@ $button-opacity-disabled: 0.25;
 
 $buttongroup-margin: 1rem;
 $buttongroup-spacing: 1px;
-$buttongroup-child-selector: '.button';
+$buttongroup-child-selector: ".button";
 $buttongroup-expand-max: 6;
 
 // 13. Callout
@@ -299,7 +359,7 @@ $dropdown-radius: $global-radius;
 $dropdown-sizes: (
   tiny: 100px,
   small: 200px,
-  large: 400px,
+  large: 400px
 );
 
 // 17. Dropdown Menu
@@ -406,7 +466,7 @@ $offcanvas-transition-length: 0.5s;
 $offcanvas-transition-timing: ease;
 $offcanvas-fixed-reveal: true;
 $offcanvas-exit-background: rgba($white, 0.25);
-$maincontent-class: 'off-canvas-content';
+$maincontent-class: "off-canvas-content";
 $maincontent-shadow: 0 0 10px rgba($black, 0.5);
 
 // 25. Orbit
@@ -501,7 +561,10 @@ $table-border: 1px solid smart-scale($table-background, $table-color-scale);
 $table-padding: rem-calc(8 10 10);
 $table-hover-scale: 2%;
 $table-row-hover: darken($table-background, $table-hover-scale);
-$table-row-stripe-hover: darken($table-background, $table-color-scale + $table-hover-scale);
+$table-row-stripe-hover: darken(
+  $table-background,
+  $table-color-scale + $table-hover-scale
+);
 $table-striped-background: smart-scale($table-background, $table-color-scale);
 $table-stripe: even;
 $table-head-background: smart-scale($table-background, $table-color-scale / 2);
