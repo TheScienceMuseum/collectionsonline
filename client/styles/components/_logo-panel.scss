@@ -3,10 +3,10 @@
   @include sm-gradient-animated($layers: 2);
   color: white;
   padding: 1rem 0;
-  @include breakpoint(medium up) {
+  @include media(">=medium") {
     padding: 2rem 0;
   }
-  @include breakpoint(large up) {
+  @include media(">=large") {
     padding: 3rem 0;
   }
 
@@ -18,16 +18,16 @@
     margin-bottom: 1rem;
     text-transform: uppercase;
     font-size: 1.125rem;
-    @include breakpoint(medium up) {
+    @include media(">=medium") {
       margin-bottom: 2rem;
     }
-    @include breakpoint(large up) {
+    @include media(">=large") {
       margin-bottom: 3rem;
     }
   }
 
   &__items {
-    @include breakpoint(medium up) {
+    @include media(">=medium") {
       display: flex;
       flex-flow: row wrap;
       justify-content: space-between;
@@ -44,7 +44,7 @@
     display: block;
     margin: 0.4rem 0;
 
-    @include breakpoint(medium up) {
+    @include media(">=medium") {
       display: none;
     }
   }
@@ -56,10 +56,10 @@
     width: auto;
     max-width: none;
 
-    @include breakpoint(medium up) {
+    @include media(">=medium") {
       display: block;
     }
-    @include breakpoint(large up) {
+    @include media(">=large") {
       height: 4rem;
     }
   }

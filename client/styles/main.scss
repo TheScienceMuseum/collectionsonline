@@ -1,8 +1,21 @@
 @charset 'utf-8';
 
+// redefined to add 'zero' for foundation compat
+$breakpoints: (
+  zero: 0,
+  tiny: 320px,
+  phone: 375px,
+  small: 580px,
+  // point of single column layout. Numiko use 580 but too tight here?
+    medium: 768px,
+  // desktop: 1024px,
+    large: 1152px
+);
+
+@import "smg-web-design-system/src/scss/lib";
+
 // general settings and variables, required before foundation
 @import "base/colour";
-@import "base/type";
 @import "base/helpers";
 @import "base/print";
 

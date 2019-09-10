@@ -8,10 +8,10 @@
   color: white;
   text-shadow: rgba(0, 0, 0, 0.5) 0 0 1rem;
   padding: 2rem 0;
-  @include breakpoint(medium up) {
+  @include media(">=medium") {
     padding: 3rem 0;
   }
-  @include breakpoint(large up) {
+  @include media(">=large") {
     padding: 4rem 0;
   }
   position: relative;
@@ -22,14 +22,14 @@
     font-weight: 500;
     margin-bottom: 0;
     text-transform: none;
-    @include breakpoint(small only) {
+    @include media("<=small") {
       display: none;
     }
-    @include breakpoint(medium up) {
+    @include media(">=medium") {
       margin-top: 1rem;
       margin-bottom: 1rem;
     }
-    @include breakpoint(large up) {
+    @include media(">=large") {
       margin-top: 2rem;
       margin-bottom: 2rem;
     }
@@ -118,7 +118,7 @@
 }
 
 .featuresteps {
-  @include breakpoint(medium up) {
+  @include media(">=medium") {
     display: table; //ie9 fallback
     display: flex;
     justify-content: space-between;
@@ -132,11 +132,11 @@
     flex-basis: 3em;
     margin: 0 1em;
     position: relative; // for safari
-    @include breakpoint(small only) {
+    @include media("<=small") {
       height: 2rem;
       margin: 1rem 37.5%;
     }
-    @include breakpoint(large up) {
+    @include media(">=large") {
       flex-basis: 4em;
       margin: 0 2em;
     }
@@ -151,7 +151,7 @@
     .ttb {
       display: none;
     }
-    @include breakpoint(small only) {
+    @include media("<=small") {
       .ltr {
         display: none;
       }
@@ -171,7 +171,7 @@
   .icon {
     font-size: 2rem;
     vertical-align: top;
-    @include breakpoint(medium up) {
+    @include media(">=medium") {
       display: block;
       margin-bottom: 1rem;
       font-size: 3rem;
@@ -184,11 +184,11 @@
     font-weight: 500;
     text-align: center;
     margin-bottom: 0.5rem;
-    @include breakpoint(medium up) {
+    @include media(">=medium") {
       text-align: left;
       margin-bottom: 1rem;
     }
-    @include breakpoint(large up) {
+    @include media(">=large") {
       font-size: 3rem;
     }
   }
@@ -204,7 +204,7 @@
     font-weight: 500;
     margin: 0;
     text-align: center;
-    @include breakpoint(medium up) {
+    @include media(">=medium") {
       text-align: left;
     }
   }
@@ -220,11 +220,11 @@
 @mixin home-section($top: 2rem, $bottom: 2rem) {
   padding-top: $top;
   padding-bottom: $bottom;
-  @include breakpoint(medium up) {
+  @include media(">=medium") {
     padding-top: $top * 1.5;
     padding-bottom: $bottom * 1.5;
   }
-  @include breakpoint(large up) {
+  @include media(">=large") {
     padding-top: $top * 2;
     padding-bottom: $bottom * 2;
   }
@@ -234,11 +234,11 @@
     line-height: 1;
     text-transform: uppercase;
     margin: 0 0 1em 0;
-    @include breakpoint(medium up) {
+    @include media(">=medium") {
       margin: 1em 0;
       font-size: 2rem;
     }
-    @include breakpoint(large up) {
+    @include media(">=large") {
       font-size: 2.5rem;
     }
   }
@@ -271,7 +271,7 @@
 .smg-map {
   display: block;
 
-  @include breakpoint(medium up) {
+  @include media(">=medium") {
     display: flex;
     &__imgratio {
       height: percentage(340 / 400);
@@ -294,10 +294,10 @@
     width: 118px * 0.75;
     height: 71px * 0.75;
     display: none;
-    @include breakpoint(medium up) {
+    @include media(">=medium") {
       display: block;
     }
-    @include breakpoint(large up) {
+    @include media(">=large") {
       width: 118px;
       height: 71px;
     }
@@ -305,13 +305,13 @@
   &__desc {
     margin-top: 1rem;
     // display: none;
-    // @include breakpoint(medium up) {
+    // @include media(">=medium") {
     //   display: block;
     // }
     h3 {
       font-size: 1em;
     }
-    @include breakpoint(large up) {
+    @include media(">=large") {
       margin-top: 2rem;
       font-size: 1.5em;
       line-height: 1.2;
@@ -324,21 +324,11 @@
     background-color: black;
     margin: 1rem 2rem;
     display: none;
-    @include breakpoint(medium up) {
+    @include media(">=medium") {
       display: block;
     }
-    @include breakpoint(large up) {
+    @include media(">=large") {
       margin: 1rem 4rem;
-    }
-  }
-
-  @include breakpoint(small up) {
-  }
-  @include breakpoint(medium up) {
-    &__intro {
-    }
-    &__map {
-      // margin: 0;
     }
   }
 }

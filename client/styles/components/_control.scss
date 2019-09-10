@@ -3,7 +3,8 @@
 // a common appearance across a few element types
 //-----------------------------------------------------------------------------
 
-.controls { //.row
+.controls {
+  //.row
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
@@ -18,7 +19,7 @@
     float: left;
     line-height: rem-calc(16);
     padding: rem-calc(12 8);
-    @include breakpoint(medium) {
+    @include media(">=medium") {
       padding: rem-calc(12 16);
     }
   }
@@ -53,7 +54,8 @@
       color: white;
     }
 
-    label { //alt posiiton of label
+    label {
+      //alt posiiton of label
       float: left;
       line-height: rem-calc(16);
       padding: rem-calc(16);
@@ -73,7 +75,7 @@
   }
 
   &--active:after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -1rem;
     left: 50%;
@@ -83,16 +85,17 @@
     background-image: url(/assets/img/filter-drop.svg);
     background-repeat: no-repeat;
   }
-
 }
 
-
-.pagination { // styled like a control
+.pagination {
+  // styled like a control
   @include control-base;
   float: right;
   font-size: 0; // remove inline-block inbetween space
   font-weight: 500;
-  @include breakpoint(medium) { text-align: center; }
+  @include media(">=medium") {
+    text-align: center;
+  }
 
   li {
     line-height: rem-calc(16);
@@ -120,7 +123,6 @@
 .control--rpp {
   float: left;
 
-
   select {
     width: auto;
     height: rem-calc(40);
@@ -134,8 +136,9 @@
     &:hover {
       // because F is already using bg image for disclosure triangle, to add extra bg on hover means retrieving existing properties first.
       @include control-hover;
-      background-image:
-      svg-uri('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="24" viewBox="0 0 32 24"><polygon points="0,0 32,0 16,24" fill="#333"></polygon></svg>');
+      background-image: svg-uri(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="24" viewBox="0 0 32 24"><polygon points="0,0 32,0 16,24" fill="#333"></polygon></svg>'
+      );
       background-size: 9px 6px, cover;
       background-origin: content-box, border-box;
       background-repeat: no-repeat, repeat;

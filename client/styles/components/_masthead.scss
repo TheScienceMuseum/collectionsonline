@@ -18,7 +18,7 @@
       // @include between(margin, 20px 0, 25px 0);
       height: 45px;
       margin: 20px 0;
-      @include breakpoint(medium) {
+      @include media(">=medium") {
         height: 70px;
         margin: 25px 0;
       }

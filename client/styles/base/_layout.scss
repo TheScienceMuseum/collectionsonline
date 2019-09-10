@@ -20,10 +20,10 @@
   &__column {
     @include flexcards-item;
     @include grid-column(6);
-    @include breakpoint(medium) {
+    @include media(">=medium") {
       @include grid-column(4);
     }
-    @include breakpoint(large) {
+    @include media(">=large") {
       @include grid-column(3);
     }
   }
@@ -33,19 +33,19 @@
   }
 
   &--filtersactive {
-    @include breakpoint(medium) {
+    @include media(">=medium") {
       @include grid-col-size(8);
     }
-    @include breakpoint(large) {
+    @include media(">=large") {
       @include grid-col-size(9);
     }
 
     .searchresults__column {
-      @include breakpoint(medium) {
+      @include media(">=medium") {
         @include grid-column(6);
         @include grid-column-end;
       }
-      @include breakpoint(large) {
+      @include media(">=large") {
         @include grid-column(4);
         @include grid-column-end;
       }
@@ -63,18 +63,18 @@
     display: block;
   }
   // positioned on top for small screens, col on right for larger
-  @include breakpoint(small only) {
+  @include media("<=small") {
     position: absolute;
     z-index: 1;
     right: 1rem;
     left: 1rem;
     padding: 0;
   }
-  @include breakpoint(medium) {
+  @include media(">=medium") {
     float: right;
     @include grid-col-size(4);
   }
-  @include breakpoint(large) {
+  @include media(">=large") {
     @include grid-col-size(3);
   }
 }
