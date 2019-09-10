@@ -9,7 +9,7 @@
   &__section-title {
     margin-bottom: 1rem;
 
-    @include breakpoint(large up) {
+    @include media(">=large") {
       margin-bottom: 1.5rem;
     }
   }

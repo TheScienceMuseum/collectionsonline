@@ -2,7 +2,7 @@
   background-color: grey(80);
   color: white;
 
-  @include breakpoint(medium) {
+  @include media(">=medium") {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;

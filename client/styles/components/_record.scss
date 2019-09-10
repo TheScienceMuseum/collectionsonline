@@ -12,7 +12,7 @@
 .record-top {
   padding-top: 1rem;
   padding-bottom: 1rem;
-  @include breakpoint(medium) {
+  @include media(">=medium") {
     padding-top: 2rem;
     padding-bottom: 2rem;
   }
@@ -21,7 +21,7 @@
   &__title {
     font-size: 2rem;
     letter-spacing: -0.02em;
-    @include breakpoint(medium) {
+    @include media(">=medium") {
       font-size: 3rem;
     }
     font-weight: 700;
@@ -82,7 +82,7 @@
     overflow: hidden;
     margin-bottom: -1px;
     display: none;
-    @include breakpoint(medium) {
+    @include media(">=medium") {
       display: block;
     }
   }
@@ -117,7 +117,7 @@
     margin: 1rem 0;
     font-size: 1rem;
     line-height: 1.25;
-    @include breakpoint(small only) {
+    @include media("<=small") {
       clear: right;
       font-size: rem-calc(14);
     }
@@ -131,7 +131,7 @@
   &__button {
     @include button-base;
     @include toolbar-button;
-    @include breakpoint(small only) {
+    @include media("<=small") {
       padding: 0.5em 0.75em;
     }
     font-size: rem-calc(18);
@@ -158,10 +158,10 @@
     background: rgba(black, 0.9);
     position: absolute;
     width: 75%;
-    @include breakpoint(medium) {
+    @include media(">=medium") {
       width: 50%;
     }
-    @include breakpoint(large) {
+    @include media(">=large") {
       width: 25%;
     }
     right: 1rem;
@@ -260,7 +260,7 @@
     padding-left: 1rem;
     @include icon-bullet(arrow_right, $size: 1.125rem, $left: 0.5rem, $top: 0);
 
-    &[aria-expanded='true'] {
+    &[aria-expanded="true"] {
       @include icon-bullet(arrow_down, $size: 1.125rem, $left: 0.5rem, $top: 0);
     }
   }
@@ -272,7 +272,7 @@
     // &:not(:last-of-type) { border-bottom: 1px grey(20) solid; }
     // need to knock it in a gutter, hence
     &:not(:last-of-type):after {
-      content: ' ';
+      content: " ";
       margin: 0 0.5rem;
       background: grey(20);
       height: 1px;

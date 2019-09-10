@@ -14,7 +14,7 @@
     position: relative;
 
     &:before {
-      content: '';
+      content: "";
       position: absolute;
       height: 2px;
       bottom: 5px;
@@ -49,7 +49,7 @@
     &.toggled-on {
       display: block;
     }
-    @include breakpoint(medium) {
+    @include media(">=medium") {
       display: block;
     }
   }
@@ -70,20 +70,20 @@
       transform: translateY(50%);
     }
 
-    &[aria-expanded='true'] {
+    &[aria-expanded="true"] {
       &:after {
         transform: translateY(50%) scaleY(-1);
       }
     }
 
-    @include breakpoint(medium) {
+    @include media(">=medium") {
       display: none;
     }
   }
 
   &__nav {
     height: 100%;
-    @include breakpoint(medium) {
+    @include media(">=medium") {
       display: flex;
       justify-content: flex-end;
     }
@@ -114,7 +114,7 @@
     left: 0;
     right: 0;
 
-    @include breakpoint(medium) {
+    @include media(">=medium") {
       padding: 0;
       position: relative;
       background: transparent;
@@ -131,7 +131,7 @@
         // third level
         padding-left: 1rem;
       }
-      @include breakpoint(medium) {
+      @include media(">=medium") {
         // padding-bottom: 2rem;
         display: flex;
         align-items: center;
@@ -172,7 +172,7 @@
     padding: 0;
     display: none;
 
-    @include breakpoint(medium) {
+    @include media(">=medium") {
       position: absolute;
       display: block;
       top: 100%;
@@ -198,7 +198,7 @@
     right: 0.5rem;
     top: 0;
     @include button;
-    @include breakpoint(medium) {
+    @include media(">=medium") {
       position: relative;
       right: auto;
       top: auto;
@@ -211,7 +211,7 @@
       display: inline-block;
     }
 
-    &[aria-expanded='true'] {
+    &[aria-expanded="true"] {
       transform: scaleY(-1);
     }
   }
@@ -222,7 +222,7 @@
     top: 0;
   }
 
-  @include breakpoint(medium) {
+  @include media(">=medium") {
     .c-menu__nav ul .has-sub-menu > li {
       padding-right: 40px;
     }
@@ -237,7 +237,7 @@
     }
 
     .menu-item:hover > .sub-menu,
-    [aria-expanded='true'] + .sub-menu {
+    [aria-expanded="true"] + .sub-menu {
       transform: scaleY(1);
       visibility: visible;
     }
