@@ -65,6 +65,11 @@
     @include breakpoint(medium) {
       padding-top: 1rem;
     }
+    //browsers hyphenate a bit too readily, so only used on widths where we really haven't got room
+    @include breakpoint(small only) {
+      overflow: hidden;
+      @include hyphenate;
+    }
   }
 
   &__description,
@@ -89,7 +94,7 @@
       padding-left: 1.25rem;
       line-height: 1.25;
       &:before {
-        content: '';
+        content: "";
         display: block;
         position: absolute;
         left: 0;
@@ -132,7 +137,7 @@
     box-shadow $transition-default, transform $transition-default;
 
   &:before {
-    content: '';
+    content: "";
     top: 0;
     bottom: 0;
     right: 0;
