@@ -8,4 +8,3 @@ module.exports = function (results, selectedFilters) {
   }
   return display;
 };
-

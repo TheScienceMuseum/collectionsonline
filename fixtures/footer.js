@@ -6,5 +6,9 @@ module.exports = [
   {
     name: 'Terms and conditions',
     url: 'https://group.sciencemuseum.org.uk/terms-and-conditions/'
+  },
+  {
+    name: 'Web accessibility',
+    url: 'https://www.sciencemuseumgroup.org.uk/web-accessibility/'
   }
 ];
