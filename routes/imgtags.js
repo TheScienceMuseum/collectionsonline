@@ -28,7 +28,7 @@ module.exports = (elastic, config) => ({
           return h.view('imgtags', {tags: tags});
         } else if (responseType === 'json') {
           return h.response(tags)
-          .header('content-type', 'application/vnd.api+json');
+            .header('content-type', 'application/vnd.api+json');
         }
       } catch (err) {
         Boom.serverUnavailable(err);

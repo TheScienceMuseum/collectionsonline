@@ -23,4 +23,3 @@ testWithServer(file + 'Should accept params in filter[PARAM_NAME] format for peo
   t.equal(res.statusCode, 200, 'Status code was as expected');
   t.end();
 });
-

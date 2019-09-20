@@ -12,7 +12,7 @@ tape('getFirst', (t) => {
   t.equal(actual, expected, 'Non note first type');
 
   actual = getFirst([{type: 'note', value: 'Note description'},
-                     {type: 'biography', value: 'Biography description'}]);
+    {type: 'biography', value: 'Biography description'}]);
   expected = 'Biography description';
   t.equal(actual, expected, 'First type is note');
 
