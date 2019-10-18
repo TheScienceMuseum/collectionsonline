@@ -19,10 +19,15 @@ $breakpoints: map-merge(
 @import "base/foundation-settings";
 @import "base/foundation-components";
 
+// this is nasty: included in smg-web-design-system/src/scss/lib but overwritten by foundation, so reimporting for our use.
+@import "sass-between/dist/between";
+@import "smg-web-design-system/src/scss/lib";
+
 // our base styles, then all components
 @import "base/general";
 @import "base/layout";
 @import "smg-web-design-system/src/scss/components/accordion";
+@import "smg-web-design-system/src/scss/components/audioplayer";
 @import "components/awesomplete";
 @import "components/archive-tree";
 @import "components/betabar";
