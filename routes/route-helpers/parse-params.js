@@ -23,6 +23,9 @@ module.exports = function (urlParams) {
       } else if (urlCats[i] === 'image_license') {
         urlCats.splice(i + 1, 0, 'true');
         categories['image_license'] = 'image_license';
+      } else if (urlCats[i] === 'rotational') {
+        urlCats.splice(i + 1, 0, 'true');
+        categories['rotational'] = 'rotational';
       } else if (i % 2 === 0) {
         if (urlCats[i] === 'category') {
           urlCats[i] = 'categories';
