@@ -33,14 +33,24 @@
   "Water Supply & Sanitation": {
     "description": "This collection of decorative glassware includes items manufactured in Manchester by Percival Vickers and in Salford by John Derbyshire between 1870 and 1890."
   },
-  "Liverpool and  Manchester Railway": {
+  "Liverpool & Manchester Railway": {
     "description": "Discover the world-changing history of the world’s first intercity passenger railway, the Liverpool and Manchester Railway, whose Manchester terminus is now the Science and Industry Museum’s site."
   },
   "Sound Recordings": {
     "description": "This valuable resource comprises audio recordings of the railways, made on the lineside, in stations or on locomotive footplates in a range of formats from gramophone records to digital recordings. It also includes the National Archive of Railway Oral History."
   },
-  "Coins, medals & tokens": {
-    "description": "These objects, largely commemorative, are all themed around scientific events and figures. Explore items from medals celebrating scientific achievement to the tokens which were an important part of industrial history and labour relations."
+  "Coins, medals and tokens": {
+    "description": "These objects, largely commemorative, are all themed around scientific events and figures. Explore items from medals celebrating scientific achievement to the tokens which were an important part of industrial history and labour relations.",
+    "sub-categories": [
+      {
+        "title": "Coins and Medals",
+        "link": "/search/categories/coins-and-medals"
+      },
+      {
+        "title": "Welcome Medals",
+        "link": "/search/categories/wellcome-medals"
+      }
+    ]
   },
   "Marine engines": {
     "description": "Immerse yourself in the history of power shipping as you explore objects tracing the development of marine engines and the ingenuity of important British inventors and manufacturers."
