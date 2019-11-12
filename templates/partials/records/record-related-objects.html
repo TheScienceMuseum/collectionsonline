@@ -25,7 +25,7 @@
           {{#ifcreator related.objects}}
             <a href="/search/objects/makers/{{normalise this.title this}}">
           {{else}}
-            <a href="/search/objects?q={{normalise this.title this}}">
+            <a href="/search/objects?q=%22{{normalise this.title this}}%22">
           {{/ifcreator}}
               <div class="resultcard resultcard--seemore see-more-objects">
                 <figure class="resultcard__figure">{{> global/icon i="search" size="48" }}</figure>
