@@ -1,5 +1,29 @@
 {{#if description}}
 
+  <!--
+  {{#if description.briefbiog}}
+    {{#each description.briefbiog.initialDescription}}
+      <p>
+        {{this}}
+      </p>
+    {{/each}}
+
+    {{#if description.briefbiog.moreDescription}}
+    <div class="details" aria-expanded="false">
+      <div class="details__summary">More…</div>
+        <div class="details__content">
+          {{#each description.briefbiog.moreDescription}}
+            <p>
+              {{this}}
+            </p>
+          {{/each}}
+        </div>
+      </div>
+    {{/if}}
+
+  {{/if}}
+  -->
+  
   {{#if description.primary}}
     {{#each description.primary.initialDescription}}
       <p>
