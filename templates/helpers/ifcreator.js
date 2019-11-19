@@ -6,7 +6,7 @@ module.exports = (related, options) => {
   // var makerRoles = ['creator', 'designer', 'engineer', 'inventor'];
   var makerRoles = makersList;
 
-  if (related.length > 0 && related.some(el => makerRoles.indexOf(el.role.toLowerCase()) > -1)) {
+  if (related.length > 0 && related.some(el => makerRoles.indexOf(el.role && el.role.toLowerCase()) > -1)) {
     return options.fn(options.data.root);
   } else {
     return options.inverse(options.data.root);
