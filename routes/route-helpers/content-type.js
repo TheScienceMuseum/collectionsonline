@@ -11,7 +11,9 @@ module.exports = function (request) {
     var htmlContent = typesInHeaders(accept, htmlAcceptHeaders);
     // if accept header has both json and html return notAcceptable
     if (jsonContent && htmlContent) {
-      return 'notAcceptable';
+      // ammened as this seem to cause issues with CLiudfortn and Crawlers
+      // return 'notAcceptable';
+      return 'html';
     }
 
     if (htmlContent) {
@@ -28,8 +30,9 @@ module.exports = function (request) {
     return 'html';
   }
 
-  // return notAcceptable if no cases match
-  return 'notAcceptable';
+  // ammened as this seem to cause issues with CLiudfortn and Crawlers
+  // return 'notAcceptable';
+  return 'html';
 };
 
 function typesInHeaders (acceptHeaders, contentTypes) {
