@@ -366,7 +366,7 @@ testWithServer(file + 'Request for Object Page with wrong accept headers', {}, a
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/cowrongid',
+    url: '/objects/co37959',
     headers: { 'Accept': 'wrongContent' }
   };
 
