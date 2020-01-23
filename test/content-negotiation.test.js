@@ -49,7 +49,8 @@ testWithServer(file + 'Request with multiple instances of JSONAPI media type, on
   t.end();
 });
 
-testWithServer(file + 'Not acceptable request when to accept header', {}, async (t, ctx) => {
+// testWithServer(file + 'Not acceptable request when to accept header', {}, async (t, ctx) => {
+testWithServer(file + 'Return html if neither json or html header are defined', {}, async (t, ctx) => {
   t.plan(1);
 
   const acceptableJSONRequest = {
@@ -58,11 +59,13 @@ testWithServer(file + 'Not acceptable request when to accept header', {}, async 
   };
 
   const res = await ctx.server.inject(acceptableJSONRequest);
-  t.equal(res.statusCode, 406, 'Not acceptable request when no accept header is defined');
+  // t.equal(res.statusCode, 406, 'Not acceptable request when no accept header is defined');
+  t.ok(res.headers['content-type'].indexOf('text/html') > -1, 'Response header should be text/html');
   t.end();
 });
 
-testWithServer(file + 'Not acceptable if json and html header are defined at the same time', {}, async (t, ctx) => {
+// testWithServer(file + 'Not acceptable if json and html header are defined at the same time', {}, async (t, ctx) => {
+testWithServer(file + 'Return html if both json and html header are defined at the same time', {}, async (t, ctx) => {
   t.plan(1);
 
   const acceptableJSONRequest = {
@@ -72,7 +75,8 @@ testWithServer(file + 'Not acceptable if json and html header are defined at the
   };
 
   const res = await ctx.server.inject(acceptableJSONRequest);
-  t.equal(res.statusCode, 406, 'Not acceptable request when a json and html header are defined at the same time');
+  // t.equal(res.statusCode, 406, 'Not acceptable request when a json and html header are defined at the same time');
+  t.ok(res.headers['content-type'].indexOf('text/html') > -1, 'Response header should be text/html');
   t.end();
 });
 
@@ -87,19 +91,5 @@ testWithServer(file + 'Return html if user agent is twitter bot', {}, async (t, 
 
   const res = await ctx.server.inject(acceptableJSONRequest);
   t.equal(res.statusCode, 200, 'return some html for twitter');
-  t.end();
-});
-
-testWithServer(file + 'Not acceptable if no accept header and no user-agent twitter', {}, async (t, ctx) => {
-  t.plan(1);
-
-  const acceptableJSONRequest = {
-    method: 'GET',
-    url: '/',
-    headers: { 'user-agent': 'bot' }
-  };
-
-  const res = await ctx.server.inject(acceptableJSONRequest);
-  t.equal(res.statusCode, 406, 'not acceptage if user-agent is not twitter');
   t.end();
 });
