@@ -3,11 +3,13 @@ const buildJSONResponse = require('../lib/jsonapi-response');
 const TypeMapping = require('../lib/type-mapping');
 var beautify = require('json-beautify');
 var contentType = require('./route-helpers/content-type.js');
+const cacheHeaders = require('./route-helpers/cache-control');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/api/{type}/{id}/{slug?}',
   config: {
+    cache: cacheHeaders(config, 3600),
     handler: async function (request, h) {
       try {
         const result = await elastic.get({ index: 'smg', type: TypeMapping.toInternal(request.params.type), id: TypeMapping.toInternal(request.params.id) });

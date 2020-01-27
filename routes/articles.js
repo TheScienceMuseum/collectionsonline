@@ -1,5 +1,6 @@
 const axios = require('axios');
 const Boom = require('boom');
+const cacheHeaders = require('./route-helpers/cache-control');
 
 // Article endpoints on each museum website
 var endpoints = [
@@ -14,14 +15,14 @@ var endpoints = [
   // { label: 'Science and Industry Musem Blog', url: 'https://blog.scienceandindustrymuseum.org.uk/wp-json/collection-media/collection-usage' }
 ];
 
-module.exports = () => ({
+module.exports = (config) => ({
   method: 'GET',
   path: '/articles/{id}',
   config: {
+    cache: cacheHeaders(config, 3600 * 12),
     handler: async function (req, h) {
       try {
         const articles = await Promise.all(endpoints.map(e => fetchArticles(e, req.params.id)));
-
         return h.response({ data: articles.filter(e => e.data.length > 0) });
       } catch (err) {
         return new Boom('Cannot parse related objects feed:', err);
@@ -32,7 +33,11 @@ module.exports = () => ({
 
 async function fetchArticles (endpoint, id) {
   try {
-    const response = await axios.get(endpoint.url);
+    const aclient = axios.create({
+      timeout: 10000,
+      headers: { 'User-Agent': 'SMG Collection Site 1.0' }
+    });
+    const response = await aclient.get(endpoint.url);
     const data = response.data ? response.data.filter(e => e.collection_objects.indexOf(id) > -1) : [];
 
     return {
@@ -40,6 +45,7 @@ async function fetchArticles (endpoint, id) {
       data: data
     };
   } catch (err) {
+    console.log(err);
     throw err;
   }
 }
