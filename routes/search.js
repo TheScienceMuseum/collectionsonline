@@ -88,7 +88,12 @@ module.exports = (elastic, config) => ({
           const jsonData = searchResultsToJsonApi(queryParams, res, config);
           const tplData = searchResultsToTemplateData(queryParams, jsonData);
 
-          return h.view('search', tplData);
+          var response = h.view('search', tplData);
+          // Only set a Cache-Control if we don't have a freetext query string and aren't running on production
+          if (!result.query.q && config && config.NODE_ENV === 'production') {
+            response.header('Cache-Control', 'public, must-revalidate, max-age: 43200');
+          }
+          return response;
         } else if (responseType === 'json') {
           const res = await search(elastic, queryParams);
 

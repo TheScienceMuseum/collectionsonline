@@ -1,8 +1,11 @@
 var contentType = require('./route-helpers/content-type.js');
-module.exports = () => ({
+const cacheHeaders = require('./route-helpers/cache-control');
+
+module.exports = (config) => ({
   method: 'GET',
   path: '/',
   config: {
+    cache: cacheHeaders(config, 3600 * 24),
     handler: function (request, h) {
       var responseType = contentType(request);
       if (responseType === 'json') {

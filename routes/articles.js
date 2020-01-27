@@ -1,5 +1,6 @@
 const axios = require('axios');
 const Boom = require('boom');
+const cacheHeaders = require('./route-helpers/cache-control');
 
 // Article endpoints on each museum website
 var endpoints = [
@@ -14,10 +15,11 @@ var endpoints = [
   // { label: 'Science and Industry Musem Blog', url: 'https://blog.scienceandindustrymuseum.org.uk/wp-json/collection-media/collection-usage' }
 ];
 
-module.exports = () => ({
+module.exports = (config) => ({
   method: 'GET',
   path: '/articles/{id}',
   config: {
+    cache: cacheHeaders(config, 3600 * 24),
     handler: async function (req, h) {
       try {
         const articles = await Promise.all(endpoints.map(e => fetchArticles(e, req.params.id)));
