@@ -4,11 +4,13 @@ const TypeMapping = require('../lib/type-mapping');
 const Handlebars = require('handlebars');
 const fs = require('fs');
 const path = require('path');
+const cacheHeaders = require('./route-helpers/cache-control');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/iiif/{type}/{id}/{slug?}',
   config: {
+    cache: cacheHeaders(config, 3600 * 24),
     handler: async function (request, h) {
       if (!(request.params.type === 'objects' || request.params.type === 'documents')) {
         return Boom.notFound();

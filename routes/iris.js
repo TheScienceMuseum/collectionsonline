@@ -3,11 +3,13 @@ const TypeMapping = require('../lib/type-mapping');
 const buildJSONResponse = require('../lib/jsonapi-response');
 var AWS = require('aws-sdk');
 var beautify = require('json-beautify');
+const cacheHeaders = require('./route-helpers/cache-control');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/iris/{type}/{id}/{slug?}',
   config: {
+    cache: cacheHeaders(config, 3600),
     handler: async function (request, h) {
       if (!(request.params.type === 'objects' || request.params.type === 'documents')) {
         return Boom.notFound();

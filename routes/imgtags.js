@@ -1,11 +1,13 @@
 const getImgTags = require('../lib/getImgTags');
 const Boom = require('boom');
 const contentType = require('./route-helpers/content-type.js');
+const cacheHeaders = require('./route-helpers/cache-control');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/imgtags',
   config: {
+    cache: cacheHeaders(config, 3600),
     handler: async function (request, h) {
       var responseType = contentType(request);
 
