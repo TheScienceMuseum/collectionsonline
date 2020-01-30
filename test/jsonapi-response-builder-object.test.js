@@ -34,7 +34,7 @@ test(file + 'Relationships field should contain correct attributes', function (t
 
 test(file + 'Links field should contain correct link', function (t) {
   t.plan(1);
-  t.equal(JSONAPIResponse.data.links.self, config.rootUrl + '/objects/co8245103', 'Response contains links field');
+  t.equal(JSONAPIResponse.data.links.self, config.rootUrl + '/objects/co8245103/packet-of-technetium-mdp-for-bone-scintigraphy-amerscan-agent-phial-packet-materia-medica', 'Response contains links field');
   t.end();
 });
 
