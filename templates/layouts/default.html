@@ -18,6 +18,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
     <title>{{ normalise titlePage this }}</title>
+    {{#if this.links.self}}
+        <link rel="canonical" href="{{this.links.self}}" />
+    {{/if}}
     <link rel="stylesheet" href="/bundle.css">
     <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/assets/img/favicon/android-icon-192x192.png" sizes="192x192">
