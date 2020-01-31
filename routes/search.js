@@ -90,7 +90,7 @@ module.exports = (elastic, config) => ({
 
           var response = h.view('search', tplData);
           // Only set a Cache-Control if we don't have a freetext query string and aren't running on production
-          if (!result.query.q && result.query.random && config && config.NODE_ENV === 'production') {
+          if (!result.query.q && !result.query.random && config && config.NODE_ENV === 'production') {
             response.header('Cache-Control', 'public, must-revalidate, max-age: 43200');
           }
           return response;
