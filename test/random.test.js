@@ -36,7 +36,7 @@ testWithServer(file + 'Query has no effect on randomness', {}, async (t, ctx) =>
   const res = await ctx.server.inject(htmlRequest);
   var result = JSON.parse(res.payload).data;
   t.equal(res.statusCode, 200, 'Status code was as expected');
-  t.equal(result.length, 2, 'Returns 4 items');
+  t.equal(result.length, 2, 'Returns 2 items');
 
   const res2 = await ctx.server.inject(htmlRequest);
   var result2 = JSON.parse(res2.payload).data;
