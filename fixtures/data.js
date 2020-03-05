@@ -169,6 +169,13 @@ module.exports = {
       collection: [
         {
           type: 'collection',
+          title: 'Rotational photography',
+          figure: '/assets/img/home/collections/rotational.jpg',
+          columns: '',
+          link: '/search/objects/rotational'
+        },
+        {
+          type: 'collection',
           title: 'The Babbage Papers',
           figure: '/assets/img/home/collections/babbage.jpg',
           columns: '',
