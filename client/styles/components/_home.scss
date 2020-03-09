@@ -130,6 +130,7 @@
   &--arrow {
     flex: initial;
     flex-basis: 3em;
+    max-width: 3em;
     margin: 0 1em;
     position: relative; // for safari
     @include media("<=small") {
@@ -138,6 +139,7 @@
     }
     @include media(">=large") {
       flex-basis: 4em;
+      max-width: 4em;
       margin: 0 2em;
     }
   }
