@@ -40,4 +40,3 @@ test(file + 'Sort a list of images by position, priority and date upload(sort pr
   t.deepEqual(sortImages(images), expected, 'The images are sorted by position, date and priority');
   t.end();
 });
-

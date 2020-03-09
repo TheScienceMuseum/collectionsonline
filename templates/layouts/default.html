@@ -16,7 +16,11 @@
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
     <title>{{ normalise titlePage this }}</title>
+    {{#if this.links.self}}
+        <link rel="canonical" href="{{this.links.self}}" />
+    {{/if}}
     <link rel="stylesheet" href="/bundle.css">
     <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/assets/img/favicon/android-icon-192x192.png" sizes="192x192">
@@ -37,9 +41,11 @@
     <meta property="og:url" content="{{links.self}}" />
     <meta property="og:description" content="{{description.primary.initialDescription}}" />
     <meta property="og:image" content="{{#unless images.0.card}}/assets/img/global/smgco-default.png{{/unless}}{{#if images.0.medium}}{{images.0.card}}{{/if}}">
+    {{#if jsonLD}}
     <script type="application/ld+json">
       {{{jsonLD}}}
     </script>
+    {{/if}}
   </head>
   <body class="{{type}}">
     <!-- Google Tag Manager -->

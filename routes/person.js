@@ -5,11 +5,13 @@ const getRelatedItems = require('../lib/get-related-items');
 const sortRelated = require('../lib/sort-related-items');
 const contentType = require('./route-helpers/content-type.js');
 const response = require('./route-helpers/response');
+const cacheHeaders = require('./route-helpers/cache-control');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/people/{id}/{slug?}',
   config: {
+    cache: cacheHeaders(config, 3600 * 24),
     handler: async function (request, h) {
       var responseType = contentType(request);
 

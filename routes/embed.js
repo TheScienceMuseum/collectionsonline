@@ -1,6 +1,7 @@
 const Boom = require('boom');
 const buildJSONResponse = require('../lib/jsonapi-response');
 const TypeMapping = require('../lib/type-mapping');
+const cacheHeaders = require('./route-helpers/cache-control');
 
 module.exports = {
   rotational (elastic, config) {
@@ -8,6 +9,7 @@ module.exports = {
       method: 'GET',
       path: '/embed/rotational/{coid}',
       config: {
+        cache: cacheHeaders(config, 3600 * 24),
         handler: async function (request, h) {
           try {
             var configUrl;
@@ -53,4 +55,3 @@ module.exports = {
     };
   }
 };
-

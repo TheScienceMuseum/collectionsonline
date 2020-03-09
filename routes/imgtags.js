@@ -1,11 +1,13 @@
 const getImgTags = require('../lib/getImgTags');
 const Boom = require('boom');
 const contentType = require('./route-helpers/content-type.js');
+const cacheHeaders = require('./route-helpers/cache-control');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/imgtags',
   config: {
+    cache: cacheHeaders(config, 3600),
     handler: async function (request, h) {
       var responseType = contentType(request);
 
@@ -28,7 +30,7 @@ module.exports = (elastic, config) => ({
           return h.view('imgtags', {tags: tags});
         } else if (responseType === 'json') {
           return h.response(tags)
-          .header('content-type', 'application/vnd.api+json');
+            .header('content-type', 'application/vnd.api+json');
         }
       } catch (err) {
         Boom.serverUnavailable(err);

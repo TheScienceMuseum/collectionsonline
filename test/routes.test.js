@@ -33,7 +33,7 @@ testWithServer(file + 'Attempt to request for Archive HTML Page with wrong accep
   };
 
   const res = await ctx.server.inject(htmlRequest);
-  t.equal(res.statusCode, 406, 'Wrong accept header');
+  t.equal(res.statusCode, 200, 'Return HTML : Status code was as expected, 200');
   await ctx.server.stop();
   t.end();
 });
@@ -366,12 +366,12 @@ testWithServer(file + 'Request for Object Page with wrong accept headers', {}, a
 
   const htmlRequest = {
     method: 'GET',
-    url: '/objects/cowrongid',
+    url: '/objects/co37959',
     headers: { 'Accept': 'wrongContent' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
-  t.equal(res.statusCode, 406, 'Status code was as expected, 406');
+  t.equal(res.statusCode, 200, 'Return HTML : Status code was as expected, 200');
   await ctx.server.stop();
   t.end();
 });
@@ -417,7 +417,7 @@ testWithServer(file + 'Request for Person JSON Page with the wrong accept header
   };
 
   const res = await ctx.server.inject(htmlRequest);
-  t.equal(res.statusCode, 406, 'Status code was as expected as 406');
+  t.equal(res.statusCode, 200, 'Return HTML : Status code was as expected, 200');
   await ctx.server.stop();
   t.end();
 });

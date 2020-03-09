@@ -15,6 +15,197 @@
       }
     ]
   },
+  "Opthalmology": {
+    "description": "Explore objects which tell the story of the care and treatment of the human eye and eye-related conditions. They offer a rich history of both ophthalmology and optometry, and the evolution of vision aids to treat sight loss."
+  },
+  "Public health & hygiene": {
+    "description": "These objects tell the story of government and campaigning efforts to improve public health, notably through vaccination, as well as through the everyday items we use to maintain or improve personal hygiene."
+  },
+  "Industrial chemistry": {
+    "description": "Trace the history of chemistry on an industrial scale with these objects dating from the 19th century onwards. Discover equipment and products associated with industrial chemical processes, from artificial dyes and food processing to cosmetics and plastic production."
+  },
+  "Metallurgy ": {
+    "description": "These objects form a rich and comprehensive historical and technical archive of all aspects of metallurgy, including the processes of smelting, working, physical testing and assaying."
+  },
+  "Optics": {
+    "description": "Optical observations, diversions and demonstrations. Explore how we’ve studied and played with light."
+  },
+  "Industrial chemistry": {
+    "description": "Trace the history of chemistry on an industrial scale with these objects dating from the 19th century onwards. Discover equipment and products associated with industrial chemical processes, from artificial dyes and food processing to cosmetics and plastic production."
+  },
+  "Time measurement": {
+    "description": "Follow the development of time measurement and technical and scientific innovation in timekeeping from the 16th to the 21st centuries."
+  },
+  "Aircraft propulsion": {
+    "description": "Look to the skies and trace the history of aeroengines from the 19th century to the near present with this globally significant range of engines, from steam-powered to Concorde supersonic."
+  },
+  "Radar & radio location": {
+    "description": "Follow the evolution of radar technology, a vital system for detection and location from World War 2 through to the late 20th Century."
+  },
+  "Biochemistry": {
+    "description": "These highly significant objects represent the ways scientists have applied molecular concepts to complex biological systems in order to study the chemistry and biochemical processes underpinning them."
+  },
+  "Papermaking ": {
+    "description": "Discover the processes involved in making an everyday item we couldn’t live without. From early traditional methods to later forms of mechanisation, explore equipment used to make the humble piece of paper."
+  },
+  "Docks and diving": {
+    "description": "Explore objects from the history of diving and submersible technology, revealing the ways we have attempted underwater exploration and research."
+  },
+  "Geophysics ": {
+    "description": "These objects represent a vast range of geophysical phenomena and surveying techniques—seismology, gravitation, atmospheric electricity, tide monitoring and prediction and geomagnetism—dating from the discipline's beginnings in the late 19th century."
+  },
+  "Nuclear physics ": {
+    "description": "Explore how we have studied matter at its smallest scales, from table-top experiments to huge international facilities."
+  },
+  "Passenger comforts": {
+    "description": "These objects reveal how rail passengers have kept comfortable while on the move, from making or buying a cup of tea to warming cold feet."
+  },
+  "Railway heraldry": {
+    "description": "Discover heraldic devices created by a wide range of railway companies from the 18th to the 21st centuries, including company seals and coats of arms. "
+  },
+  "Tools of the trade & personal accessories": {
+    "description": "Explore objects used by railway staff in a variety of settings, from engine works and offices to stations, dating from the 1820s to the 21st century. Made specifically by or for the railways, many have strong personal associations."
+  },
+  "Railway infrastructure": {
+    "description": "Follow the development of rail infrastructure from the wooden railways of the 18th century to 21st century technology, including track, signs and lineside equipment."
+  },
+  "Railway uniform & costume": {
+    "description": "This substantial range of railway uniform, specialist clothing and accessories reveals what people wore in their work on the railways, from the early Victorian era up to the present day."
+  },
+  "Miscellanea & curiosities": {
+    "description": "Immerse yourself in a fascinating range of commemorative, memorial and souvenir items associated with the railways and those who designed, built and worked on them."
+  },
+  "Fixtures & fittings from railway buildings": {
+    "description": "Get a glimpse of stations, goods depots, works and engine sheds from the early years of rail transport into the present day. Explore architectural and decorative features as well as functional objects which reveal the everyday operation of railways."
+  },
+  "Tickets, passes & labels": {
+    "description": "To travel by train, you need a ticket to your destination. Explore over 800 objects related to this simple but essential element of rail transport throughout its history."
+  },
+  "Railway maps & plans": {
+    "description": "This rich array of maps and plans reveals the inexorable rise of railways in the 19th century and how they became an established part of the British landscape. See how new lines carved their paths through the British countryside, transforming the environment and connecting towns and cities across the country like never before."
+  },
+  "Signalling & telecommunications": {
+    "description": "Discover instruments and other objects from the earliest days of mainline railway signalling through to the introduction of modern train control and protection systems.  The collection includes examples of some of the earliest uses of electricity for telecommunications on the railways."
+  },
+  "Railway furniture": {
+    "description": "Explore all kinds of furniture used by the railways—in offices, waiting rooms, refreshment rooms and on platforms, as well as in carriages and other rolling stock."
+  },
+  "Coins and medals": {
+    "description": "Explore numismatic objects associated with the railways and the commemoration of significant anniversaries and achievements, including coins, medals and medallions."
+  },
+  "Toys & games": {
+    "description": "Since its earliest days, rail travel has stimulated a sense of fun and adventure. Discover a variety of toys including board games, card games, jigsaws, children’s books and collectibles inspired or created and marketed by the railways."
+  },
+  "Road Vehicles (Railway)": {
+    "description": "These objects represent the thousands of road vehicles that were associated with and directly owned by Britain’s railways.  They include horse drawn, diesel, petrol and electric vehicles."
+  },
+  "Railway timepieces": {
+    "description": "Running to a timetable has meant that railways have always needed timepieces for their staff and passengers.  Investigate objects ranging from the earliest guards’ watches to large station clocks, from watches inspired by railways to the commemorative clocks and watches awarded to staff on retirement."
+  },
+  "Railway shipping": {
+    "description": "Explore objects reflecting railway companies’ extensive shipping interests, from the 1860s into the late 20th century."
+  },
+  "Railway stamps & covers": {
+    "description": "Delve into the world of railway-related philately and see how railways have been featured on stamps from Britain and around the world."
+  },
+  "Electricity and magnetism": {
+    "description": "Trace the development of electromagnetic technology over recent centuries, from early experiments to working equipment and instruments."
+  },
+  "Scientific instruments & research": {
+    "description": "Encounter equipment used by scientists and engineers to carry out their experiments and laboratory work, from the 18th century to the present day."
+  },
+  "Textile industry": {
+    "description": "In the 19th and early 20th centuries, Lancashire was the country's foremost textiles manufacturing centre. Discover objects revealing the key mechanical processes of cloth manufacturing as well as technological advancements in the field."
+  },
+
+  "Coal Mining": {
+    "description": "These objects include the hand tools, safety equipment, personal items and machinery used by the miners of the Lancashire coalfields from the 18th century to the 1980s."
+  },
+  "Creative Industries": {
+    "description": "Explore objects reflecting Manchester’s development from the mid-20th century into a centre for the creative industries. The collection focuses on film and television production and the city's alternative music scene."
+  },
+  "Local History": {
+    "description": "Delve into objects illustrating the social, economic and political backdrop to Manchester’s industrial and scientific developments, including major events such as the 1819 Peterloo Massacre and the 1887 Royal Jubilee Exhibition."
+  },
+  "Glass Industry": {
+    "description": "This collection of decorative glassware includes items manufactured in Manchester by Percival Vickers and in Salford by John Derbyshire between 1870 and 1890."
+  },
+  "Food & Drink industry": {
+    "description": "Get a glimpse of food and drink processing in Manchester over the decades, with objects illustrating key elements of the industry, including material used in the development and manufacture of Vimto cordial."
+  },
+  "Water Supply & Sanitation": {
+    "description": "As the world’s first industrial city, Manchester sat at the forefront of progress in urban sanitation. These objects represent developments in water and sanitation technology and infrastructure, including water supply during the mediaeval period through to the early 19th century, and engineering projects which brought clean water to the city."
+  },
+  "Liverpool & Manchester Railway": {
+    "description": "Discover the world-changing history of the world’s first intercity passenger railway, the Liverpool and Manchester Railway, whose Manchester terminus is now the Science and Industry Museum’s site."
+  },
+  "Sound Recordings": {
+    "description": "This valuable resource comprises audio recordings of the railways, made on the lineside, in stations or on locomotive footplates in a range of formats from gramophone records to digital recordings. It also includes the National Archive of Railway Oral History."
+  },
+  "Coins, medals & tokens": {
+    "description": "These objects, largely commemorative, are all themed around scientific events and figures. Explore items from medals celebrating scientific achievement to the tokens which were an important part of industrial history and labour relations.",
+    "sub-categories": [
+      {
+        "title": "Coins and Medals",
+        "link": "/search/categories/coins-and-medals"
+      },
+      {
+        "title": "Welcome Medals",
+        "link": "/search/categories/wellcome-medals"
+      }
+    ]
+  },
+  "Marine engines": {
+    "description": "Immerse yourself in the history of power shipping as you explore objects tracing the development of marine engines and the ingenuity of important British inventors and manufacturers."
+  },
+  "Wellcome (General)": {
+    "description": "Alongside Henry Wellcome’s collection of objects reflecting the human experience of medicine and life, he also collected this group of miscellaneous objects—from everyday items such as cutlery to display props and instruments of torture."
+  },
+  "Cash registers": {
+    "description": "Explore objects telling the story of the automation of cash collection, retail and accounting, from early mechanical examples to electronic machines from the late 20th century."
+  },
+  "Warships": {
+    "description": "Uncover objects representing the history of warships from the 17th century to the 1980s, and the development of sail, steam and nuclear propulsion systems."
+  },
+  "Froude": {
+    "description": "Discover objects connected to pioneer of ship tank research William Froude (1810–76), representing all stages of his experimental practice, from which he established his laws of ship resistance."
+  },
+  "Emergency Medicine": {
+    "description": "Discover how science and technology has been used to embrace the challenge of serious, acute and at times extraordinary medical situations, through objects used in the first seconds and minutes of critical medical care."
+  },
+  "Sound Technologies": {
+    "description": "Trace the history of the analogue-digital revolution, the development of live sound technologies in the 20th century and the impact of digital technology on music production and reproduction."
+  },
+  "Electronic Components": {
+    "description": "Discover devices used in the construction of electronic equipment, including radios, televisions and computers. These objects trace the miniaturisation of electronic components, providing an insight into the technology that enabled a boom in cheaper and smaller electronic goods."
+  },
+  "Electricity Supply": {
+    "description": "Trace the development of methods and equipment for harnessing and delivering electricity, through objects reflecting the growth of the British electricity supply industry."
+  },
+  "Aeronautics": {
+    "description": "Charting human flight from its pre-history to the near-present, these objects represent all aspects of aviation other than propulsion. Discover world-famous aircraft, as well as objects revealing the interplay of science, industry and society in the context of flight."
+  },
+  "Lighting": {
+    "description": "Discover different methods of lighting private and public spaces through history, from early shell and stone lighting methods right up to modern gas and electric lighting."
+  },
+  "Gas Industry": {
+    "description": "These objects chart the history of humankind’s exploitation of flammable gas for lighting, heating, cooking and industrial processes. They reflect the development of the gas industry and gas appliances, as well as the storage, distribution and use of natural gas."
+  },
+  "Weighing & Measuring": {
+    "description": "These weights and capacity measures from around the world and dating from prehistoric times to the present day tell stories of change and continuity in the production, use, standardisation and regulation of weights and measures."
+  },
+  "Nuclear Energy": {
+    "description": "Explore objects which reveal the story of the generation of electricity by harnessing nuclear power over the last 75 years. These objects help make real the sometimes secretive or complex process of civil nuclear power generation."
+  },
+  "Water Transport": {
+    "description": "These objects reflect the history of Britain's shipping industry and dockyards, as well as the international development and construction of water transportation, from Chinese and Japanese junks to Dutch sloops."
+  },
+  "Gas Industry": {
+    "description": "These objects chart the history of humankind’s exploitation of flammable gas for lighting, heating, cooking and industrial processes. They reflect the development of the gas industry and gas appliances, as well as the storage, distribution and use of natural gas."
+  },
+  "Heating, Cooling and Ventilation": {
+    "description": "Mostly comprising objects rescued from buildings around Britain subject to demolition or refurbishment, these objects illustrate the scientific principles behind warming, extracting, conditioning and cooling air and fluids."
+  },
   "Acoustics": {
     "description": "Delve into objects charting the development of acoustics as a science, featuring sound-producing apparatus and electronic means of sound production for musical composition and performance.",
     "sub-categories": [

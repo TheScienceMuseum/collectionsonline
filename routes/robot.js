@@ -1,9 +1,11 @@
 var config = require('../config.js');
+const cacheHeaders = require('./route-helpers/cache-control');
 
 module.exports = () => ({
   method: 'GET',
   path: '/robots.txt',
   config: {
+    cache: cacheHeaders(config, 3600 * 24),
     handler: function (req, h) {
       return h.response(
         'sitemap: ' + config.sitemapUrl + '/sitemap.xml\n' +

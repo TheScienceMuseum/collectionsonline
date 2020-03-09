@@ -8,6 +8,7 @@ const sharedSchema = {
   'filter[on_display]': Joi.boolean().truthy('true').falsy('false'),
   'filter[has_image]': Joi.string(),
   'filter[image_license]': Joi.string(),
+  'filter[rotational]': Joi.string(),
   // People
   'filter[birth[date]]': Joi.number().allow('', null).integer().min(0),
   'filter[death[date]]': Joi.number().allow('', null).integer().min(0)
@@ -93,6 +94,7 @@ module.exports = (contentType) => {
     .rename('formats', 'filter[formats]', {override: true, ignoreUndefined: true})
     .rename('has_image', 'filter[has_image]', {override: true, ignoreUndefined: true})
     .rename('image_license', 'filter[image_license]', {override: true, ignoreUndefined: true})
+    .rename('rotational', 'filter[rotational]', {override: true, ignoreUndefined: true})
     .rename('user', 'filter[user]', {override: true, ignoreUndefined: true})
     .rename('imgtag', 'filter[imgtag]', {override: true, ignoreUndefined: true})
     .rename('material', 'filter[material]', {override: true, ignoreUndefined: true});
