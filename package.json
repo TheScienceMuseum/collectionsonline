@@ -37,6 +37,7 @@
     "lodash.debounce": "^4.0.8",
     "openseadragon": "2.4.0",
     "page": "^1.11.5",
+    "plyr": "^3.5.10",
     "rc": "^1.2.8",
     "request": "^2.87.0",
     "selenium-standalone": "^6.15.0",
