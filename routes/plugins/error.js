@@ -28,7 +28,7 @@ exports.plugin = {
 
         if (error.output.statusCode === 404) {
           var data = {};
-          data.footer = require('../../fixtures/footer');
+          data.navigation = require('../../fixtures/navigation');
           data.museums = require('../../fixtures/museums');
           data.items = require('../../fixtures/404.js')(options.config);
           return h.view('404', data).code(404);
@@ -42,11 +42,13 @@ exports.plugin = {
       if (accept.indexOf('application/vnd.api+json') === 0) {
         // Simply reformat the payload http://jsonapi.org/format/#errors
         request.response.output.payload = {
-          errors: [{
-            title: error.output.payload.error,
-            status: error.output.statusCode,
-            detail: error.output.payload.message
-          }]
+          errors: [
+            {
+              title: error.output.payload.error,
+              status: error.output.statusCode,
+              detail: error.output.payload.message
+            }
+          ]
         };
       }
 
