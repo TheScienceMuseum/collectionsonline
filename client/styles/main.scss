@@ -9,6 +9,7 @@ $breakpoints: map-merge(
   ),
   $breakpoints
 );
+$logo-panel-gradient: $c-teal $c-blue $c-purple;
 
 // general settings and variables, required before foundation
 @import "base/colour";
@@ -22,6 +23,7 @@ $breakpoints: map-merge(
 // this is nasty: included in smg-web-design-system/src/scss/lib but overwritten by foundation, so reimporting for our use.
 @import "sass-between/dist/between";
 @import "smg-web-design-system/src/scss/lib";
+@import "smg-web-design-system/src/scss/objects/grid";
 
 // our base styles, then all components
 @import "base/general";
@@ -43,8 +45,9 @@ $breakpoints: map-merge(
 @import "smg-web-design-system/src/scss/components/loading";
 @import "components/logo-panel";
 @import "components/mediaplayer";
-@import "components/masthead";
+@import "smg-web-design-system/src/scss/components/masthead";
 @import "components/menu";
+@import "components/nav";
 @import "components/panel";
 @import "components/record";
 @import "components/result";

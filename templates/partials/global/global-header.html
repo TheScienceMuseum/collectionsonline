@@ -1,5 +1,5 @@
 <header class="c-masthead">
-  <div class="row columns">
+  <div class="o-flex-container">
     {{!--
       <a href="https://group.sciencemuseum.org.uk/" class="c-masthead__logo">
         <img src="/assets/img/global/smg-logo.svg" alt="Science Museum Group">
@@ -8,27 +8,27 @@
     <b class="c-masthead__logo">
         <img src="/assets/img/global/smg-logo.svg" alt="Science Museum Group">
     </b>
-    <nav class="c-masthead__nav">
-      <div class="c-menu">
-        <button class="c-menu__button" aria-controls="primary-menu" aria-expanded="false">Menu</button>
-        <div class="c-menu__wrapper">
-          <nav id="site-navigation" class="c-menu__nav" aria-expanded="false">
-            <ul id="primary-menu" class="c-menu__primary-ul">
-              <li class="menu-item"><a target="_self" href="/">Collection search</a></li>
-              <li class="menu-item"><a target="_self" href="/about">About</a></li>
-              <li class="menu-item menu-item-has-children" aria-haspopup="true">
-                <a href="#">Visit our museums</a>
-                <button aria-expanded="false" class="dropdown-toggle"><span class="screen-readers">Expand child menu</span></button>
-                <ul class="sub-menu">
-                  {{#each museums.links}}
-                  <li class="menu-item"><a href="{{url}}">{{name}}</a></li>
-                  {{/each}}
-                </ul>
-              </li>
-            </ul>
+      <div class="c-masthead__right c-menu">
+        <button class="c-menu__button" aria-controls="mobile-menu" aria-expanded="false">Collection</button>
+            {{> global/menu class="c-menu--global" items=navigation.global}}
           </nav>
-        </div>
       </div>
-    </nav>
   </div>
+</header>
+<header class="c-nav-site">
+  <div class="o-flex-container">
+    <h1 class="c-nav-site__title">Collection</h1>
+    <div class="c-nav-site__right c-menu">
+      <nav class="c-menu__nav" aria-expanded="false">
+        {{> global/menu class="c-menu--site" items=navigation.site}}
+      </nav>
+    </div>
+  </div>
+</header>
+<header class="c-nav-mobile" id="mobile-menu" aria-expanded="false">
+  <nav class="c-menu {{class}}">
+    {{> global/menu class="c-menu--site" items=navigation.site}}
+    {{> global/menu class="c-menu--global" items=navigation.global}}
+  </nav>
+
 </header>
