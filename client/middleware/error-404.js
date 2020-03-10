@@ -9,7 +9,7 @@ module.exports = function (page) {
     if (!ctx.isInitialRender) {
       var pageEl = document.getElementsByTagName('main')[0];
       var data = {};
-      data.footer = require('../../fixtures/footer');
+      data.navigation = require('../../fixtures/navigation');
       data.museums = require('../../fixtures/museums');
       data.items = require('../../fixtures/404.js');
       pageEl.innerHTML = Templates['404'](data);
