@@ -105,7 +105,8 @@
       }
     }
   }
-  .row {
+
+  &__searchbar {
     // keep above images
     position: relative;
     z-index: $no-of-slides + 1;
