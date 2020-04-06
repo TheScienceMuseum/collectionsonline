@@ -1,0 +1,32 @@
+{{#unless inProduction}}
+<header class="c-masthead internal-header">
+  <div class="row columns">
+  	<form class="wikidata" id="wikidata-submission">
+		<input name="wikidataurl" placeholder="Wikidata URL">
+		<!--
+		<input type="hidden" name="title" value="{{title}}">
+		<input type="hidden" name="mimsyid" value="{{mimsyid}}">
+		<input type="hidden" name="coid" value="{{coid}}">
+		<input type="hidden" name="relationship" value="{{relationship}}">
+		<input type="hidden" name="note" value="{{note}}">
+		-->
+		<button type="submit">Add</button>
+	</form>
+
+<script src="https://wzrd.in/standalone/formdata-polyfill"></script>
+<script src="https://wzrd.in/standalone/promise-polyfill@latest"></script>
+<script src="https://wzrd.in/standalone/whatwg-fetch@latest"></script>
+<script>
+const scriptURL = 'https://script.google.com/macros/s/AKfycbysqlRQ2-x8CDvV55zyzd09zwayQZrO7hu61sZg_xYYRU9CYqY/exec';
+const form = document.forms['wikidata-submission'];
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+   .then(response => console.log('Success!', response))
+   .catch(error => console.error('Error!', error.message));
+});
+</script>
+
+  </div>
+</header>
+{{/unless}}

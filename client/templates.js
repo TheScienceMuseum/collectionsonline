@@ -23,6 +23,11 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
+  'global/internal-header',
+  Fs.readFileSync('./templates/partials/global/internal-header.html', 'utf8')
+);
+
+Handlebars.registerPartial(
   'global/global-header',
   Fs.readFileSync('./templates/partials/global/global-header.html', 'utf8')
 );
