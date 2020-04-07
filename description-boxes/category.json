@@ -15,17 +15,29 @@
       }
     ]
   },
-  "Opthalmology": {
+
+ "Opthalmology": {
     "description": "Explore objects which tell the story of the care and treatment of the human eye and eye-related conditions. They offer a rich history of both ophthalmology and optometry, and the evolution of vision aids to treat sight loss."
   },
+  "Metallurgy": {
+    "description": "These objects form a rich and comprehensive historical and technical archive of all aspects of metallurgy, including the processes of smelting, working, physical testing and assaying."
+  },
+  "Papermaking": {
+    "description": "Discover the processes involved in making an everyday item we couldn’t live without. From early traditional methods to later forms of mechanisation, explore equipment used to make the humble piece of paper."
+  },
+  "Geophysics": {
+    "description": "These objects represent a vast range of geophysical phenomena and surveying techniques—seismology, gravitation, atmospheric electricity, tide monitoring and prediction and geomagnetism—dating from the discipline's beginnings in the late 19th century."
+  },
+  "Nuclear physics": {
+    "description": "Explore how we have studied matter at its smallest scales, from table-top experiments to huge international facilities."
+  },
+
+
   "Public health & hygiene": {
     "description": "These objects tell the story of government and campaigning efforts to improve public health, notably through vaccination, as well as through the everyday items we use to maintain or improve personal hygiene."
   },
   "Industrial chemistry": {
     "description": "Trace the history of chemistry on an industrial scale with these objects dating from the 19th century onwards. Discover equipment and products associated with industrial chemical processes, from artificial dyes and food processing to cosmetics and plastic production."
-  },
-  "Metallurgy ": {
-    "description": "These objects form a rich and comprehensive historical and technical archive of all aspects of metallurgy, including the processes of smelting, working, physical testing and assaying."
   },
   "Optics": {
     "description": "Optical observations, diversions and demonstrations. Explore how we’ve studied and played with light."
@@ -45,17 +57,8 @@
   "Biochemistry": {
     "description": "These highly significant objects represent the ways scientists have applied molecular concepts to complex biological systems in order to study the chemistry and biochemical processes underpinning them."
   },
-  "Papermaking ": {
-    "description": "Discover the processes involved in making an everyday item we couldn’t live without. From early traditional methods to later forms of mechanisation, explore equipment used to make the humble piece of paper."
-  },
   "Docks and diving": {
     "description": "Explore objects from the history of diving and submersible technology, revealing the ways we have attempted underwater exploration and research."
-  },
-  "Geophysics ": {
-    "description": "These objects represent a vast range of geophysical phenomena and surveying techniques—seismology, gravitation, atmospheric electricity, tide monitoring and prediction and geomagnetism—dating from the discipline's beginnings in the late 19th century."
-  },
-  "Nuclear physics ": {
-    "description": "Explore how we have studied matter at its smallest scales, from table-top experiments to huge international facilities."
   },
   "Passenger comforts": {
     "description": "These objects reveal how rail passengers have kept comfortable while on the move, from making or buying a cup of tea to warming cold feet."

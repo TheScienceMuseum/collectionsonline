@@ -1,4 +1,4 @@
-module.exports = function (details) {
+module.exports = function (details, clean) {
   var accession;
   if (details) {
     Object.keys(details).forEach(el => {
@@ -7,5 +7,9 @@ module.exports = function (details) {
       }
     });
   }
-  return accession ? accession + '. ' : '';
+  if (accession && clean) {
+    return accession;
+  } else {
+    return accession ? accession + '. ' : '';
+  }
 };
