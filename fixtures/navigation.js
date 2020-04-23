@@ -33,6 +33,10 @@ module.exports = {
       name: 'Learning'
     },
     {
+      url: 'https://www.sciencemuseumgroup.org.uk/',
+      name: 'The group'
+    },
+    {
       url: '#',
       name: 'Visit us',
       items: museums.links
