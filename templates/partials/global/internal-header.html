@@ -2,20 +2,24 @@
 
 <header class="c-masthead internal-header">
   <div class="row columns">
+
   	<form class="wikidata" id="wikidata-form">
 		<input name="wikidataurl" placeholder="Wikidata URL" style="width:300px; height:35px">
+		<!--
 		<select name="relationship" style="width:100px; height:35px">
 		  <option value="equal">Equal to</option>
 		  <option value="instance">Instance of</option>
 		</select>
 		<input name="note" placeholder="Note" style="width:200px; height:35px">
+	    -->
+	    <input type="hidden" name="relationship" value="equal">
 		<input type="hidden" name="coid" value="{{uid}}">
 		<input type="hidden" name="courl" value="{{links.self}}">
 		<input type="hidden" name="title" value="{{title}}">
 		<input type="hidden" name="mimsyid" value="{{getinventorynumber details}}">
 		<button type="submit" id="submit" style="height:35px; width:100px; border:1px solid black">Add</button>
 	</form>
-
+	
 <script>
 const scriptURL = 'https://script.google.com/macros/s/AKfycbxavhMbZpTlCuRHdUauf2hkGcx4uHTZ2TpSx5jr4B8p4Luy3u4/exec';
 const form = document.forms['wikidata-form'];
