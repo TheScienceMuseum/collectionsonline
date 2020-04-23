@@ -30,7 +30,7 @@ module.exports = {
     },
     {
       url: 'https://www.sciencemuseumgroup.org.uk/',
-      name: 'About us'
+      name: 'The group'
     },
     {
       url: '#',
