@@ -20,10 +20,6 @@ module.exports = {
   ],
   global: [
     {
-      url: 'https://www.sciencemuseumgroup.org.uk/',
-      name: 'About us'
-    },
-    {
       url: 'https://collection.sciencemuseumgroup.org.uk/',
       name: 'Collection',
       current: true
