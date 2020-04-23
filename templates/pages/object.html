@@ -38,6 +38,14 @@
   </section>
   
   {{#if (or youtube sketchfab rotational)}}{{> records/mediaplayer}}{{/if}}
+  
+  {{#unless inProduction}}
+    {{#if audioplayer}}
+      {{#each audioplayer}}
+        {{> records/audioplayer }}
+      {{/each}}
+    {{/if}}
+  {{/unless}}
 
   {{> records/record-details }}
 

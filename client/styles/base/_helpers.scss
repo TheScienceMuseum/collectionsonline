@@ -27,7 +27,7 @@ $transition-default: 0.2s ease-in-out;
   position: relative;
 
   &:before {
-    content: ' ';
+    content: " ";
     display: block;
     height: $size;
     width: $size;
@@ -73,18 +73,6 @@ $transition-default: 0.2s ease-in-out;
   }
 }
 
-@mixin for-screen-readers {
-  position: absolute;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  width: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0;
-  word-break: normal;
-}
-
 // wrap long text strings
 @mixin hyphenate {
   overflow-wrap: break-word;
@@ -113,7 +101,7 @@ $transition-default: 0.2s ease-in-out;
   position: relative;
   padding-left: $size * 4/3 + $left;
   &:before {
-    content: ' ';
+    content: " ";
     display: block;
     position: absolute;
     margin: auto; // top, bottom, height, auto = vertical align!
@@ -123,9 +111,9 @@ $transition-default: 0.2s ease-in-out;
     } @else {
       top: -$size/5;
     }
-    @if ($align == 'top') {
+    @if ($align == "top") {
       margin-top: 0;
-    } @else if ($align == 'bottom') {
+    } @else if ($align == "bottom") {
       @if ($bottom) {
         bottom: $bottom;
       } @else {
@@ -183,7 +171,7 @@ $transition-default: 0.2s ease-in-out;
   margin: rem-calc(-1 0 8 -1);
   height: 3rem;
   min-width: 3rem;
-  @include breakpoint(small only) {
+  @include media("<=small") {
     height: 2.5rem;
     min-width: 2.5rem;
   }
@@ -197,126 +185,7 @@ $transition-default: 0.2s ease-in-out;
   $h: 36rem; // this might change after load?
   height: $h;
   transition: height $transition-default;
-  @include breakpoint(small only) {
+  @include media("<=small") {
     height: 25rem;
   } //  = 12px
-}
-
-//-----------------------------------------------------------------------------
-// svg-uri
-// not packaging this cos its tiny,
-// and i needed to make changes anyway to make compatible with IE:
-// http://codepen.io/tigt/post/optimizing-svgs-in-data-uris
-//-----------------------------------------------------------------------------
-
-////
-/// Helper function to easily use an SVG inline in CSS
-/// without encoding it to base64, saving bytes.
-/// It also helps with browser support.
-////
-
-/// A small function allowing skipping base64 encoding
-/// and simply pasting the SVG markup right in the CSS.
-/// @author Jakob Eriksen
-/// @link http://codepen.io/jakob-e/pen/doMoML
-/// @param {String} $svg - SVG image to encode
-/// @return {String} - Encoded SVG data uri
-@function svg-uri($svg) {
-  $encoded: '';
-  $slice: 2000;
-  $index: 0;
-  $loops: ceil(str-length($svg) / $slice);
-
-  @for $i from 1 through $loops {
-    $chunk: str-slice($svg, $index, $index + $slice - 1);
-    $chunk: str-replace($chunk, '"', "'");
-    $chunk: str-replace($chunk, '<', '%3C');
-    $chunk: str-replace($chunk, '>', '%3E');
-    $chunk: str-replace($chunk, '&', '%26');
-    $chunk: str-replace($chunk, '#', '%23');
-    $encoded: #{$encoded}#{$chunk};
-    $index: $index + $slice;
-  }
-
-  @return url('data:image/svg+xml,#{$encoded}');
-}
-
-/// Replace `$search` with `$replace` in `$string`
-/// @author Hugo Giraudel
-/// @link http://sassmeister.com/gist/1b4f2da5527830088e4d
-/// @param {String} $string - Initial string
-/// @param {String} $search - Substring to replace
-/// @param {String} $replace ('') - New value
-/// @return {String} - Updated string
-@function str-replace($string, $search, $replace: '') {
-  $index: str-index($string, $search);
-
-  @if $index {
-    @return str-slice($string, 1, $index - 1) + $replace +
-      str-replace(
-        str-slice($string, $index + str-length($search)),
-        $search,
-        $replace
-      );
-  }
-
-  @return $string;
-}
-
-/// Returns the opposite direction of each direction in a list
-/// @author Hugo Giraudel
-/// @param {List} $directions - List of initial directions
-/// @return {List} - List of opposite directions
-@function opposite-direction($directions) {
-  $opposite-directions: ();
-  $direction-map: (
-    'top': 'bottom',
-    'right': 'left',
-    'bottom': 'top',
-    'left': 'right',
-    'center': 'center',
-    'ltr': 'rtl',
-    'rtl': 'ltr'
-  );
-
-  @each $direction in $directions {
-    $direction: to-lower-case($direction);
-
-    @if map-has-key($direction-map, $direction) {
-      $opposite-directions: append(
-        $opposite-directions,
-        unquote(map-get($direction-map, $direction))
-      );
-    } @else {
-      @warn 'No opposite direction can be found for `#{$direction}`. Direction omitted.';
-    }
-  }
-
-  @return $opposite-directions;
-}
-
-/// Triangle helper mixin
-/// @param {Direction} $direction - Triangle direction, either `top`, `right`, `bottom` or `left`
-/// @param {Color} $color [currentcolor] - Triangle color
-/// @param {Length} $size [1em] - Triangle size
-@mixin triangle($direction, $color: currentcolor, $size: 1em) {
-  @if not index(top right bottom left, $direction) {
-    @error 'Direction must be either `top`, `right`, `bottom` or `left`.';
-  }
-
-  width: 0;
-  height: 0;
-  content: '';
-  z-index: 2;
-  border-#{opposite-direction($direction)}: $size solid $color;
-
-  $perpendicular-borders: ($size / 2) solid transparent;
-
-  @if $direction == top or $direction == bottom {
-    border-left: $perpendicular-borders;
-    border-right: $perpendicular-borders;
-  } @else if $direction == right or $direction == left {
-    border-bottom: $perpendicular-borders;
-    border-top: $perpendicular-borders;
-  }
 }

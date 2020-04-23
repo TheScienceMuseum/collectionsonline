@@ -4,12 +4,12 @@
   padding: 1rem 0.5rem;
   margin-bottom: 2rem;
   position: relative;
-  @include breakpoint(small only) {
+  @include media("<=small") {
     display: none;
   }
 
   &--museum {
-    @include breakpoint(medium up) {
+    @include media(">=medium") {
       display: flex;
     }
     min-height: 15rem;
@@ -46,7 +46,6 @@
     line-height: 1.5rem; //setting absolutely on both to vertical align
   }
   &__main-title {
-
   }
 
   &__list-title {

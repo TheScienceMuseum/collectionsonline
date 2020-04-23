@@ -1,0 +1,20 @@
+<ul class="c-menu__list {{class}}">
+  {{#each items}}
+  {{#if items}}
+  <li class="c-menu__item c-menu__item--has-children" aria-haspopup="true">
+    <a href="{{url}}">{{name}}</a>
+    <button aria-expanded="false" class="c-menu__toggle">
+      <span class="screen-readers">Expand child
+        menu</span>
+    </button>
+    <ul class="c-menu__submenu {{../gradient}}" aria-expanded="false">
+      {{#each items}}
+      <li class="c-menu__item"><a href="{{url}}" target="_self">{{name}}</a></li>
+      {{/each}}
+    </ul>
+  </li>
+  {{else}}
+  <li class="c-menu__item"><a href="{{url}}" target="_self" {{#if current}}aria-current="true"{{/if}}>{{name}}</a></li>
+  {{/if}}
+  {{/each}}
+</ul>

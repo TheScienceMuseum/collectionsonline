@@ -3,12 +3,13 @@ var searchBox = require('./search-box');
 var clipboard = require('./clipboard');
 var map = require('./map');
 var moreButton = require('./more-button');
-var moreCordion = require('./accordion');
+var moreCordion = require('smg-web-design-system/dist/js/accordion');
 var carousel = require('./carousel');
 var moreDetails = require('./expand-details-button');
+var audioplayer = require('smg-web-design-system/dist/js/audioplayer');
 var mediaplayer = require('./mediaplayer');
-var headerMenu = require('./header-menu');
-var illuminate = require('./illuminate');
+var headerMenu = require('smg-web-design-system/dist/js/menu');
+var illuminate = require('smg-web-design-system/dist/js/illuminate');
 var osd = require('./osd');
 
 module.exports = ctx => {
@@ -21,6 +22,7 @@ module.exports = ctx => {
   moreDetails();
   carousel(ctx);
   mediaplayer();
+  audioplayer();
   headerMenu();
   illuminate();
   osd(ctx);

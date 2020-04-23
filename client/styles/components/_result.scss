@@ -39,7 +39,7 @@
       margin: auto;
       color: rgba(white, 0.25);
       font-size: rem-calc(24);
-      @include breakpoint(medium) {
+      @include media(">=medium") {
         font-size: rem-calc(32);
       }
       line-height: 1;
@@ -54,7 +54,7 @@
     line-height: 1.2;
     text-transform: none;
     margin: 0;
-    @include breakpoint(medium) {
+    @include media(">=medium") {
       font-size: rem-calc(18);
     }
   }
@@ -62,11 +62,11 @@
   &__info {
     position: relative;
     padding-top: 0.5rem;
-    @include breakpoint(medium) {
+    @include media(">=medium") {
       padding-top: 1rem;
     }
     //browsers hyphenate a bit too readily, so only used on widths where we really haven't got room
-    @include breakpoint(small only) {
+    @include media("<=small") {
       overflow: hidden;
       @include hyphenate;
     }
@@ -187,7 +187,7 @@
 
   &__info {
     padding: 0.5rem;
-    @include breakpoint(medium) {
+    @include media(">=medium") {
       padding: 1rem;
     }
   }
@@ -243,7 +243,7 @@
       margin-bottom: 0.5rem;
       clear: right;
       font-size: rem-calc(16);
-      @include breakpoint(medium) {
+      @include media(">=medium") {
         font-size: rem-calc(24);
       }
     }

@@ -8,10 +8,10 @@ var loadingEl = function () {
 
 module.exports = {
   start: function () {
-    loadingEl().classList.add('loading');
+    loadingEl().classList.add('c-loading');
   },
 
   end: function () {
-    loadingEl().classList.remove('loading');
+    loadingEl().classList.remove('c-loading');
   }
 };

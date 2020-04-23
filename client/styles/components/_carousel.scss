@@ -96,6 +96,9 @@
 
   .flickity-prev-next-button {
     width: 1.5rem;
+    svg {
+      height: 1.5rem; //IE
+    }
     padding: 1rem 0;
     opacity: 0.6;
     fill: white;

@@ -8,8 +8,8 @@ var endpoints = [
   { label: 'Science and Industry Musem', url: 'https://www.scienceandindustrymuseum.org.uk/collection-media/collection-usage/objects' },
   { label: 'Science Museum', url: 'https://www.sciencemuseum.org.uk/collection-media/collection-usage/objects' },
   { label: 'Railway Museum', url: 'https://www.railwaymuseum.org.uk/collection-media/collection-usage/objects' },
-  { label: 'Learning Resources', url: 'https://learning-resources.sciencemuseum.org.uk/wp-json/collection-media/collection-usage' },
   { label: 'Science Museum Blog', url: 'https://blog.sciencemuseum.org.uk/wp-json/collection-media/collection-usage' }
+  // { label: 'Learning Resources', url: 'https://learning-resources.sciencemuseum.org.uk/wp-json/collection-media/collection-usage' },
   // { label: 'Railway Museum Blog', url: 'https://blog.railwaymuseum.org.uk/wp-json/collection-media/collection-usage' }
   // { label: 'National Science and Media Museum', url: 'https://www.scienceandmediamuseum.org.uk/collection-media/collection-usage/objects' },
   // { label: 'Science and Industry Musem Blog', url: 'https://blog.scienceandindustrymuseum.org.uk/wp-json/collection-media/collection-usage' }

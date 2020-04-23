@@ -1,7 +1,7 @@
 var contentType = require('./route-helpers/content-type.js');
 const cacheHeaders = require('./route-helpers/cache-control');
 
-module.exports = (config) => ({
+module.exports = config => ({
   method: 'GET',
   path: '/',
   config: {
@@ -9,12 +9,14 @@ module.exports = (config) => ({
     handler: function (request, h) {
       var responseType = contentType(request);
       if (responseType === 'json') {
-        return h.response('See https://github.com/TheScienceMuseum/collectionsonline/wiki/Collections-Online-API on how to use the api');
+        return h.response(
+          'See https://github.com/TheScienceMuseum/collectionsonline/wiki/Collections-Online-API on how to use the api'
+        );
       }
 
       if (responseType === 'html') {
         const data = require('../fixtures/data');
-        data.footer = require('../fixtures/footer');
+        data.navigation = require('../fixtures/navigation');
         data.museums = require('../fixtures/museums');
         return h.view('home', data);
       }

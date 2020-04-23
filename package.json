@@ -37,11 +37,13 @@
     "lodash.debounce": "^4.0.8",
     "openseadragon": "2.4.0",
     "page": "^1.11.5",
+    "plyr": "^3.5.10",
     "rc": "^1.2.8",
     "request": "^2.87.0",
-    "selenium-standalone": "^6.17.0",
+    "selenium-standalone": "^6.15.0",
     "selenium-webdriver": "^4.0.0-alpha.1",
     "slugg": "^1.1.0",
+    "smg-web-design-system": "^0.6.4",
     "snackbarlightjs": "^1.1.2",
     "svg4everybody": "^2.1.8",
     "uglifyjs": "^2.4.11",
@@ -49,7 +51,7 @@
     "wikijs": "^4.13.0"
   },
   "devDependencies": {
-    "autoprefixer": "^6.3.6",
+    "autoprefixer": "^9.7.4",
     "babel-plugin-transform-object-assign": "^6.8.0",
     "babel-preset-es2015": "^6.9.0",
     "babelify": "^7.3.0",
@@ -90,9 +92,10 @@
     "build": "run-p build:*",
     "build:js": "browserify client/main.js --debug | exorcist public/bundle.js.map > public/bundle.js",
     "build:css": "run-s build:css:*",
-    "build:css:sass": "node-sass client/styles/main.scss public/bundle.css --include-path node_modules/foundation-sites/scss --error-bell",
+    "build:css:sass": "node-sass client/styles/main.scss public/bundle.css --include-path node_modules --error-bell",
     "build:css:prefix": "postcss --u autoprefixer -i public/bundle.css -o public/bundle.css",
     "build:img": "cp -R client/icons/* public/assets/icons",
+    "build:wds": "cp -R node_modules/smg-web-design-system/dist/assets/logos public/assets/logos",
     "build:svg": "svg-sprite --view --vscss --view-sprite=svg/sprite.view.svg --symbol --symbol-example --symbol-sprite=svg/sprite.symbol.svg --dest=public/assets/icons client/icons/*.svg",
     "minify": "run-p minify:*",
     "minify:js": "uglifyjs public/bundle.js -o public/bundle.js",
@@ -138,7 +141,8 @@
     "ignore": [
       "client/lib/polyfills.js",
       "public/vendor/object2vr/skin.js",
-      "public/vendor/object2vr/object2vr_player.js"
+      "public/vendor/object2vr/object2vr_player.js",
+      "backstop_data"
     ]
   },
   "browserslist": [
