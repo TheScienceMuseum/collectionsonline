@@ -47,7 +47,7 @@
                             "motivation": "sc:painting",
                             "on": "{{../self}}/canvas/{{@index}}",
                             "resource":{
-                                "@id": "{{processed.zoom.location}}/full/full/0/native.jpg",
+                                "@id": "{{processed.zoom.location}}/full/full/0/default.jpg",
                                 "@type": "dctypes:Image",
                                 "format": "image/jpeg",
                                 "label": "{{source.title.0.value}}",
