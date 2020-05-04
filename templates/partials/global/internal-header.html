@@ -4,7 +4,7 @@
   <div class="row columns">
 
   	<form class="wikidata" id="wikidata-form">
-		<input name="wikidataurl" placeholder="Wikidata URL" style="width:300px; height:35px">
+		<input name="wikidataurl" placeholder="https://www.wikidata.org/wiki/Q674773" style="width:300px; height:35px">
 		<!--
 		<select name="relationship" style="width:100px; height:35px">
 		  <option value="equal">Equal to</option>
@@ -19,16 +19,36 @@
 		<input type="hidden" name="mimsyid" value="{{getinventorynumber details}}">
 		<button type="submit" id="submit" style="height:35px; width:100px; border:1px solid black">Add</button>
 	</form>
-	
+	<div id="sucessMessage" hidden>
+		<h3 style="color:black">URL Submitted, Thanks!</h3>
+	</div>
+	<div id="errorMessage" hidden>
+		<h3 style="color:black">Error submitting URL</h3>
+	</div>
+
 <script>
 const scriptURL = 'https://script.google.com/macros/s/AKfycbxavhMbZpTlCuRHdUauf2hkGcx4uHTZ2TpSx5jr4B8p4Luy3u4/exec';
 const form = document.forms['wikidata-form'];
 
+function handleSuccess (response) {
+  document.getElementById('wikidata-form').hidden = true;
+  document.getElementById('sucessMessage').hidden = false;
+  console.log('Success!', response);
+}
+
+function handleError (error) {
+  document.getElementById('wikidata-form').hidden = true;
+  document.getElementById('errorMessage').hidden = false;
+  console.log('Success!', response);
+  console.error('Error!', error.message);
+}
+
 form.addEventListener('submit', e => {
   e.preventDefault();
+  handleSuccess('success');
   fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-   .then(response => console.log('Success!', response))
-   .catch(error => console.error('Error!', error.message));
+   .then(response => handleSuccess(response))
+   .catch(error => handleError(error));
 });
 </script>
 
