@@ -82,7 +82,7 @@ function render (ctx, next, type) {
 }
 
 function listeners (ctx, next, type) {
-  var funcs = [initComp, searchListener ];
+  var funcs = [initComp, searchListener];
 
   if (type === 'object' || type === 'document') {
     funcs.push(downloadImageListener);
