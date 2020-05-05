@@ -18,9 +18,11 @@
     "catbox-redis": "^4.2.4",
     "clipboard": "^2.0.4",
     "elasticsearch": "^15.4.1",
+    "fetch": "^1.1.0",
     "fetch-ponyfill": "^6.0.2",
     "flickity": "^2.2.0",
     "flickity-imagesloaded": "^2.0.0",
+    "form-data": "^3.0.0",
     "format-number": "^3.0.0",
     "foundation-sites": "^6.6.3",
     "good": "^8.1.2",
@@ -35,6 +37,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.10",
     "lodash.debounce": "^4.0.8",
+    "node-fetch": "^2.6.0",
     "openseadragon": "2.4.2",
     "page": "^1.11.6",
     "plyr": "^3.6.1",
@@ -48,7 +51,10 @@
     "svg4everybody": "^2.1.8",
     "uglifyjs": "^2.4.11",
     "vision": "^5.4.4",
-    "wikijs": "^4.13.0"
+    "wikijs": "^4.13.0",
+    "node-fetch": "^2.0.4",
+    "form-data": "^3.0.0"
+
   },
   "devDependencies": {
     "autoprefixer": "^9.7.4",
