@@ -26,32 +26,6 @@
 		<h3 style="color:black">Error submitting URL</h3>
 	</div>
 
-<script>
-const scriptURL = 'https://script.google.com/macros/s/AKfycbxavhMbZpTlCuRHdUauf2hkGcx4uHTZ2TpSx5jr4B8p4Luy3u4/exec';
-const form = document.forms['wikidata-form'];
-
-function handleSuccess (response) {
-  document.getElementById('wikidata-form').hidden = true;
-  document.getElementById('sucessMessage').hidden = false;
-  console.log('Success!', response);
-}
-
-function handleError (error) {
-  document.getElementById('wikidata-form').hidden = true;
-  document.getElementById('errorMessage').hidden = false;
-  console.log('Success!', response);
-  console.error('Error!', error.message);
-}
-
-form.addEventListener('submit', e => {
-  e.preventDefault();
-  handleSuccess('success');
-  fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-   .then(response => handleSuccess(response))
-   .catch(error => handleError(error));
-});
-</script>
-
   </div>
 </header>
 {{/unless}}

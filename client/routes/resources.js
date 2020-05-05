@@ -13,6 +13,7 @@ var searchListener = require('../lib/listeners/search-listener');
 var downloadImageListener = require('../lib/listeners/download-image');
 var archiveListeners = require('../lib/listeners/archive-listeners');
 var initComp = require('../lib/listeners/init-components.js');
+var internalHeader = require('../lib/listeners/internal-header');
 
 module.exports = function (type) {
   return {
@@ -81,7 +82,7 @@ function render (ctx, next, type) {
 }
 
 function listeners (ctx, next, type) {
-  var funcs = [initComp, searchListener];
+  var funcs = [initComp, searchListener ];
 
   if (type === 'object' || type === 'document') {
     funcs.push(downloadImageListener);
@@ -90,9 +91,9 @@ function listeners (ctx, next, type) {
   if (type === 'object') {
     funcs.push(getArticles);
   } else if (type === 'document') {
-    funcs.push(archiveListeners);
+    funcs.push(archiveListeners, internalHeader);
   } else if (type === 'people') {
-    funcs.push(getWikiData);
+    funcs.push(getWikiData, internalHeader);
   }
 
   funcs.forEach(function (el) {
