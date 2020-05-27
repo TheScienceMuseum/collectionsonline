@@ -75,8 +75,9 @@ module.exports = (ctx) => {
     thingsToInit.forEach(function (el) {
       el.addEventListener('click', () => {
         show();
-        ctx.viewer.open(ctx.imgUrl + '/info.json');
-        ctx.viewer.setFullScreen(true);
+        // ctx.viewer.tileSources.append(ctx.imgUrl + '/info.json');
+        // ctx.viewer.open(ctx.imgUrl + '/info.json');
+        // ctx.viewer.setFullScreen(true);
       });
     });
   }
