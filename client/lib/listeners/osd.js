@@ -67,8 +67,8 @@ module.exports = (ctx) => {
     if (ctx.carousel) {
       ctx.carousel.on('staticClick', () => {
         show();
-        ctx.viewer.open(ctx.imgUrl + '/info.json');
-        ctx.viewer.setFullScreen(true);
+        // ctx.viewer.open(ctx.imgUrl + '/info.json');
+        // ctx.viewer.setFullScreen(true);
       });
     }
 
