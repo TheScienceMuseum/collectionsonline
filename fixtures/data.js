@@ -169,6 +169,20 @@ module.exports = {
       collection: [
         {
           type: 'collection',
+          title: 'What the Machine Saw',
+          figure: '/assets/img/home/collections/what-the-machine-saw.jpg',
+          columns: '',
+          link: 'https://johnstack.github.io/what-the-machine-saw/'
+        },
+        {
+          type: 'collection',
+          title: 'Random object generator',
+          figure: '/assets/img/home/collections/random-object-generator.jpg',
+          columns: '',
+          link: '/search/slideshow'
+        },
+        {
+          type: 'collection',
           title: 'Rotational photography',
           figure: '/assets/img/home/collections/rotational.jpg',
           columns: '',
