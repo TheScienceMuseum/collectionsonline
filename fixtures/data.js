@@ -179,7 +179,7 @@ module.exports = {
           title: 'Random object generator',
           figure: '/assets/img/home/collections/random-object-generator.jpg',
           columns: '',
-          link: '/search/slideshow'
+          link: '/search/slideshow/'
         },
         {
           type: 'collection',
