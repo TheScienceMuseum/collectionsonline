@@ -39,13 +39,11 @@
   
   {{#if (or youtube sketchfab rotational)}}{{> records/mediaplayer}}{{/if}}
   
-  {{#unless inProduction}}
-    {{#if audioplayer}}
-      {{#each audioplayer}}
-        {{> records/audioplayer }}
-      {{/each}}
-    {{/if}}
-  {{/unless}}
+  {{#if audioplayer}}
+    {{#each audioplayer}}
+      {{> records/audioplayer }}
+    {{/each}}
+  {{/if}}
 
   {{> records/record-details }}
 
