@@ -3,7 +3,7 @@
     <div class="c-audioplayer">
       <div class="c-audioplayer__thumb">
         <button class="c-audioplayer__button" aria-label="Play audio">
-          {{#if thumbnail}}<img class="" src="{{thumbnail}}" />{{else}}
+          {{#if thumbnail}}<img class="" src="{{prefix}}/{{thumbnail}}" />{{else}}
           <svg
             height="248"
             width="248"
@@ -22,7 +22,7 @@
       <div class="c-audioplayer__main">
         <h4 class="c-audioplayer__title">{{ interviewee }}</h4>
         <p class="c-audioplayer__description">{{ title }}</p>
-        <audio src="{{audiofile}}" controls />
+        <audio src="{{prefix}}/{{id}}" controls />
       </div>
     </div>
 
