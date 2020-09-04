@@ -29,7 +29,7 @@
     "good-console": "^8.0.0",
     "h2o2": "^8.1.2",
     "handlebars": "^4.7.6",
-    "hapi": "^18.1.0",
+    "@hapi/hapi": "^18.1.0",
     "hapi-auth-jwt2": "^8.8.1",
     "inert": "^5.1.2",
     "joi": "^14.3.1",

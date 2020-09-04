@@ -1,4 +1,4 @@
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 const routes = require('./routes');
 const auth = require('./auth');
 
