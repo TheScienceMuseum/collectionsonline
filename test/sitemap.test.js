@@ -1,6 +1,6 @@
 const Fs = require('fs');
 const Path = require('path');
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 const test = require('tape');
 const file = require('path').relative(process.cwd(), __filename) + ' > ';
 const createMockDatabase = require('./helpers/mock-database');
