@@ -169,7 +169,7 @@ module.exports = {
       collection: [
         {
           type: 'collection',
-          title: 'Never been seen',
+          title: 'Never Been Seen',
           figure: '/assets/img/home/collections/never-been-seen.jpg',
           columns: '',
           link: 'https://thesciencemuseum.github.io/never-been-seen/'
