@@ -38,7 +38,7 @@
     "lodash": "^4.17.10",
     "lodash.debounce": "^4.0.8",
     "node-fetch": "^2.0.4",
-    "openseadragon": "2.4.2",
+    "openseadragon": "2.4.5",
     "page": "^1.11.6",
     "plyr": "^3.6.2",
     "rc": "^1.2.8",
