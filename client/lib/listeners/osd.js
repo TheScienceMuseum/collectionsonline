@@ -18,6 +18,7 @@ module.exports = (ctx) => {
     ctx.viewer = OpenSeadragon({
       id: 'openseadragon',
       crossOriginPolicy: 'Anonymous',
+      ajaxWithCredentials: false,
       prefixUrl: '/assets/img/openseadragon/',
       showZoomControl: true,
       animationTime: 0.15,
