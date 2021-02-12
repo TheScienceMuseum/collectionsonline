@@ -26,5 +26,6 @@ module.exports = (elastic, config) => ([
   require('./about')(config),
   require('./stats')(elastic, config),
   require('./categories')(elastic, config),
-  require('./imgtags')(elastic, config)
+  require('./imgtags')(elastic, config),
+  require('./neverbeenseen')(elastic, config)
 ]);
