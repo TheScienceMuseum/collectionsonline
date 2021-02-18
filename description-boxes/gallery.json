@@ -20,6 +20,11 @@
     "description": "Medicine: The Wellcome Galleries will completely transform the first floor of the Science Museum, creating a magnificent new home for the most significant medical collections in the world.",
     "link-to-gallery-page": "https://www.sciencemuseum.org.uk/see-and-do/medicine-wellcome-galleries"
   },
+  "Mathematics: The Winton Gallery": {
+    "description": "Explore the objects on display in Mathematics: The Winton Gallery and discover the fundamental role mathematicians, their tools and ideas have played in building the world we live in.",
+    "thumbnail": "/assets/img/description-box/gallery/mathematics-winton-gallery.jpg",
+    "link-to-gallery-page": "https://www.sciencemuseum.org.uk/see-and-do/mathematics-winton-gallery"
+  },
   "Science City": {
     "title": "Science City 1550 -1800: The Linbury Gallery",
     "description": "Explore the objects on display in Science City and discover how London grew from a bustling capital city to a global hub for trade, commerce, and scientific enquiry between 1550 and 1800.",
@@ -52,11 +57,6 @@
   "Information Age Gallery: Constellation": {
     "description": "Explore the objects on display in the Information Age Gallery which tell the story of the satellite networks relaying information between earth and space, delivering data to parts of the world that other technologies cannot reach.",
     "link-to-gallery-page": "http://www.sciencemuseum.org.uk/visitmuseum/Plan_your_visit/exhibitions/information_age"
-  },
-  "Mathematics: The Winton Gallery": {
-    "description": "Explore the objects on display in Mathematics: The Winton Gallery and discover the fundamental role mathematicians, their tools and ideas have played in building the world we live in.",
-    "thumbnail": "https://static1.squarespace.com/static/5818888f5016e166cfa5e0af/t/5846c62b9de4bb2223a8c5c1/1481033266991/highlights.jpg",
-    "link-to-gallery-page": "https://beta.sciencemuseum.org.uk/mathematics"
   },
   "Making The Modern World Gallery": {
     "description": "Spanning 250 years of science and technology, the iconic objects on display in Making the Modern World have helped to shape the world we see today.",
