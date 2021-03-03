@@ -46,7 +46,7 @@
     "selenium-standalone": "^6.15.0",
     "selenium-webdriver": "^4.0.0-alpha.1",
     "slugg": "^1.1.0",
-    "smg-web-design-system": "^0.6.5",
+    "smg-web-design-system": "^0.6.6",
     "snackbarlightjs": "^1.1.2",
     "svg4everybody": "^2.1.8",
     "uglifyjs": "^2.4.11",
