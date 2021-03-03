@@ -177,7 +177,7 @@
       display: block;
     }
 
-    button {
+    button, .cite__menubutton {
       @include button-base;
       color: $c-teal;
       border-color: $c-teal;
