@@ -9,7 +9,7 @@
         <div class="resultcard__info">
           <h4 class="resultcard__title">
             {{#if level}}{{> global/icon i=this.level }}{{else}}{{> global/icon i=this.type }}{{/if}}
-            {{#if isOnDisplay}}{{> global/icon i="room" }}{{/if}}
+            {{#if isOnDisplay}}{{> global/icon i="room" label="On display" }}{{/if}}
             {{ this.title }}
           </h4>
           <p class="resultcard__description">{{{ this.categoryOrArtist }}}</p>
