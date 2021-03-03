@@ -54,10 +54,12 @@
     "wikijs": "^4.13.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.13.8",
+    "@babel/preset-env": "^7.13.9",
     "autoprefixer": "^9.7.4",
     "babel-plugin-transform-object-assign": "^6.8.0",
     "babel-preset-env": "^1.7.0",
-    "babelify": "^7.3.0",
+    "babelify": "^10.0.0",
     "brfs": "^1.6.1",
     "browserify": "^13.0.1",
     "codecov": "^3.6.5",
@@ -127,7 +129,7 @@
         "babelify",
         {
           "presets": [
-            "env"
+            "@babel/preset-env"
           ],
           "plugins": [
             "transform-object-assign"
