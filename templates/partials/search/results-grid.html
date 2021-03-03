@@ -3,7 +3,7 @@
     <a href="{{ this.link }}">
       <div class="resultcard {{#if type}}resultcard--{{ this.type }}{{/if}}">
         <figure class="resultcard__figure">
-          {{#if figure}}<img src="{{ this.figure }}" /> {{/if}}
+          {{#if figure}}<img src="{{ this.figure }}" alt="" /> {{/if}}
           {{#unless figure}}{{#if figcaption}}<figcaption role="presentation">{{ this.figcaption }}</figcaption>{{/if}}{{/unless}}
         </figure>
         <div class="resultcard__info">

@@ -4,7 +4,7 @@
 <section class="home-banner">
   {{!-- update /client/styles/components/_home.scss if no of images changes --}}
   {{#each headerImages}}
-    <img src="/assets/img/home/feature/1600/{{this}}" srcset="/assets/img/home/feature/800/{{this}} 800w, /assets/img/home/feature/1600/{{this}} 1600w" />
+    <img src="/assets/img/home/feature/1600/{{this}}" srcset="/assets/img/home/feature/800/{{this}} 800w, /assets/img/home/feature/1600/{{this}} 1600w" alt="" />
   {{/each}}
 
   <div class="searchbar searchbar--home">
@@ -82,7 +82,7 @@
         <div class="small-6 medium-3 columns">
             <div class="resultcard resultcard--collection">
               <figure class="resultcard__figure">
-                <img src="{{ this.figure }}" />
+                <img src="{{ this.figure }}" alt="" />
               </figure>
               <div class="resultcard__info">
                 <h4 class="resultcard__title">{{ this.title }}</h4>
@@ -114,7 +114,7 @@
           <a href="{{ this.link }}">
             <div class="resultcard resultcard--dark {{#if type}}resultcard--{{ this.type }}{{/if}}">
               <figure class="resultcard__figure">
-                <img src="{{ this.figure }}" />
+                <img src="{{ this.figure }}" alt="" />
               </figure>
               <div class="resultcard__info">
                 <h4 class="resultcard__title">{{ this.title }}</h4>

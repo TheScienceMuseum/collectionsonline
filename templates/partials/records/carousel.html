@@ -2,14 +2,14 @@
   <div class="record-imgpanel__thumbs">
     {{#if images}}
       {{#each images}}
-        <img src="{{this.thumb}}" class="record-imgpanel__thumb {{#if @first}}record-imgpanel__thumb--selected{{/if}}" />
+        <img src="{{this.thumb}}" class="record-imgpanel__thumb {{#if @first}}record-imgpanel__thumb--selected{{/if}}" alt="{{this.title}}" />
       {{/each}}
     {{/if}}
   </div>
   <div class="carousel">
     {{#if images}}
       {{#each images}}
-        <img data-osd="{{this.zoom}}" data-flickity-lazyload="{{this.medium}}" class="carousel__image" />
+        <img data-osd="{{this.zoom}}" data-flickity-lazyload="{{this.medium}}" class="carousel__image" alt="{{this.title}}" />
       {{/each}}
     {{/if}}
   </div>
