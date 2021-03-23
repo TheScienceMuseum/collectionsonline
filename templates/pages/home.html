@@ -81,22 +81,22 @@
       <h2 class="home-cards__h columns">{{this.title}}</h2>
       {{#each this.theme}}
         <div class="small-6 medium-3 columns">
-            <div class="resultcard resultcard--collection">
-              <figure class="resultcard__figure">
-                <img src="{{ this.figure }}" alt="" />
-              </figure>
-              <div class="resultcard__info">
-                <h4 class="resultcard__title">{{ this.title }}</h4>
-                <p class="resultcard__description">{{ this.description }}</p>
-                <ul class="resultcard__linklist">
-                  {{#each this.links}}
-                    <li>
-                      <a href="{{ this.link }}">{{ this.title }}</a>
-                    </li>
-                  {{/each}}
-                </ul>
-              </div>
+          <article class="resultcard resultcard--collection">
+            <figure class="resultcard__figure">
+              <img src="{{ this.figure }}" alt="" />
+            </figure>
+            <div class="resultcard__info">
+              <h3 class="resultcard__title">{{ this.title }}</h3>
+              <p class="resultcard__description">{{ this.description }}</p>
+              <ul class="resultcard__linklist">
+                {{#each this.links}}
+                  <li>
+                    <a href="{{ this.link }}">{{ this.title }}</a>
+                  </li>
+                {{/each}}
+              </ul>
             </div>
+          </article>
         </div>
       {{/each}}
     </div>
@@ -113,15 +113,15 @@
       {{#each this.collection}}
         <div class="{{ this.columns }} home-carousel__cell">
           <a href="{{ this.link }}">
-            <div class="resultcard resultcard--dark {{#if type}}resultcard--{{ this.type }}{{/if}}">
+            <article class="resultcard resultcard--dark {{#if type}}resultcard--{{ this.type }}{{/if}}">
               <figure class="resultcard__figure">
                 <img src="{{ this.figure }}" alt="" />
               </figure>
               <div class="resultcard__info">
-                <h4 class="resultcard__title">{{ this.title }}</h4>
+                <h3 class="resultcard__title">{{ this.title }}</h3>
                 <p class="resultcard__description">{{ this.description }}</p>
               </div>
-            </div>
+            </article>
           </a>
         </div>
       {{/each}}

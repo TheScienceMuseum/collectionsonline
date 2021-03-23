@@ -22,14 +22,14 @@
       {{#each items}}
         <div class="large-2 medium-3 small-4 columns">
           <a href="{{link}}">
-            <div class="resultcard resultcard--related ">
+            <article class="resultcard resultcard--related">
               <figure class="resultcard__figure">
                 {{#if figure}}<img src="{{figure }}" alt="" />{{/if}}
               </figure>
               <div class="resultcard__info">
-                <h4 class="resultcard__title">{{caption}}</h4>
+                <h3 class="resultcard__title">{{caption}}</h3>
               </div>
-            </div>
+            </article>
           </a>
         </div>
       {{/each}}
