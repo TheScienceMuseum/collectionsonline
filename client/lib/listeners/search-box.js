@@ -8,7 +8,8 @@ module.exports = function () {
   var searchinput = document.querySelector('#searchbox [type=search]');
   var awesomplete = new Awesomplete(searchinput, {
     minChars: 3,
-    autoFirst: false
+    autoFirst: false,
+    listLabel: "Search results"
   });
   searchinput.addEventListener('keyup', debounce(function (e) {
     var q = e.target.value;

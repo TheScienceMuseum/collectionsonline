@@ -10,7 +10,7 @@
     "@hapi/catbox": "^10.2.1",
     "@hapi/catbox-redis": "^5.0.5",
     "async": "^2.6.2",
-    "awesomplete": "^1.1.4",
+    "awesomplete": "https://github.com/TheScienceMuseum/awesomplete",
     "aws-sdk": "^2.700.0",
     "axios": ">=0.21.1",
     "boom": "^7.3.0",
