@@ -7,7 +7,7 @@ module.exports = function (page) {
 
   function render (ctx, next) {
     if (!ctx.isInitialRender) {
-      var pageEl = document.getElementsByTagName('main')[0];
+      var pageEl = document.getElementById('main-page');
       var data = {};
       data.navigation = require('../../fixtures/navigation');
       data.museums = require('../../fixtures/museums');

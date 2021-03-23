@@ -1,6 +1,7 @@
-<main id="main-page">
+<div id="main-page">
 {{> global/global-header}}
 
+<main>
 <section class="home-banner">
   {{!-- update /client/styles/components/_home.scss if no of images changes --}}
   {{#each headerImages}}
@@ -128,7 +129,7 @@
     </div>
   </section>
 {{/collectionCarousel}}
-
+</main>
 
 {{> global/global-footer}}
-</main>
+</div>

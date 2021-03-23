@@ -1,9 +1,9 @@
-<main id="main-page">
+<div id="main-page">
 {{> global/internal-header}}
 {{> global/global-header}}
 {{> global/search-main reduced="reduced"}}
 
-<div class="page" role="main">
+<main class="page">
 
   {{> records/record-top Xclass="record-top--dark" }}
 
@@ -50,7 +50,7 @@
   {{#if related.objects}}{{> records/record-related-objects }}{{/if}}
   {{#if related.documents}}{{> records/record-related-documents }}{{/if}}
 
-</div>
+</main>
 
 {{> global/global-footer }}
-</main>
+</div>
