@@ -90,7 +90,7 @@ module.exports = ctx => {
       on: {
         ready: function () {
           offsetContainer();
-          this.select(0)
+          this.select(0);
           // move buttons to before the main carousel
           let buttons = homeCarousel.querySelectorAll(
             '.flickity-prev-next-button'
