@@ -190,6 +190,14 @@ module.exports = {
         },
         {
           type: 'collection',
+          title: 'A Brief History of Stuff',
+          figure: '/assets/img/home/collections/brief-history-of-stuff.jpg',
+          columns: '',
+          link: 'https://www.sciencemuseumgroup.org.uk/brief-history-stuff-podcast/'
+        },
+
+        {
+          type: 'collection',
           title: 'Rotational photography',
           figure: '/assets/img/home/collections/rotational.jpg',
           columns: '',
