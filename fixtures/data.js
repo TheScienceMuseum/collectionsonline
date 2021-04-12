@@ -183,7 +183,7 @@ module.exports = {
         },
         {
           type: 'collection',
-          title: 'Random object generator',
+          title: 'Random Object Generator',
           figure: '/assets/img/home/collections/random-object-generator.jpg',
           columns: '',
           link: 'https://collection.sciencemuseumgroup.org.uk/search/slideshow'
