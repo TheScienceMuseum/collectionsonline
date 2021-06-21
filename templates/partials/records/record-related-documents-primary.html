@@ -1,20 +1,20 @@
-      <div class="panel panel__text">
-        <h4>Related documents</h4>
-        <ul class="related-document">
-          {{#each related.documents}}
-            <li>
-              {{> global/icon i="documents" }}
-              {{#if this.links}}
-                <a href={{this.links.self}}>
-              {{/if}}
-              {{this.attributes.summary_title}}
-              {{#if this.links}}
-                </a>
-              {{/if}}
-              {{#if this.attributes.role}}
-                ({{this.attributes.role.value}})
-              {{/if}}
-            </li>
-          {{/each}}
-        </ul>
-      </div>
+<div class="panel panel__text">
+  <h2>Related documents</h2>
+  <ul class="related-document">
+    {{#each related.documents}}
+      <li>
+        {{> global/icon i="documents" }}
+        {{#if this.links}}
+          <a href={{this.links.self}}>
+        {{/if}}
+        {{this.attributes.summary_title}}
+        {{#if this.links}}
+          </a>
+        {{/if}}
+        {{#if this.attributes.role}}
+          ({{this.attributes.role.value}})
+        {{/if}}
+      </li>
+    {{/each}}
+  </ul>
+</div>

@@ -6,14 +6,14 @@
       {{#formatrelated ../related.objects @index this}}
         <div class="large-2 medium-3 small-4 columns">
           <a href="{{link}}">
-            <div class="resultcard resultcard--related {{#if type}}resultcard--{{ this.type }}{{/if}}">
+            <article class="resultcard resultcard--related {{#if type}}resultcard--{{ this.type }}{{/if}}">
               <figure class="resultcard__figure">
-                {{#if this.attributes.figure}}<img src="{{ this.attributes.figure }}" /> {{/if}}
+                {{#if this.attributes.figure}}<img src="{{ this.attributes.figure }}" alt="" /> {{/if}}
               </figure>
               <div class="resultcard__info">
-                <h4 class="resultcard__title">{{this.attributes.summary_title}}</h4>
+                <h3 class="resultcard__title">{{this.attributes.summary_title}}</h3>
               </div>
-            </div>
+            </article>
           </a>
         </div>
       {{/formatrelated}}
@@ -27,12 +27,12 @@
           {{else}}
             <a href="/search/objects?q=%22{{normalise this.title this}}%22">
           {{/ifcreator}}
-              <div class="resultcard resultcard--seemore see-more-objects">
+              <article class="resultcard resultcard--seemore see-more-objects">
                 <figure class="resultcard__figure">{{> global/icon i="search" size="48" }}</figure>
                 <div class="resultcard__info">
-                  <h4 class="resultcard__title">See more related objects</h4>
+                  <h3 class="resultcard__title">See more related objects</h3>
                 </div>
-              </div>
+              </article>
             </a>
         </div>
       {{/seemore}}

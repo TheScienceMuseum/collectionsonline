@@ -4,13 +4,13 @@
     <div class="resultlist {{#if type}}resultlist--{{ this.type }}{{/if}}">
       {{#if figure}}
         <figure class="resultlist__figure">
-          <img src="{{ this.figure }}" />
+          <img src="{{ this.figure }}" alt="" />
         </figure>
       {{/if}}
       <div class="resultlist__info">
         <h4 class="resultlist__title">
           {{> global/icon i=this.type }}
-          {{#if ondisplay}}{{> icon i="room" size="16" }}{{/if}}
+          {{#if ondisplay}}{{> global/icon i="room" size="16" label="On display" }}{{/if}}
           {{ normalise this.title this }}
         </h4>
         <p class="resultlist__description">{{this.categoryOrArtist}}</p>

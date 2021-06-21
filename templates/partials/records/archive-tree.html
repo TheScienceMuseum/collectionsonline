@@ -1,37 +1,32 @@
-</ul>
+<ul role="tree">
   <li role="treeitem" aria-expanded="true">
     <div class="archive-tree__label {{current this}} archive-tree__label--root archive-tree--fond">
-      <button aria-controls="group1"></button>
+      <button aria-controls="group1" aria-label="Expand section"></button>
       <a class="" href="{{getlink this}}">{{this.tree.summary_title}}</a>
     </div>
-    <ul role="tree">
-      <ul role="group" id="group1">
+    <ul role="tree" id="group1">
+      {{#each tree.children}}
+        <li role="treeitem" aria-expanded="false">
+          <div class="archive-tree__label {{current this}}">
 
-        {{#each tree.children}}
-          <li role="treeitem" aria-expanded="false">
-            <div class="archive-tree__label {{current this}}">
+              {{#if children}}
+                <label for="{{id}}"></label>
+              {{else}}
+                <button name="expanded" disabled value="{{id}}" type="submit" aria-controls="groupX"></button>
+              {{/if}}
 
-                {{#if children}}
-                  <label for="{{id}}"></label>
-                {{else}}
-                  <button name="expanded" disabled value="{{id}}" type="submit" aria-controls="groupX"></button>
-                {{/if}}
+            <a class="summary" href="{{getlink this}}">{{identifier}} {{summary_title}}</a>
+          </div>
 
-              <a class="summary" href="{{getlink this}}">{{identifier}} {{summary_title}}</a>
-            </div>
+          <input id="{{id}}" {{current this}} type="checkbox" value="{{id}}" aria-controls="groupX"></input>
+          {{#if children}}
+            <ul role="tree" class="children">
+              {{> records/archive-tree-children}}
+            </ul>
+          {{/if}}
 
-            <input id="{{id}}" {{current this}} type="checkbox" value="{{id}}" aria-controls="groupX"></input>
-            {{#if children}}
-              <ul role="tree" class="children">
-                {{> records/archive-tree-children}}
-              </ul>
-            {{/if}}
-
-          </li>
-        {{/each}}
-
-      </ul>
-
+        </li>
+      {{/each}}
     </ul>
   </li>
 </ul>

@@ -96,7 +96,7 @@ function render (ctx, next) {
 
   var searchResults = document.querySelector('.results-page');
   var searchBar = document.querySelector('.search-main');
-  var pageEl = document.getElementsByTagName('main')[0];
+  var pageEl = document.getElementById('main-page');
 
   if (searchResults && searchBar) {
     // If already on the search page, just re-render the results

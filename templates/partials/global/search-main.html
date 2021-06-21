@@ -47,14 +47,14 @@
                 <p>{{descriptionBox.gallery.description}}</p>
               </div>
               <div class="columns medium-3">
-                <h5 class="description-box__list-title">&nbsp;</h5>
+                <h5 class="description-box__list-title" aria-hidden="true">&nbsp;</h5>
                 <ul class="description-box__list">
                   <li>{{> global/icon i="external" }}<a href="{{descriptionBox.gallery.link-to-gallery-page}}">Visitor information</a></li>
                 </ul>
               </div>
               <div class="columns medium-3">
-                <h5 class="description-box__list-title">&nbsp;</h5>
-                <img src="{{descriptionBox.gallery.thumbnail}}">
+                <h5 class="description-box__list-title" aria-hidden="true">&nbsp;</h5>
+                <img src="{{descriptionBox.gallery.thumbnail}}" alt="">
               </div>
             {{/if}}
 

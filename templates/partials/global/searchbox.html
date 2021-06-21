@@ -16,27 +16,31 @@
     <div class="searchbox__filters">
       <div class="filterbadge--prefix">In</div>
       {{#each imageFilters}}
-      <dl class="filterbadge" data-filter="Category">
-        <dt class="filterbadge__key">Image</dt>
-        <dd class="filterbadge__label">{{value}}</dd>
+      <div class="filterbadge" data-filter="Category">
+        <dl>
+          <dt class="filterbadge__key">Image</dt>
+          <dd class="filterbadge__label">{{value}}</dd>
+        </dl>
         <a class="filterbadge__x" href="{{lookup ../links.clearImageLink name}}" title="remove">✕</a>
         <input type="hidden" class='searchbox__{{name}}__filter' name="filter[{{name}}]" value="true">
-      </dl>
+      </div>
       {{/each}}
       {{#each categoryFilters}}
-      <dl class="filterbadge" data-filter="Category">
-        <dt class="filterbadge__key">Category</dt>
-        <dd class="filterbadge__label">{{this}}</dd>
+      <div class="filterbadge" data-filter="Category">
+        <dl>
+          <dt class="filterbadge__key">Category</dt>
+          <dd class="filterbadge__label">{{this}}</dd>
+        </dl>
         <a class="filterbadge__x" href="{{../links.clearCategoryLink}}" title="remove">✕</a>
         <input type="hidden" class='searchbox__category__filter' name="filter[categories]" value="{{this}}">
-      </dl>
+      </div>
       {{/each}}
       {{#each museumFilters}}
       <div class="filterbadge" data-filter="Museum">
-        <dt class="filterbadge__key">On display</dt>
-        <div class="filterbadge__label">
-          {{shortLocation}}
-        </div>
+        <dl>
+          <dt class="filterbadge__key">On display</dt>
+          <dd class="filterbadge__label">{{shortLocation}}</dd>
+        </dl>
         <a class="filterbadge__x" href="{{../links.clearMuseumLink}}" title="remove">✕</a>
         <input type="hidden" class='searchbox__museum__filter' name="filter[museum]" value="{{museum}}">
         <input type="hidden" class='searchbox__gallery__filter' name="filter[gallery]" value="{{gallery}}">
@@ -44,8 +48,10 @@
       {{/each}}
       {{#each archiveFilters}}
       <div class="filterbadge" data-filter="Archive">
-        <dt class="filterbadge__key">Archive</dt>
-        <div class="filterbadge__label">{{this}}</div>
+        <dl>
+          <dt class="filterbadge__key">Archive</dt>
+          <dd class="filterbadge__label">{{this}}</dd>
+        </dl>
         <a class="filterbadge__x" href="{{../links.clearArchiveLink}}" title="remove">✕</a>
         <input type="hidden" class='searchbox__archive__filter' name="filter[archive]" value="{{this}}">
       </div>

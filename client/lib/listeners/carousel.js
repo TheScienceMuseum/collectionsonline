@@ -84,12 +84,13 @@ module.exports = ctx => {
       lazyLoad: 1,
       cellAlign: 'left',
       percentPosition: false,
+      accessibility: true,
       arrowShape:
         'M 0,50 L 45.67,4.33 L 52.5,11.16 L 18.49,45.17 L 100,45.17 L 100,54.83 L 18.49,54.83 L 52.5,88.84 45.67,95.67 Z',
       on: {
         ready: function () {
           offsetContainer();
-
+          this.select(0);
           // move buttons to before the main carousel
           let buttons = homeCarousel.querySelectorAll(
             '.flickity-prev-next-button'

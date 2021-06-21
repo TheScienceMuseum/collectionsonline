@@ -96,16 +96,16 @@
   @include media(">=medium") {
     text-align: center;
   }
+  display: flex;
 
   li {
     line-height: rem-calc(16);
-    margin-right: -1px;
+    display: flex;
   }
+  li + li { border-left: 1px black solid }
 
   a,
   .current {
-    border: 1px black solid;
-    border-width: 0 1px;
     color: black;
   }
 

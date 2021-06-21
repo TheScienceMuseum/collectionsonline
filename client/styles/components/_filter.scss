@@ -91,7 +91,7 @@
   }
 
   &__count {
-    color: grey(50);
+    opacity: (0.66);
     @include small-caps;
     padding-left: 0.5em;
   }
@@ -194,26 +194,9 @@
   line-height: 1rem;
   font-weight: 500;
   font-size: 0;
+  display: flex;
   & * {
     font-size: rem-calc(14);
-  }
-}
-
-$filtertypes: (
-  Category: $c-teal,
-  Museum: $c-purple,
-  Archive: $c-green
-);
-@each $type, $c in $filtertypes {
-  .filterbadge[data-filter="#{$type}"] {
-    $c: mix($c, $c-blue);
-    background: $c;
-  }
-  [data-filter="#{$type}"] .filterbadge__x {
-    background: $c;
-    &:hover {
-      background: darken($c, 10%);
-    }
   }
 }
 
@@ -221,7 +204,7 @@ $filtertypes: (
   @include filterbadge-base;
   overflow: hidden;
   color: white;
-  background: grey(50); // but should be overridden by data-filter type
+  background: grey(80);
   a:hover {
     color: white;
   }
@@ -265,24 +248,29 @@ $filtertypes: (
     right: 0;
     top: 0;
     bottom: 0;
-    display: block;
+    display: flex;
+    align-items: center;
     float: right;
     padding: rem-calc(4 8 4 6);
     color: white;
+    background: grey(80);
     border-left: 1px white solid;
     &:hover {
       color: white;
+      background: grey(90);
     }
   }
 
   &--prefix {
     @include filterbadge-base;
-    color: grey(60);
+    color: grey(100);
     background-color: grey(20);
     @include small-caps;
     padding: rem-calc(4 8);
     border-radius: rem-calc(6 0 0 6);
     margin: rem-calc(4 0);
+    display: flex;
+    align-items: center;
 
     &:after {
       content: "";
