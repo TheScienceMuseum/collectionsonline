@@ -6,14 +6,14 @@
       {{#formatrelated ../related.documents @index this}}
         <div class="large-2 medium-3 small-4 columns end">
           <a href="{{link}}">
-            <div class="resultcard resultcard--related {{#if type}}resultcard--{{ this.type }}{{/if}}">
+            <article class="resultcard resultcard--related {{#if type}}resultcard--{{ this.type }}{{/if}}">
               <figure class="resultcard__figure">
-                {{#if this.attributes.figure}}<img src="{{ this.attributes.figure }}" /> {{/if}}
+                {{#if this.attributes.figure}}<img src="{{ this.attributes.figure }}" alt="" /> {{/if}}
               </figure>
               <div class="resultcard__info">
-                <h4 class="resultcard__title">{{this.attributes.summary_title}}</h4>
+                <h3 class="resultcard__title">{{this.attributes.summary_title}}</h3>
               </div>
-            </div>
+            </article>
           </a>
         </div>
       {{/formatrelated}}
@@ -22,12 +22,12 @@
     {{#seemore related.documents}}
       <div class="large-2 medium-3 small-4 columns end">
         <a href="/search/documents/makers/{{this.title}}">
-          <div class="resultcard resultcard--seemore see-more-documents">
+          <article class="resultcard resultcard--seemore see-more-documents">
             <figure class="resultcard__figure">{{> global/icon i="search" size="48" }}</figure>
             <div class="resultcard__info">
-              <h4 class="resultcard__title">See more related documents</h4>
+              <h3 class="resultcard__title">See more related documents</h3>
             </div>
-          </div>
+          </article>
         </a>
       </div>
     {{/seemore}}

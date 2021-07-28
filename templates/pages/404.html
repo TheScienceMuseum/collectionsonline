@@ -1,8 +1,8 @@
-<main id="main-page">
+<div id="main-page">
 {{> global/global-header}}
 {{> global/search-main reduced="reduced"}}
 
-  <div class="page 404-page" role="main">
+  <main class="404-page">
 
       <section class="white">
         <div class="row">
@@ -14,7 +14,7 @@
         </div>
       </section>
 
-  </div>
+  </main>
 
   <section class="record-related">
     <div class="nested row">
@@ -22,14 +22,14 @@
       {{#each items}}
         <div class="large-2 medium-3 small-4 columns">
           <a href="{{link}}">
-            <div class="resultcard resultcard--related ">
+            <article class="resultcard resultcard--related">
               <figure class="resultcard__figure">
-                {{#if figure}}<img src="{{figure }}" />{{/if}}
+                {{#if figure}}<img src="{{figure }}" alt="" />{{/if}}
               </figure>
               <div class="resultcard__info">
-                <h4 class="resultcard__title">{{caption}}</h4>
+                <h3 class="resultcard__title">{{caption}}</h3>
               </div>
-            </div>
+            </article>
           </a>
         </div>
       {{/each}}
@@ -37,4 +37,4 @@
   </section>
 
 {{> global/global-footer}}
-</main>
+</div>

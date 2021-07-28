@@ -1,8 +1,8 @@
-<main id="main-page">
+<div id="main-page">
 {{> global/global-header}}
 {{> global/search-main reduced="reduced"}}
 
-<div class="page" role="main">
+<main>
 
   {{> records/record-top }}
 
@@ -21,7 +21,7 @@
         {{> records/record-description}}
 
       </div>
-      <div class="columns medium-4">
+      <aside class="columns medium-4">
 
         {{#if related.people}}{{> records/record-related-people }}{{/if}}
 
@@ -30,7 +30,7 @@
         {{#if related.documents}}{{> records/record-related-documents-primary }}{{/if}}
 
 
-      </div>
+      </aside>
     </div>
   </section>
 
@@ -38,7 +38,7 @@
 
   {{> records/archive-tree-browser top="y"}}
 
-</div>
+</main>
 
 {{> global/global-footer }}
-</main>
+</div>

@@ -59,6 +59,9 @@
     animation-duration: $no-of-slides * $slide-duration;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+    @media (prefers-reduced-motion) {
+      animation: none;
+    }
   }
 
   $slide-fade: 50% / $no-of-slides;

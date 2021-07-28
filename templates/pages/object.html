@@ -1,9 +1,9 @@
-<main id="main-page">
+<div id="main-page">
 {{> global/internal-header}}
 {{> global/global-header}}
 {{> global/search-main reduced="reduced"}}
 
-<div class="page" role="main">
+<main>
 
   {{> records/record-top Xclass="record-top--dark" }}
 
@@ -21,7 +21,7 @@
 
         {{> records/record-description}}
       </div>
-      <div class="columns medium-4">
+      <aside class="columns medium-4">
 
         {{#if displayLocation}}
           {{> records/ondisplay }}
@@ -33,7 +33,7 @@
 
         {{!-- {{> records/panel-taxonomy}} moved lower to record-details. but panels could also be used here. --}}
 
-      </div>
+      </aside>
     </div>
   </section>
   
@@ -50,7 +50,7 @@
   {{#if related.objects}}{{> records/record-related-objects }}{{/if}}
   {{#if related.documents}}{{> records/record-related-documents }}{{/if}}
 
-</div>
+</main>
 
 {{> global/global-footer }}
-</main>
+</div>
