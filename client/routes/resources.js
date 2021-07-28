@@ -91,9 +91,10 @@ function listeners (ctx, next, type) {
   if (type === 'object') {
     funcs.push(getArticles);
   } else if (type === 'document') {
-    funcs.push(archiveListeners, internalHeader);
+    funcs.push(archiveListeners);
   } else if (type === 'people') {
-    funcs.push(getWikiData, internalHeader);
+    // funcs.push(getWikiData, internalHeader);
+    funcs.push(getWikiData);
   }
 
   funcs.forEach(function (el) {
