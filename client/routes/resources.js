@@ -13,7 +13,7 @@ var searchListener = require('../lib/listeners/search-listener');
 var downloadImageListener = require('../lib/listeners/download-image');
 var archiveListeners = require('../lib/listeners/archive-listeners');
 var initComp = require('../lib/listeners/init-components.js');
-var internalHeader = require('../lib/listeners/internal-header');
+// var internalHeader = require('../lib/listeners/internal-header');
 
 module.exports = function (type) {
   return {
