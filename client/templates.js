@@ -32,10 +32,10 @@ Handlebars.registerPartial(
    Fs.readFileSync('./templates/partials/global/global-footer.html', 'utf8')
 );
 
-Handlebars.registerPartial(
-  'global/internal-header',
-  Fs.readFileSync('./templates/partials/global/internal-header.html', 'utf8')
-);
+// Handlebars.registerPartial(
+//   'global/internal-header',
+//   Fs.readFileSync('./templates/partials/global/internal-header.html', 'utf8')
+// );
 
 Handlebars.registerPartial(
   'global/logo-panel',

@@ -13,7 +13,7 @@ var searchListener = require('../lib/listeners/search-listener');
 var downloadImageListener = require('../lib/listeners/download-image');
 var archiveListeners = require('../lib/listeners/archive-listeners');
 var initComp = require('../lib/listeners/init-components.js');
-var internalHeader = require('../lib/listeners/internal-header');
+// var internalHeader = require('../lib/listeners/internal-header');
 
 module.exports = function (type) {
   return {
@@ -91,9 +91,10 @@ function listeners (ctx, next, type) {
   if (type === 'object') {
     funcs.push(getArticles);
   } else if (type === 'document') {
-    funcs.push(archiveListeners, internalHeader);
+    funcs.push(archiveListeners);
   } else if (type === 'people') {
-    funcs.push(getWikiData, internalHeader);
+    // funcs.push(getWikiData, internalHeader);
+    funcs.push(getWikiData);
   }
 
   funcs.forEach(function (el) {
