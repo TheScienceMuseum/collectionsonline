@@ -11,7 +11,7 @@
     "@hapi/catbox-redis": "^5.0.5",
     "@hapi/hapi": "^18.1.0",
     "async": "^2.6.2",
-    "awesomplete": "^1.1.4",
+    "awesomplete": "https://github.com/TheScienceMuseum/awesomplete",
     "aws-sdk": "^2.955.0",
     "axios": ">=0.21.1",
     "boom": "^7.3.0",
@@ -55,9 +55,12 @@
   },
   "devDependencies": {
     "autoprefixer": "^9.8.6",
+    "@babel/core": "^7.13.8",
+    "@babel/preset-env": "^7.13.9",
+    "autoprefixer": "^9.7.4",
     "babel-plugin-transform-object-assign": "^6.8.0",
     "babel-preset-env": "^1.7.0",
-    "babelify": "^7.3.0",
+    "babelify": "^10.0.0",
     "brfs": "^1.6.1",
     "browserify": "^13.0.1",
     "codecov": "^3.8.3",
@@ -127,7 +130,7 @@
         "babelify",
         {
           "presets": [
-            "env"
+            "@babel/preset-env"
           ],
           "plugins": [
             "transform-object-assign"

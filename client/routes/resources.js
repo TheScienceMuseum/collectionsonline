@@ -67,7 +67,7 @@ function load (ctx, next, type) {
 
 function render (ctx, next, type) {
   var pageType = type === 'people' ? type : type + 's';
-  var pageEl = document.getElementsByTagName('main')[0];
+  var pageEl = document.getElementById('main-page');
 
   hideKeyboard();
   document.getElementsByTagName('title')[0].textContent = ctx.state.data.titlePage;
