@@ -2,7 +2,7 @@ var fetch = require('node-fetch');
 var FormData = require('form-data');
 
 module.exports = () => {
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbxavhMbZpTlCuRHdUauf2hkGcx4uHTZ2TpSx5jr4B8p4Luy3u4/exec';
+  const scriptURL = 'https://script.google.com/macros/s/---/exec';
 
   // Add submit handler to 'internal header' form
   const wikiform = document.forms['wikidata-form'];
