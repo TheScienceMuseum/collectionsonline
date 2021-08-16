@@ -89,7 +89,7 @@ function listeners (ctx, next, type) {
   }
 
   if (type === 'object') {
-    funcs.push(getArticles);
+    // funcs.push(getArticles); # disabled while caching investigated
   } else if (type === 'document') {
     funcs.push(archiveListeners);
   } else if (type === 'people') {
