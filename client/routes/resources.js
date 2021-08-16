@@ -7,7 +7,7 @@ var JSONToHTML = require('../../lib/transforms/json-to-html-data');
 var getData = require('../lib/get-data.js');
 var hideKeyboard = require('../lib/hide-keyboard');
 
-var getArticles = require('../lib/listeners/get-articles');
+// var getArticles = require('../lib/listeners/get-articles');
 var getWikiData = require('../lib/listeners/get-wiki-data');
 var searchListener = require('../lib/listeners/search-listener');
 var downloadImageListener = require('../lib/listeners/download-image');
@@ -89,7 +89,7 @@ function listeners (ctx, next, type) {
   }
 
   if (type === 'object') {
-    funcs.push(getArticles);
+    // funcs.push(getArticles); # disabled while caching investigated
   } else if (type === 'document') {
     funcs.push(archiveListeners);
   } else if (type === 'people') {
