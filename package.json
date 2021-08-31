@@ -45,7 +45,6 @@
     "request": "^2.87.0",
     "selenium-standalone": "^6.24.0",
     "selenium-webdriver": "^4.0.0-beta.4",
-    "selenium-download": "^2.0.16",
     "slugg": "^1.1.0",
     "smg-web-design-system": "^0.6.7",
     "snackbarlightjs": "^1.1.2",
@@ -58,6 +57,7 @@
   "devDependencies": {
     "@babel/core": "^7.15.0",
     "@babel/preset-env": "^7.13.9",
+    "selenium-download": "^2.0.16",
     "autoprefixer": "^9.7.4",
     "babel-plugin-transform-object-assign": "^6.8.0",
     "babel-preset-env": "^1.7.0",
