@@ -12,7 +12,7 @@
     "@hapi/hapi": "^18.1.0",
     "async": "^2.6.2",
     "awesomplete": "git+https://github.com/TheScienceMuseum/awesomplete.git",
-    "aws-sdk": "^2.1018.0",
+    "aws-sdk": "^2.1019.0",
     "axios": "^0.24.0",
     "boom": "^7.3.0",
     "catbox": "^10.0.6",
