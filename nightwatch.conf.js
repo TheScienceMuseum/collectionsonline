@@ -1,5 +1,5 @@
-const fs = require('fs');
-const binpath = './node_modules/nightwatch/bin/';
+// const fs = require('fs');
+// const binpath = './node_modules/nightwatch/bin/';
 const seleniumServer = require('selenium-server');
 const chromedriver = require('chromedriver');
 const TRAVIS_JOB_NUMBER = process.env.TRAVIS_JOB_NUMBER;
