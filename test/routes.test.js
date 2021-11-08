@@ -723,20 +723,20 @@ testWithServer(file + 'Request for Results list page', {}, async (t, ctx) => {
   t.end();
 });
 
-testWithServer(file + 'Request for Wikipedia Data', {}, async (t, ctx) => {
-  const htmlRequest = {
-    method: 'GET',
-    url: '/wiki/Albert_Einstein'
-  };
+// testWithServer(file + 'Request for Wikipedia Data', {}, async (t, ctx) => {
+//   const htmlRequest = {
+//     method: 'GET',
+//     url: '/wiki/Albert_Einstein'
+//   };
 
-  const res = await ctx.server.inject(htmlRequest);
-  var result = JSON.parse(res.payload);
-  t.equal(result.url, 'https://en.wikipedia.org/wiki/Albert_Einstein', 'gets Einsteins wikipedia page');
-  t.ok(result.mainImage, 'returns an image from wikipedia');
-  t.equal(res.statusCode, 200, 'Status code was as expected');
-  await ctx.server.stop();
-  t.end();
-});
+//   const res = await ctx.server.inject(htmlRequest);
+//   var result = JSON.parse(res.payload);
+//   t.equal(result.url, 'https://en.wikipedia.org/wiki/Albert_Einstein', 'gets Einsteins wikipedia page');
+//   t.ok(result.mainImage, 'returns an image from wikipedia');
+//   t.equal(res.statusCode, 200, 'Status code was as expected');
+//   await ctx.server.stop();
+//   t.end();
+// });
 
 testWithServer(file + 'Request for Wikipedia in record Data', {}, async (t, ctx) => {
   const htmlRequest = {
