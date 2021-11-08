@@ -41,7 +41,7 @@
     "node-fetch": "^2.6.6",
     "openseadragon": "2.4.2",
     "page": "^1.11.6",
-    "plyr": "^3.6.9",
+    "plyr": "git+https://github.com/TheScienceMuseum/plyr.git",
     "rc": "^1.2.8",
     "request": "^2.87.0",
     "selenium-standalone": "^6.24.0",
