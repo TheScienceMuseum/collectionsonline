@@ -89,12 +89,12 @@ module.exports = {
   }
 };
 
-fs.stat(binpath + 'selenium.jar', function (err, stat) {
-  if (err || !stat || stat.size < 1) {
-    // require('selenium-download').ensure(binpath, function (error) {
-    //   if (error) throw new Error(error);
-    //   console.log('✔ Selenium & Chromedriver downloaded to:', binpath);
-    // });
-  }
-});
+// fs.stat(binpath + 'selenium.jar', function (err, stat) {
+//   if (err || !stat || stat.size < 1) {
+//     require('selenium-download').ensure(binpath, function (error) {
+//       if (error) throw new Error(error);
+//       console.log('✔ Selenium & Chromedriver downloaded to:', binpath);
+//     });
+//   }
+// });
 
