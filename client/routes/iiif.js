@@ -23,6 +23,7 @@ module.exports = function (page) {
     });
   }
 
+
   function render (ctx, next) {
     var pageEl = document.getElementById('main-page');
     pageEl.innerHTML = Templates['api']({api: ctx.json});
