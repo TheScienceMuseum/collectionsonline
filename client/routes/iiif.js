@@ -11,7 +11,7 @@ module.exports = function (page) {
     };
     var type = ctx.params.type;
     var id = ctx.params.id;
-    var url = '/api/' + type + '/' + id + '?ajax=true';
+    var url = '/iiif/' + type + '/' + id;
     getData(url, opts, function (err, json) {
       if (err) {
         console.error(err);
