@@ -43,6 +43,8 @@ module.exports = (elastic, config) => ({
           { allowUnknown: true }
         );
 
+        console.log(result);
+
         const query = Object.assign(result.query, result.params, result.categories);
         let queryParams = createQueryParams(responseType, { query: query, params: params });
 
@@ -76,8 +78,8 @@ module.exports = (elastic, config) => ({
             }
           }
 
-          // match collections
-          if (result.query.q && (!result.collections['filter[collections]'])) {
+          // match collection
+          if (result.query.q && (!result.categories['filter[collection]'])) {
             let q = result.query.q.toLowerCase();
             let qMatch;
 
@@ -89,7 +91,7 @@ module.exports = (elastic, config) => ({
                 return false;
               }
             })) {
-              return h.redirect(request.path + '/collection/' + qMatch);
+              return h.redirect(request.path + '/categories/' + qMatch);
             }
           }
 
