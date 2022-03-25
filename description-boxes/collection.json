@@ -1,0 +1,27 @@
+{
+  "Example entry": {
+    "title": "Telecommunications",
+    "description": "short description on telecommunications (1 or 2 lines max)",
+    "sub-categories": [
+      {
+        "title": "transistor radio",
+        "link": "bar.html"
+      }
+    ],
+    "related-articles": [
+      {
+        "title": "article name",
+        "link": "foo.html"
+      }
+    ]
+  },
+
+ "Stephen Hawking’s Office": {
+    "title": "Stephen Hawking’s Office",
+    "description": "Stephen Hawking’s Office"
+  },
+  "BBC Heritage Collection": {
+    "title": "BBC Heritage Collection",
+    "description": "The British Broadcasting Company was established in October 1922 as a private enterprise and was renamed in 1927 as the British Broadcasting Corporation as it moved to a public service model."
+  }
+}

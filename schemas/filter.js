@@ -24,6 +24,7 @@ const jsonSchema = {
   'filter[people]': Joi.string(),
   'filter[organisations]': Joi.string(),
   'filter[categories]': Joi.string(),
+  'filter[collection]': Joi.string(),
   'filter[museum]': Joi.string(),
   'filter[location]': Joi.string(),
   'filter[gallery]': Joi.string(),
@@ -47,6 +48,7 @@ const htmlSchema = {
   'filter[people]': Joi.array().items(Joi.string()).single(),
   'filter[organisations]': Joi.array().items(Joi.string()).single(),
   'filter[categories]': Joi.array().items(Joi.string()).single(),
+  'filter[collection]': Joi.array().items(Joi.string()).single(),
   'filter[museum]': Joi.array().items(Joi.string()).single(),
   'filter[gallery]': Joi.array().items(Joi.string()).single(),
   'filter[location]': Joi.array().items(Joi.string()).single(),
@@ -82,6 +84,7 @@ module.exports = (contentType) => {
     .rename('people', 'filter[people]', {override: true, ignoreUndefined: true})
     .rename('organisations', 'filter[organisations]', {override: true, ignoreUndefined: true})
     .rename('categories', 'filter[categories]', {override: true, ignoreUndefined: true})
+    .rename('collection', 'filter[collection]', {override: true, ignoreUndefined: true})
     .rename('museum', 'filter[museum]', {override: true, ignoreUndefined: true})
     .rename('gallery', 'filter[gallery]', {override: true, ignoreUndefined: true})
     .rename('on_display', 'filter[on_display]', {override: true, ignoreUndefined: true})

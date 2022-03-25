@@ -16,6 +16,7 @@ module.exports = function () {
     e.preventDefault();
     var searchValue = document.querySelector('.searchbox__search').value;
     var categoryFilter = document.querySelector('.searchbox__category__filter') && document.querySelector('.searchbox__category__filter').value;
+    var collectionFilter = document.querySelector('.searchbox__collection__filter') && document.querySelector('.searchbox__collection__filter').value;
     var museumFilter = document.querySelector('.searchbox__museum__filter') && document.querySelector('.searchbox__museum__filter').value;
     var galleryFilter = document.querySelector('.searchbox__gallery__filter') && document.querySelector('.searchbox__gallery__filter').value;
     var archiveFilter = document.querySelector('.searchbox__archive__filter') && document.querySelector('.searchbox__archive__filter').value;
@@ -26,6 +27,9 @@ module.exports = function () {
 
     if (categoryFilter) {
       qs['filter[categories]'] = categoryFilter;
+    }
+    if (collectionFilter) {
+      qs['filter[collection]'] = collectionFilter;
     }
     if (museumFilter) {
       qs['filter[museum]'] = museumFilter;

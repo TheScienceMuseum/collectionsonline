@@ -7,6 +7,7 @@ module.exports = {
   all: {
     Dates: 'close',
     Category: 'close',
+    Collection: 'close',
     Maker: 'close',
     Museum: 'close',
     Type: 'close',
@@ -24,6 +25,7 @@ module.exports = {
   objects: {
     Dates: 'close',
     Category: 'close',
+    Collection: 'close',
     Maker: 'close',
     Museum: 'close',
     Type: 'close',
