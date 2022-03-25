@@ -38,6 +38,24 @@
   </div>
 {{/if}}
 
+{{#if filters.collection.length}}
+  {{#if (activeFacet selectedFilters 'collection')}}
+    <div class="filter filter--open filter--active" data-filter="Collection">
+      <a href="{{lookup links.clearFacet "filter[collection]"}}" class="filter__name">Category</a>
+  {{else}}
+    <div class="filter filter--open" data-filter="Collection">
+      <a href="" class="filter__name">Collection</a>
+  {{/if}}
+    <div class="filter__options">
+      <ul>
+        {{#each filters.collection}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[collection]" value="{{value}}" {{isselected ../selectedFilters "collection" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+{{/if}}
+
 <!-- MAKER -->
 {{#if filters.maker.length}}
   {{#if (activeFacet selectedFilters 'makers')}}

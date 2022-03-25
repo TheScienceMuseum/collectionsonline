@@ -9,6 +9,7 @@ const createQueryParams = require('../lib/query-params/query-params');
 const contentType = require('./route-helpers/content-type.js');
 const parseParameters = require('./route-helpers/parse-params');
 const keyCategories = require('../fixtures/key-categories');
+const keyCollections = require('../fixtures/key-categories');
 const whatis = require('../fixtures/whatis');
 const searchResultsToSlideshow = require('../lib/transforms/slideshow');
 
@@ -42,6 +43,8 @@ module.exports = (elastic, config) => ({
           { allowUnknown: true }
         );
 
+        console.log(result);
+
         const query = Object.assign(result.query, result.params, result.categories);
         let queryParams = createQueryParams(responseType, { query: query, params: params });
 
@@ -60,12 +63,29 @@ module.exports = (elastic, config) => ({
 
           // match categories
           if (result.query.q && (!result.categories['filter[categories]'])) {
-            var q = result.query.q.toLowerCase();
-            var qMatch;
+            let q = result.query.q.toLowerCase();
+            let qMatch;
 
             if (keyCategories.some(el => {
               if (el.category === q || el.synonyms.indexOf(q) > -1) {
                 qMatch = el.category;
+                return true;
+              } else {
+                return false;
+              }
+            })) {
+              return h.redirect(request.path + '/categories/' + qMatch);
+            }
+          }
+
+          // match collection
+          if (result.query.q && (!result.categories['filter[collection]'])) {
+            let q = result.query.q.toLowerCase();
+            let qMatch;
+
+            if (keyCollections.some(el => {
+              if (el.collection === q || el.synonyms.indexOf(q) > -1) {
+                qMatch = el.collection;
                 return true;
               } else {
                 return false;
@@ -105,7 +125,7 @@ module.exports = (elastic, config) => ({
           return Boom.badRequest();
         }
 
-        return Boom.serverUnavailable();
+        return Boom.serverUnavailable(err);
       }
     }
   }

@@ -41,6 +41,24 @@
               {{/if}}
             {{/if}}
 
+
+            {{#if descriptionBox.collection}}
+              <div class="columns medium-6 medium-9 {{#if descriptionBox.collection.related-articles}} medium-6 {{else}} medium-9 {{/if}}">
+                <h3 class="description-box__main-title">{{descriptionBox.collection.title}}</h3>
+                <p>{{descriptionBox.collection.description}}</p>              
+              </div>
+              {{#if descriptionBox.collection.related-articles}}
+                <div class="columns medium-3">
+                  <h5 class="description-box__list-title">Read about</h5>
+                  <ul class="description-box__list">
+                    {{#each descriptionBox.collection.related-articles}}
+                      <li>{{> global/icon i="external" }}<a href="{{link}}">{{title}}</a></li>
+                    {{/each}}                
+                  </ul>
+                </div>
+              {{/if}}
+            {{/if}}
+
             {{#if descriptionBox.gallery}}
               <div class="columns medium-6">
                 <h3 class="description-box__main-title">{{descriptionBox.gallery.title}}</h3>
