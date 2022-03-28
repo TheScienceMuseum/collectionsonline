@@ -43,8 +43,6 @@ module.exports = (elastic, config) => ({
           { allowUnknown: true }
         );
 
-        console.log(result);
-
         const query = Object.assign(result.query, result.params, result.categories);
         let queryParams = createQueryParams(responseType, { query: query, params: params });
 
