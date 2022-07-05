@@ -3,7 +3,7 @@ const routes = require('./routes');
 const auth = require('./auth');
 
 module.exports = async (elastic, config, cb) => {
-  const server = new Hapi.Server({ port: config.port, routes: { cors: true, log: { collect: true } } });
+  const server = new Hapi.Server({ port: config.port, routes: { cors: { origin: "ignore" }, log: { collect: true } } });
 
   server.route(routes(elastic, config));
 
