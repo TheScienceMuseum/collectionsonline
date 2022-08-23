@@ -58,5 +58,10 @@ module.exports = {
     text: 'Creative Commons Attribution-NonCommercial-NoDerivs',
     url: 'https://creativecommons.org/licenses/by-nc-nd/4.0',
     image: 'cc-by-nc-nd.png'
+  },
+  'Open Government License v3.0': {
+    text: 'Open Government Licence v3',
+    url: 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/',
+    image: 'ogl-symbol-white-big.png'
   }
 };
