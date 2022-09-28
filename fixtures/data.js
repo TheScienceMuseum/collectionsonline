@@ -169,6 +169,20 @@ module.exports = {
       collection: [
         {
           type: 'collection',
+          title: 'Daily Herald Photo Archive',
+          figure: '/assets/img/home/collections/daily-herald-archive.jpg',
+          columns: '',
+          link: 'https://collection.sciencemuseumgroup.org.uk/search/collection/daily-herald-archive'
+        },
+        {
+          type: 'collection',
+          title: 'A Brief History of Stuff',
+          figure: '/assets/img/home/collections/brief-history-of-stuff.jpg',
+          columns: '',
+          link: 'https://www.sciencemuseumgroup.org.uk/brief-history-stuff-podcast/'
+        },
+        {
+          type: 'collection',
           title: 'Never Been Seen',
           figure: '/assets/img/home/collections/never-been-seen.jpg',
           columns: '',
@@ -188,14 +202,6 @@ module.exports = {
           columns: '',
           link: 'https://collection.sciencemuseumgroup.org.uk/search/slideshow'
         },
-        {
-          type: 'collection',
-          title: 'A Brief History of Stuff',
-          figure: '/assets/img/home/collections/brief-history-of-stuff.jpg',
-          columns: '',
-          link: 'https://www.sciencemuseumgroup.org.uk/brief-history-stuff-podcast/'
-        },
-
         {
           type: 'collection',
           title: 'Rotational photography',
