@@ -169,7 +169,7 @@ module.exports = {
       collection: [
         {
           type: 'collection',
-          title: 'Daily Herald Photographic Archive',
+          title: 'Daily Herald Photo Archive',
           figure: '/assets/img/home/collections/daily-herald-archive.jpg',
           columns: '',
           link: '/search/collection/daily-herald-archive'
