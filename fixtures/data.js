@@ -132,8 +132,8 @@ module.exports = {
                 '/search/categories/photographs'
             },
             {
-              title: 'Daily Herald photographic archive',
-              link: '/objects/co205344/the-photographic-library-of-the-daily-herald-newspaper-1911-1965'
+              title: 'Daily Herald Photographic Archive',
+              link: '/search/collection/daily-herald-archive'
             }
           ]
         },
@@ -172,7 +172,7 @@ module.exports = {
           title: 'Daily Herald Photo Archive',
           figure: '/assets/img/home/collections/daily-herald-archive.jpg',
           columns: '',
-          link: 'https://collection.sciencemuseumgroup.org.uk/search/collection/daily-herald-archive'
+          link: '/search/collection/daily-herald-archive'
         },
         {
           type: 'collection',
