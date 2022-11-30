@@ -25,5 +25,14 @@ module.exports = {
         return h.redirect(config.rootUrl + '/search/collection/daily-herald-archive').permanent();
       }
     };
+  },
+  dailyheraldarchive (config) {
+    return {
+      method: 'GET',
+      path: '/documents/aa110073662/{slug?}',
+      handler: function (request, h) {
+        return h.redirect(config.rootUrl + '/search/collection/daily-herald-archive').permanent();
+      }
+    };
   }
 };
