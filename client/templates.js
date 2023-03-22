@@ -358,6 +358,11 @@ Handlebars.registerHelper(
 );
 
 Handlebars.registerHelper(
+  'toggleDetailOpen',
+  require('../templates/helpers/toggleDetailOpen.js')
+);
+
+Handlebars.registerHelper(
   'isResourcePage',
   require('../templates/helpers/isResourcePage.js')
 );
