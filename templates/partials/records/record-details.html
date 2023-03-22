@@ -9,9 +9,12 @@
           {{#if (toggleDetail key)}}
             <button type="button" name="button" class="record-details__toggler">Show</button>
             <dd class="toggle-detail hidden">
-          {{else}}
-            <dd>
-          {{/if}}
+          {{else}} {{# if (toggleDetailOpen key)}}
+              <button type="button" name="button" class="record-details__toggler" aria-expanded="true">Hide</button>
+              <dd class="toggle-detail">
+          {{else}}   
+              <dd>
+          {{/if}}{{/if}}
             {{#taxonomy this}}
               <ul class="taxonomy">
                 {{#each value}}
