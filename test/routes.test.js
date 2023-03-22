@@ -522,7 +522,7 @@ testWithServer('One gallery selected', {}, async (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?q=locomotive&filter[gallery]=Station-Hall',
+    url: '/search?q=locomotive&filter[gallery]=Energy-Hall-Gallery',
     headers: { 'Accept': 'application/json' }
   };
 
@@ -530,7 +530,7 @@ testWithServer('One gallery selected', {}, async (t, ctx) => {
   var result = JSON.parse(res.payload).meta.filters.museum;
   t.ok(res.statusCode, 200, 'status is 200');
   t.equal(result.length, 1);
-  t.equal(result[0].value, 'National Railway Museum', 'Selects relevant museum for gallery');
+  t.equal(result[0].value, 'Science Museum', 'Selects relevant museum for gallery');
   await ctx.server.stop();
   t.end();
 });
