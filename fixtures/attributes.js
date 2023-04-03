@@ -48,5 +48,6 @@ module.exports = [
   'display_date',
   'duration',
   'occurance_type',
-  'enhancement'
+  'enhancement',
+  'transcriptions'
 ];
