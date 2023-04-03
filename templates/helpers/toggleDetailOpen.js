@@ -2,6 +2,6 @@
 
 module.exports = function (key, options) {
   var toggleFor = ['TRANSCRIPTION'];
-
-  return toggleFor.indexOf(key.toUpperCase()) > -1 && options.data.root.page === 'document';
+  console.log("***" + options.data.root.page);
+  return toggleFor.indexOf(key.toUpperCase()) > -1 && options.data.root.page === 'archive';
 };
