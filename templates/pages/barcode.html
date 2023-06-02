@@ -1,0 +1,32 @@
+<div id="qr-reader" style="width: 600px"></div>
+<div id="result" style="width: 600px"></div>
+
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script>
+    function onScanSuccess(decodedText, decodedResult) {
+        // Handle on success condition with the decoded text or result.
+        console.log(`Scan result: ${decodedText}`, decodedResult);
+
+        html5QrcodeScanner.clear();
+        // ^ this will stop the scanner (video feed) and clear the scan area.
+
+        //document.getElementById("result").innerHTML = decodedText
+
+        document.location.href = '/barcode/' + decodedText;
+    }
+
+    let config = {
+      fps: 10,
+      qrbox: {width: 250, height: 150 },
+      showTorchButtonIfSupported: true,
+      //rememberLastUsedCamera: true,
+      //formatsToSupport: [Html5QrcodeSupportedFormats.CODE_128],
+      supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
+    };
+
+    var html5QrcodeScanner = new Html5QrcodeScanner(
+        "qr-reader", config);
+
+    html5QrcodeScanner.render(onScanSuccess);
+
+</script>
