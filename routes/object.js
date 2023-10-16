@@ -13,7 +13,7 @@ module.exports = (elastic, config) => ({
   config: {
     cache: cacheHeaders(config, 3600 * 24),
     handler: async function (request, h) {
-      var responseType = contentType(request);
+      const responseType = contentType(request);
 
       if (responseType !== 'notAcceptable') {
         try {

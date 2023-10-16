@@ -4,16 +4,16 @@ const slug = require('slugg');
 
 module.exports = function (elastic, config) {
   return async function (request, h) {
-    var body = {
+    const body = {
       query: {
         bool: { filter: { term: { 'identifier.value': request.params.idObject } } }
       }
     };
-    var searchOpts = {
+    const searchOpts = {
       index: 'ciim',
-      body: body
+      body
     };
-    var jsonResult = {};
+    const jsonResult = {};
     let result;
 
     try {
@@ -33,8 +33,8 @@ module.exports = function (elastic, config) {
       jsonResult.error = error;
     }
 
-    var obj = result.hits.hits[0];
-    var slugValue = obj._source.summary_title && slug(obj._source.summary_title).toLowerCase();
+    const obj = result.hits.hits[0];
+    let slugValue = obj._source.summary_title && slug(obj._source.summary_title).toLowerCase();
     slugValue = slugValue ? ('/' + slugValue) : '';
     jsonResult.path = '/objects/' + obj._id + slugValue;
 

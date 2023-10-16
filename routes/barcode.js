@@ -6,7 +6,7 @@ module.exports = (elastic, config) => ({
   config: {
     handler: async function (request, h) {
       if (request.params.uid) {
-        var barcode = escape(request.params.uid);
+        const barcode = escape(request.params.uid);
         return `Barcode found: <b>${barcode}</b><br>Barcode not found in index<br><a href="/barcode">Scan again</a>`;
         // var body = {
         //   query: {

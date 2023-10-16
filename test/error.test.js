@@ -10,7 +10,7 @@ testWithServer(file + 'Request for Archive HTML Page but receive bad request fro
   const htmlRequest = {
     method: 'GET',
     url: '/documents/aabadRequest',
-    headers: { 'Accept': 'text/html' }
+    headers: { Accept: 'text/html' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -24,7 +24,7 @@ testWithServer(file + 'Request for Archive JSON Page but receive bad request fro
   const htmlRequest = {
     method: 'GET',
     url: '/documents/aabadRequest',
-    headers: { 'Accept': 'application/vnd.api+json' }
+    headers: { Accept: 'application/vnd.api+json' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -38,7 +38,7 @@ testWithServer(file + 'Request for Object HTML Page but receive bad request from
   const htmlRequest = {
     method: 'GET',
     url: '/objects/cobadRequest',
-    headers: { 'Accept': 'text/html' }
+    headers: { Accept: 'text/html' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -52,7 +52,7 @@ testWithServer(file + 'Request for Object JSON Page but receive bad request from
   const htmlRequest = {
     method: 'GET',
     url: '/objects/cobadRequest',
-    headers: { 'Accept': 'application/vnd.api+json' }
+    headers: { Accept: 'application/vnd.api+json' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -66,7 +66,7 @@ testWithServer(file + 'Request for Person HTML Page but receive bad request from
   const htmlRequest = {
     method: 'GET',
     url: '/people/cpbadRequest',
-    headers: { 'Accept': 'text/html' }
+    headers: { Accept: 'text/html' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -80,7 +80,7 @@ testWithServer(file + 'Request for Person JSON Page but receive bad request from
   const htmlRequest = {
     method: 'GET',
     url: '/people/cpbadRequest',
-    headers: { 'Accept': 'application/vnd.api+json' }
+    headers: { Accept: 'application/vnd.api+json' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -94,11 +94,11 @@ testWithServer(file + 'Request for Person with related items', { mock: { method:
   const htmlRequest = {
     method: 'GET',
     url: '/people/cp36993',
-    headers: { 'Accept': 'application/vnd.api+json' }
+    headers: { Accept: 'application/vnd.api+json' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
-  var response = JSON.parse(res.payload);
+  const response = JSON.parse(res.payload);
 
   t.equal(res.statusCode, 200, 'Status code was as expected, 200');
   t.notOk(response.data.relationships.objects, 'Response has no related items');
@@ -111,7 +111,7 @@ testWithServer(file + 'Search for JSON', { mock: { method: 'search', response: {
   const htmlRequest = {
     method: 'GET',
     url: '/search?q=charles',
-    headers: { 'Accept': 'application/vnd.api+json' }
+    headers: { Accept: 'application/vnd.api+json' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -125,7 +125,7 @@ testWithServer(file + 'Search for HTML', { mock: { method: 'search', response: {
   const htmlRequest = {
     method: 'GET',
     url: '/search?q=charles',
-    headers: { 'Accept': 'text/html' }
+    headers: { Accept: 'text/html' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -136,12 +136,12 @@ testWithServer(file + 'Search for HTML', { mock: { method: 'search', response: {
 testWithServer(file + 'Request for Archive JSON with children', { mock: { method: 'search', response: { error: true } } }, async (t, ctx) => {
   t.plan(1);
 
-  var cacheGet = stub(cache, 'get').rejects(new Error());
+  const cacheGet = stub(cache, 'get').rejects(new Error());
 
   const htmlRequest = {
     method: 'GET',
     url: '/documents/aa110000003',
-    headers: { 'Accept': 'text/html' }
+    headers: { Accept: 'text/html' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -156,7 +156,7 @@ testWithServer(file + 'Request for Person JSON with related items', { mock: { me
   const htmlRequest = {
     method: 'GET',
     url: '/people/ap8',
-    headers: { 'Accept': 'text/html' }
+    headers: { Accept: 'text/html' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -171,7 +171,7 @@ testWithServer('Specific api endpoint error', { mock: { method: 'get', response:
   const htmlRequest = {
     method: 'GET',
     url: '/api/objects/co8094437',
-    headers: { 'Accept': 'application/json' }
+    headers: { Accept: 'application/json' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -185,11 +185,11 @@ testWithServer('Search for similar objects error', { mock: { method: 'search', r
   const htmlRequest = {
     method: 'GET',
     url: '/objects/co8094437',
-    headers: { 'Accept': 'application/json' }
+    headers: { Accept: 'application/json' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
-  var result = JSON.parse(res.payload);
+  const result = JSON.parse(res.payload);
   t.ok(res.statusCode, 200, 'should still return result');
   t.notOk(result.relationships, 'no related items');
   t.end();
@@ -201,7 +201,7 @@ testWithServer('Search for similar objects error', { mock: { method: 'search', r
   const htmlRequest = {
     method: 'GET',
     url: '/objects/co8094437',
-    headers: { 'Accept': 'text/html' }
+    headers: { Accept: 'text/html' }
   };
 
   const res = await ctx.server.inject(htmlRequest);

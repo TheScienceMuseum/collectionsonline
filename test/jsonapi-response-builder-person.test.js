@@ -3,7 +3,7 @@ const config = require('../config');
 const buildJSONResponse = require('../lib/jsonapi-response.js');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
-var JSONAPIResponse;
+let JSONAPIResponse;
 
 test(file + 'Response is built succesfully', (t) => {
   t.plan(1);

@@ -7,15 +7,15 @@ const Pagination = require('../lib/pagination');
     currentPageNumber: 0,
     totalPages: 9,
     expected: [
-      {pageNumber: 0, isCurrent: true, link: 'http://example.org/0'},
-      {pageNumber: 1, isCurrent: false, link: 'http://example.org/1'},
-      {pageNumber: 2, isCurrent: false, link: 'http://example.org/2'},
-      {pageNumber: 3, isCurrent: false, link: 'http://example.org/3'},
-      {pageNumber: 4, isCurrent: false, link: 'http://example.org/4'},
-      {pageNumber: 5, isCurrent: false, link: 'http://example.org/5'},
-      {pageNumber: 6, isCurrent: false, link: 'http://example.org/6'},
-      {pageNumber: 7, isCurrent: false, link: 'http://example.org/7'},
-      {pageNumber: 8, isCurrent: false, link: 'http://example.org/8'}
+      { pageNumber: 0, isCurrent: true, link: 'http://example.org/0' },
+      { pageNumber: 1, isCurrent: false, link: 'http://example.org/1' },
+      { pageNumber: 2, isCurrent: false, link: 'http://example.org/2' },
+      { pageNumber: 3, isCurrent: false, link: 'http://example.org/3' },
+      { pageNumber: 4, isCurrent: false, link: 'http://example.org/4' },
+      { pageNumber: 5, isCurrent: false, link: 'http://example.org/5' },
+      { pageNumber: 6, isCurrent: false, link: 'http://example.org/6' },
+      { pageNumber: 7, isCurrent: false, link: 'http://example.org/7' },
+      { pageNumber: 8, isCurrent: false, link: 'http://example.org/8' }
     ]
   },
   {
@@ -23,15 +23,15 @@ const Pagination = require('../lib/pagination');
     currentPageNumber: 4,
     totalPages: 9,
     expected: [
-      {pageNumber: 0, isCurrent: false, link: 'http://example.org/0'},
-      {pageNumber: 1, isCurrent: false, link: 'http://example.org/1'},
-      {pageNumber: 2, isCurrent: false, link: 'http://example.org/2'},
-      {pageNumber: 3, isCurrent: false, link: 'http://example.org/3'},
-      {pageNumber: 4, isCurrent: true, link: 'http://example.org/4'},
-      {pageNumber: 5, isCurrent: false, link: 'http://example.org/5'},
-      {pageNumber: 6, isCurrent: false, link: 'http://example.org/6'},
-      {pageNumber: 7, isCurrent: false, link: 'http://example.org/7'},
-      {pageNumber: 8, isCurrent: false, link: 'http://example.org/8'}
+      { pageNumber: 0, isCurrent: false, link: 'http://example.org/0' },
+      { pageNumber: 1, isCurrent: false, link: 'http://example.org/1' },
+      { pageNumber: 2, isCurrent: false, link: 'http://example.org/2' },
+      { pageNumber: 3, isCurrent: false, link: 'http://example.org/3' },
+      { pageNumber: 4, isCurrent: true, link: 'http://example.org/4' },
+      { pageNumber: 5, isCurrent: false, link: 'http://example.org/5' },
+      { pageNumber: 6, isCurrent: false, link: 'http://example.org/6' },
+      { pageNumber: 7, isCurrent: false, link: 'http://example.org/7' },
+      { pageNumber: 8, isCurrent: false, link: 'http://example.org/8' }
     ]
   },
   {
@@ -39,11 +39,11 @@ const Pagination = require('../lib/pagination');
     currentPageNumber: 0,
     totalPages: 12,
     expected: [
-      {pageNumber: 0, isCurrent: true, link: 'http://example.org/0'},
-      {pageNumber: 1, isCurrent: false, link: 'http://example.org/1'},
+      { pageNumber: 0, isCurrent: true, link: 'http://example.org/0' },
+      { pageNumber: 1, isCurrent: false, link: 'http://example.org/1' },
       null,
-      {pageNumber: 10, isCurrent: false, link: 'http://example.org/10'},
-      {pageNumber: 11, isCurrent: false, link: 'http://example.org/11'}
+      { pageNumber: 10, isCurrent: false, link: 'http://example.org/10' },
+      { pageNumber: 11, isCurrent: false, link: 'http://example.org/11' }
     ]
   },
   {
@@ -51,15 +51,15 @@ const Pagination = require('../lib/pagination');
     currentPageNumber: 5,
     totalPages: 10,
     expected: [
-      {pageNumber: 0, isCurrent: false, link: 'http://example.org/0'},
-      {pageNumber: 1, isCurrent: false, link: 'http://example.org/1'},
+      { pageNumber: 0, isCurrent: false, link: 'http://example.org/0' },
+      { pageNumber: 1, isCurrent: false, link: 'http://example.org/1' },
       null, // ellipses
-      {pageNumber: 4, isCurrent: false, link: 'http://example.org/4'},
-      {pageNumber: 5, isCurrent: true, link: 'http://example.org/5'},
-      {pageNumber: 6, isCurrent: false, link: 'http://example.org/6'},
+      { pageNumber: 4, isCurrent: false, link: 'http://example.org/4' },
+      { pageNumber: 5, isCurrent: true, link: 'http://example.org/5' },
+      { pageNumber: 6, isCurrent: false, link: 'http://example.org/6' },
       null, // ellipses
-      {pageNumber: 8, isCurrent: false, link: 'http://example.org/8'},
-      {pageNumber: 9, isCurrent: false, link: 'http://example.org/9'}
+      { pageNumber: 8, isCurrent: false, link: 'http://example.org/8' },
+      { pageNumber: 9, isCurrent: false, link: 'http://example.org/9' }
     ]
   },
   {
@@ -67,15 +67,15 @@ const Pagination = require('../lib/pagination');
     currentPageNumber: 4,
     totalPages: 10,
     expected: [
-      {pageNumber: 0, isCurrent: false, link: 'http://example.org/0'},
-      {pageNumber: 1, isCurrent: false, link: 'http://example.org/1'},
-      {pageNumber: 2, isCurrent: false, link: 'http://example.org/2'},
-      {pageNumber: 3, isCurrent: false, link: 'http://example.org/3'},
-      {pageNumber: 4, isCurrent: true, link: 'http://example.org/4'},
-      {pageNumber: 5, isCurrent: false, link: 'http://example.org/5'},
+      { pageNumber: 0, isCurrent: false, link: 'http://example.org/0' },
+      { pageNumber: 1, isCurrent: false, link: 'http://example.org/1' },
+      { pageNumber: 2, isCurrent: false, link: 'http://example.org/2' },
+      { pageNumber: 3, isCurrent: false, link: 'http://example.org/3' },
+      { pageNumber: 4, isCurrent: true, link: 'http://example.org/4' },
+      { pageNumber: 5, isCurrent: false, link: 'http://example.org/5' },
       null, // ellipses
-      {pageNumber: 8, isCurrent: false, link: 'http://example.org/8'},
-      {pageNumber: 9, isCurrent: false, link: 'http://example.org/9'}
+      { pageNumber: 8, isCurrent: false, link: 'http://example.org/8' },
+      { pageNumber: 9, isCurrent: false, link: 'http://example.org/9' }
     ]
   },
   {
@@ -83,14 +83,14 @@ const Pagination = require('../lib/pagination');
     currentPageNumber: 6,
     totalPages: 10,
     expected: [
-      {pageNumber: 0, isCurrent: false, link: 'http://example.org/0'},
-      {pageNumber: 1, isCurrent: false, link: 'http://example.org/1'},
+      { pageNumber: 0, isCurrent: false, link: 'http://example.org/0' },
+      { pageNumber: 1, isCurrent: false, link: 'http://example.org/1' },
       null, // ellipses
-      {pageNumber: 5, isCurrent: false, link: 'http://example.org/5'},
-      {pageNumber: 6, isCurrent: true, link: 'http://example.org/6'},
-      {pageNumber: 7, isCurrent: false, link: 'http://example.org/7'},
-      {pageNumber: 8, isCurrent: false, link: 'http://example.org/8'},
-      {pageNumber: 9, isCurrent: false, link: 'http://example.org/9'}
+      { pageNumber: 5, isCurrent: false, link: 'http://example.org/5' },
+      { pageNumber: 6, isCurrent: true, link: 'http://example.org/6' },
+      { pageNumber: 7, isCurrent: false, link: 'http://example.org/7' },
+      { pageNumber: 8, isCurrent: false, link: 'http://example.org/8' },
+      { pageNumber: 9, isCurrent: false, link: 'http://example.org/9' }
     ]
   }
 ].forEach((testObj) => {
@@ -121,7 +121,7 @@ const Pagination = require('../lib/pagination');
 });
 
 function constructTestMessage (actual, expected) {
-  var isWrong;
+  let isWrong;
 
   actual.forEach((obj, i) => {
     if (isWrong) {

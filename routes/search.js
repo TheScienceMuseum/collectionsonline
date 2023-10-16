@@ -18,7 +18,7 @@ module.exports = (elastic, config) => ({
   path: '/search/{filters*}',
   config: {
     handler: async function (request, h) {
-      var responseType = contentType(request);
+      const responseType = contentType(request);
 
       if (responseType === 'notAcceptable') {
         return h.response('Not Acceptable').code(406);
@@ -34,7 +34,7 @@ module.exports = (elastic, config) => ({
         const categories = parseParameters(request.params).categories;
 
         const result = await Joi.validate(
-          { params: params, categories: categories, query: value.query },
+          { params, categories, query: value.query },
           {
             params: Joi.any(),
             categories: filterSchema('html').keys(searchSchema.query),
@@ -44,7 +44,7 @@ module.exports = (elastic, config) => ({
         );
 
         const query = Object.assign(result.query, result.params, result.categories);
-        let queryParams = createQueryParams(responseType, { query: query, params: params });
+        const queryParams = createQueryParams(responseType, { query, params });
 
         if (responseType === 'html') {
           // slideshow
@@ -56,12 +56,12 @@ module.exports = (elastic, config) => ({
             const res = await search(elastic, query);
             const data = searchResultsToSlideshow(queryParams, res, config);
 
-            return h.view('slideshow', { data: data, stringData: JSON.stringify(data) });
+            return h.view('slideshow', { data, stringData: JSON.stringify(data) });
           }
 
           // match categories
           if (result.query.q && (!result.categories['filter[categories]'])) {
-            let q = result.query.q.toLowerCase();
+            const q = result.query.q.toLowerCase();
             let qMatch;
 
             if (keyCategories.some(el => {
@@ -78,7 +78,7 @@ module.exports = (elastic, config) => ({
 
           // match collection
           if (result.query.q && (!result.categories['filter[collection]'])) {
-            let q = result.query.q.toLowerCase();
+            const q = result.query.q.toLowerCase();
             let qMatch;
 
             if (keyCollections.some(el => {
@@ -95,7 +95,7 @@ module.exports = (elastic, config) => ({
 
           // match and answer 'what is' questions
           if (result.query.q && result.query.q.toLowerCase().startsWith('what')) {
-            var answer = whatis.data.filter((a) => a.attributes.summary_title.toLowerCase() === result.query.q.toLowerCase());
+            const answer = whatis.data.filter((a) => a.attributes.summary_title.toLowerCase() === result.query.q.toLowerCase());
             if (answer.length > 0) {
               return h.redirect(answer[0].links.self);
             }
@@ -106,7 +106,7 @@ module.exports = (elastic, config) => ({
           const jsonData = searchResultsToJsonApi(queryParams, res, config);
           const tplData = searchResultsToTemplateData(queryParams, jsonData);
 
-          var response = h.view('search', tplData);
+          const response = h.view('search', tplData);
           // Only set a Cache-Control if we don't have a freetext query string and aren't running on production
           if (!result.query.q && !result.query.random && config && config.NODE_ENV === 'production') {
             response.header('Cache-Control', 'public, must-revalidate, max-age: 43200');

@@ -1,4 +1,4 @@
-var fetch = require('fetch-ponyfill')().fetch;
+const fetch = require('fetch-ponyfill')().fetch;
 
 module.exports = function (url, opts, cb) {
   fetch(url, opts)

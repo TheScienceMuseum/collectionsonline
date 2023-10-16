@@ -5,7 +5,7 @@ const JSONAPIResponse = buildJSONResponse(require('../fixtures/elastic-responses
 const buildHTMLData = require('../../lib/transforms/json-to-html-data');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
-var HTMLData;
+let HTMLData;
 
 test(file + 'HTMLData should be transformed succesfully', (t) => {
   t.plan(1);

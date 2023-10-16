@@ -8,10 +8,10 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^8.10.0",
-    "@hapi/catbox": "^10.2.1",
-    "@hapi/catbox-redis": "^5.0.5",
-    "@hapi/hapi": "^18.1.0",
     "@hapi/boom": "^10.0.1",
+    "@hapi/catbox": "^12.1.1",
+    "@hapi/catbox-redis": "^7.0.2",
+    "@hapi/hapi": "^21.3.2",
     "async": "^2.6.4",
     "awesomplete": "git+https://github.com/TheScienceMuseum/awesomplete.git",
     "aws-sdk": "^2.1168.0",
@@ -48,7 +48,8 @@
     "smg-web-design-system": "^0.6.7",
     "snackbarlightjs": "^1.1.2",
     "svg4everybody": "^2.1.8",
-    "uglifyjs": "^2.4.11",
+    "uglify-js": "^3.17.4",
+    "unitconversion": "^2.1.13",
     "vision": "^5.4.4",
     "what-input": "^5.2.12",
     "wikijs": "^6.4.1"
@@ -83,7 +84,7 @@
     "selenium-webdriver": "^4.3.0",
     "semistandard": "^17.0.0",
     "sinon": "^2.0.0",
-    "svg-sprite": "^2.0.2",
+    "svg-sprite": "^1.5.4",
     "tape": "^4.15.1",
     "watchify": "^4.0.0",
     "wreck": "^10.0.0"

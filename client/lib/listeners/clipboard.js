@@ -1,9 +1,9 @@
-var Clipboard = require('clipboard');
+const Clipboard = require('clipboard');
 
 module.exports = function () {
   // using bower / Clipboard for copying cite text. not really neceesary?
   // https://clipboardjs.com/
-  var clipboard = new Clipboard('.clipboard__button');
+  const clipboard = new Clipboard('.clipboard__button');
 
   clipboard.on('success', function (e) {
     e.trigger.parentNode.classList.add('clipboard--copied');

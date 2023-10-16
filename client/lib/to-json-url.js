@@ -1,9 +1,9 @@
 /**
 * Create a flatten escaped encoded json type url values
 */
-var QueryString = require('querystring');
+const QueryString = require('querystring');
 module.exports = function (queryString) {
-  var qs = QueryString.parse(queryString);
+  const qs = QueryString.parse(queryString);
   // escape value
   Object.keys(qs).forEach(function (k) {
     if (Array.isArray(qs[k])) {

@@ -3,10 +3,10 @@ const config = require('../config');
 const buildJSONResponse = require('../lib/jsonapi-response.js');
 const buildHTMLData = require('../lib/transforms/json-to-html-data');
 const sortRelated = require('../lib/sort-related-items');
-var JSONAPIResponse;
-var HTMLData;
-var person = require('./fixtures/elastic-responses/example-get-response-person.json');
-var relatedItems = sortRelated(require('./fixtures/elastic-responses/database.json').related['cp2735'].response.hits.hits, 'cp2735');
+let JSONAPIResponse;
+let HTMLData;
+const person = require('./fixtures/elastic-responses/example-get-response-person.json');
+const relatedItems = sortRelated(require('./fixtures/elastic-responses/database.json').related.cp2735.response.hits.hits, 'cp2735');
 
 test('Response is built succesfully', (t) => {
   t.plan(1);

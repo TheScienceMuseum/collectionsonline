@@ -11,7 +11,7 @@ const wikijs = require('wikijs').default;
  */
 
 const wikipedia = (name) => new Promise((resolve, reject) => {
-  var url, mainImage, infoBox, summary, title;
+  let url, mainImage, infoBox, summary, title;
 
   wikijs().page(name)
     .then((page) => {
@@ -27,12 +27,12 @@ const wikipedia = (name) => new Promise((resolve, reject) => {
               page.mainImage()
                 .then((mainImageRes) => {
                   mainImage = mainImageRes;
-                  resolve({url, mainImage, infoBox, summary, title});
+                  resolve({ url, mainImage, infoBox, summary, title });
                 })
                 .catch((err) => {
                   const noImageErr = 'Cannot read property \'imageinfo\' of undefined';
                   if (err.message === noImageErr) {
-                    resolve({url, infoBox, summary, title});
+                    resolve({ url, infoBox, summary, title });
                   }
                 })
                 .catch(reject);

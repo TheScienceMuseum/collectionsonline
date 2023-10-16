@@ -1,14 +1,14 @@
-var Templates = require('../templates');
-var initComp = require('../lib/listeners/init-components');
-var searchListener = require('../lib/listeners/search-listener');
+const Templates = require('../templates');
+const initComp = require('../lib/listeners/init-components');
+const searchListener = require('../lib/listeners/search-listener');
 
 module.exports = function (page) {
   page(render);
 
   function render (ctx, next) {
     if (!ctx.isInitialRender) {
-      var pageEl = document.getElementById('main-page');
-      var data = {};
+      const pageEl = document.getElementById('main-page');
+      const data = {};
       data.navigation = require('../../fixtures/navigation');
       data.museums = require('../../fixtures/museums');
       data.items = require('../../fixtures/404.js');

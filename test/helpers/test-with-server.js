@@ -2,7 +2,7 @@ const tape = require('tape');
 const createServer = require('../../server');
 const config = require('../../config');
 const createMockDatabase = require('./mock-database');
-var stub = require('sinon').stub;
+const stub = require('sinon').stub;
 
 /**
 * Wrap tape's test function with a function that creates a new server and mocks dependencies

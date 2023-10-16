@@ -1,16 +1,16 @@
 module.exports = () => {
-  var mediaplayer = document.querySelector('.mediaplayer');
+  const mediaplayer = document.querySelector('.mediaplayer');
   if (mediaplayer) {
-    var embeds = [].slice.call(
+    const embeds = [].slice.call(
       mediaplayer.querySelectorAll('.mediaplayer__embed')
     );
-    var playlist = [].slice.call(
+    const playlist = [].slice.call(
       mediaplayer.querySelectorAll('.mediaplayer__listitem')
     );
 
-    var setActive = function (el, i) {
+    const setActive = function (el, i) {
       el.classList.add('mediaplayer--active');
-      var iframe = embeds[i].querySelector('iframe');
+      const iframe = embeds[i].querySelector('iframe');
       if (!iframe.src) iframe.src = iframe.dataset.src;
       embeds[i].classList.add('mediaplayer--active');
     };
@@ -24,35 +24,37 @@ module.exports = () => {
       });
     });
 
-    var swapActive = function (event, el, i) {
+    const swapActive = function (event, el, i) {
       event.preventDefault();
-      var current = mediaplayer.querySelectorAll('.mediaplayer--active');
+      const current = mediaplayer.querySelectorAll('.mediaplayer--active');
       [].forEach.call(current, function (el) {
         el.classList.remove('mediaplayer--active');
       });
       setActive(el, i);
 
+      // Jamie / 16th Oct 2023
+      // Where are player assigned. Ask Toby?
       // pause videos on inactive tabs, play them on select.
-      if (players) {
-        Object.keys(players).forEach(function (key) {
-          players[key].pauseVideo();
-        });
-      }
-      if (embeds[i].dataset.type === 'youtube') {
-        var thisPlayer = embeds[i].querySelector('iframe').id;
-        players[thisPlayer].playVideo();
-      }
+      // if (players) {
+      //   Object.keys(players).forEach(function (key) {
+      //     players[key].pauseVideo();
+      //   });
+      // }
+      // if (embeds[i].dataset.type === 'youtube') {
+      //   const thisPlayer = embeds[i].querySelector('iframe').id;
+      //   players[thisPlayer].playVideo();
+      // }
     };
 
     // Only if we have youtubes, add the API to be able to control play state.
-    var videos = document.querySelectorAll('[data-type=youtube] iframe');
+    const videos = document.querySelectorAll('[data-type=youtube] iframe');
     if (videos) {
-      var tag = document.createElement('script');
+      const tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
-      var firstScriptTag = document.getElementsByTagName('script')[0];
+      const firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-      var players = [];
+      const players = [];
       window.onYouTubeIframeAPIReady = function () {
         [].forEach.call(videos, function (el) {
           players[el.id] = new YT.Player(el); // eslint-disable-line

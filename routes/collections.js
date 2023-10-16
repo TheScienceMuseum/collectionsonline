@@ -16,14 +16,14 @@ module.exports = (elastic, config) => ({
                 terms: {
                   field: 'lifecycle.collection.collector.summary_title',
                   size: 500,
-                  order: { '_count': 'desc' }
+                  order: { _count: 'desc' }
                 }
               }
             }
           }
         });
 
-        let collections = [];
+        const collections = [];
 
         if (result.aggregations.collections.buckets) {
           result.aggregations.collections.buckets.forEach(e => {
@@ -35,7 +35,7 @@ module.exports = (elastic, config) => ({
           });
         }
 
-        return h.view('collections', { collections: collections });
+        return h.view('collections', { collections });
       } catch (err) {
         return new Boom(err);
       }

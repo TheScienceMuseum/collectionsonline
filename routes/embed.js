@@ -12,14 +12,14 @@ module.exports = {
         cache: cacheHeaders(config, 3600 * 24),
         handler: async function (request, h) {
           try {
-            var configUrl;
+            let configUrl;
             const result = await elastic.get({ index: 'ciim', type: 'object', id: TypeMapping.toInternal(request.params.coid) });
-            var res = await buildJSONResponse(result, config);
+            const res = await buildJSONResponse(result, config);
 
             if (res.data.attributes.enhancement) {
-              res.data.attributes.enhancement.web.find((el) => {
+              res.data.attributes.enhancement.web.forEach((el) => {
                 if (el.platform === '3D') {
-                  var rid = el.id;
+                  const rid = el.id;
                   configUrl = 'https://s3-eu-west-1.amazonaws.com/' + rid + '/object.xml';
                 }
               });

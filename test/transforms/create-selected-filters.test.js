@@ -4,7 +4,7 @@ const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
 
 test(file + 'Selected filters should be build from the queryParams', (t) => {
-  var queryParams = {
+  const queryParams = {
     query: {
       object_type: ['medals', 'photograph'],
       has_image: true,
@@ -12,14 +12,14 @@ test(file + 'Selected filters should be build from the queryParams', (t) => {
     }
   };
   t.plan(1);
-  var result = createSelectedFitlers(queryParams);
-  var expected = {
+  const result = createSelectedFitlers(queryParams);
+  const expected = {
     object_type: {
       medals: true,
       photograph: true
     },
-    hasImage: {true: true},
-    imageLicense: {true: true}
+    hasImage: { true: true },
+    imageLicense: { true: true }
   };
   t.deepEqual(result, expected, 'The selected filters object is build correctly');
   t.end();

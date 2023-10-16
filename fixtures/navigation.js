@@ -1,4 +1,4 @@
-var museums = require('./museums');
+const museums = require('./museums');
 module.exports = {
   site: [
     { url: '/', name: 'Search' },

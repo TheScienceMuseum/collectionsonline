@@ -3,7 +3,7 @@ const config = require('../../config');
 const buildJSONResponse = require('../../lib/jsonapi-response');
 const JSONAPIResponse = buildJSONResponse(require('../fixtures/elastic-responses/example-get-response-object2.json'), config);
 const buildHTMLData = require('../../lib/transforms/json-to-html-data');
-var HTMLData;
+let HTMLData;
 
 test('All makers should be found', function (t) {
   t.plan(3);

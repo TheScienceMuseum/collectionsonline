@@ -4,17 +4,17 @@ const JSONToHTML = require('../lib/transforms/json-to-html-data');
 test('Normal date and place test', (t) => {
   t.plan(7);
 
-  var resource = {
+  const resource = {
     data: {
       type: 'objects',
       attributes: {
         lifecycle: {
           creation: [
-            {date: [{value: '1912'}]}
+            { date: [{ value: '1912' }] }
           ]
         }
       },
-      links: {root: 'http://localhost:8000'}
+      links: { root: 'http://localhost:8000' }
     },
     included: [
       {
@@ -28,8 +28,8 @@ test('Normal date and place test', (t) => {
       }
     ]
   };
-  var JSONData = JSONToHTML(resource);
-  var made = JSONData.fact.find(el => el.key === 'Made');
+  const JSONData = JSONToHTML(resource);
+  const made = JSONData.fact.find(el => el.key === 'Made');
 
   t.ok(made, 'Data has facts');
   t.ok(made.place, 'Data has a place');
@@ -44,17 +44,17 @@ test('Normal date and place test', (t) => {
 test('date range test', (t) => {
   t.plan(1);
 
-  var resource = {
+  const resource = {
     data: {
       type: 'objects',
       attributes: {
         lifecycle: {
           creation: [
-            {date: [{value: '1912-1917'}]}
+            { date: [{ value: '1912-1917' }] }
           ]
         }
       },
-      links: {root: 'http://localhost:8000'}
+      links: { root: 'http://localhost:8000' }
     },
     included: [
       {
@@ -68,8 +68,8 @@ test('date range test', (t) => {
       }
     ]
   };
-  var JSONData = JSONToHTML(resource);
-  var made = JSONData.fact.find(el => el.key === 'Made');
+  const JSONData = JSONToHTML(resource);
+  const made = JSONData.fact.find(el => el.key === 'Made');
 
   t.equal(made.date.link, 'http://localhost:8000/search/date[from]/1912/date[to]/1917', 'Handles date ranges correctly');
   t.end();
@@ -78,17 +78,17 @@ test('date range test', (t) => {
 test('bad date test', (t) => {
   t.plan(1);
 
-  var resource = {
+  const resource = {
     data: {
       type: 'objects',
       attributes: {
         lifecycle: {
           creation: [
-            {date: [{value: '1-91-2/1917'}]}
+            { date: [{ value: '1-91-2/1917' }] }
           ]
         }
       },
-      links: {root: 'http://localhost:8000'}
+      links: { root: 'http://localhost:8000' }
     },
     included: [
       {
@@ -102,8 +102,8 @@ test('bad date test', (t) => {
       }
     ]
   };
-  var JSONData = JSONToHTML(resource);
-  var made = JSONData.fact.find(el => el.key === 'Made');
+  const JSONData = JSONToHTML(resource);
+  const made = JSONData.fact.find(el => el.key === 'Made');
 
   t.notOk(made.date.link, 'Ignores malformed dates');
   t.end();
@@ -112,17 +112,17 @@ test('bad date test', (t) => {
 test('bad date range test', (t) => {
   t.plan(1);
 
-  var resource = {
+  const resource = {
     data: {
       type: 'objects',
       attributes: {
         lifecycle: {
           creation: [
-            {date: [{value: '1912-19FG=17'}]}
+            { date: [{ value: '1912-19FG=17' }] }
           ]
         }
       },
-      links: {root: 'http://localhost:8000'}
+      links: { root: 'http://localhost:8000' }
     },
     included: [
       {
@@ -136,8 +136,8 @@ test('bad date range test', (t) => {
       }
     ]
   };
-  var JSONData = JSONToHTML(resource);
-  var made = JSONData.fact.find(el => el.key === 'Made');
+  const JSONData = JSONToHTML(resource);
+  const made = JSONData.fact.find(el => el.key === 'Made');
 
   t.equal(made.date.link, 'http://localhost:8000/search/date[from]/1912/date[to]/1912', 'uses one date if only one is good');
   t.end();

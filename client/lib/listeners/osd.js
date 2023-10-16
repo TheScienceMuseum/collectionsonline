@@ -1,11 +1,11 @@
-var OpenSeadragon = require('openseadragon');
+const OpenSeadragon = require('openseadragon');
 
 module.exports = (ctx) => {
   const openseadragon = document.querySelector('#openseadragon');
 
   if (openseadragon) {
-    var carouselImage = document.querySelectorAll('.carousel__image.is-selected');
-    var singleImage = document.querySelectorAll('.single_image');
+    const carouselImage = document.querySelectorAll('.carousel__image.is-selected');
+    const singleImage = document.querySelectorAll('.single_image');
 
     if (!ctx.imgUrl) {
       if (!carouselImage.length && singleImage) {
@@ -60,13 +60,13 @@ module.exports = (ctx) => {
     //     document.getElementsByClassName('osd__toolbar')
     //   ) || [];
 
-    var singleImages =
+    const singleImages =
       Array.prototype.slice.call(
         document.getElementsByClassName('single_image')
       ) || [];
 
     // var thingsToInit = osd.concat(singleImages);
-    var thingsToInit = singleImages;
+    const thingsToInit = singleImages;
 
     if (ctx.carousel) {
       ctx.carousel.on('staticClick', () => {
@@ -101,9 +101,9 @@ function hide () {
 }
 
 function openseadragonElements () {
-  var openseadragon = document.querySelectorAll('#openseadragon');
-  var rotateButtons = document.querySelectorAll('.osd-rotate');
-  var zoomButtons = document.querySelectorAll('.osd-zoom');
+  const openseadragon = document.querySelectorAll('#openseadragon');
+  const rotateButtons = document.querySelectorAll('.osd-rotate');
+  const zoomButtons = document.querySelectorAll('.osd-zoom');
 
   return Array.prototype.slice
     .call(rotateButtons)
