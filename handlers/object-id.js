@@ -10,7 +10,7 @@ module.exports = function (elastic, config) {
       }
     };
     var searchOpts = {
-      index: 'smg',
+      index: 'ciim',
       body: body
     };
     var jsonResult = {};

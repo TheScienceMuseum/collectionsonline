@@ -17,7 +17,7 @@ module.exports = (elastic, config) => ({
 
       if (responseType !== 'notAcceptable') {
         try {
-          const result = await elastic.get({ index: 'smg', type: 'object', id: TypeMapping.toInternal(request.params.id) });
+          const result = await elastic.get({ index: 'ciim', type: 'object', id: TypeMapping.toInternal(request.params.id) });
 
           const relatedItems = await getSimilarObjects(result, elastic);
 

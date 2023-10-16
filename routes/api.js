@@ -12,7 +12,7 @@ module.exports = (elastic, config) => ({
     cache: cacheHeaders(config, 3600),
     handler: async function (request, h) {
       try {
-        const result = await elastic.get({ index: 'smg', type: TypeMapping.toInternal(request.params.type), id: TypeMapping.toInternal(request.params.id) });
+        const result = await elastic.get({ index: 'ciim', type: TypeMapping.toInternal(request.params.type), id: TypeMapping.toInternal(request.params.id) });
 
         var responseType = contentType(request);
         var apiData = beautify(buildJSONResponse(result, config), null, 2, 80);

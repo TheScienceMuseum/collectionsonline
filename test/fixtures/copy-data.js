@@ -1,4 +1,4 @@
-const Client = require('elasticsearch').Client;
+const Client = require('@elastic/elasticsearch').Client;
 const Async = require('async');
 const config = require('../../config');
 const elastic = new Client(config.elasticsearch);

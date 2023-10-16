@@ -11,7 +11,7 @@ const body = {
 };
 
 const searchOpts = {
-  index: 'smg',
+  index: 'ciim',
   body: body,
   scroll: '30s'
 };

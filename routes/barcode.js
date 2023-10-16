@@ -14,7 +14,7 @@ module.exports = (elastic, config) => ({
         //   }
         // };
         // try {
-        //   const result = await elastic.search({ index: 'smg', body: body });
+        //   const result = await elastic.search({ index: 'ciim', body: body });
         //   if (result.hits.total>0) {
         //     var obj = result.hits.hits[0];
         //     var slugValue = obj._source.summary_title && slug(obj._source.summary_title).toLowerCase();

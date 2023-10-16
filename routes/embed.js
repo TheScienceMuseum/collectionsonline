@@ -13,7 +13,7 @@ module.exports = {
         handler: async function (request, h) {
           try {
             var configUrl;
-            const result = await elastic.get({ index: 'smg', type: 'object', id: TypeMapping.toInternal(request.params.coid) });
+            const result = await elastic.get({ index: 'ciim', type: 'object', id: TypeMapping.toInternal(request.params.coid) });
             var res = await buildJSONResponse(result, config);
 
             if (res.data.attributes.enhancement) {
