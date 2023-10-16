@@ -7,7 +7,7 @@
     "test": "test"
   },
   "dependencies": {
-    "@elastic/elasticsearch": "^8.10.0",
+    "@elastic/elasticsearch": "^7.17.13",
     "@hapi/boom": "^10.0.1",
     "@hapi/catbox": "^12.1.1",
     "@hapi/catbox-redis": "^7.0.2",
