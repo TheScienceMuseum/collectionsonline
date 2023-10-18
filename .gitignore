@@ -54,7 +54,8 @@ test/fixtures/elastic-responses/database.json
 test/helpers/aggregations-all.json
 test/fixtures/elastic-responses/example-*
 
-package-lock.json
+#package lock : Allow 18th October 2023 / Jamie
+#package-lock.json
 
 # zips
 collectionsonline.zip

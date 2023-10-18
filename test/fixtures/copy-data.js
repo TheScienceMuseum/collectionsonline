@@ -126,6 +126,6 @@ Async.parallel([
         console.log('The file has been saved!');
       });
   }
-], (err) => {
-  if (err) throw err;
+], (err, { body, statusCode, headers, warnings }) => {
+  if (err) console.log(err);
 });
