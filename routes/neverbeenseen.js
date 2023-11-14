@@ -17,7 +17,7 @@ module.exports = (elastic, config) => ({
                   bool:
                   {
                     must: [
-                      { term: { 'type.base': 'object' } },
+                      { term: { '@datatype.base': 'object' } },
                       { exists: { field: 'multimedia' } }
                     ],
                     must_not: [{ exists: { field: 'admin.analytics.count.current' } }]

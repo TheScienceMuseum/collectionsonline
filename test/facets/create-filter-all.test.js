@@ -21,7 +21,7 @@ test(file + 'The filters date are included in the array filter', (t) => {
     bool: {
       must: [
         {
-          terms: {'type.base': ['agent', 'object']}
+          terms: {'@datatype.base': ['agent', 'object']}
         },
         {
           bool: {
@@ -88,7 +88,7 @@ test(file + 'The filter people array do not include a term filter of a wrong dat
   const mustExpected = [
     {
       terms: {
-        'type.base': ['agent', 'object', 'archive']
+        '@datatype.base': ['agent', 'object', 'archive']
       }
     }
   ];
