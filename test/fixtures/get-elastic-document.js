@@ -3,7 +3,7 @@
 */
 module.exports = function (elastic, type, id, next) {
   elastic.get({
-    index: 'smg',
+    index: 'ciim',
     type: type,
     id: id
   }, (error, response) => {

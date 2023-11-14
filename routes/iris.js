@@ -16,7 +16,7 @@ module.exports = (elastic, config) => ({
       }
 
       try {
-        const result = await elastic.get({ index: 'smg', type: TypeMapping.toInternal(request.params.type), id: TypeMapping.toInternal(request.params.id) });
+        const result = await elastic.get({ index: 'ciim', type: TypeMapping.toInternal(request.params.type), id: TypeMapping.toInternal(request.params.id) });
 
         var apiData = buildJSONResponse(result, config);
 
