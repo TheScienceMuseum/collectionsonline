@@ -7,6 +7,7 @@
     "test": "test"
   },
   "dependencies": {
+    "@elastic/elasticsearch": "^5.6.22",
     "@hapi/catbox": "^10.2.1",
     "@hapi/catbox-redis": "^5.0.5",
     "@hapi/hapi": "^18.1.0",
@@ -93,7 +94,7 @@
     "index-update": "run-s index-update:*",
     "index-update:galleries": "node scripts/get-galleries.js",
     "postinstall": "run-s build minify && node nightwatch.conf.js",
-    "start": "node bin/server.js",
+    "start": "node bin/server.mjs",
     "test": "run-s test:*",
     "test:lint": "semistandard",
     "test:unit": "run-s test:unit:*",
