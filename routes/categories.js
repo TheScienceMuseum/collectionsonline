@@ -7,7 +7,7 @@ module.exports = (elastic, config) => ({
     handler: async function (request, h) {
       try {
         const result = await elastic.search({
-          index: 'smg',
+          index: 'ciim',
           type: 'object',
           body: {
             size: 0,
@@ -16,14 +16,14 @@ module.exports = (elastic, config) => ({
                 terms: {
                   field: 'categories.name',
                   size: 500,
-                  order: { '_count': 'desc' }
+                  order: { _count: 'desc' }
                 }
               }
             }
           }
         });
 
-        let categories = [];
+        const categories = [];
 
         if (result.aggregations.categories.buckets) {
           result.aggregations.categories.buckets.forEach(e => {
@@ -35,7 +35,7 @@ module.exports = (elastic, config) => ({
           });
         }
 
-        return h.view('categories', { categories: categories });
+        return h.view('categories', { categories });
       } catch (err) {
         return new Boom(err);
       }

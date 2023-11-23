@@ -6,7 +6,7 @@ module.exports = (elastic, config) => ({
   config: {
     handler: async function (request, h) {
       if (request.params.uid) {
-        var barcode = escape(request.params.uid);
+        const barcode = escape(request.params.uid);
         return `Barcode found: <b>${barcode}</b><br>Barcode not found in index<br><a href="/barcode">Scan again</a>`;
         // var body = {
         //   query: {
@@ -14,7 +14,7 @@ module.exports = (elastic, config) => ({
         //   }
         // };
         // try {
-        //   const result = await elastic.search({ index: 'smg', body: body });
+        //   const result = await elastic.search({ index: 'ciim', body: body });
         //   if (result.hits.total>0) {
         //     var obj = result.hits.hits[0];
         //     var slugValue = obj._source.summary_title && slug(obj._source.summary_title).toLowerCase();

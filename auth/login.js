@@ -4,5 +4,5 @@ module.exports = () => ({
   config: {
     auth: false
   },
-  handler: (request, reply) => reply.view('login', null, {layout: 'auth'})
+  handler: (request, reply) => reply.view('login', null, { layout: 'auth' })
 });

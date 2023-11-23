@@ -1,5 +1,5 @@
-var fetch = require('node-fetch');
-var FormData = require('form-data');
+const fetch = require('node-fetch');
+const FormData = require('form-data');
 
 module.exports = () => {
   const scriptURL = 'https://script.google.com/macros/s/---/exec';
@@ -11,8 +11,8 @@ module.exports = () => {
       e.preventDefault();
       handleSuccess('success');
       fetch(scriptURL, { method: 'POST', body: new FormData(wikiform) })
-       .then(response => handleSuccess(response))
-       .catch(error => handleError(error));
+        .then(response => handleSuccess(response))
+        .catch(error => handleError(error));
     });
   }
 };
@@ -28,4 +28,3 @@ function handleError (error) {
   document.getElementById('errorMessage').hidden = false;
   console.error('Error!', error.message);
 }
-

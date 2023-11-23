@@ -1,6 +1,6 @@
 const test = require('tape');
 const getNestedProperty = require('../lib/nested-property');
-const obj = {1: {2: {3: ['hello']}}};
+const obj = { 1: { 2: { 3: ['hello'] } } };
 
 test('Calling getNestedProperty should not throw an error', function (t) {
   t.plan(2);

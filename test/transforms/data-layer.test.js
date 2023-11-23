@@ -3,7 +3,7 @@ const dataLayer = require('../../lib/transforms/data-layer');
 
 test('data-layer return right object for documnents', (t) => {
   t.plan(1);
-  var data = [
+  const data = [
     {
       key: 'part of archive',
       value: 'Babbage'
@@ -22,10 +22,10 @@ test('data-layer return right object for documnents', (t) => {
 
   const layer = dataLayer('documents', data);
   const expected = JSON.stringify({
-    'recordType': 'documents',
-    'recordArchive': 'Babbage',
-    'recordMaker': 'Babbage',
-    'recordMade': '1820'
+    recordType: 'documents',
+    recordArchive: 'Babbage',
+    recordMaker: 'Babbage',
+    recordMade: '1820'
   });
   t.equal(layer, expected, 'The layer for documents is ok');
   t.end();
@@ -33,10 +33,10 @@ test('data-layer return right object for documnents', (t) => {
 
 test('data-layer return right object for people', (t) => {
   t.plan(1);
-  var data = [
+  const data = [
     {
       key: 'occupation',
-      value: [{value: 'mathematician'}]
+      value: [{ value: 'mathematician' }]
     },
     {
       key: 'born in',
@@ -50,10 +50,10 @@ test('data-layer return right object for people', (t) => {
 
   const layer = dataLayer('people', data);
   const expected = JSON.stringify({
-    'recordType': 'people',
-    'recordOccupation': ['mathematician'],
-    'recordBorn': 'Southwark',
-    'recordNationality': 'British'
+    recordType: 'people',
+    recordOccupation: ['mathematician'],
+    recordBorn: 'Southwark',
+    recordNationality: 'British'
   });
   t.equal(layer, expected, 'The layer for people is ok');
   t.end();

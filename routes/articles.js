@@ -3,7 +3,7 @@ const Boom = require('boom');
 const cacheHeaders = require('./route-helpers/cache-control');
 
 // Article endpoints on each museum website
-var endpoints = [
+const endpoints = [
   { label: 'National Science and Media Museum', url: 'https://www.scienceandmediamuseum.org.uk/collection-media/collection-usage/objects' },
   { label: 'Science and Industry Musem', url: 'https://www.scienceandindustrymuseum.org.uk/collection-media/collection-usage/objects' },
   { label: 'Science Museum', url: 'https://www.sciencemuseum.org.uk/collection-media/collection-usage/objects' },
@@ -42,7 +42,7 @@ async function fetchArticles (endpoint, id) {
 
     return {
       museum: endpoint.label,
-      data: data
+      data
     };
   } catch (err) {
     console.log(err);

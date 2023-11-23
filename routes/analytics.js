@@ -1,5 +1,5 @@
 const Joi = require('joi');
-var contentType = require('./route-helpers/content-type.js');
+const contentType = require('./route-helpers/content-type.js');
 
 module.exports = (elastic, config) => ({
   method: 'POST',
@@ -12,7 +12,7 @@ module.exports = (elastic, config) => ({
       }
     },
     handler: function (request, h) {
-      var responseType = contentType(request);
+      const responseType = contentType(request);
       if (responseType === 'json') {
         return h.response().code(204);
       } else {

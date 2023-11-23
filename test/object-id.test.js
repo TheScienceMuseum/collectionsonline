@@ -2,12 +2,12 @@
 
 const config = require('../config');
 
-var testWithServer = require('./helpers/test-with-server');
-var dir = __dirname.split('/')[__dirname.split('/').length - 1];
-var file = dir + __filename.replace(__dirname, '') + ' > ';
+const testWithServer = require('./helpers/test-with-server');
+const dir = __dirname.split('/')[__dirname.split('/').length - 1];
+const file = dir + __filename.replace(__dirname, '') + ' > ';
 
 testWithServer(file + 'Request for object id page 1970-54', {}, async (t, ctx) => {
-  var htmlRequest = {
+  const htmlRequest = {
     method: 'GET',
     url: '/oid/1970-54'
   };
@@ -19,7 +19,7 @@ testWithServer(file + 'Request for object id page 1970-54', {}, async (t, ctx) =
 });
 
 testWithServer(file + 'Request for object id page 1970-54 with redirect true', {}, async (t, ctx) => {
-  var htmlRequest = {
+  const htmlRequest = {
     method: 'GET',
     url: '/oid/1970-54?redirect=true'
   };
@@ -31,7 +31,7 @@ testWithServer(file + 'Request for object id page 1970-54 with redirect true', {
 });
 
 testWithServer(file + 'Request for object id with wrong id', {}, async (t, ctx) => {
-  var htmlRequest = {
+  const htmlRequest = {
     method: 'GET',
     url: '/oid/15433554wrong?redirect=true'
   };

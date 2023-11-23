@@ -1,4 +1,4 @@
-const Client = require('elasticsearch').Client;
+const Client = require('@elastic/elasticsearch').Client;
 const Async = require('async');
 const config = require('../../config');
 const elastic = new Client(config.elasticsearch);
@@ -117,17 +117,15 @@ Async.parallel([
 
   // Aggregations
   async () => {
-    try {
-      const response = await search(elastic, createQueryParams('html', { query: { q: 'test' }, params: {} }));
-      Fs.writeFile(dirData + '/../../helpers/aggregations-all.json',
-        JSON.stringify(response.aggregations.all, null, 2),
-        'utf-8',
-        (err) => {
-          if (err) throw err;
-          console.log('The file has been saved!');
-        });
-    } catch (err) { throw err; }
+    const response = await search(elastic, createQueryParams('html', { query: { q: 'test' }, params: {} }));
+    Fs.writeFile(dirData + '/../../helpers/aggregations-all.json',
+      JSON.stringify(response.aggregations.all, null, 2),
+      'utf-8',
+      (err) => {
+        if (err) throw err;
+        console.log('The file has been saved!');
+      });
   }
-], (err) => {
-  if (err) throw err;
+], (err, { body, statusCode, headers, warnings }) => {
+  if (err) console.log(err);
 });

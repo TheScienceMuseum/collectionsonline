@@ -1,1 +1,1 @@
-module.exports = {isFilterOpen: true};
+module.exports = { isFilterOpen: true };

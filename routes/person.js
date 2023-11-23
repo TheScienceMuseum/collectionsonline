@@ -13,11 +13,11 @@ module.exports = (elastic, config) => ({
   config: {
     cache: cacheHeaders(config, 3600 * 24),
     handler: async function (request, h) {
-      var responseType = contentType(request);
+      const responseType = contentType(request);
 
       if (responseType !== 'notAcceptable') {
         try {
-          const result = await elastic.get({ index: 'smg', type: 'agent', id: TypeMapping.toInternal(request.params.id) });
+          const result = await elastic.get({ index: 'ciim', type: 'agent', id: TypeMapping.toInternal(request.params.id) });
 
           let relatedItems;
           let sortedRelatedItems;

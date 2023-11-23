@@ -1,4 +1,4 @@
-var contentType = require('./route-helpers/content-type.js');
+const contentType = require('./route-helpers/content-type.js');
 const cacheHeaders = require('./route-helpers/cache-control');
 
 module.exports = config => ({
@@ -7,7 +7,7 @@ module.exports = config => ({
   config: {
     cache: cacheHeaders(config, 3600 * 24),
     handler: function (request, h) {
-      var responseType = contentType(request);
+      const responseType = contentType(request);
       if (responseType === 'json') {
         return h.response(
           'See https://github.com/TheScienceMuseum/collectionsonline/wiki/Collections-Online-API on how to use the api'

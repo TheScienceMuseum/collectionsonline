@@ -2,9 +2,9 @@
 * toggle classes for the filter
 */
 module.exports = function (display) {
-  var searchresults = document.querySelector('.searchresults');
-  var filtercolumn = document.querySelector('.filtercolumn');
-  var controlFilters = document.querySelector('.control--filters');
+  const searchresults = document.querySelector('.searchresults');
+  const filtercolumn = document.querySelector('.filtercolumn');
+  const controlFilters = document.querySelector('.control--filters');
 
   if (searchresults && filtercolumn && controlFilters) {
     if (display) {

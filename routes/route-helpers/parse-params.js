@@ -2,10 +2,10 @@ const museumMap = require('../../lib/museum-mapping');
 const utils = require('../../lib/helpers/utils');
 
 module.exports = function (urlParams) {
-  var params = {};
-  var categories = {};
+  const params = {};
+  const categories = {};
   if (urlParams.filters) {
-    var urlCats = urlParams.filters.split('/').filter(function (el) {
+    const urlCats = urlParams.filters.split('/').filter(function (el) {
       if (el === 'objects' || el === 'people' || el === 'documents') {
         params.type = el;
         return false;
@@ -16,16 +16,16 @@ module.exports = function (urlParams) {
     if (!params.type) {
       params.type = 'all';
     }
-    for (var i = 0; i < urlCats.length; i++) {
+    for (let i = 0; i < urlCats.length; i++) {
       if (urlCats[i] === 'has_image' || urlCats[i] === 'images') {
         urlCats.splice(i + 1, 0, 'true');
-        categories['has_image'] = 'has_image';
+        categories.has_image = 'has_image';
       } else if (urlCats[i] === 'image_license') {
         urlCats.splice(i + 1, 0, 'true');
-        categories['image_license'] = 'image_license';
+        categories.image_license = 'image_license';
       } else if (urlCats[i] === 'rotational') {
         urlCats.splice(i + 1, 0, 'true');
-        categories['rotational'] = 'rotational';
+        categories.rotational = 'rotational';
       } else if (i % 2 === 0) {
         if (urlCats[i] === 'category') {
           urlCats[i] = 'categories';
@@ -42,8 +42,8 @@ module.exports = function (urlParams) {
     }
   }
 
-  for (var cat in categories) {
-    var exclude = ['has_image', 'object_type', 'material', 'occupation'];
+  for (const cat in categories) {
+    const exclude = ['has_image', 'object_type', 'material', 'occupation'];
 
     if (cat === 'museum') {
       categories[cat] = museumMap.toLong(categories[cat]);
@@ -52,5 +52,5 @@ module.exports = function (urlParams) {
     }
   }
 
-  return {params, categories};
+  return { params, categories };
 };

@@ -8,7 +8,7 @@ testWithServer(file + 'Request for HTML Content', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/',
-    headers: { 'Accept': 'text/html' }
+    headers: { Accept: 'text/html' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -27,7 +27,7 @@ testWithServer(file + 'Request for JSONAPI Content', {}, async (t, ctx) => {
   const jsonRequest = {
     method: 'GET',
     url: '/search?q=test',
-    headers: { 'Accept': 'application/vnd.api+json' }
+    headers: { Accept: 'application/vnd.api+json' }
   };
 
   const res = await ctx.server.inject(jsonRequest);
@@ -41,7 +41,7 @@ testWithServer(file + 'Request with multiple instances of JSONAPI media type, on
   const acceptableJSONRequest = {
     method: 'GET',
     url: '/search?q=test',
-    headers: { 'Accept': 'application/vnd.api+json; charset=utf-8, application/vnd.api+json' }
+    headers: { Accept: 'application/vnd.api+json; charset=utf-8, application/vnd.api+json' }
   };
 
   const res = await ctx.server.inject(acceptableJSONRequest);
@@ -71,7 +71,7 @@ testWithServer(file + 'Return html if both json and html header are defined at t
   const acceptableJSONRequest = {
     method: 'GET',
     url: '/',
-    headers: { 'Accept': 'text/html, application/json' }
+    headers: { Accept: 'text/html, application/json' }
   };
 
   const res = await ctx.server.inject(acceptableJSONRequest);

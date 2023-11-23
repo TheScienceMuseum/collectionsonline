@@ -1,37 +1,37 @@
-var QueryString = require('querystring');
-var fetch = require('fetch-ponyfill')().fetch;
-var page = require('page');
-var Snackbar = require('snackbarlightjs');
+const QueryString = require('querystring');
+const fetch = require('fetch-ponyfill')().fetch;
+const page = require('page');
+const Snackbar = require('snackbarlightjs');
 
-var Templates = require('../templates');
+const Templates = require('../templates');
 
-var parseParams = require('../../routes/route-helpers/parse-params.js');
+const parseParams = require('../../routes/route-helpers/parse-params.js');
 
-var createQueryParams = require('../../lib/query-params/query-params');
-var paramify = require('../../lib/helpers/paramify.js');
-var querify = require('../../lib/helpers/querify.js');
-var searchResultsToTemplateData = require('../../lib/transforms/search-results-to-template-data');
+const createQueryParams = require('../../lib/query-params/query-params');
+const paramify = require('../../lib/helpers/paramify.js');
+const querify = require('../../lib/helpers/querify.js');
+const searchResultsToTemplateData = require('../../lib/transforms/search-results-to-template-data');
 
-var getData = require('../lib/get-data.js');
-var filterResults = require('../lib/filter-results');
-var filterState = require('../lib/filter-state.js');
-var toggleFacets = require('../lib/toggle-facets.js');
-var updateActiveStateFacets = require('../lib/update-active-states-facets.js');
-var loadingBar = require('../lib/loading-bar');
-var hideKeyboard = require('../lib/hide-keyboard');
-var findCategory = require('../lib/find-category.js');
+const getData = require('../lib/get-data.js');
+const filterResults = require('../lib/filter-results');
+const filterState = require('../lib/filter-state.js');
+const toggleFacets = require('../lib/toggle-facets.js');
+const updateActiveStateFacets = require('../lib/update-active-states-facets.js');
+const loadingBar = require('../lib/loading-bar');
+const hideKeyboard = require('../lib/hide-keyboard');
+const findCategory = require('../lib/find-category.js');
 
-var displayFilters = require('../lib/listeners/display-filters.js');
-var searchListener = require('../lib/listeners/search-listener');
-var descriptionBoxCloseListener = require('../lib/listeners/close-description-box.js');
-var deleteFiltersFacets = require('../lib/listeners/delete-filters-facets.js');
-var displayFacet = require('../lib/listeners/display-facet.js');
-var facetsStates = require('../lib/listeners/facets-states.js');
-var initComp = require('../lib/listeners/init-components');
+const displayFilters = require('../lib/listeners/display-filters.js');
+const searchListener = require('../lib/listeners/search-listener');
+const descriptionBoxCloseListener = require('../lib/listeners/close-description-box.js');
+const deleteFiltersFacets = require('../lib/listeners/delete-filters-facets.js');
+const displayFacet = require('../lib/listeners/display-facet.js');
+const facetsStates = require('../lib/listeners/facets-states.js');
+const initComp = require('../lib/listeners/init-components');
 
 const whatis = require('../../fixtures/whatis');
 
-var i = 0;
+let i = 0;
 
 module.exports = function (page) {
   page('/search', load, render, listeners);
@@ -46,17 +46,17 @@ function load (ctx, next) {
   // only load the data if the page hasn't been loaded before
   if (!ctx.isInitialRender) {
     loadingBar.start();
-    var opts = {
+    const opts = {
       headers: { Accept: 'application/vnd.api+json' }
     };
-    var qs = QueryString.parse(ctx.querystring);
-    var p = Object.assign(parseParams({filters: ctx.pathname}).categories, parseParams({filters: ctx.pathname}).params);
-    var searchCategory = findCategory(ctx.pathname);
-    var queryParams = createQueryParams('html', {query: Object.assign(qs, p), params: {type: searchCategory}});
+    const qs = QueryString.parse(ctx.querystring);
+    const p = Object.assign(parseParams({ filters: ctx.pathname }).categories, parseParams({ filters: ctx.pathname }).params);
+    const searchCategory = findCategory(ctx.pathname);
+    const queryParams = createQueryParams('html', { query: Object.assign(qs, p), params: { type: searchCategory } });
 
     // match and answer 'what is' questions
     if (qs.q && qs.q.toLowerCase().lastIndexOf('what', 0) === 0) {
-      var answer = whatis.data.filter(function (a) {
+      const answer = whatis.data.filter(function (a) {
         return a.attributes.summary_title.toLowerCase() === qs.q.toLowerCase();
       });
 
@@ -71,11 +71,11 @@ function load (ctx, next) {
         Snackbar.create('Error getting data from the server.\n<br>Please check your internet connection or try again shortly');
         return;
       }
-      var data = searchResultsToTemplateData(queryParams, json);
+      const data = searchResultsToTemplateData(queryParams, json);
       ctx.state.data = data;
 
       window.dataLayer.push(JSON.parse(data.layer));
-      window.dataLayer.push({'event': 'serpEvent'});
+      window.dataLayer.push({ event: 'serpEvent' });
 
       next();
     });
@@ -94,9 +94,9 @@ function render (ctx, next) {
   hideKeyboard();
   loadingBar.end();
 
-  var searchResults = document.querySelector('.results-page');
-  var searchBar = document.querySelector('.search-main');
-  var pageEl = document.getElementById('main-page');
+  const searchResults = document.querySelector('.results-page');
+  const searchBar = document.querySelector('.search-main');
+  const pageEl = document.getElementById('main-page');
 
   if (searchResults && searchBar) {
     // If already on the search page, just re-render the results
@@ -104,27 +104,27 @@ function render (ctx, next) {
     searchResults.innerHTML = Templates['search-results'](ctx.state.data);
   } else {
     // Else re-render the whole page
-    pageEl.innerHTML = Templates['search'](ctx.state.data);
+    pageEl.innerHTML = Templates.search(ctx.state.data);
   }
 
   // Shows filter toggle button if javascript enabled
-  var fb = document.getElementById('fb');
+  const fb = document.getElementById('fb');
   if (fb) {
     fb.className = 'control__button';
   }
-  var filterButton = document.querySelector('button.filterpanel__button');
+  const filterButton = document.querySelector('button.filterpanel__button');
   if (filterButton) {
     filterButton.style.display = 'none';
   }
   // Hides filterpanel by default if javascript is enabled
   if (!ctx.isFilterOpen) {
-    var searchresults = document.querySelector('.searchresults');
+    const searchresults = document.querySelector('.searchresults');
     searchresults.className = searchresults.className.replace('searchresults--filtersactive', '');
 
-    var filtercolumn = document.querySelector('.filtercolumn');
+    const filtercolumn = document.querySelector('.filtercolumn');
     filtercolumn.className = filtercolumn.className.replace('filtercolumn--filtersactive', '');
 
-    var controlFilters = document.querySelector('.control--filters');
+    const controlFilters = document.querySelector('.control--filters');
     if (controlFilters) {
       controlFilters.className = controlFilters.className.replace('control--active', '');
     }
@@ -144,13 +144,13 @@ function listeners (ctx, next) {
   descriptionBoxCloseListener();
   initComp();
   // hide the filter button
-  var filterButton = document.querySelector('button.filterpanel__button');
+  const filterButton = document.querySelector('button.filterpanel__button');
   if (filterButton) {
     filterButton.style.display = 'none';
   }
 
   // display the button on the filter which toggle the filters
-  var toggleFilterButton = document.getElementById('fb');
+  const toggleFilterButton = document.getElementById('fb');
   if (toggleFilterButton) {
     toggleFilterButton.classList.remove('hidden');
     toggleFilterButton.classList.add('control__button');
@@ -178,30 +178,30 @@ function listeners (ctx, next) {
   * Click to add/remove filters
   * Build a html url with the new filter selected (get the current url + new filter)
   */
-  var filtersCheckbox = document.querySelectorAll('.filter:not(.filter--uncollapsible) [type=checkbox]');
+  const filtersCheckbox = document.querySelectorAll('.filter:not(.filter--uncollapsible) [type=checkbox]');
   for (i = 0; i < filtersCheckbox.length; i++) {
     filtersCheckbox[i].addEventListener('click', function (e) {
       // analytics
       if (ctx.state.data.inProduction) {
         if (e.target.checked) {
           window.dataLayer.push({
-            'event': 'Filter',
-            'ga_event': {
-              'category': 'filter',
-              'action': ctx.params.type || 'all',
-              'label': e.target.name + ' | ' + e.target.value,
-              'value': e.target.value,
+            event: 'Filter',
+            ga_event: {
+              category: 'filter',
+              action: ctx.params.type || 'all',
+              label: e.target.name + ' | ' + e.target.value,
+              value: e.target.value,
               'non-interaction': 'false'
             }
           });
         }
       }
 
-      var museums = ['Science-Museum', 'National-Railway-Museum', 'National-Media-Museum', 'Museum-of-Science-and-Industry'];
+      const museums = ['Science-Museum', 'National-Railway-Museum', 'National-Media-Museum', 'Museum-of-Science-and-Industry'];
       loadingBar.start();
       museums.forEach(function (m) {
-        var museumFilter = document.getElementsByClassName('filter__museum__' + m)[0];
-        var galleryFilters = document.querySelectorAll('.nested-galleries input[type=checkbox]');
+        const museumFilter = document.getElementsByClassName('filter__museum__' + m)[0];
+        const galleryFilters = document.querySelectorAll('.nested-galleries input[type=checkbox]');
 
         if (e.target.classList.contains('filter__gallery__' + m) && !museumFilter.checked) {
           museumFilter.checked = e.target.checked;
@@ -218,7 +218,7 @@ function listeners (ctx, next) {
   /**
   * Search when one of the input date onblur
   */
-  var filtersDate = document.querySelectorAll('.filter:not(.filter--uncollapsible) [type=number]');
+  const filtersDate = document.querySelectorAll('.filter:not(.filter--uncollapsible) [type=number]');
   for (i = 0; i < filtersDate.length; i++) {
     filtersDate[i].addEventListener('blur', function () {
       filterResults(ctx, page);
@@ -234,7 +234,7 @@ function listeners (ctx, next) {
   /**
   * Search when the result per page is change
   */
-  var controlRpp = document.querySelector('.control--rpp select');
+  const controlRpp = document.querySelector('.control--rpp select');
   // the select page number only exists if there are enough results
   if (controlRpp) {
     controlRpp.addEventListener('change', function () {
@@ -263,8 +263,8 @@ function listeners (ctx, next) {
   }
 
   // close filters on mobile when no filter selected
-  var onMobile = window.getComputedStyle(document.getElementById('filtercolumn')).position === 'absolute';
-  var noFilterSelected = ['/search', '/search/people', '/search/objects', '/search/documents'].lastIndexOf(ctx.canonicalPath) !== -1;
+  const onMobile = window.getComputedStyle(document.getElementById('filtercolumn')).position === 'absolute';
+  const noFilterSelected = ['/search', '/search/people', '/search/objects', '/search/documents'].lastIndexOf(ctx.canonicalPath) !== -1;
   if (onMobile && noFilterSelected) {
     displayFilters(false);
     filterState.isFilterOpen = false;

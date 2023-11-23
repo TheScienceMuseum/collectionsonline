@@ -1,18 +1,18 @@
-var Snackbar = require('snackbarlightjs');
+const Snackbar = require('snackbarlightjs');
 
-var Templates = require('../templates');
+const Templates = require('../templates');
 
-var JSONToHTML = require('../../lib/transforms/json-to-html-data');
+const JSONToHTML = require('../../lib/transforms/json-to-html-data');
 
-var getData = require('../lib/get-data.js');
-var hideKeyboard = require('../lib/hide-keyboard');
+const getData = require('../lib/get-data.js');
+const hideKeyboard = require('../lib/hide-keyboard');
 
 // var getArticles = require('../lib/listeners/get-articles');
-var getWikiData = require('../lib/listeners/get-wiki-data');
-var searchListener = require('../lib/listeners/search-listener');
-var downloadImageListener = require('../lib/listeners/download-image');
-var archiveListeners = require('../lib/listeners/archive-listeners');
-var initComp = require('../lib/listeners/init-components.js');
+const getWikiData = require('../lib/listeners/get-wiki-data');
+const searchListener = require('../lib/listeners/search-listener');
+const downloadImageListener = require('../lib/listeners/download-image');
+const archiveListeners = require('../lib/listeners/archive-listeners');
+const initComp = require('../lib/listeners/init-components.js');
 // var internalHeader = require('../lib/listeners/internal-header');
 
 module.exports = function (type) {
@@ -30,15 +30,15 @@ module.exports = function (type) {
 };
 
 function load (ctx, next, type) {
-  var pageType = type === 'people' ? type : type + 's';
-  var page = type === 'people' ? 'person' : type;
+  const pageType = type === 'people' ? type : type + 's';
+  const page = type === 'people' ? 'person' : type;
 
   if (!ctx.isInitialRender) {
-    var opts = {
+    const opts = {
       headers: { Accept: 'application/vnd.api+json' }
     };
-    var id = ctx.params.id;
-    var url = '/' + pageType + '/' + id + '?ajax=true';
+    const id = ctx.params.id;
+    const url = '/' + pageType + '/' + id + '?ajax=true';
 
     getData(url, opts, function (err, json) {
       if (err) {
@@ -46,14 +46,14 @@ function load (ctx, next, type) {
         Snackbar.create('Error getting data from the server.\n<br>Please check your internet connection or try again shortly');
         return;
       }
-      var data = JSONToHTML(json);
+      const data = JSONToHTML(json);
 
       ctx.state.data = data;
       ctx.state.data.back = sessionStorage.getItem('backPath');
       // analytics
       window.dataLayer.push(JSON.parse(data.layer));
-      window.dataLayer.push({ 'recordTitle': data.title });
-      window.dataLayer.push({ 'event': 'recordEvent' });
+      window.dataLayer.push({ recordTitle: data.title });
+      window.dataLayer.push({ event: 'recordEvent' });
 
       ctx.state.data.page = page;
       next();
@@ -66,8 +66,8 @@ function load (ctx, next, type) {
 }
 
 function render (ctx, next, type) {
-  var pageType = type === 'people' ? type : type + 's';
-  var pageEl = document.getElementById('main-page');
+  const pageType = type === 'people' ? type : type + 's';
+  const pageEl = document.getElementById('main-page');
 
   hideKeyboard();
   document.getElementsByTagName('title')[0].textContent = ctx.state.data.titlePage;
@@ -82,7 +82,7 @@ function render (ctx, next, type) {
 }
 
 function listeners (ctx, next, type) {
-  var funcs = [initComp, searchListener];
+  const funcs = [initComp, searchListener];
 
   if (type === 'object' || type === 'document') {
     funcs.push(downloadImageListener);

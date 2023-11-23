@@ -1,8 +1,8 @@
 const Boom = require('boom');
 const TypeMapping = require('../lib/type-mapping');
 const buildJSONResponse = require('../lib/jsonapi-response');
-var AWS = require('aws-sdk');
-var beautify = require('json-beautify');
+const AWS = require('aws-sdk');
+const beautify = require('json-beautify');
 const cacheHeaders = require('./route-helpers/cache-control');
 
 module.exports = (elastic, config) => ({
@@ -16,19 +16,19 @@ module.exports = (elastic, config) => ({
       }
 
       try {
-        const result = await elastic.get({ index: 'smg', type: TypeMapping.toInternal(request.params.type), id: TypeMapping.toInternal(request.params.id) });
+        const result = await elastic.get({ index: 'ciim', type: TypeMapping.toInternal(request.params.type), id: TypeMapping.toInternal(request.params.id) });
 
-        var apiData = buildJSONResponse(result, config);
+        const apiData = buildJSONResponse(result, config);
 
-        var inProduction = config && config.NODE_ENV === 'production';
+        const inProduction = config && config.NODE_ENV === 'production';
 
         if (!inProduction) {
           // AWS Rekogition
-          var rekognition = new AWS.Rekognition({ region: 'eu-west-1' });
-          var imageURL = apiData.data.attributes.multimedia[0].processed.medium_thumbnail.location;
-          var s3path = 'media/' + imageURL.slice(config.mediaPath.length);
+          const rekognition = new AWS.Rekognition({ region: 'eu-west-1' });
+          const imageURL = apiData.data.attributes.multimedia[0].processed.medium_thumbnail.location;
+          const s3path = 'media/' + imageURL.slice(config.mediaPath.length);
 
-          var params = {
+          const params = {
             Image: {
               S3Object: {
                 Bucket: 'smgco-images',

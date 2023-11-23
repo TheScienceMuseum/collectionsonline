@@ -21,15 +21,21 @@ const testResult = {
   aggregations: {
     total_categories: {
       doc_count: 17,
-      documents: { doc_count: 0, documents_total: [{value: 29}] },
-      objects: { doc_count: 13, objects_total: [{value: 3304}] },
-      people: { doc_count: 4, people_total: [{value: 221}] },
+      documents: { doc_count: 0, documents_total: [{ value: 29 }] },
+      objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
+      people: { doc_count: 4, people_total: [{ value: 221 }] },
       all: {
         doc_count: 17,
         all_total: {
           doc_count_error_upper_bound: 0,
           sum_other_doc_count: 0,
-          buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ] } } }
+          buckets: [
+            { key: 'object', doc_count: 13 },
+            { key: 'agent', doc_count: 4 }
+          ]
+        }
+      }
+    }
   }
 };
 
@@ -41,7 +47,7 @@ testResult.aggregations.documents = aggregationsDocuments;
 const query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
 const jsonData = searchResultsToJsonApi(query, testResult);
 test(file + 'Results should be transformed succesfully', (t) => {
-  var templateData;
+  let templateData;
   t.plan(2);
   t.doesNotThrow(() => {
     templateData = searchToTemplate(query, jsonData);
@@ -51,7 +57,7 @@ test(file + 'Results should be transformed succesfully', (t) => {
 });
 
 test(file + 'Person template data is correctly built', (t) => {
-  var templateData;
+  let templateData;
   t.plan(5);
   t.doesNotThrow(() => {
     templateData = searchToTemplate(query, jsonData);
@@ -67,7 +73,7 @@ test(file + 'Person template data is correctly built', (t) => {
 });
 
 test(file + 'Document template data is correctly built', (t) => {
-  var templateData;
+  let templateData;
   t.plan(5);
   t.doesNotThrow(() => {
     templateData = searchToTemplate(query, jsonData);
@@ -83,7 +89,7 @@ test(file + 'Document template data is correctly built', (t) => {
 });
 
 test(file + 'Object template data is correctly built', (t) => {
-  var templateData;
+  let templateData;
   t.plan(4);
   t.doesNotThrow(() => {
     templateData = searchToTemplate(query, jsonData);

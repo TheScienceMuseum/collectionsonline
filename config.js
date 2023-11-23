@@ -1,7 +1,7 @@
 module.exports = require('rc')('co', {
   port: 8000,
   elasticsearch: {
-    host: process.env.ELASTIC_HOST || ''
+    node: process.env.ELASTIC_HOST || ''
   },
   auth: process.env.auth !== undefined ? (process.env.auth === 'true') : true,
   user: process.env.co_auth_user,

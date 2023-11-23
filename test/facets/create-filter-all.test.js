@@ -8,7 +8,7 @@ const file = dir + __filename.replace(__dirname, '') + ' > ';
 
 test(file + 'The filters date are included in the array filter', (t) => {
   const query = queryString.parse('q=ada&filter%5Bdate%5Bfrom%5D%5D=1800&&filter%5Bdate%5Bto%5D%5D=1900&page%5Bsize%5D=50');
-  const queryParams = createQueryParams('html', {query: query, params: {}});
+  const queryParams = createQueryParams('html', { query, params: {} });
 
   const filters = {
     people: createFilters(queryParams, 'agent'),
@@ -17,51 +17,75 @@ test(file + 'The filters date are included in the array filter', (t) => {
   };
 
   const filtersAll = createFilterAll(queryParams, filters);
-  var expected = {
+  const expected = {
     bool: {
       must: [
         {
-          terms: {'type.base': ['agent', 'object']}
+          terms: { '@datatype.base': ['agent', 'object'] }
         },
         {
           bool: {
             should: [
-              { 'bool': { 'filter': [
-                { 'range': { 'lifecycle.creation.date.earliest': { 'gte': ['1800'] } } },
-                { 'range': { 'lifecycle.creation.date.latest': { 'lte': ['1900'] } } }
-              ] } },
-              { 'bool': { 'filter': [
-                { 'range': { 'lifecycle.birth.date.earliest': { 'gte': ['1800'] } } },
-                { 'range': { 'lifecycle.birth.date.latest': { 'lte': ['1900'] } } }
-              ] } }
+              {
+                bool: {
+                  filter: [
+                    { range: { 'lifecycle.creation.date.earliest': { gte: ['1800'] } } },
+                    { range: { 'lifecycle.creation.date.latest': { lte: ['1900'] } } }
+                  ]
+                }
+              },
+              {
+                bool: {
+                  filter: [
+                    { range: { 'lifecycle.birth.date.earliest': { gte: ['1800'] } } },
+                    { range: { 'lifecycle.birth.date.latest': { lte: ['1900'] } } }
+                  ]
+                }
+              }
             ]
           }
         },
         {
           bool: {
             should: [
-              { 'bool': { 'filter': [
-                { 'range': { 'lifecycle.creation.date.earliest': { 'gte': ['1800'] } } },
-                { 'range': { 'lifecycle.creation.date.latest': { 'lte': ['1900'] } } }
-              ] } },
-              { 'bool': { 'filter': [
-                { 'range': { 'lifecycle.birth.date.earliest': { 'gte': ['1800'] } } },
-                { 'range': { 'lifecycle.birth.date.latest': { 'lte': ['1900'] } } }
-              ] } }
+              {
+                bool: {
+                  filter: [
+                    { range: { 'lifecycle.creation.date.earliest': { gte: ['1800'] } } },
+                    { range: { 'lifecycle.creation.date.latest': { lte: ['1900'] } } }
+                  ]
+                }
+              },
+              {
+                bool: {
+                  filter: [
+                    { range: { 'lifecycle.birth.date.earliest': { gte: ['1800'] } } },
+                    { range: { 'lifecycle.birth.date.latest': { lte: ['1900'] } } }
+                  ]
+                }
+              }
             ]
           }
         },
         {
           bool: {
             should: [
-              { 'bool': { 'filter': [
-                { 'range': { 'lifecycle.creation.date.earliest': { 'gte': ['1800'] } } },
-                { 'range': { 'lifecycle.creation.date.latest': { 'lte': ['1900'] } } }
-              ] } },
-              { 'bool': { 'filter': [
-                { 'range': { 'lifecycle.birth.date.earliest': { 'gte': ['1800'] } } },
-                { 'range': { 'lifecycle.birth.date.latest': { 'lte': ['1900'] } } }
-              ] } }
+              {
+                bool: {
+                  filter: [
+                    { range: { 'lifecycle.creation.date.earliest': { gte: ['1800'] } } },
+                    { range: { 'lifecycle.creation.date.latest': { lte: ['1900'] } } }
+                  ]
+                }
+              },
+              {
+                bool: {
+                  filter: [
+                    { range: { 'lifecycle.birth.date.earliest': { gte: ['1800'] } } },
+                    { range: { 'lifecycle.birth.date.latest': { lte: ['1900'] } } }
+                  ]
+                }
+              }
             ]
           }
         }
@@ -76,7 +100,7 @@ test(file + 'The filters date are included in the array filter', (t) => {
 
 test(file + 'The filter people array do not include a term filter of a wrong date format', (t) => {
   const query = queryString.parse('q=ada&filter%5Bdate%5Bfrom%5D%5D=wrongDate&filter%5Bdate%5Bto%5D%5D=wrongDate&page%5Bsize%5D=50');
-  const queryParams = createQueryParams('html', {query: query, params: {}});
+  const queryParams = createQueryParams('html', { query, params: {} });
 
   const filters = {
     people: createFilters(queryParams, 'agent'),
@@ -88,7 +112,7 @@ test(file + 'The filter people array do not include a term filter of a wrong dat
   const mustExpected = [
     {
       terms: {
-        'type.base': ['agent', 'object', 'archive']
+        '@datatype.base': ['agent', 'object', 'archive']
       }
     }
   ];

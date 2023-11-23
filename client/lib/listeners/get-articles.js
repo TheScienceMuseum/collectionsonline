@@ -1,9 +1,9 @@
-var getData = require('../get-data');
-var Templates = require('../../templates');
+const getData = require('../get-data');
+const Templates = require('../../templates');
 
 module.exports = function (ctx) {
-  var url = '/articles/' + ctx.params.id;
-  var opts = {
+  const url = '/articles/' + ctx.params.id;
+  const opts = {
     headers: { Accept: 'application/vnd.api+json' }
   };
 
@@ -11,8 +11,8 @@ module.exports = function (ctx) {
     if (err) {
       console.error(err);
     } else if (data.data.length >= 1) {
-      var articles = document.getElementById('articles');
-      articles.innerHTML = Templates['articles'](data);
+      const articles = document.getElementById('articles');
+      articles.innerHTML = Templates.articles(data);
     }
   });
 };

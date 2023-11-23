@@ -432,7 +432,7 @@ testWithServer(file + 'Should accept on_display true', {}, async (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'on_display': true }),
+    url: '/search?' + QueryString.stringify({ q: 'test', on_display: true }),
     headers: { Accept: 'text/html' }
   };
 
@@ -446,7 +446,7 @@ testWithServer(file + 'Should accept on_display false', {}, async (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'on_display': false }),
+    url: '/search?' + QueryString.stringify({ q: 'test', on_display: false }),
     headers: { Accept: 'text/html' }
   };
 
@@ -460,7 +460,7 @@ testWithServer(file + 'Should not accept invalid on_display', {}, async (t, ctx)
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'on_display': 'not a bool' }),
+    url: '/search?' + QueryString.stringify({ q: 'test', on_display: 'not a bool' }),
     headers: { Accept: 'text/html' }
   };
 
@@ -684,7 +684,7 @@ testWithServer(file + 'Should accept single image_license', {}, async (t, ctx) =
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'image_license': 'true' }),
+    url: '/search?' + QueryString.stringify({ q: 'test', image_license: 'true' }),
     headers: { Accept: 'text/html' }
   };
 
@@ -698,7 +698,7 @@ testWithServer(file + 'Should not accept array of multiple image_license as json
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', 'image_license': ['CC BY-NC-SA', 'CC BY-SA'] }),
+    url: '/search?' + QueryString.stringify({ q: 'test', image_license: ['CC BY-NC-SA', 'CC BY-SA'] }),
     headers: { Accept: 'application/vnd.api+json' }
   };
 
@@ -778,7 +778,7 @@ testWithServer(file + 'Should accept user params', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/search?' + QueryString.stringify({
-      'user': 'Great Central Railway'
+      user: 'Great Central Railway'
     }),
     headers: { Accept: 'text/html' }
   };
@@ -794,7 +794,7 @@ testWithServer(file + 'Should not return people or organisations as object type'
   const htmlRequest = {
     method: 'GET',
     url: '/search?' + QueryString.stringify({
-      'q': 'Asbestos'
+      q: 'Asbestos'
     }),
     headers: { Accept: 'application/vnd.api+json' }
   };
@@ -810,7 +810,7 @@ testWithServer(file + 'Should filter by has image', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/search?' + QueryString.stringify({
-      'q': '',
+      q: '',
       'filter[has_image]': 'true'
     }),
     headers: { Accept: 'application/vnd.api+json' }
@@ -828,13 +828,13 @@ testWithServer(file + 'Should have image and license facets', {}, async (t, ctx)
   const htmlRequest = {
     method: 'GET',
     url: '/search?' + QueryString.stringify({
-      'q': ''
+      q: ''
     }),
     headers: { Accept: 'application/vnd.api+json' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
-  var result = JSON.parse(res.payload);
+  const result = JSON.parse(res.payload);
   t.equal(res.statusCode, 200, 'Status code was as expected');
   t.ok(result.meta.filters.has_image[0].count >= result.meta.filters.image_license[0].count, 'more images than images with licenses');
   t.end();
@@ -850,7 +850,7 @@ testWithServer(file + 'Should filter by image tag cat - json', {}, async (t, ctx
   };
 
   const res = await ctx.server.inject(htmlRequest);
-  var result = JSON.parse(res.payload);
+  const result = JSON.parse(res.payload);
   t.equal(res.statusCode, 200, 'Status code was as expected');
   t.ok(result.data.length > 1, 'There is at least one image tag');
   t.end();
@@ -862,7 +862,7 @@ testWithServer(file + 'Should filter by image tag - html', {}, async (t, ctx) =>
   const htmlRequest = {
     method: 'GET',
     url: '/search/imgtag/cat' + QueryString.stringify({
-      'q': ''
+      q: ''
     }),
     headers: { Accept: 'text/html' }
   };

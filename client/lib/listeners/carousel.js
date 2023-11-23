@@ -1,20 +1,20 @@
-var Flickity = require('flickity');
+const Flickity = require('flickity');
 require('flickity-imagesloaded');
 
 module.exports = ctx => {
-  var carousel = document.querySelector('.carousel');
+  const carousel = document.querySelector('.carousel');
   if (carousel) {
-    var thumbnails = document.getElementsByClassName('record-imgpanel__thumb');
-    var captions = Array.prototype.slice.call(
+    const thumbnails = document.getElementsByClassName('record-imgpanel__thumb');
+    const captions = Array.prototype.slice.call(
       document.getElementsByClassName('record-imgpanel__caption')
     );
-    var rights = Array.prototype.slice.call(
+    const rights = Array.prototype.slice.call(
       document.getElementsByClassName('cite__menu__methods')
     );
-    var zooms = Array.prototype.slice.call(
+    const zooms = Array.prototype.slice.call(
       document.getElementsByClassName('osd__toolbar-container')
     );
-    var useImage = Array.prototype.slice.call(
+    const useImage = Array.prototype.slice.call(
       document.getElementsByClassName('cite__button')
     );
 
@@ -28,7 +28,7 @@ module.exports = ctx => {
         'M 0,50 L 45.67,4.33 L 52.5,11.16 L 18.49,45.17 L 100,45.17 L 100,54.83 L 18.49,54.83 L 52.5,88.84 45.67,95.67 Z'
     });
 
-    var flkty = Flickity.data(carousel);
+    const flkty = Flickity.data(carousel);
     ctx.carousel.on('select', function () {
       if (navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)) {
         document.querySelector('#openseadragon').style.width = '100%';
@@ -46,7 +46,7 @@ module.exports = ctx => {
         useImage.forEach(el => showHide('cite__button', flkty, el));
       }
 
-      let carouselImage = document.querySelectorAll('.carousel__image.is-selected');
+      const carouselImage = document.querySelectorAll('.carousel__image.is-selected');
 
       if (carouselImage.length) {
         ctx.imgUrl = carouselImage[0].dataset.osd;
@@ -60,7 +60,7 @@ module.exports = ctx => {
     );
   }
 
-  var citeButton = document.getElementsByClassName('cite__button');
+  const citeButton = document.getElementsByClassName('cite__button');
 
   if (citeButton) {
     Array.prototype.slice.call(citeButton).forEach((el, i) =>
@@ -75,9 +75,9 @@ module.exports = ctx => {
     );
   }
 
-  var homeCarousel = document.querySelector('.home-carousel__flickity');
+  const homeCarousel = document.querySelector('.home-carousel__flickity');
   if (homeCarousel) {
-    var homeCarouselFlkty = new Flickity(homeCarousel, {
+    const homeCarouselFlkty = new Flickity(homeCarousel, {
       wrapAround: true,
       pageDots: false,
       imagesLoaded: true,
@@ -92,10 +92,10 @@ module.exports = ctx => {
           offsetContainer();
           this.select(0);
           // move buttons to before the main carousel
-          let buttons = homeCarousel.querySelectorAll(
+          const buttons = homeCarousel.querySelectorAll(
             '.flickity-prev-next-button'
           );
-          let before = document.querySelector(
+          const before = document.querySelector(
             '.home-carousel .flickity-buttonholder'
           );
           buttons.forEach(b => {
@@ -110,9 +110,9 @@ module.exports = ctx => {
   }
   function offsetContainer () {
     // to mirror main site carousels, we want to bust out of column container on right side only.
-    var windowWidth = document.body.offsetWidth;
-    var containerWidth = document.querySelector('.row').offsetWidth; // any row will do!
-    var offsetWidth = (windowWidth - containerWidth) / 2 + 8;
+    const windowWidth = document.body.offsetWidth;
+    const containerWidth = document.querySelector('.row').offsetWidth; // any row will do!
+    const offsetWidth = (windowWidth - containerWidth) / 2 + 8;
     document.querySelector(
       '.home-carousel__flickity .flickity-viewport'
     ).style.marginLeft =

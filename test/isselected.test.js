@@ -4,7 +4,7 @@ const isSelected = require('../templates/helpers/isselected.js');
 test('Should check correctly', (t) => {
   const selected = {
     'filter[occupation]': {
-      'artist': true
+      artist: true
     }
   };
   t.plan(2);

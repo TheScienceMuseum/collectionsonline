@@ -1,4 +1,4 @@
-var config = require('../config.js');
+const config = require('../config.js');
 const cacheHeaders = require('./route-helpers/cache-control');
 
 module.exports = () => ({

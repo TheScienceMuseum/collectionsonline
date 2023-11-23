@@ -7,7 +7,7 @@ module.exports = (elastic, config) => ({
     handler: async function (request, h) {
       try {
         const result = await elastic.search({
-          index: 'smg',
+          index: 'ciim',
           type: 'object',
           body: {
             size: 1,
@@ -17,7 +17,7 @@ module.exports = (elastic, config) => ({
                   bool:
                   {
                     must: [
-                      { term: { 'type.base': 'object' } },
+                      { term: { '@datatype.base': 'object' } },
                       { exists: { field: 'multimedia' } }
                     ],
                     must_not: [{ exists: { field: 'admin.analytics.count.current' } }]
@@ -34,7 +34,7 @@ module.exports = (elastic, config) => ({
           }
         });
         return h.response(
-          result.hits.hits[0]
+          result.body.hits.hits[0]
         );
       } catch (err) {
         return new Boom(err);

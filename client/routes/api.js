@@ -1,17 +1,17 @@
-var Snackbar = require('snackbarlightjs');
-var Templates = require('../templates');
-var getData = require('../lib/get-data.js');
+const Snackbar = require('snackbarlightjs');
+const Templates = require('../templates');
+const getData = require('../lib/get-data.js');
 
 module.exports = function (page) {
   page('/api/:type/:id', load, render);
 
   function load (ctx, next) {
-    var opts = {
+    const opts = {
       headers: { Accept: 'application/vnd.api+json' }
     };
-    var type = ctx.params.type;
-    var id = ctx.params.id;
-    var url = '/api/' + type + '/' + id + '?ajax=true';
+    const type = ctx.params.type;
+    const id = ctx.params.id;
+    const url = '/api/' + type + '/' + id + '?ajax=true';
     getData(url, opts, function (err, json) {
       if (err) {
         console.error(err);
@@ -24,7 +24,7 @@ module.exports = function (page) {
   }
 
   function render (ctx, next) {
-    var pageEl = document.getElementById('main-page');
-    pageEl.innerHTML = Templates['api']({api: ctx.json});
+    const pageEl = document.getElementById('main-page');
+    pageEl.innerHTML = Templates.api({ api: ctx.json });
   }
 };

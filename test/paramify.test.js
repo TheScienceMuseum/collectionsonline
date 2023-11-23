@@ -1,10 +1,10 @@
-var test = require('tape');
-var paramify = require('../lib/helpers/paramify.js');
-var dir = __dirname.split('/')[__dirname.split('/').length - 1];
-var file = dir + __filename.replace(__dirname, '') + ' > ';
+const test = require('tape');
+const paramify = require('../lib/helpers/paramify.js');
+const dir = __dirname.split('/')[__dirname.split('/').length - 1];
+const file = dir + __filename.replace(__dirname, '') + ' > ';
 
 test(file + 'paramify transforms query', (t) => {
-  var query = {
+  const query = {
     has_image: true,
     categories: 'Art'
   };

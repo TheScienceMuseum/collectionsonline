@@ -9,7 +9,7 @@ module.exports = (elastic, config) => ({
   config: {
     cache: cacheHeaders(config, 3600),
     handler: async function (request, h) {
-      var responseType = contentType(request);
+      const responseType = contentType(request);
 
       if (responseType === 'notAcceptable') {
         return h.response('Not Acceptable').code(406);
@@ -20,14 +20,14 @@ module.exports = (elastic, config) => ({
 
         const imgTags = result.aggregations.img_tags_aggs.imgtags.buckets;
         const imgTagsParents = result.aggregations.img_tags_aggs.imgtagsParents.buckets;
-        var imgTagSet = new Set();
+        const imgTagSet = new Set();
         imgTags.concat(imgTagsParents).forEach(t => {
           imgTagSet.add(t.key.toLowerCase());
         });
         const tags = Array.from(imgTagSet).sort();
 
         if (responseType === 'html') {
-          return h.view('imgtags', {tags: tags});
+          return h.view('imgtags', { tags });
         } else if (responseType === 'json') {
           return h.response(tags)
             .header('content-type', 'application/vnd.api+json');

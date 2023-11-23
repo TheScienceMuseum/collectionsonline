@@ -28,7 +28,7 @@ module.exports = async (elastic, config, cb) => {
       {
         plugin: require('./routes/plugins/error'),
         options: {
-          config: config
+          config
         }
       }
     ]);

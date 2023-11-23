@@ -1,5 +1,5 @@
-var Fs = require('fs');
-var Handlebars = require('handlebars');
+const Fs = require('fs');
+const Handlebars = require('handlebars');
 
 // Partials
 Handlebars.registerPartial(
@@ -29,7 +29,7 @@ Handlebars.registerPartial(
 
 Handlebars.registerPartial(
   'global/global-footer',
-   Fs.readFileSync('./templates/partials/global/global-footer.html', 'utf8')
+  Fs.readFileSync('./templates/partials/global/global-footer.html', 'utf8')
 );
 
 Handlebars.registerPartial(
@@ -375,7 +375,7 @@ Handlebars.registerHelper(
 
 // Routes
 module.exports = {
-  '404': Handlebars.compile(
+  404: Handlebars.compile(
     Fs.readFileSync('./templates/pages/404.html', 'utf8')
   ),
   home: Handlebars.compile(

@@ -1,8 +1,8 @@
 module.exports = (selected, facet, name) => {
-  var isSelected = false;
+  let isSelected = false;
 
   if (selected[facet] && typeof name === 'string') {
-    for (var filterName in selected[facet]) {
+    for (const filterName in selected[facet]) {
       if (filterName.toLowerCase().split(' ').join('-') === name.toLowerCase().split(' ').join('-')) {
         isSelected = true;
       }

@@ -1,16 +1,16 @@
-var svg4everybody = require('svg4everybody');
-var searchBox = require('./search-box');
-var clipboard = require('./clipboard');
-var map = require('./map');
-var moreButton = require('./more-button');
-var moreCordion = require('smg-web-design-system/dist/js/accordion');
-var carousel = require('./carousel');
-var moreDetails = require('./expand-details-button');
-var audioplayer = require('smg-web-design-system/dist/js/audioplayer');
-var mediaplayer = require('./mediaplayer');
-var headerMenu = require('smg-web-design-system/dist/js/menu');
-var illuminate = require('smg-web-design-system/dist/js/illuminate');
-var osd = require('./osd');
+const svg4everybody = require('svg4everybody');
+const searchBox = require('./search-box');
+const clipboard = require('./clipboard');
+const map = require('./map');
+const moreButton = require('./more-button');
+const moreCordion = require('smg-web-design-system/dist/js/accordion');
+const carousel = require('./carousel');
+const moreDetails = require('./expand-details-button');
+const audioplayer = require('smg-web-design-system/dist/js/audioplayer');
+const mediaplayer = require('./mediaplayer');
+const headerMenu = require('smg-web-design-system/dist/js/menu');
+const illuminate = require('smg-web-design-system/dist/js/illuminate');
+const osd = require('./osd');
 
 module.exports = ctx => {
   svg4everybody();

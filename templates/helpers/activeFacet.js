@@ -1,3 +1,3 @@
 module.exports = function (selectedFilters, facet) {
-  return selectedFilters.hasOwnProperty(facet);
+  return Object.prototype.hasOwnProperty.call(selectedFilters, facet);
 };

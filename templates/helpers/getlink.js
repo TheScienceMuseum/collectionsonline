@@ -1,6 +1,6 @@
-var getNested = require('../../lib/nested-property');
+const getNested = require('../../lib/nested-property');
 module.exports = function (obj, options) {
-  var id;
+  let id;
   if (obj.tree) {
     id = obj.tree.id;
   } else {

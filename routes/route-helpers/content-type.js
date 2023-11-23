@@ -2,13 +2,13 @@
 * Return "json" "html" or "notAcceptable"
 */
 module.exports = function (request) {
-  var jsonAcceptHeaders = ['application/vnd.api+json', 'application/json'];
-  var htmlAcceptHeaders = ['text/html', '*/*'];
+  const jsonAcceptHeaders = ['application/vnd.api+json', 'application/json'];
+  const htmlAcceptHeaders = ['text/html', '*/*'];
 
   if (request.headers.accept) {
-    var accept = request.headers.accept;
-    var jsonContent = typesInHeaders(accept, jsonAcceptHeaders);
-    var htmlContent = typesInHeaders(accept, htmlAcceptHeaders);
+    const accept = request.headers.accept;
+    const jsonContent = typesInHeaders(accept, jsonAcceptHeaders);
+    const htmlContent = typesInHeaders(accept, htmlAcceptHeaders);
     // if accept header has both json and html return notAcceptable
     if (jsonContent && htmlContent) {
       // ammened as this seem to cause issues with CLiudfortn and Crawlers
@@ -25,7 +25,7 @@ module.exports = function (request) {
     }
   }
 
-  var twitterBot = (request.headers['user-agent'] || '').indexOf('Twitterbot') > -1;
+  const twitterBot = (request.headers['user-agent'] || '').indexOf('Twitterbot') > -1;
   if (twitterBot) {
     return 'html';
   }
@@ -36,7 +36,7 @@ module.exports = function (request) {
 };
 
 function typesInHeaders (acceptHeaders, contentTypes) {
-  var result = false;
+  let result = false;
   contentTypes.forEach(function (type) {
     if (acceptHeaders.indexOf(type) > -1) {
       result = true;
