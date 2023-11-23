@@ -14,7 +14,7 @@
     "async": "^2.6.4",
     "awesomplete": "git+https://github.com/TheScienceMuseum/awesomplete.git",
     "aws-sdk": "^2.1168.0",
-    "axios": "^0.24.0",
+    "axios": "^1.6.0",
     "boom": "^7.3.0",
     "catbox": "^10.0.6",
     "catbox-redis": "^4.2.4",
