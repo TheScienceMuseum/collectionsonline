@@ -1,8 +1,8 @@
 'use strict';
 
 function toggle (e) {
-  var button = e.target;
-  var detailElem = button.parentElement.querySelector('dd.toggle-detail');
+  const button = e.target;
+  const detailElem = button.parentElement.querySelector('dd.toggle-detail');
 
   if (detailElem.className.indexOf('hidden') === -1) {
     detailElem.classList.add('hidden');
@@ -16,7 +16,7 @@ function toggle (e) {
 }
 
 module.exports = function () {
-  var hideThis = document.querySelectorAll('.record-details__toggler');
+  const hideThis = document.querySelectorAll('.record-details__toggler');
   [].forEach.call(hideThis, function (el) {
     el.addEventListener('click', toggle);
   });

@@ -4,15 +4,15 @@ const getData = require('../get-data');
 
 module.exports = function () {
   let currentRequestId = null;
-  var searchbox = document.getElementById('searchbox');
-  var searchinput = document.querySelector('#searchbox [type=search]');
-  var awesomplete = new Awesomplete(searchinput, {
+  const searchbox = document.getElementById('searchbox');
+  const searchinput = document.querySelector('#searchbox [type=search]');
+  const awesomplete = new Awesomplete(searchinput, {
     minChars: 3,
     autoFirst: false,
     listLabel: 'Search results'
   });
   searchinput.addEventListener('keyup', debounce(function (e) {
-    var q = e.target.value;
+    const q = e.target.value;
     if (q.length > 0 && e.key !== 'Enter') {
       const requestId = currentRequestId = Date.now();
       const url = `/autocomplete?q=${encodeURIComponent(q)}`;
@@ -54,7 +54,7 @@ module.exports = function () {
   );
 
   if (document.location.pathname === '/') {
-    var focused = document.activeElement;
+    const focused = document.activeElement;
     if (
       !focused ||
       focused === document.body ||

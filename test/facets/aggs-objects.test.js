@@ -7,7 +7,7 @@ const aggregationObjects = require('../../lib/facets/aggs-all');
 
 test(file + 'The filters date are not included in the aggregation filters', (t) => {
   const query = queryString.parse('q=ada&filter%5Bdate%5Bfrom%5D%5D=wrongdate&filter%5Bdate%5Bto%5D%5D=wrongdate&page%5Bsize%5D=50');
-  const queryParams = createQueryParams('html', {query: query, params: {}});
+  const queryParams = createQueryParams('html', { query, params: {} });
   queryParams.filter.objects.dateFrom = new Date('wrongDate');
   queryParams.filter.objects.dateTo = new Date('wrongDate');
   const aggregation = aggregationObjects(queryParams);

@@ -25,7 +25,7 @@ module.exports = (elastic, config) => ({
     }
   },
   handler: async function (request, h) {
-    var responseType = contentType(request);
+    const responseType = contentType(request);
     if (responseType === 'json') {
       const queryParams = Object.assign({}, request.params, request.query);
 

@@ -1,6 +1,6 @@
 module.exports = function findCategory (path) {
-  var categoryRegex = /(objects|people|documents)/g;
-  var match = categoryRegex.exec(path);
+  const categoryRegex = /(objects|people|documents)/g;
+  const match = categoryRegex.exec(path);
   if (match) {
     return match[1];
   }

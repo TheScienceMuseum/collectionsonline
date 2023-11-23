@@ -1,7 +1,7 @@
-var splitOnUnescapedCommas = require('./split-commas.js');
+const splitOnUnescapedCommas = require('./split-commas.js');
 
 module.exports = (queryString) => {
-  var qObj = {};
+  const qObj = {};
   Object.keys(queryString).forEach(key => {
     qObj[key] = splitOnUnescapedCommas(queryString[key]);
   });

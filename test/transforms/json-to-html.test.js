@@ -4,7 +4,7 @@ const buildJSONResponse = require('../../lib/jsonapi-response');
 const JSONAPIResponse = buildJSONResponse(require('../fixtures/elastic-responses/example-get-response-person.json'), config);
 const noBirthdayResponse = buildJSONResponse(require('../fixtures/elastic-responses/example-get-response-death.json'), config);
 const buildHTMLData = require('../../lib/transforms/json-to-html-data');
-var HTMLData;
+let HTMLData;
 
 test('HTMLData should be transformed succesfully', (t) => {
   t.plan(1);

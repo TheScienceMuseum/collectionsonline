@@ -4,8 +4,8 @@ const createQueryParams = require('../../lib/query-params/query-params');
 module.exports = function (elastic, searchToCopy, database, next) {
   database.search = database.search || {};
   // define a search error response
-  database.search.error = { error: { 'status': 400, 'displayName': 'BadRequest', 'message': 'Bad Request' }, response: null };
-  var count = 0;
+  database.search.error = { error: { status: 400, displayName: 'BadRequest', message: 'Bad Request' }, response: null };
+  let count = 0;
   searchToCopy.forEach(async searchItem => {
     const parameters = { query: { q: searchItem.q }, params: searchItem.params };
     // add other query parameters

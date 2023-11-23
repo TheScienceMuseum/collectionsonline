@@ -14,7 +14,7 @@ const queryString = (params) => paramify(params) + querify(params);
 
 test(file + 'Should create valid meta count numbers', (t) => {
   t.plan(7);
-  var testResult = {
+  const testResult = {
     took: 0,
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
@@ -34,15 +34,15 @@ test(file + 'Should create valid meta count numbers', (t) => {
     aggregations: {
       total_categories: {
         doc_count: 17,
-        documents: { doc_count: 0, documents_total: [{value: 29}] },
-        objects: { doc_count: 13, objects_total: [{value: 3304}] },
-        people: { doc_count: 4, people_total: [{value: 221}] },
+        documents: { doc_count: 0, documents_total: [{ value: 29 }] },
+        objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
+        people: { doc_count: 4, people_total: [{ value: 221 }] },
         all: {
           doc_count: 17,
           all_total: {
             doc_count_error_upper_bound: 0,
             sum_other_doc_count: 0,
-            buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ]
+            buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
           }
         }
       }
@@ -54,8 +54,8 @@ test(file + 'Should create valid meta count numbers', (t) => {
   testResult.aggregations.objects = aggregationsObjects;
   testResult.aggregations.documents = aggregationsDocuments;
 
-  var obj;
-  var query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
+  let obj;
+  const query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
   t.doesNotThrow(() => {
     obj = searchResultsToJsonApi(query, testResult);
   }, 'Transform did not throw');
@@ -72,7 +72,7 @@ test(file + 'Should create valid meta count numbers', (t) => {
 test(file + 'Should create valid meta default count numbers for empty aggregations', (t) => {
   t.plan(7);
 
-  var testResult = {
+  const testResult = {
     took: 0,
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
@@ -83,16 +83,16 @@ test(file + 'Should create valid meta default count numbers for empty aggregatio
         {
           _type: 'object',
           _id: `smg-object-${Date.now()}`,
-          _source: {summary_title: 'this is the summary title'}
+          _source: { summary_title: 'this is the summary title' }
         }
       ]
     },
     aggregations: {
       total_categories: {
         doc_count: 17,
-        documents: { doc_count: 0, documents_total: [{value: 29}] },
-        objects: { doc_count: 13, objects_total: [{value: 3304}] },
-        people: { doc_count: 4, people_total: [{value: 221}] },
+        documents: { doc_count: 0, documents_total: [{ value: 29 }] },
+        objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
+        people: { doc_count: 4, people_total: [{ value: 221 }] },
         all: {
           doc_count: 17,
           all_total: {
@@ -110,8 +110,8 @@ test(file + 'Should create valid meta default count numbers for empty aggregatio
   testResult.aggregations.objects = aggregationsObjects;
   testResult.aggregations.documents = aggregationsDocuments;
 
-  var obj;
-  var query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
+  let obj;
+  const query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
 
   t.doesNotThrow(() => {
     obj = searchResultsToJsonApi(query, testResult);
@@ -128,7 +128,7 @@ test(file + 'Should create valid meta default count numbers for empty aggregatio
 
 test(file + 'Should create valid links on first page', (t) => {
   t.plan(6);
-  var testResult = {
+  const testResult = {
     took: 0,
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
@@ -139,22 +139,22 @@ test(file + 'Should create valid links on first page', (t) => {
         {
           _type: 'object',
           _id: `smg-object-${Date.now()}`,
-          _source: {summary_title: 'this is the summary title'}
+          _source: { summary_title: 'this is the summary title' }
         }
       ]
     },
     aggregations: {
       total_categories: {
         doc_count: 17,
-        documents: { doc_count: 0, documents_total: [{value: 29}] },
-        objects: { doc_count: 13, objects_total: [{value: 3304}] },
-        people: { doc_count: 4, people_total: [{value: 221}] },
+        documents: { doc_count: 0, documents_total: [{ value: 29 }] },
+        objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
+        people: { doc_count: 4, people_total: [{ value: 221 }] },
         all: {
           doc_count: 17,
           all_total: {
             doc_count_error_upper_bound: 0,
             sum_other_doc_count: 0,
-            buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ]
+            buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
           }
         }
       }
@@ -166,14 +166,14 @@ test(file + 'Should create valid links on first page', (t) => {
   testResult.aggregations.objects = aggregationsObjects;
   testResult.aggregations.documents = aggregationsDocuments;
 
-  var obj;
-  var query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
+  let obj;
+  const query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
 
   t.doesNotThrow(() => {
     obj = searchResultsToJsonApi(query, testResult);
   }, 'Transform did not throw');
 
-  var qs;
+  let qs;
 
   qs = queryString({ q: 'test', 'page[number]': 0, 'page[size]': 1 });
   t.equal(obj.links.self, '/search' + qs, 'Self page link was correct');
@@ -194,7 +194,7 @@ test(file + 'Should create valid links on first page', (t) => {
 
 test(file + 'Should create valid links on middle page', (t) => {
   t.plan(6);
-  var testResult = {
+  const testResult = {
     took: 0,
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
@@ -205,22 +205,22 @@ test(file + 'Should create valid links on middle page', (t) => {
         {
           _type: 'object',
           _id: `smg-object-${Date.now()}`,
-          _source: {summary_title: 'this is the summary title'}
+          _source: { summary_title: 'this is the summary title' }
         }
       ]
     },
     aggregations: {
       total_categories: {
         doc_count: 17,
-        documents: { doc_count: 0, documents_total: [{value: 29}] },
-        objects: { doc_count: 13, objects_total: [{value: 3304}] },
-        people: { doc_count: 4, people_total: [{value: 221}] },
+        documents: { doc_count: 0, documents_total: [{ value: 29 }] },
+        objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
+        people: { doc_count: 4, people_total: [{ value: 221 }] },
         all: {
           doc_count: 17,
           all_total: {
             doc_count_error_upper_bound: 0,
             sum_other_doc_count: 0,
-            buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ]
+            buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
           }
         }
       }
@@ -231,14 +231,14 @@ test(file + 'Should create valid links on middle page', (t) => {
   testResult.aggregations.objects = aggregationsObjects;
   testResult.aggregations.documents = aggregationsDocuments;
 
-  var obj;
-  var query = queryParams('html', { query: { q: 'test', 'page[number]': 1, 'page[size]': 1 }, params: {} });
+  let obj;
+  const query = queryParams('html', { query: { q: 'test', 'page[number]': 1, 'page[size]': 1 }, params: {} });
 
   t.doesNotThrow(() => {
     obj = searchResultsToJsonApi(query, testResult);
   }, 'Transform did not throw');
 
-  var qs;
+  let qs;
 
   qs = queryString({ q: 'test', 'page[number]': 1, 'page[size]': 1 });
   t.equal(obj.links.self, '/search' + qs, 'Self page link was correct');
@@ -261,7 +261,7 @@ test(file + 'Should create valid links on middle page', (t) => {
 test(file + 'Should create valid links on last page', (t) => {
   t.plan(6);
 
-  var testResult = {
+  const testResult = {
     took: 0,
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
@@ -272,22 +272,22 @@ test(file + 'Should create valid links on last page', (t) => {
         {
           _type: 'object',
           _id: `smg-object-${Date.now()}`,
-          _source: {summary_title: 'this is the summary title'}
+          _source: { summary_title: 'this is the summary title' }
         }
       ]
     },
     aggregations: {
       total_categories: {
         doc_count: 17,
-        documents: { doc_count: 0, documents_total: [{value: 29}] },
-        objects: { doc_count: 13, objects_total: [{value: 3304}] },
-        people: { doc_count: 4, people_total: [{value: 221}] },
+        documents: { doc_count: 0, documents_total: [{ value: 29 }] },
+        objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
+        people: { doc_count: 4, people_total: [{ value: 221 }] },
         all: {
           doc_count: 17,
           all_total: {
             doc_count_error_upper_bound: 0,
             sum_other_doc_count: 0,
-            buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ]
+            buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
           }
         }
       }
@@ -299,14 +299,14 @@ test(file + 'Should create valid links on last page', (t) => {
   testResult.aggregations.objects = aggregationsObjects;
   testResult.aggregations.documents = aggregationsDocuments;
 
-  var obj;
-  var query = queryParams('html', { query: { q: 'test', 'page[number]': 4, 'page[size]': 1 }, params: {} });
+  let obj;
+  const query = queryParams('html', { query: { q: 'test', 'page[number]': 4, 'page[size]': 1 }, params: {} });
 
   t.doesNotThrow(() => {
     obj = searchResultsToJsonApi(query, testResult);
   }, 'Transform did not throw');
 
-  var qs;
+  let qs;
 
   qs = queryString({ q: 'test', 'page[number]': 4, 'page[size]': 1 });
   t.equal(obj.links.self, '/search' + qs, 'Self page link was correct');
@@ -328,7 +328,7 @@ test(file + 'Should create valid links on last page', (t) => {
 test(file + 'Should ignore unknown object types', (t) => {
   t.plan(3);
 
-  var testResult = {
+  const testResult = {
     took: 0,
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
@@ -339,22 +339,22 @@ test(file + 'Should ignore unknown object types', (t) => {
         {
           _type: 'wrongtype',
           _id: `smg-object-${Date.now()}`,
-          _source: {summary_title: 'this is the summary title'}
+          _source: { summary_title: 'this is the summary title' }
         }
       ]
     },
     aggregations: {
       total_categories: {
         doc_count: 17,
-        documents: { doc_count: 0, documents_total: [{value: 29}] },
-        objects: { doc_count: 13, objects_total: [{value: 3304}] },
-        people: { doc_count: 4, people_total: [{value: 221}] },
+        documents: { doc_count: 0, documents_total: [{ value: 29 }] },
+        objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
+        people: { doc_count: 4, people_total: [{ value: 221 }] },
         all: {
           doc_count: 17,
           all_total: {
             doc_count_error_upper_bound: 0,
             sum_other_doc_count: 0,
-            buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ]
+            buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
           }
         }
       }
@@ -366,8 +366,8 @@ test(file + 'Should ignore unknown object types', (t) => {
   testResult.aggregations.objects = aggregationsObjects;
   testResult.aggregations.documents = aggregationsDocuments;
 
-  var obj;
-  var query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 50 }, params: {} });
+  let obj;
+  const query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 50 }, params: {} });
 
   t.doesNotThrow(() => {
     obj = searchResultsToJsonApi(query, testResult);
@@ -384,7 +384,7 @@ test(file + 'Should extract @link\'d document to relationships and included', (t
   const relId = `smg-agent-${Date.now()}`;
   const relSummaryTitle = 'Charles Babbage';
 
-  var testResult = {
+  const testResult = {
     took: 0,
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
@@ -410,15 +410,15 @@ test(file + 'Should extract @link\'d document to relationships and included', (t
     aggregations: {
       total_categories: {
         doc_count: 17,
-        documents: { doc_count: 0, documents_total: [{value: 29}] },
-        objects: { doc_count: 13, objects_total: [{value: 3304}] },
-        people: { doc_count: 4, people_total: [{value: 221}] },
+        documents: { doc_count: 0, documents_total: [{ value: 29 }] },
+        objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
+        people: { doc_count: 4, people_total: [{ value: 221 }] },
         all: {
           doc_count: 17,
           all_total: {
             doc_count_error_upper_bound: 0,
             sum_other_doc_count: 0,
-            buckets: [ { key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 } ]
+            buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
           }
         }
       }
@@ -430,8 +430,8 @@ test(file + 'Should extract @link\'d document to relationships and included', (t
   testResult.aggregations.objects = aggregationsObjects;
   testResult.aggregations.documents = aggregationsDocuments;
 
-  var obj;
-  var query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
+  let obj;
+  const query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
 
   t.doesNotThrow(() => {
     obj = searchResultsToJsonApi(query, testResult);

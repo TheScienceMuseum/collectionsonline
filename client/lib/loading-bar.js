@@ -1,4 +1,4 @@
-var loadingEl = function () {
+const loadingEl = function () {
   // Attach the loading bar to a different element if on the home page
   return (
     document.querySelector('.home-banner') ||

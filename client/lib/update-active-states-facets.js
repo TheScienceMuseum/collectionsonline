@@ -1,8 +1,8 @@
 module.exports = function (statesFacets, typeSearch) {
-  var type = typeSearch || 'all';
+  const type = typeSearch || 'all';
 
-  var activeFacets = Array.prototype.slice.call(document.querySelectorAll('.filter--active:not(.filter--uncollapsible)'));
-  var activeFacetNames = activeFacets.map(function (f) {
+  const activeFacets = Array.prototype.slice.call(document.querySelectorAll('.filter--active:not(.filter--uncollapsible)'));
+  const activeFacetNames = activeFacets.map(function (f) {
     return f.getAttribute('data-filter');
   });
 
@@ -10,14 +10,14 @@ module.exports = function (statesFacets, typeSearch) {
     statesFacets[type][name] = 'active';
   });
 
-  var statesFacetsActive = [];
-  var facetKeys = Object.keys(statesFacets[type]);
-  for (var i = 0; i < facetKeys.length; i++) {
+  const statesFacetsActive = [];
+  const facetKeys = Object.keys(statesFacets[type]);
+  for (let i = 0; i < facetKeys.length; i++) {
     if (statesFacets[type][facetKeys[i]] === 'active') {
       statesFacetsActive.push(facetKeys[i]);
     }
   }
-  for (i = 0; i < statesFacetsActive.length; i++) {
+  for (let i = 0; i < statesFacetsActive.length; i++) {
     if (activeFacetNames.indexOf(statesFacetsActive[i]) === -1) {
       statesFacets[type][statesFacetsActive[i]] = 'open';
     }

@@ -27,7 +27,7 @@ exports.plugin = {
         }
 
         if (error.output.statusCode === 404) {
-          var data = {};
+          const data = {};
           data.navigation = require('../../fixtures/navigation');
           data.museums = require('../../fixtures/museums');
           data.items = require('../../fixtures/404.js')(options.config);

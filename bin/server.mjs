@@ -1,5 +1,4 @@
 import { Client } from '@elastic/elasticsearch';
-
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 

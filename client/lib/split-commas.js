@@ -6,8 +6,8 @@
 * @param {string} str - string to split into an array
 **/
 module.exports = function splitOnUnescapedCommas (str) {
-  var splitResult = [];
-  for (var i = 0; i < str.length; i++) {
+  let splitResult = [];
+  for (let i = 0; i < str.length; i++) {
     if (str[i] === ',') {
       if (str[i - 1] !== '\\') {
         splitResult.push(str.substr(0, i));

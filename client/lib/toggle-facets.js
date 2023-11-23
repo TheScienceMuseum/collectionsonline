@@ -3,15 +3,15 @@
 * This function also update the general display state object for the facets
 */
 module.exports = function (facetsStates, typeSearch) {
-  var type = typeSearch || 'all';
-  var facets = Array.prototype.slice.call(document.querySelectorAll('.filter:not(.filter--active):not(.filter--uncollapsible)'));
+  const type = typeSearch || 'all';
+  const facets = Array.prototype.slice.call(document.querySelectorAll('.filter:not(.filter--active):not(.filter--uncollapsible)'));
   facets.forEach(function (facet) {
-    var link = facet.querySelector('a');
+    const link = facet.querySelector('a');
     link.addEventListener('click', function (e) {
       e.preventDefault();
       facet.classList.toggle('filter--open');
-      var facetName = facet.getAttribute('data-filter');
-      var state = facetsStates[type][facetName];
+      const facetName = facet.getAttribute('data-filter');
+      const state = facetsStates[type][facetName];
       if (state === 'open') {
         facetsStates[type][facetName] = 'close';
       }

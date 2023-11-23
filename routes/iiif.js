@@ -19,7 +19,7 @@ module.exports = (elastic, config) => ({
       try {
         const result = await elastic.get({ index: 'ciim', type: TypeMapping.toInternal(request.params.type), id: TypeMapping.toInternal(request.params.id) });
 
-        var iiifData = buildJSONResponse(result, config);
+        const iiifData = buildJSONResponse(result, config);
         iiifData.self = config.rootUrl + '/iiif/' + iiifData.data.type + '/' + iiifData.data.id;
 
         return h.response(

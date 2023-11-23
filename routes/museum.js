@@ -2,7 +2,7 @@ const Joi = require('joi');
 const Boom = require('boom');
 const filterSchema = require('../schemas/filter');
 const searchSchema = require('../schemas/search');
-var Querystring = require('querystring');
+const Querystring = require('querystring');
 
 module.exports = {
   scm () {

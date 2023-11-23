@@ -1,7 +1,7 @@
 const test = require('tape');
 const sortRelatedItems = require('../lib/sort-related-items.js');
-var sortedItems;
-var relatedItems = [
+let sortedItems;
+const relatedItems = [
   {
     _id: 'smgc-object-1234',
     _type: 'object',
