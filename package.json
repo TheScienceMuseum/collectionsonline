@@ -63,7 +63,7 @@
     "babelify": "^10.0.0",
     "brfs": "^1.6.1",
     "browserify": "^13.0.1",
-    "chromedriver": "^98.0.0",
+    "chromedriver": "^119.0.1",
     "codecov": "^3.8.3",
     "cssnano": "^6.0.1",
     "esprima": "^4.0.1",
