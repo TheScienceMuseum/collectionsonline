@@ -1,4 +1,7 @@
-const Client = require('@elastic/elasticsearch').Client;
+import { Client } from '@elastic/elasticsearch';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
 const config = require('../config');
 const createServer = require('../server');
 

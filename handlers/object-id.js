@@ -19,7 +19,7 @@ module.exports = function (elastic, config) {
     try {
       result = await elastic.search(searchOpts);
 
-      if (result.hits.total === 0) {
+      if (result.body.hits.total === 0) {
         jsonResult.found = false;
         jsonResult.error = 'Not Found';
         jsonResult.path = '';
@@ -33,7 +33,7 @@ module.exports = function (elastic, config) {
       jsonResult.error = error;
     }
 
-    const obj = result.hits.hits[0];
+    const obj = result.body.hits.hits[0];
     let slugValue = obj._source.summary_title && slug(obj._source.summary_title).toLowerCase();
     slugValue = slugValue ? ('/' + slugValue) : '';
     jsonResult.path = '/objects/' + obj._id + slugValue;

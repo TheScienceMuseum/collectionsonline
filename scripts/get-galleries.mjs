@@ -1,8 +1,11 @@
-const fs = require('fs');
-const Client = require('elasticsearch').Client;
+import { Client } from '@elastic/elasticsearch';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
 const config = require('../config');
 const elastic = new Client(config.elasticsearch);
 const path = require('path');
+const fs = require('fs');
 
 const body = {
   query: {
@@ -23,7 +26,7 @@ elastic.search(searchOpts, function getMoreUntilDone (err, result) {
   else {
     let galName;
     let musName;
-    result.hits.hits.forEach(function (hit, i) {
+    result.body.hits.hits.forEach(function (hit, i) {
       galName = hit._source.locations[0].name.find(e => e.type === 'gallery');
       musName = hit._source.locations[0].name.find(e => e.type === 'museum');
       if (galName && musName) {
@@ -33,7 +36,7 @@ elastic.search(searchOpts, function getMoreUntilDone (err, result) {
       }
     });
 
-    if (result.hits.total !== allGalleries.length) {
+    if (result.body.hits.total !== allGalleries.length) {
       elastic.scroll({
         scrollId: result._scroll_id,
         scroll: '30s'

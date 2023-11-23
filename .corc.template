@@ -3,8 +3,7 @@
   "rootUrl": "http://localhost:8000",
   "sitemapUrl": "http://localhost:8000",
   "elasticsearch": {
-    "apiVersion": "2.3",
-    "host": ""
+    "node": ""
   },
   "auth": false,
   "user": "",
