@@ -34,7 +34,7 @@ module.exports = (elastic, config) => ({
           }
         });
         return h.response(
-          result.hits.hits[0]
+          result.body.hits.hits[0]
         );
       } catch (err) {
         return new Boom(err);

@@ -21,7 +21,7 @@ test(file + 'The filters date are included in the array filter', (t) => {
     bool: {
       must: [
         {
-          terms: {'@datatype.base': ['agent', 'object']}
+          terms: { '@datatype.base': ['agent', 'object'] }
         },
         {
           bool: {
