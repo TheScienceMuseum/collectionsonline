@@ -1,4 +1,3 @@
-/* tmp remove test : JU : 20/11/2017
 const QueryString = require('querystring');
 const testWithServer = require('./helpers/test-with-server');
 const dir = __dirname.split('/')[__dirname.split('/').length - 1];
@@ -41,4 +40,3 @@ testWithServer(file + 'Search for docs with images', {}, (t, ctx) => {
     t.end();
   });
 });
-*/
