@@ -1,4 +1,3 @@
-/*
 module.exports = {
   'Using Rest Style Urls': function (browser) {
     browser
@@ -15,4 +14,3 @@ module.exports = {
     .end();
   }
 };
-*/
