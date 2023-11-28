@@ -17,7 +17,7 @@ module.exports = (elastic, config) => ({
 
       if (responseType !== 'notAcceptable') {
         try {
-          const result = await elastic.get({ index: 'ciim', type: 'agent', id: TypeMapping.toInternal(request.params.id) });
+          const result = await elastic.get({ index: 'ciim', id: TypeMapping.toInternal(request.params.id) });
 
           let relatedItems;
           let sortedRelatedItems;
@@ -29,7 +29,7 @@ module.exports = (elastic, config) => ({
             sortedRelatedItems = null;
           }
 
-          const JSONData = buildJSONResponse(result, config, sortedRelatedItems);
+          const JSONData = buildJSONResponse(result.body, config, sortedRelatedItems);
 
           return response(h, JSONData, 'person', responseType);
         } catch (err) {

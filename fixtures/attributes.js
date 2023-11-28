@@ -1,7 +1,9 @@
 module.exports = [
   'admin',
   'autocomplete',
+  'birth',
   'cumulation',
+  'death',
   'description',
   'identifier',
   'name',
