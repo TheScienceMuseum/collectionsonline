@@ -41,7 +41,7 @@ module.exports = (elastic, config) => ({
 });
 
 function elasticError (err) {
-  if (err.status === 404) {
+  if (err.statusCode === 404) {
     return Boom.notFound();
   } else {
     return Boom.serverUnavailable('unavailable');

@@ -33,7 +33,7 @@ module.exports = (elastic, config) => ({
 
           return response(h, JSONData, 'person', responseType);
         } catch (err) {
-          if (err.status === 404) {
+          if (err.statusCode === 404) {
             return Boom.notFound();
           }
 
