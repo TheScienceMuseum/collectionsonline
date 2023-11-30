@@ -1,4 +1,3 @@
-/*
 module.exports = {
   'Filtering on search page': function (browser) {
     browser
@@ -33,4 +32,3 @@ module.exports = {
       .end();
   }
 };
-*/

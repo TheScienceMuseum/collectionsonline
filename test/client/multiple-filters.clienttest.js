@@ -1,4 +1,3 @@
-/*
 module.exports = {
   'Selecting multiple filters on search page': function (browser) {
     browser
@@ -20,4 +19,3 @@ module.exports = {
       .end();
   }
 };
-*/

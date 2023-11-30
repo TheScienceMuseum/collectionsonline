@@ -1,4 +1,3 @@
-/*
 module.exports = {
   'next/back buttons': function (browser) {
     browser
@@ -11,4 +10,3 @@ module.exports = {
       .end();
   }
 };
-*/
