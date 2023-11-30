@@ -6,7 +6,7 @@ module.exports = [
   'place',
   'terms',
   'thesaurus',
-  'archives',
+  'archive',
   'fonds',
   'organisations'
 ];
