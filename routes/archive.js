@@ -16,18 +16,18 @@ module.exports = (elastic, config) => ({
 
       if (responseType !== 'notAcceptable') {
         try {
-          const result = await elastic.get({ index: 'ciim', type: 'archive', id: TypeMapping.toInternal(request.params.id) });
+          const result = await elastic.get({ index: 'ciim', id: TypeMapping.toInternal(request.params.id) });
           let fondsId;
 
-          if (result._source.fonds) {
-            fondsId = result._source.fonds[0].admin.uid;
+          if (result.body._source.fonds) {
+            fondsId = result.body._source.fonds[0]['@admin'].uid;
           } else {
-            fondsId = result._source.admin.uid;
+            fondsId = result.body._source['@admin'].uid;
           }
 
           const data = await getCachedDocument(elastic, TypeMapping.toInternal(request.params.id), fondsId);
 
-          const JSONData = Object.assign(buildJSONResponse(result, config), { tree: data });
+          const JSONData = Object.assign(buildJSONResponse(result.body, config), { tree: data });
 
           return response(h, JSONData, 'archive', responseType);
         } catch (err) {
@@ -41,7 +41,7 @@ module.exports = (elastic, config) => ({
 });
 
 function elasticError (err) {
-  if (err.status === 404) {
+  if (err.statusCode === 404) {
     return Boom.notFound();
   } else {
     return Boom.serverUnavailable('unavailable');

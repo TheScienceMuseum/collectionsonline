@@ -17,17 +17,16 @@ module.exports = (elastic, config) => ({
 
       if (responseType !== 'notAcceptable') {
         try {
-          const result = await elastic.get({ index: 'ciim', type: 'object', id: TypeMapping.toInternal(request.params.id) });
-
-          const relatedItems = await getSimilarObjects(result, elastic);
+          const result = await elastic.get({ index: 'ciim', id: TypeMapping.toInternal(request.params.id) });
+          const relatedItems = await getSimilarObjects(result.body, elastic);
 
           const sortedRelatedItems = sortRelated(relatedItems);
-          const JSONData = buildJSONResponse(result, config, sortedRelatedItems);
+          const JSONData = buildJSONResponse(result.body, config, sortedRelatedItems);
 
           return response(h, JSONData, 'object', responseType);
         } catch (err) {
           console.log(err);
-          if (err.status === 404) {
+          if (err.statusCodeCode === 404) {
             return Boom.notFound(err);
           }
           return Boom.serverUnavailable('unavailable');

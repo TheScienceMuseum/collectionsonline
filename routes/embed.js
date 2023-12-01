@@ -30,7 +30,7 @@ module.exports = {
               { layout: 'embed' }
             );
           } catch (err) {
-            if (err.status === 404) {
+            if (err.statusCode === 404) {
               return Boom.notFound();
             }
             return Boom.serverUnavailable(err);

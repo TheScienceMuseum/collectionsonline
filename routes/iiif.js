@@ -17,9 +17,9 @@ module.exports = (elastic, config) => ({
       }
 
       try {
-        const result = await elastic.get({ index: 'ciim', type: TypeMapping.toInternal(request.params.type), id: TypeMapping.toInternal(request.params.id) });
+        const result = await elastic.get({ index: 'ciim', id: TypeMapping.toInternal(request.params.id) });
 
-        const iiifData = buildJSONResponse(result, config);
+        const iiifData = buildJSONResponse(result.body, config);
         iiifData.self = config.rootUrl + '/iiif/' + iiifData.data.type + '/' + iiifData.data.id;
 
         return h.response(
@@ -28,7 +28,7 @@ module.exports = (elastic, config) => ({
           )(iiifData)
         ).header('content-type', 'application/json');
       } catch (err) {
-        if (err.status === 404) {
+        if (err.statusCode === 404) {
           return Boom.notFound();
         }
         return Boom.serverUnavailable('unavailable');

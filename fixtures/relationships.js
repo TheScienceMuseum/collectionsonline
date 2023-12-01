@@ -1,12 +1,12 @@
 module.exports = [
-  'agents',
+  'agent',
   'cultures',
   'events',
   'parent',
-  'places',
+  'place',
   'terms',
   'thesaurus',
-  'archives',
+  'archive',
   'fonds',
   'organisations'
 ];
