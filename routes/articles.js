@@ -1,5 +1,5 @@
 const axios = require('axios');
-const Boom = require('boom');
+const Boom = require('@hapi/boom');
 const cacheHeaders = require('./route-helpers/cache-control');
 
 // Article endpoints on each museum website
@@ -25,7 +25,7 @@ module.exports = (config) => ({
         const articles = await Promise.all(endpoints.map(e => fetchArticles(e, req.params.id)));
         return h.response({ data: articles.filter(e => e.data.length > 0) });
       } catch (err) {
-        return new Boom('Cannot parse related objects feed:', err);
+        return new Boom.Boom('Cannot parse related objects feed:', err);
       }
     }
   }

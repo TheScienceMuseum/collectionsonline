@@ -1,5 +1,5 @@
 const test = require('tape');
-const Boom = require('boom');
+const Boom = require('@hapi/boom');
 const Sinon = require('sinon');
 const errorPlugin = require('../routes/plugins/error').plugin;
 
@@ -54,7 +54,7 @@ test('Should reply with error JSON for application/vnd.api+json accepted request
   const errMessage = 'BOOM!';
 
   const mockRequest = {
-    response: new Boom(500, errMessage),
+    response: new Boom.Boom(500, errMessage),
     headers: { accept: 'application/vnd.api+json' }
   };
 

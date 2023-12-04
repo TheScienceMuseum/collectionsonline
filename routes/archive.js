@@ -1,4 +1,4 @@
-const Boom = require('boom');
+const Boom = require('@hapi/boom');
 const TypeMapping = require('../lib/type-mapping');
 const getCachedDocument = require('../lib/cached-document');
 const buildJSONResponse = require('../lib/jsonapi-response');

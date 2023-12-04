@@ -1,4 +1,4 @@
-const Boom = require('boom');
+const Boom = require('@hapi/boom');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -37,7 +37,7 @@ module.exports = (elastic, config) => ({
 
         return h.view('categories', { categories });
       } catch (err) {
-        return new Boom(err);
+        return new Boom.Boom(err);
       }
     }
   }

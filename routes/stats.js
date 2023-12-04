@@ -1,5 +1,5 @@
 const stats = require('../lib/stats');
-const Boom = require('boom');
+const Boom = require('@hapi/boom');
 
 module.exports = (elastic, config) => ({
   method: 'GET',

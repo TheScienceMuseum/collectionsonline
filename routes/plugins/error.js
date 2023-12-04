@@ -1,4 +1,4 @@
-const Boom = require('boom');
+const Boom = require('@hapi/boom');
 const isDevelopment = (process.env.NODE_ENV || 'development') === 'development';
 
 // Heavily based on the excellent https://github.com/dwyl/hapi-error
@@ -13,7 +13,7 @@ exports.plugin = {
       // Only interested in errors
       if (!(request.response instanceof Error)) return h.continue;
 
-      const error = new Boom(request.response);
+      const error = new Boom.Boom(request.response);
       const accept = request.headers.accept || '';
 
       if (error.output.statusCode >= 500) {

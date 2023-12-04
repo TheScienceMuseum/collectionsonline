@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const Boom = require('boom');
+const Boom = require('@hapi/boom');
 const filterSchema = require('../schemas/filter');
 const searchSchema = require('../schemas/search');
 const searchResultsToJsonApi = require('../lib/transforms/search-results-to-jsonapi');
@@ -24,24 +24,23 @@ module.exports = (elastic, config) => ({
         return h.response('Not Acceptable').code(406);
       }
       try {
-        const value = await Joi.validate(
+        const querySchema = Joi.object({ query: filterSchema(responseType).keys(searchSchema.query) })
+        const value = await (querySchema.validate(
           { query: request.query },
-          { query: filterSchema(responseType).keys(searchSchema.query) },
           { allowUnknown: true }
-        );
-
+        )).value;
         const params = parseParameters(request.params).params;
         const categories = parseParameters(request.params).categories;
 
-        const result = await Joi.validate(
+        const resultSchema = Joi.object({
+          params: Joi.any(),
+          categories: filterSchema('html').keys(searchSchema.query),
+          query: filterSchema('html').keys(searchSchema.query)
+        });
+        const result = await (resultSchema.validate(
           { params, categories, query: value.query },
-          {
-            params: Joi.any(),
-            categories: filterSchema('html').keys(searchSchema.query),
-            query: filterSchema('html').keys(searchSchema.query)
-          },
           { allowUnknown: true }
-        );
+        )).value;
 
         const query = Object.assign(result.query, result.params, result.categories);
         const queryParams = createQueryParams(responseType, { query, params });
