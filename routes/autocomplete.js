@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const Boom = require('boom');
+const Boom = require('@hapi/boom');
 const autocomplete = require('../lib/autocomplete');
 const autocompleteResultsToJsonApi = require('../lib/transforms/autocomplete-results-to-jsonapi');
 const contentType = require('./route-helpers/content-type.js');

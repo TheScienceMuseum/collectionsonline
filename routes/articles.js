@@ -1,5 +1,5 @@
-const axios = require('axios');
-const Boom = require('boom');
+const fetch = require('fetch-ponyfill')().fetch;
+const Boom = require('@hapi/boom');
 const cacheHeaders = require('./route-helpers/cache-control');
 
 // Article endpoints on each museum website
@@ -25,7 +25,7 @@ module.exports = (config) => ({
         const articles = await Promise.all(endpoints.map(e => fetchArticles(e, req.params.id)));
         return h.response({ data: articles.filter(e => e.data.length > 0) });
       } catch (err) {
-        return new Boom('Cannot parse related objects feed:', err);
+        return new Boom.Boom('Cannot parse related objects feed:', err);
       }
     }
   }
@@ -33,16 +33,15 @@ module.exports = (config) => ({
 
 async function fetchArticles (endpoint, id) {
   try {
-    const aclient = axios.create({
+    const response = await fetch(endpoint.url, {
       timeout: 10000,
       headers: { 'User-Agent': 'SMG Collection Site 1.0' }
     });
-    const response = await aclient.get(endpoint.url);
-    const data = response.data ? response.data.filter(e => e.collection_objects.indexOf(id) > -1) : [];
-
+    const data = await response.json();
+    
     return {
       museum: endpoint.label,
-      data
+      data: data.filter(e => e.collection_objects.indexOf(id) > -1)
     };
   } catch (err) {
     console.log(err);

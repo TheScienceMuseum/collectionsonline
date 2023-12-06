@@ -1,9 +1,14 @@
+const H2o2 = require('@hapi/h2o2');
 const Hapi = require('@hapi/hapi');
+const Inert = require('@hapi/inert');
+const Joi = require('joi');
+const Vision = require('@hapi/vision');
 const routes = require('./routes');
 const auth = require('./auth');
 
 module.exports = async (elastic, config, cb) => {
   const server = new Hapi.Server({ port: config.port, routes: { cors: { origin: 'ignore' }, log: { collect: true } } });
+  server.validator(Joi);
   server.route(routes(elastic, config));
 
   if (config.auth) {
@@ -14,17 +19,9 @@ module.exports = async (elastic, config, cb) => {
 
   try {
     await server.register([
-      {
-        plugin: require('good'),
-        options: {
-          reporters: {
-            console: [{ module: 'good-console' }, 'stdout']
-          }
-        }
-      },
-      require('inert'),
-      require('vision'),
-      require('h2o2'),
+      Inert,
+      Vision,
+      H2o2,
       {
         plugin: require('./routes/plugins/error'),
         options: {

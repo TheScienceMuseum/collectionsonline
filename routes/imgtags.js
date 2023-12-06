@@ -1,5 +1,5 @@
 const getImgTags = require('../lib/getImgTags');
-const Boom = require('boom');
+const Boom = require('@hapi/boom');
 const contentType = require('./route-helpers/content-type.js');
 const cacheHeaders = require('./route-helpers/cache-control');
 

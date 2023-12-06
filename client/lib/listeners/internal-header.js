@@ -1,5 +1,4 @@
-const fetch = require('node-fetch');
-const FormData = require('form-data');
+const fetch = require('fetch-ponyfill')().fetch;
 
 module.exports = () => {
   const scriptURL = 'https://script.google.com/macros/s/---/exec';

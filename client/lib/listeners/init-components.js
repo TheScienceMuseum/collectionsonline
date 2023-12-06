@@ -1,4 +1,3 @@
-const svg4everybody = require('svg4everybody');
 const searchBox = require('./search-box');
 const clipboard = require('./clipboard');
 const map = require('./map');
@@ -13,7 +12,6 @@ const illuminate = require('smg-web-design-system/dist/js/illuminate');
 const osd = require('./osd');
 
 module.exports = ctx => {
-  svg4everybody();
   searchBox();
   clipboard();
   map();

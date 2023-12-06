@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const Boom = require('boom');
+const Boom = require('@hapi/boom');
 const filterSchema = require('../schemas/filter');
 const searchSchema = require('../schemas/search');
 const Querystring = require('querystring');
