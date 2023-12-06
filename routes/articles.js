@@ -38,7 +38,7 @@ async function fetchArticles (endpoint, id) {
       headers: { 'User-Agent': 'SMG Collection Site 1.0' }
     });
     const data = await response.json();
-    
+
     return {
       museum: endpoint.label,
       data: data.filter(e => e.collection_objects.indexOf(id) > -1)

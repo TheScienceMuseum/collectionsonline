@@ -1,11 +1,11 @@
-const Client = require('elasticsearch').Client;
+const Client = require('@elastic/elasticsearch').Client;
 const config = require('../../config');
 
 module.exports = () => {
   function getConfig () {
     return {
       log: 'warning',
-      host: config.elasticsearch.host
+      node: config.elasticsearch.node
     };
   }
 

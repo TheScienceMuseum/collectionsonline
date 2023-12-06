@@ -11,7 +11,7 @@ testWithServer('Authentication is ok', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
     url: '/',
-    headers: { cookie: 'token=' + token, 'Accept': 'text/html' }
+    headers: { cookie: 'token=' + token, Accept: 'text/html' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -26,7 +26,7 @@ testWithServer('Attempt to access a page with a wrong cookie', {}, async (t, ctx
   const htmlRequest = {
     method: 'GET',
     url: '/',
-    headers: { cookie: 'token=' + token, 'Accept': 'text/html' }
+    headers: { cookie: 'token=' + token, Accept: 'text/html' }
   };
 
   const res = await ctx.server.inject(htmlRequest);

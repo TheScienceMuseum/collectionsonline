@@ -24,7 +24,7 @@ module.exports = (elastic, config) => ({
         return h.response('Not Acceptable').code(406);
       }
       try {
-        const querySchema = Joi.object({ query: filterSchema(responseType).keys(searchSchema.query) })
+        const querySchema = Joi.object({ query: filterSchema(responseType).keys(searchSchema.query) });
         const value = await (querySchema.validate(
           { query: request.query },
           { allowUnknown: true }
