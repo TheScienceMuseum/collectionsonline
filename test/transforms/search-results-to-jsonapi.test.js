@@ -148,7 +148,9 @@ test(file + 'Should create valid links on first page', (t) => {
     _shards: { total: 1, successful: 1, failed: 0 },
     body: {
       hits: {
-        total: 5,
+        total: {
+          value: 5
+        },
         max_score: null,
         hits: [
           {
@@ -222,7 +224,9 @@ test(file + 'Should create valid links on middle page', (t) => {
     _shards: { total: 1, successful: 1, failed: 0 },
     body: {
       hits: {
-        total: 5,
+        total: {
+          value: 5
+        },
         max_score: null,
         hits: [
           {
@@ -297,7 +301,9 @@ test(file + 'Should create valid links on last page', (t) => {
     _shards: { total: 1, successful: 1, failed: 0 },
     body: {
       hits: {
-        total: 5,
+        total: {
+          value: 5
+        },
         max_score: null,
         hits: [
           {
@@ -372,7 +378,9 @@ test(file + 'Should ignore unknown object types', (t) => {
     _shards: { total: 1, successful: 1, failed: 0 },
     body: {
       hits: {
-        total: 5,
+        total: {
+          value: 5
+        },
         max_score: null,
         hits: [
           {
@@ -420,7 +428,7 @@ test(file + 'Should ignore unknown object types', (t) => {
   }, 'Transform did not throw');
 
   t.equal(obj.data.length, 0, 'No objects were returned');
-  t.equal(obj.meta.total_pages, 0, 'Total pages was correct');
+  t.equal(obj.meta.total_pages, 1, 'Total pages was correct');
 
   t.end();
 });
@@ -436,7 +444,9 @@ test(file + 'Should extract @link\'d document to relationships and included', (t
     _shards: { total: 1, successful: 1, failed: 0 },
     body: {
       hits: {
-        total: 5,
+        total: {
+          value: 5
+        },
         max_score: null,
         hits: [
           {
