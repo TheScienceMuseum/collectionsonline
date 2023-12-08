@@ -1,5 +1,5 @@
 const test = require('tape');
-const Client = require('elasticsearch').Client;
+const Client = require('@elastic/elasticsearch').Client;
 const config = require('../config');
 const elastic = new Client(config.elasticsearch);
 config.port = 0;

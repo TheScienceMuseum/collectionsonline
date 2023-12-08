@@ -6,8 +6,9 @@ const stub = require('sinon').stub;
 
 /**
 * Wrap tape's test function with a function that creates a new server and mocks dependencies
-* @param {string} description - the description for yoyr tape test
+* @param {string} description - the description for your tape test
 * @param {object} options - options object
+* @param {object} options.config - optional config object
 * @param {object} options.mock - elasticsearch database mock options
 * @param {string} options.mock.method - the elasticsearch method you want to mock, for example: 'get', 'search'
 * @param {object} options.mock.response - an object containing either an error or data to return in the es callback
@@ -21,7 +22,7 @@ module.exports = (description, options, cb, auth) => {
   } else {
     config.auth = false;
   }
-  createServer(elastic, config, (err, ctx) => {
+  createServer(elastic, options.config || config, (err, ctx) => {
     if (err) {
       console.log(err);
       throw err;

@@ -29,6 +29,6 @@ testWithServer(file + 'empty response if not a json request', {}, async (t, ctx)
   };
 
   const res = await ctx.server.inject(request);
-  t.equal(res.statusCode, 200, 'Nothing special');
+  t.equal(res.statusCode, 204, 'No content');
   t.end();
 });

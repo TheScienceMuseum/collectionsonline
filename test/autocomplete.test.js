@@ -13,7 +13,7 @@ testWithServer(file + 'Should suggest completion', {}, async (t, ctx) => {
 
   const res = await ctx.server.inject(request);
   t.equal(res.statusCode, 200, 'Status was OK');
-  t.ok(res.result.data.some((d) => d.attributes.summary_title === 'NeXT Computer (personal computer)'), 'Autocompleted Next successfully');
+  t.ok(res.result.data.some((d) => d.attributes.summary_title === 'NeXT Computer Tower (personal computer)'), 'Autocompleted Next successfully');
   t.end();
 });
 
@@ -29,7 +29,7 @@ testWithServer(file + 'Should disallow < 3 characters', {}, async (t, ctx) => {
   const res = await ctx.server.inject(request);
 
   t.equal(res.statusCode, 400, 'Status was bad request');
-  t.equal(res.payload, 'child "q" fails because ["q" length must be at least 3 characters long]', 'Validation error was as expected');
+  t.equal(res.payload, '"q" length must be at least 3 characters long', 'Validation error was as expected');
   t.end();
 });
 
@@ -72,7 +72,7 @@ testWithServer(file + 'Should return an empty response if accept header is not j
   };
 
   const res = await ctx.server.inject(request);
-  t.equal(res.statusCode, 200, 'Status was OK');
+  t.equal(res.statusCode, 204, 'Status was OK - No Content');
   t.ok((res.payload === ''), 'Empty response with a html request');
   t.end();
 });

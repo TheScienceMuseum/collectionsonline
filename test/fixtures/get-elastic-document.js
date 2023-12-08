@@ -4,7 +4,6 @@
 module.exports = function (elastic, type, id, next) {
   elastic.get({
     index: 'ciim',
-    type,
     id
   }, (error, response) => {
     return next(error, response);

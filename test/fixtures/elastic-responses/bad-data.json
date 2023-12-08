@@ -1,32 +1,26 @@
 {
   "_source": {
-    "lifecycle": {
-      "creation": [
+    "creation": {
+      "maker": [
         {
-          "maker": [
-            {
-              "test": "1"
-            },
-            {
-              "admin": {
-                "id": "1",
-                "uid": "1"
-              }
-            }
-          ]
+          "test": "1"
         },
         {
-          "places": [
-            {
-              "test": "2"
-            },
-            {
-              "admin": {
-                "id": "2",
-                "uid": "2"
-              }
-            }
-          ]
+          "@admin": {
+            "id": "1",
+            "uid": "1"
+          }
+        }
+      ],
+      "place": [
+        {
+          "test": "2"
+        },
+        {
+          "@admin": {
+            "id": "2",
+            "uid": "2"
+          }
         }
       ]
     }

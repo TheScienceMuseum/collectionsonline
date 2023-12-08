@@ -548,7 +548,7 @@ testWithServer('Specific api endpoint', {}, async (t, ctx) => {
   const result = JSON.parse(res.payload);
   t.ok(res.statusCode, 200, 'status is 200');
   t.ok(result, 'Result was json');
-  t.equal(result.data.attributes.admin.uid, 'co8094437', 'Correct object returned');
+  t.equal(result.data.attributes['@admin'].uid, 'co8094437', 'Correct object returned');
   await ctx.server.stop();
   t.end();
 });

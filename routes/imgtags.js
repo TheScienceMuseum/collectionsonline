@@ -18,8 +18,8 @@ module.exports = (elastic, config) => ({
       try {
         const result = await getImgTags(elastic);
 
-        const imgTags = result.aggregations.img_tags_aggs.imgtags.buckets;
-        const imgTagsParents = result.aggregations.img_tags_aggs.imgtagsParents.buckets;
+        const imgTags = result.body.aggregations.img_tags_aggs.imgtags.buckets;
+        const imgTagsParents = result.body.aggregations.img_tags_aggs.imgtagsParents.buckets;
         const imgTagSet = new Set();
         imgTags.concat(imgTagsParents).forEach(t => {
           imgTagSet.add(t.key.toLowerCase());

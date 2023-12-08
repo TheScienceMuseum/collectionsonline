@@ -25,10 +25,14 @@ module.exports = (elastic, config) => ({
       }
       try {
         const querySchema = Joi.object({ query: filterSchema(responseType).keys(searchSchema.query) });
-        const value = await (querySchema.validate(
+        const validation = querySchema.validate(
           { query: request.query },
           { allowUnknown: true }
-        )).value;
+        );
+
+        if (validation.error) return Boom.badRequest();
+
+        const value = validation.value;
         const params = parseParameters(request.params).params;
         const categories = parseParameters(request.params).categories;
 
@@ -118,10 +122,6 @@ module.exports = (elastic, config) => ({
             .header('content-type', 'application/vnd.api+json');
         }
       } catch (err) {
-        if (err.isJoi) {
-          return Boom.badRequest();
-        }
-
         return Boom.serverUnavailable(err);
       }
     }

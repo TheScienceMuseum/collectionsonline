@@ -51,6 +51,6 @@ test(file + 'People with multiple relationships should be processed correctly', 
   t.doesNotThrow(() => {
     JSONAPIResponse = buildJSONResponse(require('./fixtures/elastic-responses/example-get-response-with-places.json'), config);
   }, 'Building response does not throw an error');
-  t.equal(JSONAPIResponse.data.relationships.places.data.length, 2, 'should have two place relationships');
+  t.equal(JSONAPIResponse.data.relationships.place.data.length, 2, 'should have two place relationships');
   t.end();
 });

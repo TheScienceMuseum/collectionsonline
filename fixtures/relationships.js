@@ -4,7 +4,7 @@ module.exports = [
   'events',
   'parent',
   'place',
-  'terms',
+  'term',
   'thesaurus',
   'archive',
   'fonds',

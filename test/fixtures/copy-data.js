@@ -36,7 +36,7 @@ Async.parallel([
           console.log('Error Elastic', data.id);
           return cb(err);
         }
-        Fs.writeFile(`${dirData}/${data.filename}.json`, JSON.stringify(response, null, 2), 'utf-8', cb);
+        Fs.writeFile(`${dirData}/${data.filename}.json`, JSON.stringify(response.body, null, 2), 'utf-8', cb);
       });
     }, cb);
   },
@@ -119,7 +119,7 @@ Async.parallel([
   async () => {
     const response = await search(elastic, createQueryParams('html', { query: { q: 'test' }, params: {} }));
     Fs.writeFile(dirData + '/../../helpers/aggregations-all.json',
-      JSON.stringify(response.aggregations.all, null, 2),
+      JSON.stringify(response.body.aggregations.all, null, 2),
       'utf-8',
       (err) => {
         if (err) throw err;

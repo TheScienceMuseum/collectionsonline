@@ -18,14 +18,14 @@ test(file + 'The filters date are included in the array filter', (t) => {
               {
                 bool: {
                   filter: [
-                    { range: { 'lifecycle.creation.date.earliest': { gte: ['1800'] } } }
+                    { range: { 'creation.date.from': { gte: ['1800'] } } }
                   ]
                 }
               },
               {
                 bool: {
                   filter: [
-                    { range: { 'lifecycle.birth.date.earliest': { gte: ['1800'] } } }
+                    { range: { 'birth.date.from': { gte: ['1800'] } } }
                   ]
                 }
               }
