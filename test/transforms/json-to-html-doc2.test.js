@@ -14,7 +14,6 @@ test('HTMLData should be transformed succesfully', (t) => {
 });
 
 test('Data fields should have correct values', function (t) {
-  console.log(HTMLData.details);
   t.doesNotThrow(() => {
     HTMLData = buildHTMLData(JSONAPIResponse);
   }, 'Transform did not throw error');

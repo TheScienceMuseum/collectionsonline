@@ -77,7 +77,6 @@ module.exports = (ctx) => {
     }
 
     thingsToInit.forEach(function (el) {
-      console.log(el);
       el.addEventListener('click', () => {
         show();
         // ctx.viewer.tileSources.append(ctx.imgUrl + '/info.json');

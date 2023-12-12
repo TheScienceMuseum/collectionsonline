@@ -45,7 +45,8 @@ module.exports = {
 
 async function museumRedirect (request, h, museum) {
   try {
-    await Joi.validate({ query: request.query }, { query: filterSchema('json').keys(searchSchema) });
+    const schema = Joi.object({ query: filterSchema('json').keys(searchSchema) });
+    await schema.validate({ query: request.query });
 
     return h.redirect('/search/museum/' + museum + Querystring.stringify(request.query));
   } catch (err) {

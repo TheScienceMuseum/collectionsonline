@@ -8,10 +8,8 @@ test('Normal date and place test', (t) => {
     data: {
       type: 'objects',
       attributes: {
-        lifecycle: {
-          creation: [
-            { date: [{ value: '1912' }] }
-          ]
+        creation: {
+          date: [{ value: '1912' }]
         }
       },
       links: { root: 'http://localhost:8000' }
@@ -23,7 +21,9 @@ test('Normal date and place test', (t) => {
           role: {
             value: 'made'
           },
-          summary_title: 'London'
+          summary: {
+            title: 'London'
+          }
         }
       }
     ]
@@ -48,10 +48,8 @@ test('date range test', (t) => {
     data: {
       type: 'objects',
       attributes: {
-        lifecycle: {
-          creation: [
-            { date: [{ value: '1912-1917' }] }
-          ]
+        creation: {
+          date: [{ value: '1912-1917' }]
         }
       },
       links: { root: 'http://localhost:8000' }
@@ -63,7 +61,9 @@ test('date range test', (t) => {
           role: {
             value: 'made'
           },
-          summary_title: 'London'
+          summary: {
+            title: 'London'
+          }
         }
       }
     ]
@@ -82,10 +82,8 @@ test('bad date test', (t) => {
     data: {
       type: 'objects',
       attributes: {
-        lifecycle: {
-          creation: [
-            { date: [{ value: '1-91-2/1917' }] }
-          ]
+        creation: {
+          date: [{ value: '1-91-2/1917' }]
         }
       },
       links: { root: 'http://localhost:8000' }
@@ -97,7 +95,9 @@ test('bad date test', (t) => {
           role: {
             value: 'made'
           },
-          summary_title: 'London'
+          summary: {
+            title: 'London'
+          }
         }
       }
     ]
@@ -116,10 +116,8 @@ test('bad date range test', (t) => {
     data: {
       type: 'objects',
       attributes: {
-        lifecycle: {
-          creation: [
-            { date: [{ value: '1912-19FG=17' }] }
-          ]
+        creation: {
+          date: [{ value: '1912-19FG=17' }]
         }
       },
       links: { root: 'http://localhost:8000' }
@@ -131,7 +129,9 @@ test('bad date range test', (t) => {
           role: {
             value: 'made'
           },
-          summary_title: 'London'
+          summary: {
+            title: 'London'
+          }
         }
       }
     ]

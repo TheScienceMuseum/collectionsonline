@@ -25,10 +25,10 @@ test(file + 'Relationships field should contain correct attributes', function (t
   t.plan(6);
   t.ok(JSONAPIResponse.data.relationships.parent, 'Relationships field contains parent');
   t.equal(JSONAPIResponse.data.relationships.parent.data[0].id, 'co5191', 'Parent field has correct id');
-  t.ok(JSONAPIResponse.data.relationships.terms, 'Relationships field contains terms');
-  t.equal(JSONAPIResponse.data.relationships.terms.data.length, 3, 'Terms field contains correct number of items');
+  t.ok(JSONAPIResponse.data.relationships.term, 'Relationships field contains terms');
+  t.equal(JSONAPIResponse.data.relationships.term.data.length, 3, 'Terms field contains correct number of items');
   t.ok(JSONAPIResponse.data.relationships.maker, 'Relationships field contains maker');
-  t.ok(JSONAPIResponse.data.relationships.places, 'Relationships field contains places');
+  t.ok(JSONAPIResponse.data.relationships.place, 'Relationships field contains places');
   t.end();
 });
 

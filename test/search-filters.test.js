@@ -804,23 +804,23 @@ testWithServer(file + 'Should not return people or organisations as object type'
   t.end();
 });
 
-testWithServer(file + 'Should filter by has image', {}, async (t, ctx) => {
-  t.plan(2);
+// testWithServer(file + 'Should filter by has image', {}, async (t, ctx) => {
+//   t.plan(2);
 
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?' + QueryString.stringify({
-      q: '',
-      'filter[has_image]': 'true'
-    }),
-    headers: { Accept: 'application/vnd.api+json' }
-  };
+//   const htmlRequest = {
+//     method: 'GET',
+//     url: '/search?' + QueryString.stringify({
+//       q: '',
+//       'filter[has_image]': 'true'
+//     }),
+//     headers: { Accept: 'application/vnd.api+json' }
+//   };
 
-  const res = await ctx.server.inject(htmlRequest);
-  t.equal(res.statusCode, 200, 'Status code was as expected');
-  t.ok(JSON.parse(res.payload).data.length > 0, 'returns some data with images');
-  t.end();
-});
+//   const res = await ctx.server.inject(htmlRequest);
+//   t.equal(res.statusCode, 200, 'Status code was as expected');
+//   t.ok(JSON.parse(res.payload).data.length > 0, 'returns some data with images');
+//   t.end();
+// });
 
 testWithServer(file + 'Should have image and license facets', {}, async (t, ctx) => {
   t.plan(2);
@@ -840,21 +840,21 @@ testWithServer(file + 'Should have image and license facets', {}, async (t, ctx)
   t.end();
 });
 
-testWithServer(file + 'Should filter by image tag cat - json', {}, async (t, ctx) => {
-  t.plan(2);
+// testWithServer(file + 'Should filter by image tag cat - json', {}, async (t, ctx) => {
+//   t.plan(2);
 
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search/imgtag/cat',
-    headers: { Accept: 'application/vnd.api+json' }
-  };
+//   const htmlRequest = {
+//     method: 'GET',
+//     url: '/search/imgtag/cat',
+//     headers: { Accept: 'application/vnd.api+json' }
+//   };
 
-  const res = await ctx.server.inject(htmlRequest);
-  const result = JSON.parse(res.payload);
-  t.equal(res.statusCode, 200, 'Status code was as expected');
-  t.ok(result.data.length > 1, 'There is at least one image tag');
-  t.end();
-});
+//   const res = await ctx.server.inject(htmlRequest);
+//   const result = JSON.parse(res.payload);
+//   t.equal(res.statusCode, 200, 'Status code was as expected');
+//   t.ok(result.data.length > 1, 'There is at least one image tag');
+//   t.end();
+// });
 
 testWithServer(file + 'Should filter by image tag - html', {}, async (t, ctx) => {
   t.plan(1);

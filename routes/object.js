@@ -26,7 +26,7 @@ module.exports = (elastic, config) => ({
           return response(h, JSONData, 'object', responseType);
         } catch (err) {
           console.log(err);
-          if (err.statusCodeCode === 404) {
+          if (err.statusCode === 404) {
             return Boom.notFound(err);
           }
           return Boom.serverUnavailable('unavailable');

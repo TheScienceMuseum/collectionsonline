@@ -4,23 +4,35 @@ let sortedItems;
 const relatedItems = [
   {
     _id: 'smgc-object-1234',
-    _type: 'object',
     _source: {
-      summary_title: 'Hello World'
+      '@datatype': {
+        base: 'object'
+      },
+      summary: {
+        title: 'Hello World'
+      }
     }
   },
   {
     _id: 'smgc-archive-1234',
-    _type: 'archive',
     _source: {
-      summary_title: 'Archive No. 1'
+      '@datatype': {
+        base: 'archive'
+      },
+      summary: {
+        title: 'Archive No. 1'
+      }
     }
   },
   {
     _id: 'smgc-object-6789',
-    _type: 'object',
     _source: {
-      summary_title: 'Object 2'
+      '@datatype': {
+        base: 'object'
+      },
+      summary: {
+        title: 'Object 2'
+      }
     }
   }
 ];

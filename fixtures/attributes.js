@@ -1,5 +1,5 @@
 module.exports = [
-  'admin',
+  '@admin',
   'autocomplete',
   'birth',
   'cumulation',
@@ -9,8 +9,7 @@ module.exports = [
   'name',
   'note',
   'reference_links',
-  'summary_title',
-  'summary_title_text',
+  'summary',
   'title',
   'type',
   'arrangement',

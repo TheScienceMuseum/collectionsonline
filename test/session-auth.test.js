@@ -12,7 +12,7 @@ testWithServer('Authentication is ok', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'POST',
     url: '/session',
-    payload: { 'username': 'testUser', 'password': 'securePassword' }
+    payload: { username: 'testUser', password: 'securePassword' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -34,7 +34,7 @@ testWithServer('Authentication is not ok', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'POST',
     url: '/session',
-    payload: { 'username': 'wrongUser', 'password': 'wrongPassword' }
+    payload: { username: 'wrongUser', password: 'wrongPassword' }
   };
 
   const res = await ctx.server.inject(htmlRequest);

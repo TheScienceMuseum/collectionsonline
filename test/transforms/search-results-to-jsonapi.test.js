@@ -18,41 +18,47 @@ test(file + 'Should create valid meta count numbers', (t) => {
     took: 0,
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
-    hits: {
-      total: 3554,
-      max_score: null,
-      hits: [
-        {
-          _type: 'object',
-          _id: `smg-object-${Date.now()}`,
-          _source: {
-            summary_title: 'this is the summary title'
+    body: {
+      hits: {
+        total: 3554,
+        max_score: null,
+        hits: [
+          {
+            _id: `smg-object-${Date.now()}`,
+            _source: {
+              '@datatype': {
+                base: 'object'
+              },
+              summary: {
+                title: 'this is the summary title'
+              }
+            }
           }
-        }
-      ]
-    },
-    aggregations: {
-      total_categories: {
-        doc_count: 17,
-        documents: { doc_count: 0, documents_total: [{ value: 29 }] },
-        objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
-        people: { doc_count: 4, people_total: [{ value: 221 }] },
-        all: {
+        ]
+      },
+      aggregations: {
+        total_categories: {
           doc_count: 17,
-          all_total: {
-            doc_count_error_upper_bound: 0,
-            sum_other_doc_count: 0,
-            buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
+          documents: { doc_count: 0, documents_total: [{ value: 29 }] },
+          objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
+          people: { doc_count: 4, people_total: [{ value: 221 }] },
+          all: {
+            doc_count: 17,
+            all_total: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
+            }
           }
         }
       }
     }
   };
 
-  testResult.aggregations.all = aggregationsAll;
-  testResult.aggregations.people = aggregationsPeople;
-  testResult.aggregations.objects = aggregationsObjects;
-  testResult.aggregations.documents = aggregationsDocuments;
+  testResult.body.aggregations.all = aggregationsAll;
+  testResult.body.aggregations.people = aggregationsPeople;
+  testResult.body.aggregations.objects = aggregationsObjects;
+  testResult.body.aggregations.documents = aggregationsDocuments;
 
   let obj;
   const query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
@@ -76,39 +82,47 @@ test(file + 'Should create valid meta default count numbers for empty aggregatio
     took: 0,
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
-    hits: {
-      total: 3554,
-      max_score: null,
-      hits: [
-        {
-          _type: 'object',
-          _id: `smg-object-${Date.now()}`,
-          _source: { summary_title: 'this is the summary title' }
-        }
-      ]
-    },
-    aggregations: {
-      total_categories: {
-        doc_count: 17,
-        documents: { doc_count: 0, documents_total: [{ value: 29 }] },
-        objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
-        people: { doc_count: 4, people_total: [{ value: 221 }] },
-        all: {
+    body: {
+      hits: {
+        total: 3554,
+        max_score: null,
+        hits: [
+          {
+            _id: `smg-object-${Date.now()}`,
+            _source: {
+              '@datatype': {
+                base: 'object'
+              },
+              summary: {
+                title: 'this is the summary title'
+              }
+            }
+          }
+        ]
+      },
+      aggregations: {
+        total_categories: {
           doc_count: 17,
-          all_total: {
-            doc_count_error_upper_bound: 0,
-            sum_other_doc_count: 0,
-            buckets: []
+          documents: { doc_count: 0, documents_total: [{ value: 29 }] },
+          objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
+          people: { doc_count: 4, people_total: [{ value: 221 }] },
+          all: {
+            doc_count: 17,
+            all_total: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: []
+            }
           }
         }
       }
     }
   };
 
-  testResult.aggregations.all = aggregationsAll;
-  testResult.aggregations.people = aggregationsPeople;
-  testResult.aggregations.objects = aggregationsObjects;
-  testResult.aggregations.documents = aggregationsDocuments;
+  testResult.body.aggregations.all = aggregationsAll;
+  testResult.body.aggregations.people = aggregationsPeople;
+  testResult.body.aggregations.objects = aggregationsObjects;
+  testResult.body.aggregations.documents = aggregationsDocuments;
 
   let obj;
   const query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
@@ -132,39 +146,49 @@ test(file + 'Should create valid links on first page', (t) => {
     took: 0,
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
-    hits: {
-      total: 5,
-      max_score: null,
-      hits: [
-        {
-          _type: 'object',
-          _id: `smg-object-${Date.now()}`,
-          _source: { summary_title: 'this is the summary title' }
-        }
-      ]
-    },
-    aggregations: {
-      total_categories: {
-        doc_count: 17,
-        documents: { doc_count: 0, documents_total: [{ value: 29 }] },
-        objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
-        people: { doc_count: 4, people_total: [{ value: 221 }] },
-        all: {
+    body: {
+      hits: {
+        total: {
+          value: 5
+        },
+        max_score: null,
+        hits: [
+          {
+            _id: `smg-object-${Date.now()}`,
+            _source: {
+              '@datatype': {
+                base: 'object'
+              },
+              summary: {
+                title: 'this is the summary title'
+              }
+            }
+          }
+        ]
+      },
+      aggregations: {
+        total_categories: {
           doc_count: 17,
-          all_total: {
-            doc_count_error_upper_bound: 0,
-            sum_other_doc_count: 0,
-            buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
+          documents: { doc_count: 0, documents_total: [{ value: 29 }] },
+          objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
+          people: { doc_count: 4, people_total: [{ value: 221 }] },
+          all: {
+            doc_count: 17,
+            all_total: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
+            }
           }
         }
       }
     }
   };
 
-  testResult.aggregations.all = aggregationsAll;
-  testResult.aggregations.people = aggregationsPeople;
-  testResult.aggregations.objects = aggregationsObjects;
-  testResult.aggregations.documents = aggregationsDocuments;
+  testResult.body.aggregations.all = aggregationsAll;
+  testResult.body.aggregations.people = aggregationsPeople;
+  testResult.body.aggregations.objects = aggregationsObjects;
+  testResult.body.aggregations.documents = aggregationsDocuments;
 
   let obj;
   const query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
@@ -198,38 +222,48 @@ test(file + 'Should create valid links on middle page', (t) => {
     took: 0,
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
-    hits: {
-      total: 5,
-      max_score: null,
-      hits: [
-        {
-          _type: 'object',
-          _id: `smg-object-${Date.now()}`,
-          _source: { summary_title: 'this is the summary title' }
-        }
-      ]
-    },
-    aggregations: {
-      total_categories: {
-        doc_count: 17,
-        documents: { doc_count: 0, documents_total: [{ value: 29 }] },
-        objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
-        people: { doc_count: 4, people_total: [{ value: 221 }] },
-        all: {
+    body: {
+      hits: {
+        total: {
+          value: 5
+        },
+        max_score: null,
+        hits: [
+          {
+            _id: `smg-object-${Date.now()}`,
+            _source: {
+              '@datatype': {
+                base: 'object'
+              },
+              summary: {
+                title: 'this is the summary title'
+              }
+            }
+          }
+        ]
+      },
+      aggregations: {
+        total_categories: {
           doc_count: 17,
-          all_total: {
-            doc_count_error_upper_bound: 0,
-            sum_other_doc_count: 0,
-            buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
+          documents: { doc_count: 0, documents_total: [{ value: 29 }] },
+          objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
+          people: { doc_count: 4, people_total: [{ value: 221 }] },
+          all: {
+            doc_count: 17,
+            all_total: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
+            }
           }
         }
       }
     }
   };
-  testResult.aggregations.all = aggregationsAll;
-  testResult.aggregations.people = aggregationsPeople;
-  testResult.aggregations.objects = aggregationsObjects;
-  testResult.aggregations.documents = aggregationsDocuments;
+  testResult.body.aggregations.all = aggregationsAll;
+  testResult.body.aggregations.people = aggregationsPeople;
+  testResult.body.aggregations.objects = aggregationsObjects;
+  testResult.body.aggregations.documents = aggregationsDocuments;
 
   let obj;
   const query = queryParams('html', { query: { q: 'test', 'page[number]': 1, 'page[size]': 1 }, params: {} });
@@ -265,39 +299,49 @@ test(file + 'Should create valid links on last page', (t) => {
     took: 0,
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
-    hits: {
-      total: 5,
-      max_score: null,
-      hits: [
-        {
-          _type: 'object',
-          _id: `smg-object-${Date.now()}`,
-          _source: { summary_title: 'this is the summary title' }
-        }
-      ]
-    },
-    aggregations: {
-      total_categories: {
-        doc_count: 17,
-        documents: { doc_count: 0, documents_total: [{ value: 29 }] },
-        objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
-        people: { doc_count: 4, people_total: [{ value: 221 }] },
-        all: {
+    body: {
+      hits: {
+        total: {
+          value: 5
+        },
+        max_score: null,
+        hits: [
+          {
+            _id: `smg-object-${Date.now()}`,
+            _source: {
+              '@datatype': {
+                base: 'object'
+              },
+              summary: {
+                title: 'this is the summary title'
+              }
+            }
+          }
+        ]
+      },
+      aggregations: {
+        total_categories: {
           doc_count: 17,
-          all_total: {
-            doc_count_error_upper_bound: 0,
-            sum_other_doc_count: 0,
-            buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
+          documents: { doc_count: 0, documents_total: [{ value: 29 }] },
+          objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
+          people: { doc_count: 4, people_total: [{ value: 221 }] },
+          all: {
+            doc_count: 17,
+            all_total: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
+            }
           }
         }
       }
     }
   };
 
-  testResult.aggregations.all = aggregationsAll;
-  testResult.aggregations.people = aggregationsPeople;
-  testResult.aggregations.objects = aggregationsObjects;
-  testResult.aggregations.documents = aggregationsDocuments;
+  testResult.body.aggregations.all = aggregationsAll;
+  testResult.body.aggregations.people = aggregationsPeople;
+  testResult.body.aggregations.objects = aggregationsObjects;
+  testResult.body.aggregations.documents = aggregationsDocuments;
 
   let obj;
   const query = queryParams('html', { query: { q: 'test', 'page[number]': 4, 'page[size]': 1 }, params: {} });
@@ -332,39 +376,49 @@ test(file + 'Should ignore unknown object types', (t) => {
     took: 0,
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
-    hits: {
-      total: 5,
-      max_score: null,
-      hits: [
-        {
-          _type: 'wrongtype',
-          _id: `smg-object-${Date.now()}`,
-          _source: { summary_title: 'this is the summary title' }
-        }
-      ]
-    },
-    aggregations: {
-      total_categories: {
-        doc_count: 17,
-        documents: { doc_count: 0, documents_total: [{ value: 29 }] },
-        objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
-        people: { doc_count: 4, people_total: [{ value: 221 }] },
-        all: {
+    body: {
+      hits: {
+        total: {
+          value: 5
+        },
+        max_score: null,
+        hits: [
+          {
+            _id: `smg-object-${Date.now()}`,
+            _source: {
+              '@datatype': {
+                base: 'wrongtype'
+              },
+              summary: {
+                title: 'this is the summary title'
+              }
+            }
+          }
+        ]
+      },
+      aggregations: {
+        total_categories: {
           doc_count: 17,
-          all_total: {
-            doc_count_error_upper_bound: 0,
-            sum_other_doc_count: 0,
-            buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
+          documents: { doc_count: 0, documents_total: [{ value: 29 }] },
+          objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
+          people: { doc_count: 4, people_total: [{ value: 221 }] },
+          all: {
+            doc_count: 17,
+            all_total: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
+            }
           }
         }
       }
     }
   };
 
-  testResult.aggregations.all = aggregationsAll;
-  testResult.aggregations.people = aggregationsPeople;
-  testResult.aggregations.objects = aggregationsObjects;
-  testResult.aggregations.documents = aggregationsDocuments;
+  testResult.body.aggregations.all = aggregationsAll;
+  testResult.body.aggregations.people = aggregationsPeople;
+  testResult.body.aggregations.objects = aggregationsObjects;
+  testResult.body.aggregations.documents = aggregationsDocuments;
 
   let obj;
   const query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 50 }, params: {} });
@@ -388,47 +442,57 @@ test(file + 'Should extract @link\'d document to relationships and included', (t
     took: 0,
     timed_out: false,
     _shards: { total: 1, successful: 1, failed: 0 },
-    hits: {
-      total: 5,
-      max_score: null,
-      hits: [
-        {
-          _type: 'object',
-          _id: `smg-object-${Date.now()}`,
-          _source: {
-            summary_title: 'this is the summary title',
-            agents: [
-              {
-                admin: { uid: relId },
-                summary_title: relSummaryTitle
-              }
-            ]
+    body: {
+      hits: {
+        total: {
+          value: 5
+        },
+        max_score: null,
+        hits: [
+          {
+            _id: `smg-object-${Date.now()}`,
+            _source: {
+              '@datatype': {
+                base: 'object'
+              },
+              summary: {
+                title: 'this is the summary title'
+              },
+              agent: [
+                {
+                  '@admin': { uid: relId },
+                  summary: {
+                    title: relSummaryTitle
+                  }
+                }
+              ]
+            }
           }
-        }
-      ]
-    },
-    aggregations: {
-      total_categories: {
-        doc_count: 17,
-        documents: { doc_count: 0, documents_total: [{ value: 29 }] },
-        objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
-        people: { doc_count: 4, people_total: [{ value: 221 }] },
-        all: {
+        ]
+      },
+      aggregations: {
+        total_categories: {
           doc_count: 17,
-          all_total: {
-            doc_count_error_upper_bound: 0,
-            sum_other_doc_count: 0,
-            buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
+          documents: { doc_count: 0, documents_total: [{ value: 29 }] },
+          objects: { doc_count: 13, objects_total: [{ value: 3304 }] },
+          people: { doc_count: 4, people_total: [{ value: 221 }] },
+          all: {
+            doc_count: 17,
+            all_total: {
+              doc_count_error_upper_bound: 0,
+              sum_other_doc_count: 0,
+              buckets: [{ key: 'object', doc_count: 13 }, { key: 'agent', doc_count: 4 }]
+            }
           }
         }
       }
     }
   };
 
-  testResult.aggregations.all = aggregationsAll;
-  testResult.aggregations.people = aggregationsPeople;
-  testResult.aggregations.objects = aggregationsObjects;
-  testResult.aggregations.documents = aggregationsDocuments;
+  testResult.body.aggregations.all = aggregationsAll;
+  testResult.body.aggregations.people = aggregationsPeople;
+  testResult.body.aggregations.objects = aggregationsObjects;
+  testResult.body.aggregations.documents = aggregationsDocuments;
 
   let obj;
   const query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });

@@ -15,7 +15,7 @@ module.exports = {
       .assert.urlEquals('http://localhost:8000/search/object_type/bottles+tablets')
       .waitForElementVisible('.resultcard__title', 5000)
       .assert.containsText('.resultcard__title', 'tablets')
-      .assert.containsText('.resultcard__title', 'Bottle of "Drazine" tablets, with instructions, in')
+      .assert.containsText('.resultcard__title', 'Bottle containing acriflavine tablets')
       .end();
   }
 };

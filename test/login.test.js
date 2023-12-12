@@ -32,7 +32,7 @@ testWithServer('Attempt to acces the home page without authorisation, redirect t
   const htmlRequest = {
     method: 'GET',
     url: '/',
-    headers: { 'Accept': 'text/html' }
+    headers: { Accept: 'text/html' }
   };
 
   const res = await ctx.server.inject(htmlRequest);

@@ -6,16 +6,15 @@ const file = require('path').relative(process.cwd(), __filename) + ' > ';
 const createMockDatabase = require('./helpers/mock-database');
 const createServer = require('../server');
 const config = require('../config');
+const testWithServer = require('./helpers/test-with-server');
 
-test(file + 'Should proxy to sitemap', async (t) => {
-  t.plan(3);
-
+test('setup', async () => {
   const sitemapPath = Path.join(__dirname, '..', 'public', 'sitemap.xml');
   const sitemapXml = Fs.readFileSync(sitemapPath, 'utf8');
 
   const upstream = new Hapi.Server();
 
-  await upstream.register(require('inert'));
+  await upstream.register(require('@hapi/inert'));
   upstream.route({
     method: 'GET',
     path: '/sitemap.xml',
@@ -29,8 +28,8 @@ test(file + 'Should proxy to sitemap', async (t) => {
     sitemapUrl: `http://localhost:${upstream.info.port}`
   });
 
-  createServer(createMockDatabase(), testConfig, async (err, ctx) => {
-    t.ifError(err, 'No error creating server');
+  testWithServer(file + 'Should proxy to sitemap', { config: testConfig }, async (t, ctx) => {
+    t.plan(2);
 
     const request = {
       method: 'GET',

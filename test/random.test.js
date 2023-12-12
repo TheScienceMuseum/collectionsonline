@@ -57,6 +57,6 @@ testWithServer(file + 'Query has no effect on randomness', {}, async (t, ctx) =>
   const res = await ctx.server.inject(htmlRequest);
   const result = JSON.parse(res.payload).data;
   t.equal(res.statusCode, 200, 'Status code was as expected');
-  t.ok(result[0].attributes.categories.find(el => el.name === 'Art'), 'Item in correct category');
+  t.ok(result[0].attributes.category.find(el => el.name === 'Art'), 'Item in correct category');
   t.end();
 });
