@@ -18,7 +18,6 @@ test('Data should contain relationships', function (t) {
   t.plan(2);
   t.doesNotThrow(() => {
     JSONAPIResponse = buildJSONResponse(data, config);
-    console.log(JSONAPIResponse);
   }, 'Building response does not throw an error');
   t.ok(JSONAPIResponse.data.relationships, 'contains relationships');
   t.end();

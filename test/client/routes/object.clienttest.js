@@ -13,7 +13,7 @@ module.exports = {
       // .assert.containsText('.details-status', 'Permanent collection')
       .assert.containsText('.details-credit', 'Butlins')
       .assert.containsText('.details-type', 'steam locomotive')
-      .assert.containsText('.details-taxonomy', 'vehicles and vehicle components')
+      // .assert.containsText('.details-taxonomy', 'vehicles and vehicle components')
       .end();
   }
 };

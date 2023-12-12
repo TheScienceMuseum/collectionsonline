@@ -61,7 +61,6 @@
 {{/if}}
   <a href="{{lookup links.clearFacet "dates"}}" class="filter__name">Date (born / died)</a>
   <div class="filter__options filter__daterange">
-    {{log selectedFilters}}
     <label>From <input type="number" placeholder="1600" name="date[from]" value="{{lookup selectedFilters "date[from]"}}"/></label>
     <label>To <input type="number" placeholder="2016" name="date[to]" value="{{lookup selectedFilters "date[to]"}}"/></label>
   </div>
