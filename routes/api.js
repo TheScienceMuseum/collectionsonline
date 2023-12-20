@@ -12,13 +12,23 @@ module.exports = (elastic, config) => ({
     cache: cacheHeaders(config, 3600),
     handler: async function (request, h) {
       try {
-        const result = await elastic.get({ index: 'ciim', id: TypeMapping.toInternal(request.params.id) });
+        const result = await elastic.get({
+          index: 'ciim',
+          id: TypeMapping.toInternal(request.params.id)
+        });
 
         const responseType = contentType(request);
-        const apiData = beautify(buildJSONResponse(result.body, config), null, 2, 80);
+        const apiData = beautify(
+          buildJSONResponse(result.body, config),
+          null,
+          2,
+          80
+        );
 
         if (responseType === 'json') {
-          return h.response(apiData).header('content-type', 'application/vnd.api+json');
+          return h
+            .response(apiData)
+            .header('content-type', 'application/vnd.api+json');
         } else {
           return h.view('api', { api: apiData });
         }
