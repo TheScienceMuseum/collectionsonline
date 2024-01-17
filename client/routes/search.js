@@ -197,7 +197,7 @@ function listeners (ctx, next) {
         }
       }
 
-      const museums = ['Science-Museum', 'National-Railway-Museum', 'National-Media-Museum', 'Museum-of-Science-and-Industry'];
+      const museums = ['Science-Museum', 'National-Railway-Museum', 'National-Media-Museum', 'National-Science-and-Media-Museum', 'Museum-of-Science-and-Industry'];
       loadingBar.start();
       museums.forEach(function (m) {
         const museumFilter = document.getElementsByClassName('filter__museum__' + m)[0];
