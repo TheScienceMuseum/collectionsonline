@@ -45,7 +45,7 @@ module.exports = {
           description:
             'The science and culture of light and sound technologies, and their impact on our lives',
           columns: 'small-6 medium-3',
-          link: '/search/museum/national-media-museum'
+          link: '/search/museum/national-science-media-museum'
         },
         {
           type: 'collection',

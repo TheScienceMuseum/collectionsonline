@@ -32,6 +32,15 @@ module.exports = {
       }
     };
   },
+  nsmm () {
+    return {
+      method: 'GET',
+      path: '/msi',
+      handler: function (request, h) {
+        return museumRedirect(request, h, 'national-science-and-media-museum');
+      }
+    };
+  },
   nmem () {
     return {
       method: 'GET',
