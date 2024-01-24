@@ -16,7 +16,6 @@
     "@hapi/inert": "^7.1.0",
     "@hapi/vision": "^7.0.1",
     "awesomplete": "git+https://github.com/TheScienceMuseum/awesomplete.git",
-    "aws-sdk": "^2.1168.0",
     "catbox": "^10.0.6",
     "catbox-redis": "^4.2.4",
     "clipboard": "^2.0.11",

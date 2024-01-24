@@ -23,11 +23,10 @@
     "description": "From locomotives to railway posters explore the railway objects currently on display at the National Railway Museum in York, and discover the role of railways in shaping the modern world.",
     "link": "http://www.railwaymuseum.org.uk"
   },
-  
   "Locomotion": {
     "title": "Locomotion",
     "thumbnail": "/assets/img/description-box/museum/locomotion.png",
     "description": "At Locomotion you can see highlights of the national collection of railway vehicles in the world’s first railway town – Shildon in County Durham.",
     "link": "https://www.locomotion.org.uk"
-  }   
+  }
 }
