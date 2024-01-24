@@ -24,8 +24,7 @@ after_script:
   - pkill node
 
 before_deploy:
-  # - zip -q -x .git\* node_modules/\* package-lock.json .npmrc -r collectionsonline .
-  - zip -q -x .git\* .npmrc -r collectionsonline .
+  - zip -q -x .git\* node_modules/\* package-lock.json .npmrc -r collectionsonline .
 
 deploy:
   - provider: elasticbeanstalk
