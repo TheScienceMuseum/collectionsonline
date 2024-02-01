@@ -13,9 +13,40 @@ testWithServer(file + 'Should suggest completion', {}, async (t, ctx) => {
 
   const res = await ctx.server.inject(request);
   t.equal(res.statusCode, 200, 'Status was OK');
-  t.ok(res.result.data.some((d) => d.attributes.summary_title === 'NeXT Computer Tower (personal computer)'), 'Autocompleted Next successfully');
+  t.ok(
+    res.result.data.some(
+      (d) => d.attributes.summary_title === 'NeXT Computer (personal computer)'
+    ),
+    'Autocompleted Next successfully'
+  );
   t.end();
 });
+
+testWithServer(
+  file + 'Should not suggest completion for suppressed child records',
+  {},
+  async (t, ctx) => {
+    t.plan(2);
+
+    const request = {
+      method: 'GET',
+      url: '/autocomplete?' + QueryString.stringify({ q: 'next computer' }),
+      headers: { Accept: 'application/vnd.api+json' }
+    };
+
+    const res = await ctx.server.inject(request);
+    t.equal(res.statusCode, 200, 'Status was OK');
+    t.notOk(
+      res.result.data.some(
+        (d) =>
+          d.attributes.summary_title ===
+          'NeXT Computer Tower (personal computer)'
+      ),
+      'Autocompleted Next successfully'
+    );
+    t.end();
+  }
+);
 
 testWithServer(file + 'Should disallow < 3 characters', {}, async (t, ctx) => {
   t.plan(2);
@@ -29,7 +60,11 @@ testWithServer(file + 'Should disallow < 3 characters', {}, async (t, ctx) => {
   const res = await ctx.server.inject(request);
 
   t.equal(res.statusCode, 400, 'Status was bad request');
-  t.equal(res.payload, '"q" length must be at least 3 characters long', 'Validation error was as expected');
+  t.equal(
+    res.payload,
+    '"q" length must be at least 3 characters long',
+    'Validation error was as expected'
+  );
   t.end();
 });
 
@@ -47,32 +82,40 @@ testWithServer(file + 'Autocomplete with type people', {}, async (t, ctx) => {
   t.end();
 });
 
-testWithServer(file + 'Autocomplete error', { mock: { method: 'search', response: { error: new Error() } } }, async (t, ctx) => {
-  t.plan(1);
+testWithServer(
+  file + 'Autocomplete error',
+  { mock: { method: 'search', response: { error: new Error() } } },
+  async (t, ctx) => {
+    t.plan(1);
 
-  const request = {
-    method: 'GET',
-    url: '/autocomplete?' + QueryString.stringify({ q: 'cha' }),
-    headers: { Accept: 'application/vnd.api+json' }
-  };
+    const request = {
+      method: 'GET',
+      url: '/autocomplete?' + QueryString.stringify({ q: 'cha' }),
+      headers: { Accept: 'application/vnd.api+json' }
+    };
 
-  const res = await ctx.server.inject(request);
+    const res = await ctx.server.inject(request);
 
-  t.equal(res.statusCode, 503, 'Status code was as expected');
-  t.end();
-});
+    t.equal(res.statusCode, 503, 'Status code was as expected');
+    t.end();
+  }
+);
 
-testWithServer(file + 'Should return an empty response if accept header is not json', {}, async (t, ctx) => {
-  t.plan(2);
+testWithServer(
+  file + 'Should return an empty response if accept header is not json',
+  {},
+  async (t, ctx) => {
+    t.plan(2);
 
-  const request = {
-    method: 'GET',
-    url: '/autocomplete?' + QueryString.stringify({ q: 'babb' }),
-    headers: { Accept: 'text/html' }
-  };
+    const request = {
+      method: 'GET',
+      url: '/autocomplete?' + QueryString.stringify({ q: 'babb' }),
+      headers: { Accept: 'text/html' }
+    };
 
-  const res = await ctx.server.inject(request);
-  t.equal(res.statusCode, 204, 'Status was OK - No Content');
-  t.ok((res.payload === ''), 'Empty response with a html request');
-  t.end();
-});
+    const res = await ctx.server.inject(request);
+    t.equal(res.statusCode, 204, 'Status was OK - No Content');
+    t.ok(res.payload === '', 'Empty response with a html request');
+    t.end();
+  }
+);

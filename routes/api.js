@@ -4,6 +4,7 @@ const TypeMapping = require('../lib/type-mapping');
 const beautify = require('json-beautify');
 const contentType = require('./route-helpers/content-type.js');
 const cacheHeaders = require('./route-helpers/cache-control');
+const getChildRecords = require('../lib/get-child-records.js');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -18,8 +19,14 @@ module.exports = (elastic, config) => ({
         });
 
         const responseType = contentType(request);
+
+        const childRecords = await getChildRecords(
+          elastic,
+          TypeMapping.toInternal(request.params.id)
+        );
+        // TODO: come back and fix this
         const apiData = beautify(
-          buildJSONResponse(result.body, config),
+          buildJSONResponse(result.body, config, null, childRecords),
           null,
           2,
           80
@@ -36,6 +43,7 @@ module.exports = (elastic, config) => ({
         if (err.statusCode === 404) {
           return Boom.notFound();
         }
+        console.log('The error:', err);
         return Boom.serverUnavailable('unavailable');
       }
     }
