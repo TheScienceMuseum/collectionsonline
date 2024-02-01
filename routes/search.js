@@ -24,7 +24,9 @@ module.exports = (elastic, config) => ({
         return h.response('Not Acceptable').code(406);
       }
       try {
-        const querySchema = Joi.object({ query: filterSchema(responseType).keys(searchSchema.query) });
+        const querySchema = Joi.object({
+          query: filterSchema(responseType).keys(searchSchema.query)
+        });
         const validation = querySchema.validate(
           { query: request.query },
           { allowUnknown: true }
@@ -41,64 +43,87 @@ module.exports = (elastic, config) => ({
           categories: filterSchema('html').keys(searchSchema.query),
           query: filterSchema('html').keys(searchSchema.query)
         });
-        const result = await (resultSchema.validate(
+        const result = await resultSchema.validate(
           { params, categories, query: value.query },
           { allowUnknown: true }
-        )).value;
+        ).value;
 
-        const query = Object.assign(result.query, result.params, result.categories);
+        const query = Object.assign(
+          result.query,
+          result.params,
+          result.categories
+        );
         const queryParams = createQueryParams(responseType, { query, params });
 
         if (responseType === 'html') {
           // slideshow
-          if (request.params.filters && request.params.filters.indexOf('slideshow') > -1) {
+          if (
+            request.params.filters &&
+            request.params.filters.indexOf('slideshow') > -1
+          ) {
             queryParams.filter.objects.hasImage = ['has_image'];
             queryParams.filter.all.hasImage = ['has_image'];
 
-            const query = Object.assign(queryParams, { type: 'objects', random: 100 });
+            const query = Object.assign(queryParams, {
+              type: 'objects',
+              random: 100
+            });
             const res = await search(elastic, query);
             const data = searchResultsToSlideshow(queryParams, res, config);
-
-            return h.view('slideshow', { data, stringData: JSON.stringify(data) });
+            return h.view('slideshow', {
+              data,
+              stringData: JSON.stringify(data)
+            });
           }
 
           // match categories
-          if (result.query.q && (!result.categories['filter[categories]'])) {
+          if (result.query.q && !result.categories['filter[categories]']) {
             const q = result.query.q.toLowerCase();
             let qMatch;
 
-            if (keyCategories.some(el => {
-              if (el.category === q || el.synonyms.indexOf(q) > -1) {
-                qMatch = el.category;
-                return true;
-              } else {
-                return false;
-              }
-            })) {
+            if (
+              keyCategories.some((el) => {
+                if (el.category === q || el.synonyms.indexOf(q) > -1) {
+                  qMatch = el.category;
+                  return true;
+                } else {
+                  return false;
+                }
+              })
+            ) {
               return h.redirect(request.path + '/categories/' + qMatch);
             }
           }
 
           // match collection
-          if (result.query.q && (!result.categories['filter[collection]'])) {
+          if (result.query.q && !result.categories['filter[collection]']) {
             const q = result.query.q.toLowerCase();
             let qMatch;
 
-            if (keyCollections.some(el => {
-              if (el.collection === q || el.synonyms.indexOf(q) > -1) {
-                qMatch = el.collection;
-                return true;
-              } else {
-                return false;
-              }
-            })) {
+            if (
+              keyCollections.some((el) => {
+                if (el.collection === q || el.synonyms.indexOf(q) > -1) {
+                  qMatch = el.collection;
+                  return true;
+                } else {
+                  return false;
+                }
+              })
+            ) {
               return h.redirect(request.path + '/categories/' + qMatch);
             }
           }
 
           // match and answer 'what is' questions
-          if (result.query.q && result.query.q.toLowerCase().startsWith('what')) {
-            const answer = whatis.data.filter((a) => a.attributes.summary_title.toLowerCase() === result.query.q.toLowerCase());
+          if (
+            result.query.q &&
+            result.query.q.toLowerCase().startsWith('what')
+          ) {
+            const answer = whatis.data.filter(
+              (a) =>
+                a.attributes.summary_title.toLowerCase() ===
+                result.query.q.toLowerCase()
+            );
             if (answer.length > 0) {
               return h.redirect(answer[0].links.self);
             }
@@ -111,14 +136,23 @@ module.exports = (elastic, config) => ({
 
           const response = h.view('search', tplData);
           // Only set a Cache-Control if we don't have a freetext query string and aren't running on production
-          if (!result.query.q && !result.query.random && config && config.NODE_ENV === 'production') {
-            response.header('Cache-Control', 'public, must-revalidate, max-age: 43200');
+          if (
+            !result.query.q &&
+            !result.query.random &&
+            config &&
+            config.NODE_ENV === 'production'
+          ) {
+            response.header(
+              'Cache-Control',
+              'public, must-revalidate, max-age: 43200'
+            );
           }
           return response;
         } else if (responseType === 'json') {
           const res = await search(elastic, queryParams);
 
-          return h.response(searchResultsToJsonApi(queryParams, res, config))
+          return h
+            .response(searchResultsToJsonApi(queryParams, res, config))
             .header('content-type', 'application/vnd.api+json');
         }
       } catch (err) {

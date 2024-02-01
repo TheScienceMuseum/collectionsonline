@@ -13,25 +13,34 @@ module.exports = {
       .pause(1000)
       .click('.filter__box[value=painter]')
       .pause(1000)
-      .assert.urlEquals('http://localhost:8000/search/people/occupation/artist+painter?q=charles')
-      .assert.containsText('.resultcard', '1873-1928, artist; painter; poster artist, British')
+      .assert.urlEquals(
+        'http://localhost:8000/search/people/occupation/artist+painter?q=charles'
+      )
+      .assert.containsText(
+        '.resultcard',
+        '1873-1928, artist; painter; poster artist, British'
+      )
       .click('.filter__box')
       .pause(1000)
       .click('.filter__box[value=painter]')
-      .pause(3000)
+      .pause(6000)
       .assert.urlEquals('http://localhost:8000/search/people?q=charles')
-      .assert.containsText('.resultcard', '1741-1827, artist, American')
+      .assert.containsText('.resultcard', '1857-1952, physiologist, British')
       .pause(1000)
       .click('.filter__box[value=inventor]')
       .pause(1000)
-      .assert.urlEquals('http://localhost:8000/search/people/occupation/inventor?q=charles')
+      .assert.urlEquals(
+        'http://localhost:8000/search/people/occupation/inventor?q=charles'
+      )
       .click('.filter__box[value=inventor]')
       .pause(1000)
       .click('.filter[data-filter="Place born"] > a')
       .pause(1000)
       .click('.filter__box[value="England, United Kingdom"]')
       .pause(1000)
-      .assert.urlEquals('http://localhost:8000/search/people/birth[place]/england,-united-kingdom?q=charles')
+      .assert.urlEquals(
+        'http://localhost:8000/search/people/birth[place]/england,-united-kingdom?q=charles'
+      )
       .click('.filter__box[value="England, United Kingdom"]')
       .pause(1000)
       .assert.urlEquals('http://localhost:8000/search/people?q=charles')

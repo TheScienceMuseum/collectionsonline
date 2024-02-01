@@ -3,8 +3,10 @@ const OpenSeadragon = require('openseadragon');
 module.exports = (ctx) => {
   const openseadragon = document.querySelector('#openseadragon');
 
-  if (openseadragon) {
-    const carouselImage = document.querySelectorAll('.carousel__image.is-selected');
+  if (openseadragon && ctx.imgUrl) {
+    const carouselImage = document.querySelectorAll(
+      '.carousel__image.is-selected'
+    );
     const singleImage = document.querySelectorAll('.single_image');
 
     if (!ctx.imgUrl) {

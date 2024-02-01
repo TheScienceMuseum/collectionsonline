@@ -140,6 +140,14 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
+  'records/record-child-records',
+  Fs.readFileSync(
+    './templates/partials/records/record-child-records.html',
+    'utf8'
+  )
+);
+
+Handlebars.registerPartial(
   'records/panel-cite',
   Fs.readFileSync('./templates/partials/records/panel-cite.html', 'utf8')
 );
@@ -338,6 +346,11 @@ Handlebars.registerHelper(
 Handlebars.registerHelper(
   'truncate',
   require('../templates/helpers/truncate.js')
+);
+
+Handlebars.registerHelper(
+  'truncateDescription',
+  require('../templates/helpers/truncateDescription.js')
 );
 
 Handlebars.registerHelper('or', require('../templates/helpers/or.js'));

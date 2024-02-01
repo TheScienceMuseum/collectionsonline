@@ -12,7 +12,7 @@
 .record-top {
   padding-top: 1rem;
   padding-bottom: 1rem;
-  @include media(">=medium") {
+  @include media('>=medium') {
     padding-top: 2rem;
     padding-bottom: 2rem;
   }
@@ -21,7 +21,7 @@
   &__title {
     font-size: 2rem;
     letter-spacing: -0.02em;
-    @include media(">=medium") {
+    @include media('>=medium') {
       font-size: 3rem;
     }
     font-weight: 700;
@@ -82,7 +82,7 @@
     overflow: hidden;
     margin-bottom: -1px;
     display: none;
-    @include media(">=medium") {
+    @include media('>=medium') {
       display: block;
     }
   }
@@ -117,7 +117,7 @@
     margin: 1rem 0;
     font-size: 1rem;
     line-height: 1.25;
-    @include media("<=small") {
+    @include media('<=small') {
       clear: right;
       font-size: rem-calc(14);
     }
@@ -131,7 +131,7 @@
   &__button {
     @include button-base;
     @include toolbar-button;
-    @include media("<=small") {
+    @include media('<=small') {
       padding: 0.5em 0.75em;
     }
     font-size: rem-calc(18);
@@ -158,10 +158,10 @@
     background: rgba(black, 0.9);
     position: absolute;
     width: 75%;
-    @include media(">=medium") {
+    @include media('>=medium') {
       width: 50%;
     }
-    @include media(">=large") {
+    @include media('>=large') {
       width: 25%;
     }
     right: 1rem;
@@ -177,7 +177,8 @@
       display: block;
     }
 
-    button, .cite__menubutton {
+    button,
+    .cite__menubutton {
       @include button-base;
       color: $c-teal;
       border-color: $c-teal;
@@ -260,7 +261,7 @@
     padding-left: 1rem;
     @include icon-bullet(arrow_right, $size: 1.125rem, $left: 0.5rem, $top: 0);
 
-    &[aria-expanded="true"] {
+    &[aria-expanded='true'] {
       @include icon-bullet(arrow_down, $size: 1.125rem, $left: 0.5rem, $top: 0);
     }
   }
@@ -272,7 +273,7 @@
     // &:not(:last-of-type) { border-bottom: 1px grey(20) solid; }
     // need to knock it in a gutter, hence
     &:not(:last-of-type):after {
-      content: " ";
+      content: ' ';
       margin: 0 0.5rem;
       background: grey(20);
       height: 1px;
@@ -355,4 +356,158 @@
 .see-more {
   float: right;
   font-size: 1.5rem;
+}
+
+//-----------------------------------------------------------------------------
+// .child-record-related
+//-----------------------------------------------------------------------------
+
+.child-records {
+  margin-top: 2rem;
+  .child-records__list {
+    gap: 1em;
+    display: flex;
+    flex-direction: column;
+    margin-block: 1em;
+    margin-inline-start: 0;
+
+    .child-records__list-item {
+      padding-block: 2em;
+      display: flex;
+      container: record-item / inline-size;
+      flex-direction: row;
+      list-style: none;
+      .child-records__container {
+        display: flex;
+        gap: 2em;
+      }
+    }
+  }
+
+  .child-records__thumbnail {
+    display: flex;
+    flex: 2 1 100%;
+    flex-direction: column;
+    position: relative;
+    line-height: 1.2;
+    gap: 2em;
+
+    &:not(:has(img)) {
+      width: 100%;
+      height: clamp(12.5rem, 12.821rem + 14.286vw, 18.75rem);
+      background-image: linear-gradient(
+        to right top,
+        #d16ba5,
+        #c777b9,
+        #ba83ca,
+        #aa8fd8,
+        #9a9ae1,
+        #8aa7ec,
+        #79b3f4,
+        #69bff8,
+        #52cffe,
+        #41dfff,
+        #46eefa,
+        #5ffbf1
+      );
+    }
+
+    &:not(:has(img)) .child-records__title {
+      color: #ffffff;
+      padding: 0.5em;
+    }
+
+    .child-records__thumbnail-picture,
+    .child-records__thumbnail-placeholder {
+      background-image: linear-gradient(
+        to right top,
+        #d16ba5,
+        #c777b9,
+        #ba83ca,
+        #aa8fd8,
+        #9a9ae1,
+        #8aa7ec,
+        #79b3f4,
+        #69bff8,
+        #52cffe,
+        #41dfff,
+        #46eefa,
+        #5ffbf1
+      );
+
+      // background-image:  linear-gradient(
+      //   224deg in oklab,
+      //   oklch(55% .45 350) 4% 4%, oklch(95% .4 95) 89% 89%
+      // );
+      padding: 0.5em;
+      aspect-ratio: 2/1;
+    }
+  }
+
+  .child-records__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      font-size: 1.125em;
+      + svg {
+        align-self: flex-start;
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+  }
+
+  .child-records__details {
+    flex: 2 1 100%;
+    display: flex;
+    flex-direction: column;
+
+    > h3 {
+      font-size: 1.25rem;
+    }
+
+    .child-records__details-item {
+      padding-block-start: 2rem;
+      padding-block-end: 2rem;
+      background-color: grey(10);
+
+      .record-details__dl {
+        dt {
+          width: 45%;
+          font-size: 12px;
+        }
+        dd {
+          width: 55%;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+  .child-records__description {
+    display: flex;
+    transition: 0.5s linear ease-in-out;
+    flex: 2 1 100%;
+    align-self: start;
+    > p {
+      font-size: 0.7rem;
+    }
+  }
+}
+
+// .child-records__description.open {
+
+// }
+
+.child-records__details-item-header {
+  font-size: 1.25rem;
+}
+
+// container query for wrapping child records
+@container record-item (max-width: 991px) {
+  .child-records__container {
+    flex-wrap: wrap;
+  }
 }

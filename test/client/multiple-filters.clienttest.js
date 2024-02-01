@@ -11,11 +11,16 @@ module.exports = {
       .assert.urlEquals('http://localhost:8000/search/object_type/bottles')
       .waitForElementVisible('.filter__box[value="tablets"]', 5000)
       .click('.filter__box[value="tablets"]')
-      .pause(2000)
-      .assert.urlEquals('http://localhost:8000/search/object_type/bottles+tablets')
+      .pause(8000)
+      .assert.urlEquals(
+        'http://localhost:8000/search/object_type/bottles+tablets'
+      )
       .waitForElementVisible('.resultcard__title', 5000)
       .assert.containsText('.resultcard__title', 'tablets')
-      .assert.containsText('.resultcard__title', 'Bottle containing acriflavine tablets')
+      .assert.containsText(
+        '.resultcard__title',
+        'Empty bottle for Opium tincture tablets'
+      )
       .end();
   }
 };

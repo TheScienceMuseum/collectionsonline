@@ -6,6 +6,8 @@ const getSimilarObjects = require('../lib/get-similar-objects');
 const sortRelated = require('../lib/sort-related-items');
 const response = require('./route-helpers/response');
 const cacheHeaders = require('./route-helpers/cache-control');
+const getChildRecords = require('../lib/get-child-records.js');
+// const { log } = require('handlebars');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -17,12 +19,38 @@ module.exports = (elastic, config) => ({
 
       if (responseType !== 'notAcceptable') {
         try {
-          const result = await elastic.get({ index: 'ciim', id: TypeMapping.toInternal(request.params.id) });
+          const result = await elastic.get({
+            index: 'ciim',
+            id: TypeMapping.toInternal(request.params.id)
+          });
           const relatedItems = await getSimilarObjects(result.body, elastic);
 
-          const sortedRelatedItems = sortRelated(relatedItems);
-          const JSONData = buildJSONResponse(result.body, config, sortedRelatedItems);
+          const childRecords = await getChildRecords(
+            elastic,
+            TypeMapping.toInternal(request.params.id)
+          );
 
+          const sortedRelatedItems = sortRelated(relatedItems);
+          const JSONData = buildJSONResponse(
+            result.body,
+            config,
+            sortedRelatedItems,
+            childRecords
+          );
+
+          // handles redirect to parent record if child record is part of SPH grouping
+          const childRecord = JSONData.data.record.groupingType;
+          const recordType = JSONData.data.record.recordType;
+          const parentRedirect = JSONData.data.links.parentSlug;
+          const inProduction = config && config.NODE_ENV === 'production';
+
+          if (
+            childRecord === 'SPH' &&
+            recordType === 'child' &&
+            !inProduction
+          ) {
+            return h.redirect(parentRedirect).permanent();
+          }
           return response(h, JSONData, 'object', responseType);
         } catch (err) {
           console.log(err);
