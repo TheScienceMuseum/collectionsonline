@@ -23,5 +23,6 @@ module.exports = [
   'signatory',
   'distributor',
   'developer',
-  'railway company'
+  'railway company',
+  'engineer'
 ];
