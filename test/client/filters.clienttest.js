@@ -25,7 +25,7 @@ module.exports = {
       .click('.filter__box[value=painter]')
       .pause(6000)
       .assert.urlEquals('http://localhost:8000/search/people?q=charles')
-      .assert.containsText('.resultcard', '1857-1952, physiologist, British')
+      .assert.containsText('.resultcard', '1600-1649, reigned 1625-1649, king of England, Scotland, and Ireland, British')
       .pause(1000)
       .click('.filter__box[value=inventor]')
       .pause(1000)

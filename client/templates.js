@@ -140,13 +140,28 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
+  'records/record-mph-records',
+  Fs.readFileSync(
+    './templates/partials/records/record-mph-records.html',
+    'utf8'
+  )
+);
+
+Handlebars.registerPartial(
+  'records/record-sph-records',
+  Fs.readFileSync(
+    './templates/partials/records/record-sph-records.html',
+    'utf8'
+  )
+);
+
+Handlebars.registerPartial(
   'records/record-child-records',
   Fs.readFileSync(
     './templates/partials/records/record-child-records.html',
     'utf8'
   )
 );
-
 Handlebars.registerPartial(
   'records/panel-cite',
   Fs.readFileSync('./templates/partials/records/panel-cite.html', 'utf8')
@@ -384,6 +399,16 @@ Handlebars.registerHelper('concat', require('../templates/helpers/concat.js'));
 Handlebars.registerHelper(
   'ifcreator',
   require('../templates/helpers/ifcreator.js')
+);
+
+Handlebars.registerHelper(
+  'determineGrouping',
+  require('../templates/helpers/determineGrouping.js')
+);
+
+Handlebars.registerHelper(
+  'firstImage',
+  require('../templates/helpers/firstImage.js')
 );
 
 // Routes

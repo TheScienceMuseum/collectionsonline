@@ -19,10 +19,13 @@ module.exports = (elastic, config) => ({
         });
 
         const responseType = contentType(request);
+        const { grouping } = result.body._source['@datatype'];
 
         const childRecords = await getChildRecords(
           elastic,
-          TypeMapping.toInternal(request.params.id)
+          TypeMapping.toInternal(request.params.id),
+          undefined,
+          grouping
         );
         // TODO: come back and fix this
         const apiData = beautify(

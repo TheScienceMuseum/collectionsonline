@@ -1,0 +1,36 @@
+<ul class="child-records-mph-list">
+    {{#each childRecords}}
+    <li class="child-records-mph__list-item ">
+        <picture class="child-records-mph__thumbnail child-records-mph__thumbnail">
+            {{#if images}}
+            <img src="{{firstImage images 0}}" class="child-records-mph__thumbnail-picture " alt="{{title}}" />
+            {{/if }}
+        </picture>
+        <div class="child-records-mph__container">
+            <div class=" child-records-mph__title">
+                <h3 class="child-records__heading">
+                    {{title}}</h3>
+                <svg class="icon icon-objects">
+                    <use xlink:href="/assets/icons/symbol/svg/sprite.symbol.svg#objects"></use>
+                </svg>
+
+            </div>
+            <div>
+                {{#if category}}
+                <a href={category.link} class="child-records__category">
+                    {{category.value}}
+                </a>
+                {{/if}}
+            </div>
+            <div class="child-records__creation">
+                {{#if creation}}
+                <p>{{creation}}</p>
+                {{/if}}
+            </div>
+            {{#if link}}
+            <a href={{link}} class="more-details">Read More</a>
+            {{/if}}
+        </div>
+    </li>
+    {{/each}}
+</ul>
