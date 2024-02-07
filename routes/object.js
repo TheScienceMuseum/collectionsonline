@@ -25,9 +25,12 @@ module.exports = (elastic, config) => ({
           });
           const relatedItems = await getSimilarObjects(result.body, elastic);
 
+          const { grouping } = result.body._source['@datatype'];
           const childRecords = await getChildRecords(
             elastic,
-            TypeMapping.toInternal(request.params.id)
+            TypeMapping.toInternal(request.params.id),
+            undefined,
+            grouping
           );
 
           const sortedRelatedItems = sortRelated(relatedItems);

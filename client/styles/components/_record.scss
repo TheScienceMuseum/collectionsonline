@@ -44,7 +44,6 @@
       display: inline;
       margin: 0;
     }
-
     dt {
       @include small-caps;
     }
@@ -64,6 +63,10 @@
   }
 }
 
+.record-top__back-mph {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
 //-----------------------------------------------------------------------------
 // .record-imgpanel
 // the big image panel thing with carousel, and/or openseadragon
@@ -497,12 +500,115 @@
   }
 }
 
-// .child-records__description.open {
-
-// }
-
 .child-records__details-item-header {
   font-size: 1.25rem;
+}
+
+// mph records
+.child-records-mph-list {
+  display: grid;
+  grid: {
+    column-gap: 1em;
+    row-gap: 2em;
+    template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  margin-block: 2rem;
+  list-style: none;
+  margin-inline-start: 0;
+
+  .child-records-mph__list-item {
+    display: grid;
+    position: relative;
+    grid: {
+      auto-rows: auto;
+    }
+    transition: 0.3s background ease-in-out, 0.3s transform ease-in-out;
+    .child-records-mph__container {
+      display: grid;
+      grid-row-gap: 0.1rem;
+      margin-block-start: 0.5rem;
+      padding-inline-start: 0.2rem;
+    }
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0);
+      transition: 0.3s background ease-in-out, 0.3s transform ease-in-out;
+      z-index: -1; // Ensure the pseudo-element is behind the content
+    }
+    &:hover:before {
+      transform: scale3d(1.06, 1.06, 1);
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+.child-records-mph__thumbnail {
+  display: block;
+  gap: 0;
+}
+
+.child-records-mph__thumbnail-picture {
+  transition: 0.5s background ease-in-out;
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    right top,
+    from(#d16ba5),
+    color-stop(#c777b9),
+    color-stop(#ba83ca),
+    color-stop(#aa8fd8),
+    color-stop(#9a9ae1),
+    color-stop(#8aa7ec),
+    color-stop(#79b3f4),
+    color-stop(#69bff8),
+    color-stop(#52cffe),
+    color-stop(#41dfff),
+    color-stop(#46eefa),
+    to(#5ffbf1)
+  );
+  background-image: linear-gradient(
+    to right top,
+    #d16ba5,
+    #c777b9,
+    #ba83ca,
+    #aa8fd8,
+    #9a9ae1,
+    #8aa7ec,
+    #79b3f4,
+    #69bff8,
+    #52cffe,
+    #41dfff,
+    #46eefa,
+    #5ffbf1
+  );
+  padding: 0.5em;
+  aspect-ratio: 1/1;
+}
+
+.child-records-mph__title {
+  display: grid;
+
+  grid-template-columns: 90% 10%;
+
+  .child-records__heading {
+    font-weight: 700;
+    font-size: 1.125rem;
+    line-height: 1;
+    text-transform: none;
+    margin: 0;
+  }
+  .child-records__category,
+  .child-records__creation,
+  .more-details {
+    font-weight: 300;
+    font-size: 1rem;
+  }
 }
 
 // container query for wrapping child records

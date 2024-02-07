@@ -12,7 +12,10 @@ test('Normal date and place test', (t) => {
           date: [{ value: '1912' }]
         }
       },
-      links: { root: 'http://localhost:8000' }
+      links: { root: 'http://localhost:8000' },
+      record: {
+        groupingType: 'SPH'
+      }
     },
     included: [
       {

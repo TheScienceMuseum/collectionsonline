@@ -1,42 +1,47 @@
-  <section class="record-top {{class}}">
-    <div class="row">
-      <div class="large-12 columns">
-      <h1 class="record-top__title">{{#if level}}{{> global/icon i=level}}{{else}}{{> global/icon i=type}}{{/if}} {{normalise title this}} {{#ifpage 'person'}}<span class="record-top__date">{{date}}</span>{{/ifpage}}</h1>
+<section class="record-top {{class}}">
+  <div class="row">
+    <div class="large-12 columns">
+      <h1 class="record-top__title">{{#if level}}{{> global/icon i=level}}{{else}}{{> global/icon i=type}}{{/if}}
+        {{normalise title this}} {{#ifpage 'person'}}<span class="record-top__date">{{date}}</span>{{/ifpage}}</h1>
+      {{#if links }}
+      <a href="{{links.parentSlug}}" class="record-top__back-mph">Back to parent</a>
+      {{/if}}
       {{#each fact}}
-        <dl class="record-top__dl fact-{{classname this.key}}">
-          <dt>{{ this.key }}:</dt>
-          {{#if this.makers}}
-            {{#each this.makers}}
-              <dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{ this.value }}{{#if this.link }}</a>{{/if}}</dd>{{comma this ../this.makers true}}
-            {{/each}}
+      <dl class="record-top__dl fact-{{classname this.key}}">
+        <dt>{{ this.key }}:</dt>
+        {{#if this.makers}}
+        {{#each this.makers}}
+        <dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{ this.value }}{{#if this.link }}</a>{{/if}}</dd>{{comma
+        this ../this.makers true}}
+        {{/each}}
+        {{/if}}
+        {{#isequal this.key 'Made' this}}
+        <dd>
+          {{#if this.date.value}}
+          {{#if this.date.link }}<a href="{{this.date.link}}">{{/if}}
+            {{ this.date.value }}
+            {{#if this.date.link }}</a>{{/if}}
           {{/if}}
-          {{#isequal this.key 'Made' this}}
-            <dd>
-              {{#if this.date.value}}
-                {{#if this.date.link }}<a href="{{this.date.link}}">{{/if}}
-                {{ this.date.value }}
-                {{#if this.date.link }}</a>{{/if}}
-              {{/if}}
 
-              {{#if this.date.value}}
-                {{#if this.place}}
-                  in
-                {{/if}}
-              {{/if}}
+          {{#if this.date.value}}
+          {{#if this.place}}
+          in
+          {{/if}}
+          {{/if}}
 
-              {{#each this.place}}
-                <a href="{{link}}">{{ value }}</a>{{comma this ../this.place true}}
-              {{/each}}
-            </dd>
-          {{else}}
-            {{#each this.value}}
-              <dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{ this.value }}{{#if this.link }}</a>{{/if}}</dd>
-            {{else}}
-              <dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{ this.value }}{{#if this.link }}</a>{{/if}}</dd>
-            {{/each}}
-          {{/isequal}}
-        </dl>
+          {{#each this.place}}
+          <a href="{{link}}">{{ value }}</a>{{comma this ../this.place true}}
+          {{/each}}
+        </dd>
+        {{else}}
+        {{#each this.value}}
+        <dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{ this.value }}{{#if this.link }}</a>{{/if}}</dd>
+        {{else}}
+        <dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{ this.value }}{{#if this.link }}</a>{{/if}}</dd>
+        {{/each}}
+        {{/isequal}}
+      </dl>
       {{/each}}
-      </div>
     </div>
-  </section>
+  </div>
+</section>
