@@ -9,8 +9,12 @@ module.exports = {
       .assert.urlEquals('http://localhost:8000/search?q=ada')
       .click('.resultcard')
       .pause(1000)
-      .assert.not.urlEquals('http://localhost:8000/objects/co8228143/fort-ada-alexandria-photograph')
-      .assert.urlEquals('http://localhost:8000/objects/co65351/ada-countess-of-lovelace-print-engraving-portrait')
+      .assert.not.urlEquals(
+        'http://localhost:8000/objects/co8228143/fort-ada-alexandria-photograph'
+      )
+      .assert.urlEquals(
+        'http://localhost:8000/objects/co65351/ada-countess-of-lovelace-print-engraving-portrait'
+      )
       .waitForElementVisible('.record-top__title', 1000)
       .assert.containsText('.record-top__title', 'Ada, Countess of Lovelace')
       .back()
@@ -25,7 +29,9 @@ module.exports = {
       .assert.urlEquals('http://localhost:8000/search?q=charles%20babbage')
       .click('.resultcard')
       .pause(3000)
-      .assert.urlEquals('http://localhost:8000/documents/aa110000564/the-diplomas-of-charles-babbage')
+      .assert.urlEquals(
+        'http://localhost:8000/objects/co65125/charles-babbage-drawing-portrait'
+      )
       .assert.containsText('.record-top__title', 'Charles Babbage')
       .back()
       .assert.urlEquals('http://localhost:8000/search?q=charles%20babbage')
