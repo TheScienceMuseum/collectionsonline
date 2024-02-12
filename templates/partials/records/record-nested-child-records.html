@@ -1,18 +1,24 @@
-<ul class="child-records__list">
-    {{#each childRecords}}
+<ul class="nested" style="display:flex; flex-direction: column;">
+    {{#if children}}
+    {{#each children}}
     <li class="child-records__list-item">
         <div class="child-records__container">
             <div class="child-records__thumbnail">
 
                 {{#if images}}
-                <img src="{{firstImage images 0}}" class="child-records__thumbnail-picture" alt="{{this.title}}" />
+                {{#each images}}
+                <img src="{{this.medium}}" class="child-records__thumbnail-picture" alt="{{this.title}}" />
+                {{/each}}
                 {{/if }}
                 <div class="child-records__title">
                     <h3 class="">
-                        {{title}}</h3>
+                        {{this.title}}</h3>
                     <svg class="icon icon-objects">
                         <use xlink:href="/assets/icons/symbol/svg/sprite.symbol.svg#objects"></use>
                     </svg>
+                    {{#if parentTitle}}
+                    Part of: {{parentTitle}}
+                    {{/if}}
                 </div>
             </div>
             <div class="child-records__details">
@@ -57,11 +63,11 @@
 
             </div>
         </div>
-        {{#if children}}
+        {{#if nested}}
         {{> records/record-nested-child-records}}
 
         {{/if}}
     </li>
     {{/each}}
-
+    {{/if}}
 </ul>
