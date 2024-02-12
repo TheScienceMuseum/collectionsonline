@@ -404,6 +404,11 @@ Handlebars.registerHelper(
   require('../templates/helpers/firstImage.js')
 );
 
+Handlebars.registerHelper(
+  'haschildimages',
+  require('../templates/helpers/haschildimages.js')
+);
+
 // Routes
 module.exports = {
   404: Handlebars.compile(

@@ -1,6 +1,7 @@
 <section class="sph-records row">
   <h2 class="columns">Parts</h2>
   <div class="sph-records__grid">
+
     {{#each childRecords}}
     <article class="sph-records__item" id="{{getinventorynumber details}}">
       {{#if images}}
@@ -9,6 +10,11 @@
           <img src="{{firstImage images 0 }}" class="sph-records__img" alt="{{this.title}}" />
         </figure>
       </a>
+      {{ else }}
+      {{#if (haschildimages ../childRecords) }}
+      <figure class="sph-records__figure">
+        <figcaption>{{title}}</figcaption>
+      </figure>{{/if}}
       {{/if }}
 
       <h3 class="sph-records__title">
