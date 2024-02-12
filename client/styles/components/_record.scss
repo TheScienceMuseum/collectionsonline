@@ -392,6 +392,11 @@
     gap: 2em 1em;
     grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   }
+
+  .resultcard__figure img {
+    width: 100%;
+  }
+
 }
 
 
