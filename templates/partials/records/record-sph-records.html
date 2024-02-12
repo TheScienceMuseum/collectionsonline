@@ -1,14 +1,14 @@
 <section class="sph-records row">
   <h2 class="columns">Parts</h2>
   <div class="sph-records__grid">
-
     {{#each childRecords}}
-    <article class="sph-records__item">
-
+    <article class="sph-records__item" id="{{getinventorynumber details}}">
       {{#if images}}
-      <figure class="sph-records__figure">
-        <img src="{{firstImage images 0}}" class="sph-records__img" alt="{{this.title}}" />
-      </figure>
+      <a href="{{firstImage images 0 'large' }}" data-lightbox>
+        <figure class="sph-records__figure">
+          <img src="{{firstImage images 0 }}" class="sph-records__img" alt="{{this.title}}" />
+        </figure>
+      </a>
       {{/if }}
 
       <h3 class="sph-records__title">
