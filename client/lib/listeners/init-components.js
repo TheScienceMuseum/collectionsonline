@@ -10,6 +10,7 @@ const mediaplayer = require('./mediaplayer');
 const headerMenu = require('smg-web-design-system/dist/js/menu');
 const illuminate = require('smg-web-design-system/dist/js/illuminate');
 const osd = require('./osd');
+const lightbox = require('./lightbox');
 
 module.exports = ctx => {
   searchBox();
@@ -24,4 +25,5 @@ module.exports = ctx => {
   headerMenu();
   illuminate();
   osd(ctx);
+  lightbox();
 };

@@ -7,10 +7,10 @@
 
 .clipboard {
   margin-bottom: 0.5rem;
+  display: flex;
 
   &__input {
-    vertical-align: middle;
-    display: inline-block;
+    display: block;
     padding: rem-calc(6 4 5 4);
     margin: 0;
     height: 2rem;
@@ -19,7 +19,8 @@
     box-shadow: none;
   }
 
-  &--copied &__input { // this class applied by js once contents copied to clipboard
+  &--copied &__input {
+    // this class applied by js once contents copied to clipboard
     animation-name: copied;
     animation-duration: 2s;
     animation-timing-function: ease;
@@ -27,15 +28,20 @@
   }
 
   &__button {
-    vertical-align: middle;
-    display: inline-block;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    flex-shrink: 0;
     height: 2rem;
     width: 2rem;
     margin-left: -1px;
     @include control-base;
+
     &:hover {
       @include control-hover;
     }
+
     &:active {
       background: black;
       color: white;

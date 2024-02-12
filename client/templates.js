@@ -156,6 +156,14 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
+  'records/record-sph-item',
+  Fs.readFileSync(
+    './templates/partials/records/record-sph-item.html',
+    'utf8'
+  )
+);
+
+Handlebars.registerPartial(
   'records/record-child-records',
   Fs.readFileSync(
     './templates/partials/records/record-child-records.html',
@@ -418,6 +426,11 @@ Handlebars.registerHelper(
 Handlebars.registerHelper(
   'firstImage',
   require('../templates/helpers/firstImage.js')
+);
+
+Handlebars.registerHelper(
+  'haschildimages',
+  require('../templates/helpers/haschildimages.js')
 );
 
 // Routes

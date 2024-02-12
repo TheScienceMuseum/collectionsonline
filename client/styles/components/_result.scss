@@ -39,9 +39,11 @@
       margin: auto;
       color: rgba(white, 0.25);
       font-size: rem-calc(24);
+
       @include media(">=medium") {
         font-size: rem-calc(32);
       }
+
       line-height: 1;
       letter-spacing: rem-calc(-1);
       font-weight: 300;
@@ -54,6 +56,7 @@
     line-height: 1.2;
     text-transform: none;
     margin: 0;
+
     @include media(">=medium") {
       font-size: rem-calc(18);
     }
@@ -62,9 +65,11 @@
   &__info {
     position: relative;
     padding-top: 0.5rem;
+
     @include media(">=medium") {
       padding-top: 1rem;
     }
+
     //browsers hyphenate a bit too readily, so only used on widths where we really haven't got room
     @include media("<=small") {
       overflow: hidden;
@@ -89,10 +94,12 @@
   &__linklist {
     @include ul-icons;
     $icnsize: 1rem;
+
     li {
       position: relative;
       padding-left: 1.25rem;
       line-height: 1.25;
+
       &:before {
         content: "";
         display: block;
@@ -106,8 +113,10 @@
         background-size: $icnsize $icnsize;
       }
     }
+
     a {
       color: grey(80);
+
       &:hover {
         color: black;
         text-decoration: underline;
@@ -187,6 +196,7 @@
 
   &__info {
     padding: 0.5rem;
+
     @include media(">=medium") {
       padding: 1rem;
     }
@@ -217,6 +227,7 @@
 .resultcard {
   @include resultclass;
   color: black;
+
   a & {
     @include resulthover;
   }
@@ -243,6 +254,7 @@
       margin-bottom: 0.5rem;
       clear: right;
       font-size: rem-calc(16);
+
       @include media(">=medium") {
         font-size: rem-calc(24);
       }
@@ -267,7 +279,7 @@
 
   // used as related results, slight smaller
   &--related,
-  &--seemore {
+  &--seemore:not(.mph-records__resultcard) {
     @include reversed;
 
     .resultcard__info {

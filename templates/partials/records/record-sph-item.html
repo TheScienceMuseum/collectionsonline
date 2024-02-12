@@ -1,0 +1,61 @@
+<article class="sph-records__item" id="{{getinventorynumber details}}">
+  {{#if images}}
+  <a href="{{firstImage images 0 'large' }}" data-lightbox>
+    <figure class="sph-records__figure">
+      <img src="{{firstImage images 0 }}" class="sph-records__img" alt="{{this.title}}" />
+    </figure>
+  </a>
+  {{ else }}
+  <figure class="sph-records__figure">
+    <figcaption>{{title}}</figcaption>
+  </figure>
+  {{/if }}
+
+  <h3 class="sph-records__title">
+    {{title}}
+  </h3>
+
+  <div class="sph-records__description">
+    {{#if description.primary}}
+    {{#each description.primary.initialDescription }}
+    <p>
+      {{truncateDescription this}}
+    </p>
+    {{/each}}
+    {{/if}}
+  </div>
+
+  <div class="sph-records__details">
+    {{#each details}}
+    <dl class="sph-records__dl details-{{classname this.key}}">
+      <dt>{{key}}:</dt>
+      <dd>
+        {{#each this.value}}
+        {{#if this.link}}
+        <a href="{{this.link}}" title="[link to filtered search results]">{{/if}}
+          {{{ this.value }}}
+          {{#if this.link}}</a>{{/if}}
+        {{comma this ../this.value false}}
+
+        {{else}}
+        {{#if link}}
+        <a href="{{link}}" title="[link to filtered search results]">{{/if}}
+          {{{ this.value }}}
+          {{#if link}}</a>{{/if}}
+        {{/each}}
+      </dd>
+    </dl>
+    {{/each}}
+    {{# if parentTitle}}
+    <dl class="sph-records__dl">
+      <dt>Part of:</dt>
+      <dd>{{ parentTitle }}</dd>
+    </dl>
+    {{/if}}
+  </div>
+
+</article>
+
+{{#each children}}
+{{> records/record-sph-item record=.}}
+{{/each}}

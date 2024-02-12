@@ -1,36 +1,45 @@
-<ul class="child-records-mph-list">
+<section class="mph-records row">
+  <div class="mph-records__grid">
     {{#each childRecords}}
-    <li class="child-records-mph__list-item ">
-        <picture class="child-records-mph__thumbnail child-records-mph__thumbnail">
-            {{#if images}}
-            <img src="{{firstImage images 0}}" class="child-records-mph__thumbnail-picture " alt="{{title}}" />
-            {{/if }}
-        </picture>
-        <div class="child-records-mph__container">
-            <div class=" child-records-mph__title">
-                <h3 class="child-records__heading">
-                    {{title}}</h3>
-                <svg class="icon icon-objects">
-                    <use xlink:href="/assets/icons/symbol/svg/sprite.symbol.svg#objects"></use>
-                </svg>
+    {{#if link}}
+    <a href={{link}}>
+      <article class="resultcard resultcard--objects mph-records__resultcard">
 
-            </div>
-            <div>
-                {{#if category}}
-                <a href={category.link} class="child-records__category">
-                    {{category.value}}
-                </a>
-                {{/if}}
-            </div>
-            <div class="child-records__creation">
-                {{#if creation}}
-                <p>{{creation}}</p>
-                {{/if}}
-            </div>
-            {{#if link}}
-            <a href={{link}} class="more-details">Read More</a>
-            {{/if}}
+        <figure class="resultcard__figure">
+          {{#if images}}
+          <img src="{{firstImage images 0 'card' }}" class="" alt="{{title}}" />
+          {{/if }}
+        </figure>
+
+        <div class="resultcard__info">
+
+          <h3 class="resultcard__title">
+            {{title}}
+          </h3>
+
+          {{#if creation}}
+          <p class="mph-records__creation">{{creation}}</p>
+          {{/if}}
+
         </div>
-    </li>
+      </article>
+
+    </a>
+    {{/if}}
     {{/each}}
-</ul>
+
+    {{!-- template for 'see more' if long results. maybe paginate after 23 to keep whole rows?
+
+    <a href="#">
+      <article class="resultcard mph-records__resultcard resultcard--seemore resultcard--objects">
+        <figure class="resultcard__figure">{{> global/icon i="search" size="48" }}</figure>
+        <div class="resultcard__info">
+          <h3 class="resultcard__title">See more</h3>
+        </div>
+      </article>
+    </a>
+
+    --}}
+
+  </div>
+</section>
