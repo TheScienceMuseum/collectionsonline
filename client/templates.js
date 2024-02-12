@@ -162,6 +162,15 @@ Handlebars.registerPartial(
     'utf8'
   )
 );
+
+Handlebars.registerPartial(
+  'records/record-nested-child-records',
+  Fs.readFileSync(
+    './templates/partials/records/record-nested-child-records.html',
+    'utf8'
+  )
+);
+
 Handlebars.registerPartial(
   'records/panel-cite',
   Fs.readFileSync('./templates/partials/records/panel-cite.html', 'utf8')

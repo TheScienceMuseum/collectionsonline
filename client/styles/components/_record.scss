@@ -378,7 +378,7 @@
       padding-block: 2em;
       display: flex;
       container: record-item / inline-size;
-      flex-direction: row;
+      flex-direction: column;
       list-style: none;
       .child-records__container {
         display: flex;
@@ -611,6 +611,12 @@
   }
 }
 
+.nested {
+  margin-inline-start: 5em;
+  padding-inline-start: 3em;
+  border-inline-start: 2px dashed #000000;
+  margin-block-start: 1em;
+}
 // container query for wrapping child records
 @container record-item (max-width: 991px) {
   .child-records__container {
