@@ -4,11 +4,11 @@
 
     {{#each childRecords}}
     <article class="sph-records__item">
-      {{log this}}
+
       {{#if images}}
-      <div class="sph-records__thumbnail">
+      <figure class="sph-records__figure">
         <img src="{{firstImage images 0}}" class="sph-records__img" alt="{{this.title}}" />
-      </div>
+      </figure>
       {{/if }}
 
       <h3 class="sph-records__title">

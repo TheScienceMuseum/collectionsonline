@@ -3,12 +3,12 @@
     {{#each childRecords}}
     {{#if link}}
     <a href={{link}}>
-      <article class="resultcard mph-records__resultcard">
+      <article class="resultcard resultcard--objects mph-records__resultcard">
+
         <figure class="resultcard__figure">
           {{#if images}}
           <img src="{{firstImage images 0}}" class="" alt="{{title}}" />
           {{/if }}
-
         </figure>
 
         <div class="resultcard__info">

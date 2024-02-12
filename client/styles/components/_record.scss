@@ -408,6 +408,30 @@
     grid-template-columns: repeat(auto-fit, minmax(23rem, 1fr));
   }
 
+
+  &__figure {
+    background-color: grey(80);
+    position: relative;
+    overflow: hidden;
+    padding-top: 75%;
+    margin-bottom: 1rem;
+
+    img {
+      position: absolute;
+      width: auto;
+      height: auto;
+      min-height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      object-fit: cover;
+      object-position: center;
+    }
+
+  }
+
   &__title {
     font-size: 1.5rem;
   }
@@ -421,6 +445,7 @@
   &__details {
     display: table;
     border-collapse: collapse;
+    width: 100%;
   }
 
   &__dl {
