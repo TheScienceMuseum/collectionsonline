@@ -44,7 +44,6 @@ module.exports = (elastic, config) => ({
             sortedRelatedItems,
             childRecords
           );
-          // TODO: this probably doesn't work with mph
           // handles redirect to parent record if child record is part of SPH grouping
           const childRecord = JSONData.data.record.groupingType;
 
