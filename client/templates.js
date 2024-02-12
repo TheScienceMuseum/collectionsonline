@@ -156,6 +156,14 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
+  'records/record-sph-item',
+  Fs.readFileSync(
+    './templates/partials/records/record-sph-item.html',
+    'utf8'
+  )
+);
+
+Handlebars.registerPartial(
   'records/record-child-records',
   Fs.readFileSync(
     './templates/partials/records/record-child-records.html',
