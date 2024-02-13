@@ -415,6 +415,11 @@
 
 
   &__figure {
+
+    [data-has-images="false"] & {
+      display: none;
+    }
+
     position: relative;
     overflow: hidden;
     padding-top: 75%;
