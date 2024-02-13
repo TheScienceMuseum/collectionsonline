@@ -1,8 +1,9 @@
+Has images:{{this.childRecordsHaveImages}}
 <section class="sph-records row">
-  <h2 class="columns">Parts</h2>
-  <div class="sph-records__grid">
-    {{#each childRecords}}
-    {{>records/record-sph-item record=.}}
-    {{/each}}
-  </div>
+    <h2 class="columns">Parts</h2>
+    <div class="sph-records__grid">
+        {{#each childRecords}}
+        {{>records/record-sph-item record=.}}
+        {{/each}}
+    </div>
 </section>
