@@ -11,7 +11,7 @@
   </figure>
   {{/if }}
 
-  <h3 class="sph-records__title">
+  <h3 id="{{uid}}" class="sph-records__title">
     {{title}}
   </h3>
 
@@ -49,7 +49,7 @@
     {{# if parentTitle}}
     <dl class="sph-records__dl">
       <dt>Part of:</dt>
-      <dd>{{ parentTitle }}</dd>
+      <dd><a href="#{{ parentId }}">{{ parentAccessionNumber }}</a></dd>
     </dl>
     {{/if}}
   </div>
