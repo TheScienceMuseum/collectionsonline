@@ -1,4 +1,5 @@
-<article class="sph-records__item" id="{{getinventorynumber details}}">
+<article class="sph-records__item" id="part{{uid}}">
+
   {{#if images}}
   <a href="{{firstImage images 0 'large' }}" data-lightbox>
     <figure class="sph-records__figure">
@@ -11,7 +12,7 @@
   </figure>
   {{/if }}
 
-  <h3 id="{{uid}}" class="sph-records__title">
+  <h3 class="sph-records__title">
     {{title}}
   </h3>
 
@@ -49,7 +50,7 @@
     {{# if parentTitle}}
     <dl class="sph-records__dl">
       <dt>Part of:</dt>
-      <dd><a href="#{{ parentId }}">{{ parentAccessionNumber }}</a></dd>
+      <dd><a href="#part{{ parentId }}">{{ parentAccessionNumber }}</a></dd>
     </dl>
     {{/if}}
   </div>
@@ -57,5 +58,5 @@
 </article>
 
 {{#each children}}
-{{> records/record-sph-item record=.}}
+{{> records/record-sph-item record=. }}
 {{/each}}
