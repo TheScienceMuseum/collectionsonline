@@ -3,8 +3,14 @@
     <div class="large-12 columns">
       <h1 class="record-top__title">{{#if level}}{{> global/icon i=level}}{{else}}{{> global/icon i=type}}{{/if}}
         {{normalise title this}} {{#ifpage 'person'}}<span class="record-top__date">{{date}}</span>{{/ifpage}}</h1>
-      {{#if links.parentSlug }}
-      <a href="{{links.parentSlug}}" class="record-top__back-mph">Back to parent collection</a>
+
+      {{#if parent }}
+      <dl class="record-top__dl fact-Made">
+        <dt>PART OF:</dt>
+        <dd>
+          <a href="{{parent.links.self}}">{{parent.attributes.summary.title}}</a>
+        </dd>
+      </dl>
       {{/if}}
       {{#each fact}}
       <dl class="record-top__dl fact-{{classname this.key}}">
