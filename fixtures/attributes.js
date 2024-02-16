@@ -48,6 +48,7 @@ module.exports = [
   'website',
   'category',
   'collection',
+  'mphc',
   'date',
   'display_date',
   'duration',

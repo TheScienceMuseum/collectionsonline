@@ -19,7 +19,6 @@ module.exports = (elastic, config) => ({
   config: {
     handler: async function (request, h) {
       const responseType = contentType(request);
-
       if (responseType === 'notAcceptable') {
         return h.response('Not Acceptable').code(406);
       }
@@ -150,7 +149,6 @@ module.exports = (elastic, config) => ({
           return response;
         } else if (responseType === 'json') {
           const res = await search(elastic, queryParams);
-
           return h
             .response(searchResultsToJsonApi(queryParams, res, config))
             .header('content-type', 'application/vnd.api+json');
