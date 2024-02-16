@@ -480,5 +480,5 @@ module.exports = {
   ),
   about: Handlebars.compile(
     Fs.readFileSync('./templates/pages/about.html', 'utf8')
-  ),
+  )
 };

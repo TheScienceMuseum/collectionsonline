@@ -54,5 +54,5 @@ module.exports = [
   'duration',
   'occurance_type',
   'enhancement',
-  'transcriptions',
+  'transcriptions'
 ];
