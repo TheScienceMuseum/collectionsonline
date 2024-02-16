@@ -19,13 +19,12 @@ module.exports = (elastic, config) => ({
   config: {
     handler: async function (request, h) {
       const responseType = contentType(request);
-
       if (responseType === 'notAcceptable') {
         return h.response('Not Acceptable').code(406);
       }
       try {
         const querySchema = Joi.object({
-          query: filterSchema(responseType).keys(searchSchema.query)
+          query: filterSchema(responseType).keys(searchSchema.query),
         });
         const validation = querySchema.validate(
           { query: request.query },
@@ -41,7 +40,7 @@ module.exports = (elastic, config) => ({
         const resultSchema = Joi.object({
           params: Joi.any(),
           categories: filterSchema('html').keys(searchSchema.query),
-          query: filterSchema('html').keys(searchSchema.query)
+          query: filterSchema('html').keys(searchSchema.query),
         });
         const result = await resultSchema.validate(
           { params, categories, query: value.query },
@@ -66,13 +65,13 @@ module.exports = (elastic, config) => ({
 
             const query = Object.assign(queryParams, {
               type: 'objects',
-              random: 100
+              random: 100,
             });
             const res = await search(elastic, query);
             const data = searchResultsToSlideshow(queryParams, res, config);
             return h.view('slideshow', {
               data,
-              stringData: JSON.stringify(data)
+              stringData: JSON.stringify(data),
             });
           }
 
@@ -132,6 +131,7 @@ module.exports = (elastic, config) => ({
           const res = await search(elastic, queryParams);
 
           const jsonData = searchResultsToJsonApi(queryParams, res, config);
+          // console.log(jsonData, 'cgheckibng the data here');
           const tplData = searchResultsToTemplateData(queryParams, jsonData);
 
           const response = h.view('search', tplData);
@@ -150,7 +150,6 @@ module.exports = (elastic, config) => ({
           return response;
         } else if (responseType === 'json') {
           const res = await search(elastic, queryParams);
-
           return h
             .response(searchResultsToJsonApi(queryParams, res, config))
             .header('content-type', 'application/vnd.api+json');
@@ -158,6 +157,6 @@ module.exports = (elastic, config) => ({
       } catch (err) {
         return Boom.serverUnavailable(err);
       }
-    }
-  }
+    },
+  },
 });

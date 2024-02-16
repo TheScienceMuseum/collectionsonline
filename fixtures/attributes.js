@@ -48,10 +48,11 @@ module.exports = [
   'website',
   'category',
   'collection',
+  'mphc',
   'date',
   'display_date',
   'duration',
   'occurance_type',
   'enhancement',
-  'transcriptions'
+  'transcriptions',
 ];

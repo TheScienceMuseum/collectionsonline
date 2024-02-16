@@ -28,9 +28,10 @@
     {{/if}}
     {{/each}}
 
-    {{!-- template for 'see more' if long results. maybe paginate after 23 to keep whole rows?
+    {{#if (mphShowMore childRecords 10)}}
+    <a href="/search?mphc={{uid}}">
+      <!-- <a href="/search/objects/mphc/{{uid}}"> -->
 
-    <a href="#">
       <article class="resultcard mph-records__resultcard resultcard--seemore resultcard--objects">
         <figure class="resultcard__figure">{{> global/icon i="search" size="48" }}</figure>
         <div class="resultcard__info">
@@ -38,8 +39,7 @@
         </div>
       </article>
     </a>
-
-    --}}
+    {{/if}}
 
   </div>
 </section>

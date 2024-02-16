@@ -414,6 +414,11 @@ Handlebars.registerHelper(
   require('../templates/helpers/haschildimages.js')
 );
 
+Handlebars.registerHelper(
+  'mphShowMore',
+  require('../templates/helpers/mphShowMore.js')
+);
+
 // Routes
 module.exports = {
   404: Handlebars.compile(
@@ -475,5 +480,5 @@ module.exports = {
   ),
   about: Handlebars.compile(
     Fs.readFileSync('./templates/pages/about.html', 'utf8')
-  )
+  ),
 };
