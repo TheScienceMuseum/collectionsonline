@@ -131,7 +131,6 @@ module.exports = (elastic, config) => ({
           const res = await search(elastic, queryParams);
 
           const jsonData = searchResultsToJsonApi(queryParams, res, config);
-          // console.log(jsonData, 'cgheckibng the data here');
           const tplData = searchResultsToTemplateData(queryParams, jsonData);
 
           const response = h.view('search', tplData);

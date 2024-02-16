@@ -43,7 +43,7 @@ module.exports = function (urlParams) {
   }
 
   for (const cat in categories) {
-    const exclude = ['has_image', 'object_type', 'material', 'occupation'];
+    const exclude = ['has_image', 'object_type', 'material', 'occupation', 'mphc'];
 
     if (cat === 'museum') {
       categories[cat] = museumMap.toLong(categories[cat]);
