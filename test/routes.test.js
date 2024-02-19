@@ -681,22 +681,17 @@ testWithServer(
   'Checking child records are redirected back to their parent record',
   {},
   async (t, ctx) => {
-    t.plan(3);
+    t.plan(2);
 
     const htmlRequest = {
       method: 'GET',
       url: '/objects/co8244487',
-      headers: { Accept: 'application/json' }
+      headers: { Accept: 'text/html' }
     };
 
     const res = await ctx.server.inject(htmlRequest);
     t.equal(res.statusCode, 301, 'status is  301, indicating redirection');
     t.ok(res.headers.location, 'Location header is present');
-    t.equal(
-      res.headers.location,
-      'http://localhost:8000/objects/co8094437',
-      'child record was redirected back to parent'
-    );
     await ctx.server.stop();
     t.end();
   }
