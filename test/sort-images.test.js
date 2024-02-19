@@ -15,13 +15,13 @@ test(file + 'Sort a list of images by position and date upload(sort priority)', 
   ];
 
   const expected = [
-    { position: 1, sort: '2016-07-07 10:10:41.0' }, 
-    { position: 1, sort: '2015-07-07 10:10:40.0' }, 
-    { sort: '2015-06-06' }, 
-    { sort: '2015-05-05' }, 
-    { position: 2, sort: '2016-07-07' }, 
-    { position: 3, sort: '2016-07-07' } 
-  ]
+    { position: 1, sort: '2016-07-07 10:10:41.0' },
+    { position: 1, sort: '2015-07-07 10:10:40.0' },
+    { sort: '2015-06-06' },
+    { sort: '2015-05-05' },
+    { position: 2, sort: '2016-07-07' },
+    { position: 3, sort: '2016-07-07' }
+  ];
 
   t.deepEqual(sortImages(images), expected, 'The images are sorted by position and date');
   t.end();
