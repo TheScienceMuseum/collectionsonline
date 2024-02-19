@@ -48,9 +48,8 @@ module.exports = (elastic, config) => ({
           const childRecord = JSONData.data.record.groupingType;
 
           const recordType = JSONData.data.record.recordType;
-          const parentRedirect = JSONData.data.links.parentSlug;
+          const parentRedirect = JSONData.data.links.parent;
           const inProduction = config && config.NODE_ENV === 'production';
-
           if (
             childRecord === 'SPH' &&
             recordType === 'child' &&
