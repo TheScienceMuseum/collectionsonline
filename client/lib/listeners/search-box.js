@@ -11,27 +11,34 @@ module.exports = function () {
     autoFirst: false,
     listLabel: 'Search results'
   });
-  searchinput.addEventListener('keyup', debounce(function (e) {
-    const q = e.target.value;
-    if (q.length > 0 && e.key !== 'Enter') {
-      const requestId = currentRequestId = Date.now();
-      const url = `/autocomplete?q=${encodeURIComponent(q)}`;
-      const opts = { headers: { Accept: 'application/vnd.api+json' } };
+  searchinput.addEventListener(
+    'keyup',
+    debounce(function (e) {
+      const q = e.target.value;
+      if (q.length > 0 && e.key !== 'Enter') {
+        const requestId = (currentRequestId = Date.now());
+        const url = `/autocomplete?q=${encodeURIComponent(q)}`;
+        const opts = { headers: { Accept: 'application/vnd.api+json' } };
 
-      getData(url, opts, (err, results) => {
-        if (err) {
-          // No need to feedback - not mission critical
-          return console.error('Failed to autocomplete', err);
-        }
+        getData(url, opts, (err, results) => {
+          if (err) {
+            // No need to feedback - not mission critical
+            return console.error('Failed to autocomplete', err);
+          }
 
-        if (requestId !== currentRequestId) {
-          return console.warn('Ignoring autocomplete response', requestId, results);
-        }
-        const suggestions = results.data.map((r) => r.attributes.summary_title);
-        awesomplete.list = suggestions;
-      });
-    }
-  }, 500));
+          if (requestId !== currentRequestId) {
+            return console.warn(
+              'Ignoring autocomplete response',
+              requestId,
+              results
+            );
+          }
+          const suggestions = results.data.map((r) => r.attributes.title);
+          awesomplete.list = suggestions;
+        });
+      }
+    }, 500)
+  );
   searchinput.addEventListener('focus', function (e) {
     searchbox.classList.add('searchbox--focussed');
   });

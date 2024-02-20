@@ -14,9 +14,7 @@ testWithServer(file + 'Should suggest completion', {}, async (t, ctx) => {
   const res = await ctx.server.inject(request);
   t.equal(res.statusCode, 200, 'Status was OK');
   t.ok(
-    res.result.data.some(
-      (d) => d.attributes.summary_title === 'NeXT Computer (personal computer)'
-    ),
+    res.result.data.some((d) => d.attributes.title === 'NeXT Computer'),
     'Autocompleted Next successfully'
   );
   t.end();
