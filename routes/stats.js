@@ -24,7 +24,7 @@ module.exports = (elastic, config) => ({
 
           // Records flagged as an MPH layout (parent image)
           recordsMPH: results.body.responses[6].hits.total.value,
-          recordsPHWithImages: results.body.responses[7].hits.total.value,
+          recordsMPHWithImages: results.body.responses[7].hits.total.value,
 
           // Records flagged as an MPH layout with children (parent image)
           recordsMPHWithChildren: results.body.responses[8].hits.total.value,
