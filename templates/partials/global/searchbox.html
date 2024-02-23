@@ -1,71 +1,84 @@
 {{#isResourcePage}}
-  <a href="{{#if back}}{{back}}{{else}}/{{/if}}" aria-label="{{#if back}}Back to your results{{else}}Back to the home page{{/if}}" title="{{#if back}}Back to your results{{else}}Back to the home page{{/if}}" class="searchbox__back">
-    {{#if back}}
-      {{> global/icon i="back" size="32" }}
-    {{else}}
-      {{> global/icon i="home" size="32" }}
-    {{/if}}
-  </a>
+<a href="{{#if back}}{{back}}{{else}}/{{/if}}"
+  aria-label="{{#if back}}Back to your results{{else}}Back to the home page{{/if}}"
+  title="{{#if back}}Back to your results{{else}}Back to the home page{{/if}}" class="searchbox__back">
+  {{#if back}}
+  {{> global/icon i="back" size="32" }}
+  {{else}}
+  {{> global/icon i="home" size="32" }}
+  {{/if}}
+</a>
 {{/isResourcePage}}
 <form class="searchbox" id="searchbox" action="/search">
-  <input type="search" class="searchbox__search" placeholder="Search objects, people, categories, object numbers etc." name="q" value="{{q}}">
+  <input type="search" class="searchbox__search" placeholder="Search objects, people, categories, object numbers etc."
+    name="q" value="{{q}}">
   <button aria-label="search" class="searchbox__submit">
     {{> global/icon i="search" size="32" }}
   </button>
   {{#if stickyFilters.length}}
-    <div class="searchbox__filters">
-      <div class="filterbadge--prefix">In</div>
-      {{#each imageFilters}}
-      <div class="filterbadge" data-filter="Category">
-        <dl>
-          <dt class="filterbadge__key">Image</dt>
-          <dd class="filterbadge__label">{{value}}</dd>
-        </dl>
-        <a class="filterbadge__x" href="{{lookup ../links.clearImageLink name}}" title="remove">✕</a>
-        <input type="hidden" class='searchbox__{{name}}__filter' name="filter[{{name}}]" value="true">
-      </div>
-      {{/each}}
-      {{#each categoryFilters}}
-      <div class="filterbadge" data-filter="Category">
-        <dl>
-          <dt class="filterbadge__key">Category</dt>
-          <dd class="filterbadge__label">{{this}}</dd>
-        </dl>
-        <a class="filterbadge__x" href="{{../links.clearCategoryLink}}" title="remove">✕</a>
-        <input type="hidden" class='searchbox__category__filter' name="filter[categories]" value="{{this}}">
-      </div>
-      {{/each}}
-      {{#each collectionFilters}}
-      <div class="filterbadge" data-filter="Category">
-        <dl>
-          <dt class="filterbadge__key">Collection</dt>
-          <dd class="filterbadge__label">{{this}}</dd>
-        </dl>
-        <a class="filterbadge__x" href="{{../links.clearCollectionLink}}" title="remove">✕</a>
-        <input type="hidden" class='searchbox__collection__filter' name="filter[collection]" value="{{this}}">
-      </div>
-      {{/each}}
-      {{#each museumFilters}}
-      <div class="filterbadge" data-filter="Museum">
-        <dl>
-          <dt class="filterbadge__key">On display</dt>
-          <dd class="filterbadge__label">{{shortLocation}}</dd>
-        </dl>
-        <a class="filterbadge__x" href="{{../links.clearMuseumLink}}" title="remove">✕</a>
-        <input type="hidden" class='searchbox__museum__filter' name="filter[museum]" value="{{museum}}">
-        <input type="hidden" class='searchbox__gallery__filter' name="filter[gallery]" value="{{gallery}}">
-      </div>
-      {{/each}}
-      {{#each archiveFilters}}
-      <div class="filterbadge" data-filter="Archive">
-        <dl>
-          <dt class="filterbadge__key">Archive</dt>
-          <dd class="filterbadge__label">{{this}}</dd>
-        </dl>
-        <a class="filterbadge__x" href="{{../links.clearArchiveLink}}" title="remove">✕</a>
-        <input type="hidden" class='searchbox__archive__filter' name="filter[archive]" value="{{this}}">
-      </div>
-      {{/each}}
+  <div class="searchbox__filters">
+    <div class="filterbadge--prefix">In</div>
+    {{#each imageFilters}}
+    <div class="filterbadge" data-filter="Category">
+      <dl>
+        <dt class="filterbadge__key">Image</dt>
+        <dd class="filterbadge__label">{{value}}</dd>
+      </dl>
+      <a class="filterbadge__x" href="{{lookup ../links.clearImageLink name}}" title="remove">✕</a>
+      <input type="hidden" class='searchbox__{{name}}__filter' name="filter[{{name}}]" value="true">
     </div>
+    {{/each}}
+    {{#each categoryFilters}}
+    <div class="filterbadge" data-filter="Category">
+      <dl>
+        <dt class="filterbadge__key">Category</dt>
+        <dd class="filterbadge__label">{{this}}</dd>
+      </dl>
+      <a class="filterbadge__x" href="{{../links.clearCategoryLink}}" title="remove">✕</a>
+      <input type="hidden" class='searchbox__category__filter' name="filter[categories]" value="{{this}}">
+    </div>
+    {{/each}}
+    {{#each collectionFilters}}
+    <div class="filterbadge" data-filter="Category">
+      <dl>
+        <dt class="filterbadge__key">Collection</dt>
+        <dd class="filterbadge__label">{{this}}</dd>
+      </dl>
+      <a class="filterbadge__x" href="{{../links.clearCollectionLink}}" title="remove">✕</a>
+      <input type="hidden" class='searchbox__collection__filter' name="filter[collection]" value="{{this}}">
+    </div>
+    {{/each}}
+    {{#each museumFilters}}
+    <div class="filterbadge" data-filter="Museum">
+      <dl>
+        <dt class="filterbadge__key">On display</dt>
+        <dd class="filterbadge__label">{{shortLocation}}</dd>
+      </dl>
+      <a class="filterbadge__x" href="{{../links.clearMuseumLink}}" title="remove">✕</a>
+      <input type="hidden" class='searchbox__museum__filter' name="filter[museum]" value="{{museum}}">
+      <input type="hidden" class='searchbox__gallery__filter' name="filter[gallery]" value="{{gallery}}">
+    </div>
+    {{/each}}
+    {{#each archiveFilters}}
+    <div class="filterbadge" data-filter="Archive">
+      <dl>
+        <dt class="filterbadge__key">Archive</dt>
+        <dd class="filterbadge__label">{{this}}</dd>
+      </dl>
+      <a class="filterbadge__x" href="{{../links.clearArchiveLink}}" title="remove">✕</a>
+      <input type="hidden" class='searchbox__archive__filter' name="filter[archive]" value="{{this}}">
+    </div>
+    {{/each}}
+    {{#each mphcFilters}}
+    <div class="filterbadge" data-filter="Mphc">
+      <dl>
+        <dt class="filterbadge__key">Group</dt>
+        <dd class="filterbadge__label">{{this}}</dd>
+      </dl>
+      <a class="filterbadge__x" href="{{../links.clearMphcLink}}" title="remove">✕</a>
+      <input type="hidden" class='searchbox__archive__filter' name="filter[archive]" value="{{this}}">
+    </div>
+    {{/each}}
+  </div>
   {{/if}}
 </form>
