@@ -12,6 +12,7 @@ const keyCategories = require('../fixtures/key-categories');
 const keyCollections = require('../fixtures/key-categories');
 const whatis = require('../fixtures/whatis');
 const searchResultsToSlideshow = require('../lib/transforms/slideshow');
+const parentCollection = require('../lib/get-search-parent.js');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -129,9 +130,15 @@ module.exports = (elastic, config) => ({
           }
 
           const res = await search(elastic, queryParams);
-
           const jsonData = searchResultsToJsonApi(queryParams, res, config);
-          const tplData = searchResultsToTemplateData(queryParams, jsonData);
+          const mphcParent = await parentCollection(elastic, queryParams);
+
+          const tplData = searchResultsToTemplateData(
+            queryParams,
+            jsonData,
+            mphcParent || null,
+            config
+          );
 
           const response = h.view('search', tplData);
           // Only set a Cache-Control if we don't have a freetext query string and aren't running on production
