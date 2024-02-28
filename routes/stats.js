@@ -14,6 +14,10 @@ module.exports = (elastic, config) => ({
           objects: results.body.responses[0].hits.total.value,
           objectsWithImages: results.body.responses[1].hits.total.value,
 
+          // Mimsy records (same as above)
+          records: results.body.responses[0].hits.total.value,
+          recordsWithImages: results.body.responses[1].hits.total.value,
+
           // Records flagged as an SPH layout (parent image)
           recordsSPH: results.body.responses[2].hits.total.value,
           recordsSPHWithImages: results.body.responses[3].hits.total.value,

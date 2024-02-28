@@ -17,7 +17,9 @@
 
     img {
       position: absolute;
-      width: auto;
+      /* remove: width: auto; add below */
+      width: 100%;
+      max-width: none;
       height: auto;
       min-height: 100%;
       top: 0;
