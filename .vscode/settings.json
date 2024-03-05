@@ -1,0 +1,79 @@
+{
+    "favorites.resources": [
+        {
+            "filePath": "lib/transforms/json-to-html-data.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "test/facets/create-filter-all.test.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "lib/facets/aggs-all.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "routes/search.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "lib/search.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "lib/facets/create-filter-all.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "lib/facets/create-filters.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "templates/partials/records/record-mph-records.html",
+            "group": "Default"
+        },
+        {
+            "filePath": "lib/transforms/search-results-to-jsonapi.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "lib/query-params/query-params-objects.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "lib/create-description-box.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "lib/transforms/search-results-to-template-data.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "client/routes/search.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "templates/partials/global/search-main.html",
+            "group": "Default"
+        },
+        {
+            "filePath": "test/create-description-box.test.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "templates/partials/global/search-nav.html",
+            "group": "Default"
+        },
+        {
+            "filePath": "lib/query-params/query-params-group.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "client/lib/listeners/facets-states.js",
+            "group": "Default"
+        }
+    ],
+    "cSpell.words": [
+        "mgroup"
+    ]
+}

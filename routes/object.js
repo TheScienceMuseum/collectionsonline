@@ -22,7 +22,7 @@ module.exports = (elastic, config) => ({
         try {
           const result = await elastic.get({
             index: 'ciim',
-            id: TypeMapping.toInternal(request.params.id)
+            id: TypeMapping.toInternal(request.params.id),
           });
           const relatedItems = await getSimilarObjects(result.body, elastic);
 
@@ -68,6 +68,6 @@ module.exports = (elastic, config) => ({
       } else {
         return h.response('Not Acceptable').code(406);
       }
-    }
-  }
+    },
+  },
 });

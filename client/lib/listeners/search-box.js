@@ -9,18 +9,20 @@ module.exports = function () {
   const awesomplete = new Awesomplete(searchinput, {
     minChars: 3,
     autoFirst: false,
-    listLabel: 'Search results'
+    listLabel: 'Search results',
   });
   searchinput.addEventListener(
     'keyup',
     debounce(function (e) {
       const q = e.target.value;
+      // console.log(q, 'checking query');
       if (q.length > 0 && e.key !== 'Enter') {
         const requestId = (currentRequestId = Date.now());
         const url = `/autocomplete?q=${encodeURIComponent(q)}`;
         const opts = { headers: { Accept: 'application/vnd.api+json' } };
 
         getData(url, opts, (err, results) => {
+          // console.log(url, 'checking url');
           if (err) {
             // No need to feedback - not mission critical
             return console.error('Failed to autocomplete', err);
@@ -34,6 +36,7 @@ module.exports = function () {
             );
           }
           const suggestions = results.data.map((r) => r.attributes.title);
+          // console.log(suggestions, 'checking here');
           awesomplete.list = suggestions;
         });
       }

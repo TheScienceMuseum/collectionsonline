@@ -38,21 +38,28 @@ module.exports = function (page) {
   page('/search/*', load, render, listeners);
 };
 /**
-* Ajax request to get the data of the url
-* assign ctx.state with an object representing the data displayed on the page
-*/
-function load (ctx, next) {
+ * Ajax request to get the data of the url
+ * assign ctx.state with an object representing the data displayed on the page
+ */
+function load(ctx, next) {
   sessionStorage.setItem('backPath', ctx.path);
   // only load the data if the page hasn't been loaded before
   if (!ctx.isInitialRender) {
     loadingBar.start();
     const opts = {
-      headers: { Accept: 'application/vnd.api+json' }
+      headers: { Accept: 'application/vnd.api+json' },
     };
     const qs = QueryString.parse(ctx.querystring);
-    const p = Object.assign(parseParams({ filters: ctx.pathname }).categories, parseParams({ filters: ctx.pathname }).params);
+    const p = Object.assign(
+      parseParams({ filters: ctx.pathname }).categories,
+      parseParams({ filters: ctx.pathname }).params
+    );
+    // console.log(p, 'checking p first');
     const searchCategory = findCategory(ctx.pathname);
-    const queryParams = createQueryParams('html', { query: Object.assign(qs, p), params: { type: searchCategory } });
+    const queryParams = createQueryParams('html', {
+      query: Object.assign(qs, p),
+      params: { type: searchCategory },
+    });
 
     // match and answer 'what is' questions
     if (qs.q && qs.q.toLowerCase().lastIndexOf('what', 0) === 0) {
@@ -64,21 +71,33 @@ function load (ctx, next) {
         return page.redirect(answer[0].links.self);
       }
     }
+    // console.log(paramify(p), 'checking p');
+    // console.log(querify(queryParams), 'checking query params');
 
-    getData('/search' + (searchCategory ? '/' + searchCategory : '') + paramify(p) + querify(queryParams), opts, function (err, json) {
-      if (err) {
-        console.error(err);
-        Snackbar.create('Error getting data from the server.\n<br>Please check your internet connection or try again shortly');
-        return;
+    getData(
+      '/search' +
+        (searchCategory ? '/' + searchCategory : '') +
+        paramify(p) +
+        querify(queryParams),
+      opts,
+      function (err, json) {
+        if (err) {
+          console.error(err);
+          Snackbar.create(
+            'Error getting data from the server.\n<br>Please check your internet connection or try again shortly'
+          );
+          return;
+        }
+        const data = searchResultsToTemplateData(queryParams, json);
+        // console.log(data, 'echcking the data');
+        ctx.state.data = data;
+
+        window.dataLayer.push(JSON.parse(data.layer));
+        window.dataLayer.push({ event: 'serpEvent' });
+
+        next();
       }
-      const data = searchResultsToTemplateData(queryParams, json);
-      ctx.state.data = data;
-
-      window.dataLayer.push(JSON.parse(data.layer));
-      window.dataLayer.push({ event: 'serpEvent' });
-
-      next();
-    });
+    );
   } else {
     ctx.state.data = {};
     // change the display facet state to add active to the one who are
@@ -87,9 +106,9 @@ function load (ctx, next) {
 }
 
 /**
-* Call the Handlebars template with the data and display the new DOM on the page
-*/
-function render (ctx, next) {
+ * Call the Handlebars template with the data and display the new DOM on the page
+ */
+function render(ctx, next) {
   window.scrollTo(0, 0);
   hideKeyboard();
   loadingBar.end();
@@ -119,27 +138,37 @@ function render (ctx, next) {
   // Hides filterpanel by default if javascript is enabled
   if (!ctx.isFilterOpen) {
     const searchresults = document.querySelector('.searchresults');
-    searchresults.className = searchresults.className.replace('searchresults--filtersactive', '');
+    searchresults.className = searchresults.className.replace(
+      'searchresults--filtersactive',
+      ''
+    );
 
     const filtercolumn = document.querySelector('.filtercolumn');
-    filtercolumn.className = filtercolumn.className.replace('filtercolumn--filtersactive', '');
+    filtercolumn.className = filtercolumn.className.replace(
+      'filtercolumn--filtersactive',
+      ''
+    );
 
     const controlFilters = document.querySelector('.control--filters');
     if (controlFilters) {
-      controlFilters.className = controlFilters.className.replace('control--active', '');
+      controlFilters.className = controlFilters.className.replace(
+        'control--active',
+        ''
+      );
     }
   }
 
   // refresh the title of the page
-  document.getElementsByTagName('title')[0].textContent = ctx.state.data.titlePage;
+  document.getElementsByTagName('title')[0].textContent =
+    ctx.state.data.titlePage;
   document.body.className = ctx.state.data.type;
   next();
 }
 
 /**
-* Define event listeners for search and filters
-*/
-function listeners (ctx, next) {
+ * Define event listeners for search and filters
+ */
+function listeners(ctx, next) {
   searchListener();
   descriptionBoxCloseListener();
   initComp();
@@ -175,10 +204,12 @@ function listeners (ctx, next) {
   // add event listener when the filters of a facet are cleared to update the state
   deleteFiltersFacets(facetsStates, findCategory(ctx.pathname));
   /**
-  * Click to add/remove filters
-  * Build a html url with the new filter selected (get the current url + new filter)
-  */
-  const filtersCheckbox = document.querySelectorAll('.filter:not(.filter--uncollapsible) [type=checkbox]');
+   * Click to add/remove filters
+   * Build a html url with the new filter selected (get the current url + new filter)
+   */
+  const filtersCheckbox = document.querySelectorAll(
+    '.filter:not(.filter--uncollapsible) [type=checkbox]'
+  );
   for (i = 0; i < filtersCheckbox.length; i++) {
     filtersCheckbox[i].addEventListener('click', function (e) {
       // analytics
@@ -191,21 +222,37 @@ function listeners (ctx, next) {
               action: ctx.params.type || 'all',
               label: e.target.name + ' | ' + e.target.value,
               value: e.target.value,
-              'non-interaction': 'false'
-            }
+              'non-interaction': 'false',
+            },
           });
         }
       }
 
-      const museums = ['Science-Museum', 'National-Railway-Museum', 'National-Media-Museum', 'National-Science-and-Media-Museum', 'Museum-of-Science-and-Industry'];
+      const museums = [
+        'Science-Museum',
+        'National-Railway-Museum',
+        'National-Media-Museum',
+        'National-Science-and-Media-Museum',
+        'Museum-of-Science-and-Industry',
+      ];
       loadingBar.start();
       museums.forEach(function (m) {
-        const museumFilter = document.getElementsByClassName('filter__museum__' + m)[0];
-        const galleryFilters = document.querySelectorAll('.nested-galleries input[type=checkbox]');
+        const museumFilter = document.getElementsByClassName(
+          'filter__museum__' + m
+        )[0];
+        const galleryFilters = document.querySelectorAll(
+          '.nested-galleries input[type=checkbox]'
+        );
 
-        if (e.target.classList.contains('filter__gallery__' + m) && !museumFilter.checked) {
+        if (
+          e.target.classList.contains('filter__gallery__' + m) &&
+          !museumFilter.checked
+        ) {
           museumFilter.checked = e.target.checked;
-        } else if (e.target.classList.contains('filter__museum__' + m) && !museumFilter.checked) {
+        } else if (
+          e.target.classList.contains('filter__museum__' + m) &&
+          !museumFilter.checked
+        ) {
           Array.prototype.slice.call(galleryFilters).forEach(function (g) {
             g.checked = false;
           });
@@ -216,9 +263,11 @@ function listeners (ctx, next) {
   }
 
   /**
-  * Search when one of the input date onblur
-  */
-  const filtersDate = document.querySelectorAll('.filter:not(.filter--uncollapsible) [type=number]');
+   * Search when one of the input date onblur
+   */
+  const filtersDate = document.querySelectorAll(
+    '.filter:not(.filter--uncollapsible) [type=number]'
+  );
   for (i = 0; i < filtersDate.length; i++) {
     filtersDate[i].addEventListener('blur', function () {
       filterResults(ctx, page);
@@ -232,8 +281,8 @@ function listeners (ctx, next) {
   }
 
   /**
-  * Search when the result per page is change
-  */
+   * Search when the result per page is change
+   */
   const controlRpp = document.querySelector('.control--rpp select');
   // the select page number only exists if there are enough results
   if (controlRpp) {
@@ -250,10 +299,12 @@ function listeners (ctx, next) {
       method: 'POST',
       headers: {
         Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ event: 'RESULT_CLICK', data: id })
-    }).catch((err) => console.error('Failed to send RESULT_CLICK analytics', err));
+      body: JSON.stringify({ event: 'RESULT_CLICK', data: id }),
+    }).catch((err) =>
+      console.error('Failed to send RESULT_CLICK analytics', err)
+    );
   };
 
   const resultLinks = document.querySelectorAll('#searchresults a');
@@ -263,8 +314,17 @@ function listeners (ctx, next) {
   }
 
   // close filters on mobile when no filter selected
-  const onMobile = window.getComputedStyle(document.getElementById('filtercolumn')).position === 'absolute';
-  const noFilterSelected = ['/search', '/search/people', '/search/objects', '/search/documents'].lastIndexOf(ctx.canonicalPath) !== -1;
+  const onMobile =
+    window.getComputedStyle(document.getElementById('filtercolumn'))
+      .position === 'absolute';
+  const noFilterSelected =
+    [
+      '/search',
+      '/search/people',
+      '/search/objects',
+      '/search/documents',
+      'search/group',
+    ].lastIndexOf(ctx.canonicalPath) !== -1;
   if (onMobile && noFilterSelected) {
     displayFilters(false);
     filterState.isFilterOpen = false;
