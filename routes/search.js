@@ -129,14 +129,26 @@ module.exports = (elastic, config) => ({
             }
           }
 
+          // extra query for mph search results, in order to show pillbox/filterbadges
+          // currently hard coded in other search collections with pillboxes - dynamic here
+          const type = 'mphc';
+          const isMphcType = queryParams.query[`filter[${type}]`];
+
+          let mphcParent = null;
+          if (isMphcType) {
+            mphcParent = await parentCollection(elastic, queryParams);
+          }
           const res = await search(elastic, queryParams);
-          const jsonData = searchResultsToJsonApi(queryParams, res, config);
-          const mphcParent = await parentCollection(elastic, queryParams);
+          const jsonData = searchResultsToJsonApi(
+            queryParams,
+            res,
+            config,
+            mphcParent || null
+          );
 
           const tplData = searchResultsToTemplateData(
             queryParams,
             jsonData,
-            mphcParent || null,
             config
           );
 
@@ -155,9 +167,17 @@ module.exports = (elastic, config) => ({
           }
           return response;
         } else if (responseType === 'json') {
+          const mphcParent = await parentCollection(elastic, queryParams);
           const res = await search(elastic, queryParams);
           return h
-            .response(searchResultsToJsonApi(queryParams, res, config))
+            .response(
+              searchResultsToJsonApi(
+                queryParams,
+                res,
+                config,
+                mphcParent || null
+              )
+            )
             .header('content-type', 'application/vnd.api+json');
         }
       } catch (err) {
