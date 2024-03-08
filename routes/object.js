@@ -49,11 +49,9 @@ module.exports = (elastic, config) => ({
 
           const recordType = JSONData.data.record.recordType;
           const parentRedirect = JSONData.data.links.parent;
-          const inProduction = config && config.NODE_ENV === 'production';
           if (
             childRecord === 'SPH' &&
-            recordType === 'child' &&
-            !inProduction
+            recordType === 'child'
           ) {
             return h.redirect(parentRedirect).permanent();
           }
