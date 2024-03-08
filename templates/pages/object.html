@@ -44,23 +44,19 @@
     {{/each}}
     {{/if}}
 
-    {{#unless inProduction}}
     {{#if childRecords}}
     {{#if (determineGrouping this.grouping 'MPH')}}
     {{> records/record-mph-records}}
     {{/if}}
     {{/if}}
-    {{/unless}}
 
     {{> records/record-details }}
 
-    {{#unless inProduction}}
     {{#if childRecords}}
     {{#if (determineGrouping this.grouping 'SPH')}}
     {{> records/record-sph-records}}
     {{/if}}
     {{/if}}
-    {{/unless}}
 
     {{#if related.objects}}{{> records/record-related-objects }}{{/if}}
     {{#if related.documents}}{{> records/record-related-documents }}{{/if}}
