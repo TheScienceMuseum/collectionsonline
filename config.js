@@ -3,7 +3,7 @@ module.exports = require('rc')('co', {
   elasticsearch: {
     node: process.env.ELASTIC_HOST || ''
   },
-  auth: process.env.auth !== undefined ? (process.env.auth === 'true') : true,
+  auth: process.env.auth !== undefined ? (process.env.auth) : false,
   user: process.env.co_auth_user,
   password: process.env.co_auth_pass,
   JWT_SECRET: process.env.JWT_SECRET,
