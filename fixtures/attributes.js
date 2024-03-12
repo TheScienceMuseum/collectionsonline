@@ -55,5 +55,6 @@ module.exports = [
   'occurance_type',
   'enhancement',
   'transcriptions',
-  'wikidata'
+  'wikidata',
+  'grouping'
 ];
