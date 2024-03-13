@@ -181,20 +181,20 @@ module.exports = {
           columns: '',
           link: 'https://www.sciencemuseumgroup.org.uk/brief-history-stuff-podcast/'
         },
-        {
-          type: 'collection',
-          title: 'Never Been Seen',
-          figure: '/assets/img/home/collections/never-been-seen.jpg',
-          columns: '',
-          link: 'https://thesciencemuseum.github.io/never-been-seen/'
-        },
-        {
-          type: 'collection',
-          title: 'What the Machine Saw',
-          figure: '/assets/img/home/collections/what-the-machine-saw.jpg',
-          columns: '',
-          link: 'https://johnstack.github.io/what-the-machine-saw/'
-        },
+        // {
+        //   type: 'collection',
+        //   title: 'Never Been Seen',
+        //   figure: '/assets/img/home/collections/never-been-seen.jpg',
+        //   columns: '',
+        //   link: 'https://thesciencemuseum.github.io/never-been-seen/'
+        // },
+        // {
+        //   type: 'collection',
+        //   title: 'What the Machine Saw',
+        //   figure: '/assets/img/home/collections/what-the-machine-saw.jpg',
+        //   columns: '',
+        //   link: 'https://johnstack.github.io/what-the-machine-saw/'
+        // },
         {
           type: 'collection',
           title: 'Random Object Generator',
