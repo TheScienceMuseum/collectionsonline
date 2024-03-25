@@ -12,33 +12,33 @@ module.exports = function (elastic, dataToCopy, database, next) {
 
   // Error fixture 400 bad request
   database.archive[TypeMapping.toInternal('aabadRequest')] = {
-    error: { status: 400, displayName: 'BadRequest', message: 'Bad Request' },
+    error: { status: 400, displayName: 'BadRequest', message: 'Bad Request' }
   };
   database.agent[TypeMapping.toInternal('cpbadRequest')] = {
-    error: { status: 400, displayName: 'BadRequest', message: 'Bad Request' },
+    error: { status: 400, displayName: 'BadRequest', message: 'Bad Request' }
   };
   database.object[TypeMapping.toInternal('cobadRequest')] = {
-    error: { status: 400, displayName: 'BadRequest', message: 'Bad Request' },
+    error: { status: 400, displayName: 'BadRequest', message: 'Bad Request' }
   };
   database.mgroup[TypeMapping.toInternal('cobadRequest')] = {
-    error: { status: 400, displayName: 'BadRequest', message: 'Bad Request' },
+    error: { status: 400, displayName: 'BadRequest', message: 'Bad Request' }
   };
   // Error fixtures no error but also no result
   database.archive[TypeMapping.toInternal('aanoResult')] = {
     error: { status: 404, displayName: 'NotFound', message: 'Not Found' },
-    response: null,
+    response: null
   };
   database.agent[TypeMapping.toInternal('cpnoResult')] = {
     error: { status: 404, displayName: 'NotFound', message: 'Not Found' },
-    response: null,
+    response: null
   };
   database.object[TypeMapping.toInternal('conoResult')] = {
     error: { status: 404, displayName: 'NotFound', message: 'Not Found' },
-    response: null,
+    response: null
   };
   database.mgroup[TypeMapping.toInternal('conoResult')] = {
     error: { status: 404, displayName: 'NotFound', message: 'Not Found' },
-    response: null,
+    response: null
   };
 
   let count = 0;
@@ -55,7 +55,7 @@ module.exports = function (elastic, dataToCopy, database, next) {
         database[data.type] = database[data.type] || {};
         database[data.type][TypeMapping.toInternal(data.id)] = {
           error,
-          response,
+          response
         };
         count += 1;
         if (count === dataToCopy.length) {

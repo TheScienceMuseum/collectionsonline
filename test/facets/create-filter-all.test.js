@@ -16,7 +16,7 @@ test(file + 'The filters date are included in the array filter', (t) => {
     people: createFilters(queryParams, 'agent'),
     objects: createFilters(queryParams, 'object'),
     documents: createFilters(queryParams, 'archive'),
-    group: createFilters(queryParams, 'group'),
+    group: createFilters(queryParams, 'group')
   };
 
   const filtersAll = createFilterAll(queryParams, filters);
@@ -24,8 +24,8 @@ test(file + 'The filters date are included in the array filter', (t) => {
     bool: {
       must: [
         {
-          terms: { '@datatype.base': ['agent', 'object'] },
-          terms: { '@datatype.base': ['agent', 'object', 'group'] },
+          // terms: { '@datatype.base': ['agent', 'object'] },
+          terms: { '@datatype.base': ['agent', 'object', 'group'] }
         },
         {
           bool: {
@@ -34,20 +34,20 @@ test(file + 'The filters date are included in the array filter', (t) => {
                 bool: {
                   filter: [
                     { range: { 'creation.date.from': { gte: ['1800'] } } },
-                    { range: { 'creation.date.to': { lte: ['1900'] } } },
-                  ],
-                },
+                    { range: { 'creation.date.to': { lte: ['1900'] } } }
+                  ]
+                }
               },
               {
                 bool: {
                   filter: [
                     { range: { 'birth.date.from': { gte: ['1800'] } } },
-                    { range: { 'birth.date.to': { lte: ['1900'] } } },
-                  ],
-                },
-              },
-            ],
-          },
+                    { range: { 'birth.date.to': { lte: ['1900'] } } }
+                  ]
+                }
+              }
+            ]
+          }
         },
         {
           bool: {
@@ -56,20 +56,20 @@ test(file + 'The filters date are included in the array filter', (t) => {
                 bool: {
                   filter: [
                     { range: { 'creation.date.from': { gte: ['1800'] } } },
-                    { range: { 'creation.date.to': { lte: ['1900'] } } },
-                  ],
-                },
+                    { range: { 'creation.date.to': { lte: ['1900'] } } }
+                  ]
+                }
               },
               {
                 bool: {
                   filter: [
                     { range: { 'birth.date.from': { gte: ['1800'] } } },
-                    { range: { 'birth.date.to': { lte: ['1900'] } } },
-                  ],
-                },
-              },
-            ],
-          },
+                    { range: { 'birth.date.to': { lte: ['1900'] } } }
+                  ]
+                }
+              }
+            ]
+          }
         },
         {
           bool: {
@@ -78,23 +78,23 @@ test(file + 'The filters date are included in the array filter', (t) => {
                 bool: {
                   filter: [
                     { range: { 'creation.date.from': { gte: ['1800'] } } },
-                    { range: { 'creation.date.to': { lte: ['1900'] } } },
-                  ],
-                },
+                    { range: { 'creation.date.to': { lte: ['1900'] } } }
+                  ]
+                }
               },
               {
                 bool: {
                   filter: [
                     { range: { 'birth.date.from': { gte: ['1800'] } } },
-                    { range: { 'birth.date.to': { lte: ['1900'] } } },
-                  ],
-                },
-              },
-            ],
-          },
-        },
-      ],
-    },
+                    { range: { 'birth.date.to': { lte: ['1900'] } } }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
   };
 
   t.plan(1);
@@ -115,7 +115,7 @@ test(
       people: createFilters(queryParams, 'agent'),
       objects: createFilters(queryParams, 'object'),
       group: createFilters(queryParams, 'group'),
-      documents: createFilters(queryParams, 'archive'),
+      documents: createFilters(queryParams, 'archive')
     };
 
     const filtersAll = createFilterAll(queryParams, filters);
@@ -123,9 +123,9 @@ test(
       {
         terms: {
           // '@datatype.base': ['agent', 'object', 'archive'],
-          '@datatype.base': ['agent', 'object', 'archive', 'group'],
-        },
-      },
+          '@datatype.base': ['agent', 'object', 'archive', 'group']
+        }
+      }
     ];
 
     t.deepEqual(filtersAll.bool.must, mustExpected, 'Must get all they types');

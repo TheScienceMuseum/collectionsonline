@@ -9,7 +9,7 @@ module.exports = function () {
   const awesomplete = new Awesomplete(searchinput, {
     minChars: 3,
     autoFirst: false,
-    listLabel: 'Search results',
+    listLabel: 'Search results'
   });
   searchinput.addEventListener(
     'keyup',

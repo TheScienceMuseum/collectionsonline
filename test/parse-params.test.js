@@ -36,7 +36,7 @@ test('parsing url params', function (t) {
     parseParameters({ filters: 'objects/image_license' }),
     {
       params: { type: 'objects' },
-      categories: { image_license: 'Image_license' },
+      categories: { image_license: 'Image_license' }
     },
     'parses type correctly'
   );
@@ -44,7 +44,7 @@ test('parsing url params', function (t) {
     parseParameters({ filters: 'objects/categories/art/images' }),
     {
       params: { type: 'objects' },
-      categories: { has_image: 'has_image', categories: 'Art' },
+      categories: { has_image: 'has_image', categories: 'Art' }
     },
     'parses type correctly'
   );
@@ -79,7 +79,7 @@ test('parsing museum params', function (t) {
     parseParameters({ filters: 'objects/museum/msi' }),
     {
       params: { type: 'objects' },
-      categories: { museum: 'Museum of Science and Industry' },
+      categories: { museum: 'Museum of Science and Industry' }
     },
     'should convert short museum name'
   );
@@ -87,7 +87,7 @@ test('parsing museum params', function (t) {
     parseParameters({ filters: 'objects/museum/nrm' }),
     {
       params: { type: 'objects' },
-      categories: { museum: 'National Railway Museum' },
+      categories: { museum: 'National Railway Museum' }
     },
     'should convert short museum name'
   );
@@ -95,7 +95,7 @@ test('parsing museum params', function (t) {
     parseParameters({ filters: 'objects/museum/nmem' }),
     {
       params: { type: 'objects' },
-      categories: { museum: 'National Media Museum' },
+      categories: { museum: 'National Media Museum' }
     },
     'should convert short museum name'
   );
@@ -108,17 +108,17 @@ test('parsing museum params', function (t) {
     parseParameters({ filters: 'objects/museum/National-Railway-Museum' }),
     {
       params: { type: 'objects' },
-      categories: { museum: 'National Railway Museum' },
+      categories: { museum: 'National Railway Museum' }
     },
     'should keep long museum name'
   );
   t.deepEqual(
     parseParameters({
-      filters: 'objects/museum/museum-of-science-and-industry',
+      filters: 'objects/museum/museum-of-science-and-industry'
     }),
     {
       params: { type: 'objects' },
-      categories: { museum: 'Museum of Science and Industry' },
+      categories: { museum: 'Museum of Science and Industry' }
     },
     'should convert museum name to correct case'
   );
@@ -135,15 +135,15 @@ test('param order', function (t) {
       categories: {
         museum: 'Science Museum',
         categories: 'Art',
-        has_image: 'has_image',
-      },
+        has_image: 'has_image'
+      }
     },
     'param order does not matter'
   );
   t.deepEqual(
     parseParameters({
       filters:
-        'objects/museum/scm/images/gallery/mathematics:-the-winton-gallery/categories/art',
+        'objects/museum/scm/images/gallery/mathematics:-the-winton-gallery/categories/art'
     }),
     {
       params: { type: 'objects' },
@@ -151,8 +151,8 @@ test('param order', function (t) {
         museum: 'Science Museum',
         gallery: 'Mathematics: The Winton Gallery',
         categories: 'Art',
-        has_image: 'has_image',
-      },
+        has_image: 'has_image'
+      }
     },
     'param order does not matter'
   );

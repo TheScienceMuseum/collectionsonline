@@ -25,7 +25,7 @@ after_script:
 
 before_deploy:
   # - zip -q -x .git\* node_modules/\* package-lock.json .npmrc -r collectionsonline .
-  - zip -q -x .git\* .npmrc .corc -r collectionsonline .
+  - zip -q -x .git\* -x .npmrc -x .corc -r collectionsonline .
 deploy:
   - provider: elasticbeanstalk
     access_key_id: &1 AKIAIWVLTZ3YIKYYXEYQ

@@ -14,13 +14,13 @@ module.exports = {
     Place: 'close',
     User: 'close',
     Archive: 'close',
-    Image: 'close',
+    Image: 'close'
   },
   people: {
     Dates: 'close',
     Occupation: 'close',
     'Place born': 'close',
-    Organisation: 'close',
+    Organisation: 'close'
   },
   objects: {
     Dates: 'close',
@@ -32,14 +32,14 @@ module.exports = {
     Place: 'close',
     User: 'close',
     Material: 'close',
-    Image: 'close',
+    Image: 'close'
   },
   documents: {
     Archive: 'close',
     Maker: 'close',
-    Image: 'close',
+    Image: 'close'
   },
   group: {
-    group_type: 'close',
-  },
+    group_type: 'close'
+  }
 };

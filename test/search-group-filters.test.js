@@ -12,7 +12,7 @@ testWithServer(
     const htmlRequest = {
       method: 'GET',
       url: '/search/group?' + QueryString.stringify({}),
-      headers: { Accept: 'text/html' },
+      headers: { Accept: 'text/html' }
     };
     const res = await ctx.server.inject(htmlRequest);
     t.equal(res.statusCode, 200, 'Status code was as expected');

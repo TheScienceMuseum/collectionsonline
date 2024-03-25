@@ -25,7 +25,7 @@ module.exports = (elastic, config) => ({
       }
       try {
         const querySchema = Joi.object({
-          query: filterSchema(responseType).keys(searchSchema.query),
+          query: filterSchema(responseType).keys(searchSchema.query)
         });
         const validation = querySchema.validate(
           { query: request.query },
@@ -41,7 +41,7 @@ module.exports = (elastic, config) => ({
         const resultSchema = Joi.object({
           params: Joi.any(),
           categories: filterSchema('html').keys(searchSchema.query),
-          query: filterSchema('html').keys(searchSchema.query),
+          query: filterSchema('html').keys(searchSchema.query)
         });
         const result = await resultSchema.validate(
           { params, categories, query: value.query },
@@ -66,14 +66,14 @@ module.exports = (elastic, config) => ({
 
             const query = Object.assign(queryParams, {
               type: 'objects',
-              random: 100,
+              random: 100
             });
             const res = await search(elastic, query);
             const data = searchResultsToSlideshow(queryParams, res, config);
 
             return h.view('slideshow', {
               data,
-              stringData: JSON.stringify(data),
+              stringData: JSON.stringify(data)
             });
           }
           // match categories
@@ -183,6 +183,6 @@ module.exports = (elastic, config) => ({
       } catch (err) {
         return Boom.serverUnavailable(err);
       }
-    },
-  },
+    }
+  }
 });

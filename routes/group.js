@@ -2,8 +2,6 @@ const Boom = require('@hapi/boom');
 const buildJSONResponse = require('../lib/jsonapi-response.js');
 const TypeMapping = require('../lib/type-mapping.js');
 const contentType = require('./route-helpers/content-type.js');
-const getSimilarObjects = require('../lib/get-similar-objects.js');
-const sortRelated = require('../lib/sort-related-items.js');
 const response = require('./route-helpers/response.js');
 const cacheHeaders = require('./route-helpers/cache-control.js');
 const getChildRecords = require('../lib/get-child-records.js');
@@ -21,7 +19,7 @@ module.exports = (elastic, config) => ({
         try {
           const result = await elastic.get({
             index: 'ciim',
-            id: TypeMapping.toInternal(request.params.id),
+            id: TypeMapping.toInternal(request.params.id)
           });
           //   const inProduction = config && config.NODE_ENV === 'production';
           const { grouping } = result.body._source['@datatype'];
@@ -52,6 +50,6 @@ module.exports = (elastic, config) => ({
       } else {
         return h.response('Not Acceptable').code(406);
       }
-    },
-  },
+    }
+  }
 });

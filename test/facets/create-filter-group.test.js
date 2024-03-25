@@ -11,7 +11,7 @@ test(file + 'The filters date are included in the array filter', (t) => {
   );
   const queryParams = createQueryParams('html', {
     query,
-    params: { type: 'group' },
+    params: { type: 'group' }
   });
   const filters = createFilters(queryParams, 'group');
   const expected = {
@@ -24,20 +24,20 @@ test(file + 'The filters date are included in the array filter', (t) => {
               {
                 bool: {
                   filter: [
-                    { range: { 'creation.date.from': { gte: ['1800'] } } },
-                  ],
-                },
+                    { range: { 'creation.date.from': { gte: ['1800'] } } }
+                  ]
+                }
               },
               {
                 bool: {
-                  filter: [{ range: { 'birth.date.from': { gte: ['1800'] } } }],
-                },
-              },
-            ],
-          },
-        },
-      ],
-    },
+                  filter: [{ range: { 'birth.date.from': { gte: ['1800'] } } }]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
   };
   t.deepEqual(filters, expected, 'The dates are part of the filter array');
   t.plan(1);
@@ -53,11 +53,11 @@ test(
     );
     const queryParams = createQueryParams('html', {
       query,
-      params: { type: 'group' },
+      params: { type: 'group' }
     });
     const filters = createFilters(queryParams, 'group');
     const expected = {
-      bool: { must: [{ term: { '@datatype.base': 'group' } }] },
+      bool: { must: [{ term: { '@datatype.base': 'group' } }] }
     };
     t.deepEqual(
       filters,
@@ -78,13 +78,13 @@ test(
     );
     const queryParams = createQueryParams('html', {
       query,
-      params: { type: 'group' },
+      params: { type: 'group' }
     });
     queryParams.filter.group.dateFrom = new Date('wrongDate');
     queryParams.filter.group.dateTo = new Date('wrongDate');
     const filters = createFilters(queryParams, 'group');
     const expected = {
-      bool: { must: [{ term: { '@datatype.base': 'group' } }] },
+      bool: { must: [{ term: { '@datatype.base': 'group' } }] }
     };
     t.deepEqual(
       filters,

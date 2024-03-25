@@ -41,13 +41,13 @@ module.exports = function (page) {
  * Ajax request to get the data of the url
  * assign ctx.state with an object representing the data displayed on the page
  */
-function load(ctx, next) {
+function load (ctx, next) {
   sessionStorage.setItem('backPath', ctx.path);
   // only load the data if the page hasn't been loaded before
   if (!ctx.isInitialRender) {
     loadingBar.start();
     const opts = {
-      headers: { Accept: 'application/vnd.api+json' },
+      headers: { Accept: 'application/vnd.api+json' }
     };
     const qs = QueryString.parse(ctx.querystring);
     const p = Object.assign(
@@ -57,7 +57,7 @@ function load(ctx, next) {
     const searchCategory = findCategory(ctx.pathname);
     const queryParams = createQueryParams('html', {
       query: Object.assign(qs, p),
-      params: { type: searchCategory },
+      params: { type: searchCategory }
     });
     // match and answer 'what is' questions
     if (qs.q && qs.q.toLowerCase().lastIndexOf('what', 0) === 0) {
@@ -103,7 +103,7 @@ function load(ctx, next) {
 /**
  * Call the Handlebars template with the data and display the new DOM on the page
  */
-function render(ctx, next) {
+function render (ctx, next) {
   window.scrollTo(0, 0);
   hideKeyboard();
   loadingBar.end();
@@ -163,7 +163,7 @@ function render(ctx, next) {
 /**
  * Define event listeners for search and filters
  */
-function listeners(ctx, next) {
+function listeners (ctx, next) {
   searchListener();
   descriptionBoxCloseListener();
   initComp();
@@ -217,8 +217,8 @@ function listeners(ctx, next) {
               action: ctx.params.type || 'all',
               label: e.target.name + ' | ' + e.target.value,
               value: e.target.value,
-              'non-interaction': 'false',
-            },
+              'non-interaction': 'false'
+            }
           });
         }
       }
@@ -228,7 +228,7 @@ function listeners(ctx, next) {
         'National-Railway-Museum',
         'National-Media-Museum',
         'National-Science-and-Media-Museum',
-        'Museum-of-Science-and-Industry',
+        'Museum-of-Science-and-Industry'
       ];
       loadingBar.start();
       museums.forEach(function (m) {
@@ -294,9 +294,9 @@ function listeners(ctx, next) {
       method: 'POST',
       headers: {
         Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ event: 'RESULT_CLICK', data: id }),
+      body: JSON.stringify({ event: 'RESULT_CLICK', data: id })
     }).catch((err) =>
       console.error('Failed to send RESULT_CLICK analytics', err)
     );
@@ -318,7 +318,7 @@ function listeners(ctx, next) {
       '/search/people',
       '/search/objects',
       '/search/documents',
-      'search/group',
+      'search/group'
     ].lastIndexOf(ctx.canonicalPath) !== -1;
   if (onMobile && noFilterSelected) {
     displayFilters(false);

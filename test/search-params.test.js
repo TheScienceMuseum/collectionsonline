@@ -14,9 +14,9 @@ testWithServer(
       url:
         '/search/people?' +
         QueryString.stringify({
-          q: 'test people',
+          q: 'test people'
         }),
-      headers: { Accept: 'wrongContent' },
+      headers: { Accept: 'wrongContent' }
     };
 
     const res = await ctx.server.inject(htmlRequest);
@@ -34,9 +34,9 @@ testWithServer(file + 'Should accept the param people', {}, async (t, ctx) => {
     url:
       '/search/people?' +
       QueryString.stringify({
-        q: 'test people',
+        q: 'test people'
       }),
-    headers: { Accept: 'text/html' },
+    headers: { Accept: 'text/html' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -52,9 +52,9 @@ testWithServer(file + 'Should accept the param objects', {}, async (t, ctx) => {
     url:
       '/search/objects?' +
       QueryString.stringify({
-        q: 'test',
+        q: 'test'
       }),
-    headers: { Accept: 'text/html' },
+    headers: { Accept: 'text/html' }
   };
 
   const res = await ctx.server.inject(htmlRequest);
@@ -73,9 +73,9 @@ testWithServer(
       url:
         '/search/documents?' +
         QueryString.stringify({
-          q: 'test documents',
+          q: 'test documents'
         }),
-      headers: { Accept: 'text/html' },
+      headers: { Accept: 'text/html' }
     };
 
     const res = await ctx.server.inject(htmlRequest);
@@ -95,9 +95,9 @@ testWithServer(
       url:
         '/search/documents?' +
         QueryString.stringify({
-          q: 'a',
+          q: 'a'
         }),
-      headers: { Accept: 'text/html' },
+      headers: { Accept: 'text/html' }
     };
 
     const res = await ctx.server.inject(htmlRequest);
@@ -114,9 +114,9 @@ testWithServer(file + 'Should accept the param groups', {}, async (t, ctx) => {
     url:
       '/search/group?' +
       QueryString.stringify({
-        q: 'test',
+        q: 'test'
       }),
-    headers: { Accept: 'text/html' },
+    headers: { Accept: 'text/html' }
   };
 
   const res = await ctx.server.inject(htmlRequest);

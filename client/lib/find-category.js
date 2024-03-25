@@ -1,4 +1,4 @@
-module.exports = function findCategory(path) {
+module.exports = function findCategory (path) {
   const categoryRegex = /(objects|people|documents|group)/g;
   const match = categoryRegex.exec(path);
   if (match) {

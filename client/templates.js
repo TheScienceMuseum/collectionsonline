@@ -454,7 +454,7 @@ module.exports = {
   objects: Handlebars.compile(
     Fs.readFileSync('./templates/pages/object.html', 'utf8')
   ),
-  objects: Handlebars.compile(
+  group: Handlebars.compile(
     Fs.readFileSync('./templates/pages/group.html', 'utf8')
   ),
   searchnav: Handlebars.compile(
@@ -495,5 +495,5 @@ module.exports = {
   ),
   about: Handlebars.compile(
     Fs.readFileSync('./templates/pages/about.html', 'utf8')
-  ),
+  )
 };

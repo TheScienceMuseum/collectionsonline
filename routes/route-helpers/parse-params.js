@@ -10,7 +10,7 @@ module.exports = function (urlParams) {
         el === 'objects' ||
         el === 'people' ||
         el === 'documents' ||
-        'group'
+        el === 'group'
       ) {
         params.type = el;
         return false;
@@ -53,7 +53,7 @@ module.exports = function (urlParams) {
       'object_type',
       'material',
       'occupation',
-      'mphc',
+      'mphc'
     ];
 
     if (cat === 'museum') {

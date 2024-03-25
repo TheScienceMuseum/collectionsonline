@@ -28,14 +28,14 @@ test(file + 'Should create valid meta count numbers', (t) => {
             _id: `smg-object-${Date.now()}`,
             _source: {
               '@datatype': {
-                base: 'object',
+                base: 'object'
               },
               summary: {
-                title: 'this is the summary title',
-              },
-            },
-          },
-        ],
+                title: 'this is the summary title'
+              }
+            }
+          }
+        ]
       },
       aggregations: {
         total_categories: {
@@ -51,13 +51,13 @@ test(file + 'Should create valid meta count numbers', (t) => {
               sum_other_doc_count: 0,
               buckets: [
                 { key: 'object', doc_count: 13 },
-                { key: 'agent', doc_count: 4 },
-              ],
-            },
-          },
-        },
-      },
-    },
+                { key: 'agent', doc_count: 4 }
+              ]
+            }
+          }
+        }
+      }
+    }
   };
 
   testResult.body.aggregations.all = aggregationsAll;
@@ -69,7 +69,7 @@ test(file + 'Should create valid meta count numbers', (t) => {
   let obj;
   const query = queryParams('html', {
     query: { q: 'test', 'page[number]': 0, 'page[size]': 1 },
-    params: {},
+    params: {}
   });
   t.doesNotThrow(() => {
     obj = searchResultsToJsonApi(query, testResult);
@@ -105,14 +105,14 @@ test(
               _id: `smg-object-${Date.now()}`,
               _source: {
                 '@datatype': {
-                  base: 'object',
+                  base: 'object'
                 },
                 summary: {
-                  title: 'this is the summary title',
-                },
-              },
-            },
-          ],
+                  title: 'this is the summary title'
+                }
+              }
+            }
+          ]
         },
         aggregations: {
           total_categories: {
@@ -126,12 +126,12 @@ test(
               all_total: {
                 doc_count_error_upper_bound: 0,
                 sum_other_doc_count: 0,
-                buckets: [],
-              },
-            },
-          },
-        },
-      },
+                buckets: []
+              }
+            }
+          }
+        }
+      }
     };
 
     testResult.body.aggregations.all = aggregationsAll;
@@ -143,7 +143,7 @@ test(
     let obj;
     const query = queryParams('html', {
       query: { q: 'test', 'page[number]': 0, 'page[size]': 1 },
-      params: {},
+      params: {}
     });
 
     t.doesNotThrow(() => {
@@ -186,7 +186,7 @@ test(file + 'Should create valid links on first page', (t) => {
     body: {
       hits: {
         total: {
-          value: 5,
+          value: 5
         },
         max_score: null,
         hits: [
@@ -194,14 +194,14 @@ test(file + 'Should create valid links on first page', (t) => {
             _id: `smg-object-${Date.now()}`,
             _source: {
               '@datatype': {
-                base: 'object',
+                base: 'object'
               },
               summary: {
-                title: 'this is the summary title',
-              },
-            },
-          },
-        ],
+                title: 'this is the summary title'
+              }
+            }
+          }
+        ]
       },
       aggregations: {
         total_categories: {
@@ -218,13 +218,13 @@ test(file + 'Should create valid links on first page', (t) => {
               sum_other_doc_count: 0,
               buckets: [
                 { key: 'object', doc_count: 13 },
-                { key: 'agent', doc_count: 4 },
-              ],
-            },
-          },
-        },
-      },
-    },
+                { key: 'agent', doc_count: 4 }
+              ]
+            }
+          }
+        }
+      }
+    }
   };
 
   testResult.body.aggregations.all = aggregationsAll;
@@ -236,7 +236,7 @@ test(file + 'Should create valid links on first page', (t) => {
   let obj;
   const query = queryParams('html', {
     query: { q: 'test', 'page[number]': 0, 'page[size]': 1 },
-    params: {},
+    params: {}
   });
 
   t.doesNotThrow(() => {
@@ -271,7 +271,7 @@ test(file + 'Should create valid links on middle page', (t) => {
     body: {
       hits: {
         total: {
-          value: 5,
+          value: 5
         },
         max_score: null,
         hits: [
@@ -279,14 +279,14 @@ test(file + 'Should create valid links on middle page', (t) => {
             _id: `smg-object-${Date.now()}`,
             _source: {
               '@datatype': {
-                base: 'object',
+                base: 'object'
               },
               summary: {
-                title: 'this is the summary title',
-              },
-            },
-          },
-        ],
+                title: 'this is the summary title'
+              }
+            }
+          }
+        ]
       },
       aggregations: {
         total_categories: {
@@ -302,13 +302,13 @@ test(file + 'Should create valid links on middle page', (t) => {
               sum_other_doc_count: 0,
               buckets: [
                 { key: 'object', doc_count: 13 },
-                { key: 'agent', doc_count: 4 },
-              ],
-            },
-          },
-        },
-      },
-    },
+                { key: 'agent', doc_count: 4 }
+              ]
+            }
+          }
+        }
+      }
+    }
   };
   testResult.body.aggregations.all = aggregationsAll;
   testResult.body.aggregations.people = aggregationsPeople;
@@ -319,7 +319,7 @@ test(file + 'Should create valid links on middle page', (t) => {
   let obj;
   const query = queryParams('html', {
     query: { q: 'test', 'page[number]': 1, 'page[size]': 1 },
-    params: {},
+    params: {}
   });
 
   t.doesNotThrow(() => {
@@ -356,7 +356,7 @@ test(file + 'Should create valid links on last page', (t) => {
     body: {
       hits: {
         total: {
-          value: 5,
+          value: 5
         },
         max_score: null,
         hits: [
@@ -364,14 +364,14 @@ test(file + 'Should create valid links on last page', (t) => {
             _id: `smg-object-${Date.now()}`,
             _source: {
               '@datatype': {
-                base: 'object',
+                base: 'object'
               },
               summary: {
-                title: 'this is the summary title',
-              },
-            },
-          },
-        ],
+                title: 'this is the summary title'
+              }
+            }
+          }
+        ]
       },
       aggregations: {
         total_categories: {
@@ -386,13 +386,13 @@ test(file + 'Should create valid links on last page', (t) => {
               sum_other_doc_count: 0,
               buckets: [
                 { key: 'object', doc_count: 13 },
-                { key: 'agent', doc_count: 4 },
-              ],
-            },
-          },
-        },
-      },
-    },
+                { key: 'agent', doc_count: 4 }
+              ]
+            }
+          }
+        }
+      }
+    }
   };
 
   testResult.body.aggregations.all = aggregationsAll;
@@ -404,7 +404,7 @@ test(file + 'Should create valid links on last page', (t) => {
   let obj;
   const query = queryParams('html', {
     query: { q: 'test', 'page[number]': 4, 'page[size]': 1 },
-    params: {},
+    params: {}
   });
 
   t.doesNotThrow(() => {
@@ -440,7 +440,7 @@ test(file + 'Should ignore unknown object types', (t) => {
     body: {
       hits: {
         total: {
-          value: 5,
+          value: 5
         },
         max_score: null,
         hits: [
@@ -448,14 +448,14 @@ test(file + 'Should ignore unknown object types', (t) => {
             _id: `smg-object-${Date.now()}`,
             _source: {
               '@datatype': {
-                base: 'wrongtype',
+                base: 'wrongtype'
               },
               summary: {
-                title: 'this is the summary title',
-              },
-            },
-          },
-        ],
+                title: 'this is the summary title'
+              }
+            }
+          }
+        ]
       },
       aggregations: {
         total_categories: {
@@ -470,13 +470,13 @@ test(file + 'Should ignore unknown object types', (t) => {
               sum_other_doc_count: 0,
               buckets: [
                 { key: 'object', doc_count: 13 },
-                { key: 'agent', doc_count: 4 },
-              ],
-            },
-          },
-        },
-      },
-    },
+                { key: 'agent', doc_count: 4 }
+              ]
+            }
+          }
+        }
+      }
+    }
   };
 
   testResult.body.aggregations.all = aggregationsAll;
@@ -488,7 +488,7 @@ test(file + 'Should ignore unknown object types', (t) => {
   let obj;
   const query = queryParams('html', {
     query: { q: 'test', 'page[number]': 0, 'page[size]': 50 },
-    params: {},
+    params: {}
   });
 
   t.doesNotThrow(() => {
@@ -515,7 +515,7 @@ test(
       body: {
         hits: {
           total: {
-            value: 5,
+            value: 5
           },
           max_score: null,
           hits: [
@@ -523,22 +523,22 @@ test(
               _id: `smg-object-${Date.now()}`,
               _source: {
                 '@datatype': {
-                  base: 'object',
+                  base: 'object'
                 },
                 summary: {
-                  title: 'this is the summary title',
+                  title: 'this is the summary title'
                 },
                 agent: [
                   {
                     '@admin': { uid: relId },
                     summary: {
-                      title: relSummaryTitle,
-                    },
-                  },
-                ],
-              },
-            },
-          ],
+                      title: relSummaryTitle
+                    }
+                  }
+                ]
+              }
+            }
+          ]
         },
         aggregations: {
           total_categories: {
@@ -553,13 +553,13 @@ test(
                 sum_other_doc_count: 0,
                 buckets: [
                   { key: 'object', doc_count: 13 },
-                  { key: 'agent', doc_count: 4 },
-                ],
-              },
-            },
-          },
-        },
-      },
+                  { key: 'agent', doc_count: 4 }
+                ]
+              }
+            }
+          }
+        }
+      }
     };
 
     testResult.body.aggregations.all = aggregationsAll;
@@ -571,7 +571,7 @@ test(
     let obj;
     const query = queryParams('html', {
       query: { q: 'test', 'page[number]': 0, 'page[size]': 1 },
-      params: {},
+      params: {}
     });
 
     t.doesNotThrow(() => {

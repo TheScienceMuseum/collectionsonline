@@ -8,7 +8,7 @@ const aggregationsAll = require('../helpers/aggregations-all.json');
 const aggregationsPeople = require('../helpers/aggregations-all.json');
 const aggregationsObjects = require('../helpers/aggregations-all.json');
 const aggregationsDocuments = require('../helpers/aggregations-all.json');
-const aggregationsGroup = require('../helpers/aggregations-all.json');
+// const aggregationsGroup = require('../helpers/aggregations-all.json');
 
 const testResult = {
   body: {
@@ -19,8 +19,8 @@ const testResult = {
         require('../fixtures/elastic-responses/example-get-response-document.json'),
         require('../fixtures/elastic-responses/example-get-response-person.json'),
         require('../fixtures/elastic-responses/example-get-response-object.json'),
-        require('../fixtures/elastic-responses/example-get-response-group.json'),
-      ],
+        require('../fixtures/elastic-responses/example-get-response-group.json')
+      ]
     },
     aggregations: {
       total_categories: {
@@ -35,13 +35,13 @@ const testResult = {
             sum_other_doc_count: 0,
             buckets: [
               { key: 'object', doc_count: 13 },
-              { key: 'agent', doc_count: 4 },
-            ],
-          },
-        },
-      },
-    },
-  },
+              { key: 'agent', doc_count: 4 }
+            ]
+          }
+        }
+      }
+    }
+  }
 };
 
 testResult.body.aggregations.all = aggregationsAll;
@@ -52,7 +52,7 @@ testResult.body.aggregations.documents = aggregationsDocuments;
 
 const query = queryParams('html', {
   query: { q: 'test', 'page[number]': 0, 'page[size]': 1 },
-  params: {},
+  params: {}
 });
 const jsonData = searchResultsToJsonApi(query, testResult);
 test(file + 'Results should be transformed succesfully', (t) => {

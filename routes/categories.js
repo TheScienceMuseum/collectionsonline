@@ -15,11 +15,11 @@ module.exports = (elastic, config) => ({
                 terms: {
                   field: 'category.name.keyword',
                   size: 500,
-                  order: { _count: 'desc' },
-                },
-              },
-            },
-          },
+                  order: { _count: 'desc' }
+                }
+              }
+            }
+          }
         });
 
         const categories = [];
@@ -30,7 +30,7 @@ module.exports = (elastic, config) => ({
               link:
                 '/search/categories/' +
                 e.key.toLowerCase().split(' ').join('-'),
-              count: e.doc_count,
+              count: e.doc_count
             });
           });
         }
@@ -38,6 +38,6 @@ module.exports = (elastic, config) => ({
       } catch (err) {
         return new Boom.Boom(err);
       }
-    },
-  },
+    }
+  }
 });
