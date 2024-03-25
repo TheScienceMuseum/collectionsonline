@@ -1083,12 +1083,101 @@ testWithServer(
 
 // mgroup tests
 
-// testWithServer(file + 'Request for MGroup HTML Page', {}, async (t, ctx) => {
-// x2 or 3 examples
-// c81734
-// testWithServer(
-// file + 'Request for Object HTML Page for a wrong id',
+testWithServer(file + 'Request for Group HTML Page', {}, async (t, ctx) => {
+  t.plan(1);
 
-// testWithServer(
-// file + 'Request for Object Page with wrong accept headers',
-// {},
+  const cacheStart = stub(cache, 'start').resolves();
+  const cacheGet = stub(cache, 'get').resolves();
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/group/c81734',
+    headers: { Accept: 'text/html' },
+  };
+
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  cacheStart.restore();
+  cacheGet.restore();
+  t.end();
+});
+
+testWithServer(
+  file + 'Attempt to request for Group HTML Page with wrong accept header',
+  {},
+  async (t, ctx) => {
+    t.plan(1);
+
+    const htmlRequest = {
+      method: 'GET',
+      url: '/group/c81734',
+      headers: { Accept: 'wrongContent' },
+    };
+
+    const res = await ctx.server.inject(htmlRequest);
+    t.equal(
+      res.statusCode,
+      200,
+      'Return HTML : Status code was as expected, 200'
+    );
+    await ctx.server.stop();
+    t.end();
+  }
+);
+
+testWithServer(file + 'Request for Group JSON Page', {}, async (t, ctx) => {
+  t.plan(1);
+  const cacheStart = stub(cache, 'start').resolves();
+  const cacheGet = stub(cache, 'get').resolves();
+
+  const htmlRequest = {
+    method: 'GET',
+    url: '/group/c81734',
+    headers: { Accept: 'application/vnd.api+json' },
+  };
+
+  const res = await ctx.server.inject(htmlRequest);
+  t.equal(res.statusCode, 200, 'Status code was as expected');
+  await ctx.server.stop();
+  cacheStart.restore();
+  cacheGet.restore();
+  t.end();
+});
+
+testWithServer(
+  file + 'Request for Group HTML Page for a wrong id',
+  {},
+  async (t, ctx) => {
+    t.plan(1);
+
+    const htmlRequest = {
+      method: 'GET',
+      url: '/group/aawrongid',
+      headers: { Accept: 'text/html' },
+    };
+
+    const res = await ctx.server.inject(htmlRequest);
+    t.equal(res.statusCode, 404, 'Status code was as expected');
+    await ctx.server.stop();
+    t.end();
+  }
+);
+
+testWithServer(
+  file + 'Request for Group JSON with error',
+  {},
+  async (t, ctx) => {
+    t.plan(1);
+
+    const htmlRequest = {
+      method: 'GET',
+      url: '/group/aawrongid',
+      headers: { Accept: 'application/vnd.api+json' },
+    };
+
+    const res = await ctx.server.inject(htmlRequest);
+    t.equal(res.statusCode, 404, 'Status code was as expected');
+    await ctx.server.stop();
+    t.end();
+  }
+);

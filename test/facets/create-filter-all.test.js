@@ -16,7 +16,7 @@ test(file + 'The filters date are included in the array filter', (t) => {
     people: createFilters(queryParams, 'agent'),
     objects: createFilters(queryParams, 'object'),
     documents: createFilters(queryParams, 'archive'),
-    // mgroup: createFilters(queryParams, 'mgroup'),
+    group: createFilters(queryParams, 'group'),
   };
 
   const filtersAll = createFilterAll(queryParams, filters);
@@ -25,7 +25,7 @@ test(file + 'The filters date are included in the array filter', (t) => {
       must: [
         {
           terms: { '@datatype.base': ['agent', 'object'] },
-          // terms: { '@datatype.base': ['agent', 'object', 'group'] }
+          terms: { '@datatype.base': ['agent', 'object', 'group'] },
         },
         {
           bool: {
@@ -114,7 +114,7 @@ test(
     const filters = {
       people: createFilters(queryParams, 'agent'),
       objects: createFilters(queryParams, 'object'),
-      // mgroup: createFilters(queryParams, 'mgroup'),
+      group: createFilters(queryParams, 'group'),
       documents: createFilters(queryParams, 'archive'),
     };
 
@@ -122,8 +122,8 @@ test(
     const mustExpected = [
       {
         terms: {
-          '@datatype.base': ['agent', 'object', 'archive'],
-          // '@datatype.base': ['agent', 'object', 'archive', 'group']
+          // '@datatype.base': ['agent', 'object', 'archive'],
+          '@datatype.base': ['agent', 'object', 'archive', 'group'],
         },
       },
     ];

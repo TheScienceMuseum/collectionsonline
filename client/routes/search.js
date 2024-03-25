@@ -54,13 +54,11 @@ function load(ctx, next) {
       parseParams({ filters: ctx.pathname }).categories,
       parseParams({ filters: ctx.pathname }).params
     );
-    // console.log(p, 'checking p first');
     const searchCategory = findCategory(ctx.pathname);
     const queryParams = createQueryParams('html', {
       query: Object.assign(qs, p),
       params: { type: searchCategory },
     });
-
     // match and answer 'what is' questions
     if (qs.q && qs.q.toLowerCase().lastIndexOf('what', 0) === 0) {
       const answer = whatis.data.filter(function (a) {
@@ -71,8 +69,6 @@ function load(ctx, next) {
         return page.redirect(answer[0].links.self);
       }
     }
-    // console.log(paramify(p), 'checking p');
-    // console.log(querify(queryParams), 'checking query params');
 
     getData(
       '/search' +
@@ -89,7 +85,6 @@ function load(ctx, next) {
           return;
         }
         const data = searchResultsToTemplateData(queryParams, json);
-        // console.log(data, 'echcking the data');
         ctx.state.data = data;
 
         window.dataLayer.push(JSON.parse(data.layer));

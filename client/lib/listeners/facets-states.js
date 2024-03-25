@@ -40,6 +40,6 @@ module.exports = {
     Image: 'close',
   },
   group: {
-    // sub_group
+    group_type: 'close',
   },
 };

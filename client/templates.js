@@ -261,6 +261,18 @@ Handlebars.registerPartial(
   Fs.readFileSync('./templates/partials/global/smg-map.html', 'utf8')
 );
 
+Handlebars.registerPartial(
+  'search/filters-group',
+  Fs.readFileSync('./templates/partials/search/filters-group.html', 'utf8')
+);
+Handlebars.registerPartial(
+  'records/record-mgroup-records',
+  Fs.readFileSync(
+    './templates/partials/records/record-mgroup-records.html',
+    'utf8'
+  )
+);
+
 // Helpers
 Handlebars.registerHelper(
   'classname',

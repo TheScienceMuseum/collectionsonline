@@ -21,50 +21,26 @@ module.exports = (elastic, config) => ({
         try {
           const result = await elastic.get({
             index: 'ciim',
-            // id: request.params.id,
             id: TypeMapping.toInternal(request.params.id),
           });
           //   const inProduction = config && config.NODE_ENV === 'production';
-
-          const relatedItems = await getSimilarObjects(result.body, elastic);
-          //   console.log(result.body);
-          // handles different properties on parent/child records
-          //   const { grouping, sub } = result.body._source['@datatype'];
-          //   const groupingType = checkRecordType(grouping, sub);
-
-          //   const childRecords = await getChildRecords(
-          //     elastic,
-          //     TypeMapping.toInternal(request.params.id),
-
-          //     // TypeMapping.toInternal(request.params.id),
-          //     undefined,
-          //     groupingType
-          //   );
-
           const { grouping } = result.body._source['@datatype'];
-          //   console.log(grouping, 'checking the grouping');
           const childRecords = await getChildRecords(
             elastic,
             TypeMapping.toInternal(request.params.id),
 
-            // TypeMapping.toInternal(request.params.id),
             undefined,
             grouping
           );
-          const sortedRelatedItems = sortRelated(relatedItems);
+          // const sortedRelatedItems = sortRelated(relatedItems);
 
           const JSONData = buildJSONResponse(
             result.body,
             config,
-            // sortedRelatedItems,
             null,
-            // null,
             childRecords
-            // null
           );
-          //   console.log(
-          //     JSONData.data.children.map((child) => child.data.attributes)
-          //   );
+
           return response(h, JSONData, 'group', responseType);
         } catch (err) {
           console.log(err);

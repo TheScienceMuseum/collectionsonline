@@ -7,7 +7,7 @@ require('./middleware/initial-render')(page);
 require('./routes/search')(page);
 require('./routes/object')(page);
 require('./routes/person')(page);
-require('./routes/mgroup.js')(page);
+require('./routes/group.js')(page);
 require('./routes/document')(page);
 require('./routes/museums')(page);
 require('./routes/api')(page);

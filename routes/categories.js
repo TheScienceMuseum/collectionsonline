@@ -15,28 +15,29 @@ module.exports = (elastic, config) => ({
                 terms: {
                   field: 'category.name.keyword',
                   size: 500,
-                  order: { _count: 'desc' }
-                }
-              }
-            }
-          }
+                  order: { _count: 'desc' },
+                },
+              },
+            },
+          },
         });
 
         const categories = [];
         if (result.body.aggregations.categories.buckets) {
-          result.body.aggregations.categories.buckets.forEach(e => {
+          result.body.aggregations.categories.buckets.forEach((e) => {
             categories.push({
               displayname: e.key,
-              link: '/search/categories/' + e.key.toLowerCase().split(' ').join('-'),
-              count: e.doc_count
+              link:
+                '/search/categories/' +
+                e.key.toLowerCase().split(' ').join('-'),
+              count: e.doc_count,
             });
           });
         }
-
         return h.view('categories', { categories });
       } catch (err) {
         return new Boom.Boom(err);
       }
-    }
-  }
+    },
+  },
 });

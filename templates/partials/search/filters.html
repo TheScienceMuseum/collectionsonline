@@ -8,19 +8,23 @@
     <input type="hidden" name="q" value="{{q}}">
     <input type="hidden" name="page[type]" value="{{page}}">
     {{#if isFilterAll}}
-      {{> search/filters-all}}
+    {{> search/filters-all}}
     {{/if}}
 
     {{#if isFilterPeople}}
-      {{> search/filters-people}}
+    {{> search/filters-people}}
     {{/if}}
 
     {{#if isFilterDocuments}}
-      {{> search/filters-documents}}
+    {{> search/filters-documents}}
     {{/if}}
 
     {{#if isFilterObjects}}
-      {{> search/filters-objects}}
+    {{> search/filters-objects}}
+    {{/if}}
+
+    {{#if isFilterGroup}}
+    {{> search/filters-group}}
     {{/if}}
 
     <button class="button filterpanel__button">filter</button>

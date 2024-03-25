@@ -41,10 +41,6 @@
             "group": "Default"
         },
         {
-            "filePath": "lib/create-description-box.js",
-            "group": "Default"
-        },
-        {
             "filePath": "lib/transforms/search-results-to-template-data.js",
             "group": "Default"
         },
@@ -57,10 +53,6 @@
             "group": "Default"
         },
         {
-            "filePath": "test/create-description-box.test.js",
-            "group": "Default"
-        },
-        {
             "filePath": "templates/partials/global/search-nav.html",
             "group": "Default"
         },
@@ -70,6 +62,58 @@
         },
         {
             "filePath": "client/lib/listeners/facets-states.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "test/transforms/search-results-to-jsonapi.test.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "test/transforms/search-results-to-templates.test.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "test/parse-params.test.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "test/helpers/aggregations-group.json",
+            "group": "Default"
+        },
+        {
+            "filePath": "test/helpers/search-result.json",
+            "group": "Default"
+        },
+        {
+            "filePath": "test/fixtures/copy-es-docs.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "test/fixtures/copy-data.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "test/facets/create-filter-group.test.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "test/facets/aggs-group.test.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "routes/route-helpers/parse-params.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "lib/jsonapi-response.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "client/lib/listeners/search-listener.js",
+            "group": "Default"
+        },
+        {
+            "filePath": "templates/helpers/isselected.js",
             "group": "Default"
         }
     ],

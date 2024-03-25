@@ -1,7 +1,6 @@
 const fetch = require('fetch-ponyfill')().fetch;
 
 module.exports = function (url, opts, cb) {
-  // console.log(url, 'checling url');
   fetch(url, opts)
     .then(function (res) {
       if (res.ok) {

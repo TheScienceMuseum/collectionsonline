@@ -8,6 +8,8 @@ const aggregationsAll = require('../helpers/aggregations-all.json');
 const aggregationsPeople = require('../helpers/aggregations-all.json');
 const aggregationsObjects = require('../helpers/aggregations-all.json');
 const aggregationsDocuments = require('../helpers/aggregations-all.json');
+const aggregationsGroup = require('../helpers/aggregations-all.json');
+
 const testResult = {
   body: {
     hits: {
@@ -16,8 +18,9 @@ const testResult = {
       hits: [
         require('../fixtures/elastic-responses/example-get-response-document.json'),
         require('../fixtures/elastic-responses/example-get-response-person.json'),
-        require('../fixtures/elastic-responses/example-get-response-object.json')
-      ]
+        require('../fixtures/elastic-responses/example-get-response-object.json'),
+        require('../fixtures/elastic-responses/example-get-response-group.json'),
+      ],
     },
     aggregations: {
       total_categories: {
@@ -32,21 +35,25 @@ const testResult = {
             sum_other_doc_count: 0,
             buckets: [
               { key: 'object', doc_count: 13 },
-              { key: 'agent', doc_count: 4 }
-            ]
-          }
-        }
-      }
-    }
-  }
+              { key: 'agent', doc_count: 4 },
+            ],
+          },
+        },
+      },
+    },
+  },
 };
 
 testResult.body.aggregations.all = aggregationsAll;
 testResult.body.aggregations.people = aggregationsPeople;
 testResult.body.aggregations.objects = aggregationsObjects;
 testResult.body.aggregations.documents = aggregationsDocuments;
+// testResult.body.aggregations.group = aggregationsGroup;
 
-const query = queryParams('html', { query: { q: 'test', 'page[number]': 0, 'page[size]': 1 }, params: {} });
+const query = queryParams('html', {
+  query: { q: 'test', 'page[number]': 0, 'page[size]': 1 },
+  params: {},
+});
 const jsonData = searchResultsToJsonApi(query, testResult);
 test(file + 'Results should be transformed succesfully', (t) => {
   let templateData;
@@ -65,12 +72,16 @@ test(file + 'Person template data is correctly built', (t) => {
     templateData = searchToTemplate(query, jsonData);
   }, 'Transform did not throw error');
 
-  const personResult = templateData.results.find(el => el.type === 'people');
+  const personResult = templateData.results.find((el) => el.type === 'people');
 
   t.ok(personResult, 'person result is returned');
-  t.equal(personResult.link, '/people/cp36993/charles-babbage', 'person link is correct');
+  t.equal(
+    personResult.link,
+    '/people/cp36993/charles-babbage',
+    'person link is correct'
+  );
   t.equal(personResult.title, 'Babbage, Charles', 'person title is correct');
-  t.equal(personResult.date, '1791 - 1871', 'person\'s date is correct');
+  t.equal(personResult.date, '1791 - 1871', "person's date is correct");
   t.end();
 });
 
@@ -81,12 +92,26 @@ test(file + 'Document template data is correctly built', (t) => {
     templateData = searchToTemplate(query, jsonData);
   }, 'Transform did not throw error');
 
-  const documentResult = templateData.results.find(el => el.type === 'documents');
+  const documentResult = templateData.results.find(
+    (el) => el.type === 'documents'
+  );
 
   t.ok(documentResult, 'document result is returned');
-  t.equal(documentResult.link, '/documents/aa110000003/the-babbage-papers', 'document link is correct');
-  t.equal(documentResult.title, 'The Babbage Papers', 'document title is correct');
-  t.equal(documentResult.figcaption, '11 plan press drawers and 8 linear meters of shelving', 'document figcaption is correct');
+  t.equal(
+    documentResult.link,
+    '/documents/aa110000003/the-babbage-papers',
+    'document link is correct'
+  );
+  t.equal(
+    documentResult.title,
+    'The Babbage Papers',
+    'document title is correct'
+  );
+  t.equal(
+    documentResult.figcaption,
+    '11 plan press drawers and 8 linear meters of shelving',
+    'document figcaption is correct'
+  );
   t.end();
 });
 
@@ -97,10 +122,37 @@ test(file + 'Object template data is correctly built', (t) => {
     templateData = searchToTemplate(query, jsonData);
   }, 'Transform did not throw error');
 
-  const objectResult = templateData.results.find(el => el.type === 'objects');
+  const objectResult = templateData.results.find((el) => el.type === 'objects');
 
   t.ok(objectResult, 'object result is returned');
-  t.equal(objectResult.link, '/objects/co8245103/packet-of-technetium-mdp-for-bone-scintigraphy-amerscan-agent-phial-packet-materia-medica', 'object link is correct');
-  t.equal(objectResult.title, 'Packet of Technetium (MDP) for bone scintigraphy \'Amerscan\' agent', 'object title is correct');
+  t.equal(
+    objectResult.link,
+    '/objects/co8245103/packet-of-technetium-mdp-for-bone-scintigraphy-amerscan-agent-phial-packet-materia-medica',
+    'object link is correct'
+  );
+  t.equal(
+    objectResult.title,
+    "Packet of Technetium (MDP) for bone scintigraphy 'Amerscan' agent",
+    'object title is correct'
+  );
   t.end();
 });
+
+// test(file + 'Group template data is correctly built', (t) => {
+//   t.plan(4);
+//   t.doesNotThrow(() => {
+//     templateData = searchToTemplate(query, jsonData);
+//   }, 'Transform did not throw error');
+
+//   const groupResult = templateData.results.find(
+//     (el) => el.data.type === 'group'
+//   );
+//   t.ok(groupResult, 'object result is returned');
+//   t.equal(
+//     groupResult.link,
+//     '/group/c81734/test-covid19',
+//     'group link is correct'
+//   );
+//   t.equal(groupResult.title, 'TEST COVID19', 'group title is correct');
+//   t.end();
+// });

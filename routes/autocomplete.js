@@ -11,18 +11,18 @@ module.exports = (elastic, config) => ({
   options: {
     validate: {
       params: {
-        type: Joi.string().valid('objects', 'people', 'documents')
+        type: Joi.string().valid('objects', 'people', 'documents', 'group'),
       },
       query: {
         q: Joi.string().min(3).required(),
-        size: Joi.number().integer().min(1).max(10).default(3)
+        size: Joi.number().integer().min(1).max(10).default(3),
       },
       failAction: function (request, h, err) {
         if (err.output.statusCode === 400) {
           return h.response(err.output.payload.message).code(400).takeover();
         }
-      }
-    }
+      },
+    },
   },
   handler: async function (request, h) {
     const responseType = contentType(request);
@@ -36,9 +36,11 @@ module.exports = (elastic, config) => ({
 
       try {
         const results = await autocomplete(elastic, queryParams);
-
-        const apiResults = autocompleteResultsToJsonApi(queryParams, results, config);
-
+        const apiResults = autocompleteResultsToJsonApi(
+          queryParams,
+          results,
+          config
+        );
         return h.response(apiResults);
       } catch (err) {
         return Boom.serverUnavailable(err);
@@ -46,5 +48,5 @@ module.exports = (elastic, config) => ({
     } else {
       return h.response();
     }
-  }
+  },
 });

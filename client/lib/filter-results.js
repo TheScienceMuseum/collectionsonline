@@ -15,6 +15,5 @@ module.exports = function (ctx, page) {
     '/search' +
     (searchCategory ? '/' + searchCategory : '') +
     getQueryString(pageType, searchCategory);
-  // console.log(url, 'checking url');
   page.show(url);
 };

@@ -6,7 +6,12 @@ module.exports = function (urlParams) {
   const categories = {};
   if (urlParams.filters) {
     const urlCats = urlParams.filters.split('/').filter(function (el) {
-      if (el === 'objects' || el === 'people' || el === 'documents') {
+      if (
+        el === 'objects' ||
+        el === 'people' ||
+        el === 'documents' ||
+        'group'
+      ) {
         params.type = el;
         return false;
       } else {
@@ -43,7 +48,13 @@ module.exports = function (urlParams) {
   }
 
   for (const cat in categories) {
-    const exclude = ['has_image', 'object_type', 'material', 'occupation', 'mphc'];
+    const exclude = [
+      'has_image',
+      'object_type',
+      'material',
+      'occupation',
+      'mphc',
+    ];
 
     if (cat === 'museum') {
       categories[cat] = museumMap.toLong(categories[cat]);
@@ -51,6 +62,5 @@ module.exports = function (urlParams) {
       categories[cat] = utils.uppercaseFirstChar(categories[cat]);
     }
   }
-
   return { params, categories };
 };

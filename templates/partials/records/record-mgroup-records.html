@@ -1,0 +1,35 @@
+<section class="mph-records row">
+  <div class="mph-records__grid">
+    {{#each childRecords}}
+    {{#if links}}
+    <a href={{links.self}}>
+      <article class="resultcard resultcard--objects mph-records__resultcard">
+
+        <figure class="resultcard__figure">
+          {{#if images}}
+          <img src="{{firstImage images 0 'card' }}" class="" alt="{{title}}" />
+          {{/if }}
+        </figure>
+
+        <div class="resultcard__info">
+
+          <h3 class="resultcard__title">
+            {{title}}
+          </h3>
+
+          {{#if creation}}
+          <p class="mph-records__creation">{{creation}}</p>
+          {{/if}}
+
+        </div>
+      </article>
+
+    </a>
+    {{/if}}
+    {{/each}}
+
+    <!-- ! A decision should be made at some point in the future as to whether there should be a cap on the child records and a show more button leading to a filtered search result. Note that the below doesn't work-->
+    <!-- See record-mph-records for example of see more btn functionality, will need tweaking -->
+
+  </div>
+</section>
