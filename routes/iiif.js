@@ -22,6 +22,12 @@ module.exports = (elastic, config) => ({
         const iiifData = buildJSONResponse(result.body, config);
         iiifData.self = config.rootUrl + '/iiif/' + iiifData.data.type + '/' + iiifData.data.id;
 
+        // deal with @processed before passing to handlebars
+        iiifData.media = [];
+        result.body._source.multimedia.forEach(function (media) {
+          iiifData.media.push(media['@processed']);
+        });
+
         return h.response(
           Handlebars.compile(
             fs.readFileSync(path.join(__dirname, '/../templates/iiif/iiifmanifest.json'), 'utf8')

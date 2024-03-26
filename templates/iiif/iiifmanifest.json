@@ -2,7 +2,7 @@
     "@context": "http://iiif.io/api/presentation/2/context.json",
     "@id": "{{self}}/manifest",
     "@type": "sc:Manifest",
-    "label": "{{data.attributes.summary_title}}",
+    "label": "{{data.attributes.summary.title}}",
     "description": "{{data.attributes.description.0.value}}",
     "attribution": "Science Museum Group",
     "logo": "http://collection.sciencemuseum.org.uk/assets/img/global/smg-logo.svg",
@@ -24,7 +24,7 @@
     ],
 
     "thumbnail": {
-        "@id": "{{data.attributes.multimedia.0.processed.zoom.location}}/full/{{data.attributes.multimedia.0.processed.medium_thumbnail.measurements.dimensions.1.value}},{{data.attributes.multimedia.0.processed.medium_thumbnail.measurements.dimensions.1.value}}/0/default.jpg"
+        "@id": "{{media.0.large_thumbnail.location}}"
     },
 
     "sequences": [
@@ -33,31 +33,31 @@
             "@type": "sc:Sequence",
 
             "canvases": [
-                {{#each data.attributes.multimedia}}
+                {{#each media}}
                 {
                     "@id": "{{../self}}/canvas/{{@index}}",
                     "@type": "sc:Canvas",
-                    "label": "{{data.attributes.summary_title}}",
-                    "height": {{processed.large.measurements.dimensions.0.value}},
-                    "width": {{processed.large.measurements.dimensions.1.value}},  
+                    "label": "{{data.attributes.summary.title}}",
+                    "height": {{large.measurements.dimensions.0.value}},
+                    "width": {{large.measurements.dimensions.1.value}},  
                     "images": [
                         {
-                            "@id": "{{processed.zoom.location}}",
+                            "@id": "{{zoom.location}}",
                             "@type": "oa:Annotation",
                             "motivation": "sc:painting",
                             "on": "{{../self}}/canvas/{{@index}}",
                             "resource":{
-                                "@id": "{{processed.zoom.location}}/full/full/0/default.jpg",
+                                "@id": "{{zoom.location}}/full/max/0/default.jpg",
                                 "@type": "dctypes:Image",
                                 "format": "image/jpeg",
                                 "label": "{{source.title.0.value}}",
                                 "service": {
-                                    "@id": "{{processed.zoom.location}}",
+                                    "@id": "{{zoom.location}}",
                                     "@context": "http://iiif.io/api/image/2/context.json",
                                     "profile": "http://iiif.io/api/image/2/level1.json"
                                 },
-                                "height": {{processed.large.measurements.dimensions.0.value}},
-                                "width": {{processed.large.measurements.dimensions.1.value}}
+                                "height": {{large.measurements.dimensions.0.value}},
+                                "width": {{large.measurements.dimensions.1.value}}
                             }
                         }
                     ]
