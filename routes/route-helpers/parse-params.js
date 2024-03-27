@@ -42,6 +42,7 @@ module.exports = function (urlParams) {
     }
   }
 
+  // Capitalise certian filter values
   for (const cat in categories) {
     const exclude = ['has_image', 'object_type', 'material', 'occupation', 'mphc'];
 
