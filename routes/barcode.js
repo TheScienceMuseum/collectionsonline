@@ -14,6 +14,7 @@ module.exports = (elastic, config) => ({
             }
           }
         };
+        
         try {
           const result = await elastic.search({ index: 'ciim', body });
           if (result.body.hits.hits) {
