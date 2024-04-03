@@ -5,7 +5,7 @@ module.exports = (elastic, config) => ({
   path: '/barcode/{uid?}',
   config: {
     handler: async function (request, h) {
-      if (request.params.uid) {
+      if (request.params.uid && request.params.uid.match(/^[A-Za-z0-9]*$/)) {
         const barcode = escape(request.params.uid);
         const body = {
           query: {
@@ -29,7 +29,7 @@ module.exports = (elastic, config) => ({
           return 'Error: ' + err;
         }
       } else {
-        return h.view('barcode');
+        return h.view('barcode', null, { layout: 'basic' });
       }
     }
   }
