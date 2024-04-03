@@ -73,7 +73,7 @@ module.exports = (elastic, config) => ({
             return h.view('slideshow', {
               data,
               stringData: JSON.stringify(data)
-            });
+            }, { layout: 'basic' });
           }
 
           // match categories
