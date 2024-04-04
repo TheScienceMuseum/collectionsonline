@@ -19,7 +19,7 @@ module.exports = {
       .assert.containsText('.resultcard__title', 'tablets')
       .assert.containsText(
         '.resultcard__title',
-        'Empty bottle for Opium tincture tablets'
+        'Glass bottle of Phenobarbitone sodium tablets'
       )
       .end();
   }

@@ -47,12 +47,12 @@ module.exports = (elastic, config) => ({
           { params, categories, query: value.query },
           { allowUnknown: true }
         ).value;
-
         const query = Object.assign(
           result.query,
           result.params,
           result.categories
         );
+
         const queryParams = createQueryParams(responseType, { query, params });
 
         if (responseType === 'html') {
@@ -70,12 +70,12 @@ module.exports = (elastic, config) => ({
             });
             const res = await search(elastic, query);
             const data = searchResultsToSlideshow(queryParams, res, config);
+
             return h.view('slideshow', {
               data,
               stringData: JSON.stringify(data)
             }, { layout: 'basic' });
           }
-
           // match categories
           if (result.query.q && !result.categories['filter[categories]']) {
             const q = result.query.q.toLowerCase();
@@ -139,6 +139,7 @@ module.exports = (elastic, config) => ({
             mphcParent = await parentCollection(elastic, queryParams);
           }
           const res = await search(elastic, queryParams);
+
           const jsonData = searchResultsToJsonApi(
             queryParams,
             res,

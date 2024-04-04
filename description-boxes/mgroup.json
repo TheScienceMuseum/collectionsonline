@@ -1,0 +1,15 @@
+{
+  "Example entry": {
+    "title": "Collection of objects and archives from Boddingtons Brewery at Strangeways",
+    "description": "Collection of objects and archives from Boddingtons Brewery at Strangeways, Manchester.",
+    "uid": "co8413731",
+    "parentCollection": "http://localhost:8000/objects/co8413731/collection-of-objects-and-archives-from-boddingtons-brewery-at-strangeways-collection-of-objects-and-archives"
+  },
+
+  "co8413731": {
+    "title": "Collection of objects and archives from Boddingtons Brewery at Strangeways",
+    "description": "Collection of objects and archives from Boddingtons Brewery at Strangeways, Manchester.",
+    "uid": "co8413731",
+    "parentCollection": "http://localhost:8000/objects/co8413731/collection-of-objects-and-archives-from-boddingtons-brewery-at-strangeways-collection-of-objects-and-archives"
+  }
+}

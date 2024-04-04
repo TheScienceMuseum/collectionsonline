@@ -11,7 +11,7 @@ module.exports = (elastic, config) => ({
   options: {
     validate: {
       params: {
-        type: Joi.string().valid('objects', 'people', 'documents')
+        type: Joi.string().valid('objects', 'people', 'documents', 'group')
       },
       query: {
         q: Joi.string().min(3).required(),
@@ -36,9 +36,11 @@ module.exports = (elastic, config) => ({
 
       try {
         const results = await autocomplete(elastic, queryParams);
-
-        const apiResults = autocompleteResultsToJsonApi(queryParams, results, config);
-
+        const apiResults = autocompleteResultsToJsonApi(
+          queryParams,
+          results,
+          config
+        );
         return h.response(apiResults);
       } catch (err) {
         return Boom.serverUnavailable(err);

@@ -30,9 +30,12 @@ module.exports = {
       .click('.resultcard')
       .pause(3000)
       .assert.urlEquals(
-        'http://localhost:8000/objects/co65125/charles-babbage-drawing-portrait'
+        'http://localhost:8000/documents/aa110000564/the-diplomas-of-charles-babbage'
       )
-      .assert.containsText('.record-top__title', 'Charles Babbage')
+      .assert.containsText(
+        '.record-top__title',
+        'The diplomas of Charles Babbage'
+      )
       .back()
       .assert.urlEquals('http://localhost:8000/search?q=charles%20babbage')
       .end();

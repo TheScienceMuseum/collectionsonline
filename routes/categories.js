@@ -24,15 +24,16 @@ module.exports = (elastic, config) => ({
 
         const categories = [];
         if (result.body.aggregations.categories.buckets) {
-          result.body.aggregations.categories.buckets.forEach(e => {
+          result.body.aggregations.categories.buckets.forEach((e) => {
             categories.push({
               displayname: e.key,
-              link: '/search/categories/' + e.key.toLowerCase().split(' ').join('-'),
+              link:
+                '/search/categories/' +
+                e.key.toLowerCase().split(' ').join('-'),
               count: e.doc_count
             });
           });
         }
-
         return h.view('categories', { categories });
       } catch (err) {
         return new Boom.Boom(err);

@@ -30,9 +30,8 @@ module.exports = function (type) {
 };
 
 function load (ctx, next, type) {
-  const pageType = type === 'people' ? type : type + 's';
+  const pageType = type === 'people' || type === 'group' ? type : type + 's';
   const page = type === 'people' ? 'person' : type;
-
   if (!ctx.isInitialRender) {
     const opts = {
       headers: { Accept: 'application/vnd.api+json' }
@@ -43,11 +42,12 @@ function load (ctx, next, type) {
     getData(url, opts, function (err, json) {
       if (err) {
         console.error(err);
-        Snackbar.create('Error getting data from the server.\n<br>Please check your internet connection or try again shortly');
+        Snackbar.create(
+          'Error getting data from the server.\n<br>Please check your internet connection or try again shortly'
+        );
         return;
       }
       const data = JSONToHTML(json);
-
       ctx.state.data = data;
       ctx.state.data.back = sessionStorage.getItem('backPath');
       // analytics
@@ -66,11 +66,12 @@ function load (ctx, next, type) {
 }
 
 function render (ctx, next, type) {
-  const pageType = type === 'people' ? type : type + 's';
+  const pageType = type === 'people' || type === 'group' ? type : type + 's';
   const pageEl = document.getElementById('main-page');
 
   hideKeyboard();
-  document.getElementsByTagName('title')[0].textContent = ctx.state.data.titlePage;
+  document.getElementsByTagName('title')[0].textContent =
+    ctx.state.data.titlePage;
   document.body.className = ctx.state.data.type;
   pageEl.innerHTML = Templates[pageType](ctx.state.data);
 

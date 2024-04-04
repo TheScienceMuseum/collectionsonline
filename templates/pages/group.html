@@ -1,0 +1,58 @@
+<div id="main-page">
+    {{> global/global-header}}
+    {{> global/search-main reduced="reduced"}}
+
+    <main>
+
+        {{> records/record-top Xclass="record-top--dark" }}
+
+        {{#if images}}
+        {{#ifmultiple images}}
+        {{> records/carousel}}
+        {{else}}
+        {{>records/single-image}}
+        {{/ifmultiple}}
+        {{/if}}
+
+        <section class="white">
+            <div class="row">
+                <div class="columns medium-8">
+
+                    {{> records/record-description}}
+                </div>
+                <aside class="columns medium-4">
+
+                    {{#if displayLocation}}
+                    {{> records/ondisplay }}
+                    {{/if}}
+
+                    {{#if related.people}}{{> records/record-related-people }}{{/if}}
+                    {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
+                    <div id="articles"></div>
+
+                    {{!-- {{> records/panel-taxonomy}} moved lower to record-details. but panels could also be used
+                    here. --}}
+
+                </aside>
+            </div>
+        </section>
+
+        {{#if (or youtube sketchfab rotational)}}{{> records/mediaplayer}}{{/if}}
+
+        {{#if audioplayer}}
+        {{#each audioplayer}}
+        {{> records/audioplayer }}
+        {{/each}}
+        {{/if}}
+
+        {{#unless inProduction}}
+        {{#if childRecords}}
+        {{> records/record-mgroup-records}}
+        {{/if}}
+        {{/unless}}
+
+
+    </main>
+
+    {{> global/global-footer }}
+</div>

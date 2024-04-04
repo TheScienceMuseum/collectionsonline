@@ -1,4 +1,4 @@
-module.exports = (elastic, config) => ([
+module.exports = (elastic, config) => [
   require('./redirects').random(),
   require('./redirects').medicine(),
   require('./redirects').dailyherald(config),
@@ -30,5 +30,6 @@ module.exports = (elastic, config) => ([
   require('./collections')(elastic, config),
   require('./imgtags')(elastic, config),
   require('./neverbeenseen')(elastic, config),
-  require('./barcode')(elastic, config)
-]);
+  require('./barcode')(elastic, config),
+  require('./group')(elastic, config)
+];

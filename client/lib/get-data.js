@@ -6,7 +6,9 @@ module.exports = function (url, opts, cb) {
       if (res.ok) {
         return res.json();
       } else {
-        return Promise.reject(new Error(res.status + ' Failed to fetch results'));
+        return Promise.reject(
+          new Error(res.status + ' Failed to fetch results')
+        );
       }
     })
     .then(function (json) {

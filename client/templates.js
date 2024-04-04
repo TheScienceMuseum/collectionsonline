@@ -261,6 +261,22 @@ Handlebars.registerPartial(
   Fs.readFileSync('./templates/partials/global/smg-map.html', 'utf8')
 );
 
+Handlebars.registerPartial(
+  'search/filters-group',
+  Fs.readFileSync('./templates/partials/search/filters-group.html', 'utf8')
+);
+Handlebars.registerPartial(
+  'records/record-mgroup-records',
+  Fs.readFileSync(
+    './templates/partials/records/record-mgroup-records.html',
+    'utf8'
+  )
+);
+Handlebars.registerPartial(
+  'records/group-display-box',
+  Fs.readFileSync('./templates/partials/records/group-display-box.html', 'utf8')
+);
+
 // Helpers
 Handlebars.registerHelper(
   'classname',
@@ -419,6 +435,10 @@ Handlebars.registerHelper(
   require('../templates/helpers/mphShowMore.js')
 );
 
+Handlebars.registerHelper(
+  'notInProd',
+  require('../templates/helpers/notInProd')
+);
 // Routes
 module.exports = {
   404: Handlebars.compile(
@@ -438,6 +458,9 @@ module.exports = {
   ),
   documents: Handlebars.compile(
     Fs.readFileSync('./templates/pages/archive.html', 'utf8')
+  ),
+  group: Handlebars.compile(
+    Fs.readFileSync('./templates/pages/group.html', 'utf8')
   ),
   objects: Handlebars.compile(
     Fs.readFileSync('./templates/pages/object.html', 'utf8')

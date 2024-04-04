@@ -1,8 +1,8 @@
 /**
-* State object which represent the display of the facets, open, close or active
-* On first load all the facets are closed except the active ones
-* The name of the properties must match the data-filter attribute of the div hthml DOM
-*/
+ * State object which represent the display of the facets, open, close or active
+ * On first load all the facets are closed except the active ones
+ * The name of the properties must match the data-filter attribute of the div hthml DOM
+ */
 module.exports = {
   all: {
     Dates: 'close',
@@ -38,5 +38,8 @@ module.exports = {
     Archive: 'close',
     Maker: 'close',
     Image: 'close'
+  },
+  group: {
+    sub_group: 'close'
   }
 };

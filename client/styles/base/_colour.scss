@@ -6,30 +6,34 @@ $c-dark-green: #317873;
 $recordtypes: (
   objects: (
     bg: $c-teal,
-    grad: $c-teal $c-green $c-blue
+    grad: $c-teal $c-green $c-blue,
   ),
   people: (
     bg: $c-orange,
-    grad: $c-yellow $c-orange $c-red
+    grad: $c-yellow $c-orange $c-red,
   ),
   all: (
     bg: $c-green,
-    grad: $c-yellow $c-green $c-teal
+    grad: $c-yellow $c-green $c-teal,
   ),
   documents: (
     bg: $c-purple,
-    grad: $c-red $c-purple $c-blue
+    grad: $c-red $c-purple $c-blue,
   ),
   archive: (
     bg: $c-purple,
-    grad: $c-red $c-purple $c-blue
+    grad: $c-red $c-purple $c-blue,
   ),
   archivedoc: (
     bg: $c-purple,
-    grad: $c-red $c-purple $c-blue
+    grad: $c-red $c-purple $c-blue,
   ),
   collection: (
     bg: $c-blue,
-    grad: $c-teal $c-blue $c-purple
-  )
+    grad: $c-teal $c-blue $c-purple,
+  ),
+  group: (
+    bg: $c-orange,
+    grad: $c-yellow $c-red $c-blue,
+  ),
 );

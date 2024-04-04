@@ -52,6 +52,7 @@ The following main 3 document types are available in the index:
 * Agent
 * Object
 * Archive
+* MGroup
 
 Other document types:
 
@@ -67,6 +68,7 @@ The name of the index types isn't always obvious to the public so on the site th
 * People => Agent
 * Objects => Object
 * Documents => Archive
+* MGroup => Group
 * Location => Facility
 
 ### Routes
@@ -78,6 +80,7 @@ To access the pages we currently have templates for, use:
 * `/objects/{id}/{slug?}`
 * `/people/{id}/{slug?}`
 * `/documents/{id}/{slug?}`
+* `/group/{id}/{slug}`
 
 The routes will not work without params, however any random string will lead you to the example pages.
 
