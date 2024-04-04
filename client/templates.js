@@ -272,6 +272,10 @@ Handlebars.registerPartial(
     'utf8'
   )
 );
+Handlebars.registerPartial(
+  'records/group-display-box',
+  Fs.readFileSync('./templates/partials/records/group-display-box.html', 'utf8')
+);
 
 // Helpers
 Handlebars.registerHelper(
@@ -431,6 +435,10 @@ Handlebars.registerHelper(
   require('../templates/helpers/mphShowMore.js')
 );
 
+Handlebars.registerHelper(
+  'notInProd',
+  require('../templates/helpers/notInProd')
+);
 // Routes
 module.exports = {
   404: Handlebars.compile(
@@ -451,11 +459,11 @@ module.exports = {
   documents: Handlebars.compile(
     Fs.readFileSync('./templates/pages/archive.html', 'utf8')
   ),
-  objects: Handlebars.compile(
-    Fs.readFileSync('./templates/pages/object.html', 'utf8')
-  ),
   group: Handlebars.compile(
     Fs.readFileSync('./templates/pages/group.html', 'utf8')
+  ),
+  objects: Handlebars.compile(
+    Fs.readFileSync('./templates/pages/object.html', 'utf8')
   ),
   searchnav: Handlebars.compile(
     Fs.readFileSync('./templates/partials/global/search-nav.html', 'utf8')

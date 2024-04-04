@@ -1,5 +1,4 @@
-const resources = require('./resources')('object');
-
+const resources = require('./resources')('group');
 module.exports = function (page) {
   page(
     '/group/:id/:slug?',

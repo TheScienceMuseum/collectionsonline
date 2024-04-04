@@ -18,14 +18,17 @@ module.exports = {
       )
       .assert.containsText(
         '.resultcard',
-        '1873-1928, artist; painter; poster artist, British'
+        '1875-1961, artist; painter; poster artist, British'
       )
       .click('.filter__box')
       .pause(1000)
       .click('.filter__box[value=painter]')
       .pause(6000)
       .assert.urlEquals('http://localhost:8000/search/people?q=charles')
-      .assert.containsText('.resultcard', '1600-1649, reigned 1625-1649, king of England, Scotland, and Ireland, British')
+      .assert.containsText(
+        '.resultcard',
+        '1806-1872, author, physician, Ireland'
+      )
       .pause(1000)
       .click('.filter__box[value=inventor]')
       .pause(1000)

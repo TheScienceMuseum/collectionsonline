@@ -37,7 +37,9 @@ const jsonSchema = {
   'filter[occupation]': Joi.string(),
   // Documents
   'filter[archive]': Joi.string(),
-  'filter[formats]': Joi.string()
+  'filter[formats]': Joi.string(),
+  // Group
+  'filter[subgroup]': Joi.string()
 };
 
 const htmlSchema = {
@@ -61,7 +63,9 @@ const htmlSchema = {
   'filter[occupation]': Joi.array().items(Joi.string()).single(),
   // Documents
   'filter[archive]': Joi.array().items(Joi.string()).single(),
-  'filter[formats]': Joi.array().items(Joi.string()).single()
+  'filter[formats]': Joi.array().items(Joi.string()).single(),
+  // Group
+  'filter[subgroup]': Joi.array().items(Joi.string()).single()
 };
 
 module.exports = (contentType) => {
@@ -175,6 +179,10 @@ module.exports = (contentType) => {
       ignoreUndefined: true
     })
     .rename('mphc', 'filter[mphc]', {
+      override: true,
+      ignoreUndefined: true
+    })
+    .rename('subgroup', 'filter[subgroup]', {
       override: true,
       ignoreUndefined: true
     });

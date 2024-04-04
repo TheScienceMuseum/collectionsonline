@@ -25,9 +25,11 @@
   <span class="searchtab__label">Documents</span>
   <span class="searchtab__count">{{formatnumber meta.count.type.documents}}</span>
 </a>
+{{#unless inProduction}}
 <a class="searchtab{{#if isFilterGroup}} searchtab--active{{/if}}" {{#unless
   filterGroupDisabled}}href="{{links.filterGroup}}" {{/unless}} {{#if filterGroupDisabled}}aria-disabled="true" {{/if}}>
   {{> global/icon i="group" }}
   <span class="searchtab__label">Group</span>
   <span class="searchtab__count">{{formatnumber meta.count.type.group}}</span>
 </a>
+{{/unless}}

@@ -314,7 +314,7 @@ test(file + 'Should create valid links on middle page', (t) => {
   testResult.body.aggregations.people = aggregationsPeople;
   testResult.body.aggregations.objects = aggregationsObjects;
   testResult.body.aggregations.documents = aggregationsDocuments;
-  testResult.body.aggregations.group = aggregationsDocuments;
+  testResult.body.aggregations.group = aggregationsGroup;
 
   let obj;
   const query = queryParams('html', {

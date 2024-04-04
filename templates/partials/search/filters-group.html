@@ -1,22 +1,22 @@
 <input type="hidden" name="fields[type]" value="group">
 
 <!-- CREATOR -->
-{{#if filters.group_type.length}}
-{{#if (activeFacet selectedFilters 'group_type')}}
-<div class="filter filter--open filter--active" data-filter="group_type>
+{{#if filters.subgroup.length}}
+{{#if (activeFacet selectedFilters 'subgroup')}}
+<div class="filter filter--open filter--active" data-filter="subgroup">
     {{else}}
-    <div class=" filter filter--open" data-filter="group_type">
-    {{/if}}
-    <a href="{{lookup links.clearFacet " filter[sub_group]"}}" class="filter__name">SubGroup</a>
-    <div class="filter__options">
-        <ul>
-            {{#each filters.group_type}}
-            <li><label><input type="checkbox" class="filter__box" name="filter[group_type]" value="{{value}}"
-                        {{isselected ../selectedFilters "group_type" value}} />{{value}}<span
-                        class="filter__count">{{formatnumber
-                        count}}</span></label></li>
-            {{/each}}
-        </ul>
+    <div class=" filter filter--open" data-filter="sub_group">
+        {{/if}}
+        <a href="{{lookup links.clearFacet 'filter[subgroup]'}}" class="filter__name">SubGroup</a>
+        <div class="filter__options">
+            <ul>
+                {{#each filters.subgroup}}
+                <li><label><input type="checkbox" class="filter__box" name="filter[subgroup]" value="{{value}}"
+                            {{isselected ../selectedFilters "subgroup" value}} />{{value}}<span
+                            class="filter__count">{{formatnumber
+                            count}}</span></label></li>
+                {{/each}}
+            </ul>
+        </div>
     </div>
-</div>
-{{/if}}
+    {{/if}}

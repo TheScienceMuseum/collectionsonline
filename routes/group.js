@@ -5,9 +5,7 @@ const contentType = require('./route-helpers/content-type.js');
 const response = require('./route-helpers/response.js');
 const cacheHeaders = require('./route-helpers/cache-control.js');
 const getChildRecords = require('../lib/get-child-records.js');
-// const checkRecordType = require('./route-helpers/recordType.js');
 
-// TODO:  add internal/external ids to typmapping file
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/group/{id}/{slug?}',
@@ -21,6 +19,7 @@ module.exports = (elastic, config) => ({
             index: 'ciim',
             id: TypeMapping.toInternal(request.params.id)
           });
+
           //   const inProduction = config && config.NODE_ENV === 'production';
           const { grouping } = result.body._source['@datatype'];
           const childRecords = await getChildRecords(
@@ -30,7 +29,6 @@ module.exports = (elastic, config) => ({
             undefined,
             grouping
           );
-          // const sortedRelatedItems = sortRelated(relatedItems);
 
           const JSONData = buildJSONResponse(
             result.body,

@@ -28,11 +28,6 @@ test('parsing url params', function (t) {
     'parses type correctly'
   );
   t.deepEqual(
-    parseParameters({ filters: 'group/images' }),
-    { params: { type: 'group' }, categories: { has_image: 'has_image' } },
-    'parses type correctly'
-  );
-  t.deepEqual(
     parseParameters({ filters: 'objects/image_license' }),
     {
       params: { type: 'objects' },

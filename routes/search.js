@@ -146,6 +146,7 @@ module.exports = (elastic, config) => ({
             config,
             mphcParent || null
           );
+
           const tplData = searchResultsToTemplateData(
             queryParams,
             jsonData,
