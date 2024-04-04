@@ -14,7 +14,6 @@ const copyEsAutocompletes = require('./copy-es-autocompletes');
 const search = require('../../lib/search');
 const createQueryParams = require('../../lib/query-params/query-params');
 
-// TODO: add group tests
 Async.parallel(
   [
     /**
@@ -26,58 +25,58 @@ Async.parallel(
           {
             id: 'cp50417',
             type: 'agent',
-            filename: 'example-get-response-death',
+            filename: 'example-get-response-death'
           },
           {
             id: 'aa110000003',
             type: 'archive',
-            filename: 'example-get-response-document',
+            filename: 'example-get-response-document'
           },
           {
             id: 'aa110014918',
             type: 'archive',
-            filename: 'example-get-response-document2',
+            filename: 'example-get-response-document2'
           },
           {
             id: 'co8245103',
             type: 'object',
-            filename: 'example-get-response-object',
+            filename: 'example-get-response-object'
           },
           {
             id: 'co205752',
             type: 'object',
-            filename: 'example-get-response-object2',
+            filename: 'example-get-response-object2'
           },
           {
             id: 'co8447906',
             type: 'object',
-            filename: 'example-get-response-object3',
+            filename: 'example-get-response-object3'
           },
           {
             id: 'co503422',
             type: 'object',
-            filename: 'example-get-response-object4',
+            filename: 'example-get-response-object4'
           },
           {
             id: 'cp5207',
             type: 'agent',
-            filename: 'example-get-response-organisation',
+            filename: 'example-get-response-organisation'
           },
           {
             id: 'cp36993',
             type: 'agent',
-            filename: 'example-get-response-person',
+            filename: 'example-get-response-person'
           },
           {
             id: 'cp86306',
             type: 'agent',
-            filename: 'example-get-response-with-places',
+            filename: 'example-get-response-with-places'
           },
           {
             id: 'c81734',
             type: 'group',
-            filename: 'example-get-response-group',
-          },
+            filename: 'example-get-response-group'
+          }
         ],
         (data, cb) => {
           getElasticDocument(elastic, data.type, data.id, (err, response) => {
@@ -118,7 +117,7 @@ Async.parallel(
         { type: 'agent', id: 'cpwrongid' },
         { type: 'agent', id: 'ap24329' },
         { type: 'group', id: 'cpwrongid' },
-        { type: 'group', id: 'c81734' },
+        { type: 'group', id: 'c81734' }
       ];
 
       const searchToCopy = [
@@ -136,11 +135,11 @@ Async.parallel(
         {
           q: 'Lumière filmmaker',
           queryParams: { 'filter[occupation]': 'filmmaker' },
-          params: { type: 'people' },
+          params: { type: 'people' }
         },
         { q: 'hawking painting', params: {} },
         { q: 'all', params: {} },
-        { q: 'plumed hat', params: { type: 'objects' } },
+        { q: 'plumed hat', params: { type: 'objects' } }
       ];
 
       const related = [{ id: 'cp36993' }, { id: 'cp17351' }, { id: 'cp2735' }];
@@ -150,7 +149,7 @@ Async.parallel(
         { id: 'aa110000316' },
         { id: 'aa110000036' },
         { id: 'aa110066453' },
-        { id: 'aa110000009' },
+        { id: 'aa110000009' }
       ];
 
       const autocompletes = [{ q: 'babb' }];
@@ -163,7 +162,7 @@ Async.parallel(
           (cb) => copyEsSearches(elastic, searchToCopy, database, cb),
           (cb) => copyEsrelated(elastic, related, database, cb),
           (cb) => copyEsChildren(elastic, children, database, cb),
-          (cb) => copyEsAutocompletes(elastic, autocompletes, database, cb),
+          (cb) => copyEsAutocompletes(elastic, autocompletes, database, cb)
         ],
         (err) => {
           if (err) {
@@ -194,7 +193,7 @@ Async.parallel(
           console.log('The file has been saved!');
         }
       );
-    },
+    }
   ],
   (err, { body, statusCode, headers, warnings }) => {
     if (err) console.log(err);
