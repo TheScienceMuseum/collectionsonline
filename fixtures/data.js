@@ -3,9 +3,9 @@ module.exports = {
   titlePage: 'Science Museum Group Collection',
   strap: 'Search our collection',
   intro:
-    'Explore over 380,000 <a href="/search/objects">objects</a> and <a href="/search/documents">archives</a> from the <a href="/search/museum/science-museum">Science Museum</a>, <a href="/search/museum/science-and-industry-museum">Science and Industry Museum</a>, <a href="/search/museum/national-media-museum">National Science and Media Museum</a>, <a href="/search/museum/national-railway-museum">National Railway Museum</a> and <a href="/search/museum/locomotion">Locomotion</a>.<div style="font-size:1.5rem; margin-top: 1rem"><a href="https://collection.sciencemuseumgroup.org.uk/about">Please be aware some historic records may include inaccurate or offensive content.</div>',
+    'Explore over 380,000 <a href="/search/objects">objects</a> and <a href="/search/documents">archives</a> from the <a href="/search/museum/science-museum">Science Museum</a>, <a href="/search/museum/science-and-industry-museum">Science and Industry Museum</a>, <a href="/search/museum/national-media-museum">National Science and Media Museum</a>, <a href="/search/museum/national-railway-museum">National Railway Museum</a> and <a href="/search/museum/locomotion">Locomotion</a>.<div style="font-size:1.3rem; margin-top: 1rem">Did you know that the <a href="https://www.scienceinnovationpark.org.uk">Science and Innovation Park</a> is home to around 80% of objects from our collection?</div><div style="font-size:1rem; margin-top: 1rem"><a href="https://collection.sciencemuseumgroup.org.uk/about">Please be aware some historic records may include inaccurate or offensive content.</div>',
   smg__description:
-    'As the world’s leading group of science museums, we share our unparalleled collection spanning science, technology, engineering, mathematics and medicine with over five million visitors each year.',
+    'We share our world-leading collection – spanning science, technology, engineering and medicine – with over five million visitors each year.',
   headerImages: [
     '_D819175-ret.jpg',
     '1970-0025_0007.jpg',
