@@ -26,9 +26,12 @@
           {{#if displayLocation}}
           {{> records/ondisplay }}
           {{/if}}
+          {{#unless inProduction}}
+
           {{#if displayBox}}
           {{> records/record-group-display-box}}
           {{/if}}
+          {{/unless}}
           {{#if related.people}}{{> records/record-related-people }}{{/if}}
           {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
           <div id="articles"></div>
