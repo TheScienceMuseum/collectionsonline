@@ -231,7 +231,7 @@
   &__method {
     overflow: auto;
 
-    &+& {
+    & + & {
       border-top: 1px grey(30) solid;
       padding-top: 1rem;
     }
@@ -261,6 +261,15 @@
   font-size: rem-calc(18);
 }
 
+.group-info-box {
+  display: flex;
+  flex-direction: column;
+
+  dl {
+    display: flex;
+    gap: 1em;
+  }
+}
 // .record-longdesc {
 // this could be applied to a <p>
 // but may be safer to apply to wrapping <div> for bigger content
@@ -326,7 +335,7 @@
       margin: 0;
     }
 
-    p+p {
+    p + p {
       margin-top: 1em;
     }
   }
@@ -396,9 +405,7 @@
   .resultcard__figure img {
     width: 100%;
   }
-
 }
-
 
 // sph records
 
@@ -413,10 +420,8 @@
     grid-template-columns: repeat(auto-fit, minmax(23rem, 1fr));
   }
 
-
   &__figure {
-
-    [data-has-images="false"] & {
+    [data-has-images='false'] & {
       display: none;
     }
 
@@ -453,7 +458,7 @@
       color: rgba(white, 0.25);
       font-size: rem-calc(24);
 
-      @include media(">=medium") {
+      @include media('>=medium') {
         font-size: rem-calc(32);
       }
 
@@ -461,7 +466,6 @@
       letter-spacing: rem-calc(-1);
       font-weight: 300;
     }
-
   }
 
   &__title {
@@ -492,7 +496,6 @@
     }
 
     dt {
-
       @include small-caps;
       color: grey(80);
       line-height: 1rem;

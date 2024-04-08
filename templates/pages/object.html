@@ -19,13 +19,16 @@
         <div class="columns medium-8">
 
           {{> records/record-description}}
+
         </div>
-        <aside class="columns medium-4">
+        <aside class="columns medium-4 ">
 
           {{#if displayLocation}}
           {{> records/ondisplay }}
           {{/if}}
-
+          {{#if displayBox}}
+          {{> records/record-group-display-box}}
+          {{/if}}
           {{#if related.people}}{{> records/record-related-people }}{{/if}}
           {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
           <div id="articles"></div>
