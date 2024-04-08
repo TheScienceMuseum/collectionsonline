@@ -30,6 +30,11 @@ module.exports = {
       name: 'Locomotion',
       url: 'https://www.locomotion.org.uk/',
       image: '/assets/img/global/loco-logo.svg'
+    },
+    {
+      name: 'Science and Innovation Park',
+      url: 'https://www.scienceinnovationpark.org.uk/',
+      image: '/assets/img/global/sip-logo.svg'
     }
   ]
 };
