@@ -273,8 +273,11 @@ Handlebars.registerPartial(
   )
 );
 Handlebars.registerPartial(
-  'records/group-display-box',
-  Fs.readFileSync('./templates/partials/records/group-display-box.html', 'utf8')
+  'records/record-group-display-box',
+  Fs.readFileSync(
+    './templates/partials/records/record-group-display-box.html',
+    'utf8'
+  )
 );
 
 // Helpers
