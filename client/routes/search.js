@@ -318,7 +318,7 @@ function listeners (ctx, next) {
       '/search/people',
       '/search/objects',
       '/search/documents',
-      'search/group'
+      '/search/group'
     ].lastIndexOf(ctx.canonicalPath) !== -1;
   if (onMobile && noFilterSelected) {
     displayFilters(false);
