@@ -399,12 +399,12 @@ testWithServer(file + 'Should accept valid museum SMG', {}, async (t, ctx) => {
   t.end();
 });
 
-testWithServer(file + 'Should accept valid museum NMeM', {}, async (t, ctx) => {
+testWithServer(file + 'Should accept valid museum NSMM', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', museum: 'NMeM' }),
+    url: '/search?' + QueryString.stringify({ q: 'test', museum: 'NSMM' }),
     headers: { Accept: 'text/html' }
   };
 
@@ -413,12 +413,12 @@ testWithServer(file + 'Should accept valid museum NMeM', {}, async (t, ctx) => {
   t.end();
 });
 
-testWithServer(file + 'Should accept valid museum MSI', {}, async (t, ctx) => {
+testWithServer(file + 'Should accept valid museum SIM', {}, async (t, ctx) => {
   t.plan(1);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?' + QueryString.stringify({ q: 'test', museum: 'MSI' }),
+    url: '/search?' + QueryString.stringify({ q: 'test', museum: 'SIM' }),
     headers: { Accept: 'text/html' }
   };
 

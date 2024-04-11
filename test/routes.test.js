@@ -552,12 +552,12 @@ testWithServer('NRM Short url', {}, async (t, ctx) => {
   t.end();
 });
 
-testWithServer('NMEM Short url', {}, async (t, ctx) => {
+testWithServer('NSMM Short url', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/nmem',
+    url: '/nsmm',
     headers: { Accept: 'text/html' }
   };
 
@@ -565,19 +565,19 @@ testWithServer('NMEM Short url', {}, async (t, ctx) => {
   t.ok(res.statusCode, 200, 'status is 200');
   t.equal(
     res.headers.location,
-    '/search/museum/national-media-museum',
-    'redirects to search on Media Museum'
+    '/search/museum/national-science-and-media-museum',
+    'redirects to search on National Science and Media Museum'
   );
   await ctx.server.stop();
   t.end();
 });
 
-testWithServer('MSI Short url', {}, async (t, ctx) => {
+testWithServer('SIM Short url', {}, async (t, ctx) => {
   t.plan(2);
 
   const htmlRequest = {
     method: 'GET',
-    url: '/msi',
+    url: '/sim',
     headers: { Accept: 'text/html' }
   };
 
@@ -585,8 +585,8 @@ testWithServer('MSI Short url', {}, async (t, ctx) => {
   t.ok(res.statusCode, 200, 'status is 200');
   t.equal(
     res.headers.location,
-    '/search/museum/museum-of-science-and-industry',
-    'redirects to search on Museum of Science and Industry'
+    '/search/museum/science-and-industry-museum',
+    'redirects to search on Science and Industry Museum'
   );
   await ctx.server.stop();
   t.end();

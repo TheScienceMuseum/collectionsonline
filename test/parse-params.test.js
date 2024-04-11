@@ -71,10 +71,10 @@ test('parsing museum params', function (t) {
     'should convert short museum name'
   );
   t.deepEqual(
-    parseParameters({ filters: 'objects/museum/msi' }),
+    parseParameters({ filters: 'objects/museum/sim' }),
     {
       params: { type: 'objects' },
-      categories: { museum: 'Museum of Science and Industry' }
+      categories: { museum: 'Science and Industry Museum' }
     },
     'should convert short museum name'
   );
@@ -87,10 +87,10 @@ test('parsing museum params', function (t) {
     'should convert short museum name'
   );
   t.deepEqual(
-    parseParameters({ filters: 'objects/museum/nmem' }),
+    parseParameters({ filters: 'objects/museum/nsmm' }),
     {
       params: { type: 'objects' },
-      categories: { museum: 'National Media Museum' }
+      categories: { museum: 'National Science and Media Museum' }
     },
     'should convert short museum name'
   );
@@ -109,11 +109,11 @@ test('parsing museum params', function (t) {
   );
   t.deepEqual(
     parseParameters({
-      filters: 'objects/museum/museum-of-science-and-industry'
+      filters: 'objects/museum/science-and-industry-museum'
     }),
     {
       params: { type: 'objects' },
-      categories: { museum: 'Museum of Science and Industry' }
+      categories: { museum: 'Science and Industry Museum' }
     },
     'should convert museum name to correct case'
   );
