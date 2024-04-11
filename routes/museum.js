@@ -14,12 +14,12 @@ module.exports = {
       }
     };
   },
-  msi () {
+  sim () {
     return {
       method: 'GET',
-      path: '/msi',
+      path: '/sim',
       handler: function (request, h) {
-        return museumRedirect(request, h, 'museum-of-science-and-industry');
+        return museumRedirect(request, h, 'science-and-industry-museum');
       }
     };
   },
@@ -35,18 +35,9 @@ module.exports = {
   nsmm () {
     return {
       method: 'GET',
-      path: '/msi',
+      path: '/nsmm',
       handler: function (request, h) {
         return museumRedirect(request, h, 'national-science-and-media-museum');
-      }
-    };
-  },
-  nmem () {
-    return {
-      method: 'GET',
-      path: '/nmem',
-      handler: function (request, h) {
-        return museumRedirect(request, h, 'national-media-museum');
       }
     };
   }

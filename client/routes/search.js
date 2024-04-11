@@ -228,6 +228,7 @@ function listeners (ctx, next) {
         'National-Railway-Museum',
         'National-Media-Museum',
         'National-Science-and-Media-Museum',
+        'Science-and-Industry-Museum',
         'Museum-of-Science-and-Industry'
       ];
       loadingBar.start();
