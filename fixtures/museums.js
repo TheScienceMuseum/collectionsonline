@@ -24,7 +24,7 @@ module.exports = {
       image: '/assets/img/global/smm-logo.svg',
       description: 'Discover the science and culture of light and sound technologies',
       map: {
-        url: '/search/museum/national-media-museum',
+        url: '/search/museum/national-science-and-media-museum',
         key: 'nsmm',
         logo: { width: 94.82, height: 50, y: 95.68 },
         hover: { y: 87, height: 68 }
