@@ -2,14 +2,12 @@ const OpenSeadragon = require('openseadragon');
 
 module.exports = (ctx) => {
   const openseadragon = document.querySelector('#openseadragon');
-
   // if (openseadragon && ctx.imgUrl) {
   if (openseadragon) {
     const carouselImage = document.querySelectorAll(
       '.carousel__image.is-selected'
     );
     const singleImage = document.querySelectorAll('.single_image');
-
     if (!ctx.imgUrl) {
       if (!carouselImage.length && singleImage) {
         ctx.imgUrl = singleImage[0].dataset.osd;
@@ -17,7 +15,6 @@ module.exports = (ctx) => {
         ctx.imgUrl = carouselImage[0].dataset.osd;
       }
     }
-
     ctx.viewer = OpenSeadragon({
       id: 'openseadragon',
       crossOriginPolicy: 'Anonymous',
@@ -58,19 +55,20 @@ module.exports = (ctx) => {
       }
     });
 
-    // var osd =
-    //   Array.prototype.slice.call(
-    //     document.getElementsByClassName('osd__toolbar')
-    //   ) || [];
+    const osd =
+      Array.prototype.slice.call(
+        document.getElementsByClassName('osd__toolbar')
+      ) || [];
 
     const singleImages =
       Array.prototype.slice.call(
         document.getElementsByClassName('single_image')
       ) || [];
 
-    // var thingsToInit = osd.concat(singleImages);
-    const thingsToInit = singleImages;
+    const thingsToInit = osd.concat(singleImages);
+    // const thingsToInit = singleImages;
 
+    // for click on carousel itself
     if (ctx.carousel) {
       ctx.carousel.on('staticClick', () => {
         show();
@@ -106,7 +104,6 @@ function openseadragonElements () {
   const openseadragon = document.querySelectorAll('#openseadragon');
   const rotateButtons = document.querySelectorAll('.osd-rotate');
   const zoomButtons = document.querySelectorAll('.osd-zoom');
-
   return Array.prototype.slice
     .call(rotateButtons)
     .concat(Array.prototype.slice.call(zoomButtons))
