@@ -56,7 +56,7 @@ module.exports = [
   'enhancement',
   'transcriptions',
   'wikidata',
-  'sub_group',
+  'subgroup',
   'grouping',
   'ondisplay'
 ];
