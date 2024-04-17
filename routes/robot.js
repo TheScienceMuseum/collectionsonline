@@ -14,6 +14,7 @@ module.exports = () => ({
         'Disallow: /api/\n' +
         'Disallow: /iiif/\n' +
         'Disallow: /iris/\n' +
+        'Disallow: /barcode/\n' +
         'Disallow: /categories/\n' +
         'Disallow: /*?*\n' +
         'User-agent: AhrefsBot\n' +
