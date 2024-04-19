@@ -35,7 +35,7 @@
           {{/if}}
           {{/if}}
 
-          {{#each this.place}}
+          {{#each (dedupe this.place)}}
           <a href="{{link}}">{{ value }}</a>{{comma this ../this.place true}}
           {{/each}}
         </dd>
