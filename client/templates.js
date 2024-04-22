@@ -442,6 +442,7 @@ Handlebars.registerHelper(
   'notInProd',
   require('../templates/helpers/notInProd')
 );
+Handlebars.registerHelper('dedupe', require('../templates/helpers/dedupe'));
 // Routes
 module.exports = {
   404: Handlebars.compile(
