@@ -20,10 +20,23 @@
     {{#if description.primary}}
     {{#each description.primary.initialDescription }}
     <p>
-      {{truncateDescription this}}
+      {{ this}}
     </p>
     {{/each}}
     {{/if}}
+    {{#ifWebAndPrimary description}}
+    <hr>
+    {{/ifWebAndPrimary}}
+    {{#if description.web}}
+
+    {{#each description.web.initialDescription}}
+    <p>
+      {{this}}
+    </p>
+    {{/each}}
+    {{/if}}
+
+
   </div>
 
   <div class="sph-records__details">

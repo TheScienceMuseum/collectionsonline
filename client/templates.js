@@ -443,6 +443,12 @@ Handlebars.registerHelper(
   require('../templates/helpers/notInProd')
 );
 Handlebars.registerHelper('dedupe', require('../templates/helpers/dedupe'));
+
+Handlebars.registerHelper(
+  'ifWebAndPrimary',
+  require('../templates/helpers/ifWebAndPrimary')
+);
+
 // Routes
 module.exports = {
   404: Handlebars.compile(
