@@ -442,6 +442,12 @@ Handlebars.registerHelper(
   'notInProd',
   require('../templates/helpers/notInProd')
 );
+
+Handlebars.registerHelper(
+  'ifWebAndPrimary',
+  require('../templates/helpers/ifWebAndPrimary')
+);
+
 // Routes
 module.exports = {
   404: Handlebars.compile(
