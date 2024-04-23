@@ -1,5 +1,5 @@
-module.exports = (arr, num) => {
-  if (arr.length > num) {
+module.exports = (arr, counts) => {
+  if (counts > arr.length) {
     return true;
   } else {
     return null;
