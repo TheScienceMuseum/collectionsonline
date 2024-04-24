@@ -44,6 +44,6 @@ function elasticError (err) {
   if (err.statusCode === 404) {
     return Boom.notFound();
   } else {
-    return Boom.serverUnavailable('unavailable');
+    return Boom.serverUnavailable('unavailable', err);
   }
 }
