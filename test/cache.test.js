@@ -29,7 +29,7 @@ test('Get fonds data', async function (t) {
 
   const cacheGet = stub(cache, 'get').resolves();
 
-  const elasticGet = stub(elastic, 'get').resolves({ body: { _source: { level: { value: 'fonds' }, summary_title: 'doc', identifier: [{ value: 'BAB' }] } } });
+  const elasticGet = stub(elastic, 'get').resolves({ body: { _source: { level: { value: 'fonds' }, summary: { title: 'doc' }, identifier: [{ value: 'BAB' }] } } });
 
   const data = await cachedDocument(elastic, 'smga-documents-110000013', 'smga-documents-110000003');
   t.ok(data, 'data from elasticsearch');
@@ -46,7 +46,7 @@ test('Get child document data', async function (t) {
 
   const cacheSet = stub(cache, 'set').resolves();
 
-  const elasticGet = stub(elastic, 'get').resolves({ body: { _source: { level: { value: 'document' }, fonds: [{ admin: { uid: 'smga-documents-110000003' }, summary_title: 'doc' }], summary_title: 'doc', identifier: [{ value: 'BAB' }] } } });
+  const elasticGet = stub(elastic, 'get').resolves({ body: { _source: { level: { value: 'document' }, fonds: [{ '@admin': { uid: 'smga-documents-110000003' }, summary: { title: 'doc' } }], summary: { title: 'doc' }, identifier: [{ value: 'BAB' }] } } });
 
   const archiveTreeSort = stub(archiveTree, 'sortChildren').callsFake(function (data) {
     return {};
@@ -70,7 +70,7 @@ test('Get single document data', async function (t) {
 
   const cacheSet = stub(cache, 'set').resolves();
 
-  const elasticGet = stub(elastic, 'get').resolves({ body: { _source: { level: { value: 'document' }, summary_title: 'doc', identifier: [{ value: 'BAB' }] } } });
+  const elasticGet = stub(elastic, 'get').resolves({ body: { _source: { level: { value: 'document' }, summary: { title: 'doc' }, identifier: [{ value: 'BAB' }] } } });
 
   const archiveTreeSort = stub(archiveTree, 'sortChildren').callsFake(function (data) {
     return {};
@@ -93,7 +93,7 @@ test('Get single document data', async function (t) {
 
   const cacheSet = stub(cache, 'set').resolves();
 
-  const elasticGet = stub(elastic, 'get').resolves({ body: { _source: { level: { value: 'document' }, fonds: [{ admin: { uid: 'smga-documents-110000003' }, summary_title: 'doc' }], summary_title: 'doc', identifier: [{ value: 'BAB' }] } } });
+  const elasticGet = stub(elastic, 'get').resolves({ body: { _source: { level: { value: 'document' }, fonds: [{ '@admin': { uid: 'smga-documents-110000003' }, summary: { title: 'doc' } }], summary: { title: 'doc' }, identifier: [{ value: 'BAB' }] } } });
 
   const elasticSearch = stub(elastic, 'search').rejects(new Error());
 
