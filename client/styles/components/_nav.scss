@@ -1,5 +1,6 @@
-@import "smg-web-design-system/src/scss/components/nav";
+@import 'smg-web-design-system/src/scss/components/nav';
 // overrides
+// TODO: this override is currently not working
 .c-nav-mobile {
   z-index: 10;
 }
