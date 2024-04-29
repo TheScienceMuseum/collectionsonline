@@ -265,6 +265,16 @@
   display: flex;
   flex-direction: column;
 
+  &__heading {
+    font-size: 1.5rem;
+    margin-block-start: 0.7rem;
+    margin-inline-start: 0.7rem;
+  }
+
+  &__text {
+    padding-inline: 1rem;
+    padding-block: 0.5rem;
+  }
   dl {
     display: flex;
     gap: 1em;
