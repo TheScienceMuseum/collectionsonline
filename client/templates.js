@@ -448,6 +448,10 @@ Handlebars.registerHelper(
   'ifWebAndPrimary',
   require('../templates/helpers/ifWebAndPrimary')
 );
+Handlebars.registerHelper(
+  'groupState',
+  require('../templates/helpers/groupState.js')
+);
 
 // Routes
 module.exports = {

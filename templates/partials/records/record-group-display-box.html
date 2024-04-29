@@ -1,22 +1,18 @@
-<div class="panel group-info-box">
-    <!--<img class="bleed" src="/assets/img/example/locations/scimus.png">-->
-    <div class="panel__text">
-        <h2>{{> global/icon i="room" size="16" }}Part Of Group:</h2>
+<!--<img class="bleed" src="/assets/img/example/locations/scimus.png">-->
+<div class="panel__text group-info-box__text">
+    <dl>
+        <dt>Title:</dt>
+        <dd>
+            {{this.title}}
 
-        <dl>
-            <dt>Title:</dt>
-            <dd>
-                {{displayBox.title}}
-
-            </dd>
-        </dl>
-        <p>
-        <dl>
-            <dt>Id:</dt>
-            <dd>
-                {{displayBox.uid}}
-            </dd>
-        </dl>
-        </p>
-    </div>
+        </dd>
+    </dl>
+    <p>
+    <dl>
+        <dt>Id:</dt>
+        <dd>
+            {{this.uid}}
+        </dd>
+    </dl>
+    </p>
 </div>

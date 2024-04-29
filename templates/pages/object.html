@@ -29,7 +29,14 @@
           {{#unless inProduction}}
 
           {{#if displayBox}}
-          {{> records/record-group-display-box}}
+          <div class="panel group-info-box">
+            <h2 class="group-info-box__heading">{{> global/icon i="room" size="16" }}
+              {{groupState displayBox}}
+            </h2>
+            {{#each displayBox}}
+            {{> records/record-group-display-box}}
+            {{/each}}
+          </div>
           {{/if}}
           {{/unless}}
           {{#if related.people}}{{> records/record-related-people }}{{/if}}
