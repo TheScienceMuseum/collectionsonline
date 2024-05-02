@@ -7,7 +7,11 @@ const file = dir + __filename.replace(__dirname, '') + ' > ';
 test(file + 'serp title - no filters selected', (t) => {
   const selectedFilters = {};
   const title = getTitlePage('', selectedFilters);
-  t.equal(title, 'Search our collection | Science Museum Group Collection', 'no filters - title ok');
+  t.equal(
+    title,
+    'Search our collection | Science Museum Group Collection',
+    'no filters - title ok'
+  );
   t.end();
 });
 
@@ -15,7 +19,11 @@ test(file + 'serp title - no filters selected', (t) => {
 test(file + 'serp title - no filters selected', (t) => {
   const selectedFilters = { hasImage: { true: true } };
   const title = getTitlePage('', selectedFilters);
-  t.equal(title, 'Search our collection | Science Museum Group Collection', 'filter image selected - title ok');
+  t.equal(
+    title,
+    'Search our collection | Science Museum Group Collection',
+    'filter image selected - title ok'
+  );
   t.end();
 });
 
@@ -27,21 +35,53 @@ test(file + 'serp title - no filters selected', (t) => {
     museum: { 'Science Museum': true }
   };
   const title = getTitlePage('', selectedFilters);
-  t.equal(title, 'Search our collection | Science Museum Group Collection', 'filter museum but with image selected - title ok');
+  t.equal(
+    title,
+    'Search our collection | Science Museum Group Collection',
+    'filter museum but with image selected - title ok'
+  );
   t.end();
 });
 // filter with category only
 test(file + 'serp title - no filters selected', (t) => {
-  const selectedFilters = { categories: { Photographs: true } };
+  const selectedFilters = {
+    '': {
+      Search: true
+    },
+    categories: {
+      Photographs: true
+    },
+    type: {
+      all: true
+    }
+  };
   const title = getTitlePage('', selectedFilters);
-  t.equal(title, 'Photographs | Science Museum Group Collection', 'filter category - title ok');
+  t.equal(
+    title,
+    'Photographs | Science Museum Group Collection',
+    'filter category - title ok'
+  );
   t.end();
 });
 // filter with category only bit with a query parameter q
 test(file + 'serp title - no filters selected', (t) => {
-  const selectedFilters = { categories: { Photographs: true } };
+  const selectedFilters = {
+    '': {
+      Search: true
+    },
+    categories: {
+      Photographs: true
+    },
+    type: {
+      all: true
+    }
+  };
   const title = getTitlePage('babbage', selectedFilters);
-  t.equal(title, 'Search our collection | Science Museum Group Collection', 'filter category - title ok');
+  t.equal(
+    title,
+    'Search our collection | Science Museum Group Collection',
+    'filter category - title ok'
+  );
   t.end();
 });
 // filter with museum and gallery
@@ -51,18 +91,26 @@ test(file + 'serp title - no filters selected', (t) => {
     museum: { 'National Railway Museum': true }
   };
   const title = getTitlePage('', selectedFilters);
-  t.equal(title, 'On display at the National Railway Museum | Warehouse | Science Museum Group Collection', 'filter museum & gallery - title ok');
+  t.equal(
+    title,
+    'On display at the National Railway Museum | Warehouse | Science Museum Group Collection',
+    'filter museum & gallery - title ok'
+  );
   t.end();
 });
 
 // filter with category and museum and gallery (a gallery can't be defined without a museum)
 test(file + 'serp title - no filters selected', (t) => {
   const selectedFilters = {
-    categories: { 'Railway Models': true },
+    categories: { 'Railway Posters, Notices & Handbills': true },
     gallery: { Warehouse: true },
     museum: { 'National Railway Museum': true }
   };
   const title = getTitlePage('', selectedFilters);
-  t.equal(title, 'Railway Models on display at the National Railway Museum | Warehouse | Science Museum Group Collection', 'filter museum & gallery - title ok');
+  t.equal(
+    title,
+    'Railway Posters, Notices & Handbills on display at the National Railway Museum | Warehouse | Science Museum Group Collection',
+    'filter museum & gallery - title ok'
+  );
   t.end();
 });
