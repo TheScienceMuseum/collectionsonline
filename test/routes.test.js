@@ -817,31 +817,53 @@ testWithServer('Restful Style Search Routes: json', {}, async (t, ctx) => {
   t.end();
 });
 
-// testWithServer(file + 'Request for Related Articles from NSMM', {}, async (t, ctx) => {
-//   const htmlRequest = {
-//     method: 'GET',
-//     url: '/articles/co18634',
-//     headers: { 'Accept': 'application/json' }
-//   };
+testWithServer(
+  file + 'Request for Related Articles from NSMM',
+  {},
+  async (t, ctx) => {
+    t.plan(2);
+    const cacheStart = stub(cache, 'start').resolves();
+    const cacheGet = stub(cache, 'get').resolves();
 
-//   const res = await ctx.server.inject(htmlRequest);
-//   t.ok(JSON.parse(res.payload), 'Result is JSON');
-//   t.equal(res.statusCode, 200, 'Status code was as expected');
-//   t.end();
-// });
+    const htmlRequest = {
+      method: 'GET',
+      url: '/articles/co18634',
+      headers: { Accept: 'application/json' }
+    };
 
-// testWithServer(file + 'Request for Related Articles from MSI', {}, async (t, ctx) => {
-//   const htmlRequest = {
-//     method: 'GET',
-//     url: '/articles/co8406299',
-//     headers: { 'Accept': 'application/json' }
-//   };
+    const res = await ctx.server.inject(htmlRequest);
+    t.ok(JSON.parse(res.payload), 'Result is JSON');
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    await ctx.server.stop();
+    cacheStart.restore();
+    cacheGet.restore();
+    t.end();
+  }
+);
 
-//   const res = await ctx.server.inject(htmlRequest);
-//   t.ok(JSON.parse(res.payload), 'Result is JSON');
-//   t.equal(res.statusCode, 200, 'Status code was as expected');
-//   t.end();
-// });
+testWithServer(
+  file + 'Request for Related Articles from MSI',
+  {},
+  async (t, ctx) => {
+    t.plan(1);
+
+    const cacheStart = stub(cache, 'start').resolves();
+    const cacheGet = stub(cache, 'get').resolves();
+    const htmlRequest = {
+      method: 'GET',
+      url: '/articles/co8406299',
+      headers: { Accept: 'application/json' }
+    };
+
+    const res = await ctx.server.inject(htmlRequest);
+    t.ok(JSON.parse(res.payload), 'Result is JSON');
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    await ctx.server.stop();
+    cacheStart.restore();
+    cacheGet.restore();
+    t.end();
+  }
+);
 
 /*
 testWithServer(file + 'iiif request', {}, async (t, ctx) => {

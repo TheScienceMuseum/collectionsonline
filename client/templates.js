@@ -189,13 +189,13 @@ Handlebars.registerPartial(
   )
 );
 
-// Handlebars.registerPartial(
-//   'records/record-related-articles',
-//   Fs.readFileSync(
-//     './templates/partials/records/record-related-articles.html',
-//     'utf8'
-//   )
-// );
+Handlebars.registerPartial(
+  'records/record-related-articles',
+  Fs.readFileSync(
+    './templates/partials/records/record-related-articles.html',
+    'utf8'
+  )
+);
 
 Handlebars.registerPartial(
   'records/archive-tree',
@@ -500,12 +500,12 @@ module.exports = {
   api: Handlebars.compile(
     Fs.readFileSync('./templates/pages/api.html', 'utf8')
   ),
-  // articles: Handlebars.compile(
-  //   Fs.readFileSync(
-  //     './templates/partials/records/record-related-articles.html',
-  //     'utf8'
-  //   )
-  // ),
+  articles: Handlebars.compile(
+    Fs.readFileSync(
+      './templates/partials/records/record-related-articles.html',
+      'utf8'
+    )
+  ),
   wikiImage: Handlebars.compile(
     Fs.readFileSync('./templates/partials/records/wiki-image.html', 'utf8')
   ),
