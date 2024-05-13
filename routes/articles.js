@@ -1,6 +1,6 @@
 const Boom = require('@hapi/boom');
 const cacheHeaders = require('./route-helpers/cache-control');
-const getCachedFeed = require('../lib/cached-feed');
+
 // Article endpoints on each museum website
 const endpoints = [
   {
@@ -41,11 +41,10 @@ const endpoints = [
   },
   {
     label: 'Science Museum Group',
-    url: 'https://www.sciencemuseumgroup.org.uk/wp-json/collection-media/collection-usage'
+    url: 'https://www.sciencemuseumgroup.org.uk/collection-media/collection-usage/objects'
   }
 ];
 
-// Either get the items from the endpoints, or the cache
 module.exports = (config) => ({
   method: 'GET',
   path: '/articles/{id}',
@@ -53,12 +52,12 @@ module.exports = (config) => ({
     cache: cacheHeaders(config, 3600 * 12),
     handler: async function (req, h) {
       try {
-        console.log('hiiiiiiiiiiiiiiiiiiiiii');
-        const articles = await Promise.all(
-          // endpoints.map((e) => fetchArticles(e, req.params.id))
-          endpoints.map((e) => getCachedFeed(e, req.params.id))
+        const articlesPromises = endpoints.map((e) =>
+          fetchArticles(e, req.params.id)
         );
-        console.log(articles, 'checking artilces');
+
+        const articles = await Promise.all(articlesPromises);
+
         return h.response({ data: articles.filter((e) => e.data.length > 0) });
       } catch (err) {
         return new Boom.Boom('Cannot parse related objects feed:', err);
@@ -66,3 +65,35 @@ module.exports = (config) => ({
     }
   }
 });
+
+/**
+ * Fetches articles from a given endpoint, filtering them based on a specific ID.
+ * @async
+ * @function
+ * @param {Object} endpoint - The endpoint object containing the URL and label.
+ * @param {string} endpoint.url - The URL of the endpoint.
+ * @param {string} endpoint.label - The label of the endpoint.
+ * @param {string} id - The ID to filter the articles by.
+ * @returns {Promise<Object>} A promise that resolves to an object containing the museum label and the filtered data.
+ */
+
+async function fetchArticles (endpoint, id) {
+  try {
+    const response = await fetch(endpoint.url, {
+      timeout: 10000,
+      headers: { 'User-Agent': 'SMG Collection Site 1.0' }
+    });
+    const data = await response.json();
+
+    return {
+      museum: endpoint.label,
+      data: data.filter((e) => e.collection_objects.indexOf(id) > -1)
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      museum: endpoint.label,
+      data: []
+    };
+  }
+}
