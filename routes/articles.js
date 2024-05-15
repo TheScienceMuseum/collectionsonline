@@ -1,6 +1,8 @@
 const Boom = require('@hapi/boom');
 const cacheHeaders = require('./route-helpers/cache-control');
 
+const getCachedArticles = require('../lib/cached-article');
+
 // Article endpoints on each museum website
 const endpoints = [
   {
@@ -45,6 +47,7 @@ const endpoints = [
   }
 ];
 
+// Either get the items from the endpoints, or the cache
 module.exports = (config) => ({
   method: 'GET',
   path: '/articles/{id}',
@@ -79,15 +82,34 @@ module.exports = (config) => ({
 
 async function fetchArticles (endpoint, id) {
   try {
+    // attempt to get articles from cache initially
+    const cachedArticle = await getCachedArticles(endpoint);
+
+    if (cachedArticle) {
+      const filteredArticles = cachedArticle.filter(
+        (e) => e.collection_objects.indexOf(id) > -1
+      );
+      return {
+        museum: endpoint.label,
+        data: filteredArticles
+      };
+    }
+
+    // regular response from endpoint otherwise
     const response = await fetch(endpoint.url, {
       timeout: 10000,
       headers: { 'User-Agent': 'SMG Collection Site 1.0' }
     });
+
     const data = await response.json();
 
+    const filteredData = data.filter(
+      (e) => e.collection_objects.indexOf(id) > -1
+    );
     return {
       museum: endpoint.label,
-      data: data.filter((e) => e.collection_objects.indexOf(id) > -1)
+      // data,
+      data: filteredData
     };
   } catch (err) {
     console.log(err);

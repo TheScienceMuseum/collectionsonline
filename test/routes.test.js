@@ -822,6 +822,8 @@ testWithServer(
   {},
   async (t, ctx) => {
     t.plan(2);
+    const cacheStart = stub(cache, 'start').resolves();
+    const cacheGet = stub(cache, 'get').resolves();
 
     const htmlRequest = {
       method: 'GET',
@@ -833,7 +835,8 @@ testWithServer(
     t.ok(JSON.parse(res.payload), 'Result is JSON');
     t.equal(res.statusCode, 200, 'Status code was as expected');
     await ctx.server.stop();
-
+    cacheStart.restore();
+    cacheGet.restore();
     t.end();
   }
 );
@@ -844,6 +847,8 @@ testWithServer(
   async (t, ctx) => {
     t.plan(2);
 
+    const cacheStart = stub(cache, 'start').resolves();
+    const cacheGet = stub(cache, 'get').resolves();
     const htmlRequest = {
       method: 'GET',
       url: '/articles/co8406299',
@@ -854,6 +859,8 @@ testWithServer(
     t.ok(JSON.parse(res.payload), 'Result is JSON');
     t.equal(res.statusCode, 200, 'Status code was as expected');
     await ctx.server.stop();
+    cacheStart.restore();
+    cacheGet.restore();
     t.end();
   }
 );
