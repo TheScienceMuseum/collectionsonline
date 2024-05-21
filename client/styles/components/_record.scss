@@ -486,6 +486,8 @@
     p {
       font-size: 1rem;
     }
+    max-height: 15rem;
+    overflow-y: scroll;
   }
 
   &__details {

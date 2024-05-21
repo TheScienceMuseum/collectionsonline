@@ -22,6 +22,9 @@
     font-weight: 500;
     margin-bottom: 0;
     text-transform: none;
+    a[href^='/search/'] {
+      text-decoration: underline;
+    }
     @include media('<=small') {
       display: none;
     }
