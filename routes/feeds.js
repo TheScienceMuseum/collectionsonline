@@ -1,7 +1,7 @@
 const Boom = require('@hapi/boom');
 const cacheHeaders = require('./route-helpers/cache-control');
-
-const getCachedArticles = require('../lib/cached-article');
+const cache = require('../bin/cache.js');
+const fetch = require('fetch-ponyfill')().fetch;
 
 // Article endpoints on each museum website
 const endpoints = [
@@ -46,76 +46,66 @@ const endpoints = [
     url: 'https://www.sciencemuseumgroup.org.uk/collection-media/collection-usage/objects'
   }
 ];
-
-// Either get the items from the endpoints, or the cache
 module.exports = (config) => ({
   method: 'GET',
-  path: '/articles/{id}',
+  path: '/feeds/refresh',
   config: {
     cache: cacheHeaders(config, 3600 * 12),
     handler: async function (req, h) {
       try {
-        const articlesPromises = endpoints.map((e) =>
-          fetchArticles(e, req.params.id)
-        );
+        for (const endpoint of endpoints) {
+          await fetchAndCacheEndpoint(endpoint);
+        }
 
-        const articles = await Promise.all(articlesPromises);
-
-        return h.response({ data: articles.filter((e) => e.data.length > 0) });
+        return h.response({ message: 'Article feeds cached successfully' });
       } catch (err) {
-        return new Boom.Boom('Cannot parse related objects feed:', err);
+        return new Boom.Boom('Failed to refresh and cache articles:', err);
       }
     }
   }
 });
 
-/**
- * Fetches articles from a given endpoint, filtering them based on a specific ID.
- * @async
- * @function
- * @param {Object} endpoint - The endpoint object containing the URL and label.
- * @param {string} endpoint.url - The URL of the endpoint.
- * @param {string} endpoint.label - The label of the endpoint.
- * @param {string} id - The ID to filter the articles by.
- * @returns {Promise<Object>} A promise that resolves to an object containing the museum label and the filtered data.
- */
-
-async function fetchArticles (endpoint, id) {
+// Function to fetch and cache data from an endpoint
+async function fetchAndCacheEndpoint (endpoint) {
   try {
-    // attempt to get articles from cache initially
-    const cachedArticle = await getCachedArticles(endpoint);
-
-    if (cachedArticle) {
-      const filteredArticles = cachedArticle.filter(
-        (e) => e.collection_objects.indexOf(id) > -1
-      );
-      return {
-        museum: endpoint.label,
-        data: filteredArticles
-      };
-    }
-
-    // regular response from endpoint otherwise
     const response = await fetch(endpoint.url, {
-      timeout: 10000,
+      timeout: 100000,
       headers: { 'User-Agent': 'SMG Collection Site 1.0' }
     });
-
     const data = await response.json();
-
-    const filteredData = data.filter(
-      (e) => e.collection_objects.indexOf(id) > -1
-    );
-    return {
-      museum: endpoint.label,
-      // data,
-      data: filteredData
-    };
+    await cacheEndpoints(cache, endpoint, data);
+    console.log(`Successfully cached ${endpoint.label}`);
   } catch (err) {
-    console.log(err);
-    return {
-      museum: endpoint.label,
-      data: []
-    };
+    console.error(`Failed to cache ${endpoint.label}:`, err);
+  }
+}
+
+// Function to cache data in the cache
+async function cacheEndpoints (cache, endpoint, data) {
+  try {
+    if (!cache) {
+      console.error('Cache is not connected.');
+      return;
+    }
+
+    await cache.start();
+
+    if (!cache.isReady()) {
+      console.error('Cache is not connected.');
+      return;
+    }
+    const url = endpoint.url;
+    const cached = await cache.get({ segment: 'feed', id: url });
+
+    if (cached) {
+      console.log('cleared cache');
+      await cache.drop({ segment: 'feed', id: url });
+    }
+    await cache.set({ segment: 'feed', id: url }, data, 100000000);
+    console.log('Feed successfully cached');
+  } catch (err) {
+    console.error("Couldn't cache item:", err);
+  } finally {
+    await cache.stop();
   }
 }
