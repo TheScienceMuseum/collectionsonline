@@ -1,7 +1,7 @@
 const Boom = require('@hapi/boom');
 const cacheHeaders = require('./route-helpers/cache-control');
-
 const getCachedArticles = require('../lib/cached-article');
+const { fetchAndCacheEndpoint } = require('../lib/cached-feed.js');
 
 // Article endpoints on each museum website
 const endpoints = [
@@ -60,7 +60,6 @@ module.exports = (config) => ({
         );
 
         const articles = await Promise.all(articlesPromises);
-
         return h.response({ data: articles.filter((e) => e.data.length > 0) });
       } catch (err) {
         return new Boom.Boom('Cannot parse related objects feed:', err);
@@ -95,24 +94,20 @@ async function fetchArticles (endpoint, id) {
       };
     }
 
-    // regular response from endpoint otherwise
-    const response = await fetch(endpoint.url, {
-      timeout: 10000,
-      headers: { 'User-Agent': 'SMG Collection Site 1.0' }
-    });
+    // otherwise fetch and cache endpoints here
 
-    const data = await response.json();
-
+    const data = await fetchAndCacheEndpoint(endpoint);
     const filteredData = data.filter(
       (e) => e.collection_objects.indexOf(id) > -1
     );
+
     return {
       museum: endpoint.label,
-      // data,
       data: filteredData
     };
   } catch (err) {
     console.log(err);
+    // handles dead endpoints, to avoid Promises.all failing
     return {
       museum: endpoint.label,
       data: []
