@@ -1,7 +1,7 @@
+// const Hapi = require('@hapi/hapi');
 const Boom = require('@hapi/boom');
 const cacheHeaders = require('./route-helpers/cache-control');
-const cache = require('../bin/cache.js');
-const fetch = require('fetch-ponyfill')().fetch;
+const { fetchAndCacheEndpoint } = require('../lib/cached-feed.js');
 
 // Article endpoints on each museum website
 const endpoints = [
@@ -53,59 +53,18 @@ module.exports = (config) => ({
     cache: cacheHeaders(config, 3600 * 12),
     handler: async function (req, h) {
       try {
+        let data;
         for (const endpoint of endpoints) {
-          await fetchAndCacheEndpoint(endpoint);
+          data = await fetchAndCacheEndpoint(endpoint);
         }
 
-        return h.response({ message: 'Article feeds cached successfully' });
+        return h.response({
+          message: 'Article feeds cached successfully',
+          data
+        });
       } catch (err) {
         return new Boom.Boom('Failed to refresh and cache articles:', err);
       }
     }
   }
 });
-
-// Function to fetch and cache data from an endpoint
-async function fetchAndCacheEndpoint (endpoint) {
-  try {
-    const response = await fetch(endpoint.url, {
-      timeout: 100000,
-      headers: { 'User-Agent': 'SMG Collection Site 1.0' }
-    });
-    const data = await response.json();
-    await cacheEndpoints(cache, endpoint, data);
-    console.log(`Successfully cached ${endpoint.label}`);
-  } catch (err) {
-    console.error(`Failed to cache ${endpoint.label}:`, err);
-  }
-}
-
-// Function to cache data in the cache
-async function cacheEndpoints (cache, endpoint, data) {
-  try {
-    if (!cache) {
-      console.error('Cache is not connected.');
-      return;
-    }
-
-    await cache.start();
-
-    if (!cache.isReady()) {
-      console.error('Cache is not connected.');
-      return;
-    }
-    const url = endpoint.url;
-    const cached = await cache.get({ segment: 'feed', id: url });
-
-    if (cached) {
-      console.log('cleared cache');
-      await cache.drop({ segment: 'feed', id: url });
-    }
-    await cache.set({ segment: 'feed', id: url }, data, 100000000);
-    console.log('Feed successfully cached');
-  } catch (err) {
-    console.error("Couldn't cache item:", err);
-  } finally {
-    await cache.stop();
-  }
-}
