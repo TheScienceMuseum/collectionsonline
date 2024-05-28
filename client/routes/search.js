@@ -321,7 +321,10 @@ function listeners (ctx, next) {
       '/search/documents',
       '/search/group'
     ].lastIndexOf(ctx.canonicalPath) !== -1;
-  if (onMobile && noFilterSelected) {
+
+  const qs = QueryString.parse(ctx.querystring).q;
+
+  if ((onMobile && noFilterSelected) || (qs && onMobile)) {
     displayFilters(false);
     filterState.isFilterOpen = false;
   }
