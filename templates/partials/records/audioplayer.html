@@ -3,17 +3,11 @@
     <div class="c-audioplayer">
       <div class="c-audioplayer__thumb">
         <button class="c-audioplayer__button" aria-label="Play audio">
-          {{#if thumbnail}}<img class="" src="{{prefix}}/{{thumbnail}}" alt="" />{{else}}
-          <svg
-            height="248"
-            width="248"
-            viewBox="0 0 248 248"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          {{#if thumbnail}}<img class="" src="{{thumbnail}}" alt="" />{{else}}
+          <svg height="248" width="248" viewBox="0 0 248 248" xmlns="http://www.w3.org/2000/svg">
             <g fill-rule="evenodd" fill="rgba(0,0,0,0.25)">
               <path
-                d="M8 67h8v114H8zM24 89h8v70h-8zM40 78h8v92h-8zM56 49.25h8v149.5h-8zM72 57h8v134h-8zM88 78h8v92h-8zM104 96.25h8v55.5h-8zM120 108.75h8v30.5h-8zM184 119h8v10h-8zM136 100h8v48h-8zM200 114.5h8v19h-8zM152 58.75h8v130.5h-8zM216 75h8v98h-8zM168 86.5h8v75h-8zM232 81.75h8v84.5h-8z"
-              />
+                d="M8 67h8v114H8zM24 89h8v70h-8zM40 78h8v92h-8zM56 49.25h8v149.5h-8zM72 57h8v134h-8zM88 78h8v92h-8zM104 96.25h8v55.5h-8zM120 108.75h8v30.5h-8zM184 119h8v10h-8zM136 100h8v48h-8zM200 114.5h8v19h-8zM152 58.75h8v130.5h-8zM216 75h8v98h-8zM168 86.5h8v75h-8zM232 81.75h8v84.5h-8z" />
             </g>
           </svg>
           {{/if}}
@@ -23,28 +17,19 @@
         <!-- {{ interviewee }} -->
         <h4 class="c-audioplayer__title">{{ title }}</h4>
         <p class="c-audioplayer__description">{{ description }}</p>
-        <audio src="{{prefix}}/{{id}}" controls />
+        <audio src="{{audiofile}}" controls />
       </div>
     </div>
 
     {{#if transcript}}
     <div class="c-accordion" style="margin-top:1rem;">
       <h3 class="c-accordion__title">
-        <button
-          class="c-accordion__tab | js-accordion-tab"
-          id="tab-{{ id }}"
-          aria-expanded="false"
-          aria-controls="tab-content-{{ id }}"
-        >
+        <button class="c-accordion__tab | js-accordion-tab" id="tab-{{ id }}" aria-expanded="false"
+          aria-controls="tab-content-{{ id }}">
           Transcript
         </button>
       </h3>
-      <div
-        class="c-accordion__content"
-        id="tab-content-{{ id }}"
-        aria-hidden="true"
-        aria-labelledby="tab-{{ id}}"
-      >
+      <div class="c-accordion__content" id="tab-content-{{ id }}" aria-hidden="true" aria-labelledby="tab-{{ id}}">
         {{{ transcript }}}
       </div>
     </div>

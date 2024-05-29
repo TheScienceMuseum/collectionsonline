@@ -1,0 +1,11 @@
+@import 'smg-web-design-system/src/scss/components/audioplayer';
+
+.c-audioplayer__button {
+  height: 100%;
+}
+
+@media only screen and (max-width: 480px) {
+  .c-audioplayer__thumb {
+    width: 100%;
+  }
+}
