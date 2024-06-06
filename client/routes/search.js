@@ -1,5 +1,5 @@
 const QueryString = require('querystring');
-const fetch = require('fetch-ponyfill')().fetch;
+// const fetch = require('fetch-ponyfill')().fetch;
 const page = require('page');
 const Snackbar = require('snackbarlightjs');
 
@@ -288,26 +288,27 @@ function listeners (ctx, next) {
   }
 
   // analytics
-  const onResultClick = (e) => {
-    const id = e.currentTarget.getAttribute('href').split('/').pop();
+  // rmemove / analytics click handler as no longer in use : JU 06/06/24
+  // const onResultClick = (e) => {
+  //   const id = e.currentTarget.getAttribute('href').split('/').pop();
 
-    fetch('/analytics', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/vnd.api+json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ event: 'RESULT_CLICK', data: id })
-    }).catch((err) =>
-      console.error('Failed to send RESULT_CLICK analytics', err)
-    );
-  };
+  //   fetch('/analytics', {
+  //     method: 'POST',
+  //     headers: {
+  //       Accept: 'application/vnd.api+json',
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({ event: 'RESULT_CLICK', data: id })
+  //   }).catch((err) =>
+  //     console.error('Failed to send RESULT_CLICK analytics', err)
+  //   );
+  // };
 
-  const resultLinks = document.querySelectorAll('#searchresults a');
+  // const resultLinks = document.querySelectorAll('#searchresults a');
 
-  for (let i = 0; i < resultLinks.length; i++) {
-    resultLinks[i].addEventListener('click', onResultClick);
-  }
+  // for (let i = 0; i < resultLinks.length; i++) {
+  //   resultLinks[i].addEventListener('click', onResultClick);
+  // }
 
   // close filters on mobile when no filter selected
   const onMobile =
