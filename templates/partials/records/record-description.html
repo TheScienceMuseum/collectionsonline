@@ -1,6 +1,6 @@
 {{#if description}}
 
-  <!--
+<!--
   {{#if description.briefbiog}}
     {{#each description.briefbiog.initialDescription}}
       <p>
@@ -9,59 +9,57 @@
     {{/each}}
 
     {{#if description.briefbiog.moreDescription}}
-    <div class="details" aria-expanded="false">
-      <div class="details__summary">More…</div>
-        <div class="details__content">
-          {{#each description.briefbiog.moreDescription}}
-            <p>
-              {{this}}
-            </p>
-          {{/each}}
-        </div>
-      </div>
+      <details class="c-truncated">
+        <summary>More</summary>
+        {{#each description.briefbiog.moreDescription}}
+          <p>
+            {{this}}
+          </p>
+        {{/each}}
+      </details>
     {{/if}}
 
   {{/if}}
   -->
-  
-  {{#if description.primary}}
-    {{#each description.primary.initialDescription}}
-      <p>
-        {{this}}
-      </p>
-    {{/each}}
 
-    {{#if description.primary.moreDescription}}
-      <details class="c-truncated">
-        <summary>More</summary>
-        {{#each description.primary.moreDescription}}
-          <p>
-            {{this}}
-          </p>
-        {{/each}}
-      </details>
-    {{/if}}
+{{#if description.primary}}
+{{#each description.primary.initialDescription}}
+<p>
+  {{this}}
+</p>
+{{/each}}
 
-  {{/if}}
+{{#if description.primary.moreDescription}}
+<details class="c-truncated">
+  <summary>More</summary>
+  {{#each description.primary.moreDescription}}
+  <p>
+    {{this}}
+  </p>
+  {{/each}}
+</details>
+{{/if}}
 
-  {{#if description.web}}
-    {{#each description.web.initialDescription}}
-      <p>
-        {{this}}
-      </p>
-    {{/each}}
+{{/if}}
 
-    {{#if description.web.moreDescription}}
-      <details class="c-truncated">
-        <summary>More</summary>
-        {{#each description.web.moreDescription}}
-          <p>
-            {{this}}
-          </p>
-        {{/each}}
-      </details>
-    {{/if}}
+{{#if description.web}}
+{{#each description.web.initialDescription}}
+<p>
+  {{this}}
+</p>
+{{/each}}
 
-  {{/if}}
+{{#if description.web.moreDescription}}
+<details class="c-truncated">
+  <summary>More</summary>
+  {{#each description.web.moreDescription}}
+  <p>
+    {{this}}
+  </p>
+  {{/each}}
+</details>
+{{/if}}
+
+{{/if}}
 
 {{/if}}
