@@ -15,35 +15,41 @@ module.exports = (ctx) => {
         ctx.imgUrl = carouselImage[0].dataset.osd;
       }
     }
-    ctx.viewer = OpenSeadragon({
-      id: 'openseadragon',
-      crossOriginPolicy: 'Anonymous',
-      ajaxWithCredentials: false,
-      prefixUrl: '/assets/img/openseadragon/',
-      showZoomControl: true,
-      animationTime: 0.15,
-      blendTime: 0,
-      constrainDuringPan: false,
-      controlsFadeAfterInactive: 1500,
-      controlsFadeDelay: 250,
-      controlsFadeLength: 250,
-      defaultZoomLever: 0,
-      immediateRender: false,
-      maxZoomPixelRatio: 1.25,
-      preload: false,
-      tileSources: ctx.imgUrl + '/info.json',
-      zoomInButton: 'osd-zoomin',
-      zoomOutButton: 'osd-zoomout',
-      fullPageButton: 'osd-fullpage',
-      rotateRightButton: 'osd-rotate-right',
-      rotateLeftButton: 'osd-rotate-left',
-      homeButton: 'osd-home',
-      toolbar: 'openseadragon-toolbar',
-      gestureSettingsMouse: {
-        scrollToZoom: false
-      },
-      showRotationControl: true
-    });
+
+    if (document.getElementById('openseadragon-toolbar')) {
+      // to handle edge case where a record doesn't have zooms and can't dynamically generate '#openseadragon-toolbar', which is checked in record-imgpanel_controlbar.html
+      ctx.viewer = OpenSeadragon({
+        id: 'openseadragon',
+        crossOriginPolicy: 'Anonymous',
+        ajaxWithCredentials: false,
+        prefixUrl: '/assets/img/openseadragon/',
+        showZoomControl: true,
+        animationTime: 0.15,
+        blendTime: 0,
+        constrainDuringPan: false,
+        controlsFadeAfterInactive: 1500,
+        controlsFadeDelay: 250,
+        controlsFadeLength: 250,
+        defaultZoomLever: 0,
+        immediateRender: false,
+        maxZoomPixelRatio: 1.25,
+        preload: false,
+        tileSources: ctx.imgUrl + '/info.json',
+        zoomInButton: 'osd-zoomin',
+        zoomOutButton: 'osd-zoomout',
+        fullPageButton: 'osd-fullpage',
+        rotateRightButton: 'osd-rotate-right',
+        rotateLeftButton: 'osd-rotate-left',
+        homeButton: 'osd-home',
+        toolbar: 'openseadragon-toolbar',
+        gestureSettingsMouse: {
+          scrollToZoom: false
+        },
+        showRotationControl: true
+      });
+    } else {
+      return;
+    }
 
     ctx.viewer.addHandler('full-screen', function (e) {
       if (e.fullScreen) {
