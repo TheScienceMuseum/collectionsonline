@@ -33,7 +33,7 @@
       {{/if}}
     </div>
 
-    <div class="row searchresults {{#if results.length}}searchresults--filtersactive{{/if}}" id="searchresults">
+    <div class="searchresults {{#if results.length}}searchresults--filtersactive{{/if}}" id="searchresults">
 
       {{#ifpage 'search'}}{{> search/results-grid}}{{/ifpage}}
       {{#ifpage 'results-list'}}{{> search/results-list }}{{/ifpage}}

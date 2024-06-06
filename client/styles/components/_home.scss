@@ -8,16 +8,6 @@
   background-color: black;
   color: white;
   text-shadow: rgba(0, 0, 0, 0.5) 0 0 1rem;
-  // padding: 2rem 0;
-
-  // @include media('>=medium') {
-  //   padding: 3rem 0;
-  // }
-
-  // @include media('>=large') {
-  //   padding: 4rem 0;
-  // }
-
   position: relative;
   overflow: hidden;
 }
@@ -270,43 +260,14 @@
 // home page variation
 //-----------------------------------------------------------------------------
 
-@mixin home-section($top: 2rem, $bottom: 2rem) {
-  // padding-top: $top;
-  // padding-bottom: $bottom;
-
-  // @include media('>=medium') {
-  //   padding-top: $top * 1.5;
-  //   padding-bottom: $bottom * 1.5;
-  // }
-
-  // @include media('>=large') {
-  //   padding-top: $top * 2;
-  //   padding-bottom: $bottom * 2;
-  // }
-
-  // &__h {
-  //   line-height: 1;
-  //   text-transform: uppercase;
-  //   margin: 0 0 1em 0;
-  //   font-size: clamp-between(1.5rem, 2.5rem);
-  // }
-}
-
-.home-cards {
-  // @include home-section;
-
-}
+.home-cards {}
 
 .home-carousel {
   background-color: #000;
   color: #fff;
-  // @include home-section;
 }
 
-.home-map {
-  // @include home-section($top: 2rem, $bottom: 0);
-  // no bottom padding cos we have 2 white sections in a row
-}
+.home-map {}
 
 .smg-map {
   display: block;

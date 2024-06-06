@@ -26,7 +26,6 @@ module.exports = {
           description:
             'The home of human ingenuity, exploring stories of scientific achievement',
           figure: '/assets/img/home/collections/sciencemuseum.jpg',
-          columns: 'small-6 medium-3',
           link: '/search/museum/science-museum'
         },
         {
@@ -35,7 +34,6 @@ module.exports = {
           figure: '/assets/img/home/collections/msi.jpg',
           description:
             'The story of Manchester’s scientific and industrial past, present and future',
-          columns: 'small-6 medium-3',
           link: '/search/museum/science-and-industry-museum'
         },
         {
@@ -44,7 +42,6 @@ module.exports = {
           figure: '/assets/img/home/collections/nmm.jpg',
           description:
             'The science and culture of light and sound technologies, and their impact on our lives',
-          columns: 'small-6 medium-3',
           link: '/search/museum/national-science-media-museum'
         },
         {
@@ -53,7 +50,6 @@ module.exports = {
           figure: '/assets/img/home/collections/nrm.jpg',
           description:
             'Home to the largest collection of railway objects in the world',
-          columns: 'small-6 medium-3',
           link: '/search/museum/national-railway-museum'
         }
       ]
@@ -171,133 +167,114 @@ module.exports = {
           type: 'collection',
           title: 'Daily Herald Photo Archive',
           figure: '/assets/img/home/collections/daily-herald-archive.jpg',
-          columns: '',
           link: '/search/collection/daily-herald-archive'
         },
         {
           type: 'collection',
           title: 'A Brief History of Stuff',
           figure: '/assets/img/home/collections/brief-history-of-stuff.jpg',
-          columns: '',
           link: 'https://www.sciencemuseumgroup.org.uk/brief-history-stuff-podcast/'
         },
         // {
         //   type: 'collection',
         //   title: 'Never Been Seen',
         //   figure: '/assets/img/home/collections/never-been-seen.jpg',
-        //   columns: '',
         //   link: 'https://thesciencemuseum.github.io/never-been-seen/'
         // },
         // {
         //   type: 'collection',
         //   title: 'What the Machine Saw',
         //   figure: '/assets/img/home/collections/what-the-machine-saw.jpg',
-        //   columns: '',
         //   link: 'https://johnstack.github.io/what-the-machine-saw/'
         // },
         {
           type: 'collection',
           title: 'Random Object Generator',
           figure: '/assets/img/home/collections/random-object-generator.jpg',
-          columns: '',
           link: 'https://collection.sciencemuseumgroup.org.uk/search/slideshow'
         },
         {
           type: 'collection',
           title: 'Rotational photography',
           figure: '/assets/img/home/collections/rotational.jpg',
-          columns: '',
           link: '/search/objects/rotational'
         },
         {
           type: 'collection',
           title: 'The Babbage Papers',
           figure: '/assets/img/home/collections/babbage.jpg',
-          columns: '',
           link: '/documents/aa110000003/the-babbage-papers'
         },
         {
           type: 'collection',
           title: 'Toys & games',
           figure: '/assets/img/home/collections/toys.jpg',
-          columns: '',
           link: '/search?q=toy'
         },
         {
           type: 'collection',
           title: 'Information Age',
           figure: '/assets/img/home/collections/informationage.jpg',
-          columns: '',
           link: '/search/gallery/information-age-gallery%3A-web'
         },
         {
           type: 'collection',
           title: 'Mathematics',
           figure: '/assets/img/home/collections/mathematics-highlights.jpg',
-          columns: '',
           link: '/search/categories/mathematics'
         },
         {
           type: 'collection',
           title: 'Cinematography',
           figure: '/assets/img/home/collections/cinematography.jpg',
-          columns: '',
           link: '/search/categories/cinematography/images'
         },
         {
           type: 'collection',
           title: 'Psychometric Tests',
           figure: '/assets/img/home/collections/psychometric-tests.jpg',
-          columns: '',
           link: '/search/objects/object_type/psychometric-test'
         },
         {
           type: 'collection',
           title: 'Television',
           figure: '/assets/img/home/collections/television.jpg',
-          columns: '',
           link: '/search/categories/television'
         },
         {
           type: 'collection',
           title: 'Radiomedicine',
           figure: '/assets/img/home/collections/radiomedicine.jpg',
-          columns: '',
           link: '/search/categories/radiomedicine'
         },
         {
           type: 'collection',
           title: 'Creative industries',
           figure: '/assets/img/home/collections/creative-industries.jpg',
-          columns: '',
           link: '/search/categories/creative-industries'
         },
         {
           type: 'collection',
           title: 'Astronomy',
           figure: '/assets/img/home/collections/astronomy.jpg',
-          columns: '',
           link: '/search/categories/astronomy'
         },
         {
           type: 'collection',
           title: 'Computing and Data processing',
           figure: '/assets/img/home/collections/computing.jpg',
-          columns: '',
           link: '/search/categories/computing-&-data-processing'
         },
         {
           type: 'collection',
           title: 'Time measurement',
           figure: '/assets/img/home/collections/time-measurement.jpg',
-          columns: '',
           link: '/search/categories/time-measurement'
         },
         {
           type: 'collection',
           title: 'Radio communication',
           figure: '/assets/img/home/collections/radio-communication.jpg',
-          columns: '',
           link: '/search/categories/radio-communication'
         }
       ]

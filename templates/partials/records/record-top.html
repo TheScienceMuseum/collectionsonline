@@ -16,14 +16,15 @@
       {{#each fact}}
       <dl class="fact-{{classname this.key}}">
         <dt>{{ this.key }}:</dt>
-        {{#if this.makers}}
-        {{#each this.makers}}
-        <dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{ this.value }}{{#if this.link }}</a>{{/if}}</dd>{{comma
-        this ../this.makers true}}
-        {{/each}}
-        {{/if}}
-        {{#isequal this.key 'Made' this}}
         <dd>
+          {{#if this.makers}}
+          {{#each this.makers}}
+          {{#if this.link }}<a href="{{this.link}}">{{this.value}}</a>{{else}}{{this.value}}{{/if}}{{comma
+        this ../this.makers true}}
+          {{/each}}
+          {{/if}}
+          {{#isequal this.key 'Made' this}}
+
           {{#if this.date.value}}
           {{#if this.date.link }}<a href="{{this.date.link}}">{{/if}}
             {{ this.date.value }}
@@ -39,14 +40,17 @@
           {{#each (dedupe this.place)}}
           <a href="{{link}}">{{ value }}</a>{{comma this ../this.place true}}
           {{/each}}
+
+          {{else}}
+
+          {{#each this.value}}
+          {{#if this.link }}<a href="{{this.link}}">{{ this.value }}</a>{{else}}{{ this.value }}{{/if}}
+          {{else}}
+          {{#if this.link }}<a href="{{this.link}}">{{ this.value }}</a>{{else}}{{ this.value }}{{/if}}
+          {{/each}}
+
+          {{/isequal}}
         </dd>
-        {{else}}
-        {{#each this.value}}
-        <dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{ this.value }}{{#if this.link }}</a>{{/if}}</dd>
-        {{else}}
-        <dd>{{#if this.link }}<a href="{{this.link}}">{{/if}}{{ this.value }}{{#if this.link }}</a>{{/if}}</dd>
-        {{/each}}
-        {{/isequal}}
       </dl>
       {{/each}}
     </div>

@@ -4,16 +4,14 @@
 //-----------------------------------------------------------------------------
 
 .archive-section {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
   background-color: grey(10);
+  margin-top: 1px; // separate from previous section?
 }
 
 .archive-tree {
   background-color: grey(10);
 
   &__title {
-    line-height: 2.5rem; // match searchbox probably to right
     margin: 0;
   }
 
@@ -93,6 +91,7 @@
 
   li li {
     margin-left: rem(40);
+    font-weight: 300;
 
     button,
     label,
@@ -144,6 +143,7 @@
     border-left: 1px white solid;
     border-bottom: 1px white solid;
     color: black;
+    text-decoration: none;
 
     &:hover {
       background-color: blend-multiply(rgba($c-teal, 0.1), grey(20));

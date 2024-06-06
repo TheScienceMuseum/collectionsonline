@@ -122,11 +122,11 @@
     <section class="section --spacious home-carousel">
       <div class="o-container">
         <h2 class="section__h">{{this.title}}</h2>
-        <div class="columns flickity-buttonholder"></div>
+        <div class="flickity-buttonholder"></div>
       </div>
       <div class="home-carousel__flickity">
         {{#each this.collection}}
-        <div class="{{ this.columns }} home-carousel__cell">
+        <div class="home-carousel__cell">
           <a href="{{ this.link }}">
             <article class="resultcard resultcard--dark {{#if type}}resultcard--{{ this.type }}{{/if}}">
               <figure class="resultcard__figure">
