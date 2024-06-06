@@ -1,31 +1,35 @@
-
-  <section>
-    <div class="o-container">
-      <div class="mediaplayer">
-        <div class="mediaplayer__show">
-          {{#each youtube}}
-          <div class="mediaplayer__embed" data-type="{{platform}}">
-            <iframe id="{{platform}}{{id}}" data-src="https://www.youtube-nocookie.com/embed/{{id}}?modestbranding=1&rel=0&showinfo=0&enablejsapi=1" title="{{ concat platform ": " title }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-          </div>
-          {{/each}}
-          {{#each sketchfab}}
-          <div class="mediaplayer__embed">
-            <iframe id="{{platform}}{{id}}" src="https://sketchfab.com/3d-models/{{id}}/embed?preload=1"  title="{{ concat platform ": " title }}" frameborder="0" allow="autoplay; fullscreen; vr" allowfullscreen></iframe>
-          </div>
-          {{/each}}
-          {{#each rotational}}
-          <div class="mediaplayer__embed" id="{{platform}}{{id}}">
-            <iframe data-src="/embed/rotational/{{id}}" title="{{ concat platform ": " title }}" frameborder="0" allow="autoplay; fullscreen; vr" allowfullscreen></iframe>
-          </div>
-          {{/each}}
+<section class="section">
+  <div class="o-container">
+    <div class="mediaplayer">
+      <div class="mediaplayer__show">
+        {{#each youtube}}
+        <div class="mediaplayer__embed" data-type="{{platform}}">
+          <iframe id="{{platform}}{{id}}"
+            data-src="https://www.youtube-nocookie.com/embed/{{id}}?modestbranding=1&rel=0&showinfo=0&enablejsapi=1"
+            title="{{ concat platform ": " title }}" frameborder="0" allow="autoplay; encrypted-media"
+            allowfullscreen></iframe>
         </div>
-        <div class="mediaplayer__list">
-          <h4 class="mediaplayer__h">Look closer</h4>
-          {{#each youtube}}{{> records/mediaplayer__listitem }}{{/each}}
-          {{#each sketchfab}}{{> records/mediaplayer__listitem }}{{/each}}
-          {{#each rotational}}{{> records/mediaplayer__listitem }}{{/each}}
+        {{/each}}
+        {{#each sketchfab}}
+        <div class="mediaplayer__embed">
+          <iframe id="{{platform}}{{id}}" src="https://sketchfab.com/3d-models/{{id}}/embed?preload=1"
+            title="{{ concat platform ": " title }}" frameborder="0" allow="autoplay; fullscreen; vr"
+            allowfullscreen></iframe>
         </div>
+        {{/each}}
+        {{#each rotational}}
+        <div class="mediaplayer__embed" id="{{platform}}{{id}}">
+          <iframe data-src="/embed/rotational/{{id}}" title="{{ concat platform ": " title }}" frameborder="0"
+            allow="autoplay; fullscreen; vr" allowfullscreen></iframe>
+        </div>
+        {{/each}}
+      </div>
+      <div class="mediaplayer__list">
+        <h4 class="mediaplayer__h">Look closer</h4>
+        {{#each youtube}}{{> records/mediaplayer__listitem }}{{/each}}
+        {{#each sketchfab}}{{> records/mediaplayer__listitem }}{{/each}}
+        {{#each rotational}}{{> records/mediaplayer__listitem }}{{/each}}
       </div>
     </div>
-  </section>
-
+  </div>
+</section>

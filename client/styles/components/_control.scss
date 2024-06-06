@@ -3,49 +3,62 @@
 // a common appearance across a few element types
 //-----------------------------------------------------------------------------
 
+// wrapper only used for the bottom of searchgrid
 .controls {
-  //.row
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  padding-top: $grid-gutter;
+  padding-bottom: $grid-gutter;
+  justify-content: space-between;
 }
 
 .control {
   @include control-base;
-  display: inline-block;
-  height: rem-calc(40);
+  display: inline-flex;
+  height: calc(3rem + 2px);
   position: relative;
 
+  label {
+    margin: 0;
+    font-size: .875rem;
+  }
+
   &__label {
-    float: left;
-    line-height: rem-calc(16);
-    padding: rem-calc(12 8);
+    line-height: 1.5rem;
+    padding: 0.75rem 0.5rem;
+
     @include media(">=medium") {
-      padding: rem-calc(12 16);
+      padding: 0.75rem 1rem;
     }
   }
 
   &__buttons {
-    float: left;
+    display: inline-flex;
   }
+
   &__buttons:last-child {
     //margin-right: -1px;
   }
 
   &__button {
-    float: left;
-    height: rem-calc(40);
-    margin-top: -1px;
-    margin-right: -1px;
+    // height: rem(40);
+    margin: -1px;
+    // margin-right: -1px;
     border: 1px black solid;
     color: black;
+    background-color: white;
+    display: inline-flex;
+    width: 3rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+
     &:not(&--active):hover {
       @include control-hover;
     }
 
     .icon {
-      float: left;
-      font-size: rem-calc(24);
-      margin: rem-calc(8);
+      // float: left;
+      font-size: rem(24);
+      margin: rem(8);
     }
 
     &--active,
@@ -56,22 +69,22 @@
 
     label {
       //alt posiiton of label
-      float: left;
-      line-height: rem-calc(16);
-      padding: rem-calc(16);
+      // float: left;
+      line-height: rem(16);
+      padding: rem(16);
     }
   }
 
-  &--filters {
-    width: 100%;
-  }
+  // &--filters {
+  //   width: 100%;
+  // }
+
   &--filters &__label {
     float: none;
   }
+
   &--filters &__button {
-    position: absolute;
-    right: 0;
-    top: 0;
+    margin-left: auto;
   }
 
   &--active:after {
@@ -93,16 +106,21 @@
   float: right;
   font-size: 0; // remove inline-block inbetween space
   font-weight: 500;
+
   @include media(">=medium") {
     text-align: center;
   }
+
   display: flex;
 
   li {
-    line-height: rem-calc(16);
+    line-height: rem(16);
     display: flex;
   }
-  li + li { border-left: 1px black solid }
+
+  li + li {
+    border-left: 1px black solid
+  }
 
   a,
   .current {
@@ -121,27 +139,9 @@
 
 // rpp= results per page, but not quite worth inheriting from .control
 .control--rpp {
-  float: left;
-
-  select {
+  .c-select {
     width: auto;
-    height: rem-calc(40);
-    margin-top: -1px;
-    margin-right: -1px;
-    line-height: 1rem;
-    padding-right: 1.5rem;
-    border-color: black;
-    background-position: right -1rem center; //need to check support
-
-    &:hover {
-      // because F is already using bg image for disclosure triangle, to add extra bg on hover means retrieving existing properties first.
-      @include control-hover;
-      background-image: svg-uri(
-        '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="24" viewBox="0 0 32 24"><polygon points="0,0 32,0 16,24" fill="#333"></polygon></svg>'
-      );
-      background-size: 9px 6px, cover;
-      background-origin: content-box, border-box;
-      background-repeat: no-repeat, repeat;
-    }
+    margin: -1px;
+    font-size: clamp-between(rem(14), rem(18));
   }
 }

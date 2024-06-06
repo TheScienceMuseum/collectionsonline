@@ -28,7 +28,7 @@
 
   li {
     display: block;
-    min-height: rem-calc(40);
+    min-height: rem(40);
     clear: left;
     margin-bottom: -1px;
   }
@@ -55,8 +55,8 @@
 
   button,
   label {
-    width: rem-calc(40);
-    height: rem-calc(40);
+    width: rem(40);
+    height: rem(40);
     outline: 0 red solid;
     border-width: 0 0 1px 1px;
     border-color: white;
@@ -75,9 +75,12 @@
   [aria-expanded=true] button {
     background-image: url(/assets/icons/tree-contract.svg);
   }
-  [aria-expanded=false] button, label {
+
+  [aria-expanded=false] button,
+  label {
     background-image: url(/assets/icons/tree-expand.svg);
   }
+
   button[disabled] {
     background-image: url(/assets/icons/tree-item.svg);
   }
@@ -89,7 +92,7 @@
   }
 
   li li {
-    margin-left: rem-calc(40);
+    margin-left: rem(40);
 
     button,
     label,
@@ -119,23 +122,25 @@
     position: relative;
   }
 
-  &__label--root { //toppermost
+  &__label--root {
+
+    //toppermost
     button {
-      // height: rem-calc(46);
-      // width: rem-calc(46);
+      // height: rem(46);
+      // width: rem(46);
     }
 
     a {
-      font-size: rem-calc(22);
+      font-size: rem(22);
       font-weight: 500;
     }
   }
 
   &__label a {
     display: block;
-    margin-left: rem-calc(40);
-    padding: rem-calc(9 16 8 16);
-    line-height: rem-calc(22);
+    margin-left: rem(40);
+    padding: rem(9 16 8 16);
+    line-height: rem(22);
     border-left: 1px white solid;
     border-bottom: 1px white solid;
     color: black;

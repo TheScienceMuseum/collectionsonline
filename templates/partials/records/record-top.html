@@ -1,11 +1,12 @@
-<section class="record-top {{class}}">
-  <div class="row">
-    <div class="large-12 columns">
-      <h1 class="record-top__title">{{#if level}}{{> global/icon i=level}}{{else}}{{> global/icon i=type}}{{/if}}
-        {{normalise title this}} {{#ifpage 'person'}}<span class="record-top__date">{{date}}</span>{{/ifpage}}</h1>
+<section class="record-top section">
+  <div class="o-container">
 
+    <h1 class="record-top__title">{{#if level}}{{> global/icon i=level}}{{else}}{{> global/icon i=type}}{{/if}}
+      {{normalise title this}} {{#ifpage 'person'}} <span class="record-top__date">{{date}}</span>{{/ifpage}}</h1>
+
+    <div class="c-property-list">
       {{#if parent }}
-      <dl class="record-top__dl fact-Made">
+      <dl class="fact-Made">
         <dt>PART OF:</dt>
         <dd>
           <a href="{{parent.links.self}}">{{parent.attributes.summary.title}}</a>
@@ -13,7 +14,7 @@
       </dl>
       {{/if}}
       {{#each fact}}
-      <dl class="record-top__dl fact-{{classname this.key}}">
+      <dl class="fact-{{classname this.key}}">
         <dt>{{ this.key }}:</dt>
         {{#if this.makers}}
         {{#each this.makers}}

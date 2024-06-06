@@ -1,3 +1,4 @@
+@use "sass:math";
 //-----------------------------------------------------------------------------
 // Theres no place like /
 //-----------------------------------------------------------------------------
@@ -7,42 +8,54 @@
   background-color: black;
   color: white;
   text-shadow: rgba(0, 0, 0, 0.5) 0 0 1rem;
-  padding: 2rem 0;
-  @include media('>=medium') {
-    padding: 3rem 0;
-  }
-  @include media('>=large') {
-    padding: 4rem 0;
-  }
+  // padding: 2rem 0;
+
+  // @include media('>=medium') {
+  //   padding: 3rem 0;
+  // }
+
+  // @include media('>=large') {
+  //   padding: 4rem 0;
+  // }
+
   position: relative;
   overflow: hidden;
 }
+
 .home-banner {
   &__intro {
+    font-size: 2rem;
     font-weight: 500;
     margin-bottom: 0;
     text-transform: none;
+
     a[href^='/search/'] {
       text-decoration: underline;
     }
+
     @include media('<=small') {
       display: none;
     }
+
     @include media('>=medium') {
       margin-top: 1rem;
       margin-bottom: 1rem;
     }
+
     @include media('>=large') {
       margin-top: 2rem;
       margin-bottom: 2rem;
     }
+
     a {
       color: white;
     }
+
     a:hover {
       text-decoration: underline;
     }
   }
+
   /* --------- CONFIG ---------  */
   $no-of-slides: 8; // sadly, this number is not deducable by css alone.
   $slide-duration: 6s;
@@ -62,13 +75,15 @@
     animation-duration: $no-of-slides * $slide-duration;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+
     @media (prefers-reduced-motion) {
       animation: none;
     }
   }
 
-  $slide-fade: 50% / $no-of-slides;
-  $slide-end: 200% / $no-of-slides;
+  $slide-fade: math.div(50%, $no-of-slides);
+  $slide-end: math.div(200%, $no-of-slides);
+
   @keyframes slide {
     0% {
       // initial state - topmost, and transparent
@@ -76,22 +91,21 @@
       transform: scale3d(1, 1, 1);
       z-index: $no-of-slides;
     }
+
     #{$slide-fade} {
       opacity: 1; // now, the next slide will start in front
     }
+
     #{$slide-end} {
-      transform: scale3d(
+      transform: scale3d(#{$scale-factor},
         #{$scale-factor},
-        #{$scale-factor},
-        1
-      ); // but we keep scaling until fully obscured
+        1); // but we keep scaling until fully obscured
     }
+
     100% {
-      transform: scale3d(
+      transform: scale3d(#{$scale-factor},
         #{$scale-factor},
-        #{$scale-factor},
-        1
-      ); //hold until all slides are done
+        1); //hold until all slides are done
       z-index: 0;
     }
   }
@@ -102,12 +116,12 @@
     $delay: $i * $slide-duration;
     $dx: left, center, right;
     $dy: top, center, bottom;
+
     img:nth-child(#{$child}) {
       animation-delay: #{$delay};
+
       @if $pan {
-        transform-origin: nth($dx, random(length($dx)))
-          nth($dy, random(length($dy)))
-          0;
+        transform-origin: nth($dx, random(length($dx))) nth($dy, random(length($dy))) 0;
       }
     }
   }
@@ -131,31 +145,38 @@
     align-items: center; // center container & arrows
     gap: 1em;
   }
+
   @include media('>=medium') {
     display: table; //ie9 fallback
     display: flex;
     justify-content: space-between;
-  } // stack on small
+  }
+
+  // stack on small
 }
 
 .featurestep {
   flex: 1;
+
   &--arrow {
     flex: initial;
     flex-basis: 3em;
     max-width: 3em;
     margin: 0 1em;
     position: relative; // for safari
+
     @include media('<=small') {
       height: 2rem;
       margin: 1rem 37.5%;
     }
+
     @include media('>=large') {
       flex-basis: 4em;
       max-width: 4em;
       margin: 0 2em;
     }
   }
+
   &__arrow {
     width: 100%;
     height: 100%;
@@ -163,32 +184,40 @@
     stroke-width: 1;
     stroke: #fff;
     fill: none;
+
     .ttb {
       display: none;
     }
+
     @include media('<=medium') {
       position: static; // reveals arrows on smaller devices
     }
+
     @include media('<=medium') {
       .ltr {
         display: none;
       }
+
       .ttb {
         display: block;
       }
     }
   }
+
   a {
     text-decoration: none;
     color: white;
   }
+
   a:hover {
     text-decoration: underline;
     color: white;
   }
+
   .icon {
     font-size: 2rem;
     vertical-align: top;
+
     @include media('>=medium') {
       display: block;
       margin-bottom: 1rem;
@@ -202,30 +231,36 @@
     font-weight: 500;
     text-align: center;
     margin-bottom: 0.5rem;
+
     @include media('>=medium') {
       text-align: left;
       margin-bottom: 1rem;
     }
+
     @include media('>=large') {
       font-size: 3rem;
     }
   }
+
   &--1 &__title {
     font-weight: 900;
   }
+
   &--3 &__title {
     font-weight: 300;
   }
 
   &__desc {
-    font-size: rem-calc(18);
+    font-size: rem(18);
     font-weight: 500;
     margin: 0;
     text-align: center;
+
     @include media('>=medium') {
       text-align: left;
     }
   }
+
   &__desc a {
     text-decoration: underline;
   }
@@ -236,65 +271,55 @@
 //-----------------------------------------------------------------------------
 
 @mixin home-section($top: 2rem, $bottom: 2rem) {
-  padding-top: $top;
-  padding-bottom: $bottom;
-  @include media('>=medium') {
-    padding-top: $top * 1.5;
-    padding-bottom: $bottom * 1.5;
-  }
-  @include media('>=large') {
-    padding-top: $top * 2;
-    padding-bottom: $bottom * 2;
-  }
+  // padding-top: $top;
+  // padding-bottom: $bottom;
 
-  &__h {
-    font-size: 1.5rem;
-    line-height: 1;
-    text-transform: uppercase;
-    margin: 0 0 1em 0;
-    @include media('>=medium') {
-      margin: 1em 0;
-      font-size: 2rem;
-    }
-    @include media('>=large') {
-      font-size: 2.5rem;
-    }
-  }
+  // @include media('>=medium') {
+  //   padding-top: $top * 1.5;
+  //   padding-bottom: $bottom * 1.5;
+  // }
+
+  // @include media('>=large') {
+  //   padding-top: $top * 2;
+  //   padding-bottom: $bottom * 2;
+  // }
+
+  // &__h {
+  //   line-height: 1;
+  //   text-transform: uppercase;
+  //   margin: 0 0 1em 0;
+  //   font-size: clamp-between(1.5rem, 2.5rem);
+  // }
 }
 
 .home-cards {
-  background-color: #fff;
-  @include home-section;
+  // @include home-section;
 
-  .row {
-    @include flexcards-container;
-  }
-
-  .column:not(h2) {
-    @include flexcards-item;
-  }
 }
 
 .home-carousel {
   background-color: #000;
   color: #fff;
-  @include home-section;
+  // @include home-section;
 }
 
 .home-map {
-  @include home-section($top: 2rem, $bottom: 0);
+  // @include home-section($top: 2rem, $bottom: 0);
   // no bottom padding cos we have 2 white sections in a row
 }
 
 .smg-map {
   display: block;
+  --smg-link-color: black;
 
   @include media('>=medium') {
     display: flex;
+
     &__imgratio {
-      height: percentage(340 / 400);
+      height: percentage(math.div(340, 400));
       width: 50%;
     }
+
     &__intro {
       display: flex;
       flex-direction: column;
@@ -302,6 +327,7 @@
       width: 50%;
     }
   }
+
   &__map {
     display: block;
     margin: auto;
@@ -312,16 +338,20 @@
     width: 118px * 0.75;
     height: 71px * 0.75;
     display: none;
+
     @include media('>=medium') {
       display: block;
     }
+
     @include media('>=large') {
       width: 118px;
       height: 71px;
     }
   }
+
   &__desc {
     margin-top: 1rem;
+
     // display: none;
     // @include media(">=medium") {
     //   display: block;
@@ -329,6 +359,7 @@
     h3 {
       font-size: 1em;
     }
+
     @include media('>=large') {
       margin-top: 2rem;
       font-size: 1.5em;
@@ -342,9 +373,11 @@
     background-color: black;
     margin: 1rem 2rem;
     display: none;
+
     @include media('>=medium') {
       display: block;
     }
+
     @include media('>=large') {
       margin: 1rem 4rem;
     }

@@ -1,43 +1,43 @@
 <div id="main-page">
-{{> global/global-header}}
-{{> global/search-main reduced="reduced"}}
+  {{> global/global-header}}
+  {{> global/search-main reduced="reduced"}}
 
-<main>
+  <main>
 
-  {{> records/record-top }}
+    {{> records/record-top }}
 
-  {{#if images}}
+    {{#if images}}
     {{#ifmultiple images}}
-      {{> records/carousel}}
+    {{> records/carousel}}
     {{else}}
-      {{>records/single-image}}
+    {{>records/single-image}}
     {{/ifmultiple}}
-  {{/if}}
+    {{/if}}
 
-  <section class="white">
-    <div class="row">
-      <div class="columns medium-8">
+    <section class="section">
+      <div class="o-container o-grid--3cols@m">
+        <div class="section__content o-grid__span2">
 
-        {{> records/record-description}}
+          {{> records/record-description}}
 
+        </div>
+        <aside class="">
+
+          {{#if related.people}}{{> records/record-related-people }}{{/if}}
+
+          {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
+
+          {{#if related.documents}}{{> records/record-related-documents-primary }}{{/if}}
+
+        </aside>
       </div>
-      <aside class="columns medium-4">
+    </section>
 
-        {{#if related.people}}{{> records/record-related-people }}{{/if}}
+    {{> records/record-details }}
 
-        {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
+    {{> records/archive-tree-browser top="y"}}
 
-        {{#if related.documents}}{{> records/record-related-documents-primary }}{{/if}}
+  </main>
 
-      </aside>
-    </div>
-  </section>
-
-  {{> records/record-details }}
-
-  {{> records/archive-tree-browser top="y"}}
-
-</main>
-
-{{> global/global-footer }}
+  {{> global/global-footer }}
 </div>

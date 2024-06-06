@@ -39,9 +39,9 @@
 
   </div>
 
-  <div class="sph-records__details">
+  <div class="c-property-list --ruled:above">
     {{#each details}}
-    <dl class="sph-records__dl details-{{classname this.key}}">
+    <dl class="details-{{classname this.key}}">
       <dt>{{key}}:</dt>
       <dd>
         {{#each this.value}}
@@ -61,7 +61,7 @@
     </dl>
     {{/each}}
     {{# if parentTitle}}
-    <dl class="sph-records__dl">
+    <dl>
       <dt>Part of:</dt>
       <dd><a href="#part{{ parentId }}">{{ parentAccessionNumber }}</a></dd>
     </dl>

@@ -4,7 +4,7 @@
 
   <main>
 
-    {{> records/record-top Xclass="record-top--dark" }}
+    {{> records/record-top }}
 
     {{#if images}}
     {{#ifmultiple images}}
@@ -14,14 +14,14 @@
     {{/ifmultiple}}
     {{/if}}
 
-    <section class="white">
-      <div class="row">
-        <div class="columns medium-8">
+    <section class="record-description section">
+      <div class="o-container o-grid--3cols@m">
+        <div class="section__content o-grid__span2">
 
           {{> records/record-description}}
 
         </div>
-        <aside class="columns medium-4 ">
+        <aside>
 
           {{#if displayLocation}}
           {{> records/ondisplay }}

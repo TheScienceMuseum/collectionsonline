@@ -4,57 +4,91 @@
 // with filtercolumn collapsing to positioned or hidden states
 //-----------------------------------------------------------------------------
 
+.l-searchgrid {
+  display: grid;
+  gap: $grid-gutter;
+  margin-block: $grid-gutter;
+  grid-template-rows: auto auto auto;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-areas:
+    "ctrl-view ctrl-filters"
+    "filters filters"
+    "searchresults searchresults";
+
+  @include media(">=medium") {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "ctrl-view ctrl-view ctrl-filters"
+      "searchresults searchresults filters";
+  }
+
+  @include media(">=large") {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "ctrl-view ctrl-view ctrl-view ctrl-filters"
+      "searchresults searchresults searchresults filters";
+  }
+
+}
+
+.control--filters {
+  grid-area: ctrl-filters;
+}
+
+.control--view {
+  grid-area: ctrl-view;
+  margin-right: auto;
+}
+
 .searchresults {
-  @include flexcards-container;
+
+  grid-column-start: searchresults;
+  grid-column-end: filters;
   padding: 0;
   margin: 0 !important;
   position: relative;
+  display: grid;
+  gap: $grid-gutter;
+  grid-template-columns: repeat(2, 1fr);
 
-  &__column {
-    @include flexcards-item;
-    @include grid-column(6);
-    @include media(">=medium") {
-      @include grid-column(4);
-    }
-    @include media(">=large") {
-      @include grid-column(3);
-    }
+  @include media(">=medium") {
+    grid-template-columns: repeat(3, 1fr);
   }
 
+  @include media(">=large") {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  &__column {}
+
   &__list {
-    @include grid-column;
+    width: 100%;
   }
 
   &--filtersactive {
+    grid-area: searchresults;
+
     @include media(">=medium") {
-      @include grid-col-size(8);
-    }
-    @include media(">=large") {
-      @include grid-col-size(9);
+      grid-template-columns: repeat(2, 1fr);
     }
 
-    .searchresults__column {
-      @include media(">=medium") {
-        @include grid-column(6);
-        @include grid-column-end;
-      }
-      @include media(">=large") {
-        @include grid-column(4);
-        @include grid-column-end;
-      }
+    @include media(">=large") {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 }
 
 .filtercolumn {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  grid-area: filters;
   position: relative;
   display: none;
 
   &--filtersactive {
     display: block;
   }
+
   // positioned on top for small screens, col on right for larger
   @include media("<=small") {
     position: absolute;
@@ -62,12 +96,5 @@
     right: 1rem;
     left: 1rem;
     padding: 0;
-  }
-  @include media(">=medium") {
-    float: right;
-    @include grid-col-size(4);
-  }
-  @include media(">=large") {
-    @include grid-col-size(3);
   }
 }

@@ -1,58 +1,58 @@
 <div id="main-page">
-    {{> global/global-header}}
-    {{> global/search-main reduced="reduced"}}
+  {{> global/global-header}}
+  {{> global/search-main reduced="reduced"}}
 
-    <main>
+  <main>
 
-        {{> records/record-top Xclass="record-top--dark" }}
+    {{> records/record-top }}
 
-        {{#if images}}
-        {{#ifmultiple images}}
-        {{> records/carousel}}
-        {{else}}
-        {{>records/single-image}}
-        {{/ifmultiple}}
-        {{/if}}
+    {{#if images}}
+    {{#ifmultiple images}}
+    {{> records/carousel}}
+    {{else}}
+    {{>records/single-image}}
+    {{/ifmultiple}}
+    {{/if}}
 
-        <section class="white">
-            <div class="row">
-                <div class="columns medium-8">
+    <section class="section">
+      <div class="row">
+        <div class="columns medium-8">
 
-                    {{> records/record-description}}
-                </div>
-                <aside class="columns medium-4">
+          {{> records/record-description}}
+        </div>
+        <aside class="columns medium-4">
 
-                    {{#if displayLocation}}
-                    {{> records/ondisplay }}
-                    {{/if}}
+          {{#if displayLocation}}
+          {{> records/ondisplay }}
+          {{/if}}
 
-                    {{#if related.people}}{{> records/record-related-people }}{{/if}}
-                    {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
-                    <div id="articles"></div>
+          {{#if related.people}}{{> records/record-related-people }}{{/if}}
+          {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
+          <div id="articles"></div>
 
-                    {{!-- {{> records/panel-taxonomy}} moved lower to record-details. but panels could also be used
+          {{!-- {{> records/panel-taxonomy}} moved lower to record-details. but panels could also be used
                     here. --}}
 
-                </aside>
-            </div>
-        </section>
+        </aside>
+      </div>
+    </section>
 
-        {{#if (or youtube sketchfab rotational)}}{{> records/mediaplayer}}{{/if}}
+    {{#if (or youtube sketchfab rotational)}}{{> records/mediaplayer}}{{/if}}
 
-        {{#if audioplayer}}
-        {{#each audioplayer}}
-        {{> records/audioplayer }}
-        {{/each}}
-        {{/if}}
+    {{#if audioplayer}}
+    {{#each audioplayer}}
+    {{> records/audioplayer }}
+    {{/each}}
+    {{/if}}
 
-        {{#unless inProduction}}
-        {{#if childRecords}}
-        {{> records/record-mgroup-records}}
-        {{/if}}
-        {{/unless}}
+    {{#unless inProduction}}
+    {{#if childRecords}}
+    {{> records/record-mgroup-records}}
+    {{/if}}
+    {{/unless}}
 
 
-    </main>
+  </main>
 
-    {{> global/global-footer }}
+  {{> global/global-footer }}
 </div>

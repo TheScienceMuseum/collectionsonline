@@ -1,37 +1,37 @@
 {{!--  I'm hiding the filters by default for grid view, but showing for list. TBC --}}
 
 <main>
-  <div class="controls row">
+
+  <div class="l-searchgrid o-flex-container">
+
     {{#if results.length}}
-      <div class="large-9 medium-8 small-6 columns">
-          <div class="control">
-            <label class="control__label">View:</label>
-            <div class="control__buttons">
-              <a href="{{links.grid}}" class="control__button {{#ifpage 'search'}}control__button--active{{/ifpage}}" id="results-grid" title="View as grid">{{> global/icon i="grid" }}</a>
-              <a href="{{links.list}}" class="control__button {{#ifpage 'results-list'}}control__button--active{{/ifpage}}" id="results-list" title="View as list">{{> global/icon i="list" }}</a>
-            </div>
-          </div>
+
+    <div class="control control--view">
+      <label class="control__label">View:</label>
+      <div class="control__buttons">
+        <a href="{{links.grid}}" class="control__button {{#ifpage 'search'}}control__button--active{{/ifpage}}"
+          id="results-grid" title="View as grid">{{> global/icon i="grid" }}</a>
+        <a href="{{links.list}}" class="control__button {{#ifpage 'results-list'}}control__button--active{{/ifpage}}"
+          id="results-list" title="View as list">{{> global/icon i="list" }}</a>
       </div>
-      <div class="large-3 medium-4 small-6 columns">
-        {{#if (displayFilters results selectedFilters)}}
-          <div class="control control--filters control--active" id="control--filters">
-              <label class="control__label" for="fb">Filter search</label>
-              <button class="control__button hidden" id="fb">{{> global/icon i="filter_list" label="Filter search"}}</button>
-          </div>
-        {{/if}}
-      </div>
+    </div>
+
+    {{#if (displayFilters results selectedFilters)}}
+    <div class="control control--filters control--active" id="control--filters">
+      <label class="control__label" for="fb">Filter search</label>
+      <button class="control__button hidden" id="fb">{{> global/icon i="filter_list" label="Filter search"}}</button>
+    </div>
     {{/if}}
-  </div>
 
-  <div class="row">
+    {{/if}}
 
-      <div class="filtercolumn filtercolumn--filtersactive" id="filtercolumn">
-        {{#if results.length}}
-          {{#if (displayFilters results selectedFilters)}}
-            {{> search/filters }}
-          {{/if}}
-        {{/if}}
-      </div>
+    <div class="filtercolumn filtercolumn--filtersactive" id="filtercolumn">
+      {{#if results.length}}
+      {{#if (displayFilters results selectedFilters)}}
+      {{> search/filters }}
+      {{/if}}
+      {{/if}}
+    </div>
 
     <div class="row searchresults {{#if results.length}}searchresults--filtersactive{{/if}}" id="searchresults">
 

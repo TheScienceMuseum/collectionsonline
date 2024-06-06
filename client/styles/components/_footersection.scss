@@ -1,11 +1,12 @@
 .c-footersection {
   padding-top: 2rem;
   padding-bottom: 2rem;
-  font-size: rem-calc(14);
+  font-size: rem(14);
+  font-weight: 300;
 
   &__h {
     margin: 0;
-    font-size: rem-calc(16);
+    font-size: 1rem;
     text-transform: uppercase;
   }
 
@@ -24,6 +25,7 @@
   a {
     color: grey(60);
     text-decoration: underline;
+
     &:hover {
       color: black;
     }

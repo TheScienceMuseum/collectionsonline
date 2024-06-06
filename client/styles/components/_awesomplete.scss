@@ -43,13 +43,17 @@
     padding: 0.625rem 1rem;
     cursor: pointer;
     color: black;
+    font-weight: 300;
 
     &:hover,
     &[aria-selected=true] {
       background-color: black;
       // background-image: linear-gradient(grey(10) 0, grey(10) 1px, grey(5) 1px, grey(10) 100%);
       color: white;
-      mark { color: white; }
+
+      mark {
+        color: white;
+      }
     }
   }
 
