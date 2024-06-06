@@ -1,5 +1,5 @@
 const QueryString = require('querystring');
-const fetch = require('fetch-ponyfill')().fetch;
+// const fetch = require('fetch-ponyfill')().fetch;
 const page = require('page');
 const Snackbar = require('snackbarlightjs');
 
