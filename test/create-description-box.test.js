@@ -81,9 +81,11 @@ const mphcParent = {
   _source: {
     description:
       'Collection of objects and archives from Boddingtons Brewery at Strangeways, Manchester, c1883-2003.',
+    '@admin': { uid: 'co8413731' },
     title:
       'Collection of objects and archives from Boddingtons Brewery at Strangeways',
-    link: 'collection.sciencemuseumgroup.org.uk/objects/co8413731/collection-of-objects-and-archives-from-boddingtons-brewery-at-strangeways'
+    link: 'http://localhost:8000/search/objects/mphc/co8413731',
+    '@datatype': { scope: '1', grouping: 'MPH', base: 'object' }
   }
 };
 
@@ -94,24 +96,31 @@ test('createDescriptionBox - mphc valid', (t) => {
     type: { objects: true },
     mphc: { co8413731: true }
   };
-  const rootUrl =
-    'collection.sciencemuseumgroup.org.uk/objects/co8413731/collection-of-objects-and-archives-from-boddingtons-brewery-at-strangeways';
+
+  const rootUrl = 'http://localhost:8000';
 
   const actual = createDescriptionBox(selectedFilters, mphcParent, rootUrl);
 
-  const expected = ['description', 'title', 'link'];
+  const expected = {
+    mphc: {
+      description:
+        'Collection of objects and archives from Boddingtons Brewery at Strangeways, Manchester, c1883-2003.',
+      title:
+        'Collection of objects and archives from Boddingtons Brewery at Strangeways',
+      link: 'http://localhost:8000/objects/co8413731/collection-of-objects-and-archives-from-boddingtons-brewery-at-strangeways'
+    }
+  };
 
-  t.deepEqual(Object.keys(actual.mphc), expected);
+  t.deepEqual(actual, expected);
   t.end();
 });
 
-test('createDescriptionBox - mphc valid', (t) => {
+test('createDescriptionBox - mphc invalid uid', (t) => {
   const selectedFilters = {
     type: { objects: true },
     mphc: { co841373e: true }
   };
-  const rootUrl =
-    'collection.sciencemuseumgroup.org.uk/search/objects/mphc/co841373e';
+  const rootUrl = 'http://localhost:8000';
 
   const actual = createDescriptionBox(
     selectedFilters,
