@@ -38,6 +38,7 @@
     "slugg": "^1.2.1",
     "smg-web-design-system": "^0.9.0",
     "snackbarlightjs": "^1.1.2",
+    "wikibase-sdk": "^10.0.2",
     "wikijs": "^6.4.1"
   },
   "devDependencies": {
