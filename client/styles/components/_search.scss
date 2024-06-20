@@ -137,9 +137,12 @@
     }
 
     &,
-    &:focus {
+    &:focus,
+    &:focus-visible {
+      // focus drawn around parent instead
       border: 0;
       box-shadow: none;
+      outline: none;
     }
 
     @include media("<=small") {

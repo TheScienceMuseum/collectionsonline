@@ -1,5 +1,5 @@
-<section role="complementary" aria-label="Audio file">
-  <div class="o-container">
+<section class="section" role="complementary" aria-label="Audio file">
+  <div class="o-container o-blocks">
     <div class="c-audioplayer">
       <div class="c-audioplayer__thumb">
         <button class="c-audioplayer__button" aria-label="Play audio">
@@ -22,17 +22,12 @@
     </div>
 
     {{#if transcript}}
-    <div class="c-accordion" style="margin-top:1rem;">
-      <h3 class="c-accordion__title">
-        <button class="c-accordion__tab | js-accordion-tab" id="tab-{{ id }}" aria-expanded="false"
-          aria-controls="tab-content-{{ id }}">
-          Transcript
-        </button>
-      </h3>
-      <div class="c-accordion__content" id="tab-content-{{ id }}" aria-hidden="true" aria-labelledby="tab-{{ id}}">
+    <details class="c-accordion" style="margin-top: var(--smg-block-size)">
+      <summary>Transcript</summary>
+      <div class="c-accordion__content">
         {{{ transcript }}}
       </div>
-    </div>
+    </details>
     {{/if}}
   </div>
 </section>

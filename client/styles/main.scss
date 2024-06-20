@@ -4,6 +4,7 @@
 
 $grid-width: 90rem; // was previously 72
 $logo-panel-gradient: $c-teal $c-blue $c-purple;
+$pagination-mobile-items: true;
 
 // general settings and variables, required before foundation
 @import 'base/colour';

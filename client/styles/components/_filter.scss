@@ -11,7 +11,6 @@
 
   @include media("<=small") {
     position: absolute;
-    top: -1.5rem;
     width: 100%;
     box-shadow: 0 8px 16px rgba(black, 0.3);
   }
@@ -152,7 +151,7 @@
     .filter__name {
       color: white;
       font-weight: 500;
-      @include icon-bullet(cancel, 1.5rem, $top: -0.5rem, $left: -0.2rem);
+      @include icon-bullet(cancel, 1.5rem, $top: -0.1rem, $left: -0.2rem);
     }
 
     .filter__name:after {
@@ -166,7 +165,7 @@
   }
 
   &--uncollapsible &__name {
-    @include icon-bullet(cancel, 1.5rem, $top: 0.1rem, $left: -0.2rem);
+    @include icon-bullet(cancel, 1.5rem, $top: -0.1rem, $left: -0.2rem);
   }
 
   &:hover:not(&--active) {

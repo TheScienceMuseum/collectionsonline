@@ -93,8 +93,8 @@
   @include media("<=small") {
     position: absolute;
     z-index: 1;
-    right: 1rem;
-    left: 1rem;
+    right: 0;
+    left: 0;
     padding: 0;
   }
 }

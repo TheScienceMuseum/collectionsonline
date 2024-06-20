@@ -30,9 +30,14 @@
     // background-color: white;
   }
 
+  &__withicon {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
 
   &__text {
-    padding: 1rem;
+    padding: $grid-gutter;
     @include textstyles;
 
     p,
