@@ -6,4 +6,4 @@ module.exports = (description, part) => {
   } else if (part === 'moreDescription') {
     return description.primary?.initialDescription ? description.web?.initialDescription : description.web?.initialDescription.slice(1);
   }
-}
+};
