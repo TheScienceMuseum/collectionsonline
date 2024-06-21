@@ -4,10 +4,12 @@
   <main>
     <section class="section --spacious home-banner">
       {{!-- update /client/styles/components/_home.scss if no of images changes --}}
-      {{#each headerImages}}
-      <img src="/assets/img/home/feature/1600/{{this}}"
-        srcset="/assets/img/home/feature/800/{{this}} 800w, /assets/img/home/feature/1600/{{this}} 1600w" alt="" />
-      {{/each}}
+      <div class="home-banner__bgimages">
+        {{#each headerImages}}
+        <img src="/assets/img/home/feature/1600/{{this}}"
+          srcset="/assets/img/home/feature/800/{{this}} 800w, /assets/img/home/feature/1600/{{this}} 1600w" alt="" />
+        {{/each}}
+      </div>
 
       <div class="searchbar searchbar--home">
         <div class="home-banner__searchbar o-container">
