@@ -452,6 +452,10 @@ Handlebars.registerHelper(
   'groupState',
   require('../templates/helpers/groupState.js')
 );
+Handlebars.registerHelper(
+  'formatCopyright',
+  require('../templates/helpers/formatCopyright.js')
+);
 
 // Routes
 module.exports = {
