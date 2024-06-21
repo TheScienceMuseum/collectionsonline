@@ -445,9 +445,9 @@ Handlebars.registerHelper(
 Handlebars.registerHelper('dedupe', require('../templates/helpers/dedupe'));
 
 Handlebars.registerHelper(
-  'ifWebAndPrimary',
-  require('../templates/helpers/ifWebAndPrimary')
-);
+  'sphDescription',
+  require('../templates/helpers/sphDescription')
+); 
 Handlebars.registerHelper(
   'groupState',
   require('../templates/helpers/groupState.js')

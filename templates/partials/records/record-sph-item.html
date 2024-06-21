@@ -17,26 +17,23 @@
   </h3>
 
   <div class="sph-records__description">
-    {{#if description.primary}}
-    {{#each description.primary.initialDescription }}
-    <p>
-      {{ this}}
-    </p>
-    {{/each}}
-    {{/if}}
-    {{#ifWebAndPrimary description}}
-    <hr>
-    {{/ifWebAndPrimary}}
-    {{#if description.web}}
-
-    {{#each description.web.initialDescription}}
+    {{#if (sphDescription description "initialDescription")}}
+    {{#each (sphDescription description "initialDescription") }}
     <p>
       {{this}}
     </p>
     {{/each}}
     {{/if}}
-
-
+    {{#if (sphDescription description "moreDescription")}}
+    <details class="c-truncated">
+      <summary>More</summary>
+      {{#each (sphDescription description "moreDescription")}}
+      <p>
+        {{this}}
+      </p>
+      {{/each}}
+    </details>
+    {{/if}}
   </div>
 
   <div class="c-property-list --ruled:above">
