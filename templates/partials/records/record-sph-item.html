@@ -1,11 +1,22 @@
 <article class="sph-records__item resultcard--priority-card" id="part{{uid}}">
-
   {{#if images}}
+  {{#if hasMultipleImages}}
+  <div class="card-carousel">
+    {{#each images}}
+    <a class="card-carousel__cell" data-lightbox href="{{this.large}}">
+      <img src="{{this.medium}}" alt="{{this.title}}" />
+    </a>
+    {{/each}}
+  </div>
+  {{#each images}}
+  {{/each }}
+  {{ else }}
   <a href="{{firstImage images 0 'large' }}" data-lightbox>
     <figure class="sph-records__figure">
       <img src="{{firstImage images 0 }}" class="sph-records__img" alt="{{this.title}}" />
     </figure>
   </a>
+  {{/if}}
   {{ else }}
   <figure class="sph-records__figure">
     <figcaption>{{title}}</figcaption>

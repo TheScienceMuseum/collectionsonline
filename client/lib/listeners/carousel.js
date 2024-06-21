@@ -2,6 +2,7 @@ const Flickity = require('flickity');
 require('flickity-imagesloaded');
 
 module.exports = ctx => {
+  const arrowShape = 'M 0,50 L 45.67,4.33 L 52.5,11.16 L 18.49,45.17 L 100,45.17 L 100,54.83 L 18.49,54.83 L 52.5,88.84 45.67,95.67 Z';
   const carousel = document.querySelector('.carousel');
   if (carousel) {
     const thumbnails = document.getElementsByClassName('record-imgpanel__thumb');
@@ -24,8 +25,7 @@ module.exports = ctx => {
       pageDots: false,
       imagesLoaded: true,
       lazyLoad: 1,
-      arrowShape:
-        'M 0,50 L 45.67,4.33 L 52.5,11.16 L 18.49,45.17 L 100,45.17 L 100,54.83 L 18.49,54.83 L 52.5,88.84 45.67,95.67 Z'
+      arrowShape
     });
 
     const flkty = Flickity.data(carousel);
@@ -85,8 +85,7 @@ module.exports = ctx => {
       cellAlign: 'left',
       percentPosition: false,
       accessibility: true,
-      arrowShape:
-        'M 0,50 L 45.67,4.33 L 52.5,11.16 L 18.49,45.17 L 100,45.17 L 100,54.83 L 18.49,54.83 L 52.5,88.84 45.67,95.67 Z',
+      arrowShape,
       on: {
         ready: function () {
           offsetContainer();
@@ -116,6 +115,42 @@ module.exports = ctx => {
     ).style.marginLeft =
     containerOffset + 'px';
   }
+
+  const cardCarousels = document.querySelectorAll('.card-carousel');
+
+  cardCarousels.forEach(function (cardCarousel, index) {
+    ctx['cardCarousels' + index] = new Flickity(cardCarousel, {
+      wrapAround: true,
+      pageDots: true,
+      imagesLoaded: true,
+      accessibility: true,
+      setGallerySize: false,
+      arrowShape,
+      on: {
+        ready: function () {
+          // href wrappers don't play nicely with draggable elements
+          const links = cardCarousel.querySelectorAll('a');
+          links.forEach((link) => {
+            link.dataset.lightboxSrc = link.href;
+            link.removeAttribute('href');
+          });
+        },
+        staticClick: function (event, pointer, cellElement, cellIndex) {
+          if (!cellElement) {
+            return;
+          }
+          document.dispatchEvent(
+            new CustomEvent('open-lightbox', {
+              detail: {
+                src: cellElement.dataset.lightboxSrc,
+                alt: cellElement.getAttribute('alt')
+              }
+            })
+          );
+        }
+      }
+    });
+  });
 };
 
 function showHide (idBase, flkty, element) {
