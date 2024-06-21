@@ -9,15 +9,22 @@
   color: white;
   text-shadow: rgba(0, 0, 0, 0.5) 0 0 1rem;
   position: relative;
-  overflow: hidden;
 }
 
 .home-banner {
+  &__bgimages {
+    overflow: hidden;
+    position: absolute;
+    inset: 0;
+  }
+
   &__intro {
     font-size: 2rem;
     font-weight: 500;
     margin-bottom: 0;
     text-transform: none;
+
+
 
     a[href^='/search/'] {
       text-decoration: underline;
