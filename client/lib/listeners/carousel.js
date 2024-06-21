@@ -110,13 +110,11 @@ module.exports = ctx => {
   }
   function offsetContainer () {
     // to mirror main site carousels, we want to bust out of column container on right side only.
-    const windowWidth = document.body.offsetWidth;
-    const containerWidth = document.querySelector('.row').offsetWidth; // any row will do!
-    const offsetWidth = (windowWidth - containerWidth) / 2 + 8;
+    const containerOffset = document.querySelector('.o-container').offsetLeft; // first container will do!
     document.querySelector(
       '.home-carousel__flickity .flickity-viewport'
     ).style.marginLeft =
-      offsetWidth + 'px';
+    containerOffset + 'px';
   }
 };
 

@@ -36,6 +36,8 @@
   }
 
   .flickity-prev-next-button {
+    @include button-reset;
+
     width: 6rem;
     height: 100%;
     position: relative;
@@ -47,35 +49,36 @@
     &.previous {
       left: 0;
       cursor: w-resize;
+
       &:hover {
         opacity: 1;
-        background-image: linear-gradient(
-          270deg,
-          rgba(0, 0, 0, 0),
-          rgba(0, 0, 0, 0.4)
-        );
+        background-image: linear-gradient(270deg,
+            rgba(0, 0, 0, 0),
+            rgba(0, 0, 0, 0.4));
       }
     }
 
     &.next {
       float: right;
       cursor: e-resize;
+
       &:hover {
         opacity: 1;
-        background-image: linear-gradient(
-          90deg,
-          rgba(0, 0, 0, 0),
-          rgba(0, 0, 0, 0.4)
-        );
+        background-image: linear-gradient(90deg,
+            rgba(0, 0, 0, 0),
+            rgba(0, 0, 0, 0.4));
       }
     }
   }
 }
 
 .single_image_container {
-  text-align: center;
+  display: flex;
+  justify-content: center;
   border: 1px white solid;
   border-width: 1px 0;
+
+  // img { display: block;}
 
   .single_image {
     max-height: 36rem;
@@ -86,26 +89,35 @@
 
 .home-carousel {
   .flickity-enabled {
+    padding-left: $grid-gutter; // match container
+
     &:focus {
       outline: none;
     }
   }
+
   .flickity-viewport {
     overflow: hidden;
   }
 
   .flickity-prev-next-button {
     width: 1.5rem;
+    appearance: none;
+    background-color: transparent;
+
     svg {
       height: 1.5rem; //IE
     }
+
     padding: 1rem 0;
     opacity: 0.6;
     fill: white;
     color: white;
+
     &:hover {
       opacity: 1;
     }
+
     &.next {
       float: none;
       margin-left: 1rem;
@@ -114,7 +126,7 @@
 
   &__cell {
     max-width: 30%;
-    padding: 0.5rem;
-    width: rem-calc(288);
+    padding-right: $grid-gutter;
+    width: 18rem;
   }
 }

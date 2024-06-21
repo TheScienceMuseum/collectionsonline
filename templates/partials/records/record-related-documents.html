@@ -1,36 +1,34 @@
 <section class="record-related">
-  <div class="nested row">
-    <h2 class="columns">Related Documents</h2>
-
-    {{#each related.documents}}
+  <div class="o-container">
+    <h2>Related Documents</h2>
+    <div class="o-grid o-grid--3cols@s o-grid--4cols@m o-grid--6cols@l">
+      {{#each related.documents}}
       {{#formatrelated ../related.documents @index this}}
-        <div class="large-2 medium-3 small-4 columns end">
-          <a href="{{link}}">
-            <article class="resultcard resultcard--related {{#if type}}resultcard--{{ this.type }}{{/if}}">
-              <figure class="resultcard__figure">
-                {{#if this.attributes.figure}}<img src="{{ this.attributes.figure }}" alt="" /> {{/if}}
-              </figure>
-              <div class="resultcard__info">
-                <h3 class="resultcard__title">{{this.attributes.summary_title}}</h3>
-              </div>
-            </article>
-          </a>
-        </div>
+      <a href="{{link}}">
+        <article class="resultcard resultcard--related {{#if type}}resultcard--{{ this.type }}{{/if}}">
+          <figure class="resultcard__figure">
+            {{#if this.attributes.figure}}<img src="{{ this.attributes.figure }}" alt="" /> {{/if}}
+          </figure>
+          <div class="resultcard__info">
+            <h3 class="resultcard__title">{{this.attributes.summary_title}}</h3>
+          </div>
+        </article>
+      </a>
       {{/formatrelated}}
-    {{/each}}
+      {{/each}}
 
-    {{#seemore related.documents}}
-      <div class="large-2 medium-3 small-4 columns end">
-        <a href="/search/documents/makers/{{this.title}}">
-          <article class="resultcard resultcard--seemore see-more-documents">
-            <figure class="resultcard__figure">{{> global/icon i="search" size="48" }}</figure>
-            <div class="resultcard__info">
-              <h3 class="resultcard__title">See more related documents</h3>
-            </div>
-          </article>
-        </a>
-      </div>
-    {{/seemore}}
+      {{#seemore related.documents}}
 
+      <a href="/search/documents/makers/{{this.title}}">
+        <article class="resultcard resultcard--seemore see-more-documents">
+          <figure class="resultcard__figure">{{> global/icon i="search" size="48" }}</figure>
+          <div class="resultcard__info">
+            <h3 class="resultcard__title">See more related documents</h3>
+          </div>
+        </article>
+      </a>
+
+      {{/seemore}}
+    </div>
   </div>
 </section>

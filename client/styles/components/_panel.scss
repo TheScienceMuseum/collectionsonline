@@ -5,26 +5,40 @@
 //-----------------------------------------------------------------------------
 
 .panel {
-  background-color: grey(80);
+  background-color: black;
   color: white;
   margin-bottom: 1px;
   font-weight: 400;
-  &:last-child { margin-bottom: 0; }
 
-  .record-details & { //except if inside a grey panel
+  --smg-link-color: #{$c-teal};
+
+  & + & {
+    margin-top: 0;
+    background-color: grey(85);
+  }
+
+  & + & + & {
+    background-color: grey(77);
+  }
+
+  & + & + & + & {
+    background-color: grey(70);
+  }
+
+  .record-details & {
+    //except if inside a grey panel
     // background-color: white;
   }
 
+  &__withicon {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
 
   &__text {
-    padding: 1rem;
-
-    & > * {
-      line-height: 1.25;
-    }
-    & > * + * {
-      margin-top: 1rem;
-    }
+    padding: $grid-gutter;
+    @include textstyles;
 
     p,
     li,
@@ -33,26 +47,36 @@
       font-size: 1rem;
     }
 
-    h1, h2, h3, h4 {
+    h1,
+    h2,
+    h3,
+    h4 {
       // treat all equally
-      font-size: 1.5rem;
+      font-size: 1.5rem !important;
       margin: 0;
     }
 
-    :first-child {
-      margin-top: 0;
-    }
 
-    :last-child {
-      margin-bottom: 0;
-    }
   }
 
   a {
-    @include text-link($c-teal, $c-green);
+
+
+    &:hover,
+    &:active,
+    &:focus,
+    &:focus-visible {
+      color: $c-green;
+      text-decoration: underline;
+    }
   }
+
   ul {
     @include ul-icons;
+
+    a:not([class]) {
+      @include text-link($c-teal, $c-green);
+    }
   }
 
   .museum-articles h3 {
@@ -65,7 +89,8 @@
   ul.related-article {
     svg {
       vertical-align: middle;
-      margin-bottom: rem-calc(2);
+      margin-bottom: 0.125rem;
+      margin-right: 0.25rem;
     }
   }
 

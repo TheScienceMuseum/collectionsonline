@@ -1,0 +1,50 @@
+.c-property-list {
+  display: grid;
+  grid-template-columns: minmax(min-content, max-content) auto;
+  column-gap: 1em;
+  row-gap: 0.5em;
+  line-height: 1.2;
+
+  &.--ruled\:above,
+  &.--ruled\:between {
+    row-gap: 0;
+
+    dl {
+      padding-block: 0.75em;
+    }
+  }
+
+  &.--ruled\:above {
+    dl {
+      border-top: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+    }
+  }
+
+  &.--ruled\:between {
+    dl:not(:first-child) {
+      border-top: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+    }
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: span 2;
+  }
+
+  dl,
+  dt,
+  dd {
+    margin: 0;
+    padding: 0;
+  }
+
+  dt {
+    @include type-metasmall;
+    padding-top: 0.333em; //align first baseline
+  }
+
+  dd {
+    @include textstyles;
+  }
+}

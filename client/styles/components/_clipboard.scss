@@ -11,9 +11,10 @@
 
   &__input {
     display: block;
-    padding: rem-calc(6 4 5 4);
+    padding: rem(6 4 5 4);
     margin: 0;
     height: 2rem;
+    min-height: auto;
     width: calc(100% - 2rem);
     @include control-base;
     box-shadow: none;
