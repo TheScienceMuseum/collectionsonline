@@ -9,7 +9,7 @@
     align-items: flex-start;
 
     &__show {
-      width: calc(66.6666% - 0.3333333rem);
+      width: calc(66.6666% + clamp-between(0.5rem, 1rem));
     }
   }
 
