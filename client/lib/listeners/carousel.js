@@ -147,6 +147,11 @@ module.exports = ctx => {
               }
             })
           );
+        },
+        change: function () {
+          const copyright = this.selectedElement.dataset.copyright;
+          const dd = this.element.closest('article').querySelector('.details-image-copyright');
+          if (copyright && dd) dd.innerHTML = copyright;
         }
       }
     });
