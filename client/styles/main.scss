@@ -4,7 +4,7 @@
 
 $grid-width: 90rem; // was previously 72
 $logo-panel-gradient: $c-teal $c-blue $c-purple;
-$pagination-mobile-items: true;
+// $pagination-mobile-items: true; // displays all pae links on mobile, but not enough space! woul need some adaptive styling
 
 // general settings and variables, required before foundation
 @import 'base/colour';
@@ -38,6 +38,7 @@ $pagination-mobile-items: true;
 @import 'components/home';
 @import 'components/internal-header';
 @import 'components/lightbox';
+@import 'components/listresult';
 @import 'smg-web-design-system/src/scss/components/loading';
 @import 'components/logo-panel';
 @import 'components/mediaplayer';
@@ -49,7 +50,7 @@ $pagination-mobile-items: true;
 @import 'components/panel';
 @import 'components/property-list';
 @import 'components/record';
-@import 'components/result';
+@import 'components/resultcard';
 @import 'components/search';
 @import 'snackbarlightjs/src/css/snackbarlight';
 @import 'smg-web-design-system/src/scss/components/textinput';

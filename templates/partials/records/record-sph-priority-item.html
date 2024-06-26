@@ -1,0 +1,39 @@
+<article class="sph-priority-item" id="part{{uid}}" data-has-images="{{#if images}}true{{else}}false{{/if}}">
+  <div class="o-container">
+    <div class="sph-priority-item__col1">
+      {{>records/record-sph-images }}
+    </div>
+
+    <div class="sph-priority-item__col2 o-blocks --rem">
+      <h3 class="sph-priority-item__title">
+        {{title}}
+      </h3>
+
+      <div class="sph-priority-item__description">
+        {{#if (sphDescription description "moreDescription")}}
+        {{#each (sphDescription description "moreDescription")}}
+        <p>
+          {{this}}
+        </p>
+        {{/each}}
+        {{else}}
+        {{#if (sphDescription description "initialDescription")}}
+        {{#each (sphDescription description "initialDescription") }}
+        <p>
+          {{this}}
+        </p>
+        {{/each}}
+        {{/if}}
+        {{/if}}
+
+      </div>
+
+      {{>records/record-sph-properties }}
+    </div>
+  </div>
+
+</article>
+
+{{#each children}}
+{{> records/record-sph-item record=. }}
+{{/each}}

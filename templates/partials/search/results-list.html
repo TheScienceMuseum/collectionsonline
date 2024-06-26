@@ -1,24 +1,24 @@
 {{#each results}}
-<div class="searchresults__list">
-  <a href="{{this.link}}">
-    <div class="resultlist {{#if type}}resultlist--{{ this.type }}{{/if}}">
-      {{#if figure}}
-        <figure class="resultlist__figure">
-          <img src="{{ this.figure }}" alt="" />
-        </figure>
-      {{/if}}
-      <div class="resultlist__info">
-        <h4 class="resultlist__title">
-          {{> global/icon i=this.type }}
-          {{#if ondisplay}}{{> global/icon i="room" size="16" label="On display" }}{{/if}}
-          {{ normalise this.title this }}
-        </h4>
-        <p class="resultlist__description">{{this.categoryOrArtist}}</p>
-        <p class="resultlist__description">{{this.date}}</p>
-        <p class="resultlist__description">{{this.occupation}}</p>
-        <p class="resultlist__description">{{this.figcaption}}</p>
-      </div>
-    </div>
-  </a>
-</div>
+<a href="{{this.link}}" class="listresult {{#if type}}listresult--{{ this.type }}{{/if}}">
+  {{#if figure}}
+  <figure class="listresult__figure">
+    <img src="{{ this.figure }}" alt="" />
+  </figure>
+  {{else}}
+  <figure class="listresult__type">
+    {{> global/icon i=this.type }}
+  </figure>
+  {{/if}}
+  <div class="listresult__info">
+    <h4 class="listresult__title">
+      {{#if ondisplay}}{{> global/icon i="room" size="16" label="On display" }}{{/if}}
+      {{ normalise this.title this }}
+    </h4>
+    {{#if this.categoryOrArtist}}<p class="listresult__description" data-category-or-artist>{{this.categoryOrArtist}}
+    </p>{{/if}}
+    {{#if this.date}}<p class="listresult__description" data-date>{{this.date}}</p>{{/if}}
+    {{#if this.occupation}}<p class="listresult__description" data-occupation>{{this.occupation}}</p>{{/if}}
+    {{#if this.figcaption}}<p class="listresult__description" data-figcaption>{{this.figcaption}}</p>{{/if}}
+  </div>
+</a>
 {{/each}}

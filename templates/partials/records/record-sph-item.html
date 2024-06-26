@@ -1,34 +1,11 @@
-<article class="sph-records__item resultcard--priority-card" id="part{{uid}}">
-  {{#if images}}
-  {{#if hasMultipleImages}}
-  <div class="card-carousel">
-    {{#each images}}
-    <a class="card-carousel__cell" data-lightbox href="{{this.large}}"
-      data-copyright="{{formatCopyright this.rights.details}}">
-      <img src="{{this.medium}}" alt="{{this.title}}" />
-    </a>
-    {{/each}}
-  </div>
-  {{#each images}}
-  {{/each }}
-  {{ else }}
-  <a href="{{firstImage images 0 'large' }}" data-lightbox>
-    <figure class="sph-records__figure">
-      <img src="{{firstImage images 0 }}" class="sph-records__img" alt="{{this.title}}" />
-    </figure>
-  </a>
-  {{/if}}
-  {{ else }}
-  <figure class="sph-records__figure">
-    <figcaption>{{title}}</figcaption>
-  </figure>
-  {{/if }}
+<article class="resultcard resultcard--{{this.record.record.data.type}}" id="part{{uid}}"> {{log this}}
+  {{>records/record-sph-images }}
 
-  <h3 class="sph-records__title">
-    {{title}}
-  </h3>
+  <div class="resultcard__info o-blocks --rem">
+    <h3 class="resultcard__title">
+      {{title}}
+    </h3>
 
-  <div class="sph-records__description">
     {{#if (sphDescription description "initialDescription")}}
     {{#each (sphDescription description "initialDescription") }}
     <p>
@@ -46,42 +23,8 @@
       {{/each}}
     </details>
     {{/if}}
-  </div>
 
-  <div class="c-property-list --ruled:above">
-    {{#each details}}
-    <dl class="details-{{classname this.key}}">
-      <dt>{{key}}:</dt>
-      <dd>
-        {{#each this.value}}
-        {{#if this.link}}
-        <a href="{{this.link}}" title="[link to filtered search results]">{{/if}}
-          {{{ this.value }}}
-          {{#if this.link}}</a>{{/if}}
-        {{comma this ../this.value false}}
-
-        {{else}}
-        {{#if link}}
-        <a href="{{link}}" title="[link to filtered search results]">{{/if}}
-          {{{ this.value }}}
-          {{#if link}}</a>{{/if}}
-        {{/each}}
-      </dd>
-    </dl>
-    {{/each}}
-    {{#if images.0.rights.details}}
-    <dl>
-      <dt>Image ©</dt>
-      <dd><small class="details-image-copyright">{{formatCopyright images.0.rights.details}}</small></dd>
-    </dl>
-    {{/if}}
-
-    {{# if parentTitle}}
-    <dl>
-      <dt>Part of:</dt>
-      <dd><a href="#part{{ parentId }}">{{ parentAccessionNumber }}</a></dd>
-    </dl>
-    {{/if}}
+    {{>records/record-sph-properties }}
   </div>
 
 </article>

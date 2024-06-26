@@ -1,8 +1,15 @@
-<section class="sph-records o-container">
-  <h2>Parts</h2>
-  <div class="sph-records__grid" data-has-images="{{ this.childRecordsHaveImages }}">
-    {{#each childRecords}}
-    {{>records/record-sph-item record=. }}
-    {{/each}}
-  </div>
+<section class="sph-records section o-container">
+  <h2 class="section__h">Parts</h2>
 </section>
+
+{{#each (sphPrioritised childRecords true)}}
+{{>records/record-sph-priority-item record=. }}
+{{/each}}
+
+{{#if (sphPrioritised childRecords false)}}
+<section class="sph-records__grid o-container" data-has-images="{{ this.childRecordsHaveImages }}">
+  {{#each (sphPrioritised childRecords false)}}
+  {{>records/record-sph-item record=. }}
+  {{/each}}
+</section>
+{{/if}}
