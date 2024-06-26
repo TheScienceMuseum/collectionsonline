@@ -1,59 +1,46 @@
-const wikijs = require('wikijs').default;
+const wbk = require('../lib/wikibase');
 
-/**
- * wikipedia('Babbage')
- *   .then(console.log) // {url: http://, mainImage: 'http://', summary: 'summary...'}
- *   .catch((err) => console.log('Error: ', err));
- *
- * wikipedia('John_Smith_(anatomist_and_chemist)')
- *   .then(console.log)
- *   .catch((err) => console.log('Error: ', err));
- */
+const wikidataConn = async (req, h) => {
+  const { wikidata } = req.params;
 
-const wikipedia = (name) => new Promise((resolve, reject) => {
-  let url, mainImage, infoBox, summary, title;
+  try {
+    if (!wikidata) {
+      return h.response('No wikidata supplied').code(404);
+    }
 
-  wikijs().page(name)
-    .then((page) => {
-      url = page.raw.fullurl;
-      title = page.raw.title;
-      page.summary()
-        .then((summaryRes) => {
-          summary = summaryRes;
-          page.fullInfo()
-            .then((infoBoxRes) => {
-              infoBox = infoBoxRes;
-              if (!infoBox.general.caption) { infoBox.general.caption = 'Third party image from Wikimedia Commons'; }
-              page.mainImage()
-                .then((mainImageRes) => {
-                  mainImage = mainImageRes;
-                  resolve({ url, mainImage, infoBox, summary, title });
-                })
-                .catch((err) => {
-                  const noImageErr = 'Cannot read property \'imageinfo\' of undefined';
-                  if (err.message === noImageErr) {
-                    resolve({ url, infoBox, summary, title });
-                  }
-                })
-                .catch(reject);
-            })
-            .catch(reject);
-        })
-        .catch(reject);
-    })
-    .catch(reject);
-});
+    let entities;
+    const languages = ['en', 'fr', 'de'];
+    const props = ['info', 'claims'];
+    const format = 'json';
+    const redirections = false;
+    try {
+      entities = await wbk.getEntities(
+        wikidata,
+        languages,
+        props,
+        format,
+        redirections
+      );
+
+      return entities;
+    } catch (error) {
+      console.error('Error fetching entities:', error);
+      return h.response('Error fetching entities').code(500);
+    }
+  } catch (error) {
+    console.error('There was an error:', error);
+    return h.response('Internal Server Error').code(500);
+  }
+};
 
 module.exports = (config) => ({
   method: 'get',
-  path: '/wiki/{name}',
+  path: '/wiki/{wikidata}',
+
   config: {
-    handler: (req, reply) => {
-      // var inProduction = config && config.NODE_ENV === 'production';
-      // if (!inProduction) {
-      return wikipedia(req.params.name).then(reply);
-      // }
-      // return reply();
+    handler: async (req, h) => {
+      const wikidata = await wikidataConn(req);
+      return h.response(wikidata).code(200);
     }
   }
 });

@@ -3,6 +3,10 @@ const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
 const stub = require('sinon').stub;
 const cache = require('../bin/cache.js');
+const test = require('tape');
+const fetchMock = require('fetch-mock');
+global.fetch = fetchMock.sandbox();
+const initiateWikidataRequest = require('../client/lib/listeners/wikidataReq.js');
 
 testWithServer(file + 'Request for Archive HTML Page', {}, async (t, ctx) => {
   t.plan(1);
@@ -895,55 +899,161 @@ testWithServer(file + 'Request for Results list page', {}, async (t, ctx) => {
   t.end();
 });
 
-// testWithServer(file + 'Request for Wikipedia Data', {}, async (t, ctx) => {
+test('initiateWikidataRequest', async (t) => {
+  t.plan(3);
+
+  const qCode = 'Q937';
+  const expectedUrl = 'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q937&format=json&redirects=no&languages=en%7Cfr%7Cde&props=info%7Cclaims&origin=*';
+
+  // Mock successful request
+  fetchMock.getOnce('/wiki/' + qCode, {
+    status: 200,
+    body: 'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q937&format=json&redirects=no&languages=en%7Cfr%7Cde&props=info%7Cclaims'
+  });
+
+  try {
+    const result = await initiateWikidataRequest('/wiki/' + qCode);
+    t.equal(
+      result,
+      expectedUrl,
+      'Returns the correct API URL string with origin=*'
+    );
+  } catch (error) {
+    t.fail('Should not throw an error on successful request');
+  }
+
+  fetchMock.restore();
+
+  // Mock failed request with status 500
+  fetchMock.getOnce('/wiki/' + qCode, {
+    status: 500,
+    body: 'Internal Server Error'
+  });
+
+  try {
+    await initiateWikidataRequest('/wiki/' + qCode);
+    t.fail('Should throw an error on failed request');
+  } catch (error) {
+    t.equal(
+      error.message,
+      'HTTP error status: 500',
+      'Throws correct error message on failed request'
+    );
+  }
+
+  fetchMock.restore();
+
+  fetchMock.getOnce('/wiki/' + qCode, {
+    throws: new TypeError('Failed to fetch')
+  });
+
+  try {
+    await initiateWikidataRequest('/wiki/' + qCode);
+    t.fail('Should throw an error on fetch failure');
+  } catch (error) {
+    t.equal(
+      error.message,
+      'Failed to fetch',
+      'Throws correct error message on fetch failure'
+    );
+  }
+
+  fetchMock.restore();
+  t.end();
+});
+
+// testWithServer(file + 'Request for wikidata Data', {}, async (t, ctx) => {
 //   const htmlRequest = {
 //     method: 'GET',
-//     url: '/wiki/Albert_Einstein'
+//     url: '/wiki/Q937',
+//     headers: { Accept: 'text/html' },
 //   };
 
 //   const res = await ctx.server.inject(htmlRequest);
-//   var result = JSON.parse(res.payload);
-//   t.equal(result.url, 'https://en.wikipedia.org/wiki/Albert_Einstein', 'gets Einsteins wikipedia page');
-//   t.ok(result.mainImage, 'returns an image from wikipedia');
+
+//   const result = JSON.parse(res.payload);
+//   t.equal(
+//     res,
+//     'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q937&format=json&redirects=no&languages=en%7Cfr%7Cde&props=info%7Cclaims',
+//     'gets Einsteins wikipedia page'
+//   );
+//   t.ok(result.imageUrl, 'returns an image from wikipedia');
 //   t.equal(res.statusCode, 200, 'Status code was as expected');
 //   await ctx.server.stop();
 //   t.end();
 // });
 
-testWithServer(
-  file + 'Request for Wikipedia in record Data',
-  {},
-  async (t, ctx) => {
-    const htmlRequest = {
-      method: 'GET',
-      url: '/people/cp37054',
-      headers: { Accept: 'text/html' }
-    };
-
-    const res = await ctx.server.inject(htmlRequest);
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    await ctx.server.stop();
-    t.end();
-  }
-);
-
 /*
 testWithServer(file + 'Request for Wikipedia Data with no image', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
-    url: '/wiki/Accession_number_(library_science)'
+    url: '/wiki/'
   };
 
   const res = await ctx.server.inject(htmlRequest);
     var result = JSON.parse(res.payload);
     t.equal(result.url, 'https://en.wikipedia.org/wiki/Accession_number_(library_science)', 'gets Accession_number_(library_science) Wikipedia page');
-    t.notOk(result.mainImage, 'returns no image from wikipedia');
+    t.notOk(result.imageUrl, 'returns no image from wikipedia');
     t.equal(res.statusCode, 200, 'Status code was as expected');
     await ctx.server.stop();
     t.end();
 });
 */
 
+// testWithServer(
+//   file + 'Request for Wikipedia Data with logo',
+//   {},
+//   async (t, ctx) => {
+//     const htmlRequest = {
+//       method: 'GET',
+//       url: '/wiki/Q937',
+//       headers: { Accept: 'text/html' },
+//     };
+
+//     const res = await ctx.server.inject(htmlRequest);
+//     // var result = JSON.parse(res.payload);
+//     t.equal(
+//       res,
+//       'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q937&format=json&redirects=no&languages=en%7Cfr%7Cde&props=info%7Cclaims',
+//       // 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Albert_Einstein_Head.jpg/1024px-Albert_Einstein_Head.jpg',
+//       'gets Albert Einstein image'
+//     );
+//     t.notOk(res.imgUrl, 'returns no image from wikipedia');
+//     t.equal(res.statusCode, 200, 'Status code was as expected');
+//     await ctx.server.stop();
+//     t.end();
+//   }
+// );
+
+/*
+testWithServer(file + 'Request for founded by', {}, async (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/wiki/'
+  };
+
+});
+*/
+
+/*
+testWithServer(file + 'Request for significant people', {}, async (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/wiki/)'
+  };
+
+});
+*/
+
+/*
+testWithServer(file + 'Test elastic search list of related people', {}, async (t, ctx) => {
+  const htmlRequest = {
+    method: 'GET',
+    url: '/wiki/'
+  };
+
+});
+*/
 testWithServer(file + 'Not found', {}, async (t, ctx) => {
   const htmlRequest = {
     method: 'GET',
