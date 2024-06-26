@@ -13,6 +13,7 @@
   @include media("<small") {
     flex-direction: column;
     align-items: flex-start;
+    overflow: hidden;
   }
 }
 
@@ -68,7 +69,8 @@
     }
 
     &--active,
-    &--active:hover {
+    &--active:hover,
+    &--active:visited {
       background-color: grey(80);
       color: white;
     }

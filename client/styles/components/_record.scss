@@ -427,76 +427,21 @@
 // sph records
 
 .sph-records {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-top: $grid-gutter;
+
+  .section__h {
+    margin-bottom: 0;
+  }
 
   &__grid {
     display: grid;
     gap: 2em $grid-gutter;
+    margin-bottom: $grid-gutter;
     grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
   }
 
-  &__figure {
-    [data-has-images='false'] & {
-      display: none;
-    }
-
-    position: relative;
-    overflow: hidden;
-    padding-top: 75%;
-    margin-bottom: 1rem;
-
-    background-color: map-get(map-get($recordtypes, objects), bg);
-    @include sm-gradient(map-get(map-get($recordtypes, objects), grad));
-
-    img {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      min-height: 100%;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      margin: auto;
-      object-fit: cover;
-      object-position: center;
-    }
-
-    figcaption {
-      overflow: hidden;
-      position: absolute;
-      top: 0.25rem;
-      left: 0.25rem;
-      right: -0.75rem;
-      bottom: -0.5rem;
-      margin: auto;
-      color: rgba(white, 0.25);
-      font-size: rem(24);
-
-      @include media('>=medium') {
-        font-size: rem(32);
-      }
-
-      line-height: 1;
-      letter-spacing: rem(-1);
-    }
-  }
-
-  p,
-  li,
-  dl,
-  dd {
-    font-size: 1rem;
-  }
-
-  &__title {
-    font-size: 1.5rem;
-    margin-block: 1rem;
-  }
-
-  &__description {
-    margin-block: 1rem;
+  [data-has-images='false'] .resultcard__figure {
+    display: none;
   }
 
 }
@@ -506,5 +451,35 @@
     &__grid {
       grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
     }
+  }
+}
+
+.sph-priority-item {
+  padding-bottom: $grid-gutter;
+  background-image: linear-gradient(to bottom, grey(0), grey(10));
+
+  .o-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $grid-gutter;
+  }
+
+  @include media(">=medium") {
+    &[data-has-images=true] .o-container {
+      grid-template-columns: 1fr 2fr;
+    }
+
+    &__col2 {
+      columns: 2;
+      column-gap: $grid-gutter;
+    }
+  }
+
+  &[data-has-images=false] &__col1 {
+    display: none;
+  }
+
+  &__title {
+    margin-top: 0;
   }
 }

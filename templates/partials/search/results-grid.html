@@ -1,22 +1,28 @@
 {{#each results}}
-  <div class="searchresults__column">
-    <a href="{{ this.link }}">
-      <article class="resultcard {{#if type}}resultcard--{{ this.type }}{{/if}}">
-        <figure class="resultcard__figure">
-          {{#if figure}}<img src="{{ this.figure }}" alt="" /> {{/if}}
-          {{#unless figure}}{{#if figcaption}}<figcaption role="presentation">{{ this.figcaption }}</figcaption>{{/if}}{{/unless}}
-        </figure>
-        <div class="resultcard__info">
-          <h2 class="resultcard__title">
-            {{#if level}}{{> global/icon i=this.level }}{{else}}{{> global/icon i=this.type }}{{/if}}
-            {{#if isOnDisplay}}{{> global/icon i="room" label="On display" }}{{/if}}
-            {{ this.title }}
-          </h2>
-          <p class="resultcard__description">{{{ this.categoryOrArtist }}}</p>
-          <p class="resultcard__description">{{{ this.date }}}</p>
-          <p class="resultcard__description">{{{ this.occupation }}}</p>
-        </div>
-      </article>
-    </a>
-  </div>
+<a href="{{ this.link }}">
+  <article class="resultcard {{#if type}}resultcard--{{ this.type }}{{/if}}">
+    <figure class="resultcard__figure">
+      {{#if figure}}
+      <img src="{{ this.figure }}" alt="" />
+      <div class="resultcard__type">
+        {{#if level}}{{> global/icon i=this.level }}{{else}}{{> global/icon i=this.type }}{{/if}}
+      </div>
+      {{else}}
+      <figcaption role="presentation">
+        {{> global/icon i=this.type }}
+        {{ this.figcaption }}
+      </figcaption>
+      {{/if}}
+    </figure>
+    <div class="resultcard__info">
+      <h2 class="resultcard__title">
+        {{#if isOnDisplay}}{{> global/icon i="room" label="On display" }}{{/if}}
+        {{ this.title }}
+      </h2>
+      <p class="resultcard__description">{{{ this.categoryOrArtist }}}</p>
+      <p class="resultcard__description">{{{ this.date }}}</p>
+      <p class="resultcard__description">{{{ this.occupation }}}</p>
+    </div>
+  </article>
+</a>
 {{/each}}

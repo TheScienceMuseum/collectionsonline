@@ -1,0 +1,35 @@
+<div class="c-property-list --ruled:above">
+  {{#each details}}
+  <dl class="details-{{classname this.key}}">
+    <dt>{{key}}:</dt>
+    <dd>
+      {{#each this.value}}
+      {{#if this.link}}
+      <a href="{{this.link}}" title="[link to filtered search results]">{{/if}}
+        {{{ this.value }}}
+        {{#if this.link}}</a>{{/if}}
+      {{comma this ../this.value false}}
+
+      {{else}}
+      {{#if link}}
+      <a href="{{link}}" title="[link to filtered search results]">{{/if}}
+        {{{ this.value }}}
+        {{#if link}}</a>{{/if}}
+      {{/each}}
+    </dd>
+  </dl>
+  {{/each}}
+  {{#if images.0.rights.details}}
+  <dl>
+    <dt>Image ©</dt>
+    <dd><small class="details-image-copyright">{{formatCopyright images.0.rights.details}}</small></dd>
+  </dl>
+  {{/if}}
+
+  {{# if parentTitle}}
+  <dl>
+    <dt>Part of:</dt>
+    <dd><a href="#part{{ parentId }}">{{ parentAccessionNumber }}</a></dd>
+  </dl>
+  {{/if}}
+</div>

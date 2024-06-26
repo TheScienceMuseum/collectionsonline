@@ -449,6 +449,10 @@ Handlebars.registerHelper(
   require('../templates/helpers/sphDescription')
 );
 Handlebars.registerHelper(
+  'sphPrioritised',
+  require('../templates/helpers/sphPrioritised')
+);
+Handlebars.registerHelper(
   'groupState',
   require('../templates/helpers/groupState.js')
 );

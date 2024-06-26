@@ -1,14 +1,16 @@
-//-----------------------------------------------------------------------------
-//
-// shared inheritance for .resultlist and .resultcard pattern
-//-----------------------------------------------------------------------------
 @use "sass:math";
 
-@mixin resultclass {
+//-----------------------------------------------------------------------------
+// .resultcard
+// The main 'card' display of a result
+//-----------------------------------------------------------------------------
+
+.resultcard {
   position: relative;
-  min-height: 100%;
   width: 100%;
   line-height: 1.2;
+  color: black;
+  min-height: 100%;
 
   a &,
   a:has(&) {
@@ -16,59 +18,29 @@
   }
 
   &__figure {
-    margin: 0;
-    background-color: grey(80);
-    position: relative;
-    overflow: hidden;
+    @include card-image;
+  }
 
-    img {
-      position: absolute;
-      /* remove: width: auto; add below */
-      width: 100%;
-      max-width: none;
-      height: auto;
-      min-height: 100%;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      margin: auto;
-      object-fit: cover;
-      object-position: center;
-    }
+  &__type {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(black, 0.5);
+    color: white;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    figcaption {
-      overflow: hidden;
-      position: absolute;
-      top: 0.25rem;
-      left: 0.25rem;
-      right: -0.75rem;
-      bottom: -0.5rem;
-      margin: auto;
-      color: rgba(white, 0.25);
-      font-size: rem(24);
-
-      @include media(">=medium") {
-        font-size: rem(32);
-      }
-
-      line-height: 1;
-      letter-spacing: rem(-1);
+    .icon {
+      font-size: 1.5rem;
+      color: inherit;
     }
   }
 
-  &__title {
-    font-weight: 700;
-    font-size: rem(16);
-    line-height: 1.2;
-    text-transform: none;
-    margin: 0;
 
-    @include media(">=medium") {
-      font-size: rem(18);
-    }
-  }
-
+  // wraper for all text content els
   &__info {
     position: relative;
     padding-top: 0.5rem;
@@ -81,6 +53,26 @@
     @include media("<=small") {
       overflow: hidden;
       @include hyphenate;
+    }
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: clamp-between(1rem, 1.125rem);
+    line-height: 1.2;
+    text-transform: none;
+    margin: 0;
+
+    .icon {
+      float: right;
+      margin-left: 0.5rem;
+      margin-bottom: 0.5rem;
+      clear: right;
+      font-size: rem(16);
+
+      @include media(">=medium") {
+        font-size: rem(24);
+      }
     }
   }
 
@@ -138,106 +130,43 @@
       @include sm-gradient(map-get($props, grad));
     }
 
-    &--#{$type} .icon {
-      color: map-get($props, bg);
-    }
+    // &--#{$type} .icon {
+    //   color: map-get($props, bg);
+    // }
   }
 
-  //used as related results, slight smaller
-  &--related {
-    //background-color: white;
-  }
-}
-
-@mixin resulthover {
-  transition: background-color $transition-default,
-    box-shadow $transition-default, transform $transition-default;
-
-  &:before {
-    content: "";
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    transition: background-color $transition-default,
-      transform $transition-default;
-    position: absolute;
-    z-index: 0;
-  }
-
-  &:hover {
-    &:before {
-      transform: scale3d(1.06, 1.06, 1);
-    }
-
-    img,
-    figcaption {
-      transform: scale3d(1.06, 1.06, 1);
-    }
-  }
-
-  &__figure {
-    img {
-      transition: transform $transition-default;
-    }
-
-    figcaption {
-      transition: transform $transition-default;
-    }
-  }
-}
-
-//-----------------------------------------------------------------------------
-// .resultlist
-// The list view display of a result
-//-----------------------------------------------------------------------------
-
-.resultlist {
-  @include resultclass;
-  border: 1px solid black;
-  margin-bottom: -1px;
-  color: black;
-
-  &:hover {
-    background-color: rgba(black, 0.05);
-  }
-
-  &__info {
-    padding: 0.5rem;
-
-    @include media(">=medium") {
-      padding: 1rem;
-    }
-  }
-
-  &__figure {
-    width: 4rem; //aspect 4:3
-    height: 3rem; //aspect 4:3
-    float: right;
-    margin: 1rem;
-  }
-
-  &__description {
-    line-height: 1.2;
-  }
-
-  .icon {
-    position: relative;
-    top: 0.15rem;
-  }
-}
-
-//-----------------------------------------------------------------------------
-// .resultcard
-// The main 'card' display of a result
-//-----------------------------------------------------------------------------
-
-.resultcard {
-  @include resultclass;
-  color: black;
 
   a & {
-    @include resulthover;
+    transition: background-color $transition-default,
+      box-shadow $transition-default, transform $transition-default;
+
+    &:before {
+      content: "";
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      transition: background-color $transition-default,
+        transform $transition-default;
+      position: absolute;
+      z-index: 0;
+    }
+
+    &:hover {
+      &:before {
+        transform: scale3d(1.06, 1.06, 1);
+      }
+
+      img {
+        transform: scale3d(1.06, 1.06, 1);
+      }
+    }
+
+    &__figure {
+      img {
+        transition: transform $transition-default;
+      }
+    }
   }
 
   &:hover {
@@ -248,25 +177,6 @@
 
   &__description {
     color: grey(80);
-  }
-
-  &__figure {
-    width: 100%; //aspect 4:3
-    padding-top: 75%; //aspect 4:3
-  }
-
-  &__title {
-    .icon {
-      float: right;
-      margin-left: 0.5rem;
-      margin-bottom: 0.5rem;
-      clear: right;
-      font-size: rem(16);
-
-      @include media(">=medium") {
-        font-size: rem(24);
-      }
-    }
   }
 
   @mixin reversed {
