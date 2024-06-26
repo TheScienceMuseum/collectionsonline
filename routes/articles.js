@@ -95,7 +95,6 @@ async function fetchArticles (endpoint, id) {
     }
 
     // otherwise fetch and cache endpoints here
-
     const data = await fetchAndCacheEndpoint(endpoint);
     const filteredData = data.filter(
       (e) => e.collection_objects.indexOf(id) > -1
@@ -106,7 +105,8 @@ async function fetchArticles (endpoint, id) {
       data: filteredData
     };
   } catch (err) {
-    console.log(err);
+    // ToDo: Explicitly catch errors related to cache.start (and no Redis Server) with Boom to reducxe noise in logs
+    // console.log(err);
     // handles dead endpoints, to avoid Promises.all failing
     return {
       museum: endpoint.label,
