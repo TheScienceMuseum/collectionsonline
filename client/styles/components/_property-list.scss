@@ -5,6 +5,10 @@
   row-gap: 0.5em;
   line-height: 1.2;
 
+  &:empty {
+    display: none;
+  }
+
   &.--ruled\:above,
   &.--ruled\:between {
     row-gap: 0;

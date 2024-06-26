@@ -26,11 +26,13 @@
     font-size: clamp-between(2rem, 3rem);
     letter-spacing: -0.02em;
     margin: 0;
-    margin-bottom: $grid-gutter;
     font-weight: 700;
 
     .icon {
       font-size: 66.6%;
+      position: relative;
+      top: 0.125em;
+      margin-left: 0.25em;
     }
   }
 
@@ -62,10 +64,6 @@
     }
   }
 
-  &--dark {
-    background: grey(80);
-    color: white;
-  }
 }
 
 .record-top__back-mph {
@@ -270,27 +268,6 @@
   font-size: rem(18);
 }
 
-.group-info-box {
-  display: flex;
-  flex-direction: column;
-
-  &__heading {
-    font-size: 1.5rem;
-    margin-block-start: 0.7rem;
-    margin-inline-start: 0.7rem;
-  }
-
-  &__text {
-    padding-inline: 1rem;
-    padding-block: 0.5rem;
-  }
-
-  dl {
-    display: flex;
-    gap: 1em;
-  }
-}
-
 // .record-longdesc {
 // this could be applied to a <p>
 // but may be safer to apply to wrapping <div> for bigger content
@@ -409,12 +386,11 @@
 //-----------------------------------------------------------------------------
 
 .mph-records {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-top: $grid-gutter;
+  margin-bottom: $grid-gutter;
 
   &__grid {
     display: grid;
-    padding: 0 0.5rem;
     gap: 2em 1em;
     grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   }
@@ -422,6 +398,21 @@
   .resultcard__figure img {
     width: 100%;
   }
+}
+
+.group-records {
+  display: grid;
+  gap: $grid-gutter;
+  grid-template-columns: repeat(2, 1fr);
+
+  @include media(">=medium") {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include media(">=large") {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
 }
 
 // sph records
