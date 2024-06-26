@@ -26,19 +26,11 @@
           {{#if displayLocation}}
           {{> records/ondisplay }}
           {{/if}}
-          {{#unless inProduction}}
 
-          {{#if displayBox}}
-          <div class="panel group-info-box">
-            <h2 class="group-info-box__heading">{{> global/icon i="room" size="16" }}
-              {{groupState displayBox}}
-            </h2>
-            {{#each displayBox}}
-            {{> records/record-group-display-box}}
-            {{/each}}
-          </div>
-          {{/if}}
+          {{#unless inProduction}}
+          {{#if displayBox}}{{> records/record-related-groups }}{{/if}}
           {{/unless}}
+
           {{#if related.people}}{{> records/record-related-people }}{{/if}}
           {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
           {{#if related.articles}}{{> records/record-related-articles }}{{/if}}
