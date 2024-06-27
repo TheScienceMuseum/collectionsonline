@@ -2,11 +2,13 @@
   <h2>Cite this page</h2>
   <div class="clipboard">
     <label for="clipboardjs" class="u-visually-hidden">Text to use for citation</label>
-    <input type="text" class="clipboard__input" id="clipboardjs"
-      value="Science Museum Group. {{title}}. {{getinventorynumber details}}Science Museum Group Collection Online. Accessed {{gettodaysdate}}. {{links.self}}."
-      data-clipboard-text="Science Museum Group. {{title}}. {{getinventorynumber details}}Science Museum Group Collection Online. Accessed {{gettodaysdate}}. {{links.self}}." /><button
+    <textarea
+      id="clipboardjs"
+      rows="1">Science Museum Group. {{title}}. {{getinventorynumber details}} Science Museum Group Collection Online. Accessed {{gettodaysdate}}. {{links.self}}.</textarea>
+    <button
       class="clipboard__button"
-      data-clipboard-target="#clipboardjs">{{> global/icon i="clipboard" size="12" label="Copy citation text"}}</button>
+      title="Copy citation text"
+      data-clipboard-target="#clipboardjs">{{> global/icon i="clipboard" label="Copy citation text"}}</button>
   </div>
 
   <h3>Rights</h3>
