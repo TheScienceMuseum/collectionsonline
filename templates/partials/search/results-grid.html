@@ -8,10 +8,14 @@
         {{#if level}}{{> global/icon i=this.level }}{{else}}{{> global/icon i=this.type }}{{/if}}
       </div>
       {{else}}
+      {{#if collage}}
+      {{> records/collage }}
+      {{else}}
       <figcaption role="presentation">
         {{> global/icon i=this.type }}
         {{ this.figcaption }}
       </figcaption>
+      {{/if}}
       {{/if}}
     </figure>
     <div class="resultcard__info">
