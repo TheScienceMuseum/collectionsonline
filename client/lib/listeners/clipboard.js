@@ -8,10 +8,12 @@ module.exports = function () {
 
   // replicates the value of the textarea to a data-property to do some funky css auto-sizing of the textarea
   function updateSize() {
-    if(textarea) textarea.parentNode.dataset.replicatedValue = textarea.value;
+    textarea.parentNode.dataset.replicatedValue = textarea.value;
   }
-  textarea.addEventListener('input', updateSize);
-  updateSize();
+  if(textarea) {
+    textarea.addEventListener('input', updateSize);
+    updateSize();
+  }
 
   clipboard.on('success', function (e) {
     e.trigger.parentNode.classList.add('clipboard--copied');
