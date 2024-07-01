@@ -5,6 +5,20 @@
 
 $transition-default: 0.2s ease-in-out;
 
+/// Finds a value in a nested map.
+/// @link https://css-tricks.com/snippets/sass/deep-getset-maps/ Deep Get/Set in Maps
+///
+/// @param {Map} $map - Map to pull a value from.
+/// @param {String} $keys... - Keys to use when looking for a value.
+/// @returns {Mixed} The value found in the map.
+@function map-deep-get($map, $keys...) {
+  @each $key in $keys {
+    $map: map-get($map, $key);
+  }
+
+  @return $map;
+}
+
 // http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/
 @mixin vertical-align {
   position: relative;
@@ -14,12 +28,15 @@ $transition-default: 0.2s ease-in-out;
 
 @mixin text-link($color: $c-blue, $hover: $c-teal) {
   color: $color;
-  border-bottom: 1px solid transparent;
-  transition: color $transition-default, border-color $transition-default;
+  // border-bottom: 1px solid transparent;
+  @include underline-zip;
+  transition: color $transition-default, border-color $transition-default, background-size $transition-default;
 
-  &:hover {
+  &:hover,
+  &:active,
+  &:focus,
+  &:focus-visible {
     color: $hover;
-    border-color: $hover;
   }
 }
 
@@ -37,22 +54,22 @@ $transition-default: 0.2s ease-in-out;
 }
 
 @mixin ul-icons {
-  margin: 0.5rem 0;
+  margin: 0;
   padding: 0;
 
   li {
     display: block;
-    margin: 0.5rem 0;
+  }
 
-    &:last-child {
-      margin-bottom: 0;
-    }
+  li + li {
+    margin-top: 0.5em;
   }
 }
 
 @mixin flexcards-container {
   display: flex;
   flex-wrap: wrap;
+  gap: $grid-gutter;
 
   &::before,
   &::after {
@@ -64,10 +81,12 @@ $transition-default: 0.2s ease-in-out;
 
 @mixin flexcards-item {
   margin-bottom: 2rem;
+
   &,
   & > a {
     display: flex;
   }
+
   a {
     width: 100%;
   }
@@ -90,43 +109,28 @@ $transition-default: 0.2s ease-in-out;
 //  $align: top | center | bottom
 //-----------------------------------------------------------------------------
 
-@mixin icon-bullet(
-  $icon,
+@mixin icon-bullet($icon,
   $size: 0.75em,
   $left: 0,
-  $top: null,
-  $bottom: null,
-  $align: center
-) {
+  $top: null) {
   position: relative;
-  padding-left: $size * 4/3 + $left;
+  padding-left: $size * 1.33333 + $left;
+
   &:before {
     content: " ";
     display: block;
     position: absolute;
     margin: auto; // top, bottom, height, auto = vertical align!
     left: 0 + $left;
+
     @if ($top) {
       top: $top;
-    } @else {
-      top: -$size/5;
     }
-    @if ($align == "top") {
-      margin-top: 0;
-    } @else if ($align == "bottom") {
-      @if ($bottom) {
-        bottom: $bottom;
-      } @else {
-        bottom: 0;
-      }
-      margin-bottom: 0;
-    } @else {
-      @if ($bottom) {
-        bottom: $bottom;
-      } @else {
-        bottom: 0;
-      }
+
+    @else {
+      top: -$size * 0.2;
     }
+
     height: $size;
     width: $size;
     background-image: url(/assets/icons/#{$icon}.svg);
@@ -168,13 +172,15 @@ $transition-default: 0.2s ease-in-out;
   color: white;
   border: 1px white solid;
   border-color: inherit;
-  margin: rem-calc(-1 0 8 -1);
+  margin: rem(-1 0 8 -1);
   height: 3rem;
   min-width: 3rem;
+
   @include media("<=small") {
     height: 2.5rem;
     min-width: 2.5rem;
   }
+
   &:hover {
     background-color: black;
   }
@@ -185,7 +191,47 @@ $transition-default: 0.2s ease-in-out;
   $h: 36rem; // this might change after load?
   height: $h;
   transition: height $transition-default;
+
   @include media("<=small") {
     height: 25rem;
-  } //  = 12px
+  }
+
+  //  = 12px
+}
+
+// generic styling of html children
+@mixin textstyles {
+  & > * + * {
+    margin-top: 1rem !important;
+  }
+
+  h1:not([class]) {
+    font-size: 3rem;
+    line-height: 1;
+    margin: 0;
+  }
+
+  h3:not([class]) {
+    font-size: 1.75rem;
+    margin: 0;
+  }
+
+  p,
+  li {
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  a {
+    color: var(--smg-link-color, #{$c-blue});
+    text-decoration: underline;
+  }
+
+  :last-child {
+    margin-bottom: 0;
+  }
+
+  :first-child {
+    margin-top: 0;
+  }
 }

@@ -1,43 +1,48 @@
-<section class="record-details">
-  <div class="row">
-    <div class="columns medium-8">
-      <h2>Details</h2>
+<section class="record-details section">
+  <div class="o-container o-grid o-grid--3cols@m">
+    <div class="section__content o-grid__span2@m">
+      <h2 class="section__h">Details</h2>
 
-      {{#each details}}
-      <dl class="record-details__dl details-{{classname this.key}}">
-        <dt>{{key}}:</dt>
-        {{#if (toggleDetail key)}}
-        <button type="button" name="button" class="record-details__toggler">Show</button>
-        <dd class="toggle-detail hidden">
-          {{else}} {{# if (toggleDetailOpen key)}}
-          <button type="button" name="button" class="record-details__toggler" aria-expanded="true">Hide</button>
-        <dd class="toggle-detail">
-          {{else}}
-        <dd>
-          {{/if}}{{/if}}
-          {{#taxonomy this}}
-          <ul class="taxonomy">
-            {{#each value}}
-            <li>{{value}}</li>
-            {{/each}}
-          </ul>
-          {{else}}
-          {{#each this.value}}
-          {{#if this.link}}<a href="{{this.link}}" title="[link to filtered search results]">{{/if}}
-            {{{ this.value }}}{{#if this.link}}</a>{{/if}}{{comma this ../this.value false}}
-          {{else}}
-          {{#if link}}<a href="{{link}}" title="[link to filtered search results]">{{/if}}
-            {{{ this.value }}}
-            {{#if link}}</a>{{/if}}
-          {{/each}}
-          {{/taxonomy}}
-        </dd>
-      </dl>
-      {{/each}}
+      <div class="c-property-list --ruled:between">
+        {{#each details}}
+        <dl class="details-{{classname this.key}}">
+          <dt>{{key}}:</dt>
+          <dd>
+            {{#if (toggleDetail key)}}
+            <details class="c-truncated" {{toggleDetailOpen key}}>
+              <summary>More</summary>
+              <div>
+                {{/if}}
+                {{#taxonomy this}}
+                <ul class="taxonomy">
+                  {{#each value}}
+                  <li>{{value}}</li>
+                  {{/each}}
+                </ul>
+                {{else}}
+                {{#each this.value}}
+                {{#if this.link}}<a href="{{this.link}}" title="[link to filtered search results]">{{/if}}
+                  {{{ this.value }}}{{#if this.link}}</a>{{/if}}{{comma this ../this.value false}}
+                {{else}}
+                {{#if link}}<a href="{{link}}" title="[link to filtered search results]">{{/if}}
+                  {{{ this.value }}}
+                  {{#if link}}</a>{{/if}}
+
+                {{/each}}
+                {{/taxonomy}}
+
+                {{#if (toggleDetail key)}}
+              </div>
+            </details>
+            {{/if}}
+          </dd>
+        </dl>
+        {{/each}}
+      </div>
 
     </div>
     {{#ifpage 'object'}}
-    <aside class="columns medium-4">
+    <aside>
       {{> records/panel-cite }}
     </aside>
     {{/ifpage}}

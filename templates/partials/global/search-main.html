@@ -1,120 +1,144 @@
 <section class="searchbar">
 
-  <div class="o-container">
+  <div class="o-container u-clearfix">
 
     {{#unless reduced}}
     <h1 class="searchbar__strap">Search our collection</h1>
     {{> global/searchbox filters="filters"}}
 
     {{#if descriptionBox}}
-    {{#if descriptionBox.museum}}
-    <div class="description-box description-box--museum"
-      style="background-image:url({{descriptionBox.museum.thumbnail}})">{{else}}
-      <div class="description-box">
-        {{/if}}
 
-        <div class="row">
+    <div class="description-box"
+      {{#if descriptionBox.museum}}
+      data-description-box-type="museum"
+      style="background-image:url({{descriptionBox.museum.thumbnail}})"
+      {{/if}}
 
-          {{#if descriptionBox.category}}
-          <div
-            class="columns {{#if descriptionBox.category.sub-categories}} medium-6 {{else}} medium-9 {{/if}}{{#if descriptionBox.category.related-articles}} medium-6 {{else}} medium-9 {{/if}}">
-            <h3 class="description-box__main-title">{{descriptionBox.category.title}}</h3>
-            <p>{{descriptionBox.category.description}}</p>
-          </div>
-          {{#if descriptionBox.category.sub-categories}}
-          <div class="columns medium-3">
-            <h5 class="description-box__list-title">Topics</h5>
-            <ul class="description-box__list">
-              {{#each descriptionBox.category.sub-categories}}
-              <li>{{> global/icon i="objects" }}<a href="{{link}}">{{title}}</a></li>
-              {{/each}}
-            </ul>
-          </div>
-          {{/if}}
-          {{#if descriptionBox.category.related-articles}}
-          <div class="columns medium-3">
-            <h5 class="description-box__list-title">Read about</h5>
-            <ul class="description-box__list">
-              {{#each descriptionBox.category.related-articles}}
-              <li>{{> global/icon i="external" }}<a href="{{link}}">{{title}}</a></li>
-              {{/each}}
-            </ul>
-          </div>
-          {{/if}}
-          {{/if}}
+      {{#if descriptionBox.category.sub-categories}}
+      {{#if descriptionBox.category.related-articles}}
+      data-description-box-sides="2"
+      {{else}}
+      data-description-box-sides="1"
+      {{/if}}
+      {{else}}
+      {{#if descriptionBox.category.related-articles}}
+      data-description-box-sides="1"
+      {{/if}}
+      {{/if}}
+
+      {{#if descriptionBox.collection.related-articles}}
+      data-description-box-sides="1"
+      {{/if}}
+
+      {{#if descriptionBox.gallery.thumbnail}}
+      data-description-box-sides="2"
+      {{else}}
+      data-description-box-sides="1"
+      {{/if}}>
+
+      {{#if descriptionBox.category}}
+      <div
+        class="description-box__main">
+        <h3 class="description-box__main-title">{{descriptionBox.category.title}}</h3>
+        <p>{{descriptionBox.category.description}}</p>
+      </div>
+      {{#if descriptionBox.category.sub-categories}}
+      <div class="description-box__side">
+        <h5 class="description-box__list-title">Topics</h5>
+        <ul class="description-box__list">
+          {{#each descriptionBox.category.sub-categories}}
+          <li>{{> global/icon i="objects" }}<a href="{{link}}">{{title}}</a></li>
+          {{/each}}
+        </ul>
+      </div>
+      {{/if}}
+      {{#if descriptionBox.category.related-articles}}
+      <div class="description-box__side">
+        <h5 class="description-box__list-title">Read about</h5>
+        <ul class="description-box__list">
+          {{#each descriptionBox.category.related-articles}}
+          <li>{{> global/icon i="external" }}<a href="{{link}}">{{title}}</a></li>
+          {{/each}}
+        </ul>
+      </div>
+      {{/if}}
+      {{/if}}
 
 
-          {{#if descriptionBox.collection}}
-          <div
-            class="columns medium-6 medium-9 {{#if descriptionBox.collection.related-articles}} medium-6 {{else}} medium-9 {{/if}}">
-            <h3 class="description-box__main-title">{{descriptionBox.collection.title}}</h3>
-            <p>{{descriptionBox.collection.description}}</p>
-          </div>
-          {{#if descriptionBox.collection.related-articles}}
-          <div class="columns medium-3">
-            <h5 class="description-box__list-title">Read about</h5>
-            <ul class="description-box__list">
-              {{#each descriptionBox.collection.related-articles}}
-              <li>{{> global/icon i="external" }}<a href="{{link}}">{{title}}</a></li>
-              {{/each}}
-            </ul>
-          </div>
-          {{/if}}
-          {{/if}}
+      {{#if descriptionBox.collection}}
+      <div
+        class="description-box__main">
+        <h3 class="description-box__main-title">{{descriptionBox.collection.title}}</h3>
+        <p>{{descriptionBox.collection.description}}</p>
+      </div>
+      {{#if descriptionBox.collection.related-articles}}
+      <div class="description-box__side">
+        <h5 class="description-box__list-title">Read about</h5>
+        <ul class="description-box__list">
+          {{#each descriptionBox.collection.related-articles}}
+          <li>{{> global/icon i="external" }}<a href="{{link}}">{{title}}</a></li>
+          {{/each}}
+        </ul>
+      </div>
+      {{/if}}
+      {{/if}}
 
-          {{#if descriptionBox.gallery}}
-          <div class="columns medium-6">
-            <h3 class="description-box__main-title">{{descriptionBox.gallery.title}}</h3>
-            <p>{{descriptionBox.gallery.description}}</p>
-          </div>
-          <div class="columns medium-3">
-            <h5 class="description-box__list-title" aria-hidden="true">&nbsp;</h5>
-            <ul class="description-box__list">
-              <li>{{> global/icon i="external" }}<a href="{{descriptionBox.gallery.link-to-gallery-page}}">Visitor
-                  information</a></li>
-            </ul>
-          </div>
-          <div class="columns medium-3">
-            <h5 class="description-box__list-title" aria-hidden="true">&nbsp;</h5>
-            <img src="{{descriptionBox.gallery.thumbnail}}" alt="">
-          </div>
-          {{/if}}
-
-          {{#if descriptionBox.museum}}
-          <div class="columns large-9">
-            <h3 class="description-box__main-title">{{descriptionBox.museum.title}}</h3>
-            <p>{{descriptionBox.museum.description}}</p>
-            <ul class="description-box__list">
-              <li>{{> global/icon i="external" }}<a href="{{descriptionBox.museum.link}}">Visitor information</a></li>
-            </ul>
-          </div>
-          {{/if}}
-
-          {{#if descriptionBox.mphc}}
-          <div class="columns large-9">
-            <h3 class="description-box__main-title">{{descriptionBox.mphc.title}}</h3>
-            <p>{{descriptionBox.mphc.description}}</p>
-            <ul class="description-box__list">
-              <li>{{> global/icon i="external" }}<a
-                  href="{{descriptionBox.mphc.link}}">{{descriptionBox.mphc.title}}</a></li>
-            </ul>
-          </div>
-          {{/if}}
-        </div>
-        <button name="close-description-box" class="description-box__close">{{> global/icon i="close" }} close</button>
+      {{#if descriptionBox.gallery}}
+      {{#if descriptionBox.gallery.thumbnail}}
+      <div class="description-box__side">
+        <img src="{{descriptionBox.gallery.thumbnail}}" alt="">
+      </div>
+      {{/if}}
+      <div class="description-box__main">
+        <h3 class="description-box__main-title">{{descriptionBox.gallery.title}}</h3>
+        <p>{{descriptionBox.gallery.description}}</p>
+      </div>
+      <div class="description-box__side">
+        <ul class="description-box__list">
+          <li>{{> global/icon i="external" }}<a href="{{descriptionBox.gallery.link-to-gallery-page}}">Visitor
+              information</a></li>
+        </ul>
       </div>
       {{/if}}
 
-      {{#ifpage 'noresults'}}{{else}}
-      <nav class="searchtabs" id="searchnav">
-        {{> global/search-nav}}
-      </nav>
-      {{/ifpage}}
-      {{/unless}}
-
-      {{#if reduced}}
-      {{> global/searchbox}}
+      {{#if descriptionBox.museum}}
+      <div class="description-box__main">
+        <h3 class="description-box__main-title">{{descriptionBox.museum.title}}</h3>
+        <p>{{descriptionBox.museum.description}}</p>
+        <ul class="description-box__list">
+          <li>{{> global/icon i="external" }}<a href="{{descriptionBox.museum.link}}">Visitor information</a></li>
+        </ul>
+      </div>
       {{/if}}
 
+      {{#if descriptionBox.mphc}}
+      <div class="description-box__main">
+        <h3 class="description-box__main-title">{{descriptionBox.mphc.title}}</h3>
+        <p>{{descriptionBox.mphc.description}}</p>
+        <ul class="description-box__list">
+          <li>{{> global/icon i="external" }}<a
+              href="{{descriptionBox.mphc.link}}">{{descriptionBox.mphc.title}}</a></li>
+        </ul>
+      </div>
+      {{/if}}
+
+      <button name="close-description-box" class="description-box__close">
+        {{> global/icon i="close" }}
+        <span class="u-visually-hidden">close</span>
+      </button>
     </div>
+    {{/if}}
+
+    {{#ifpage 'noresults'}}{{else}}
+    <nav class="searchtabs" id="searchnav">
+      {{> global/search-nav}}
+    </nav>
+    {{/ifpage}}
+    {{/unless}}
+
+    {{#if reduced}}
+    {{> global/searchbox}}
+    {{/if}}
+
+  </div>
 </section>

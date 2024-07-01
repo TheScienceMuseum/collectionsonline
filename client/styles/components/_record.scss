@@ -9,25 +9,24 @@
 // above the 'fold' important things
 //-----------------------------------------------------------------------------
 
+@mixin button-base {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  background-color: black;
+  padding: .667em 1em;
+}
+
 .record-top {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-
-  @include media('>=medium') {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
-
   background: white;
+  @include textstyles;
 
   &__title {
-    font-size: 2rem;
+    font-size: clamp-between(2rem, 3rem);
     letter-spacing: -0.02em;
-
-    @include media('>=medium') {
-      font-size: 3rem;
-    }
-
+    margin: 0;
+    margin-bottom: $grid-gutter;
     font-weight: 700;
 
     .icon {
@@ -36,12 +35,13 @@
   }
 
   &__date {
-    font-size: 2rem;
+    font-size: 75%;
     font-weight: 500;
   }
 
   &__dl {
     font-size: 1.25rem;
+    margin: 0;
 
     dt,
     dd {
@@ -86,14 +86,13 @@
 
   &__thumbs {
     position: relative;
-    text-align: center;
-    font-size: 0;
     overflow: hidden;
-    margin-bottom: -1px;
     display: none;
+    gap: 1px;
+    justify-content: center;
 
     @include media('>=medium') {
-      display: block;
+      display: flex;
     }
   }
 
@@ -103,15 +102,11 @@
     height: 3rem;
     object-fit: cover;
     opacity: 0.5;
-    margin-bottom: 1px;
-    margin-right: 1px;
     cursor: pointer;
 
     &--selected {
       opacity: 1;
       outline: 1px white solid;
-      margin-top: -1px;
-      margin-bottom: -1px;
       z-index: 1;
       position: relative;
       cursor: default;
@@ -130,7 +125,7 @@
 
     @include media('<=small') {
       clear: right;
-      font-size: rem-calc(14);
+      font-size: rem(14);
     }
   }
 }
@@ -147,11 +142,11 @@
       padding: 0.5em 0.75em;
     }
 
-    font-size: rem-calc(18);
+    font-size: rem(18);
 
     .icon {
-      top: rem-calc(2);
-      left: rem-calc(-2);
+      top: rem(2);
+      left: rem(-2);
     }
 
     &--active .icon {
@@ -163,7 +158,7 @@
     //wraps __menu to anchor position from top
     position: absolute;
     top: 0;
-    right: 0;
+    right: $grid-gutter;
     width: 100%;
   }
 
@@ -180,7 +175,7 @@
       width: 25%;
     }
 
-    right: 1rem;
+    right: 0;
     border: 1px white solid;
     bottom: 0;
     padding: 1rem;
@@ -198,9 +193,15 @@
       @include button-base;
       color: $c-teal;
       border-color: $c-teal;
-      float: right;
+      border-width: 1px;
+      border-style: solid;
+      // float: right;
       margin-right: 0;
-      font-size: rem-calc(18);
+      margin-left: auto;
+      font-size: rem(18);
+      gap: 0.5rem;
+
+      text-decoration: none;
 
       &:hover {
         color: $c-green;
@@ -208,28 +209,39 @@
       }
 
       .icon {
-        top: rem-calc(2);
-        left: rem-calc(-2);
+        top: rem(2);
+        left: rem(-2);
       }
+    }
+
+    .download-image {
+      margin-left: auto;
     }
 
     p {
       font-size: 1rem;
-      margin-bottom: 0.5rem;
+      margin: 0;
     }
 
     a {
       color: $c-teal;
     }
 
-    img {
-      display: block;
-      margin-bottom: 0.25rem;
-    }
+
+  }
+
+  &__ccbadge {
+    vertical-align: baseline;
+    margin-right: 0.5rem;
+    position: relative;
+    top: 0.05em;
   }
 
   &__method {
-    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-bottom: 1rem;
 
     & + & {
       border-top: 1px grey(30) solid;
@@ -250,15 +262,12 @@
 
   &__button {
     @include toolbar-button;
-
-    &:hover {
-      background-color: rgba(black, 1);
-    }
+    background-color: black;
   }
 }
 
 .record-description {
-  font-size: rem-calc(18);
+  font-size: rem(18);
 }
 
 .group-info-box {
@@ -275,21 +284,20 @@
     padding-inline: 1rem;
     padding-block: 0.5rem;
   }
+
   dl {
     display: flex;
     gap: 1em;
   }
 }
+
 // .record-longdesc {
 // this could be applied to a <p>
 // but may be safer to apply to wrapping <div> for bigger content
 // }
 
 .record-details {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
   background-color: grey(10);
-  margin-top: 2rem;
 
   &__toggler {
     cursor: pointer;
@@ -301,40 +309,40 @@
     }
   }
 
-  &__dl {
-    @include grid-row($behavior: nest);
-    padding: 0.75rem 0;
+  &__dls {
+    //needs to be applied an el that wraps __dl
+    display: table;
+    width: 100%;
+  }
 
-    // &:not(:last-of-type) { border-bottom: 1px grey(20) solid; }
-    // need to knock it in a gutter, hence
-    &:not(:last-of-type):after {
-      content: ' ';
-      margin: 0 0.5rem;
-      background: grey(20);
-      height: 1px;
-      display: block;
-      position: relative;
-      top: 0.75rem;
+  &__dl {
+    display: table-row;
+    margin: 0;
+
+    & + & > * {
+      border-top: 1px grey(20) solid;
     }
 
     dt,
     dd {
       margin: 0;
+      padding: 0.75rem 0;
+      display: table-cell;
     }
 
     dt {
-      @include grid-column(3);
       @include small-caps;
       color: grey(80);
       line-height: 1rem;
       padding-top: 0.25rem; // to match dd line-height
-      @include hyphenate;
+      // @include hyphenate;
+      width: 25%; // the whole point of doing ths table-layout is to do auto-widthing for the terms. but dd widths change using expanding content toggles, causing jumpy layouts
     }
 
     dd {
-      @include grid-column(9);
       line-height: 1.5rem;
-      //font-weight: 500;
+      font-weight: 300;
+      padding-left: 1em;
     }
 
     a {
@@ -425,8 +433,7 @@
 
   &__grid {
     display: grid;
-    padding: 0 0.5rem;
-    gap: 2em 1em;
+    gap: 2em $grid-gutter;
     grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
   }
 
@@ -466,66 +473,34 @@
       bottom: -0.5rem;
       margin: auto;
       color: rgba(white, 0.25);
-      font-size: rem-calc(24);
+      font-size: rem(24);
 
       @include media('>=medium') {
-        font-size: rem-calc(32);
+        font-size: rem(32);
       }
 
       line-height: 1;
-      letter-spacing: rem-calc(-1);
+      letter-spacing: rem(-1);
       font-weight: 300;
     }
   }
 
+  p,
+  li,
+  dl,
+  dd {
+    font-size: 1rem;
+  }
+
   &__title {
     font-size: 1.5rem;
+    margin-block: 1rem;
   }
 
   &__description {
-    p {
-      font-size: 1rem;
-    }
-    max-height: 15rem;
-    overflow-y: scroll;
+    margin-block: 1rem;
   }
 
-  &__details {
-    display: table;
-    border-collapse: collapse;
-    width: 100%;
-  }
-
-  &__dl {
-    display: table-row;
-    border-top: 1px grey(20) solid;
-
-    dt,
-    dd {
-      margin: 0;
-      display: table-cell;
-      padding: 0.5rem 0;
-    }
-
-    dt {
-      @include small-caps;
-      color: grey(80);
-      line-height: 1rem;
-      padding-top: 0.25rem; // to match dd line-height
-      padding-right: 1rem;
-      // @include hyphenate;
-      width: min-content;
-    }
-
-    dd {
-      font-size: 1rem;
-      line-height: 1.5rem;
-    }
-
-    a {
-      @include text-link();
-    }
-  }
 }
 
 @media only screen and (max-width: 304px) {

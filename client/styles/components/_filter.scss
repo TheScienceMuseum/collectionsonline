@@ -8,9 +8,9 @@
   background-color: white;
   border: 1px black solid;
   box-shadow: 0 2px 8px grey(20);
+
   @include media("<=small") {
     position: absolute;
-    top: -1.5rem;
     width: 100%;
     box-shadow: 0 8px 16px rgba(black, 0.3);
   }
@@ -23,10 +23,16 @@
 }
 
 .filter {
-  padding: 0.5rem;
+  padding: 0.75rem 0.5rem;
+
+  a {
+    text-decoration: none;
+  }
+
   & + & {
     border-top: 1px black solid;
   }
+
   &--clear {
     border-bottom: 1px black solid;
   }
@@ -35,24 +41,28 @@
     display: block;
     position: relative;
     color: black;
-    font-size: rem-calc(18);
-    @include icon-bullet(arrow_right, 1.5rem, $top: 0.1rem, $left: -0.2rem);
+    font-size: rem(18);
+    font-weight: 300;
+    @include icon-bullet(arrow_right, 1.5rem, $top: -0.125rem, $left: -0.2rem);
+
+    &:before {
+      transition: transform $transition-default;
+    }
+
     padding-left: 1.5rem; // need to rewrite that mixin really
 
     .icon {
-      font-size: rem-calc(24);
+      font-size: rem(24);
       position: absolute;
       left: -0.25rem;
+      // transform-origin: center center;
 
-      .filter--open & {
-        transform: rotate(90deg);
-      }
     }
   }
 
   &__options {
     display: none;
-    font-size: rem-calc(12);
+    font-size: rem(12);
     @include clearfix;
 
     input {
@@ -71,22 +81,25 @@
     }
 
     li {
-      padding-top: rem-calc(6);
+      padding-top: rem(6);
       position: relative;
     }
 
     label {
+      display: block;
       padding-left: 1.5rem;
       margin: 0;
-      line-height: rem-calc(16);
+      font-size: rem(14);
+      line-height: rem(16);
       cursor: pointer;
-      // &:hover { color: mix($c-teal, $c-blue); }
     }
+
     .filter__box {
       //checkbox within label
       position: absolute; // relative to li
-      top: rem-calc(8);
-      left: rem-calc(4);
+      // top: rem(8);
+      left: rem(4);
+
     }
   }
 
@@ -94,6 +107,7 @@
     opacity: (0.66);
     @include small-caps;
     padding-left: 0.5em;
+    font-weight: 400;
   }
 
   &--active,
@@ -105,11 +119,20 @@
 
   &--open {
     .filter__name {
-      @include icon-bullet(arrow_down, 1.5rem, $left: -0.2rem);
-      padding-left: 1.5rem;
-      padding-bottom: 0.5rem;
+
+      // @include icon-bullet(arrow_down, 1.5rem, $left: -0.2rem);
+      // padding-left: 1.5rem;
+      &:before {
+        // transform-origin: center center;
+        // bottom: auto;
+        // top: auto;
+        transform: rotate(90deg);
+      }
+
+      padding-bottom: 0.75rem;
       margin-bottom: 0.25rem;
     }
+
     .filter__name:after {
       content: "";
       position: absolute;
@@ -128,8 +151,9 @@
     .filter__name {
       color: white;
       font-weight: 500;
-      @include icon-bullet(cancel, 1.5rem, $top: -0.5rem, $left: -0.2rem);
+      @include icon-bullet(cancel, 1.5rem, $top: -0.1rem, $left: -0.2rem);
     }
+
     .filter__name:after {
       border-color: grey(70);
     }
@@ -141,7 +165,7 @@
   }
 
   &--uncollapsible &__name {
-    @include icon-bullet(cancel, 1.5rem, $top: 0.1rem, $left: -0.2rem);
+    @include icon-bullet(cancel, 1.5rem, $top: -0.1rem, $left: -0.2rem);
   }
 
   &:hover:not(&--active) {
@@ -151,10 +175,11 @@
   .filter__other {
     display: block;
     color: grey(40);
-    font-size: rem-calc(14);
+    font-size: rem(14);
     padding-left: 1.5rem;
-    padding-top: rem-calc(4);
+    padding-top: rem(4);
     @include icon-bullet(arrow_right, $size: 1.25rem, $top: 0.1rem);
+
     &:before {
       opacity: 0.5;
     }
@@ -172,6 +197,12 @@
       margin-right: -1px;
       padding: 0.125rem 0;
     }
+
+    input {
+      padding: 0.5em;
+      max-width: 100%;
+      padding-top: 0.125rem
+    }
   }
 }
 
@@ -187,16 +218,18 @@
   display: inline-block;
   white-space: nowrap;
   max-width: 100%;
+
   @include media(">=medium") {
     max-width: 75%;
   }
+
   vertical-align: middle;
-  line-height: 1rem;
-  font-weight: 500;
+  line-height: 1.25rem;
   font-size: 0;
   display: flex;
+
   & * {
-    font-size: rem-calc(14);
+    font-size: rem(14);
   }
 }
 
@@ -205,11 +238,21 @@
   overflow: hidden;
   color: white;
   background: grey(80);
+  font-weight: 300;
+
+  dl {
+    padding: 0;
+    margin: 0;
+  }
+
   a:hover {
     color: white;
+
   }
-  border-radius: rem-calc(6);
-  margin: rem-calc(4 4 4 0);
+
+  border-radius: rem(6);
+  margin-right: 0.25rem;
+
   &__label,
   &__key {
     display: inline-block;
@@ -218,25 +261,29 @@
     overflow: hidden;
     vertical-align: top;
     text-overflow: ellipsis;
-    padding: rem-calc(4 8);
+    padding-block: 0.25rem;
+    margin: 0;
   }
+
   &__label {
-    padding-right: rem-calc(30);
-    padding-left: rem-calc(4);
+    padding-right: 2rem;
+    // padding-left: rem(4);
   }
+
   &__key {
-    padding-right: rem-calc(12); // 4 + width of pseudo el
+    padding-right: rem(12); // 4 + width of pseudo el
+    padding-left: 0.5rem;
     position: relative;
+
     &:after {
       content: "";
       position: absolute;
       right: 0;
       top: 0;
       bottom: 0;
-      width: rem-calc(8);
-      background-image: svg-uri(
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 28"><path stroke="#FFFFFF" fill="none" d="M1,0 7,15 1,28" vector-effect="non-scaling-stroke" ></path></svg>'
-      );
+      width: rem(8);
+      background-image: svg-uri('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 28"><path stroke="#FFFFFF" fill="none" d="M1,0 7,15 1,28" vector-effect="non-scaling-stroke" ></path></svg>'
+        );
       background-repeat: no-repeat;
       background-size: 100% 100%;
       background-position: left center;
@@ -251,10 +298,12 @@
     display: flex;
     align-items: center;
     float: right;
-    padding: rem-calc(4 8 4 6);
+    padding: rem(4 8 4 6);
     color: white;
     background: grey(80);
     border-left: 1px white solid;
+    text-decoration: none;
+
     &:hover {
       color: white;
       background: grey(90);
@@ -266,33 +315,34 @@
     color: grey(100);
     background-color: grey(20);
     @include small-caps;
-    padding: rem-calc(4 8);
-    border-radius: rem-calc(6 0 0 6);
-    margin: rem-calc(4 0);
+    padding: rem(4 8);
+    border-radius: rem(6 0 0 6);
+    margin: 0;
     display: flex;
     align-items: center;
+    font-weight: 500;
 
     &:after {
       content: "";
       position: absolute;
-      right: rem-calc(-7);
+      right: rem(-7);
       overflow: visible;
       top: 0;
       bottom: 0;
-      width: rem-calc(8);
-      background-image: svg-uri(
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 28"><path fill="#cccccc" d="M0,0 1,0 7,15 1,28 0,28"></path><path fill="none" stroke="#FFFFFF" stroke-width="2px" d="M1,0 7,15 1,28" vector-effect="non-scaling-stroke" ></path></svg>'
-      );
+      width: rem(8);
+      background-image: svg-uri('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 28"><path fill="#cccccc" d="M0,0 1,0 7,15 1,28 0,28"></path><path fill="none" stroke="#FFFFFF" stroke-width="2px" d="M1,0 7,15 1,28" vector-effect="non-scaling-stroke" ></path></svg>'
+        );
       background-repeat: no-repeat;
       background-size: 100% 100%;
       background-position: left center;
       z-index: 1;
     }
   }
+
   &--prefix + & {
     // the first badge after prefix
-    border-radius: rem-calc(0 6 6 0);
-    padding-left: rem-calc(8);
+    border-radius: rem(0 6 6 0);
+    padding-left: 0.25rem;
     max-width: 80%;
   }
 }

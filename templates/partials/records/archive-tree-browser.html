@@ -1,28 +1,26 @@
 {{#if tree.children}}
-<section class="archive-section" id="archive-tree">
-  <div class="row">
-    <div class="columns medium-8">
-      <h2 id="archive-block" class="archive-tree__title">Browse this archive</h2>
+<section class="section archive-section" id="archive-tree">
+  <div class="o-container">
+
+    <div class="o-grid o-grid--3cols@s">
+      <h2 id="archive-block" class="o-grid__span2@s archive-tree__title section__h">Browse this archive</h2>
+      <form action="/search/documents" id="archive-search">
+        <div class="searchbox searchbox--archive">
+          <input type="search" class="searchbox__search" placeholder="Or search within this archive" name="q"
+            id="archive-q">
+          <input type="hidden" name="archive" value="{{#if fonds}}{{fonds.summary_title}}{{else}}{{this.title}}{{/if}}"
+            id="archive-title">
+          <button aria-label="search" type="submit" class="searchbox__submit">
+            {{> global/icon i="search" size="24" }}
+          </button>
+        </div>
+      </form>
     </div>
-    <div class="columns medium-4">
 
-    <form action="/search/documents" id="archive-search">
-      <div class="searchbox searchbox--archive">
-        <input type="search" class="searchbox__search" placeholder="Or search within this archive" name="q" id="archive-q">
-        <input type="hidden" name="archive" value="{{#if fonds}}{{fonds.summary_title}}{{else}}{{this.title}}{{/if}}" id="archive-title">
-        <button aria-label="search" type="submit" class="searchbox__submit">
-          {{> global/icon i="search" size="24" }}
-        </button>
-      </div>
-    </form>
-
+    <div class="archive-tree">
+      {{> records/archive-tree }}
     </div>
 
-    <div class="archive-tree columns">
-
-        {{> records/archive-tree }}
-
-    </div>
   </div>
 </section>
 {{/if}}

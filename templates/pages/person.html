@@ -1,15 +1,15 @@
 <div id="main-page">
-{{> global/global-header}}
-{{> global/search-main reduced="reduced"}}
+  {{> global/global-header}}
+  {{> global/search-main reduced="reduced"}}
 
   <main>
 
-    <section class="white">
+    <section class="section">
 
       {{> records/record-top }}
 
-      <div class="row">
-        <div class="columns medium-8">
+      <div class="o-container o-grid o-grid--3cols@m">
+        <div class="section__content o-grid__span2@m">
 
           {{> records/record-description}}
           <!--
@@ -22,10 +22,10 @@
           {{/if}}
           -->
         </div>
-        <aside class="columns medium-4">
+        <aside>
 
           {{#if wikipedia}}
-            <div id="wikiImage" data-name="{{wikipedia}}"></div>
+          <div id="wikiImage" data-name="{{wikipedia}}"></div>
           {{/if}}
 
           {{#if related.people}}{{> records/record-related-people }}{{/if}}
@@ -40,5 +40,5 @@
 
   </main>
 
-{{> global/global-footer }}
+  {{> global/global-footer }}
 </div>

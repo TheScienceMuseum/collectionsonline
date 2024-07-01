@@ -17,13 +17,29 @@ module.exports = () => {
     };
     const $lightbox = createBox();
 
-    $lightbox.addEventListener('click', e => {
+    function openLightbox (e) {
+      const $img = $lightbox.querySelector('img');
+      $img.src = e.detail.src;
+      $img.alt = e.detail.alt;
+      $lightbox.classList.add('is-open');
+    }
+
+    function closeLightbox () {
       $lightbox.classList.remove('is-open');
+    }
+
+    $lightbox.addEventListener('click', e => {
+      closeLightbox();
     });
     document.addEventListener('keydown', e => {
       if (e.code === 'KeyX' || e.code === 'Escape') {
-        $lightbox.classList.remove('is-open');
+        closeLightbox();
       }
+    });
+
+    // define a custom eventlistener on the document so external scripts can trigger the lightbox
+    document.addEventListener('open-lightbox', e => {
+      openLightbox(e);
     });
 
     $lightboxes.forEach(el => {
@@ -31,10 +47,12 @@ module.exports = () => {
         e.preventDefault();
 
         if (el.hasAttribute('href')) {
-          const $img = $lightbox.querySelector('img');
-          $img.src = el.href;
-          $img.alt = el.getAttribute('title');
-          $lightbox.classList.add('is-open');
+          openLightbox({
+            detail: {
+              src: el.href,
+              alt: el.getAttribute('title') || el.querySelector('img').getAttribute('alt')
+            }
+          });
         }
       });
     });

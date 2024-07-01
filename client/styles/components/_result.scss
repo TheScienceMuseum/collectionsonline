@@ -2,12 +2,18 @@
 //
 // shared inheritance for .resultlist and .resultcard pattern
 //-----------------------------------------------------------------------------
+@use "sass:math";
 
 @mixin resultclass {
   position: relative;
   min-height: 100%;
   width: 100%;
   line-height: 1.2;
+
+  a &,
+  a:has(&) {
+    text-decoration: none;
+  }
 
   &__figure {
     margin: 0;
@@ -40,27 +46,27 @@
       bottom: -0.5rem;
       margin: auto;
       color: rgba(white, 0.25);
-      font-size: rem-calc(24);
+      font-size: rem(24);
 
       @include media(">=medium") {
-        font-size: rem-calc(32);
+        font-size: rem(32);
       }
 
       line-height: 1;
-      letter-spacing: rem-calc(-1);
+      letter-spacing: rem(-1);
       font-weight: 300;
     }
   }
 
   &__title {
     font-weight: 700;
-    font-size: rem-calc(16);
+    font-size: rem(16);
     line-height: 1.2;
     text-transform: none;
     margin: 0;
 
     @include media(">=medium") {
-      font-size: rem-calc(18);
+      font-size: rem(18);
     }
   }
 
@@ -84,7 +90,7 @@
   ul,
   li {
     font-weight: 300;
-    font-size: rem-calc(16);
+    font-size: rem(16);
     margin: 0;
   }
 
@@ -101,13 +107,14 @@
       position: relative;
       padding-left: 1.25rem;
       line-height: 1.25;
+      margin-top: 0.5rem;
 
       &:before {
         content: "";
         display: block;
         position: absolute;
         left: 0;
-        top: $icnsize/8;
+        top: math.div($icnsize, 8);
         margin: auto; // top, bottom, height, auto = vertical align!
         height: $icnsize;
         width: $icnsize;
@@ -118,6 +125,7 @@
 
     a {
       color: grey(80);
+      text-decoration: none;
 
       &:hover {
         color: black;
@@ -255,10 +263,10 @@
       margin-left: 0.5rem;
       margin-bottom: 0.5rem;
       clear: right;
-      font-size: rem-calc(16);
+      font-size: rem(16);
 
       @include media(">=medium") {
-        font-size: rem-calc(24);
+        font-size: rem(24);
       }
     }
   }

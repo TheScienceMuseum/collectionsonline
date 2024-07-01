@@ -2,12 +2,14 @@
   {{> global/global-header}}
 
   <main>
-    <section class="home-banner">
+    <section class="section --spacious home-banner">
       {{!-- update /client/styles/components/_home.scss if no of images changes --}}
-      {{#each headerImages}}
-      <img src="/assets/img/home/feature/1600/{{this}}"
-        srcset="/assets/img/home/feature/800/{{this}} 800w, /assets/img/home/feature/1600/{{this}} 1600w" alt="" />
-      {{/each}}
+      <div class="home-banner__bgimages">
+        {{#each headerImages}}
+        <img src="/assets/img/home/feature/1600/{{this}}"
+          srcset="/assets/img/home/feature/800/{{this}} 800w, /assets/img/home/feature/1600/{{this}} 1600w" alt="" />
+        {{/each}}
+      </div>
 
       <div class="searchbar searchbar--home">
         <div class="home-banner__searchbar o-container">
@@ -19,7 +21,7 @@
 
     </section>
 
-    <section class="home-features">
+    <section class="section --spacious home-features">
 
       <div class="o-container">
 
@@ -61,9 +63,9 @@
 
     </section>
 
-    <section class="home-map">
+    <section class="home-map section --spacious">
       <div class="o-container">
-        <h2>See what’s on display</h2>
+        <h2 class="section__h">See what’s on display</h2>
         <div class="smg-map">
           <div class="smg-map__imgratio" style="display: flex">
             {{> global/smg-map}}
@@ -88,43 +90,45 @@
       </div>
     </section>
 
-    <section class="home-cards">
+    <section class="home-cards section --spacious o-container">
       {{#each collectionThemes}}
-      <div class="row">
-        <h2 class="home-cards__h columns">{{this.title}}</h2>
+
+      <h2 class="section__h">{{this.title}}</h2>
+      <div class="o-grid o-grid--2cols@s o-grid--4cols@m">
         {{#each this.theme}}
-        <div class="small-6 medium-3 columns">
-          <article class="resultcard resultcard--collection">
-            <figure class="resultcard__figure">
-              <img src="{{ this.figure }}" alt="" />
-            </figure>
-            <div class="resultcard__info">
-              <h3 class="resultcard__title">{{ this.title }}</h3>
-              <p class="resultcard__description">{{ this.description }}</p>
-              <ul class="resultcard__linklist">
-                {{#each this.links}}
-                <li>
-                  <a href="{{ this.link }}">{{ this.title }}</a>
-                </li>
-                {{/each}}
-              </ul>
-            </div>
-          </article>
-        </div>
+
+        <article class="resultcard resultcard--collection">
+          <figure class="resultcard__figure">
+            <img src="{{ this.figure }}" alt="" />
+          </figure>
+          <div class="resultcard__info">
+            <h3 class="resultcard__title">{{ this.title }}</h3>
+            <p class="resultcard__description">{{ this.description }}</p>
+            <ul class="resultcard__linklist">
+              {{#each this.links}}
+              <li>
+                <a href="{{ this.link }}">{{ this.title }}</a>
+              </li>
+              {{/each}}
+            </ul>
+          </div>
+        </article>
+
         {{/each}}
       </div>
+
       {{/each}}
     </section>
 
     {{#collectionCarousel}}
-    <section class="home-carousel">
-      <div class="row">
-        <h2 class="home-carousel__h columns">{{this.title}}</h2>
-        <div class="columns flickity-buttonholder"></div>
+    <section class="section --spacious home-carousel">
+      <div class="o-container">
+        <h2 class="section__h">{{this.title}}</h2>
+        <div class="flickity-buttonholder"></div>
       </div>
       <div class="home-carousel__flickity">
         {{#each this.collection}}
-        <div class="{{ this.columns }} home-carousel__cell">
+        <div class="home-carousel__cell">
           <a href="{{ this.link }}">
             <article class="resultcard resultcard--dark {{#if type}}resultcard--{{ this.type }}{{/if}}">
               <figure class="resultcard__figure">
@@ -140,6 +144,7 @@
         {{/each}}
 
       </div>
+
     </section>
     {{/collectionCarousel}}
   </main>

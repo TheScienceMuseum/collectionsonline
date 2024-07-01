@@ -4,7 +4,6 @@ const map = require('./map');
 const moreButton = require('./more-button');
 const moreCordion = require('smg-web-design-system/dist/js/accordion');
 const carousel = require('./carousel');
-const moreDetails = require('./expand-details-button');
 const audioplayer = require('smg-web-design-system/dist/js/audioplayer');
 const mediaplayer = require('./mediaplayer');
 const headerMenu = require('smg-web-design-system/dist/js/menu');
@@ -18,7 +17,6 @@ module.exports = ctx => {
   map();
   moreButton();
   moreCordion();
-  moreDetails();
   carousel(ctx);
   mediaplayer();
   audioplayer();

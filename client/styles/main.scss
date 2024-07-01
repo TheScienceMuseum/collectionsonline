@@ -2,43 +2,38 @@
 
 @import 'smg-web-design-system/src/scss/lib';
 
-// redefined to add 'zero' for foundation compat
-$breakpoints: map-merge(
-  (
-    'zero': 0,
-  ),
-  $breakpoints
-);
+$grid-width: 90rem; // was previously 72
 $logo-panel-gradient: $c-teal $c-blue $c-purple;
+$pagination-mobile-items: true;
 
 // general settings and variables, required before foundation
 @import 'base/colour';
 @import 'base/helpers';
 @import 'base/print';
 
-// foundation _settings file, and component extensions
-@import 'base/foundation-settings';
-@import 'base/foundation-components';
+@import "smg-web-design-system/src/scss/base/tags";
+@import "smg-web-design-system/src/scss/base/utilities";
 
-// this is nasty: included in smg-web-design-system/src/scss/lib but overwritten by foundation, so reimporting for our use.
-@import 'sass-between/dist/between';
-@import 'smg-web-design-system/src/scss/lib';
-@import 'smg-web-design-system/src/scss/objects/grid';
+@import "smg-web-design-system/src/scss/objects/blocks";
+@import "smg-web-design-system/src/scss/objects/grid";
+@import "smg-web-design-system/src/scss/objects/textstyles";
+
 
 // our base styles, then all components
 @import 'base/general';
 @import 'base/layout';
 @import 'smg-web-design-system/src/scss/components/accordion';
+@import 'components/about';
 @import 'components/audio';
 @import 'components/awesomplete';
 @import 'components/archive-tree';
 @import 'components/betabar';
+@import 'smg-web-design-system/src/scss/components/button';
 @import 'components/carousel';
 @import 'components/clipboard';
 @import 'components/completeness';
 @import 'components/control';
 @import 'components/description-box';
-@import 'components/details';
 @import 'components/filter';
 @import 'components/footersection';
 @import 'components/home';
@@ -51,9 +46,13 @@ $logo-panel-gradient: $c-teal $c-blue $c-purple;
 @import 'components/menu';
 @import 'smg-web-design-system/src/scss/components/nav';
 @import 'components/nav';
+@import 'smg-web-design-system/src/scss/components/pagination';
 @import 'components/panel';
+@import 'components/property-list';
 @import 'components/record';
 @import 'components/result';
 @import 'components/search';
 @import 'snackbarlightjs/src/css/snackbarlight';
+@import 'smg-web-design-system/src/scss/components/textinput';
+@import 'smg-web-design-system/src/scss/components/truncated';
 @import 'base/hidden';

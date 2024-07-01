@@ -6,6 +6,7 @@
   position: relative;
   color: white;
   background-color: $c-teal;
+  // padding-block: 2rem;
   @include sm-gradient($c-green $c-teal $c-blue); //default
 
   @each $type, $props in $recordtypes {
@@ -16,31 +17,39 @@
   }
 
   &__strap {
-    font-size: rem-calc(24);
+    font-size: clamp-between(1.5rem, 2.5rem);
     text-transform: uppercase;
-    margin: 1rem 0;
+    margin: 0;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+
     position: relative;
     top: 1rem;
-    @include media(">=medium") {
-      font-size: rem-calc(40);
-      margin: 2rem 0;
-    }
+
+    // @include media(">=medium") {
+    //   font-size: rem(40);
+    //   margin: 2rem 0;
+    // }
   }
+
   &--home &__strap {
     @include media(">=medium") {
-      font-size: rem-calc(64);
+      font-size: rem(64);
       margin-bottom: 3.5rem;
     }
   }
 
   &__intro {
-    font-size: rem-calc(18);
+    font-size: rem(18);
+
     @include media(">=medium") {
-      font-size: rem-calc(24);
+      font-size: rem(24);
     }
+
     line-height: 1.25;
     font-weight: 500;
     margin: 1rem 0 1.5rem 0;
+
     @include media(">=medium") {
       margin: 2rem 0;
     }
@@ -49,9 +58,11 @@
   //searchbox placeholder text gets hidden for small, and this shown instead
   &__placeholder-for-small {
     line-height: 1.25;
+
     @include media(">=medium") {
       display: none;
     }
+
     margin: 1rem 0.125rem -0.5rem;
   }
 
@@ -76,25 +87,26 @@
   margin: 2rem 0;
   border: 1px solid rgba(black, 0.5);
 
+  &:hover,
   &--focussed {
-    border: 1px solid $black;
+    border: 1px solid black;
     box-shadow: 0 2px 8px rgba(black, 0.2);
+
     .icon-search {
       fill: $c-blue;
     }
   }
 
-  &--awesomplete-open {
-  }
+  &--awesomplete-open {}
 
   &__back + & {
     // if .searchbox preceded by back btn
-    margin-left: rem-calc(58);
+    margin-left: rem(58);
   }
 
   &__back {
-    width: rem-calc(58); //3.5 + 2px border
-    height: rem-calc(58);
+    width: rem(58); //3.5 + 2px border
+    height: rem(58);
     margin: 2rem 0;
     color: white;
     display: flex;
@@ -109,18 +121,28 @@
     }
   }
 
-  &__search {
+  &__search[type=search] {
+    border: none !important;
+    appearance: none;
     margin-right: 3.5rem;
     width: calc(100% - 3.5rem);
     height: 3.5rem;
     padding: 1rem;
-    font-size: rem-calc(24);
+    font-size: rem(24);
     font-weight: 500;
 
+    &::placeholder {
+      color: grey(20);
+      font-weight: 300;
+    }
+
     &,
-    &:focus {
+    &:focus,
+    &:focus-visible {
+      // focus drawn around parent instead
       border: 0;
       box-shadow: none;
+      outline: none;
     }
 
     @include media("<=small") {
@@ -133,6 +155,9 @@
   &__submit {
     height: 3.5rem;
     width: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
     top: 0;
     right: 0;
@@ -142,15 +167,16 @@
     transition: all $transition-default;
 
     &:hover {
-      color: $black;
+      color: black;
       transform: scale(1.1, 1.1);
     }
   }
 
   &__filters {
-    padding: rem-calc(4 8);
     border-top: 1px solid mix($c-blue, white, 25%);
     display: flex;
+    padding: 0.5rem;
+    gap: 0;
   }
 
   //reused slightly smaller on archive section
@@ -160,7 +186,7 @@
     .searchbox__search {
       padding: 0.5rem;
       height: 2.5rem;
-      font-size: rem-calc(16);
+      font-size: rem(16);
     }
 
     .searchbox__submit {
@@ -186,16 +212,19 @@
   width: 25%;
   padding: 0.75em 0.25em;
   font-weight: 500;
-  font-size: rem-calc(14);
+  font-size: rem(14);
   line-height: 1.25; //match icn size
   text-align: center;
   background-color: rgba(black, 0.6);
   color: white;
+  text-decoration: none;
+
   @include media(">=medium") {
-    font-size: rem-calc(18);
+    font-size: rem(18);
   }
+
   @include media(">=large") {
-    font-size: rem-calc(22);
+    font-size: rem(22);
   }
 
   &:hover {
@@ -207,6 +236,7 @@
     background-color: white;
     color: black;
     border-bottom: 0;
+
     .searchtab__label {
       color: black;
     }
@@ -225,7 +255,8 @@
     margin: auto;
     vertical-align: middle;
     top: -6%;
-    // font-size: rem-calc(12);
+
+    // font-size: rem(12);
     @include media(">=medium") {
       display: inline-block;
     }
@@ -238,8 +269,12 @@
   &__count {
     @include small-caps;
     opacity: 0.75;
+    color: inherit;
+    font-weight: 400;
+
     @include media("<=small") {
-      display: none;
-    } // no room
+      display: none; // no room
+    }
+
   }
 }
