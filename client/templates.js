@@ -279,6 +279,13 @@ Handlebars.registerPartial(
     'utf8'
   )
 );
+Handlebars.registerPartial(
+  'records/collage',
+  Fs.readFileSync(
+    './templates/partials/records/collage.html',
+    'utf8'
+  )
+);
 
 // Helpers
 Handlebars.registerHelper(
