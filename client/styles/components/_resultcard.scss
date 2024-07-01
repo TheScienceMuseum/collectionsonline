@@ -157,13 +157,16 @@
         transform: scale3d(1.06, 1.06, 1);
       }
 
-      img {
+      img,
+      svg.collage {
         transform: scale3d(1.06, 1.06, 1);
       }
     }
 
     &__figure {
-      img {
+
+      img,
+      svg.collage {
         transition: transform $transition-default;
       }
     }
