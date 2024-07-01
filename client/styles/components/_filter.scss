@@ -43,7 +43,7 @@
     position: relative;
     color: black;
     font-size: rem(18);
-    @include icon-bullet(arrow_right, 1.5rem, $top: -0.125rem, $left: -0.2rem);
+    @include icon-bullet(toggle, 1.5rem, $top: -0.125rem, $left: -0.2rem);
 
     &:before {
       transition: transform $transition-default;
@@ -119,13 +119,7 @@
 
   &--open {
     .filter__name {
-
-      // @include icon-bullet(arrow_down, 1.5rem, $left: -0.2rem);
-      // padding-left: 1.5rem;
       &:before {
-        // transform-origin: center center;
-        // bottom: auto;
-        // top: auto;
         transform: rotate(90deg);
       }
 
@@ -172,24 +166,6 @@
     @include control-hover;
   }
 
-  .filter__other {
-    display: block;
-    color: grey(40);
-    font-size: rem(14);
-    padding-left: 1.5rem;
-    padding-top: rem(4);
-    @include icon-bullet(arrow_right, $size: 1.25rem, $top: 0.1rem);
-
-    &:before {
-      opacity: 0.5;
-    }
-
-    &--open {
-      @include icon-bullet(arrow_down, $size: 1.25rem, $top: 0.4rem);
-      padding-left: 1.5rem;
-    }
-  }
-
   &__daterange {
     label {
       float: left;
@@ -201,7 +177,8 @@
     input {
       padding: 0.5em;
       max-width: 100%;
-      padding-top: 0.125rem
+      border-radius: 0;
+      border: 1px solid black;
     }
   }
 }

@@ -143,12 +143,11 @@
     font-size: rem(18);
 
     .icon {
-      top: rem(2);
-      left: rem(-2);
+      left: -0.25rem;
     }
 
     &--active .icon {
-      transform: rotate(270deg);
+      transform: rotate(-90deg);
     }
   }
 
@@ -275,64 +274,6 @@
 
 .record-details {
   background-color: grey(10);
-
-  &__toggler {
-    cursor: pointer;
-    padding-left: 1rem;
-    @include icon-bullet(arrow_right, $size: 1.125rem, $left: 0.5rem, $top: 0);
-
-    &[aria-expanded='true'] {
-      @include icon-bullet(arrow_down, $size: 1.125rem, $left: 0.5rem, $top: 0);
-    }
-  }
-
-  &__dls {
-    //needs to be applied an el that wraps __dl
-    display: table;
-    width: 100%;
-  }
-
-  &__dl {
-    display: table-row;
-    margin: 0;
-
-    & + & > * {
-      border-top: 1px grey(20) solid;
-    }
-
-    dt,
-    dd {
-      margin: 0;
-      padding: 0.75rem 0;
-      display: table-cell;
-    }
-
-    dt {
-      @include small-caps;
-      color: grey(80);
-      line-height: 1rem;
-      padding-top: 0.25rem; // to match dd line-height
-      // @include hyphenate;
-      width: 25%; // the whole point of doing ths table-layout is to do auto-widthing for the terms. but dd widths change using expanding content toggles, causing jumpy layouts
-    }
-
-    dd {
-      line-height: 1.5rem;
-      padding-left: 1em;
-    }
-
-    a {
-      @include text-link();
-    }
-
-    p {
-      margin: 0;
-    }
-
-    p + p {
-      margin-top: 1em;
-    }
-  }
 }
 
 .taxonomy {
