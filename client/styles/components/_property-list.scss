@@ -1,9 +1,13 @@
 .c-property-list {
   display: grid;
   grid-template-columns: minmax(min-content, max-content) auto;
-  column-gap: 1em;
+  column-gap: 0.75em;
   row-gap: 0.5em;
   line-height: 1.2;
+
+  &:empty {
+    display: none;
+  }
 
   &.--ruled\:above,
   &.--ruled\:between {

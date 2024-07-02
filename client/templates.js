@@ -273,9 +273,16 @@ Handlebars.registerPartial(
   )
 );
 Handlebars.registerPartial(
-  'records/record-group-display-box',
+  'records/record-related-groups',
   Fs.readFileSync(
-    './templates/partials/records/record-group-display-box.html',
+    './templates/partials/records/record-related-groups.html',
+    'utf8'
+  )
+);
+Handlebars.registerPartial(
+  'records/collage',
+  Fs.readFileSync(
+    './templates/partials/records/collage.html',
     'utf8'
   )
 );
@@ -449,6 +456,10 @@ Handlebars.registerHelper(
   require('../templates/helpers/sphDescription')
 );
 Handlebars.registerHelper(
+  'sphPrioritised',
+  require('../templates/helpers/sphPrioritised')
+);
+Handlebars.registerHelper(
   'groupState',
   require('../templates/helpers/groupState.js')
 );
@@ -521,5 +532,8 @@ module.exports = {
   ),
   about: Handlebars.compile(
     Fs.readFileSync('./templates/pages/about.html', 'utf8')
+  ),
+  explore: Handlebars.compile(
+    Fs.readFileSync('./templates/pages/explore.html', 'utf8')
   )
 };

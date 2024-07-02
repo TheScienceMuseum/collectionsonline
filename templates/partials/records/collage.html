@@ -1,0 +1,60 @@
+{{! 
+  Composes a collage of images for the group records.
+  Always expects an array of 9 images.
+  Fallback colors are picked from the $recordtypes.group
+}}
+<svg class="collage" width="480" height="360" viewBox="0 0 480 360"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="black" stop-opacity="0.08" />
+      <stop offset="66%" stop-color="black" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+
+  <rect width="160" height="120" fill="#47B6CC" />
+  <image href="{{collage.[0]}}"
+    height="120" width="160" preserveAspectRatio="xMidYMid slice" />
+  <rect width="160" height="120" fill="url(#grad)" />
+
+  <rect x="160" width="160" height="120" fill="#207BB0" />
+  <image x="160" href="{{collage.[1]}}"
+    height="120" width="160" preserveAspectRatio="xMidYMid slice" />
+  <rect x="160" width="160" height="120" fill="url(#grad)" />
+
+  <rect x="320" width="160" height="120" fill="#034D9B" />
+  <image x="320" href="{{collage.[2]}}"
+    height="120" width="160" preserveAspectRatio="xMidYMid slice" />
+  <rect x="320" width="160" height="120" fill="url(#grad)" />
+
+  <rect y="120" width="160" height="120" fill="#64B989" />
+  <image y="120" href="{{collage.[3]}}"
+    height="120" width="160" preserveAspectRatio="xMidYMid slice" />
+  <rect y="120" width="160" height="120" fill="url(#grad)" />
+
+  <rect x="160" y="120" width="160" height="120" fill="#409394" />
+  <image x="160" y="120" href="{{collage.[4]}}"
+    height="120" width="160" preserveAspectRatio="xMidYMid slice" />
+  <rect x="160" y="120" width="160" height="120" fill="url(#grad)" />
+
+  <rect x="320" y="120" width="160" height="120" fill="#0C5AA1" />
+  <image x="320" y="120" href="{{collage.[5]}}"
+    height="120" width="160" preserveAspectRatio="xMidYMid slice" />
+  <rect x="320" y="120" width="160" height="120" fill="url(#grad)" />
+
+  <rect y="240" width="160" height="120" fill="#8BC036" />
+  <image y="240" href="{{collage.[6]}}"
+    height="120" width="160" preserveAspectRatio="xMidYMid slice" />
+  <rect y="240" width="160" height="120" fill="url(#grad)" />
+
+  <rect x="160" y="240" width="160" height="120" fill="#59A073" />
+  <image x="160" y="240" href="{{collage.[7]}}"
+    height="120" width="160" preserveAspectRatio="xMidYMid slice" />
+  <rect x="160" y="240" width="160" height="120" fill="url(#grad)" />
+
+  <rect x="320" y="240" width="160" height="120" fill="#176396" />
+  <image x="320" y="240" y="240" href="{{collage.[8]}}"
+    height="120" width="160" preserveAspectRatio="xMidYMid slice" />
+  <rect x="320" y="240" width="160" height="120" fill="url(#grad)" />
+
+</svg>

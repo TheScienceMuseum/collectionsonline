@@ -1,0 +1,24 @@
+{{#if images}}
+{{#if hasMultipleImages}}
+<div class="card-carousel">
+  {{#each images}}
+  <a class="card-carousel__cell" data-lightbox href="{{this.large}}"
+    data-copyright="{{formatCopyright this.rights.details}}">
+    <img src="{{this.medium}}" alt="{{this.title}}" />
+  </a>
+  {{/each}}
+</div>
+{{#each images}}
+{{/each }}
+{{ else }}
+<a href="{{firstImage images 0 'large' }}" data-lightbox>
+  <figure class="resultcard__figure">
+    <img src="{{firstImage images 0 }}" alt="{{this.title}}" />
+  </figure>
+</a>
+{{/if}}
+{{ else }}
+<figure class="resultcard__figure">
+  <figcaption>{{title}}</figcaption>
+</figure>
+{{/if }}

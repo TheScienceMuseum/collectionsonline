@@ -61,12 +61,6 @@
     grid-template-columns: repeat(4, 1fr);
   }
 
-  &__column {}
-
-  &__list {
-    width: 100%;
-  }
-
   &--filtersactive {
     grid-area: searchresults;
 
@@ -77,6 +71,10 @@
     @include media(">=large") {
       grid-template-columns: repeat(3, 1fr);
     }
+  }
+
+  &--list {
+    grid-template-columns: 1fr;
   }
 }
 

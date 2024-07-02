@@ -6,14 +6,6 @@
 
     {{> records/record-top }}
 
-    {{#if images}}
-    {{#ifmultiple images}}
-    {{> records/carousel}}
-    {{else}}
-    {{>records/single-image}}
-    {{/ifmultiple}}
-    {{/if}}
-
     <section class="section">
       <div class="o-container o-grid o-grid--3cols@m">
         <div class="section__content o-grid__span2@m">
@@ -21,10 +13,6 @@
           {{> records/record-description}}
         </div>
         <aside>
-
-          {{#if displayLocation}}
-          {{> records/ondisplay }}
-          {{/if}}
 
           {{#if related.people}}{{> records/record-related-people }}{{/if}}
           {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
@@ -37,20 +25,11 @@
       </div>
     </section>
 
-    {{#if (or youtube sketchfab rotational)}}{{> records/mediaplayer}}{{/if}}
-
-    {{#if audioplayer}}
-    {{#each audioplayer}}
-    {{> records/audioplayer }}
-    {{/each}}
-    {{/if}}
-
     {{#unless inProduction}}
     {{#if childRecords}}
     {{> records/record-mgroup-records}}
     {{/if}}
     {{/unless}}
-
 
   </main>
 
