@@ -15,7 +15,6 @@
   textarea {
     min-height: 0; // but rows=1
     resize: none;
-    overflow: hidden;
     color: white;
     background-color: grey(80);
     @include form-focus();
@@ -36,6 +35,7 @@
     font-size: 0.8rem;
     line-height: 1.2;
     font-weight: 300;
+    overflow: hidden;
   }
 
   &:after {
