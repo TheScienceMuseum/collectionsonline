@@ -7,10 +7,10 @@ module.exports = function () {
   const textarea = document.getElementById('clipboardjs');
 
   // replicates the value of the textarea to a data-property to do some funky css auto-sizing of the textarea
-  function updateSize() {
+  function updateSize () {
     textarea.parentNode.dataset.replicatedValue = textarea.value;
   }
-  if(textarea) {
+  if (textarea) {
     textarea.addEventListener('input', updateSize);
     updateSize();
   }
