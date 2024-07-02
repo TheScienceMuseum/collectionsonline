@@ -1,8 +1,8 @@
 <div class="o-flex-container controls">
 
   <div class="control control--rpp">
-    <label class="control__label">Results<span class="hide-for-small-only"> per page</span>:</label>
-    <select class="c-select">
+    <label class="control__label" for="rpp">Results<span class="hide-for-small-only"> per page</span>:</label>
+    <select class="c-select" id="rpp">
       <option{{#if pagination.isPageSize50}} selected{{/if}}>50</option>
         <option{{#if pagination.isPageSize100}} selected{{/if}}>100</option>
     </select>
