@@ -8,36 +8,16 @@
 
     {{#if descriptionBox}}
 
-    <div class="description-box" data-description-box-type="{{#each descriptionBox}}{{@key}}{{/each}}"
+    <div
+      class="description-box"
+      data-description-box-type="{{descriptionBox.boxType}}"
+      data-description-box-sides="{{descriptionBox.sides}}"
       {{#if descriptionBox.museum}}
       style="background-image:url({{descriptionBox.museum.thumbnail}})"
-      {{/if}}
-
-      {{#if descriptionBox.category.sub-categories}}
-      {{#if descriptionBox.category.related-articles}}
-      data-description-box-sides="2"
-      {{else}}
-      data-description-box-sides="1"
-      {{/if}}
-      {{else}}
-      {{#if descriptionBox.category.related-articles}}
-      data-description-box-sides="1"
-      {{/if}}
-      {{/if}}
-
-      {{#if descriptionBox.collection.related-articles}}
-      data-description-box-sides="1"
-      {{/if}}
-
-      {{#if descriptionBox.gallery.thumbnail}}
-      data-description-box-sides="2"
-      {{else}}
-      data-description-box-sides="1"
       {{/if}}>
 
       {{#if descriptionBox.category}}
-      <div
-        class="description-box__main">
+      <div class="description-box__main">
         <h3 class="description-box__main-title">{{descriptionBox.category.title}}</h3>
         <p>{{descriptionBox.category.description}}</p>
       </div>
