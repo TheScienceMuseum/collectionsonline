@@ -221,7 +221,8 @@ $transition-default: 0.2s ease-in-out;
     line-height: 1.5;
   }
 
-  a {
+  a,
+  a:visited {
     color: var(--smg-link-color, #{$c-blue});
     text-decoration: underline;
   }

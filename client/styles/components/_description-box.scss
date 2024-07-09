@@ -33,7 +33,7 @@
 
   &[data-description-box-type="explore"] img {
     position: relative;
-    margin-bottom: -1rem;
+    top: 1rem;
   }
 
   @include media("<=small") {
