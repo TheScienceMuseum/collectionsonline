@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 // CAROUSEL - Flickity instances:
 // On records page .carousel
-// On home page .home-carousel
+// On home page .explore-carousel
 //-----------------------------------------------------------------------------
 
 .is-draggable .flickity-viewport {
@@ -87,7 +87,20 @@
   }
 }
 
-.home-carousel {
+/* Used on home and explore pages.
+  Same offset style as on the museum sites
+*/
+.explore-carousel {
+  background-image: linear-gradient(to bottom, grey(0), grey(10));
+  background-color: #fff;
+  color: #000;
+
+  &--dark {
+    background-image: none;
+    background-color: #000;
+    color: #fff;
+  }
+
   .flickity-enabled {
     padding-left: $grid-gutter; // match container
 
@@ -98,6 +111,7 @@
 
   .flickity-viewport {
     overflow: hidden;
+    margin-left: var(--container-offset); // updates on resize
   }
 
   .flickity-prev-next-button {
@@ -111,8 +125,8 @@
 
     padding: 1rem 0;
     opacity: 0.6;
-    fill: white;
-    color: white;
+    fill: currentColor;
+    color: currentColor;
 
     &:hover {
       opacity: 1;
@@ -128,6 +142,21 @@
     max-width: 30%;
     padding-right: $grid-gutter;
     width: 18rem;
+  }
+
+  &__cta {
+    margin-top: $grid-gutter;
+    display: inline-block;
+    text-transform: uppercase;
+    font-size: clamp-between(1rem, 1.125rem); // match card title
+    font-weight: 700;
+    color: currentColor;
+    text-decoration: none;
+    @include underline-zip;
+
+    .icon {
+      vertical-align: top;
+    }
   }
 }
 
