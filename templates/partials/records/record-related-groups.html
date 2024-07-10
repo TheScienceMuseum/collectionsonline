@@ -1,0 +1,12 @@
+{{!  Note: there may be a better way to construct a link to the group pages? works but isn't consistent with other URLS }}
+<div class="panel panel__text">
+  <h2>
+    {{groupState displayBox}}
+  </h2>
+  <ul class="related-groups">{{#each displayBox}}
+    <li>{{> global/icon i="group" }}
+      <a href="/group/{{this.uid}}">{{this.title}} </a>
+    </li>
+    {{/each}}
+  </ul>
+</div>

@@ -36,7 +36,7 @@
     "promise": "^8.3.0",
     "rc": "^1.2.8",
     "slugg": "^1.2.1",
-    "smg-web-design-system": "^0.11.2",
+    "smg-web-design-system": "^0.11.3",
     "snackbarlightjs": "^1.1.2",
     "wikijs": "^6.4.1"
   },

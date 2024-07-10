@@ -1,11 +1,15 @@
 <section class="record-top section">
-  <div class="o-container">
+  <div class="o-container o-blocks --rem">
 
-    <h1 class="record-top__title">{{#if level}}{{> global/icon i=level}}{{else}}{{> global/icon i=type}}{{/if}}
-      {{normalise title this}} {{#ifpage 'person'}} <span class="record-top__date">{{date}}</span>{{/ifpage}}</h1>
+    <h1 class="record-top__title">
+      {{normalise title this}} {{#ifpage 'person'}} <span class="record-top__date">{{date}}</span>{{/ifpage}}
+      {{#if level}}{{> global/icon i=level}}{{else}}{{> global/icon i=type}}{{/if}}
+    </h1>
+
+
 
     <div class="c-property-list">
-      {{#if parent }}
+      {{~#if parent }}
       <dl class="fact-Made">
         <dt>PART OF:</dt>
         <dd>
@@ -52,7 +56,7 @@
           {{/isequal}}
         </dd>
       </dl>
-      {{/each}}
+      {{/each~}}
     </div>
   </div>
 </section>

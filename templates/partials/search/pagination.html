@@ -1,8 +1,8 @@
 <div class="o-flex-container controls">
 
   <div class="control control--rpp">
-    <label class="control__label">Results<span class="hide-for-small-only"> per page</span>:</label>
-    <select class="c-select">
+    <label class="control__label" for="rpp">Results<span class="hide-for-small-only"> per page</span>:</label>
+    <select class="c-select" id="rpp">
       <option{{#if pagination.isPageSize50}} selected{{/if}}>50</option>
         <option{{#if pagination.isPageSize100}} selected{{/if}}>100</option>
     </select>
@@ -12,7 +12,7 @@
       {{#if pagination.isFirst}}
       {{else}}
       <a class="c-pagination__page c-pagination__page--prev" href="{{pagination.links.prev}}"><span class="u-icon"><svg>
-            <use xlink:href="/assets/icons/symbol/svg/sprite.symbol.svg#arrow_left" />
+            <use xlink:href="/assets/icons/symbol/svg/sprite.symbol.svg#arrow-left" />
           </svg></span>Previous</a>
       {{/if}}
       {{#each pagination.links.pages}}
@@ -31,7 +31,7 @@
       {{else}}
       <a class="c-pagination__page--next c-pagination__page" href="{{pagination.links.next}}">Next<span
           class="u-icon"><svg>
-            <use xlink:href="/assets/icons/symbol/svg/sprite.symbol.svg#arrow_right" />
+            <use xlink:href="/assets/icons/symbol/svg/sprite.symbol.svg#arrow-right" />
           </svg></span></a>
       {{/if}}
     </nav>

@@ -2,20 +2,22 @@
   <h2>Cite this page</h2>
   <div class="clipboard">
     <label for="clipboardjs" class="u-visually-hidden">Text to use for citation</label>
-    <input type="text" class="clipboard__input" id="clipboardjs"
-      value="Science Museum Group. {{title}}. {{getinventorynumber details}}Science Museum Group Collection Online. Accessed {{gettodaysdate}}. {{links.self}}."
-      data-clipboard-text="Science Museum Group. {{title}}. {{getinventorynumber details}}Science Museum Group Collection Online. Accessed {{gettodaysdate}}. {{links.self}}." /><button
+    <textarea
+      id="clipboardjs"
+      rows="1">Science Museum Group. {{title}}. {{getinventorynumber details}} Science Museum Group Collection Online. Accessed {{gettodaysdate}}. {{links.self}}.</textarea>
+    <button
       class="clipboard__button"
-      data-clipboard-target="#clipboardjs">{{> global/icon i="clipboard" size="12" label="Copy citation text"}}</button>
+      title="Copy citation text"
+      data-clipboard-target="#clipboardjs">{{> global/icon i="clipboard" label="Copy citation text"}}</button>
   </div>
 
   <h3>Rights</h3>
   <p>We encourage the use and reuse of our collection data.</p>
 
   <p>
-    Data in the title, made, maker and details fields are released under <a class="textlink"
+    Data in the title, made, maker and details fields are released under <a
       href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero {{> global/icon i="cc-zero"}}</a>.
-    Descriptions and all other text content are licensed under a <a class="textlink"
+    Descriptions and all other text content are licensed under a <a
       href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 licence
       {{> global/icon i="cc-cc"}}
       {{> global/icon i="cc-by"}}</a>

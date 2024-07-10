@@ -75,9 +75,13 @@ module.exports = ctx => {
     );
   }
 
-  const homeCarousel = document.querySelector('.home-carousel__flickity');
-  if (homeCarousel) {
-    const homeCarouselFlkty = new Flickity(homeCarousel, {
+  // explore-carousel used on home page and explore page.
+  const exploreCarousels = document.querySelectorAll('.explore-carousel__flickity');
+  exploreCarousels.forEach(function (exploreCarouselel, index) {
+    // can't work out why ctx is not defined on the explore page? but this seems safe to do.
+    if (!ctx) ctx = { exploreCarousels: [] };
+
+    ctx.exploreCarousels[index] = new Flickity(exploreCarouselel, {
       wrapAround: true,
       pageDots: false,
       imagesLoaded: true,
@@ -88,32 +92,31 @@ module.exports = ctx => {
       arrowShape,
       on: {
         ready: function () {
-          offsetContainer();
           this.select(0);
           // move buttons to before the main carousel
-          const buttons = homeCarousel.querySelectorAll(
+          const buttons = exploreCarouselel.querySelectorAll(
             '.flickity-prev-next-button'
           );
-          const before = document.querySelector(
-            '.home-carousel .flickity-buttonholder'
+          const before = exploreCarouselel.parentElement.querySelector(
+            '.explore-carousel .flickity-buttonholder'
           );
           buttons.forEach(b => {
             before.appendChild(b);
           });
+
+          offsetContainer();
+          window.addEventListener('resize', offsetContainer);
+          window.addEventListener('orientationchange', offsetContainer);
         }
       }
     });
-    homeCarouselFlkty.resize();
-    window.addEventListener('resize', offsetContainer);
-    window.addEventListener('orientationchange', offsetContainer);
   }
+  );
+
   function offsetContainer () {
     // to mirror main site carousels, we want to bust out of column container on right side only.
     const containerOffset = document.querySelector('.o-container').offsetLeft; // first container will do!
-    document.querySelector(
-      '.home-carousel__flickity .flickity-viewport'
-    ).style.marginLeft =
-    containerOffset + 'px';
+    document.body.style.setProperty('--container-offset', containerOffset + 'px');
   }
 
   const cardCarousels = document.querySelectorAll('.card-carousel');
