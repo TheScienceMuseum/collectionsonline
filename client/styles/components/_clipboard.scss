@@ -11,18 +11,14 @@
   align-items: stretch;
   justify-items: stretch;
   position: relative;
+  background-color: grey(90);
 
   textarea {
     min-height: 0; // but rows=1
     resize: none;
     color: white;
-    background-color: grey(80);
+    opacity: 0;
     @include form-focus();
-
-    &:focus,
-    &:focus-visible {
-      background-color: grey(90);
-    }
   }
 
   textarea,
@@ -30,18 +26,37 @@
     grid-area: 1 / 1 / 2 / 2;
     // :after type & box must match textarea measurements
     border: 1px dotted white;
-    padding: 0.25rem;
-    padding-right: 2rem;
+    padding: 0.5rem 2rem 0.5rem 0.5rem;
     font-size: 0.8rem;
     line-height: 1.2;
     font-weight: 300;
     overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &:after {
     content: attr(data-replicated-value) " ";
-    visibility: hidden;
-    white-space: pre-wrap;
+  }
+
+  &:focus-within {
+    background-color: grey(80);
+
+    textarea,
+    &::after {
+      white-space: pre-wrap;
+      overflow: auto;
+    }
+
+    textarea {
+      opacity: 1;
+      background-color: transparent;
+    }
+
+    &::after {
+      white-space: pre-wrap;
+      visibility: hidden;
+    }
   }
 
   &--copied textarea {
@@ -54,8 +69,8 @@
 
   &__button {
     position: absolute;
-    top: 0.25rem;
-    right: 0.25rem;
+    top: 1px;
+    right: 1px;
     display: flex;
     flex-wrap: wrap;
     align-content: center;
@@ -65,7 +80,7 @@
     width: 2rem;
     margin-left: -1px;
     color: white;
-    background: transparent;
+    background-color: transparent;
     @include form-focus();
 
     .icon {
