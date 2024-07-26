@@ -11,7 +11,7 @@ const keyCategories = require('../../../fixtures/key-categories.js');
 
 module.exports = function () {
   const searchBoxEl = document.getElementById('searchbox');
-  searchBoxEl.addEventListener('submit', function (e) {
+  if (searchBoxEl) searchBoxEl.addEventListener('submit', function (e) {
     loadingBar.start();
     e.preventDefault();
     const searchValue = document.querySelector('.searchbox__search').value;

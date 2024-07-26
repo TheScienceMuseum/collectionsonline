@@ -6,6 +6,7 @@ module.exports = function () {
   let currentRequestId = null;
   const searchbox = document.getElementById('searchbox');
   const searchinput = document.querySelector('#searchbox [type=search]');
+  if (!searchinput) return false
   const awesomplete = new Awesomplete(searchinput, {
     minChars: 3,
     autoFirst: false,

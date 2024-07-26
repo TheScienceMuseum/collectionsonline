@@ -30,6 +30,12 @@ const mockTheme = {
 };
 
 module.exports = {
+  strap: 'Explore our collection',
+  intro:
+    'Where to start? Our museum curators have researched some themes and topics to help you explore over 380,000 <a href="/search/objects">objects</a> and <a href="/search/documents">archives</a> from the collection.',
+  headerImages: [
+    'IMG_7224.jpg', 'IMG_7231.jpg', 'IMG_7298.jpg' // update /client/styles/components/_explore.scss if no of images changes
+  ],
   featured: [{
     title: 'The first featured theme',
     description: 'Featured themes as carousels. First one is on dark.',
