@@ -1,7 +1,25 @@
 <div id="main-page">
   {{> global/global-header}}
-  {{> global/search-main reduced="reduced"}}
+  {{! > global/search-main reduced="reduced"}}
+
   {{#explore }}
+
+  <section class="section --spacious explore-banner">
+    <div class="explore-banner__bgimages">
+      {{#each headerImages}}
+      <img src="/assets/img/explore/banner/1600/{{this}}"
+        srcset="/assets/img/explore/banner/800/{{this}} 800w, /assets/img/explore/banner/1600/{{this}} 1600w" alt="" />
+      {{/each}}
+    </div>
+
+    <div class="searchbar searchbar--home">
+      <div class="home-banner__searchbar o-container">
+        <h1 class="searchbar__strap js-illuminate">{{strap}}</h1>
+        <h2 class="explore-banner__intro">{{{intro}}}</h2>
+      </div>
+    </div>
+
+  </section>
 
   {{#each featured}}
   <section class="section --spacious explore-carousel {{#if @first}}explore-carousel--dark{{/if}}">

@@ -1,3 +1,15 @@
+{{! this test needs to be updated for the url of a banner image. If those images are added as fixtures, ideally include whether the image is predominantly dark or light, so that the text can be styled accordingly. }}
+{{#isequal this.type 'group' this}}
+<section class="group-banner section" data-image="dark|light">
+  <img class="group-banner__image"
+    src="https://coimages.sciencemuseumgroup.org.uk/42/281/medium_1972_0325__0001_.jpg"
+    alt="" />
+  <div class="o-container o-blocks --rem">
+    <h1 class="record-top__title js-illuminate">{{normalise title this}} </h1>
+  </div>
+</section>
+{{else}}
+
 <section class="record-top section">
   <div class="o-container o-blocks --rem">
 
@@ -60,3 +72,4 @@
     </div>
   </div>
 </section>
+{{/isequal}}

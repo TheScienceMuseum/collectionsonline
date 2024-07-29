@@ -31,9 +31,17 @@
     grid-column: span 2;
   }
 
-  &[data-description-box-type="explore"] img {
-    position: relative;
-    top: 1rem;
+  &[data-description-box-type="explore"] {
+
+    // if duck...
+    .description-box__side {
+      align-items: end;
+    }
+
+    img {
+      position: relative;
+      margin-bottom: -1rem;
+    }
   }
 
   @include media("<=small") {

@@ -8,6 +8,11 @@
       <figure class="resultcard__figure">
         {{#if images}}
         <img src="{{firstImage images 0 'card' }}" class="" alt="{{title}}" />
+        {{else}}
+        <figcaption role="presentation">
+          {{! > global/icon "object" }}{{!-- Usually we show icon for the record type, but don't have that data. --}}
+          {{ this.title }}{{!-- Usually custom figcaption is supplied --}}
+        </figcaption>
         {{/if }}
       </figure>
 

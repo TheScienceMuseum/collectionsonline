@@ -1,0 +1,59 @@
+.explore-banner {
+  background-color: black;
+  color: white;
+  text-shadow: rgba(0, 0, 0, 0.5) 0 0 1rem;
+  position: relative;
+
+  &__bgimages {
+    overflow: hidden;
+    position: absolute;
+    inset: 0;
+  }
+
+
+  &__intro {
+    font-size: clamp-between(1rem, 2rem);
+    font-weight: 500;
+    text-transform: none;
+    margin-top: clamp-between(2rem, 4rem);
+    margin-bottom: clamp-between(0rem, 2rem);
+
+    a {
+      color: white;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+
+  @include banner-slides($no-of-slides: 3);
+}
+
+.group-banner {
+  --banner-text: white;
+  --banner-bg: black;
+
+  &[data-image="light"] {
+    --banner-text: black;
+    --banner-bg: white;
+  }
+
+  background-color: var(--banner-bg);
+  color: var(--banner-text);
+  position: relative;
+  padding-top: clamp-between(10rem, 20rem);
+
+  &__image {
+    position: absolute;
+    inset: 0;
+    object-fit: cover;
+    max-width: none;
+    max-height: none;
+    width: 100%;
+    height: 100%;
+    // mask-image: linear-gradient(rgb(0 0 0 / 100%), rgb(0 0 0 / 50%));
+    // image may need knocking back to keep text legible.
+    // gradient will do at a pinch, but for more control, probably better to adapt in image
+  }
+}
