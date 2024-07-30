@@ -8,37 +8,16 @@
 
     {{#if descriptionBox}}
 
-    <div class="description-box"
+    <div
+      class="description-box"
+      data-description-box-type="{{descriptionBox.boxType}}"
+      data-description-box-sides="{{descriptionBox.sides}}"
       {{#if descriptionBox.museum}}
-      data-description-box-type="museum"
       style="background-image:url({{descriptionBox.museum.thumbnail}})"
-      {{/if}}
-
-      {{#if descriptionBox.category.sub-categories}}
-      {{#if descriptionBox.category.related-articles}}
-      data-description-box-sides="2"
-      {{else}}
-      data-description-box-sides="1"
-      {{/if}}
-      {{else}}
-      {{#if descriptionBox.category.related-articles}}
-      data-description-box-sides="1"
-      {{/if}}
-      {{/if}}
-
-      {{#if descriptionBox.collection.related-articles}}
-      data-description-box-sides="1"
-      {{/if}}
-
-      {{#if descriptionBox.gallery.thumbnail}}
-      data-description-box-sides="2"
-      {{else}}
-      data-description-box-sides="1"
       {{/if}}>
 
       {{#if descriptionBox.category}}
-      <div
-        class="description-box__main">
+      <div class="description-box__main">
         <h3 class="description-box__main-title">{{descriptionBox.category.title}}</h3>
         <p>{{descriptionBox.category.description}}</p>
       </div>
@@ -119,6 +98,18 @@
           <li>{{> global/icon i="external" }}<a
               href="{{descriptionBox.mphc.link}}">{{descriptionBox.mphc.title}}</a></li>
         </ul>
+      </div>
+      {{/if}}
+
+      {{#if descriptionBox.explore}}
+      {{#if descriptionBox.explore.thumbnail}}
+      <div class="description-box__side">
+        <img src="{{descriptionBox.explore.thumbnail}}" alt="">
+      </div>
+      {{/if}}
+      <div class="description-box__main">
+        <h3 class="description-box__main-title">{{descriptionBox.explore.title}}</h3>
+        <p>{{{descriptionBox.explore.description}}}</p>
       </div>
       {{/if}}
 

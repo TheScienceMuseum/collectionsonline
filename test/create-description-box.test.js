@@ -8,7 +8,7 @@ test("createDescriptionBox - with category that doesn't have description yet", (
     type: { all: true },
     categories: { 'Non existent category': true }
   };
-  const actual = createDescriptionBox(query);
+  const actual = createDescriptionBox(query).category;
   const expected = undefined;
 
   t.equal(actual, expected);
@@ -41,7 +41,7 @@ test("createDescriptionBox - with gallery which doesn't have description yet", (
     type: { all: true },
     gallery: { 'Non existent gallery': true }
   };
-  const actual = createDescriptionBox(query);
+  const actual = createDescriptionBox(query).gallery;
   const expected = undefined;
 
   t.equal(actual, expected);
@@ -103,12 +103,12 @@ test('createDescriptionBox - mphc valid', (t) => {
 
   const expected = {
     mphc: {
-      description:
-        'Collection of objects and archives from Boddingtons Brewery at Strangeways, Manchester, c1883-2003.',
-      title:
-        'Collection of objects and archives from Boddingtons Brewery at Strangeways',
+      description: 'Collection of objects and archives from Boddingtons Brewery at Strangeways, Manchester, c1883-2003.',
+      title: 'Collection of objects and archives from Boddingtons Brewery at Strangeways',
       link: 'http://localhost:8000/objects/co8413731/collection-of-objects-and-archives-from-boddingtons-brewery-at-strangeways'
-    }
+    },
+    sides: 0,
+    boxType: 'mphc'
   };
 
   t.deepEqual(actual, expected);

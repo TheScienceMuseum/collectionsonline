@@ -73,29 +73,26 @@
 
   ul {
     @include ul-icons;
-
-    a:not([class]) {
-      @include text-link($c-teal, $c-green);
-    }
   }
 
   .museum-articles h3 {
     font-size: 1.25rem;
   }
 
-  ul.related-people,
-  ul.related-organisation,
-  ul.related-document,
-  ul.related-article {
+  ul[class*='related-'] {
+    li {
+      display: flex;
+    }
+
     svg {
-      vertical-align: middle;
-      margin-bottom: 0.125rem;
-      margin-right: 0.25rem;
+      margin-top: 0.25rem;
+      margin-right: 0.5rem;
+      flex-shrink: 0;
     }
   }
 
   &--cite {
-    .icon {
+    p .icon {
       display: inline-block;
       font-size: 0.9rem;
       vertical-align: middle;

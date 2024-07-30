@@ -1,0 +1,81 @@
+//-----------------------------------------------------------------------------
+// .listresult
+// The list view display of a result
+//-----------------------------------------------------------------------------
+
+.listresult {
+  position: relative;
+  display: flex;
+  color: black;
+  gap: 1rem;
+  text-decoration: none;
+
+  &__figure {
+    @include card-image;
+    width: 4rem;
+    padding-top: 3rem;
+    flex-shrink: 0;
+  }
+
+  // if no figure
+  &__type {
+    width: 4rem;
+    height: 3rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      font-size: 2rem;
+      color: white;
+    }
+  }
+
+  @each $type, $props in $recordtypes {
+    &--#{$type} &__type {
+      background-color: map-get($props, bg);
+      @include sm-gradient(map-get($props, grad));
+    }
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: clamp-between(1.125rem, 1.25rem);
+    line-height: 1.2;
+    text-transform: none;
+    margin: 0;
+
+    .icon {
+      position: relative;
+      top: 0.15rem;
+    }
+  }
+
+  &__description {
+    line-height: 1.25;
+    margin: 0;
+  }
+
+
+  &:before {
+    content: "";
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    transition: all $transition-default;
+    position: absolute;
+    z-index: 0;
+
+  }
+
+  &:hover:before {
+    background-color: rgba(black, 0.05);
+    top: -1rem;
+    bottom: -1rem;
+    right: -1rem;
+    left: -1rem;
+  }
+
+}

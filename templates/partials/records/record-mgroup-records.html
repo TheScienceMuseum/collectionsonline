@@ -1,35 +1,39 @@
-<section class="mph-records row">
-  <div class="mph-records__grid">
-    {{#each childRecords}}
-    {{#if links}}
-    <a href={{links.self}}>
-      <article class="resultcard resultcard--objects mph-records__resultcard resultcard--priority-card">
+<section class="section o-container group-records">
 
-        <figure class="resultcard__figure">
-          {{#if images}}
-          <img src="{{firstImage images 0 'card' }}" class="" alt="{{title}}" />
-          {{/if }}
-        </figure>
+  {{#each childRecords}}
+  {{#if links}}
+  <a href={{links.self}}>
+    <article class="resultcard resultcard--group">
 
-        <div class="resultcard__info">
+      <figure class="resultcard__figure">
+        {{#if images}}
+        <img src="{{firstImage images 0 'card' }}" class="" alt="{{title}}" />
+        {{else}}
+        <figcaption role="presentation">
+          {{! > global/icon "object" }}{{!-- Usually we show icon for the record type, but don't have that data. --}}
+          {{ this.title }}{{!-- Usually custom figcaption is supplied --}}
+        </figcaption>
+        {{/if }}
+      </figure>
 
-          <h3 class="resultcard__title">
-            {{title}}
-          </h3>
+      <div class="resultcard__info">
 
-          {{#if creation}}
-          <p class="mph-records__creation">{{creation}}</p>
-          {{/if}}
+        <h3 class="resultcard__title">
+          {{title}}
+        </h3>
 
-        </div>
-      </article>
+        {{#if creation}}
+        <p class="group-records__creation">{{creation}}</p>
+        {{/if}}
 
-    </a>
-    {{/if}}
-    {{/each}}
+      </div>
+    </article>
 
-    <!-- ! A decision should be made at some point in the future as to whether there should be a cap on the child records and a show more button leading to a filtered search result. Note that the below doesn't work-->
-    <!-- See record-mph-records for example of see more btn functionality, will need tweaking -->
+  </a>
+  {{/if}}
+  {{/each}}
 
-  </div>
+  <!-- ! A decision should be made at some point in the future as to whether there should be a cap on the child records and a show more button leading to a filtered search result. Note that the below doesn't work-->
+  <!-- See record-mph-records for example of see more btn functionality, will need tweaking -->
+
 </section>

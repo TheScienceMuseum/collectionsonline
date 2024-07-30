@@ -1,0 +1,100 @@
+<div id="main-page">
+  {{> global/global-header}}
+  {{! > global/search-main reduced="reduced"}}
+
+  {{#explore }}
+
+  <section class="section --spacious explore-banner">
+    <div class="explore-banner__bgimages">
+      {{#each headerImages}}
+      <img src="/assets/img/explore/banner/1600/{{this}}"
+        srcset="/assets/img/explore/banner/800/{{this}} 800w, /assets/img/explore/banner/1600/{{this}} 1600w" alt="" />
+      {{/each}}
+    </div>
+
+    <div class="searchbar searchbar--home">
+      <div class="home-banner__searchbar o-container">
+        <h1 class="searchbar__strap js-illuminate">{{strap}}</h1>
+        <h2 class="explore-banner__intro">{{{intro}}}</h2>
+      </div>
+    </div>
+
+  </section>
+
+  {{#each featured}}
+  <section class="section --spacious explore-carousel {{#if @first}}explore-carousel--dark{{/if}}">
+    <div class="o-container">
+      <h2 class="section__h">{{this.title}}</h2>
+      <p>{{this.description }}</p>
+      <div class="flickity-buttonholder"></div>
+    </div>
+    <div class="explore-carousel__flickity">
+      {{#each this.topics}}
+      <div class="explore-carousel__cell">
+        <a href="{{ this.link }}">
+          <article class="resultcard {{#if @../first}}resultcard--dark{{/if}} resultcard--topic">
+            <figure class="resultcard__figure">
+              {{#if collage}}
+              {{> records/collage }}
+              {{else}}
+              <figcaption role="presentation">
+                {{> global/icon i="topic" }}
+                {{ this.figcaption }}
+              </figcaption>
+              {{/if}}
+            </figure>
+            <div class="resultcard__info">
+              <h3 class="resultcard__title">{{ this.title }}</h3>
+              <p class="resultcard__description">{{ this.description }}</p>
+            </div>
+          </article>
+        </a>
+      </div>
+      {{/each}}
+
+    </div>
+    <div class="o-container">
+      <a href="{{this.link}}" class="explore-carousel__cta">See all {{this.title}}
+        {{> global/icon i="arrow-right" }}</a>
+    </div>
+
+  </section>
+  {{/each}}
+
+  <section class="section --spacious o-container">
+
+    <h2 class="section__h">Explore all themes</h2>
+    <div class="o-grid o-grid--2cols@s o-grid--3cols@m o-grid--4cols@l">
+      {{#each themes}}
+      <a href={{link}}>
+        <article class="resultcard resultcard--group">
+
+          <figure class="resultcard__figure">
+            {{#if figure}}
+            <img src="{{figure }}" alt="" />
+            {{else}}
+            <figcaption role="presentation">
+              {{> global/icon i="group" }}
+              {{ this.figcaption }}
+            </figcaption>
+            {{/if}}
+          </figure>
+
+          <div class="resultcard__info">
+
+            <h3 class="resultcard__title">
+              {{title}}
+            </h3>
+
+          </div>
+        </article>
+
+      </a>
+      {{/each}}
+    </div>
+
+  </section>
+
+  {{/explore}}
+  {{> global/global-footer}}
+</div>

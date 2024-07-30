@@ -1,3 +1,4 @@
+@use "sass:math";
 //-----------------------------------------------------------------------------
 // HELPERS
 // mixins, functions and other settings
@@ -218,11 +219,11 @@ $transition-default: 0.2s ease-in-out;
 
   p,
   li {
-    font-weight: 300;
     line-height: 1.5;
   }
 
-  a {
+  a,
+  a:visited {
     color: var(--smg-link-color, #{$c-blue});
     text-decoration: underline;
   }
@@ -233,5 +234,150 @@ $transition-default: 0.2s ease-in-out;
 
   :first-child {
     margin-top: 0;
+  }
+}
+
+/**
+Fix aspect ratio at 4:3,
+Stop white bg images from blending into bg
+*/
+@mixin card-image {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 0;
+  padding-top: 75%;
+  margin: 0;
+  background-color: grey(80);
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+
+  &:has(img):after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 1px rgba(black, 0.1) solid;
+    mix-blend-mode: darken;
+    pointer-events: none;
+  }
+
+  figcaption {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0.125em;
+    color: rgba(white, 0.25);
+    font-size: clamp-between(1.5rem, 2rem);
+    line-height: 1;
+    letter-spacing: rem(-1);
+
+    .icon {
+      color: inherit;
+      vertical-align: bottom;
+    }
+  }
+
+  svg.collage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// banner slides, used on home page, and explore.
+@mixin banner-slides($no-of-slides: 8,
+  $slide-duration: 6s,
+  $scale-factor: 1.1,
+  $pan: true) {
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0; // unsupported browsers get nothing, but better loading experience.
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    animation-name: slide;
+    animation-duration: $no-of-slides * $slide-duration;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+
+    @media (prefers-reduced-motion) {
+      animation: none;
+    }
+  }
+
+  $slide-fade: math.div(50%, $no-of-slides);
+  $slide-end: math.div(200%, $no-of-slides);
+
+  @keyframes slide {
+    0% {
+      // initial state - topmost, and transparent
+      opacity: 0;
+      transform: scale3d(1, 1, 1);
+      z-index: $no-of-slides;
+    }
+
+    #{$slide-fade} {
+      opacity: 1; // now, the next slide will start in front
+    }
+
+    #{$slide-end} {
+      transform: scale3d(#{$scale-factor},
+        #{$scale-factor},
+        1); // but we keep scaling until fully obscured
+    }
+
+    100% {
+      transform: scale3d(#{$scale-factor},
+        #{$scale-factor},
+        1); //hold until all slides are done
+      z-index: 0;
+    }
+  }
+
+  // set animation offsets for subsequent slides, so we see each in turn
+  @for $i from 1 to $no-of-slides {
+    $child: 1 + $no-of-slides - $i;
+    $delay: $i * $slide-duration;
+    $dx: left, center, right;
+    $dy: top, center, bottom;
+
+    img:nth-child(#{$child}) {
+      animation-delay: #{$delay};
+
+      @if $pan {
+        transform-origin: nth($dx, random(length($dx))) nth($dy, random(length($dy))) 0;
+      }
+    }
+  }
+
+  &__searchbar {
+    // keep above images
+    position: relative;
+    z-index: $no-of-slides + 1;
   }
 }

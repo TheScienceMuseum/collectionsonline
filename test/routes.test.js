@@ -904,7 +904,7 @@ testWithServer(file + 'Request for Results list page', {}, async (t, ctx) => {
   };
 
   const res = await ctx.server.inject(htmlRequest);
-  t.ok(res.payload.indexOf('resultlist__info') > -1);
+  t.ok(res.payload.indexOf('listresult__info') > -1);
   t.equal(res.statusCode, 200, 'Status code was as expected');
   await ctx.server.stop();
   t.end();
