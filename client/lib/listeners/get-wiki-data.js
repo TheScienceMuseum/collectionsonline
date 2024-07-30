@@ -1,55 +1,43 @@
 const getData = require('../get-data');
 const Templates = require('../../templates');
-const { getImageUrl } = require('../wikidataQueries');
-const initiateWikidataRequest = require('./wikidataReq');
 module.exports = async function () {
   const wikiImage = document.getElementById('wikiImage');
-  const qCode = wikiImage.dataset.name;
+  const wikiInfo = document.getElementById('wikiInfo');
   const data = await displayData();
-  const { entities } = data;
-  const imageUrl = await getImageUrl(entities, qCode);
+  if (!data) {
+    return;
+  }
 
-  const image = imageUrl
-    ? {
-        imageUrl
-      }
-    : {};
+  const { P18: imageUrl = null, P154: logoUrl = null, ...info } = data;
+  const finalImageUrl = imageUrl || logoUrl;
+  if (finalImageUrl) {
+    wikiImage.innerHTML = Templates.wikiImage({ finalImageUrl });
+  }
+  // handles black logos on black background
+  if (finalImageUrl.endsWith('svg')) {
+    const imgPanel = document.querySelector('.bleed');
+    imgPanel.style.backgroundColor = '#ffffff';
+  }
 
-  if (data && imageUrl) {
-    wikiImage.innerHTML = Templates.wikiImage(image);
+  if (JSON.stringify(info) !== '{}') {
+    wikiInfo.innerHTML = Templates.wikiInfo({ info });
   }
 };
 
-// async function displayData () {
-//   const wikiImage = document.getElementById('wikiImage');
-//   const qCode = '/wiki/' + wikiImage.dataset.name;
-
-//   return new Promise(async (resolve, reject) => {
-//     try {
-//       const url = await initiateWikidataRequest(qCode);
-//       const opts = {
-//         headers: { Accept: 'application/vnd.api+json' }
-//       };
-
-//       getData(url, opts, function (_err, data) {
-//         if (_err) {
-//           reject(_err);
-//         } else {
-//           resolve(data);
-//         }
-//       });
-//     } catch (error) {
-//       console.error('Error checking the URL or getting data:', error);
-//       reject(error);
-//     }
-//   });
-// }
 async function displayData () {
   const wikiImage = document.getElementById('wikiImage');
-  const qCode = '/wiki/' + wikiImage.dataset.name;
+  const wikiInfo = document.getElementById('wikiInfo');
+  const url = wikiImage?.dataset.name
+    ? '/wiki/' + wikiImage?.dataset.name
+    : '/wiki/' + wikiInfo?.dataset.name;
 
+  const hasWikiImage = !!wikiImage;
+  const hasWikiInfo = !!wikiInfo;
+
+  if (!hasWikiImage || !hasWikiInfo) {
+    return null;
+  }
   try {
-    const url = await initiateWikidataRequest(qCode);
     const opts = {
       headers: { Accept: 'application/vnd.api+json' }
     };

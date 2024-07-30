@@ -456,6 +456,19 @@ Handlebars.registerHelper(
   'formatCopyright',
   require('../templates/helpers/formatCopyright.js')
 );
+Handlebars.registerHelper(
+  'wikiInfoTransform',
+  require('../templates/helpers/wikiInfoTransform.js')
+);
+Handlebars.registerHelper(
+  'isArray',
+  require('../templates/helpers/isArray.js')
+);
+
+Handlebars.registerHelper(
+  'wikidataExcludeField',
+  require('../templates/helpers/wikidataExcludeField.js')
+);
 
 // Routes
 module.exports = {
@@ -515,15 +528,6 @@ module.exports = {
   ),
   wikiInfo: Handlebars.compile(
     Fs.readFileSync('./templates/partials/records/wiki-info.html', 'utf8')
-  ),
-  wikiSummary: Handlebars.compile(
-    Fs.readFileSync('./templates/partials/records/wiki-summary.html', 'utf8')
-  ),
-  wikiPeople: Handlebars.compile(
-    Fs.readFileSync(
-      './templates/partials/records/wiki-related-people.html',
-      'utf8'
-    )
   ),
   about: Handlebars.compile(
     Fs.readFileSync('./templates/pages/about.html', 'utf8')

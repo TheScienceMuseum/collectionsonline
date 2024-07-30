@@ -12,20 +12,13 @@
         <div class="section__content o-grid__span2@m">
 
           {{> records/record-description}}
-          <!--
-          {{#if wikipedia}}
-            <div id="wikiSummary" data-name="{{wikipedia}}"></div>
-          {{/if}}
-          
-          {{#if wikipedia}}
-            <div id="wikiInfo" data-name="{{wikipedia}}"></div>
-          {{/if}}
-          -->
+
         </div>
         <aside>
 
-          {{#if wikipedia}}
-          <div id="wikiImage" data-name="{{wikipedia}}"></div>
+          {{#if wikidata}}
+          <div id="wikiImage" data-name="{{wikidata}}"></div>
+          <div id="wikiInfo" data-name="{{wikidata}}"></div>
           {{/if}}
 
           {{#if related.people}}{{> records/record-related-people }}{{/if}}
