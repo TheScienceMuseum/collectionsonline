@@ -2,7 +2,7 @@ const museums = require('./museums');
 module.exports = {
   site: [
     { url: '/search', name: 'Search' },
-    { url: '/explore', name: 'Explore' },
+    // { url: '/explore', name: 'Explore' }, # add back once live
     { url: '/about', name: 'About' }
   ],
   footer: [
