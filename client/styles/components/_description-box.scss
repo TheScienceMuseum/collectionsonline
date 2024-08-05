@@ -23,6 +23,10 @@
     grid-template-columns: subgrid; // because no explicit span placement??
   }
 
+  &[data-description-box-sides="0"] &__main {
+    grid-column: span 4;
+  }
+  
   &[data-description-box-sides="1"] &__main {
     grid-column: span 3;
   }
