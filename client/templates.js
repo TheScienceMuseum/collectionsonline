@@ -468,6 +468,16 @@ Handlebars.registerHelper(
   require('../templates/helpers/formatCopyright.js')
 );
 
+Handlebars.registerPartial(
+  'records/record-sph-images',
+  Fs.readFileSync('./templates/partials/records/record-sph-images.html', 'utf8')
+);
+
+Handlebars.registerPartial(
+  'records/record-sph-properties',
+  Fs.readFileSync('./templates/partials/records/record-sph-properties.html', 'utf8')
+);
+
 // Routes
 module.exports = {
   404: Handlebars.compile(
