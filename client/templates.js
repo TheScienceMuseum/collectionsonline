@@ -478,6 +478,11 @@ Handlebars.registerPartial(
   Fs.readFileSync('./templates/partials/records/record-sph-properties.html', 'utf8')
 );
 
+Handlebars.registerPartial(
+  'records/record-sph-properties',
+  Fs.readFileSync('./templates/partials/records/ecords/record-sph-priority-item.html', 'utf8')
+);
+
 // Routes
 module.exports = {
   404: Handlebars.compile(
