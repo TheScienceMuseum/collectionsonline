@@ -4,6 +4,7 @@ module.exports = async function () {
   const wikiImage = document.getElementById('wikiImage');
   const wikiInfo = document.getElementById('wikiInfo');
   const data = await displayData();
+
   if (!data) {
     return;
   }
@@ -13,7 +14,7 @@ module.exports = async function () {
   if (finalImageUrl) {
     wikiImage.innerHTML = Templates.wikiImage({ finalImageUrl });
   }
-  // handles black logos on black background
+  // handles black logos on black backgrounds
   if (finalImageUrl.endsWith('svg')) {
     const imgPanel = document.querySelector('.bleed');
     imgPanel.style.backgroundColor = '#ffffff';

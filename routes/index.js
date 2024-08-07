@@ -21,7 +21,6 @@ module.exports = (elastic, config) => [
   require('./object-id')(elastic, config),
   require('./robot')(config),
   require('./articles')(config),
-  require('./wiki')(config),
   require('./embed').rotational(elastic, config),
   require('./embed').rotationalDirect(),
   require('./about')(config),
@@ -33,5 +32,6 @@ module.exports = (elastic, config) => [
   require('./neverbeenseen')(elastic, config),
   require('./barcode')(elastic, config),
   require('./group')(elastic, config),
-  require('./feeds')(elastic, config)
+  require('./feeds')(elastic, config),
+  require('./wiki')(elastic, config)
 ];

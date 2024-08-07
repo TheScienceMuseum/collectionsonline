@@ -9,6 +9,7 @@ const {
 } = require('../lib/wikidataQueries');
 const qCodes = require('../fixtures/wikibaseQCodes');
 
+// handles nested flags on fields
 function hasNestAction (action) {
   return action.some((item) => item.nest === true);
 }
@@ -38,8 +39,9 @@ const wikidataConn = async (req, h) => {
   }
 };
 
-async function configResponse (qCode, entities) {
+async function configResponse (qCode, entities, elastic, config) {
   const obj = {};
+  // iterates over qCodes config
   await Promise.all(
     Object.entries(qCodes).map(async ([key, value]) => {
       const { qCode: q, action } = value;
@@ -50,18 +52,28 @@ async function configResponse (qCode, entities) {
         const valueObj =
           entities[qCode].claims[q][0]?.mainsnak.datavalue?.value;
         const value = await extractClaimValue(valueObj);
-
-        // handles nested data
+        // handles nested data (arrays of values)
         if (hasNestAction(action)) {
           const nested = await nestedData(entities, qCode, q);
-          const result = await extractNestedQCodeData(nested);
+          const value = await extractNestedQCodeData(nested, elastic, config);
 
-          obj[q] = { label, value: result.filter(Boolean) };
+          obj[q] = {
+            ...(value ? { label } : ''),
+            value
+          };
         } else {
           // single values
-          const transformedVal = await extractNestedQCodeData(value);
-
-          obj[q] = { label, value: transformedVal };
+          const transformedVal = await extractNestedQCodeData(
+            value,
+            elastic,
+            config
+          );
+          if (transformedVal) {
+            obj[q] = {
+              ...(transformedVal ? { label } : ''),
+              value: transformedVal
+            };
+          }
         }
 
         // QCodes that need special configuration
@@ -73,7 +85,7 @@ async function configResponse (qCode, entities) {
           obj[q] = logoUrl;
         } else if (q === 'P569') {
           const date = formatDate(entities, qCode, q);
-          obj[q] = { label, value: date, action };
+          obj[q] = { label, value: [{ value: date }], action };
         }
       }
     })
@@ -81,7 +93,7 @@ async function configResponse (qCode, entities) {
   return obj;
 }
 
-module.exports = (config) => ({
+module.exports = (elastic, config) => ({
   method: 'get',
   path: '/wiki/{wikidata}',
 
@@ -89,9 +101,15 @@ module.exports = (config) => ({
     handler: async (req, h) => {
       try {
         const { wikidata } = req.params;
+
         const data = await wikidataConn(req);
         const { entities } = await fetch(data).then((res) => res.json());
-        const result = await configResponse(wikidata, entities);
+        const result = await configResponse(
+          wikidata,
+          entities,
+          elastic,
+          config
+        );
         return h
           .response(JSON.stringify(result))
           .type('application/json')

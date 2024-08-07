@@ -1,27 +1,29 @@
 {{#unless inProduction}}
-<div class="panel panel__text">
-    <h2>Wikidata Information</h4>
-        <ul class="related-people">
-        </ul>
-        {{#each (wikiInfoTransform info)}}
-        <div class="property">
-
-            {{#if (isArray this.value)}}
-            {{#unless (wikidataExcludeField this.value)}}
-            <span>{{this.value.label}}</span>
-
-            {{#each this.value}}
-            <span>{{this.value}}</span>
+<section class="panel panel__text">
+    <header>
+        <h2>Wikidata Information</h2>
+    </header>
+    {{#each (wikiInfoTransform info)}}
+    {{#if (isArray this.value.value)}}
+    {{#unless (wikidataExcludeField this.value)}}
+    <article class="property">
+        <h3>{{this.value.label}}</h3>
+        <ul>
+            {{#each this.value.value}}
+            <li>
+                {{#if this.related}}
+                <a href="{{this.related}}">
+                    {{this.value}}
+                </a>
+                {{else}}
+                {{this.value}}
+                {{/if}}
+            </li>
             {{/each}}
-            {{/unless}}
-            {{else}}
-            {{#unless (wikidataExcludeField this.value)}}
-
-            <span>{{this.value.label}}</span>
-            {{this.value.value}}
-            {{/unless}}
-            {{/if}}
-        </div>
-        {{/each}}
-</div>
+        </ul>
+    </article>
+    {{/unless}}
+    {{/if}}
+    {{/each}}
+</section>
 {{/unless}}
