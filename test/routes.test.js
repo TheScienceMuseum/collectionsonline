@@ -5,19 +5,6 @@ const stub = require('sinon').stub;
 const cache = require('../bin/cache.js');
 const fetchMock = require('fetch-mock');
 global.fetch = fetchMock.sandbox();
-// const wbk = require('../lib/wikibase');
-// const sinon = require('sinon');
-// const { configureNestedData } = require('../lib/wikidataQueries.js');
-
-// const wikidataQueries = require('../fixtures/wikidataQueries.js');
-
-// Create stubs for getImageUrl and getLogo
-// const getImageUrlStub = sinon
-//   .stub(wikidataQueries, 'getImageUrl')
-//   .resolves('mockedImageUrl');
-// const getLogoStub = sinon
-//   .stub(wikidataQueries, 'getLogo')
-//   .resolves('mockedLogoUrl');
 
 testWithServer(file + 'Request for Archive HTML Page', {}, async (t, ctx) => {
   t.plan(1);
@@ -936,6 +923,7 @@ testWithServer('request to wikidata endpoint', {}, async (t, ctx) => {
   t.equal(res.statusCode, 200, 'redirect status code');
   await ctx.server.stop();
   t.end();
+  fetchMock.restore();
 });
 
 testWithServer(file + 'Request for Wikidata', {}, async (t, ctx) => {
@@ -961,7 +949,7 @@ testWithServer(file + 'Request for Wikidata', {}, async (t, ctx) => {
                 {
                   mainsnak: {
                     datavalue: {
-                      value: 'Q5'
+                      value: { id: 'Q5' }
                     }
                   }
                 }
@@ -993,40 +981,115 @@ testWithServer(file + 'Request for Wikidata', {}, async (t, ctx) => {
   fetchMock.restore();
 });
 
-// testWithServer('configureNestedData function', async (t) => {
-//   const sandbox = sinon.createSandbox();
+testWithServer(
+  file + 'Request for nested wikidata and related fields',
+  {},
+  async (t, ctx) => {
+    fetchMock.get(
+      'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q19837&format=json&languages=en&props=info%7Cclaims',
+      {
+        body: JSON.stringify({
+          entities: {
+            Q19837: {
+              claims: {
+                P108: [
+                  {
+                    mainsnak: {
+                      datavalue: {
+                        value: { id: 'Q312' }
+                      }
+                    }
+                  },
+                  {
+                    mainsnak: {
+                      datavalue: {
+                        value: { id: 'Q308993' }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }),
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
 
-//   const wbkGetEntitiesMock = {
-//     entities: {
-//       Q19837: {
-//         claims: {
-//           P1559: [{ mainsnak: { datavalue: { value: 'Test' } } }],
-//         },
-//       },
-//     },
-//   };
+    // Adding mocks for the nested fields
+    fetchMock.get(
+      'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q312&format=json&languages=en&props=info%7Cclaims',
+      {
+        body: JSON.stringify({
+          entities: {
+            Q312: {
+              claims: {
+                P373: [
+                  {
+                    mainsnak: {
+                      datavalue: {
+                        value: { text: 'Apple Inc.' }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }),
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
 
-//   sandbox.stub(wbk, 'getEntities').returns(Promise.resolve(wbkGetEntitiesMock));
-//   new Promise.all((resolve) => {
-//     configureNestedData('Q19837', true, 'P1559')
-//       .then((result) => {
-//         t.deepEqual(result, ['Test'], 'Should handle nested data correctly');
-//         resolve();
-//       })
-//       .catch((error) => {
-//         t.fail(`Async operation failed: ${error}`);
-//         resolve();
-//       });
-//   });
+    fetchMock.get(
+      'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q308993&format=json&languages=en&props=info%7Cclaims',
+      {
+        body: JSON.stringify({
+          entities: {
+            Q308993: {
+              claims: {
+                P373: [
+                  {
+                    mainsnak: {
+                      datavalue: {
+                        value: { text: 'NeXT' }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }),
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
 
-//   t.waitUntil(() => {
-//     return new Promise((r) => r());
-//   }, 5000);
+    const htmlRequest = {
+      method: 'GET',
+      url: '/wiki/Q19837'
+    };
+    t.plan(2);
 
-//   sandbox.restore();
-
-//   t.end();
-// });
+    const res = await ctx.server.inject(htmlRequest);
+    const result = JSON.parse(res.payload);
+    console.log('Raw response payload:', res.payload);
+    const expectedResult = {
+      P108: {
+        label: 'Employer(s)',
+        value: [
+          { related: 'http://localhost:8000/people/cp20600' },
+          { related: 'http://localhost:8000/people/cp132685' }
+        ]
+      }
+    };
+    t.deepEqual(result.P108[0], expectedResult.P108[0]);
+    t.equal(res.statusCode, 200, 'Status code was as expected');
+    await ctx.server.stop();
+    t.end();
+    fetchMock.restore();
+  }
+);
 
 testWithServer(file + 'Not found', {}, async (t, ctx) => {
   const htmlRequest = {
