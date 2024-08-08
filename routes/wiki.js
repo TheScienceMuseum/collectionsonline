@@ -1,3 +1,5 @@
+const cache = require('../bin/cache');
+
 const wbk = require('../lib/wikibase');
 const {
   getImageUrl,
@@ -7,6 +9,7 @@ const {
   formatDate,
   extractNestedQCodeData
 } = require('../lib/wikidataQueries');
+const { setCache, fetchCache } = require('../lib/cached-wikidata');
 const qCodes = require('../fixtures/wikibaseQCodes');
 
 // handles nested flags on fields
@@ -47,7 +50,7 @@ async function configResponse (qCode, entities, elastic, config) {
       const { qCode: q, action } = value;
       const label = key;
 
-      if (entities[qCode].claims[q]) {
+      if (entities[qCode]?.claims?.[q]) {
         // default value on which the relevant properties are extracted from conditionally
         const valueObj =
           entities[qCode].claims[q][0]?.mainsnak.datavalue?.value;
@@ -101,6 +104,15 @@ module.exports = (elastic, config) => ({
     handler: async (req, h) => {
       try {
         const { wikidata } = req.params;
+        const cachedWikidataJson = await fetchCache(cache, wikidata);
+
+        if (cachedWikidataJson !== null) {
+          const { item } = cachedWikidataJson;
+          return h
+            .response(JSON.stringify(item))
+            .type('application/json')
+            .code(200);
+        }
 
         const data = await wikidataConn(req);
         const { entities } = await fetch(data).then((res) => res.json());
@@ -110,6 +122,8 @@ module.exports = (elastic, config) => ({
           elastic,
           config
         );
+        setCache(cache, wikidata, result);
+
         return h
           .response(JSON.stringify(result))
           .type('application/json')
