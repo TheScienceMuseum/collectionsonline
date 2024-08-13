@@ -928,7 +928,7 @@ testWithServer('request to wikidata endpoint', {}, async (t, ctx) => {
 
 testWithServer(file + 'Request for Wikidata', {}, async (t, ctx) => {
   fetchMock.get(
-    'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q937&format=json&languages=en&props=info%7Cclaims',
+    'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q937&format=json&languages=en&props=info%7Cclaims%7Clabels',
     {
       body: JSON.stringify({
         entities: {
@@ -986,7 +986,7 @@ testWithServer(
   {},
   async (t, ctx) => {
     fetchMock.get(
-      'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q19837&format=json&languages=en&props=info%7Cclaims',
+      'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q19837&format=json&languages=en&props=info%7Cclaims%7Clabels',
       {
         body: JSON.stringify({
           entities: {
@@ -1018,7 +1018,7 @@ testWithServer(
 
     // Adding mocks for the nested fields
     fetchMock.get(
-      'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q312&format=json&languages=en&props=info%7Cclaims',
+      'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q312&format=json&languages=en&props=info%7Cclaims%7Clabels',
       {
         body: JSON.stringify({
           entities: {
@@ -1042,7 +1042,7 @@ testWithServer(
     );
 
     fetchMock.get(
-      'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q308993&format=json&languages=en&props=info%7Cclaims',
+      'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q308993&format=json&languages=en&props=info%7Cclaims%7Clabels',
       {
         body: JSON.stringify({
           entities: {
