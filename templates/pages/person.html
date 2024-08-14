@@ -16,13 +16,12 @@
         </div>
         <aside>
 
-          {{#if wikidata}}
-          <div id="wikiImage" data-name="{{wikidata}}"></div>
-          <div id="wikiInfo" data-name="{{wikidata}}"></div>
-          {{/if}}
 
           {{#if related.people}}{{> records/record-related-people }}{{/if}}
           {{#if related.organisations}}{{> records/record-related-organisations }}{{/if}}
+          {{#if wikidata}}
+          <div id="wikiInfo" data-name="{{wikidata}}"></div>
+          {{/if}}
 
         </aside>
       </div>

@@ -1,9 +1,15 @@
 {{#unless inProduction}}
-<section class="panel panel__text">
+<section class="panel panel__text" style="margin-top: 1em">
+    {{#if wikiData.image}}
+    <div class="panel" style="margin-bottom: 10px">
+
+        <img id="wikiImage" class="bleed" src="{{wikiData.image}}">
+    </div>
+    {{/if}}
     <header>
         <h2>Wikidata Information</h2>
     </header>
-    {{#each (wikiInfoTransform info)}}
+    {{#each (wikiInfoTransform wikiData.info)}}
     {{#if (isArray this.value.value)}}
     {{#unless (wikidataExcludeField this.value)}}
     <article class="property">

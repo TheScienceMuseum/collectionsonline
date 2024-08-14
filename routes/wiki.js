@@ -27,7 +27,7 @@ const wikidataConn = async (req, h) => {
 
     let entities;
     const languages = ['en'];
-    const props = ['info', 'claims'];
+    const props = ['info', 'claims', 'labels'];
     const format = 'json';
     try {
       entities = await wbk.getEntities(wikidata, languages, props, format);
@@ -59,7 +59,6 @@ async function configResponse (qCode, entities, elastic, config) {
         if (hasNestAction(action)) {
           const nested = await nestedData(entities, qCode, q);
           const value = await extractNestedQCodeData(nested, elastic, config);
-
           obj[q] = {
             ...(value ? { label } : ''),
             value
@@ -86,7 +85,7 @@ async function configResponse (qCode, entities, elastic, config) {
         } else if (q === 'P154') {
           const logoUrl = await getLogo(entities, qCode, q);
           obj[q] = logoUrl;
-        } else if (q === 'P569') {
+        } else if (q === 'P569' || q === 'P570' || q === 'P571') {
           const date = formatDate(entities, qCode, q);
           obj[q] = { label, value: [{ value: date }], action };
         }
@@ -104,6 +103,7 @@ module.exports = (elastic, config) => ({
     handler: async (req, h) => {
       try {
         const { wikidata } = req.params;
+
         const cachedWikidataJson = await fetchCache(cache, wikidata);
 
         if (cachedWikidataJson !== null) {
@@ -122,7 +122,8 @@ module.exports = (elastic, config) => ({
           elastic,
           config
         );
-        setCache(cache, wikidata, result);
+
+        await setCache(cache, wikidata, result);
 
         return h
           .response(JSON.stringify(result))

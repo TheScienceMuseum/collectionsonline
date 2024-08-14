@@ -1,41 +1,41 @@
 const getData = require('../get-data');
 const Templates = require('../../templates');
 module.exports = async function () {
-  const wikiImage = document.getElementById('wikiImage');
   const wikiInfo = document.getElementById('wikiInfo');
   const data = await displayData();
 
   if (!data) {
     return;
   }
+  const _data = { ...data };
 
-  const { P18: imageUrl = null, P154: logoUrl = null, ...info } = data;
+  const { P18: imageUrl = null, P154: logoUrl = null, ...info } = _data;
+
   const finalImageUrl = imageUrl || logoUrl;
-  if (finalImageUrl) {
-    wikiImage.innerHTML = Templates.wikiImage({ finalImageUrl });
+
+  const wikiData = {
+    ...(finalImageUrl && { image: finalImageUrl }),
+    ...(JSON.stringify(info) !== '{}' && { info })
+  };
+
+  if (wikiData) {
+    wikiInfo.innerHTML = Templates.wikiInfo({ wikiData });
   }
+
   // handles black logos on black backgrounds
+
   if (finalImageUrl.endsWith('svg')) {
     const imgPanel = document.querySelector('.bleed');
     imgPanel.style.backgroundColor = '#ffffff';
   }
-
-  if (JSON.stringify(info) !== '{}') {
-    wikiInfo.innerHTML = Templates.wikiInfo({ info });
-  }
 };
 
 async function displayData () {
-  const wikiImage = document.getElementById('wikiImage');
   const wikiInfo = document.getElementById('wikiInfo');
-  const url = wikiImage?.dataset.name
-    ? '/wiki/' + wikiImage?.dataset.name
-    : '/wiki/' + wikiInfo?.dataset.name;
-
-  const hasWikiImage = !!wikiImage;
+  const url = '/wiki/' + wikiInfo?.dataset.name;
   const hasWikiInfo = !!wikiInfo;
 
-  if (!hasWikiImage || !hasWikiInfo) {
+  if (!hasWikiInfo) {
     return null;
   }
   try {
