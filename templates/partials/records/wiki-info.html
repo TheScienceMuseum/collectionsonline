@@ -14,19 +14,18 @@
     {{#unless (wikidataExcludeField this.value)}}
     <article class="property">
         <h3>{{this.value.label}}</h3>
-        <ul>
-            {{#each this.value.value}}
-            <li>
-                {{#if this.related}}
-                <a href="{{this.related}}">
-                    {{this.value}}
-                </a>
-                {{else}}
+        {{#each this.value.value}}
+        <span>
+
+            {{#if this.related}}
+            <a href="{{this.related}}">
                 {{this.value}}
-                {{/if}}
-            </li>
-            {{/each}}
-        </ul>
+            </a>
+            {{else}}
+            {{this.value}}{{comma this ../this.value.value false}}
+            {{/if}}
+        </span>
+        {{/each}}
     </article>
     {{/unless}}
     {{/if}}
