@@ -163,7 +163,7 @@ module.exports = (elastic, config) => ({
           ) {
             response.header(
               'Cache-Control',
-              'public, must-revalidate, max-age: 43200'
+              'public, max-age: 604800'
             );
           }
           return response;
