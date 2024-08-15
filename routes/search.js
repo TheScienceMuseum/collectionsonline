@@ -55,6 +55,17 @@ module.exports = (elastic, config) => ({
 
         const queryParams = createQueryParams(responseType, { query, params });
 
+        // Only set a Cache-Control if we don't have a freetext query string and aren't running on production
+        var cacheResponse = false;
+        if (
+          !result.query.q &&
+          !result.query.random &&
+          config &&
+          config.NODE_ENV !== 'production'
+        ) {
+          cacheResponse = true;
+        }
+
         if (responseType === 'html') {
           // slideshow
           if (
@@ -154,32 +165,34 @@ module.exports = (elastic, config) => ({
           );
 
           const response = h.view('search', tplData);
-          // Only set a Cache-Control if we don't have a freetext query string and aren't running on production
-          if (
-            !result.query.q &&
-            !result.query.random &&
-            config &&
-            config.NODE_ENV === 'production'
-          ) {
+          if (cacheResponse) {
             response.header(
               'Cache-Control',
-              'public, max-age: 604800'
+              'max-age=43200, must-revalidate'
             );
           }
           return response;
         } else if (responseType === 'json') {
           const mphcParent = await parentCollection(elastic, queryParams);
           const res = await search(elastic, queryParams);
-          return h
-            .response(
-              searchResultsToJsonApi(
-                queryParams,
-                res,
-                config,
-                mphcParent || null
-              )
+          
+          const response = h.response(
+            searchResultsToJsonApi(
+              queryParams,
+              res,
+              config,
+              mphcParent || null
             )
-            .header('content-type', 'application/vnd.api+json');
+          );
+
+          if (cacheResponse) {
+            console.log('got here');
+            response.header(
+                'Cache-Control',
+                'max-age=43200, must-revalidate'
+            );
+          } 
+          return response;          
         }
       } catch (err) {
         return Boom.serverUnavailable(err);
