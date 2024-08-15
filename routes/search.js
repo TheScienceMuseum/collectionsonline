@@ -61,7 +61,7 @@ module.exports = (elastic, config) => ({
           !result.query.q &&
           !result.query.random &&
           config &&
-          config.NODE_ENV !== 'production'
+          config.NODE_ENV === 'production'
         ) {
           cacheResponse = true;
         }
