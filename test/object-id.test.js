@@ -14,7 +14,7 @@ testWithServer(file + 'Request for object id page 1970-54', {}, async (t, ctx) =
 
   const res = await ctx.server.inject(htmlRequest);
   t.equal(res.statusCode, 200, 'Status code was as expected');
-  t.equal(res.payload, '{"found":true,"error":null,"path":"/objects/co33448/sample-of-deep-sea-section-of-first-transatlantic-cable-1857-1858"}', 'The path found is /objects/co33448/sample-of-deep-sea-section-of-first-transatlantic-cable-1857-1858-cable');
+  t.equal(res.payload, '{"found":true,"error":null,"path":"/objects/co33448/sample-of-deep-sea-section-of-first-transatlantic-cable-1857-1858"}', 'The path found is /objects/co33448/sample-of-deep-sea-section-of-first-transatlantic-cable-1857-1858');
   t.end();
 });
 
@@ -26,7 +26,7 @@ testWithServer(file + 'Request for object id page 1970-54 with redirect true', {
 
   const res = await ctx.server.inject(htmlRequest);
   t.equal(res.statusCode, 301, 'Status code was as expected');
-  t.equal(res.headers.location, config.rootUrl + '/objects/co33448/sample-of-deep-sea-section-of-first-transatlantic-cable-1857-1858', 'redirect to /objects/co33448/sample-of-deep-sea-section-of-first-transatlantic-cable-1857-1858-cable');
+  t.equal(res.headers.location, config.rootUrl + '/objects/co33448/sample-of-deep-sea-section-of-first-transatlantic-cable-1857-1858', 'redirect to /objects/co33448/sample-of-deep-sea-section-of-first-transatlantic-cable-1857-1858');
   t.end();
 });
 
