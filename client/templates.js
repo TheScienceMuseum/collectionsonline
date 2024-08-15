@@ -480,7 +480,7 @@ Handlebars.registerPartial(
 
 Handlebars.registerPartial(
   'records/record-sph-properties',
-  Fs.readFileSync('./templates/partials/records/ecords/record-sph-priority-item.html', 'utf8')
+  Fs.readFileSync('./templates/partials/records/record-sph-priority-item.html', 'utf8')
 );
 
 // Routes
