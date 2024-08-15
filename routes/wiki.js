@@ -103,8 +103,8 @@ module.exports = (elastic, config) => ({
     handler: async (req, h) => {
       try {
         const { wikidata } = req.params;
-
-        const cachedWikidataJson = await fetchCache(cache, wikidata);
+        const { clear } = req.query;
+        const cachedWikidataJson = await fetchCache(cache, wikidata, clear);
 
         if (cachedWikidataJson !== null) {
           const { item } = cachedWikidataJson;
