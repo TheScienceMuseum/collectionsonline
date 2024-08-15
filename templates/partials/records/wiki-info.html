@@ -19,8 +19,9 @@
             <li style="display: inline-block;">
                 {{#if this.related}}
                 <a href="{{this.related}}">
-                    {{this.value}}{{comma this ../this.value.value false}}
+                    {{this.value}}
                 </a>
+                {{comma this ../this.value.value false}}
                 {{else}}
                 {{this.value}}{{comma this ../this.value.value false}}
                 {{/if}}
