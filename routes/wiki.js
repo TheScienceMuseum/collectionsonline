@@ -12,10 +12,12 @@ const {
 const { setCache, fetchCache } = require('../lib/cached-wikidata');
 const qCodes = require('../fixtures/wikibaseQCodes');
 
-// handles nested flags on fields
-function hasNestAction (action) {
-  return action.some((item) => item.nest === true);
+// handles action flags on fields, can pass in relevant action
+
+function hasPropertyAction (property, action) {
+  return action.some((item) => item[property] === true);
 }
+
 const wikidataConn = async (req, h) => {
   const { wikidata } = req.params;
 
@@ -48,6 +50,7 @@ async function configResponse (qCode, entities, elastic, config) {
   await Promise.all(
     Object.entries(qCodes).map(async ([key, value]) => {
       const { qCode: q, action } = value;
+
       const label = key;
 
       if (entities[qCode]?.claims?.[q]) {
@@ -55,20 +58,32 @@ async function configResponse (qCode, entities, elastic, config) {
         const valueObj =
           entities[qCode].claims[q][0]?.mainsnak.datavalue?.value;
         const value = await extractClaimValue(valueObj);
+
         // handles nested data (arrays of values)
-        if (hasNestAction(action)) {
+        if (hasPropertyAction('nest', action)) {
+          // does it have a hide prop - to be hidden from the UI, but included in json
+          const hide = hasPropertyAction('hide', action);
           const nested = await nestedData(entities, qCode, q);
-          const value = await extractNestedQCodeData(nested, elastic, config);
+
+          const value = await extractNestedQCodeData(
+            nested,
+            elastic,
+            config,
+            hide
+          );
           obj[q] = {
             ...(value ? { label } : ''),
             value
           };
         } else {
           // single values
+          const hide = hasPropertyAction('hide', action);
+
           const transformedVal = await extractNestedQCodeData(
             value,
             elastic,
-            config
+            config,
+            hide
           );
           if (transformedVal) {
             obj[q] = {
@@ -85,9 +100,12 @@ async function configResponse (qCode, entities, elastic, config) {
         } else if (q === 'P154') {
           const logoUrl = await getLogo(entities, qCode, q);
           obj[q] = logoUrl;
-        } else if (q === 'P569' || q === 'P570' || q === 'P571') {
+        } else if (q === 'P569' || q === 'P570') {
           const date = formatDate(entities, qCode, q);
-          obj[q] = { label, value: [{ value: date }], action };
+          obj[q] = { label, value: [{ value: date, hide: true }] };
+        } else if (q === 'P571') {
+          const date = formatDate(entities, qCode, q);
+          obj[q] = { label, value: [{ value: date }] };
         }
       }
     })
