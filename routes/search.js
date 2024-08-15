@@ -191,7 +191,7 @@ module.exports = (elastic, config) => ({
               'max-age=43200, must-revalidate'
             );
           }
-          return response;
+          return response.header('content-type', 'application/vnd.api+json');
         }
       } catch (err) {
         return Boom.serverUnavailable(err);
