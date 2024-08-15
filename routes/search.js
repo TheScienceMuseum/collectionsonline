@@ -56,7 +56,7 @@ module.exports = (elastic, config) => ({
         const queryParams = createQueryParams(responseType, { query, params });
 
         // Only set a Cache-Control if we don't have a freetext query string and aren't running on production
-        var cacheResponse = false;
+        let cacheResponse = false;
         if (
           !result.query.q &&
           !result.query.random &&
@@ -175,7 +175,7 @@ module.exports = (elastic, config) => ({
         } else if (responseType === 'json') {
           const mphcParent = await parentCollection(elastic, queryParams);
           const res = await search(elastic, queryParams);
-          
+
           const response = h.response(
             searchResultsToJsonApi(
               queryParams,
@@ -186,13 +186,12 @@ module.exports = (elastic, config) => ({
           );
 
           if (cacheResponse) {
-            console.log('got here');
             response.header(
-                'Cache-Control',
-                'max-age=43200, must-revalidate'
+              'Cache-Control',
+              'max-age=43200, must-revalidate'
             );
-          } 
-          return response;          
+          }
+          return response;
         }
       } catch (err) {
         return Boom.serverUnavailable(err);
