@@ -71,6 +71,7 @@ async function configResponse (qCode, entities, elastic, config) {
             config,
             hide
           );
+
           obj[q] = {
             ...(value ? { label } : ''),
             value
@@ -78,7 +79,6 @@ async function configResponse (qCode, entities, elastic, config) {
         } else {
           // single values
           const hide = hasPropertyAction('hide', action);
-
           const transformedVal = await extractNestedQCodeData(
             value,
             elastic,
@@ -107,6 +107,9 @@ async function configResponse (qCode, entities, elastic, config) {
           const date = formatDate(entities, qCode, q);
           obj[q] = { label, value: [{ value: date }] };
         }
+        // else if (q ===  'P39') {
+
+        // }
       }
     })
   );

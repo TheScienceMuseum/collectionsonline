@@ -16,14 +16,20 @@
         <h3>{{this.value.label}}</h3>
         <ul>
             {{#each this.value.value}}
+            {{#if (isWikiLink this.value)}}
+            <li>
+                {{else}}
             <li style="display: inline-block;">
+                {{/if}}
                 {{#if this.related}}
                 <a href="{{this.related}}">
                     {{this.value}}
-                </a>
-                {{comma this ../this.value.value false}}
+                </a>{{comma this ../this.value.value false}}
                 {{else}}
-                {{this.value}}{{comma this ../this.value.value false}}
+                {{#if (isWikiLink this.value)}}
+                <a href="{{this.value}}">{{/if}}{{this.value}}{{comma this
+                    ../this.value.value false}}
+                    {{#if (isWikiLink this.value)}}</a>{{comma this ../this.value.value false}}{{/if}}
                 {{/if}}
             </li>
             {{/each}}

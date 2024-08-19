@@ -2,7 +2,8 @@ const nest = { nest: true };
 const match = { match: true };
 const display = { display: true };
 const hide = { hide: true };
-
+// const displayLinked = {displayLinked: true}
+const isExternalLink = { isExternalLink: true };
 module.exports = {
   Image: { qCode: 'P18', action: [display] },
   Mother: { qCode: 'P25', action: [match, display] },
@@ -18,7 +19,7 @@ module.exports = {
   'Owned By': { qCode: 'P127', action: [nest, display] },
   'Member Of': { qCode: 'P463', action: [nest, display] },
   'Owner Of': { qCode: 'P1830', action: [nest, display] },
-  'described at URL': { qCode: 'P973', action: [display] }, // x
+  'described at URL': { qCode: 'P973', action: [display, isExternalLink] },
   'Oxford DNB': { qCode: 'P1415', action: [display] },
   'Award Received': { qCode: 'P166', action: [nest, display] },
   Employees: { qCode: 'P1128', action: [nest, display] },
@@ -33,7 +34,10 @@ module.exports = {
   'Short Name': { qCode: 'P1813', action: [display, hide] },
   'Has Subsidiary': { qCode: 'P355', action: [nest, display] },
   'Chief Executive Officers': { qCode: 'P169', action: [nest, display] },
-  'Official Website': { qCode: 'P856', action: [nest, display] },
+  'Official Website': {
+    qCode: 'P856',
+    action: [display, isExternalLink]
+  },
   'Given Name': { qCode: 'P735', action: [nest, display, hide] },
   'Family Name': { qCode: 'P734', action: [display, hide] },
   'Place of Birth': { qCode: 'P19', action: [display, hide] },

@@ -281,10 +281,7 @@ Handlebars.registerPartial(
 );
 Handlebars.registerPartial(
   'records/collage',
-  Fs.readFileSync(
-    './templates/partials/records/collage.html',
-    'utf8'
-  )
+  Fs.readFileSync('./templates/partials/records/collage.html', 'utf8')
 );
 
 // Helpers
@@ -481,6 +478,11 @@ Handlebars.registerHelper(
   require('../templates/helpers/wikidataExcludeField.js')
 );
 
+Handlebars.registerHelper(
+  'isWikiLink',
+  require('../templates/helpers/isWikiLink.js')
+);
+
 Handlebars.registerPartial(
   'records/record-sph-images',
   Fs.readFileSync('./templates/partials/records/record-sph-images.html', 'utf8')
@@ -488,7 +490,10 @@ Handlebars.registerPartial(
 
 Handlebars.registerPartial(
   'records/record-sph-properties',
-  Fs.readFileSync('./templates/partials/records/record-sph-properties.html', 'utf8')
+  Fs.readFileSync(
+    './templates/partials/records/record-sph-properties.html',
+    'utf8'
+  )
 );
 
 // Routes
