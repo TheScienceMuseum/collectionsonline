@@ -174,7 +174,7 @@ test('multiple param names', function (t) {
   t.deepEqual(
     parseParameters({ filters: 'places/London+France' }),
     { params: { type: 'all' }, categories: { places: ['London', 'France'] } },
-    'immges/has_images gives same result'
+    'images/has_images gives same result'
   );
   t.end();
 });
