@@ -479,7 +479,7 @@ Handlebars.registerPartial(
 );
 
 Handlebars.registerPartial(
-  'records/record-sph-properties',
+  'records/record-sph-priority-item',
   Fs.readFileSync('./templates/partials/records/record-sph-priority-item.html', 'utf8')
 );
 
