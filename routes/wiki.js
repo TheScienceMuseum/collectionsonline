@@ -7,7 +7,8 @@ const {
   extractClaimValue,
   nestedData,
   formatDate,
-  extractNestedQCodeData
+  extractNestedQCodeData,
+  positionHeld
 } = require('../lib/wikidataQueries');
 const { setCache, fetchCache } = require('../lib/cached-wikidata');
 const qCodes = require('../fixtures/wikibaseQCodes');
@@ -46,19 +47,19 @@ const wikidataConn = async (req, h) => {
 
 async function configResponse (qCode, entities, elastic, config) {
   const obj = {};
+
   // iterates over qCodes config
   await Promise.all(
     Object.entries(qCodes).map(async ([key, value]) => {
       const { qCode: q, action } = value;
-
       const label = key;
 
       if (entities[qCode]?.claims?.[q]) {
         // default value on which the relevant properties are extracted from conditionally
         const valueObj =
           entities[qCode].claims[q][0]?.mainsnak.datavalue?.value;
-        const value = await extractClaimValue(valueObj);
 
+        const value = await extractClaimValue(valueObj);
         // handles nested data (arrays of values)
         if (hasPropertyAction('nest', action)) {
           // does it have a hide prop - to be hidden from the UI, but included in json
@@ -106,10 +107,14 @@ async function configResponse (qCode, entities, elastic, config) {
         } else if (q === 'P571') {
           const date = formatDate(entities, qCode, q);
           obj[q] = { label, value: [{ value: date }] };
+        } else if (q === 'P39') {
+          // for position held + qualifiers. N.B can be expanded to do further nesting, i.e value of value
+          const qualifiersArr = entities[qCode].claims.P39;
+          const positions = await positionHeld(qualifiersArr);
+          if (positions.length > 0) {
+            obj[q] = { label, value: positions };
+          }
         }
-        // else if (q ===  'P39') {
-
-        // }
       }
     })
   );

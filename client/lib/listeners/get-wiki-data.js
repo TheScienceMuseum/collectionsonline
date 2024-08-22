@@ -3,7 +3,6 @@ const Templates = require('../../templates');
 module.exports = async function () {
   const wikiInfo = document.getElementById('wikiInfo');
   const data = await displayData();
-
   if (!data) {
     return;
   }

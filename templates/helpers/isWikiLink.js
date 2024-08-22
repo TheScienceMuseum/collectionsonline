@@ -1,5 +1,5 @@
 module.exports = (value) => {
-  if (value.startsWith('http')) {
+  if (typeof value === 'string' && value.startsWith('http')) {
     return true;
   }
   return false;
