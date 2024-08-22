@@ -11,7 +11,7 @@ const {
   positionHeld
 } = require('../lib/wikidataQueries');
 const { setCache, fetchCache } = require('../lib/cached-wikidata');
-const qCodes = require('../fixtures/wikibaseQCodes');
+const properties = require('../fixtures/wikibasePropertiesConfig');
 
 // handles action flags on fields, can pass in relevant action
 
@@ -48,23 +48,23 @@ const wikidataConn = async (req, h) => {
 async function configResponse (qCode, entities, elastic, config) {
   const obj = {};
 
-  // iterates over qCodes config
+  // iterates over properties config
   await Promise.all(
-    Object.entries(qCodes).map(async ([key, value]) => {
-      const { qCode: q, action } = value;
+    Object.entries(properties).map(async ([key, value]) => {
+      const { property, action } = value;
       const label = key;
 
-      if (entities[qCode]?.claims?.[q]) {
+      if (entities[qCode]?.claims?.[property]) {
         // default value on which the relevant properties are extracted from conditionally
         const valueObj =
-          entities[qCode].claims[q][0]?.mainsnak.datavalue?.value;
+          entities[qCode].claims[property][0]?.mainsnak.datavalue?.value;
 
         const value = await extractClaimValue(valueObj);
         // handles nested data (arrays of values)
         if (hasPropertyAction('nest', action)) {
           // does it have a hide prop - to be hidden from the UI, but included in json
           const hide = hasPropertyAction('hide', action);
-          const nested = await nestedData(entities, qCode, q);
+          const nested = await nestedData(entities, qCode, property);
 
           const value = await extractNestedQCodeData(
             nested,
@@ -73,7 +73,7 @@ async function configResponse (qCode, entities, elastic, config) {
             hide
           );
 
-          obj[q] = {
+          obj[property] = {
             ...(value ? { label } : ''),
             value
           };
@@ -87,32 +87,32 @@ async function configResponse (qCode, entities, elastic, config) {
             hide
           );
           if (transformedVal) {
-            obj[q] = {
+            obj[property] = {
               ...(transformedVal ? { label } : ''),
               value: transformedVal
             };
           }
         }
 
-        // QCodes that need special configuration
-        if (q === 'P18') {
-          const imgUrl = await getImageUrl(entities, qCode, q);
-          obj[q] = imgUrl;
-        } else if (q === 'P154') {
-          const logoUrl = await getLogo(entities, qCode, q);
-          obj[q] = logoUrl;
-        } else if (q === 'P569' || q === 'P570') {
-          const date = formatDate(entities, qCode, q);
-          obj[q] = { label, value: [{ value: date, hide: true }] };
-        } else if (q === 'P571') {
-          const date = formatDate(entities, qCode, q);
-          obj[q] = { label, value: [{ value: date }] };
-        } else if (q === 'P39') {
+        // Properties that need special configuration
+        if (property === 'P18') {
+          const imgUrl = await getImageUrl(entities, qCode, property);
+          obj[property] = imgUrl;
+        } else if (property === 'P154') {
+          const logoUrl = await getLogo(entities, qCode, property);
+          obj[property] = logoUrl;
+        } else if (property === 'P569' || property === 'P570') {
+          const date = formatDate(entities, qCode, property);
+          obj[property] = { label, value: [{ value: date, hide: true }] };
+        } else if (property === 'P571') {
+          const date = formatDate(entities, qCode, property);
+          obj[property] = { label, value: [{ value: date }] };
+        } else if (property === 'P39') {
           // for position held + qualifiers. N.B can be expanded to do further nesting, i.e value of value
           const qualifiersArr = entities[qCode].claims.P39;
           const positions = await positionHeld(qualifiersArr);
           if (positions.length > 0) {
-            obj[q] = { label, value: positions };
+            obj[property] = { label, value: positions };
           }
         }
       }
