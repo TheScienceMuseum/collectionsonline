@@ -10,11 +10,14 @@
   width: 100%;
   line-height: 1.2;
   color: black;
-  min-height: 100%;
 
   a &,
   a:has(&) {
     text-decoration: none;
+  }
+
+  a:has(&) {
+    display: flex; // to stretch card to container height
   }
 
   &__figure {
