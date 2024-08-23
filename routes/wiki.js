@@ -86,12 +86,14 @@ async function configResponse (qCode, entities, elastic, config) {
         // Handling nested data that needs extra configuration
         if (hasPropertyAction('nest', action)) {
           const hide = hasPropertyAction('hide', action);
+          const relatedRequired = hasPropertyAction('displayLinked', action);
           const nested = await nestedData(entities, qCode, property);
           const value = await extractNestedQCodeData(
             nested,
             elastic,
             config,
-            hide
+            hide,
+            relatedRequired
           );
 
           obj[property] = {
@@ -101,11 +103,13 @@ async function configResponse (qCode, entities, elastic, config) {
         } else {
           // single values
           const hide = hasPropertyAction('hide', action);
+          const relatedRequired = hasPropertyAction('displayLinked', action);
           const value = await extractNestedQCodeData(
             valueObj,
             elastic,
             config,
-            hide
+            hide,
+            relatedRequired
           );
           if (value) {
             obj[property] = {

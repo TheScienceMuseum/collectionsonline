@@ -1,18 +1,24 @@
-const nest = { nest: true };
-const match = { match: true };
-const display = { display: true };
+const nest = { nest: true }; // nested data
+const match = { match: true }; // currently unused
+const display = { display: true }; // currently unused
 const hide = { hide: true };
-// const displayLinked = { displayLinked: true };
+// const displayLinked = { displayLinked: true }; // if no related record in our systems - n.b doesn't work on every field due to how processed
 const isExternalLink = { isExternalLink: true };
 module.exports = {
   Image: { property: 'P18', action: [display] },
   Mother: { property: 'P25', action: [match, display] },
   Father: { property: 'P22', action: [match, display] },
-  'Founded By': { property: 'P112', action: [nest, match, display] },
-  'Significant Person': { property: 'P3342', action: [match, display] },
+  'Founded By': {
+    property: 'P112',
+    action: [nest, match, display]
+  },
+  'Significant Person': { property: 'P3m,m ,342', action: [match, display] },
   Logo: { property: 'P154', action: [display] },
   'Official Name': { property: 'P1448', action: [match, display] },
-  'Employer(s)': { property: 'P108', action: [nest, match, display] },
+  'Employer(s)': {
+    property: 'P108',
+    action: [nest, match, display]
+  },
   Industry: { property: 'P452', action: [nest, match] },
   'Position Held': { property: 'P39', action: [nest, match] },
   'Date of Birth': { property: 'P569', action: [match, display, hide] },
@@ -36,7 +42,10 @@ module.exports = {
   'Official Name ': { property: 'P1448', action: [display, hide] },
   'Short Name': { property: 'P1813', action: [display, hide] },
   'Has Subsidiary': { property: 'P355', action: [nest, display] },
-  'Chief Executive Officers': { property: 'P169', action: [nest, display] },
+  'Chief Executive Officers': {
+    property: 'P169',
+    action: [nest, display]
+  },
   'Official Website': {
     property: 'P856',
     action: [display, isExternalLink]
