@@ -11,7 +11,6 @@ module.exports = async function () {
   const { P18: imageUrl = null, P154: logoUrl = null, ...info } = _data;
 
   const finalImageUrl = imageUrl || logoUrl;
-
   const wikiData = {
     ...(finalImageUrl && { image: finalImageUrl }),
     ...(JSON.stringify(info) !== '{}' && { info })
@@ -23,7 +22,7 @@ module.exports = async function () {
 
   // handles black logos on black backgrounds
 
-  if (finalImageUrl.endsWith('svg')) {
+  if (finalImageUrl?.endsWith('svg')) {
     const imgPanel = document.querySelector('.bleed');
     imgPanel.style.backgroundColor = '#ffffff';
   }

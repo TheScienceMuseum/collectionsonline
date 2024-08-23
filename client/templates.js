@@ -549,9 +549,7 @@ module.exports = {
       'utf8'
     )
   ),
-  wikiImage: Handlebars.compile(
-    Fs.readFileSync('./templates/partials/records/wiki-image.html', 'utf8')
-  ),
+
   wikiInfo: Handlebars.compile(
     Fs.readFileSync('./templates/partials/records/wiki-info.html', 'utf8')
   ),

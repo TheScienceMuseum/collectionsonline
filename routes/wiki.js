@@ -53,7 +53,6 @@ async function configResponse (qCode, entities, elastic, config) {
     Object.entries(properties).map(async ([key, value]) => {
       const { property, action } = value;
       const label = key;
-
       if (entities[qCode]?.claims?.[property]) {
         // default value on which the relevant properties are extracted from conditionally
         const valueObj =
@@ -143,6 +142,7 @@ async function configResponse (qCode, entities, elastic, config) {
       }
     })
   );
+
   return obj;
 }
 
@@ -154,6 +154,7 @@ module.exports = (elastic, config) => ({
     handler: async (req, h) => {
       try {
         const { wikidata } = req.params;
+        // ! note when clearing cache with postman, the item is set again immediately below unless commented out
         const { clear } = req.query;
         const cachedWikidataJson = await fetchCache(cache, wikidata, clear);
 
