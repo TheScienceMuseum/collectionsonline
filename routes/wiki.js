@@ -58,14 +58,35 @@ async function configResponse (qCode, entities, elastic, config) {
         // default value on which the relevant properties are extracted from conditionally
         const valueObj =
           entities[qCode].claims[property][0]?.mainsnak.datavalue?.value;
+        let finalValue;
 
-        const value = await extractClaimValue(valueObj);
-        // handles nested data (arrays of values)
+        // most values brought back are objects, but a few are directly strings
+        if (typeof valueObj === 'string') {
+          if (/^Q\d+$/.test(valueObj)) {
+            finalValue = await extractNestedQCodeData(
+              valueObj,
+              elastic,
+              config,
+              false
+            );
+          } else {
+            finalValue = [{ value: valueObj }];
+          }
+        } else if (typeof valueObj === 'object' && valueObj !== null) {
+          finalValue = await extractClaimValue(valueObj);
+        }
+
+        if (finalValue) {
+          obj[property] = {
+            ...(finalValue ? { label } : ''),
+            value: finalValue
+          };
+        }
+
+        // Handling nested data that needs extra configuration
         if (hasPropertyAction('nest', action)) {
-          // does it have a hide prop - to be hidden from the UI, but included in json
           const hide = hasPropertyAction('hide', action);
           const nested = await nestedData(entities, qCode, property);
-
           const value = await extractNestedQCodeData(
             nested,
             elastic,
@@ -80,16 +101,16 @@ async function configResponse (qCode, entities, elastic, config) {
         } else {
           // single values
           const hide = hasPropertyAction('hide', action);
-          const transformedVal = await extractNestedQCodeData(
-            value,
+          const value = await extractNestedQCodeData(
+            valueObj,
             elastic,
             config,
             hide
           );
-          if (transformedVal) {
+          if (value) {
             obj[property] = {
-              ...(transformedVal ? { label } : ''),
-              value: transformedVal
+              ...(value ? { label } : ''),
+              value
             };
           }
         }

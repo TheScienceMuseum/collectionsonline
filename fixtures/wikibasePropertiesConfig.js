@@ -2,7 +2,7 @@ const nest = { nest: true };
 const match = { match: true };
 const display = { display: true };
 const hide = { hide: true };
-// const displayLinked = {displayLinked: true}
+// const displayLinked = { displayLinked: true };
 const isExternalLink = { isExternalLink: true };
 module.exports = {
   Image: { property: 'P18', action: [display] },
@@ -19,7 +19,10 @@ module.exports = {
   'Owned By': { property: 'P127', action: [nest, display] },
   'Member Of': { property: 'P463', action: [nest, display] },
   'Owner Of': { property: 'P1830', action: [nest, display] },
-  'described at URL': { property: 'P973', action: [display, isExternalLink] },
+  'described at URL': {
+    property: 'P973',
+    action: [display, isExternalLink, hide]
+  },
   'Oxford DNB': { property: 'P1415', action: [display] },
   'Award Received': { property: 'P166', action: [nest, display] },
   Employees: { property: 'P1128', action: [nest, display] },
