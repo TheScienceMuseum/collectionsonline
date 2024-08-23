@@ -288,7 +288,7 @@ function listeners (ctx, next) {
   }
 
   // analytics
-  // rmemove / analytics click handler as no longer in use : JU 06/06/24
+  // remove / analytics click handler as no longer in use : JU 06/06/24
   // const onResultClick = (e) => {
   //   const id = e.currentTarget.getAttribute('href').split('/').pop();
 

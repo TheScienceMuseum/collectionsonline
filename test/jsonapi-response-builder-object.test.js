@@ -77,7 +77,7 @@ test(file + 'Links field should contain correct link', function (t) {
   t.equal(
     JSONAPIResponse.data.links.self,
     config.rootUrl +
-      '/objects/co8245103/packet-of-technetium-mdp-for-bone-scintigraphy-amerscan-agent-phial-packet-materia-medica',
+      '/objects/co8245103/packet-of-technetium-mdp-for-bone-scintigraphy-amerscan-agent',
     'Response contains links field'
   );
   t.end();

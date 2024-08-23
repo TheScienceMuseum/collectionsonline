@@ -496,6 +496,11 @@ Handlebars.registerPartial(
   )
 );
 
+Handlebars.registerPartial(
+  'records/record-sph-priority-item',
+  Fs.readFileSync('./templates/partials/records/record-sph-priority-item.html', 'utf8')
+);
+
 // Routes
 module.exports = {
   404: Handlebars.compile(

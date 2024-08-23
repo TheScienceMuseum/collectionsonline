@@ -11,7 +11,7 @@ module.exports = function (request) {
     const htmlContent = typesInHeaders(accept, htmlAcceptHeaders);
     // if accept header has both json and html return notAcceptable
     if (jsonContent && htmlContent) {
-      // ammened as this seem to cause issues with CLiudfortn and Crawlers
+      // ammened as this seem to cause issues with Cloudfront and Crawlers
       // return 'notAcceptable';
       return 'html';
     }
@@ -30,7 +30,7 @@ module.exports = function (request) {
     return 'html';
   }
 
-  // ammened as this seem to cause issues with CLiudfortn and Crawlers
+  // ammened as this seem to cause issues with Cloudfront and Crawlers
   // return 'notAcceptable';
   return 'html';
 };

@@ -127,7 +127,7 @@ test(file + 'Object template data is correctly built', (t) => {
   t.ok(objectResult, 'object result is returned');
   t.equal(
     objectResult.link,
-    '/objects/co8245103/packet-of-technetium-mdp-for-bone-scintigraphy-amerscan-agent-phial-packet-materia-medica',
+    '/objects/co8245103/packet-of-technetium-mdp-for-bone-scintigraphy-amerscan-agent',
     'object link is correct'
   );
   t.equal(
