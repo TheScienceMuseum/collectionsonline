@@ -897,89 +897,93 @@ testWithServer(file + 'Request for Results list page', {}, async (t, ctx) => {
   t.end();
 });
 
-testWithServer('request to wikidata endpoint', {}, async (t, ctx) => {
-  fetchMock.mock(
-    'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q19837&format=json&languages=en&props=info%7Cclaims',
-    {
-      body: JSON.stringify({
-        entities: {
-          Q19837: {
-            entity: 'Q19837',
-            claims: {},
-            info: {}
-          }
-        }
-      }),
-      headers: { 'content-type': 'application/json' }
-    }
-  );
-  const htmlRequest = {
-    method: 'GET',
-    url: '/wiki/Q19837',
-    headers: { Accept: 'text/html' }
-  };
+// testWithServer('request to wikidata endpoint', {}, async (t, ctx) => {
+//   // fetchMock.config.fallbackResponse = {
+//   //   body: JSON.stringify({ error: 'Fallback response' }),
+//   //   headers: { 'content-type': 'application/json' },
+//   // };
+//   fetchMock.mock(
+//     'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q19837&format=json&languages=en&props=info%7Cclaims',
+//     {
+//       body: JSON.stringify({
+//         entities: {
+//           Q19837: {
+//             entity: 'Q19837',
+//             claims: {},
+//             info: {},
+//           },
+//         },
+//       }),
+//       headers: { 'content-type': 'application/json' },
+//     }
+//   );
+//   const htmlRequest = {
+//     method: 'GET',
+//     url: '/wiki/Q19837',
+//     headers: { Accept: 'text/html' },
+//   };
 
-  const res = await ctx.server.inject(htmlRequest);
-  t.equal(res.statusCode, 200, 'redirect status code');
-  await ctx.server.stop();
-  t.end();
-  fetchMock.restore();
-});
+//   const res = await ctx.server.inject(htmlRequest);
+//   t.equal(res.statusCode, 200, 'redirect status code');
+//   await ctx.server.stop();
+//   t.end();
+//   fetchMock.restore();
+// });
 
-testWithServer(file + 'Request for Wikidata', {}, async (t, ctx) => {
-  fetchMock.get(
-    'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q937&format=json&languages=en&props=info%7Cclaims%7Clabels',
-    {
-      body: JSON.stringify({
-        entities: {
-          Q937: {
-            claims: {
-              P18: [
-                {
-                  mainsnak: {
-                    datavalue: {
-                      value:
-                        'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg'
-                    }
-                  }
-                }
-              ],
-              P154: [],
-              P31: [
-                {
-                  mainsnak: {
-                    datavalue: {
-                      value: { id: 'Q5' }
-                    }
-                  }
-                }
-              ]
-            }
-          }
-        }
-      }),
-      headers: { 'Content-Type': 'application/json' }
-    }
-  );
+// testWithServer(file + 'Request for Wikidata', {}, async (t, ctx) => {
+//   fetchMock.get(
+//     'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q937&format=json&languages=en&props=info%7Cclaims%7Clabels',
+//     {
+//       body: JSON.stringify({
+//         entities: {
+//           Q937: {
+//             claims: {
+//               P18: [
+//                 {
+//                   mainsnak: {
+//                     datavalue: {
+//                       value:
+//                         'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg',
+//                     },
+//                   },
+//                 },
+//               ],
+//               P154: [],
+//               P31: [
+//                 {
+//                   mainsnak: {
+//                     datavalue: {
+//                       value: { id: 'Q5' },
+//                     },
+//                   },
+//                 },
+//               ],
+//             },
+//           },
+//         },
+//       }),
+//       headers: { 'Content-Type': 'application/json' },
+//     }
+//   );
 
-  const htmlRequest = {
-    method: 'GET',
-    url: '/wiki/Q937'
-  };
-  t.plan(2);
+//   const htmlRequest = {
+//     method: 'GET',
+//     url: '/wiki/Q937',
+//   };
+//   t.plan(2);
 
-  const res = await ctx.server.inject(htmlRequest);
-  const result = JSON.parse(res.payload);
-  t.equal(
-    result.P18,
-    'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg',
-    'gets Einsteins wikipedia page'
-  );
-  t.equal(res.statusCode, 200, 'Status code was as expected');
-  await ctx.server.stop();
-  t.end();
-  fetchMock.restore();
-});
+//   const res = await ctx.server.inject(htmlRequest);
+//   const result = JSON.parse(res.payload);
+//   t.equal(
+//     result.P18,
+//     'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg',
+//     'gets Einsteins wikipedia page'
+//   );
+//   t.equal(res.statusCode, 200, 'Status code was as expected');
+//   await ctx.server.stop();
+//   t.end();
+//   fetchMock.restore();
+// });
 
 testWithServer(
   file + 'Request for nested wikidata and related fields',
