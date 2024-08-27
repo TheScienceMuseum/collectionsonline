@@ -167,7 +167,9 @@ module.exports = (elastic, config) => ({
         }
 
         const data = await wikidataConn(req);
-        const { entities } = await fetch(data).then((res) => res.json());
+        const { entities } = await fetch(data)
+          .then((res) => res.json())
+          .catch((err) => console.error(err));
         const result = await configResponse(
           wikidata,
           entities,
