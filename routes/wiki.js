@@ -158,7 +158,7 @@ module.exports = (elastic, config) => ({
         const { clear } = req.query;
         const cachedWikidataJson = await fetchCache(cache, wikidata, clear);
 
-        if (cachedWikidataJson !== null) {
+        if (cachedWikidataJson !== null && cachedWikidataJson !== undefined) {
           const { item } = cachedWikidataJson;
           return h
             .response(JSON.stringify(item))
