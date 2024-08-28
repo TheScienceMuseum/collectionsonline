@@ -1105,8 +1105,6 @@ testWithServer(
     };
 
     const res = await ctx.server.inject(htmlRequest);
-    console.log('Response received');
-    console.log('Payload:', JSON.stringify(res.payload));
 
     const result = JSON.parse(res.payload);
     const expectedResult = {
