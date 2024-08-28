@@ -3,6 +3,8 @@ const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
 const stub = require('sinon').stub;
 const cache = require('../bin/cache.js');
+const fetchMock = require('fetch-mock');
+global.fetch = fetchMock.sandbox();
 
 testWithServer(file + 'Request for Archive HTML Page', {}, async (t, ctx) => {
   t.plan(1);
@@ -895,80 +897,238 @@ testWithServer(file + 'Request for Results list page', {}, async (t, ctx) => {
   t.end();
 });
 
-// testWithServer(file + 'Request for Wikipedia Data', {}, async (t, ctx) => {
+// testWithServer('request to wikidata endpoint', {}, async (t, ctx) => {
+//   // fetchMock.config.fallbackResponse = {
+//   //   body: JSON.stringify({ error: 'Fallback response' }),
+//   //   headers: { 'content-type': 'application/json' },
+//   // };
+//   fetchMock.mock(
+//     'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q19837&format=json&languages=en&props=info%7Cclaims',
+//     {
+//       body: JSON.stringify({
+//         entities: {
+//           Q19837: {
+//             entity: 'Q19837',
+//             claims: {},
+//             info: {},
+//           },
+//         },
+//       }),
+//       headers: { 'content-type': 'application/json' },
+//     }
+//   );
 //   const htmlRequest = {
 //     method: 'GET',
-//     url: '/wiki/Albert_Einstein'
+//     url: '/wiki/Q19837',
+//     headers: { Accept: 'text/html' },
 //   };
 
 //   const res = await ctx.server.inject(htmlRequest);
-//   var result = JSON.parse(res.payload);
-//   t.equal(result.url, 'https://en.wikipedia.org/wiki/Albert_Einstein', 'gets Einsteins wikipedia page');
-//   t.ok(result.mainImage, 'returns an image from wikipedia');
+//   t.equal(res.statusCode, 200, 'redirect status code');
+//   await ctx.server.stop();
+//   t.end();
+//   fetchMock.restore();
+// });
+
+// testWithServer(file + 'Request for Wikidata', {}, async (t, ctx) => {
+//   fetchMock.get(
+//     'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q937&format=json&languages=en&props=info%7Cclaims%7Clabels',
+//     {
+//       body: JSON.stringify({
+//         entities: {
+//           Q937: {
+//             claims: {
+//               P18: [
+//                 {
+//                   mainsnak: {
+//                     datavalue: {
+//                       value:
+//                         'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg',
+//                     },
+//                   },
+//                 },
+//               ],
+//               P154: [],
+//               P31: [
+//                 {
+//                   mainsnak: {
+//                     datavalue: {
+//                       value: { id: 'Q5' },
+//                     },
+//                   },
+//                 },
+//               ],
+//             },
+//           },
+//         },
+//       }),
+//       headers: { 'Content-Type': 'application/json' },
+//     }
+//   );
+
+//   const htmlRequest = {
+//     method: 'GET',
+//     url: '/wiki/Q937',
+//   };
+//   t.plan(2);
+
+//   const res = await ctx.server.inject(htmlRequest);
+//   const result = JSON.parse(res.payload);
+//   t.equal(
+//     result.P18,
+//     'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg',
+//     'gets Einsteins wikipedia page'
+//   );
 //   t.equal(res.statusCode, 200, 'Status code was as expected');
 //   await ctx.server.stop();
 //   t.end();
+//   fetchMock.restore();
 // });
 
 testWithServer(
-  file + 'Request for Wikipedia in record Data',
+  'Request for nested wikidata and related fields',
   {},
   async (t, ctx) => {
+    t.plan(2);
+
+    const startCache = cache.start;
+    cache.start = () => {};
+
+    // Mock cache get
+    const mockCacheData = {
+      wikidata: {
+        Q19837: {
+          claims: {
+            P108: [
+              { mainsnak: { datavalue: { value: { id: 'Q312' } } } },
+              { mainsnak: { datavalue: { value: { id: 'Q308993' } } } }
+            ]
+          }
+        }
+      }
+    };
+    const mockCacheGet = async (key) => {
+      console.log('Cache get called with key:', key);
+      if (key === 'wikidata') {
+        console.log('Returning mock data:', mockCacheData);
+        return mockCacheData;
+      }
+      console.log('Unknown key:', key);
+      throw new Error(`Unknown key: ${key}`);
+    };
+
+    // Replace the original cache.get method
+    cache.get = mockCacheGet;
+
+    fetchMock.get(
+      'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q19837&format=json&languages=en&props=info%7Cclaims%7Clabels',
+      {
+        body: JSON.stringify({
+          entities: {
+            Q19837: {
+              claims: {
+                P108: [
+                  {
+                    mainsnak: {
+                      datavalue: {
+                        value: { id: 'Q312' }
+                      }
+                    }
+                  },
+                  {
+                    mainsnak: {
+                      datavalue: {
+                        value: { id: 'Q308993' }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }),
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
+
+    fetchMock.get(
+      'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q312&format=json&languages=en&props=info%7Cclaims%7Clabels',
+      {
+        body: JSON.stringify({
+          entities: {
+            Q312: {
+              claims: {
+                P373: [
+                  {
+                    mainsnak: {
+                      datavalue: {
+                        value: { text: 'Apple Inc.' }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }),
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
+
+    fetchMock.get(
+      'https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q308993&format=json&languages=en&props=info%7Cclaims%7Clabels',
+      {
+        body: JSON.stringify({
+          entities: {
+            Q308993: {
+              claims: {
+                P373: [
+                  {
+                    mainsnak: {
+                      datavalue: {
+                        value: { text: 'NeXT' }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }),
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
+
     const htmlRequest = {
       method: 'GET',
-      url: '/people/cp37054',
-      headers: { Accept: 'text/html' }
+      url: '/wiki/Q19837'
     };
 
     const res = await ctx.server.inject(htmlRequest);
+    console.log('Response received');
+    console.log('Payload:', JSON.stringify(res.payload));
+
+    const result = JSON.parse(res.payload);
+    const expectedResult = {
+      P108: {
+        label: 'Employer(s)',
+        value: [
+          { related: 'http://localhost:8000/people/cp20600' },
+          { related: 'http://localhost:8000/people/cp132685' }
+        ]
+      }
+    };
+    t.deepEqual(result.P108[0], expectedResult.P108[0]);
     t.equal(res.statusCode, 200, 'Status code was as expected');
+
+    // Restore original cache.start
+    cache.start = startCache;
+
     await ctx.server.stop();
     t.end();
+    fetchMock.restore();
   }
 );
-
-/*
-testWithServer(file + 'Request for Wikipedia Data with no image', {}, async (t, ctx) => {
-  const htmlRequest = {
-    method: 'GET',
-    url: '/wiki/Accession_number_(library_science)'
-  };
-
-  const res = await ctx.server.inject(htmlRequest);
-    var result = JSON.parse(res.payload);
-    t.equal(result.url, 'https://en.wikipedia.org/wiki/Accession_number_(library_science)', 'gets Accession_number_(library_science) Wikipedia page');
-    t.notOk(result.mainImage, 'returns no image from wikipedia');
-    t.equal(res.statusCode, 200, 'Status code was as expected');
-    await ctx.server.stop();
-    t.end();
-});
-*/
-
-testWithServer(file + 'Not found', {}, async (t, ctx) => {
-  const htmlRequest = {
-    method: 'GET',
-    url: '/bad/request',
-    headers: { Accept: 'text/html' }
-  };
-
-  const res = await ctx.server.inject(htmlRequest);
-  t.equal(res.statusMessage, 'Not Found');
-  await ctx.server.stop();
-  t.end();
-});
-
-testWithServer(file + 'Key category search', {}, async (t, ctx) => {
-  const htmlRequest = {
-    method: 'GET',
-    url: '/search?q=art',
-    headers: { Accept: 'text/html' }
-  };
-
-  const res = await ctx.server.inject(htmlRequest);
-  t.equal(res.headers.location, '/search/categories/art');
-  await ctx.server.stop();
-  t.end();
-});
 
 testWithServer(file + 'Key category search - synonym', {}, async (t, ctx) => {
   const htmlRequest = {

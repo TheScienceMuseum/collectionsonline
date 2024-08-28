@@ -281,10 +281,7 @@ Handlebars.registerPartial(
 );
 Handlebars.registerPartial(
   'records/collage',
-  Fs.readFileSync(
-    './templates/partials/records/collage.html',
-    'utf8'
-  )
+  Fs.readFileSync('./templates/partials/records/collage.html', 'utf8')
 );
 
 // Helpers
@@ -467,6 +464,24 @@ Handlebars.registerHelper(
   'formatCopyright',
   require('../templates/helpers/formatCopyright.js')
 );
+Handlebars.registerHelper(
+  'wikiInfoTransform',
+  require('../templates/helpers/wikiInfoTransform.js')
+);
+Handlebars.registerHelper(
+  'isArray',
+  require('../templates/helpers/isArray.js')
+);
+
+Handlebars.registerHelper(
+  'wikidataExcludeField',
+  require('../templates/helpers/wikidataExcludeField.js')
+);
+
+Handlebars.registerHelper(
+  'isWikiLink',
+  require('../templates/helpers/isWikiLink.js')
+);
 
 Handlebars.registerPartial(
   'records/record-sph-images',
@@ -475,7 +490,10 @@ Handlebars.registerPartial(
 
 Handlebars.registerPartial(
   'records/record-sph-properties',
-  Fs.readFileSync('./templates/partials/records/record-sph-properties.html', 'utf8')
+  Fs.readFileSync(
+    './templates/partials/records/record-sph-properties.html',
+    'utf8'
+  )
 );
 
 Handlebars.registerPartial(
@@ -536,14 +554,9 @@ module.exports = {
       'utf8'
     )
   ),
-  wikiImage: Handlebars.compile(
-    Fs.readFileSync('./templates/partials/records/wiki-image.html', 'utf8')
-  ),
+
   wikiInfo: Handlebars.compile(
     Fs.readFileSync('./templates/partials/records/wiki-info.html', 'utf8')
-  ),
-  wikiSummary: Handlebars.compile(
-    Fs.readFileSync('./templates/partials/records/wiki-summary.html', 'utf8')
   ),
   about: Handlebars.compile(
     Fs.readFileSync('./templates/pages/about.html', 'utf8')

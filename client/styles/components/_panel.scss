@@ -30,6 +30,11 @@
     // background-color: white;
   }
 
+  &--wikidata {
+    padding: 0;
+    margin-top: 1em;
+  }
+
   &__withicon {
     display: flex;
     align-items: center;
@@ -55,13 +60,9 @@
       font-size: 1.5rem !important;
       margin: 0;
     }
-
-
   }
 
   a {
-
-
     &:hover,
     &:active,
     &:focus,
