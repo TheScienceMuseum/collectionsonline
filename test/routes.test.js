@@ -833,13 +833,20 @@ testWithServer(
       headers: { Accept: 'application/json' }
     };
 
-    const res = await ctx.server.inject(htmlRequest);
-    t.ok(JSON.parse(res.payload), 'Result is JSON');
-    t.equal(res.statusCode, 200, 'Status code was as expected');
+    try {
+      const res = await ctx.server.inject(htmlRequest);
+      t.ok(JSON.parse(res.payload), 'Result is JSON');
+      t.equal(res.statusCode, 200, 'Status code was as expected');
+    } catch (error) {
+      t.fail(error.message);
+    } finally {
+      await ctx.server.stop();
+      cacheStart.restore();
+      cacheGet.restore();
+    }
     await ctx.server.stop();
     cacheStart.restore();
     cacheGet.restore();
-    t.end();
   }
 );
 
