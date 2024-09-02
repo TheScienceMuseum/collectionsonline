@@ -23,20 +23,19 @@
     grid-template-columns: subgrid; // because no explicit span placement??
   }
 
-  &[data-description-box-sides="0"] &__main {
+  &[data-description-box-sides='0'] &__main {
     grid-column: span 4;
   }
-  
-  &[data-description-box-sides="1"] &__main {
+
+  &[data-description-box-sides='1'] &__main {
     grid-column: span 3;
   }
 
-  &[data-description-box-sides="2"] &__main {
+  &[data-description-box-sides='2'] &__main {
     grid-column: span 2;
   }
 
-  &[data-description-box-type="explore"] {
-
+  &[data-description-box-type='explore'] {
     // if duck...
     .description-box__side {
       align-items: end;
@@ -48,15 +47,14 @@
     }
   }
 
-  @include media("<=small") {
+  @include media('<=small') {
     display: none !important;
   }
 
-  &[data-description-box-type="museum"] {
-
+  &[data-description-box-type='museum'],
+  &[data-description-box-type='mphc'] {
     display: flex;
     justify-content: center;
-
 
     .description-box__main,
     .description-box__side {
