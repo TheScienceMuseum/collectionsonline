@@ -83,6 +83,9 @@
   ul[class*='related-'] {
     li {
       display: flex;
+      a {
+        margin-inline-end: 0.5rem;
+      }
     }
 
     svg {
