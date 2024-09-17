@@ -1,32 +1,236 @@
-<div id="qr-reader" style="width: 100%"></div>
-<div id="result" style="width: 100%"></div>
+<!doctype html>
+<html lang="en">
 
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-<script>
-    function onScanSuccess(decodedText, decodedResult) {
-        // Handle on success condition with the decoded text or result.
-        console.log(`Scan result: ${decodedText}`, decodedResult);
+<head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@remix-run/router@1.13.1/dist/router.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-router@6.20.1/dist/umd/react-router.production.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/react-router-dom@6.20.1/dist/umd/react-router-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.5/babel.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
 
-        html5QrcodeScanner.clear();
-        // ^ this will stop the scanner (video feed) and clear the scan area.
+<body>
+    <div id="root"></div>
 
-        //document.getElementById("result").innerHTML = decodedText
+    <script type="text/babel">
+        const ReactDOM = window.ReactDOM;
+        const { useState, useEffect } = React;
+        const Html5QrcodeScanner = window.Html5QrcodeScanner;
+        const Route = ReactRouterDOM.Route;
+        const Routes = ReactRouterDOM.Routes;
+        const BrowserRouter = ReactRouterDOM.BrowserRouter;
+        const useNavigate = ReactRouterDOM.useNavigate;
 
-        document.location.href = '/barcode/' + decodedText;
-    }
 
-    let config = {
-      fps: 10,
-      //qrbox: {width: 250, height: 150 },
-      showTorchButtonIfSupported: true,
-      //rememberLastUsedCamera: true,
-      //formatsToSupport: [Html5QrcodeSupportedFormats.CODE_128],
-      supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
-    };
 
-    var html5QrcodeScanner = new Html5QrcodeScanner(
-        "qr-reader", config);
+        const Home = ({ scans }) => {
+            const scansSlice = scans ? scans.slice(0, 6) : [];
 
-    html5QrcodeScanner.render(onScanSuccess);
+            const onScanSuccess = async (decodedText, decodedResult) => {
+                console.log(`Scan result: ${decodedText}`, decodedResult);
+                await localStorage.setItem('scan', JSON.stringify(decodedResult));
+                window.Html5QrcodeScanner.clear();
+            };
 
-</script>
+            const config = {
+                fps: 10,
+                rememberLastUsedCamera: false,
+                showTorchButtonIfSupported: true,
+                supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
+            };
+
+            return (
+                <>
+                    <Scanner config={config} onScanSuccess={onScanSuccess} />
+                    <section>
+                        <h2>Scan History</h2>
+                        {scansSlice.length > 0 ? (
+                            <Scans scans={scans} />
+                        ) : (
+                            <p>Scan History will appear here</p>
+                        )}
+                    </section>
+                </>
+            );
+        };
+
+        const Result = ({ uid, image, title, path, caption, description, handleShareCard, handleCopyText, isCopied, isSharing }) => {
+            return (
+                <section>
+                    <article>
+                        <img src={image} alt={caption} />
+                        <h3>{title}</h3>
+                        <p>{caption}</p>
+                        <p>{uid}</p>
+                        <button onClick={() => handleCopyText(path)}>
+                            {isCopied ? 'Copied' : 'Copy'}
+                        </button>
+                        <button onClick={() => handleShareCard({ title, description })}>Share</button>
+                        <button>
+                            {' '}
+                            <a href={path} target="_blank" rel="noopener noreferrer">
+                                Visit URL
+                            </a>
+                        </button>
+                    </article>
+                </section>
+            );
+        };
+
+        const Scanner = ({ config, onScanSuccess }) => {
+            const [startScanning, setStartScanning] = useState(false);
+            const [uid, setUid] = useState(null);
+            const [loading, setLoading] = useState(false);
+            const [error, setError] = useState(null);
+            const navigate = useNavigate();
+
+            useEffect(() => {
+
+                const onScanSuccessWrapper = async (decodedText, decodedResult) => {
+                    console.log(`Scan result: ${decodedText}`, decodedResult);
+                    setLoading(true);
+                    setError(null);
+                    setUid(decodedText);
+
+                    try {
+                        const result = await fetch(`http://localhost:8000/barcode/${decodedText}`);
+                        console.log(result, 'checking result')
+                        const data = await result.json();
+                        console.log(data, 'checking data')
+
+                        if (data.path) {
+                            navigate(data.path);
+                        } else {
+                            throw new Error('Collection item not found');
+                        }
+                    } catch (error) {
+                        setError(error.message || 'An error occurred while fetching the barcode data.');
+                    } finally {
+                        setLoading(false);
+                        // window.Html5QrcodeScanner.clear();
+                    }
+                };
+
+                const html5QrcodeScanner = new window.Html5QrcodeScanner('qr-reader', config);
+                html5QrcodeScanner.render(onScanSuccessWrapper);
+
+                return () => {
+                    html5QrcodeScanner.clear();
+                };
+            }, [config]);
+
+            return (
+                <div>
+                    <div id="qr-reader"></div>
+                    <div id="result"></div>
+                </div>
+            );
+        };
+
+        const Scans = ({ scans, handleCopyText, isCopied, handleShareCard, isSharing }) => {
+            return (
+                <section>
+                    {scans &&
+                        scans.map((scan) => (
+                            <article key={scan.uid}>
+                                <img src={scan.image} alt={scan.caption} />
+                                <h3>{scan.title}</h3>
+                                <p>{scan.caption}</p>
+                                <p>{scan.uid}</p>
+                                <button onClick={() => handleCopyText(scan.path)}>
+                                    {isCopied ? 'Copied' : 'Copy'}
+                                </button>
+                                <button onClick={() => handleShareCard({ title: scan.title, description: scan.description })}>
+                                    Share
+                                </button>
+                                <button>
+                                    {' '}
+                                    <a href={scan.path} target="_blank" rel="noopener noreferrer">
+                                        Visit URL
+                                    </a>
+                                </button>
+                            </article>
+                        ))}
+                </section>
+            );
+        };
+
+        const App = () => {
+            const [scans, setScans] = useState(null);
+            const [isCopied, setIsCopied] = useState(false);
+            const [isSharing, setIsSharing] = useState(false);
+
+            const copyTextToClipboard = async (text) => {
+                if ('clipboard' in navigator) {
+                    return await navigator.clipboard.writeText(text);
+                } else {
+                    return document.execCommand('copy', true, text);
+                }
+            };
+
+            const handleCopyText = (path) => {
+                copyTextToClipboard(path)
+                    .then(() => {
+                        setIsCopied(true);
+                        setTimeout(() => {
+                            setIsCopied(false);
+                        }, 3000);
+                    })
+                    .catch((e) =>
+                        console.error('There was an error copying text to clipboard', e)
+                    );
+            };
+
+            const handleShareCard = async (data) => {
+                setIsSharing(true);
+                try {
+                    if (navigator.share) {
+                        await navigator.share(data);
+                    } else {
+                        console.log('Web Share API not supported');
+                    }
+                } catch (err) {
+                    console.error("Couldn't share the record", err);
+                } finally {
+                    setIsSharing(false);
+                }
+            };
+
+            useEffect(() => {
+                const storedScans = localStorage.getItem('scans');
+                if (storedScans !== null) {
+                    setScans(JSON.parse(storedScans));
+                }
+            }, []);
+
+            return (
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/barcode/" element={<Home scans={scans} />} />
+                        <Route path="/barcode/:uid" element={<Result />} />
+                        <Route
+                            path="/scans"
+                            element={
+                                <Scans
+                                    scans={scans}
+                                    handleCopyText={handleCopyText}
+                                    isCopied={isCopied}
+                                    handleShareCard={handleShareCard}
+                                    isSharing={isSharing}
+                                />
+                            }
+                        />
+                    </Routes>
+                </BrowserRouter>
+            );
+        };
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+
+</body>
+
+</html>
