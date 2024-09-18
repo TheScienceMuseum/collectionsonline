@@ -28,6 +28,7 @@ module.exports = (elastic, config) => ({
             const uid = obj?._id;
             slugValue = slugValue ? '/' + slugValue : '';
             const path = '/objects/' + obj._id + slugValue;
+
             return h.response({ path, title, image, uid });
           } else {
             return 'Barcode not found';

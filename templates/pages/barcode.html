@@ -18,21 +18,23 @@
 
     <script type="text/babel">
         const ReactDOM = window.ReactDOM;
-        const { useState, useEffect } = React;
+        const { useState, useEffect, useCallback } = React;
         const Html5QrcodeScanner = window.Html5QrcodeScanner;
         const Route = ReactRouterDOM.Route;
         const Routes = ReactRouterDOM.Routes;
         const BrowserRouter = ReactRouterDOM.BrowserRouter;
         const useNavigate = ReactRouterDOM.useNavigate;
+        const useLocation = ReactRouterDOM.useLocation;
 
 
 
-        const Home = ({ scans }) => {
+        const Home = ({ scans, handleShareCard, handleCopyText, isCopied, isSharing
+        }) => {
+
             const scansSlice = scans ? scans.slice(0, 6) : [];
 
             const onScanSuccess = async (decodedText, decodedResult) => {
                 console.log(`Scan result: ${decodedText}`, decodedResult);
-                await localStorage.setItem('scan', JSON.stringify(decodedResult));
                 window.Html5QrcodeScanner.clear();
             };
 
@@ -45,7 +47,7 @@
 
             return (
                 <>
-                    <Scanner config={config} onScanSuccess={onScanSuccess} />
+                    <Scanner config={config} onScanSuccess={onScanSuccess} handleShareCard={handleShareCard} handleCopyText={handleCopyText} isCopied={isCopied} isSharing={isSharing} />
                     <section>
                         <h2>Scan History</h2>
                         {scansSlice.length > 0 ? (
@@ -58,18 +60,64 @@
             );
         };
 
-        const Result = ({ uid, image, title, path, caption, description, handleShareCard, handleCopyText, isCopied, isSharing }) => {
+        const Result = ({ handleShareCard, handleCopyText, isCopied, isSharing }) => {
+            const location = useLocation();
+            const navigate = useNavigate();
+
+            const { uid, image, title, path, } = location.state;
+            const [copy, setCopy] = useState(false);
+            const [sharing, setSharing] = useState(false);
+
+            const copyTextToClipboard = async (text) => {
+                if ('clipboard' in navigator) {
+                    return await navigator.clipboard.writeText(text);
+                } else {
+                    return document.execCommand('copy', true, text);
+                }
+            };
+
+            const handleCopyTextTwo = (path) => {
+                const url = `https://collection.sciencemuseumgroup.org.uk${path}`
+
+                copyTextToClipboard(url)
+                    .then(() => {
+                        setCopy(true);
+                        setTimeout(() => {
+                            setCopy(false);
+                        }, 3000);
+                    })
+                    .catch((e) =>
+                        console.error('There was an error copying text to clipboard', e)
+                    );
+            };
+
+            const handleShareCardTwo = async (data) => {
+                setSharing(true);
+                try {
+                    if (navigator.share) {
+                        await navigator.share(data);
+                    } else {
+                        console.log('Web Share API not supported');
+                    }
+                } catch (err) {
+                    console.error("Couldn't share the record", err);
+                } finally {
+                    setSharing(false);
+                }
+            };
+
             return (
                 <section>
+                    <button onClick={() => navigate(-1)}>Back</button>
                     <article>
-                        <img src={image} alt={caption} />
+                        <img src={image} alt={`item ${uid}`} />
                         <h3>{title}</h3>
-                        <p>{caption}</p>
                         <p>{uid}</p>
-                        <button onClick={() => handleCopyText(path)}>
-                            {isCopied ? 'Copied' : 'Copy'}
+                        <button onClick={() => handleCopyTextTwo(path)}>
+                            {copy ? 'Copied' : 'Copy'}
                         </button>
-                        <button onClick={() => handleShareCard({ title, description })}>Share</button>
+
+                        <button onClick={() => handleShareCardTwo({ title })}>Share</button>
                         <button>
                             {' '}
                             <a href={path} target="_blank" rel="noopener noreferrer">
@@ -81,7 +129,7 @@
             );
         };
 
-        const Scanner = ({ config, onScanSuccess }) => {
+        const Scanner = ({ config, onScanSuccess, handleShareCard, handleCopyText, isCopied, isSharing }) => {
             const [startScanning, setStartScanning] = useState(false);
             const [uid, setUid] = useState(null);
             const [loading, setLoading] = useState(false);
@@ -89,7 +137,6 @@
             const navigate = useNavigate();
 
             useEffect(() => {
-
                 const onScanSuccessWrapper = async (decodedText, decodedResult) => {
                     console.log(`Scan result: ${decodedText}`, decodedResult);
                     setLoading(true);
@@ -98,12 +145,25 @@
 
                     try {
                         const result = await fetch(`http://localhost:8000/barcode/${decodedText}`);
-                        console.log(result, 'checking result')
                         const data = await result.json();
-                        console.log(data, 'checking data')
 
-                        if (data.path) {
-                            navigate(data.path);
+                        if (data) {
+                            const { title, image, uid, path } = data;
+                            let scans = JSON.parse(localStorage.getItem('scans') || '{}');
+                            scans[uid] = { title, image, path };
+
+                            localStorage.setItem('scans', JSON.stringify(scans));
+
+                            // await localStorage.setItem('scans', JSON.stringify({ title, image, uid, path }))
+                            navigate(`/barcode/${uid}`, {
+                                state: {
+                                    title,
+                                    image,
+                                    uid,
+                                    path,
+                                    // handleShareCard, handleCopyText, isCopied, isSharing
+                                }
+                            });
                         } else {
                             throw new Error('Collection item not found');
                         }
@@ -137,14 +197,16 @@
                     {scans &&
                         scans.map((scan) => (
                             <article key={scan.uid}>
-                                <img src={scan.image} alt={scan.caption} />
+                                <img src={scan.image} />
                                 <h3>{scan.title}</h3>
-                                <p>{scan.caption}</p>
                                 <p>{scan.uid}</p>
                                 <button onClick={() => handleCopyText(scan.path)}>
                                     {isCopied ? 'Copied' : 'Copy'}
                                 </button>
-                                <button onClick={() => handleShareCard({ title: scan.title, description: scan.description })}>
+                                <button onClick={() => handleShareCard({
+                                    title: scan.title,
+                                    // description: scan.description
+                                })}>
                                     Share
                                 </button>
                                 <button>
@@ -160,10 +222,9 @@
         };
 
         const App = () => {
-            const [scans, setScans] = useState(null);
+            const [scans, setScans] = useState([]);
             const [isCopied, setIsCopied] = useState(false);
             const [isSharing, setIsSharing] = useState(false);
-
             const copyTextToClipboard = async (text) => {
                 if ('clipboard' in navigator) {
                     return await navigator.clipboard.writeText(text);
@@ -173,6 +234,7 @@
             };
 
             const handleCopyText = (path) => {
+
                 copyTextToClipboard(path)
                     .then(() => {
                         setIsCopied(true);
@@ -184,13 +246,14 @@
                         console.error('There was an error copying text to clipboard', e)
                     );
             };
-
             const handleShareCard = async (data) => {
                 setIsSharing(true);
                 try {
+
                     if (navigator.share) {
                         await navigator.share(data);
                     } else {
+
                         console.log('Web Share API not supported');
                     }
                 } catch (err) {
@@ -199,19 +262,44 @@
                     setIsSharing(false);
                 }
             };
+            const handleScans = useCallback(() => {
+                const storedData = localStorage.getItem('scans');
+                if (storedData === null) return [];
+
+                let scans;
+                try {
+                    scans = JSON.parse(storedData);
+                } catch (error) {
+                    console.error('Error parsing scans:', error);
+                    return [];
+                }
+
+                return Object.values(scans);
+
+            }, [])
 
             useEffect(() => {
-                const storedScans = localStorage.getItem('scans');
-                if (storedScans !== null) {
-                    setScans(JSON.parse(storedScans));
-                }
+                const fetchAllScans = async () => {
+                    const newScans = await handleScans();
+                    setScans(newScans);
+                };
+                fetchAllScans();
             }, []);
+            // useEffect(() => {
+            //     const storedScans = localStorage.getItem('scans');
+            //     if (storedScans !== null) {
+            //         setScans(JSON.parse(storedScans));
+            //     } else return [];
+            // }, [storedScans]);
 
             return (
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/barcode/" element={<Home scans={scans} />} />
-                        <Route path="/barcode/:uid" element={<Result />} />
+                        <Route path="/barcode/" element={<Home scans={scans}
+                            handleShareCard={handleShareCard} handleCopyText={handleCopyText} isCopied={isCopied} isSharing={isSharing}
+
+                        />} />
+                        <Route path="/barcode/:uid" element={<Result />} handleCopyText={handleCopyText} handleShareCard={handleShareCard} isCopied={isCopied} isSharing={isSharing} />
                         <Route
                             path="/scans"
                             element={
