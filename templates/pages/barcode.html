@@ -96,6 +96,7 @@
         const BrowserRouter = ReactRouterDOM.BrowserRouter;
         const useNavigate = ReactRouterDOM.useNavigate;
         const useLocation = ReactRouterDOM.useLocation;
+        const Link = ReactRouterDOM.Link;
 
 
         const Home = ({ scans,
@@ -124,7 +125,9 @@
                     <Scanner config={config} onScanSuccess={onScanSuccess}
                         updateScans={updateScans} />
                     <section>
-                        <h2>Scan History</h2>
+                        <div>  <h2>Scan History</h2>  {scansSlice.length > 5 && (
+                            <button><Link to={'/barcode/scans'}>See all scans</Link></button>
+                        )}</div>
                         {scansSlice.length > 0 ? (
                             <Scans scans={scans} />
                         ) : (
@@ -289,11 +292,12 @@
         }) => {
             const {
                 handleShareCard, handleCopyText, isCopied, isSharing,
-
             } = useContext(BarcodeContext);
 
             return (
                 <section>
+                    <button onClick={() => navigate(-1)}>Back</button>
+                    <h2>Scan history</h2>
                     {scans &&
                         scans.map((scan) => (
                             <article key={scan.uid}>
@@ -328,7 +332,6 @@
             const handleScans = useCallback(() => {
                 const storedData = localStorage.getItem('scans');
                 if (storedData === null) return [];
-                console.log(storedData, 'the data')
                 let scans;
                 try {
                     scans = JSON.parse(storedData);
@@ -367,7 +370,7 @@
                             <Route path="/barcode/:uid" element={<Result />}
                             />
                             <Route
-                                path="/scans"
+                                path="barcode/scans"
                                 element={
                                     <Scans
 
