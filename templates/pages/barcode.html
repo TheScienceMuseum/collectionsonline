@@ -150,9 +150,13 @@
                         if (data) {
                             const { title, image, uid, path } = data;
                             let scans = JSON.parse(localStorage.getItem('scans') || '{}');
-                            scans[uid] = { title, image, path };
+                            // if uid already exists in scans, don't duplicate
+                            if (!scans[uid]) {
 
-                            localStorage.setItem('scans', JSON.stringify(scans));
+                                scans[uid] = { title, image, path };
+
+                                localStorage.setItem('scans', JSON.stringify(scans));
+                            }
 
                             // await localStorage.setItem('scans', JSON.stringify({ title, image, uid, path }))
                             navigate(`/barcode/${uid}`, {
