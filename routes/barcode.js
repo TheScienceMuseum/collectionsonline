@@ -10,9 +10,9 @@ module.exports = (elastic, config) => ({
         const body = {
           query: {
             bool: {
-              must: [{ match: { 'barcode.value': barcode } }],
-            },
-          },
+              must: [{ match: { 'barcode.value': barcode } }]
+            }
+          }
         };
         try {
           const result = await elastic.search({ index: 'ciim', body });
@@ -37,8 +37,8 @@ module.exports = (elastic, config) => ({
           return 'Error: ' + err;
         }
       } else {
-        return h.view('barcode', {}, { layout: 'basic' });
+        return h.view('barcode');
       }
-    },
-  },
+    }
+  }
 });

@@ -16,9 +16,80 @@
 <body>
     <div id="root"></div>
 
+
+    <script type="text/babel">
+
+        const { createContext } = React;
+
+        const BarcodeContext = createContext();
+
+
+        const BarcodeProvider = ({ children }) => {
+            const [scans, setScans] = useState([]);
+            const [isCopied, setIsCopied] = useState(false);
+            const [isSharing, setIsSharing] = useState(false);
+
+            const copyTextToClipboard = async (text) => {
+                if ('clipboard' in navigator) {
+                    return await navigator.clipboard.writeText(text);
+                } else {
+                    return document.execCommand('copy', true, text);
+                }
+            };
+
+            const handleCopyText = (path) => {
+                const url = `https://collection.sciencemuseumgroup.org.uk${path}`;
+
+                copyTextToClipboard(url)
+                    .then(() => {
+                        setIsCopied(true);
+                        setTimeout(() => {
+                            setIsCopied(false);
+                        }, 3000);
+                    })
+                    .catch((e) =>
+                        console.error('There was an error copying text to clipboard', e)
+                    );
+            };
+
+            const handleShareCard = async (data) => {
+                setIsSharing(true);
+                try {
+                    if (navigator.share) {
+                        await navigator.share(data);
+                    } else {
+                        console.log('Web Share API not supported');
+                    }
+                } catch (err) {
+                    console.error("Couldn't share the record", err);
+                } finally {
+                    setIsSharing(false);
+                }
+            };
+
+            const thing = {
+                scans,
+                setScans,
+                isCopied,
+                setIsCopied,
+                isSharing,
+                setIsSharing,
+                copyTextToClipboard,
+                handleCopyText,
+                handleShareCard,
+            };
+
+            return (
+                <BarcodeContext.Provider value={thing}>
+                    {children}
+                </BarcodeContext.Provider>
+            );
+        };
+        window.BarcodeContext = BarcodeContext;
+    </script>
     <script type="text/babel">
         const ReactDOM = window.ReactDOM;
-        const { useState, useEffect, useCallback } = React;
+        const { useState, useEffect, useCallback, useContext } = React;
         const Html5QrcodeScanner = window.Html5QrcodeScanner;
         const Route = ReactRouterDOM.Route;
         const Routes = ReactRouterDOM.Routes;
@@ -27,11 +98,13 @@
         const useLocation = ReactRouterDOM.useLocation;
 
 
-
-
-        const Home = ({ scans, handleShareCard, handleCopyText, isCopied, isSharing, updateScans
+        const Home = ({ scans,
+            updateScans
         }) => {
+            const {
+                handleShareCard, handleCopyText, isCopied, isSharing,
 
+            } = useContext(BarcodeContext);
             const scansSlice = scans ? scans.slice(0, 6) : [];
 
             const onScanSuccess = async (decodedText, decodedResult) => {
@@ -48,7 +121,8 @@
 
             return (
                 <>
-                    <Scanner config={config} onScanSuccess={onScanSuccess} handleShareCard={handleShareCard} handleCopyText={handleCopyText} isCopied={isCopied} isSharing={isSharing} updateScans={updateScans} />
+                    <Scanner config={config} onScanSuccess={onScanSuccess}
+                        updateScans={updateScans} />
                     <section>
                         <h2>Scan History</h2>
                         {scansSlice.length > 0 ? (
@@ -61,7 +135,15 @@
             );
         };
 
-        const Result = ({ handleShareCard, handleCopyText, isCopied, isSharing }) => {
+        const Result = (
+
+        ) => {
+
+            const {
+                handleShareCard, handleCopyText, isCopied, isSharing,
+
+            } = useContext(BarcodeContext);
+
             const location = useLocation();
             const navigate = useNavigate();
 
@@ -130,7 +212,16 @@
             );
         };
 
-        const Scanner = ({ config, onScanSuccess, handleShareCard, handleCopyText, isCopied, isSharing, updateScans }) => {
+        const Scanner = ({ config,
+            onScanSuccess,
+            updateScans
+        }) => {
+
+            const {
+                handleShareCard, handleCopyText, isCopied, isSharing,
+
+            } = useContext(BarcodeContext);
+
             const [startScanning, setStartScanning] = useState(false);
             const [uid, setUid] = useState(null);
             const [loading, setLoading] = useState(false);
@@ -175,7 +266,6 @@
                         setError(error.message || 'An error occurred while fetching the barcode data.');
                     } finally {
                         setLoading(false);
-                        // window.Html5QrcodeScanner.clear();
                     }
                 };
 
@@ -195,7 +285,14 @@
             );
         };
 
-        const Scans = ({ scans, handleCopyText, isCopied, handleShareCard, isSharing }) => {
+        const Scans = ({ scans,
+        }) => {
+            const {
+                handleShareCard, handleCopyText, isCopied, isSharing,
+
+            } = useContext(BarcodeContext);
+
+            console.log(scans, 'checking scans')
             return (
                 <section>
                     {scans &&
@@ -226,50 +323,13 @@
         };
 
         const App = () => {
+
             const [scans, setScans] = useState([]);
-            const [isCopied, setIsCopied] = useState(false);
-            const [isSharing, setIsSharing] = useState(false);
-            const copyTextToClipboard = async (text) => {
-                if ('clipboard' in navigator) {
-                    return await navigator.clipboard.writeText(text);
-                } else {
-                    return document.execCommand('copy', true, text);
-                }
-            };
 
-            const handleCopyText = (path) => {
-
-                copyTextToClipboard(path)
-                    .then(() => {
-                        setIsCopied(true);
-                        setTimeout(() => {
-                            setIsCopied(false);
-                        }, 3000);
-                    })
-                    .catch((e) =>
-                        console.error('There was an error copying text to clipboard', e)
-                    );
-            };
-            const handleShareCard = async (data) => {
-                setIsSharing(true);
-                try {
-
-                    if (navigator.share) {
-                        await navigator.share(data);
-                    } else {
-
-                        console.log('Web Share API not supported');
-                    }
-                } catch (err) {
-                    console.error("Couldn't share the record", err);
-                } finally {
-                    setIsSharing(false);
-                }
-            };
             const handleScans = useCallback(() => {
                 const storedData = localStorage.getItem('scans');
                 if (storedData === null) return [];
-
+                console.log(storedData, 'the data')
                 let scans;
                 try {
                     scans = JSON.parse(storedData);
@@ -297,28 +357,28 @@
             }, [fetchAllScans]);
 
             return (
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="/barcode/" element={<Home scans={scans}
-                            updateScans={updateScans}
-                            handleShareCard={handleShareCard} handleCopyText={handleCopyText} isCopied={isCopied} isSharing={isSharing}
+                <BarcodeProvider>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="/barcode/" element={<Home
+                                scans={scans}
+                                updateScans={updateScans}
 
-                        />} />
-                        <Route path="/barcode/:uid" element={<Result />} handleCopyText={handleCopyText} handleShareCard={handleShareCard} isCopied={isCopied} isSharing={isSharing} />
-                        <Route
-                            path="/scans"
-                            element={
-                                <Scans
-                                    scans={scans}
-                                    handleCopyText={handleCopyText}
-                                    isCopied={isCopied}
-                                    handleShareCard={handleShareCard}
-                                    isSharing={isSharing}
-                                />
-                            }
-                        />
-                    </Routes>
-                </BrowserRouter>
+                            />} />
+                            <Route path="/barcode/:uid" element={<Result />}
+                            />
+                            <Route
+                                path="/scans"
+                                element={
+                                    <Scans
+
+                                    />
+                                }
+                            />
+                        </Routes>
+                    </BrowserRouter>
+                </ BarcodeProvider>
+
             );
         };
         ReactDOM.render(<App />, document.getElementById('root'));
