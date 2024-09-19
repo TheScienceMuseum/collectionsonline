@@ -28,7 +28,8 @@
 
 
 
-        const Home = ({ scans, handleShareCard, handleCopyText, isCopied, isSharing
+
+        const Home = ({ scans, handleShareCard, handleCopyText, isCopied, isSharing, updateScans
         }) => {
 
             const scansSlice = scans ? scans.slice(0, 6) : [];
@@ -47,7 +48,7 @@
 
             return (
                 <>
-                    <Scanner config={config} onScanSuccess={onScanSuccess} handleShareCard={handleShareCard} handleCopyText={handleCopyText} isCopied={isCopied} isSharing={isSharing} />
+                    <Scanner config={config} onScanSuccess={onScanSuccess} handleShareCard={handleShareCard} handleCopyText={handleCopyText} isCopied={isCopied} isSharing={isSharing} updateScans={updateScans} />
                     <section>
                         <h2>Scan History</h2>
                         {scansSlice.length > 0 ? (
@@ -129,7 +130,7 @@
             );
         };
 
-        const Scanner = ({ config, onScanSuccess, handleShareCard, handleCopyText, isCopied, isSharing }) => {
+        const Scanner = ({ config, onScanSuccess, handleShareCard, handleCopyText, isCopied, isSharing, updateScans }) => {
             const [startScanning, setStartScanning] = useState(false);
             const [uid, setUid] = useState(null);
             const [loading, setLoading] = useState(false);
@@ -156,16 +157,15 @@
                                 scans[uid] = { title, image, path };
 
                                 localStorage.setItem('scans', JSON.stringify(scans));
+                                updateScans();
                             }
 
-                            // await localStorage.setItem('scans', JSON.stringify({ title, image, uid, path }))
                             navigate(`/barcode/${uid}`, {
                                 state: {
                                     title,
                                     image,
                                     uid,
                                     path,
-                                    // handleShareCard, handleCopyText, isCopied, isSharing
                                 }
                             });
                         } else {
@@ -282,24 +282,25 @@
 
             }, [])
 
+            const fetchAllScans = useCallback(async () => {
+                const newScans = await handleScans();
+                setScans(newScans);
+            }, [handleScans]);
+
+
             useEffect(() => {
-                const fetchAllScans = async () => {
-                    const newScans = await handleScans();
-                    setScans(newScans);
-                };
                 fetchAllScans();
-            }, []);
-            // useEffect(() => {
-            //     const storedScans = localStorage.getItem('scans');
-            //     if (storedScans !== null) {
-            //         setScans(JSON.parse(storedScans));
-            //     } else return [];
-            // }, [storedScans]);
+            }, [fetchAllScans]);
+
+            const updateScans = useCallback(() => {
+                fetchAllScans();
+            }, [fetchAllScans]);
 
             return (
                 <BrowserRouter>
                     <Routes>
                         <Route path="/barcode/" element={<Home scans={scans}
+                            updateScans={updateScans}
                             handleShareCard={handleShareCard} handleCopyText={handleCopyText} isCopied={isCopied} isSharing={isSharing}
 
                         />} />
