@@ -67,7 +67,7 @@
                 }
             };
 
-            const thing = {
+            const values = {
                 scans,
                 setScans,
                 isCopied,
@@ -80,7 +80,7 @@
             };
 
             return (
-                <BarcodeContext.Provider value={thing}>
+                <BarcodeContext.Provider value={values}>
                     {children}
                 </BarcodeContext.Provider>
             );
@@ -98,6 +98,50 @@
         const useLocation = ReactRouterDOM.useLocation;
         const Link = ReactRouterDOM.Link;
 
+
+
+        const ScanCard = ({ scans,
+            setScans,
+            isCopied,
+            setIsCopied,
+            isSharing,
+            setIsSharing,
+            copyTextToClipboard,
+            handleCopyText,
+            handleShareCard, backBtn = true,
+            type = 'list',
+            title,
+            path,
+            image, uid
+        }) => {
+
+            const navigate = useNavigate();
+            const renderActions = () => (
+                <>
+                    <button onClick={() => handleCopyText(path)}>{isCopied ? 'Copied' : 'Copy'}</button>
+                    <button onClick={() => handleShareCard({ title })}>Share</button>
+                    <button>
+                        <a href={path} target="_blank" rel="noopener noreferrer">Visit URL</a>
+                    </button>
+                </>
+            );
+
+            const renderBackButton = () => (
+                <button onClick={() => navigate(-1)}>Back</button>
+            );
+
+            return (
+                <>
+                    {backBtn && renderBackButton()}
+                    <article className={`scan-${type}`}>
+                        <img src={image} alt={`item ${uid}`} />
+                        <h3>{title}</h3>
+                        <p>{uid}</p>
+                        {renderActions()}
+                    </article>
+                </>
+            );
+        };
 
         const Home = ({ scans,
             updateScans
@@ -125,11 +169,17 @@
                     <Scanner config={config} onScanSuccess={onScanSuccess}
                         updateScans={updateScans} />
                     <section>
-                        <div>  <h2>Scan History</h2>  {scansSlice.length > 5 && (
+                        <div>  <h2>Scan History</h2>  {scansSlice.length > 0 && (
                             <button><Link to={'/barcode/scans'}>See all scans</Link></button>
                         )}</div>
                         {scansSlice.length > 0 ? (
-                            <Scans scans={scans} />
+                            scansSlice.map((scan) =>
+                            (<section>
+
+                                <ScanCard uid={scan.uid} title={scan.title} path={scan.path} image={scan.image} handleShareCard={handleShareCard} isCopied={isCopied} handleCopyText={handleCopyText} isSharing={isSharing} backBtn={false} />
+
+                            </section>)
+                            )
                         ) : (
                             <p>Scan History will appear here</p>
                         )}
@@ -151,66 +201,12 @@
             const navigate = useNavigate();
 
             const { uid, image, title, path, } = location.state;
-            const [copy, setCopy] = useState(false);
-            const [sharing, setSharing] = useState(false);
-
-            const copyTextToClipboard = async (text) => {
-                if ('clipboard' in navigator) {
-                    return await navigator.clipboard.writeText(text);
-                } else {
-                    return document.execCommand('copy', true, text);
-                }
-            };
-
-            const handleCopyTextTwo = (path) => {
-                const url = `https://collection.sciencemuseumgroup.org.uk${path}`
-
-                copyTextToClipboard(url)
-                    .then(() => {
-                        setCopy(true);
-                        setTimeout(() => {
-                            setCopy(false);
-                        }, 3000);
-                    })
-                    .catch((e) =>
-                        console.error('There was an error copying text to clipboard', e)
-                    );
-            };
-
-            const handleShareCardTwo = async (data) => {
-                setSharing(true);
-                try {
-                    if (navigator.share) {
-                        await navigator.share(data);
-                    } else {
-                        console.log('Web Share API not supported');
-                    }
-                } catch (err) {
-                    console.error("Couldn't share the record", err);
-                } finally {
-                    setSharing(false);
-                }
-            };
 
             return (
-                <section>
-                    <button onClick={() => navigate(-1)}>Back</button>
-                    <article>
-                        <img src={image} alt={`item ${uid}`} />
-                        <h3>{title}</h3>
-                        <p>{uid}</p>
-                        <button onClick={() => handleCopyTextTwo(path)}>
-                            {copy ? 'Copied' : 'Copy'}
-                        </button>
-
-                        <button onClick={() => handleShareCardTwo({ title })}>Share</button>
-                        <button>
-                            {' '}
-                            <a href={path} target="_blank" rel="noopener noreferrer">
-                                Visit URL
-                            </a>
-                        </button>
-                    </article>
+                <section
+                //    className={`scan-card ${type}`}
+                >
+                    <ScanCard uid={uid} title={title} path={path} image={image} handleShareCard={handleShareCard} isCopied={isCopied} handleCopyText={handleCopyText} isSharing={isSharing} type='individual' />
                 </section>
             );
         };
@@ -293,33 +289,14 @@
             const {
                 handleShareCard, handleCopyText, isCopied, isSharing,
             } = useContext(BarcodeContext);
-
+            const navigate = useNavigate();
             return (
                 <section>
                     <button onClick={() => navigate(-1)}>Back</button>
                     <h2>Scan history</h2>
                     {scans &&
                         scans.map((scan) => (
-                            <article key={scan.uid}>
-                                <img src={scan.image} />
-                                <h3>{scan.title}</h3>
-                                <p>{scan.uid}</p>
-                                <button onClick={() => handleCopyText(scan.path)}>
-                                    {isCopied ? 'Copied' : 'Copy'}
-                                </button>
-                                <button onClick={() => handleShareCard({
-                                    title: scan.title,
-                                    // description: scan.description
-                                })}>
-                                    Share
-                                </button>
-                                <button>
-                                    {' '}
-                                    <a href={scan.path} target="_blank" rel="noopener noreferrer">
-                                        Visit URL
-                                    </a>
-                                </button>
-                            </article>
+                            <ScanCard uid={scan.uid} title={scan.title} path={scan.path} image={scan.image} handleShareCard={handleShareCard} isCopied={isCopied} handleCopyText={handleCopyText} isSharing={isSharing} />
                         ))}
                 </section>
             );
@@ -373,6 +350,7 @@
                                 path="barcode/scans"
                                 element={
                                     <Scans
+                                        scans={scans}
 
                                     />
                                 }
