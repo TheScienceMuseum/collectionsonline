@@ -1,0 +1,105 @@
+li {
+  list-style: none;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+.scan-container {
+  margin-block-start: 1em;
+  margin-inline: 1em;
+}
+
+.scan-card-img {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.c-btn {
+  margin-block-end: 2em;
+  cursor: pointer;
+}
+
+.c-btn--link {
+  position: absolute;
+  bottom: -15%;
+  right: 0;
+  z-index: 1;
+  opacity: 0.3;
+  transition: opacity 0.4s ease-in-out;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.scan-history {
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: 2em;
+}
+
+.scans {
+  margin-block-end: 2em;
+  margin-inline: 1em;
+  .scans__list {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.scan-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-block-start: 2em;
+}
+
+.c-card-individual {
+  max-width: 300px;
+}
+
+.c-card--list {
+  margin-block: 0.5em;
+}
+
+.scanner-container {
+  transition: all 0.5s ease-in-out;
+}
+
+@media screen and (max-width: 767px) {
+  .scans__list {
+    align-items: center;
+  }
+  .scan-history-slice {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+  .c-card--list {
+    max-width: 300px;
+    flex-direction: column;
+    gap: 1em;
+    .c-card__img {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 579px) {
+  .c-card--list .c-card__img {
+    display: block;
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 767px) {
+  .c-card--list {
+    align-self: baseline;
+    width: 100%;
+  }
+}

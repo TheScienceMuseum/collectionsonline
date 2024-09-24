@@ -28,6 +28,10 @@
             const [scans, setScans] = useState([]);
             const [isCopied, setIsCopied] = useState(false);
             const [isSharing, setIsSharing] = useState(false);
+            const [sharingError, setSharingError] = useState(false);
+            const [isScannerOpen, setIsScannerOpen] = useState(false);
+
+
 
             const copyTextToClipboard = async (text) => {
                 if ('clipboard' in navigator) {
@@ -58,12 +62,14 @@
                     if (navigator.share) {
                         await navigator.share(data);
                     } else {
+                        setSharingError(true)
                         console.log('Web Share API not supported');
                     }
                 } catch (err) {
                     console.error("Couldn't share the record", err);
                 } finally {
                     setIsSharing(false);
+                    setSharingError(false);
                 }
             };
 
@@ -74,6 +80,10 @@
                 setIsCopied,
                 isSharing,
                 setIsSharing,
+                sharingError,
+                setSharingError,
+                isScannerOpen,
+                setIsScannerOpen,
                 copyTextToClipboard,
                 handleCopyText,
                 handleShareCard,
@@ -106,38 +116,48 @@
             setIsCopied,
             isSharing,
             setIsSharing,
+            sharingError,
             copyTextToClipboard,
             handleCopyText,
-            handleShareCard, backBtn = true,
+            handleShareCard,
+            description,
+            backBtn = true,
             type = 'list',
             title,
             path,
-            image, uid
+            image,
+            uid
         }) => {
 
             const navigate = useNavigate();
-            const renderActions = () => (
-                <>
-                    <button onClick={() => handleCopyText(path)}>{isCopied ? 'Copied' : 'Copy'}</button>
-                    <button onClick={() => handleShareCard({ title })}>Share</button>
-                    <button>
-                        <a href={path} target="_blank" rel="noopener noreferrer">Visit URL</a>
-                    </button>
-                </>
-            );
 
-            const renderBackButton = () => (
-                <button onClick={() => navigate(-1)}>Back</button>
-            );
 
             return (
                 <>
-                    {backBtn && renderBackButton()}
-                    <article className={`scan-${type}`}>
-                        <img src={image} alt={`item ${uid}`} />
-                        <h3>{title}</h3>
-                        <p>{uid}</p>
-                        {renderActions()}
+                    <article className={`c-card c-card--default ${type === 'list' ? 'c-card--list' : 'c-card-individual'}`}>
+                        <div className="c-card__img u-grad-yellow-orange-red">
+                            <img src={image} alt={`item ${uid}`} className='scan-card-img' />
+                            <a href={path} target="_blank" rel="noopener noreferrer">
+                                <button className='c-btn c-btn--primary c-btn--link'></button>
+                            </a>
+
+                        </div>
+
+                        <div className="c-card__content">
+                            <div className="c-card__info">
+
+                                <h3 className="c-card__title">
+                                    {title}
+                                </h3>
+                            </div>
+                            <p className="c-card__desc">{uid}</p>
+                            <p className="c-card__desc">{description}</p>
+                            {type !== 'list' && <button className='c-btn' onClick={() => handleCopyText(path)}>{isCopied ? 'Copied' : 'Copy URL'}</button>}
+
+
+                        </div>
+
+
                     </article>
                 </>
             );
@@ -147,11 +167,10 @@
             updateScans
         }) => {
             const {
-                handleShareCard, handleCopyText, isCopied, isSharing,
-
+                handleShareCard, handleCopyText, isCopied, isSharing, sharingError, isScannerOpen, setIsScannerOpen
             } = useContext(BarcodeContext);
             const scansSlice = scans ? scans.slice(0, 6) : [];
-
+            console.log('Home component render, isScannerOpen:', isScannerOpen);
             const onScanSuccess = async (decodedText, decodedResult) => {
                 console.log(`Scan result: ${decodedText}`, decodedResult);
                 window.Html5QrcodeScanner.clear();
@@ -159,6 +178,7 @@
 
             const config = {
                 fps: 10,
+                qrbox: { width: 450, height: 350 },
                 rememberLastUsedCamera: false,
                 showTorchButtonIfSupported: true,
                 supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
@@ -167,25 +187,29 @@
             return (
                 <>
                     <Scanner config={config} onScanSuccess={onScanSuccess}
-                        updateScans={updateScans} />
-                    <section>
-                        <div>  <h2>Scan History</h2>  {scansSlice.length > 0 && (
-                            <button><Link to={'/barcode/scans'}>See all scans</Link></button>
+                        updateScans={updateScans}
+                    />
+                    {!isScannerOpen && (<section class="scan-container">
+                        <div className='scan-history'>  <h2>Scan History</h2>  {scansSlice.length > 0 && (
+                            <button className='c-btn c-btn--primary'><Link to={'/barcode/scans'}>See all scans</Link></button>
                         )}</div>
                         {scansSlice.length > 0 ? (
-                            scansSlice.map((scan) =>
-                            (<section>
+                            <ul className="scan-history-slice ">
+                                {scansSlice.map((scan) =>
+                                (<li >
 
-                                <ScanCard uid={scan.uid} title={scan.title} path={scan.path} image={scan.image} handleShareCard={handleShareCard} isCopied={isCopied} handleCopyText={handleCopyText} isSharing={isSharing} backBtn={false} />
+                                    <ScanCard uid={scan.uid} title={scan.title} path={scan.path} image={scan.image} description={scan.description} handleShareCard={handleShareCard} isCopied={isCopied} handleCopyText={handleCopyText} isSharing={isSharing} backBtn={false} sharingError={sharingError} />
 
-                            </section>)
-                            )
+                                </li>)
+                                )}
+                            </ul>
                         ) : (
                             <p>Scan History will appear here</p>
                         )}
-                    </section>
+                    </section>)}
                 </>
-            );
+            )
+                ;
         };
 
         const Result = (
@@ -193,42 +217,75 @@
         ) => {
 
             const {
-                handleShareCard, handleCopyText, isCopied, isSharing,
+                handleShareCard, handleCopyText, isCopied, isSharing, sharingError
 
             } = useContext(BarcodeContext);
 
             const location = useLocation();
             const navigate = useNavigate();
 
-            const { uid, image, title, path, } = location.state;
+            const { uid, image, title, path, description } = location.state;
 
             return (
                 <section
-                //    className={`scan-card ${type}`}
+                    className="scan-result"
                 >
-                    <ScanCard uid={uid} title={title} path={path} image={image} handleShareCard={handleShareCard} isCopied={isCopied} handleCopyText={handleCopyText} isSharing={isSharing} type='individual' />
+                    <ScanCard uid={uid} title={title} path={path} image={image} description={description} handleShareCard={handleShareCard} isCopied={isCopied} handleCopyText={handleCopyText} isSharing={isSharing} type='individual' sharingError={sharingError} />
                 </section>
             );
         };
 
         const Scanner = ({ config,
             onScanSuccess,
-            updateScans
+            updateScans,
         }) => {
 
             const {
-                handleShareCard, handleCopyText, isCopied, isSharing,
+                handleShareCard, handleCopyText, isCopied, isSharing, isScannerOpen, setIsScannerOpen
 
             } = useContext(BarcodeContext);
 
-            const [startScanning, setStartScanning] = useState(false);
             const [uid, setUid] = useState(null);
             const [loading, setLoading] = useState(false);
             const [error, setError] = useState(null);
             const navigate = useNavigate();
 
+            const cameraInUse = useCallback(async () => {
+                try {
+                    await navigator.mediaDevices.getUserMedia({ video: true });
+                    setIsScannerOpen(true);
+                    return true;
+                } catch (error) {
+                    return false;
+                }
+            }, []);
+
+
+            useEffect(() => {
+                let scannerIntervalId;
+
+                const openScanner = async () => {
+                    const isInUse = await cameraInUse();
+                    setIsScannerOpen(isInUse);
+
+                    if (isInUse) {
+                        scannerIntervalId = setInterval(async () => {
+                            const stillInUse = await cameraInUse();
+                            setIsScannerOpen(stillInUse);
+                        }, 1000);
+                    } else {
+                        setIsScannerOpen(false);
+                    }
+                };
+                return () => {
+                    clearInterval(scannerIntervalId);
+                };
+            }, [cameraInUse]);
+
+
             useEffect(() => {
                 const onScanSuccessWrapper = async (decodedText, decodedResult) => {
+                    setIsScannerOpen(true)
                     console.log(`Scan result: ${decodedText}`, decodedResult);
                     setLoading(true);
                     setError(null);
@@ -239,12 +296,12 @@
                         const data = await result.json();
 
                         if (data) {
-                            const { title, image, uid, path } = data;
+                            const { title, image, uid, path, description } = data;
                             let scans = JSON.parse(localStorage.getItem('scans') || '{}');
                             // if uid already exists in scans, don't duplicate
                             if (!scans[uid]) {
 
-                                scans[uid] = { title, image, path };
+                                scans[uid] = { title, image, path, description };
 
                                 localStorage.setItem('scans', JSON.stringify(scans));
                                 updateScans();
@@ -256,6 +313,7 @@
                                     image,
                                     uid,
                                     path,
+                                    description
                                 }
                             });
                         } else {
@@ -272,14 +330,16 @@
                 html5QrcodeScanner.render(onScanSuccessWrapper);
 
                 return () => {
+                    setIsScannerOpen(false);
+
                     html5QrcodeScanner.clear();
                 };
-            }, [config]);
+            }, [config, setIsScannerOpen]);
 
             return (
-                <div>
+                <div width="100%" className={`scanner-container ${isScannerOpen ? 'is-scanning' : ''}`}>
                     <div id="qr-reader"></div>
-                    <div id="result"></div>
+                    <div height="100%" id="result"></div>
                 </div>
             );
         };
@@ -287,17 +347,23 @@
         const Scans = ({ scans,
         }) => {
             const {
-                handleShareCard, handleCopyText, isCopied, isSharing,
+                handleShareCard, handleCopyText, isCopied, isSharing, sharingError
             } = useContext(BarcodeContext);
             const navigate = useNavigate();
             return (
-                <section>
-                    <button onClick={() => navigate(-1)}>Back</button>
-                    <h2>Scan history</h2>
-                    {scans &&
-                        scans.map((scan) => (
-                            <ScanCard uid={scan.uid} title={scan.title} path={scan.path} image={scan.image} handleShareCard={handleShareCard} isCopied={isCopied} handleCopyText={handleCopyText} isSharing={isSharing} />
-                        ))}
+                <section className='scans'>
+                    <div className='scan-history'>  <h2>Scan History</h2>
+                        <button className='c-btn c-btn--primary' onClick={() => navigate(-1)}>Back</button>
+                    </div>
+
+                    <ul className="scans__list">
+                        {scans &&
+                            scans.map((scan) => (
+                                <li>
+                                    <ScanCard uid={scan.uid} title={scan.title} path={scan.path} image={scan.image} description={scan.description} handleShareCard={handleShareCard} isCopied={isCopied} handleCopyText={handleCopyText} isSharing={isSharing} sharingError={sharingError} />
+                                </li>
+                            ))}
+                    </ul>
                 </section>
             );
         };
@@ -351,8 +417,8 @@
                                 element={
                                     <Scans
                                         scans={scans}
-
-                                    />
+                                        updateScans={updateScans}
+                                        fetchAllScans={fetchAllScans} />
                                 }
                             />
                         </Routes>
