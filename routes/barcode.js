@@ -28,8 +28,8 @@ module.exports = (elastic, config) => ({
             const uid = obj?._id;
             slugValue = slugValue ? '/' + slugValue : '';
             const path = '/objects/' + obj._id + slugValue;
-
-            return h.response({ path, title, image, uid });
+            const description = obj._source?.description?.[0]?.value;
+            return h.response({ path, title, image, uid, description });
           } else {
             return 'Barcode not found';
           }
@@ -37,7 +37,7 @@ module.exports = (elastic, config) => ({
           return 'Error: ' + err;
         }
       } else {
-        return h.view('barcode');
+        return h.view('barcode', {}, { layout: 'default' });
       }
     }
   }
