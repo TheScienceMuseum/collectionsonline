@@ -170,7 +170,6 @@
                 handleShareCard, handleCopyText, isCopied, isSharing, sharingError, isScannerOpen, setIsScannerOpen
             } = useContext(BarcodeContext);
             const scansSlice = scans ? scans.slice(0, 6) : [];
-            console.log('Home component render, isScannerOpen:', isScannerOpen);
             const onScanSuccess = async (decodedText, decodedResult) => {
                 console.log(`Scan result: ${decodedText}`, decodedResult);
                 window.Html5QrcodeScanner.clear();
@@ -193,7 +192,7 @@
                         <div className='scan-history'>  <h2>Scan History</h2>  {scansSlice.length > 0 && (
                             <button className='c-btn c-btn--primary'><Link to={'/barcode/scans'}>See all scans</Link></button>
                         )}</div>
-                        {scansSlice.length > 0 ? (
+                        {scansSlice.length > 5 ? (
                             <ul className="scan-history-slice ">
                                 {scansSlice.map((scan) =>
                                 (<li >
@@ -204,7 +203,7 @@
                                 )}
                             </ul>
                         ) : (
-                            <p>Scan History will appear here</p>
+                            <p>Scan history will appear here</p>
                         )}
                     </section>)}
                 </>
@@ -230,6 +229,7 @@
                 <section
                     className="scan-result"
                 >
+                    <button className='c-btn c-btn--primary' onClick={() => navigate(-1)}>Back</button>
                     <ScanCard uid={uid} title={title} path={path} image={image} description={description} handleShareCard={handleShareCard} isCopied={isCopied} handleCopyText={handleCopyText} isSharing={isSharing} type='individual' sharingError={sharingError} />
                 </section>
             );
@@ -300,8 +300,8 @@
                             let scans = JSON.parse(localStorage.getItem('scans') || '{}');
                             // if uid already exists in scans, don't duplicate
                             if (!scans[uid]) {
-
-                                scans[uid] = { title, image, path, description };
+                                const date = new Date();
+                                scans[uid] = { title, image, path, description, date: date.getTime() };
 
                                 localStorage.setItem('scans', JSON.stringify(scans));
                                 updateScans();
@@ -369,29 +369,43 @@
         };
 
         const App = () => {
-
             const [scans, setScans] = useState([]);
 
             const handleScans = useCallback(() => {
                 const storedData = localStorage.getItem('scans');
                 if (storedData === null) return [];
-                let scans;
+                const filteredScans = {};
                 try {
-                    scans = JSON.parse(storedData);
+
+                    const currentTime = new Date().getTime();
+
+                    let scans = JSON.parse(storedData);
+
+                    //removes scans older than a week - to avoid localStorage bloat
+                    for (let [key, value] of Object.entries(scans)) {
+                        const timeDiff = currentTime - value.date;
+                        const weekInMs = 604800000;
+                        if (timeDiff < weekInMs) {
+                            filteredScans[key] = value;
+                        } else {
+                            localStorage.removeItem(key);
+                        }
+                    }
                 } catch (error) {
                     console.error('Error parsing scans:', error);
                     return [];
                 }
 
-                return Object.values(scans);
+                // Update localStorage with filtered scans
+                localStorage.setItem('scans', JSON.stringify(filteredScans));
 
-            }, [])
+                return Object.values(filteredScans);
+            }, []);
 
             const fetchAllScans = useCallback(async () => {
                 const newScans = await handleScans();
                 setScans(newScans);
             }, [handleScans]);
-
 
             useEffect(() => {
                 fetchAllScans();
@@ -408,10 +422,8 @@
                             <Route path="/barcode/" element={<Home
                                 scans={scans}
                                 updateScans={updateScans}
-
                             />} />
-                            <Route path="/barcode/:uid" element={<Result />}
-                            />
+                            <Route path="/barcode/:uid" element={<Result />} />
                             <Route
                                 path="barcode/scans"
                                 element={
@@ -423,10 +435,10 @@
                             />
                         </Routes>
                     </BrowserRouter>
-                </ BarcodeProvider>
-
+                </BarcodeProvider>
             );
         };
+
         ReactDOM.render(<App />, document.getElementById('root'));
     </script>
 
