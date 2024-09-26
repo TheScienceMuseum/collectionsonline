@@ -19,8 +19,8 @@ module.exports = (elastic, config) => ({
           if (result.body.hits.hits) {
             const obj = result.body.hits.hits[0];
             let slugValue =
-              obj._source.summary_title &&
-              slug(obj._source.summary_title).toLowerCase();
+              obj?._source?.summary_title &&
+              slug(obj?._source?.summary_title).toLowerCase();
             const title = obj._source?.summary?.title;
             const image =
               config.mediaPath +
@@ -29,7 +29,16 @@ module.exports = (elastic, config) => ({
             slugValue = slugValue ? '/' + slugValue : '';
             const path = '/objects/' + obj._id + slugValue;
             const description = obj._source?.description?.[0]?.value;
-            return h.response({ path, title, image, uid, description });
+            const barcodeId = obj._source?.barcode?.value;
+
+            return h.response({
+              path,
+              title,
+              image,
+              uid,
+              description,
+              barcodeId
+            });
           } else {
             return 'Barcode not found';
           }
