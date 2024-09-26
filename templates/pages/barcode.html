@@ -189,19 +189,11 @@
                         updateScans={updateScans}
                     />
                     {!isScannerOpen && (<section class="scan-container">
-                        <div className='scan-history'>  <h2>Scan History</h2>  {scansSlice.length > 0 && (
-                            <button className='c-btn c-btn--primary'><Link to={'/barcode/scans'}>See all scans</Link></button>
-                        )}</div>
-                        {scansSlice.length > 5 ? (
-                            <ul className="scan-history-slice ">
-                                {scansSlice.map((scan) =>
-                                (<li >
+                        <div className='scan-history'>  <h2>Scan History</h2>
 
-                                    <ScanCard uid={scan.uid} title={scan.title} path={scan.path} image={scan.image} description={scan.description} handleShareCard={handleShareCard} isCopied={isCopied} handleCopyText={handleCopyText} isSharing={isSharing} backBtn={false} sharingError={sharingError} />
-
-                                </li>)
-                                )}
-                            </ul>
+                        </div>
+                        {scans.length > 0 ? (
+                            <Scans scans={scans} />
                         ) : (
                             <p>Scan history will appear here</p>
                         )}
@@ -211,9 +203,7 @@
                 ;
         };
 
-        const Result = (
-
-        ) => {
+        const Result = () => {
 
             const {
                 handleShareCard, handleCopyText, isCopied, isSharing, sharingError
@@ -223,14 +213,14 @@
             const location = useLocation();
             const navigate = useNavigate();
 
-            const { uid, image, title, path, description } = location.state;
+            const { uid, image, title, path, description, barcodeId } = location.state;
 
             return (
                 <section
                     className="scan-result"
                 >
                     <button className='c-btn c-btn--primary' onClick={() => navigate(-1)}>Back</button>
-                    <ScanCard uid={uid} title={title} path={path} image={image} description={description} handleShareCard={handleShareCard} isCopied={isCopied} handleCopyText={handleCopyText} isSharing={isSharing} type='individual' sharingError={sharingError} />
+                    <ScanCard uid={uid} title={title} path={path} image={image} description={description} barcodeId={barcodeId} handleShareCard={handleShareCard} isCopied={isCopied} handleCopyText={handleCopyText} isSharing={isSharing} type='individual' sharingError={sharingError} />
                 </section>
             );
         };
@@ -296,12 +286,12 @@
                         const data = await result.json();
 
                         if (data) {
-                            const { title, image, uid, path, description } = data;
+                            const { title, image, uid, path, description, barcodeId } = data;
                             let scans = JSON.parse(localStorage.getItem('scans') || '{}');
                             // if uid already exists in scans, don't duplicate
                             if (!scans[uid]) {
                                 const date = new Date();
-                                scans[uid] = { title, image, path, description, date: date.getTime() };
+                                scans[uid] = { barcodeId, title, image, path, description, date: date.getTime() };
 
                                 localStorage.setItem('scans', JSON.stringify(scans));
                                 updateScans();
@@ -313,7 +303,8 @@
                                     image,
                                     uid,
                                     path,
-                                    description
+                                    description,
+                                    barcodeId
                                 }
                             });
                         } else {
@@ -344,18 +335,14 @@
             );
         };
 
-        const Scans = ({ scans,
-        }) => {
+        const Scans = ({ scans }) => {
             const {
                 handleShareCard, handleCopyText, isCopied, isSharing, sharingError
             } = useContext(BarcodeContext);
             const navigate = useNavigate();
+
             return (
                 <section className='scans'>
-                    <div className='scan-history'>  <h2>Scan History</h2>
-                        <button className='c-btn c-btn--primary' onClick={() => navigate(-1)}>Back</button>
-                    </div>
-
                     <ul className="scans__list">
                         {scans &&
                             scans.map((scan) => (
@@ -425,13 +412,7 @@
                             />} />
                             <Route path="/barcode/:uid" element={<Result />} />
                             <Route
-                                path="barcode/scans"
-                                element={
-                                    <Scans
-                                        scans={scans}
-                                        updateScans={updateScans}
-                                        fetchAllScans={fetchAllScans} />
-                                }
+
                             />
                         </Routes>
                     </BrowserRouter>
