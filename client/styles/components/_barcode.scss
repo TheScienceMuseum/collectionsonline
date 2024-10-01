@@ -7,9 +7,50 @@ ul {
   margin: 0;
 }
 
-.scan-container {
-  margin-block-start: 1em;
-  margin-inline: 1em;
+.ReactModal__Overlay {
+  overflow: scroll;
+}
+
+#html5-qrcode-button-camera-permission,
+#html5-qrcode-button-camera-stop,
+#html5-qrcode-button-camera-start,
+.nav-tabs .nav-item .nav-link {
+  font-size: clamp(1rem, 0.8076923077rem + 0.9615384615vw, 1.5rem);
+  color: white;
+  background-color: rgb(51, 51, 51);
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
+  padding-left: 1em;
+  padding-right: 1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: bold;
+  position: relative;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  line-height: 1;
+  border: 0;
+  -webkit-transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.nav-tabs {
+  display: flex;
+  .nav-item {
+    .nav-link.active {
+      background-color: red;
+    }
+  }
+}
+
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.show {
+  display: block;
 }
 
 .scan-card-img {
@@ -43,7 +84,6 @@ ul {
 
 .scans {
   margin-block-end: 2em;
-  margin-inline: 1em;
   .scans__list {
     display: flex;
     flex-direction: column;
@@ -55,7 +95,7 @@ ul {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-block-start: 2em;
+  margin-block-start: 0.5em;
 }
 
 .c-card-individual {
@@ -68,6 +108,26 @@ ul {
 
 .scanner-container {
   transition: all 0.5s ease-in-out;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  min-height: 100vh;
+
+  .scanner-reader {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+#qr-reader__scan_region {
+  img {
+    width: 150px;
+    max-width: 150px;
+    height: auto;
+  }
 }
 
 @media screen and (max-width: 767px) {
