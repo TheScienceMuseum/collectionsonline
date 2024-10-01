@@ -10,12 +10,14 @@
     <script
         src="https://cdn.jsdelivr.net/npm/react-router-dom@6.20.1/dist/umd/react-router-dom.production.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.5/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-modal/3.14.3/react-modal.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
 </head>
 
 <body>
     <div id="root"></div>
-
 
     <script type="text/babel">
 
@@ -30,8 +32,33 @@
             const [isSharing, setIsSharing] = useState(false);
             const [sharingError, setSharingError] = useState(false);
             const [isScannerOpen, setIsScannerOpen] = useState(false);
+            const [modalIsOpen, setIsOpen] = useState(false);
+            const [resultData, setResultData] = useState(null);
 
 
+            let subtitle;
+
+            const openModal = () => {
+                setIsOpen(true);
+            }
+
+            const afterOpenModal = () => {
+                subtitle.style.color = '#f00';
+            }
+
+            const closeModal = () => {
+                setIsOpen(false);
+            }
+            const customStyles = {
+                content: {
+                    top: '75%',
+                    left: '50%',
+                    right: 'auto',
+                    bottom: 'auto',
+                    marginRight: '-50%',
+                    transform: 'translate(-50%, -50%)',
+                },
+            };
 
             const copyTextToClipboard = async (text) => {
                 if ('clipboard' in navigator) {
@@ -84,6 +111,15 @@
                 setSharingError,
                 isScannerOpen,
                 setIsScannerOpen,
+                setIsOpen,
+                modalIsOpen,
+                setIsOpen,
+                openModal,
+                afterOpenModal,
+                closeModal,
+                customStyles,
+                resultData,
+                setResultData,
                 copyTextToClipboard,
                 handleCopyText,
                 handleShareCard,
@@ -99,7 +135,7 @@
     </script>
     <script type="text/babel">
         const ReactDOM = window.ReactDOM;
-        const { useState, useEffect, useCallback, useContext } = React;
+        const { useState, useEffect, useCallback, useContext, useRef } = React;
         const Html5QrcodeScanner = window.Html5QrcodeScanner;
         const Route = ReactRouterDOM.Route;
         const Routes = ReactRouterDOM.Routes;
@@ -107,6 +143,22 @@
         const useNavigate = ReactRouterDOM.useNavigate;
         const useLocation = ReactRouterDOM.useLocation;
         const Link = ReactRouterDOM.Link;
+        const Modal = ReactModal;
+        const Tab = ReactBootstrap.Tab
+        const Tabs = ReactBootstrap.Tabs
+        Modal.setAppElement('#root');
+
+
+        const customStyles = {
+            content: {
+                top: '50%',
+                left: '50%',
+                right: 'auto',
+                bottom: 'auto',
+                marginRight: '-50%',
+                transform: 'translate(-50%, -50%)',
+            },
+        };
 
 
 
@@ -163,17 +215,77 @@
             );
         };
 
+        const ModalElement = ({ modalIsOpen, afterOpenModal, closeModal, customStyles, resultData, scans, handleUpdateResult }) => {
+            const [key, setKey] = useState('result');
+
+            const fetchResultData = useCallback(async () => {
+                const scans = JSON.parse(localStorage.getItem('scans') || '{}');
+                console.log(scans, 'cegking scans')
+
+                const lastScan = Object.values(scans).sort((a, b) => b.date - a.date)[0];
+                console.log(lastScan, 'cheking scan')
+                if (lastScan) {
+                    handleUpdateResult(lastScan)
+                }
+            }, [scans, handleUpdateResult])
+            useEffect(() => {
+                if (modalIsOpen) {
+                    // Fetch the data for the scanned item
+                    console.log('jsjfnjkekjnenjkerfjnferjnke')
+                    fetchResultData();
+                }
+            }, [modalIsOpen, fetchResultData]);
+
+
+            useEffect(() => {
+                setKey('result');
+            }, []);
+
+            return (
+                <Modal
+                    isOpen={modalIsOpen}
+                    onAfterOpen={afterOpenModal}
+                    onRequestClose={closeModal}
+                    style={customStyles}
+                >
+                    <div>
+                        <button className='c-btn c-btn--primary' aria-label="close modal" onClick={closeModal}>Close</button>
+
+
+                        <Tabs
+                            id="controlled-tab-example"
+                            activeKey={key}
+                            onSelect={(k) => setKey(k)}
+                            className="mb-3"
+                        >
+
+                            <Tab eventKey="result" title="Result" >
+                                {resultData && <Result resultData={resultData} />}
+                            </Tab>
+                            <Tab eventKey="scan-history" title="Scan History" disabled={!scans.length}>
+                                <section class="scan-container">
+
+                                    {scans.length > 0 ? (
+                                        <Scans scans={scans} />
+                                    ) : (
+                                        <p>Scan history will appear here</p>
+                                    )}
+                                </section>
+                            </Tab>
+                        </Tabs>
+                    </div>
+
+                </Modal>
+            );
+
+        }
+
         const Home = ({ scans,
             updateScans
         }) => {
             const {
-                handleShareCard, handleCopyText, isCopied, isSharing, sharingError, isScannerOpen, setIsScannerOpen
+                handleCopyText, isCopied, modalIsOpen, afterOpenModal, closeModal, customStyles, setIsOpen, resultData, setResultData, openModal
             } = useContext(BarcodeContext);
-            const scansSlice = scans ? scans.slice(0, 6) : [];
-            const onScanSuccess = async (decodedText, decodedResult) => {
-                console.log(`Scan result: ${decodedText}`, decodedResult);
-                window.Html5QrcodeScanner.clear();
-            };
 
             const config = {
                 fps: 10,
@@ -181,46 +293,48 @@
                 rememberLastUsedCamera: false,
                 showTorchButtonIfSupported: true,
                 supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
+                facingMode: "environment"
             };
-
+            let data;
+            const handleUpdateResult = useCallback((data) => {
+                setResultData(data);
+            }, [data])
             return (
                 <>
-                    <Scanner config={config} onScanSuccess={onScanSuccess}
+                    <Scanner config={config}
                         updateScans={updateScans}
+                        openModal={openModal}
                     />
-                    {!isScannerOpen && (<section class="scan-container">
-                        <div className='scan-history'>  <h2>Scan History</h2>
+                    {modalIsOpen &&
+                        (<ModalElement
+                            modalIsOpen={modalIsOpen}
+                            afterOpenModal={afterOpenModal}
+                            closeModal={closeModal}
+                            customStyles={customStyles}
+                            resultData={resultData}
+                            scans={scans}
+                            handleUpdateResult={handleUpdateResult}
 
-                        </div>
-                        {scans.length > 0 ? (
-                            <Scans scans={scans} />
-                        ) : (
-                            <p>Scan history will appear here</p>
-                        )}
-                    </section>)}
+                        />)}
                 </>
             )
                 ;
         };
 
-        const Result = () => {
+
+        const Result = ({ resultData }) => {
 
             const {
-                handleShareCard, handleCopyText, isCopied, isSharing, sharingError
-
+                handleCopyText, isCopied, modalIsOpen, setIsOpen, setResultData, scans
             } = useContext(BarcodeContext);
 
-            const location = useLocation();
             const navigate = useNavigate();
-
-            const { uid, image, title, path, description, barcodeId } = location.state;
 
             return (
                 <section
                     className="scan-result"
                 >
-                    <button className='c-btn c-btn--primary' aria-label="Back" onClick={() => navigate(-1)}>Back</button>
-                    <ScanCard uid={uid} title={title} path={path} image={image} description={description} barcodeId={barcodeId} handleShareCard={handleShareCard} isCopied={isCopied} handleCopyText={handleCopyText} isSharing={isSharing} type='individual' sharingError={sharingError} />
+                    <ScanCard uid={resultData.uid} title={resultData.title} path={resultData.path} image={resultData.image} description={resultData.description} barcodeId={resultData.barcodeId} isCopied={isCopied} handleCopyText={handleCopyText} type='individual' />
                 </section>
             );
         };
@@ -228,108 +342,73 @@
         const Scanner = ({ config,
             onScanSuccess,
             updateScans,
+            openModal
         }) => {
 
-            const {
-                handleShareCard, handleCopyText, isCopied, isSharing, isScannerOpen, setIsScannerOpen
-
-            } = useContext(BarcodeContext);
+            const { handleCopyText, isCopied } = useContext(BarcodeContext);
 
             const [uid, setUid] = useState(null);
             const [loading, setLoading] = useState(false);
             const [error, setError] = useState(null);
             const navigate = useNavigate();
 
-            const cameraInUse = useCallback(async () => {
-                try {
-                    await navigator.mediaDevices.getUserMedia({ video: true });
-                    setIsScannerOpen(true);
-                    return true;
-                } catch (error) {
-                    return false;
+
+            useEffect(() => {
+                const permissionButton = document.querySelector('#html5-qrcode-button-camera-permission');
+                console.log(permissionButton, 'the brn');
+                if (permissionButton) {
+                    permissionButton.classList.add('c-btn');
                 }
-            }, []);
+            }, [])
 
 
-            useEffect(() => {
-                let scannerIntervalId;
+            const onScanSuccessWrapper = useCallback(async (decodedText, decodedResult) => {
+                console.log(`Scan result: ${decodedText}`, decodedResult);
+                setLoading(true);
+                setError(null);
+                setUid(decodedText);
 
-                const openScanner = async () => {
-                    const isInUse = await cameraInUse();
-                    setIsScannerOpen(isInUse);
+                try {
+                    const result = await fetch(`http://localhost:8000/barcode/${decodedText}`);
+                    const data = await result.json();
 
-                    if (isInUse) {
-                        scannerIntervalId = setInterval(async () => {
-                            const stillInUse = await cameraInUse();
-                            setIsScannerOpen(stillInUse);
-                        }, 1000);
-                    } else {
-                        setIsScannerOpen(false);
-                    }
-                };
-                return () => {
-                    clearInterval(scannerIntervalId);
-                };
-            }, [cameraInUse]);
+                    if (data) {
+                        const { title, image, uid, path, description, barcodeId } = data;
+                        console.log(data, 'checking')
+                        let scans = JSON.parse(localStorage.getItem('scans') || '{}');
+                        // if uid already exists in scans, don't duplicate
+                        if (!scans[uid]) {
+                            const date = new Date();
+                            scans[uid] = { barcodeId, title, image, path, description, date: date.getTime() };
 
-
-            useEffect(() => {
-                const onScanSuccessWrapper = async (decodedText, decodedResult) => {
-                    setIsScannerOpen(true)
-                    console.log(`Scan result: ${decodedText}`, decodedResult);
-                    setLoading(true);
-                    setError(null);
-                    setUid(decodedText);
-
-                    try {
-                        const result = await fetch(`http://localhost:8000/barcode/${decodedText}`);
-                        const data = await result.json();
-
-                        if (data) {
-                            const { title, image, uid, path, description, barcodeId } = data;
-                            let scans = JSON.parse(localStorage.getItem('scans') || '{}');
-                            // if uid already exists in scans, don't duplicate
-                            if (!scans[uid]) {
-                                const date = new Date();
-                                scans[uid] = { barcodeId, title, image, path, description, date: date.getTime() };
-
-                                localStorage.setItem('scans', JSON.stringify(scans));
-                                updateScans();
-                            }
-
-                            navigate(`/barcode/${uid}`, {
-                                state: {
-                                    title,
-                                    image,
-                                    uid,
-                                    path,
-                                    description,
-                                    barcodeId
-                                }
-                            });
-                        } else {
-                            throw new Error('Collection item not found');
+                            localStorage.setItem('scans', JSON.stringify(scans));
+                            updateScans();
                         }
-                    } catch (error) {
-                        setError(error.message || 'An error occurred while fetching the barcode data.');
-                    } finally {
-                        setLoading(false);
-                    }
-                };
 
+                        openModal()
+
+                    } else {
+                        throw new Error('Collection item not found');
+                    }
+                } catch (error) {
+                    setError(error.message || 'An error occurred while fetching the barcode data.');
+                } finally {
+                    setLoading(false);
+                }
+            }, [config, openModal, navigate]);
+
+            useEffect(() => {
                 const html5QrcodeScanner = new window.Html5QrcodeScanner('qr-reader', config);
                 html5QrcodeScanner.render(onScanSuccessWrapper);
 
                 return () => {
-                    setIsScannerOpen(false);
-
                     html5QrcodeScanner.clear();
                 };
-            }, [config, setIsScannerOpen]);
+            }, [config, openModal, navigate, onScanSuccessWrapper, updateScans]);
 
             return (
-                <div width="100%" className={`scanner-container ${isScannerOpen ? 'is-scanning' : ''}`}>
-                    <div id="qr-reader"></div>
+                <div width="100%" className="scanner-container">
+                    <div id="qr-reader" className="scanner-reader"></div>
                     <div height="100%" id="result"></div>
                 </div>
             );
@@ -346,7 +425,7 @@
                     <ul className="scans__list">
                         {scans &&
                             scans.map((scan) => (
-                                <li>
+                                <li key={scan.uid}>
                                     <ScanCard uid={scan.uid} title={scan.title} path={scan.path} image={scan.image} description={scan.description} handleShareCard={handleShareCard} isCopied={isCopied} handleCopyText={handleCopyText} isSharing={isSharing} sharingError={sharingError} />
                                 </li>
                             ))}
@@ -356,7 +435,9 @@
         };
 
         const App = () => {
+
             const [scans, setScans] = useState([]);
+
 
             const handleScans = useCallback(() => {
                 const storedData = localStorage.getItem('scans');
