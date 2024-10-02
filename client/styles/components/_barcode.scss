@@ -29,11 +29,12 @@ ul {
 }
 
 .ReactModal__Overlay--animated {
-  animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.8s ease-in;
+  // animation: zoomIn 0.3s ease-out;
 }
 
 .ReactModal__Content--animated {
-  animation: zoomIn 0.3s ease-out;
+  animation: slideIn 0.8s ease-in;
 }
 
 @keyframes fadeIn {
@@ -45,9 +46,9 @@ ul {
   }
 }
 
-@keyframes zoomIn {
+@keyframes slideIn {
   from {
-    transform: translateY(-1000px);
+    transform: translateY(100%);
   }
   to {
     transform: translateY(0);

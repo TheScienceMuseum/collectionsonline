@@ -49,6 +49,8 @@
             const closeModal = () => {
                 setIsOpen(false);
             }
+
+
             const customStyles = {
                 content: {
                     top: '75%',
@@ -56,7 +58,8 @@
                     right: 'auto',
                     bottom: 'auto',
                     marginRight: '-50%',
-                    transform: 'translate(-50%, -50%)',
+                    // transform: 'translate(-50%, -50%)',
+
                 },
             };
 
@@ -147,6 +150,7 @@
         const Tab = ReactBootstrap.Tab
         const Tabs = ReactBootstrap.Tabs
         Modal.setAppElement('#root');
+        Modal.defaultStyles.overlay.backgroundColor = 'cornsilk';
 
 
         const customStyles = {
@@ -217,26 +221,23 @@
 
         const ModalElement = ({ modalIsOpen, afterOpenModal, closeModal, customStyles, resultData, scans, handleUpdateResult }) => {
             const [key, setKey] = useState('result');
-
             const fetchResultData = useCallback(async () => {
                 const scans = JSON.parse(localStorage.getItem('scans') || '{}');
-                console.log(scans, 'cegking scans')
 
                 const lastScan = Object.values(scans).sort((a, b) => b.date - a.date)[0];
-                console.log(lastScan, 'cheking scan')
                 if (lastScan) {
                     handleUpdateResult(lastScan)
                 }
             }, [scans, handleUpdateResult])
+
             useEffect(() => {
                 if (modalIsOpen) {
                     // Fetch the data for the scanned item
-                    console.log('jsjfnjkekjnenjkerfjnferjnke')
                     fetchResultData();
                 }
             }, [modalIsOpen, fetchResultData]);
 
-
+            const hasScans = scans.length > 0;
             useEffect(() => {
                 setKey('result');
             }, []);
@@ -247,9 +248,12 @@
                     onAfterOpen={afterOpenModal}
                     onRequestClose={closeModal}
                     style={customStyles}
+                    overlayClassName="ReactModal__Overlay--animated"
+                    className="ReactModal__Content--animated"
+                    closeTimeoutMS={800}
                 >
                     <div>
-                        <button className='c-btn c-btn--primary' aria-label="close modal" onClick={closeModal}>Close</button>
+                        <button className='c-btn' aria-label="close modal" onClick={closeModal}>X</button>
 
 
                         <Tabs
@@ -258,11 +262,14 @@
                             onSelect={(k) => setKey(k)}
                             className="mb-3"
                         >
+                            {resultData &&
+                                (
+                                    <Tab eventKey="result" title="Result" >
+                                        {resultData && <Result resultData={resultData} />}
+                                    </Tab>)
+                            }
+                            <Tab eventKey="scan-history" title="Scan History" disabled={!scans.length} className={`${!scans.length && 'show'}`}>
 
-                            <Tab eventKey="result" title="Result" >
-                                {resultData && <Result resultData={resultData} />}
-                            </Tab>
-                            <Tab eventKey="scan-history" title="Scan History" disabled={!scans.length}>
                                 <section class="scan-container">
 
                                     {scans.length > 0 ? (
@@ -289,7 +296,7 @@
 
             const config = {
                 fps: 10,
-                qrbox: { width: 600, height: 350 },
+                // qrbox: { width: 600, height: 150 },
                 rememberLastUsedCamera: false,
                 showTorchButtonIfSupported: true,
                 supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
@@ -305,6 +312,8 @@
                         updateScans={updateScans}
                         openModal={openModal}
                     />
+                    <button className='c-btn' aria-label="open modal" onClick={openModal}>Open Scan History</button>
+
                     {modalIsOpen &&
                         (<ModalElement
                             modalIsOpen={modalIsOpen}
@@ -355,7 +364,6 @@
 
             useEffect(() => {
                 const permissionButton = document.querySelector('#html5-qrcode-button-camera-permission');
-                console.log(permissionButton, 'the brn');
                 if (permissionButton) {
                     permissionButton.classList.add('c-btn');
                 }
@@ -374,7 +382,6 @@
 
                     if (data) {
                         const { title, image, uid, path, description, barcodeId } = data;
-                        console.log(data, 'checking')
                         let scans = JSON.parse(localStorage.getItem('scans') || '{}');
                         // if uid already exists in scans, don't duplicate
                         if (!scans[uid]) {
