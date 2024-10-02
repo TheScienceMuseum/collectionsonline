@@ -11,6 +11,49 @@ ul {
   overflow: scroll;
 }
 
+.ReactModal__Content {
+  min-height: 100vh;
+}
+
+.nav-tabs {
+  margin-bottom: 1em;
+}
+
+.nav-tabs {
+  display: flex;
+  .nav-item {
+    .nav-link.active {
+      background-color: red;
+    }
+  }
+}
+
+.ReactModal__Overlay--animated {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.ReactModal__Content--animated {
+  animation: zoomIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: translateY(-1000px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 #html5-qrcode-button-camera-permission,
 #html5-qrcode-button-camera-stop,
 #html5-qrcode-button-camera-start,
@@ -34,15 +77,6 @@ ul {
   -webkit-transition: background-color 0.2s ease-in-out;
   transition: background-color 0.2s ease-in-out;
   cursor: pointer;
-}
-
-.nav-tabs {
-  display: flex;
-  .nav-item {
-    .nav-link.active {
-      background-color: red;
-    }
-  }
 }
 
 .tab-pane {
@@ -161,5 +195,8 @@ ul {
   .c-card--list {
     align-self: baseline;
     width: 100%;
+  }
+  .ReactModal__Content {
+    width: calc(100vw - 25%);
   }
 }
