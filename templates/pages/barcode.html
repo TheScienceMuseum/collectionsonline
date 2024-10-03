@@ -55,11 +55,13 @@
                 content: {
                     top: '75%',
                     left: '50%',
-                    right: 'auto',
+                    right: '50%',
                     bottom: 'auto',
                     marginRight: '-50%',
-                    // transform: 'translate(-50%, -50%)',
-
+                    backgroundColor: 'white',
+                    padding: '20px',
+                    borderRadius: '5px',
+                    boxShadow: '7px -9px 23px rgba(186,186,186,1)',
                 },
             };
 
@@ -151,7 +153,6 @@
         const Tabs = ReactBootstrap.Tabs
         Modal.setAppElement('#root');
         Modal.defaultStyles.overlay.backgroundColor = 'cornsilk';
-
 
         const customStyles = {
             content: {
@@ -248,7 +249,6 @@
                     onAfterOpen={afterOpenModal}
                     onRequestClose={closeModal}
                     style={customStyles}
-                    overlayClassName="ReactModal__Overlay--animated"
                     className="ReactModal__Content--animated"
                     closeTimeoutMS={800}
                 >

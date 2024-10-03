@@ -13,6 +13,7 @@ ul {
 
 .ReactModal__Content {
   min-height: 100vh;
+  width: 80%;
 }
 
 .nav-tabs {
@@ -29,29 +30,21 @@ ul {
 }
 
 .ReactModal__Overlay--animated {
-  animation: fadeIn 0.8s ease-in;
-  // animation: zoomIn 0.3s ease-out;
+  animation: slideIn 0.8s ease-in-out;
 }
 
 .ReactModal__Content--animated {
-  animation: slideIn 0.8s ease-in;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  animation: slideIn 0.8s ease-in-out;
 }
 
 @keyframes slideIn {
   from {
-    transform: translateY(100%);
+    transform: translateX(-100%);
+    opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 
