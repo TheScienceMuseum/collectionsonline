@@ -20,7 +20,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-
+        // React state management
         const { createContext } = React;
 
         const BarcodeContext = createContext();
@@ -88,6 +88,7 @@
                     );
             };
 
+            // currently not used, but could be useful in future
             const handleShareCard = async (data) => {
                 setIsSharing(true);
                 try {
@@ -154,18 +155,6 @@
         Modal.setAppElement('#root');
         Modal.defaultStyles.overlay.backgroundColor = 'cornsilk';
 
-        const customStyles = {
-            content: {
-                top: '50%',
-                left: '50%',
-                right: 'auto',
-                bottom: 'auto',
-                marginRight: '-50%',
-                transform: 'translate(-50%, -50%)',
-            },
-        };
-
-
 
         const ScanCard = ({ scans,
             setScans,
@@ -210,11 +199,7 @@
                             <p className="c-card__desc">{uid}</p>
                             <p className="c-card__desc">{description}</p>
                             {type !== 'list' && <button aria-label="Scan QR code" className='c-btn' onClick={() => handleCopyText(path)}>{isCopied ? 'Copied' : 'Copy URL'}</button>}
-
-
                         </div>
-
-
                     </article>
                 </>
             );
@@ -222,6 +207,7 @@
 
         const ModalElement = ({ modalIsOpen, afterOpenModal, closeModal, customStyles, resultData, scans, handleUpdateResult }) => {
             const [key, setKey] = useState('result');
+            // fetches latest scan for modal result card
             const fetchResultData = useCallback(async () => {
                 const scans = JSON.parse(localStorage.getItem('scans') || '{}');
 
@@ -238,7 +224,6 @@
                 }
             }, [modalIsOpen, fetchResultData]);
 
-            const hasScans = scans.length > 0;
             useEffect(() => {
                 setKey('result');
             }, []);
@@ -254,8 +239,6 @@
                 >
                     <div>
                         <button className='c-btn' aria-label="close modal" onClick={closeModal}>X</button>
-
-
                         <Tabs
                             id="controlled-tab-example"
                             activeKey={key}
@@ -271,7 +254,6 @@
                             <Tab eventKey="scan-history" title="Scan History" disabled={!scans.length} className={`${!scans.length && 'show'}`}>
 
                                 <section class="scan-container">
-
                                     {scans.length > 0 ? (
                                         <Scans scans={scans} />
                                     ) : (
@@ -293,7 +275,7 @@
             const {
                 handleCopyText, isCopied, modalIsOpen, afterOpenModal, closeModal, customStyles, setIsOpen, resultData, setResultData, openModal
             } = useContext(BarcodeContext);
-
+            // passed to scanner child component
             const config = {
                 fps: 10,
                 // qrbox: { width: 600, height: 150 },
@@ -326,11 +308,10 @@
 
                         />)}
                 </>
-            )
-                ;
+            );
         };
 
-
+        // Result card on scanning item
         const Result = ({ resultData }) => {
 
             const {
@@ -355,20 +336,11 @@
         }) => {
 
             const { handleCopyText, isCopied } = useContext(BarcodeContext);
-
+            // note uid and loading state not currently used, but could be in future if needed
             const [uid, setUid] = useState(null);
             const [loading, setLoading] = useState(false);
             const [error, setError] = useState(null);
             const navigate = useNavigate();
-
-
-            useEffect(() => {
-                const permissionButton = document.querySelector('#html5-qrcode-button-camera-permission');
-                if (permissionButton) {
-                    permissionButton.classList.add('c-btn');
-                }
-            }, [])
-
 
             const onScanSuccessWrapper = useCallback(async (decodedText, decodedResult) => {
                 console.log(`Scan result: ${decodedText}`, decodedResult);
@@ -444,7 +416,6 @@
         const App = () => {
 
             const [scans, setScans] = useState([]);
-
 
             const handleScans = useCallback(() => {
                 const storedData = localStorage.getItem('scans');
