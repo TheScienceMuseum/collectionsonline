@@ -1,0 +1,196 @@
+li {
+  list-style: none;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+.ReactModal__Overlay {
+  overflow: scroll;
+}
+
+.ReactModal__Content {
+  min-height: 100vh;
+  width: 80%;
+}
+
+.nav-tabs {
+  margin-bottom: 1em;
+}
+
+.nav-tabs {
+  display: flex;
+  .nav-item {
+    .nav-link.active {
+      background-color: red;
+    }
+  }
+}
+
+.ReactModal__Overlay--animated {
+  animation: slideIn 0.8s ease-in-out;
+}
+
+.ReactModal__Content--animated {
+  animation: slideIn 0.8s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+#html5-qrcode-button-camera-permission,
+#html5-qrcode-button-camera-stop,
+#html5-qrcode-button-camera-start,
+.nav-tabs .nav-item .nav-link {
+  font-size: clamp(1rem, 0.8076923077rem + 0.9615384615vw, 1.5rem);
+  color: white;
+  background-color: rgb(51, 51, 51);
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
+  padding-left: 1em;
+  padding-right: 1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: bold;
+  position: relative;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  line-height: 1;
+  border: 0;
+  -webkit-transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.show {
+  display: block;
+}
+
+.scan-card-img {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.c-btn {
+  margin-block-end: 2em;
+  cursor: pointer;
+}
+
+.c-btn--link {
+  position: absolute;
+  bottom: -15%;
+  right: 0;
+  z-index: 1;
+  opacity: 0.3;
+  transition: opacity 0.4s ease-in-out;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.scan-history {
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: 2em;
+}
+
+.scans {
+  margin-block-end: 2em;
+  .scans__list {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.scan-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-block-start: 0.5em;
+}
+
+.c-card-individual {
+  max-width: 300px;
+}
+
+.c-card--list {
+  margin-block: 0.5em;
+}
+
+.scanner-container {
+  transition: all 0.5s ease-in-out;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  min-height: 100vh;
+
+  .scanner-reader {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+#qr-reader__scan_region {
+  img {
+    width: 150px;
+    max-width: 150px;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .scans__list {
+    align-items: center;
+  }
+  .scan-history-slice {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+  .c-card--list {
+    max-width: 300px;
+    flex-direction: column;
+    gap: 1em;
+    .c-card__img {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 579px) {
+  .c-card--list .c-card__img {
+    display: block;
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 767px) {
+  .c-card--list {
+    align-self: baseline;
+    width: 100%;
+  }
+  .ReactModal__Content {
+    width: calc(100vw - 25%);
+  }
+}

@@ -12,13 +12,12 @@ $focus-color: rgba($c-green, 0.75);
 @import 'base/helpers';
 @import 'base/print';
 
-@import "smg-web-design-system/src/scss/base/tags";
-@import "smg-web-design-system/src/scss/base/utilities";
+@import 'smg-web-design-system/src/scss/base/tags';
+@import 'smg-web-design-system/src/scss/base/utilities';
 
-@import "smg-web-design-system/src/scss/objects/blocks";
-@import "smg-web-design-system/src/scss/objects/grid";
-@import "smg-web-design-system/src/scss/objects/textstyles";
-
+@import 'smg-web-design-system/src/scss/objects/blocks';
+@import 'smg-web-design-system/src/scss/objects/grid';
+@import 'smg-web-design-system/src/scss/objects/textstyles';
 
 // our base styles, then all components
 @import 'base/general';
@@ -57,4 +56,6 @@ $focus-color: rgba($c-green, 0.75);
 @import 'snackbarlightjs/src/css/snackbarlight';
 @import 'smg-web-design-system/src/scss/components/textinput';
 @import 'smg-web-design-system/src/scss/components/truncated';
+@import 'smg-web-design-system/src/scss/components/card';
+@import 'components/barcode';
 @import 'base/hidden';

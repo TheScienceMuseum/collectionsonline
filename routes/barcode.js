@@ -6,7 +6,7 @@ module.exports = (elastic, config) => ({
   config: {
     handler: async function (request, h) {
       if (request.params.uid && request.params.uid.match(/^[A-Za-z0-9]*$/)) {
-        const barcode = escape(request.params.uid);
+        const barcode = encodeURIComponent(request.params.uid);
         const body = {
           query: {
             bool: {
@@ -18,10 +18,30 @@ module.exports = (elastic, config) => ({
           const result = await elastic.search({ index: 'ciim', body });
           if (result.body.hits.hits) {
             const obj = result.body.hits.hits[0];
-            let slugValue = obj._source.summary_title && slug(obj._source.summary_title).toLowerCase();
-            slugValue = slugValue ? ('/' + slugValue) : '';
-            const path = '/objects/' + obj._id + slugValue;
-            return h.redirect(config.rootUrl + path).permanent();
+            if (!obj) {
+              return h.redirect(config.rootUrl + '/barcode').permanent();
+            }
+            let slugValue =
+              obj?._source?.summary_title &&
+              slug(obj?._source?.summary_title).toLowerCase();
+            const title = obj?._source?.summary?.title;
+            const image =
+              config.mediaPath +
+              obj?._source?.multimedia?.[0]?.['@processed']?.medium?.location;
+            const uid = obj?._id;
+            slugValue = slugValue ? '/' + slugValue : '';
+            const path = '/objects/' + obj?._id + slugValue;
+            const description = obj?._source?.description?.[0]?.value;
+            const barcodeId = obj?._source?.barcode?.value;
+
+            return h.response({
+              path,
+              title,
+              image,
+              uid,
+              description,
+              barcodeId
+            });
           } else {
             return 'Barcode not found';
           }
@@ -29,7 +49,7 @@ module.exports = (elastic, config) => ({
           return 'Error: ' + err;
         }
       } else {
-        return h.view('barcode', null, { layout: 'basic' });
+        return h.view('barcode', {}, { layout: 'default' });
       }
     }
   }
