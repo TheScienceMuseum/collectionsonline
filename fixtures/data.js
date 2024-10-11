@@ -165,6 +165,12 @@ module.exports = {
       collection: [
         {
           type: 'collection',
+          title: 'Hawking Building Grid',
+          figure: '/assets/img/home/collections/hawkins-building-thumb.jpg',
+          link: '/group/c83918/hawking-building-freestanding-grid'
+        },
+        {
+          type: 'collection',
           title: 'Daily Herald Photo Archive',
           figure: '/assets/img/home/collections/daily-herald-archive.jpg',
           link: '/search/collection/daily-herald-archive'
@@ -187,12 +193,12 @@ module.exports = {
         //   figure: '/assets/img/home/collections/what-the-machine-saw.jpg',
         //   link: 'https://johnstack.github.io/what-the-machine-saw/'
         // },
-        {
-          type: 'collection',
-          title: 'Random Object Generator',
-          figure: '/assets/img/home/collections/random-object-generator.jpg',
-          link: 'https://collection.sciencemuseumgroup.org.uk/search/slideshow'
-        },
+        // {
+        //   type: 'collection',
+        //   title: 'Random Object Generator',
+        //   figure: '/assets/img/home/collections/random-object-generator.jpg',
+        //   link: 'https://collection.sciencemuseumgroup.org.uk/search/slideshow'
+        // },
         {
           type: 'collection',
           title: 'Rotational photography',
