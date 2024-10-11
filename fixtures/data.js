@@ -165,7 +165,7 @@ module.exports = {
       collection: [
         {
           type: 'collection',
-          title: 'Hawking Building Freestanding Grid',
+          title: 'Hawking Building Grid',
           figure: '/assets/img/home/collections/hawkins-building-thumb.jpg',
           link: '/group/c83918/hawking-building-freestanding-grid'
         },
