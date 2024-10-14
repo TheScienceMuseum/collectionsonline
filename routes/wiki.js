@@ -138,8 +138,8 @@ async function configResponse (qCode, entities, elastic, config) {
         } else if (furtherContext) {
           // for position held + qualifiers. N.B can be expanded to do further nesting, i.e value of value
           const qualifiersArr = entities[qCode].claims[property];
+          const context = await extraContext(qualifiersArr, elastic, config);
 
-          const context = await extraContext(qualifiersArr);
           if (context.length > 0) {
             obj[property] = { label, value: context };
           }
