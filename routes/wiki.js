@@ -8,7 +8,7 @@ const {
   nestedData,
   formatDate,
   extractNestedQCodeData,
-  positionHeld
+  extraContext
 } = require('../lib/wikidataQueries');
 const { setCache, fetchCache } = require('../lib/cached-wikidata');
 const properties = require('../fixtures/wikibasePropertiesConfig');
@@ -82,11 +82,14 @@ async function configResponse (qCode, entities, elastic, config) {
           };
         }
 
+        // For dates and extra information
+        const furtherContext = hasPropertyAction('context', action);
+
         // Handling nested data that needs extra configuration
         if (hasPropertyAction('nest', action)) {
           const hide = hasPropertyAction('hide', action);
-          const relatedRequired = hasPropertyAction('displayLinked', action);
           const nested = await nestedData(entities, qCode, property);
+          const relatedRequired = hasPropertyAction('displayLinked', action);
           const value = await extractNestedQCodeData(
             nested,
             elastic,
@@ -110,6 +113,7 @@ async function configResponse (qCode, entities, elastic, config) {
             hide,
             relatedRequired
           );
+
           if (value) {
             obj[property] = {
               ...(value ? { label } : ''),
@@ -131,18 +135,18 @@ async function configResponse (qCode, entities, elastic, config) {
         } else if (property === 'P571') {
           const date = formatDate(entities, qCode, property);
           obj[property] = { label, value: [{ value: date }] };
-        } else if (property === 'P39') {
+        } else if (furtherContext) {
           // for position held + qualifiers. N.B can be expanded to do further nesting, i.e value of value
-          const qualifiersArr = entities[qCode].claims.P39;
-          const positions = await positionHeld(qualifiersArr);
-          if (positions.length > 0) {
-            obj[property] = { label, value: positions };
+          const qualifiersArr = entities[qCode].claims[property];
+
+          const context = await extraContext(qualifiersArr);
+          if (context.length > 0) {
+            obj[property] = { label, value: context };
           }
         }
       }
     })
   );
-
   return obj;
 }
 

@@ -6,7 +6,8 @@ const displayLinked = { displayLinked: true }; // if no related record in our sy
 const isExternalLink = { isExternalLink: true };
 const list = { list: true };
 const context = { context: true };
-
+// to add further context. Note property needs qualifiers obj with further dates for this to work, and some don't have this or contain desired data
+// can check using this url with any qCode https://www.wikidata.org/w/api.php?action=wbgetentities&ids=<<QCODE>>&format=json&redirects=no&languages=en%7Cfr%7Cde&props=info%7Cclaims
 module.exports = {
   Image: { property: 'P18', action: [display] },
   Mother: { property: 'P25', action: [match, display, displayLinked] },
@@ -28,38 +29,35 @@ module.exports = {
   Industry: { property: 'P452', action: [nest, match] },
   'Position Held': {
     property: 'P39',
-    action: [nest, match, displayLinked, displayLinked, displayLinked, context]
+    action: [nest, match, displayLinked, context]
   },
   'Date of Birth': {
     property: 'P569',
-    action: [match, display, hide, context]
+    action: [match, display, hide]
   },
   'Owned By': {
     property: 'P127',
-    action: [
-      nest,
-      display,
-      displayLinked,
-      displayLinked,
-      displayLinked,
-      context
-    ]
+    action: [nest, display, displayLinked, context]
   },
   'Member Of': {
     property: 'P463',
-    action: [nest, display, displayLinked, displayLinked, displayLinked]
+    action: [
+      nest,
+      display,
+      displayLinked
+      //  context   // P585 P580
+    ]
   },
-  'Owner Of': { property: 'P1830', action: [nest, display] },
+  'Owner Of': {
+    property: 'P1830',
+    action: [nest, display, context]
+  },
   'described at URL': {
     property: 'P973',
     action: [display, isExternalLink, hide]
   },
   'Oxford DNB': { property: 'P1415', action: [display] },
   'Award Received': { property: 'P166', action: [nest, display, list] },
-  Employees: {
-    property: 'P1128',
-    action: [nest, display, displayLinked, displayLinked, context]
-  },
   'Named After': { property: 'P138', action: [display] },
   'Archives in': { property: 'P485', action: [nest, display, list] },
   Inception: { property: 'P571', action: [display, hide] },
