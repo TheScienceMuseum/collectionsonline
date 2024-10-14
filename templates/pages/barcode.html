@@ -349,7 +349,7 @@
                 setUid(decodedText);
 
                 try {
-                    const result = await fetch(`http://localhost:8000/barcode/${decodedText}`);
+                    const result = await fetch(`https://collection.sciencemuseumgroup.org.uk/barcode/${decodedText}`);
                     const data = await result.json();
 
                     if (data) {
