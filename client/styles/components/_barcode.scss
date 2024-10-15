@@ -197,7 +197,7 @@ ul {
 
 @media screen and (min-width: 300px) and (max-width: 500px) {
   #qr-shaded-region {
-    border-width: 150.5px 10px;
-    height: 50%;
+    border-width: 150.5px 10px !important;
+    height: 90%;
   }
 }
