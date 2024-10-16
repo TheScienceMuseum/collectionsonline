@@ -195,9 +195,16 @@ ul {
   }
 }
 
-@media screen and (min-width: 300px) and (max-width: 500px) {
-  #qr-shaded-region {
-    border-width: 150.5px 10px !important;
-    height: 90%;
+@media screen and (min-width: 600px) {
+  .scanner-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .scanner-reader {
+      width: max(50vw, 200px);
+    }
   }
 }
