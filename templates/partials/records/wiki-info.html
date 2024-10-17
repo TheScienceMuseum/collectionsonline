@@ -9,7 +9,7 @@
     <header>
         <h2>Wikidata Information</h2>
     </header>
-    {{#each (wikiInfoTransform wikiData.info)}}
+    {{#each (wikiInfoTransform wikiData.sortedInfo)}}
     {{#if (isArray this.value.value)}}
     {{#unless (wikidataExcludeField this.value)}}
     <article class="property">
