@@ -49,7 +49,7 @@ module.exports = (elastic, config) => ({
           return 'Error: ' + err;
         }
       } else {
-        return h.view('barcode', {}, { layout: 'default' });
+        return h.view('barcode', { 'titlePage': 'SMG Barcode Scanner' }, { layout: 'basic' });
       }
     }
   }
