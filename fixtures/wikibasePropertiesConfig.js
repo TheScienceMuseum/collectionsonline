@@ -41,12 +41,7 @@ module.exports = {
   },
   'Member Of': {
     property: 'P463',
-    action: [
-      nest,
-      display,
-      displayLinked
-      //  context   // P585 P580
-    ]
+    action: [nest, display, displayLinked, context]
   },
   'Owner Of': {
     property: 'P1830',

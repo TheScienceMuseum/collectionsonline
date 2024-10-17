@@ -19,7 +19,7 @@
             {{#if (isWikiLink this.value)}}
             <li>
                 {{else}}
-            <li style="display: inline-block;">
+            <li class='{{#if this.list}}wikidata-list{{/if}}' style="display: inline-block;">
                 {{/if}}
                 {{#if this.related}}
                 <a href="{{this.related}}">

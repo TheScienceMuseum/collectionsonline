@@ -8,7 +8,8 @@ const {
   nestedData,
   formatDate,
   extractNestedQCodeData,
-  extraContext
+  extraContext,
+  formatViaf
 } = require('../lib/wikidataQueries');
 const { setCache, fetchCache } = require('../lib/cached-wikidata');
 const properties = require('../fixtures/wikibasePropertiesConfig');
@@ -84,6 +85,7 @@ async function configResponse (qCode, entities, elastic, config) {
 
         // For dates and extra information
         const furtherContext = hasPropertyAction('context', action);
+        const list = hasPropertyAction('list', action);
 
         // Handling nested data that needs extra configuration
         if (hasPropertyAction('nest', action)) {
@@ -95,7 +97,8 @@ async function configResponse (qCode, entities, elastic, config) {
             elastic,
             config,
             hide,
-            relatedRequired
+            relatedRequired,
+            list
           );
 
           obj[property] = {
@@ -111,7 +114,8 @@ async function configResponse (qCode, entities, elastic, config) {
             elastic,
             config,
             hide,
-            relatedRequired
+            relatedRequired,
+            list
           );
 
           if (value) {
@@ -135,6 +139,9 @@ async function configResponse (qCode, entities, elastic, config) {
         } else if (property === 'P571') {
           const date = formatDate(entities, qCode, property);
           obj[property] = { label, value: [{ value: date }] };
+        } else if (property === 'P214') {
+          const viafString = await formatViaf(entities, qCode, property);
+          obj[property] = { label, value: [{ value: viafString }] };
         } else if (furtherContext) {
           // for position held + qualifiers. N.B can be expanded to do further nesting, i.e value of value
           const qualifiersArr = entities[qCode].claims[property];

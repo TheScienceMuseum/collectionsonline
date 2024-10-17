@@ -105,3 +105,14 @@
     }
   }
 }
+
+.wikidata-list {
+  // display: block;
+  display: list-item !important;
+  padding: 0.5rem;
+  list-style-type: circle;
+  list-style-position: inside;
+  &:nth-of-type(1) {
+    margin-top: 0.5rem;
+  }
+}
