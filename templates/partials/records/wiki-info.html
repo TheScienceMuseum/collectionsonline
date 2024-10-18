@@ -1,5 +1,5 @@
 {{#unless inProduction}}
-<section class="panel panel__text" style="border: 6px solid #e3f542">
+<section class="panel panel__text">
     {{#if wikiData.image}}
     <div class="panel" style="margin-bottom: 10px">
 
@@ -9,7 +9,7 @@
     <header>
         <h2>Wikidata Information</h2>
     </header>
-    {{#each (wikiInfoTransform wikiData.info)}}
+    {{#each (wikiInfoTransform wikiData.sortedInfo)}}
     {{#if (isArray this.value.value)}}
     {{#unless (wikidataExcludeField this.value)}}
     <article class="property">
@@ -19,16 +19,16 @@
             {{#if (isWikiLink this.value)}}
             <li>
                 {{else}}
-            <li style="display: inline-block;">
+            <li class='{{#if this.list}}wikidata-list{{/if}}' style="display: inline-block;">
                 {{/if}}
                 {{#if this.related}}
                 <a href="{{this.related}}">
                     {{this.value}}
-                </a>{{comma this ../this.value.value false}}
+                </a>{{#unless this.list}}{{comma this ../this.value.value false}}{{/unless}}
                 {{else}}
                 {{#if (isWikiLink this.value)}}
-                <a href="{{this.value}}">{{/if}}{{this.value}}{{comma this
-                    ../this.value.value false}}
+                <a href="{{this.value}}">{{/if}}{{this.value}}{{#unless this.list}}{{comma this
+                    ../this.value.value false}}{{/unless}}
                     {{#if (isWikiLink this.value)}}</a>{{comma this ../this.value.value false}}{{/if}}
                 {{/if}}
             </li>

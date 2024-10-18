@@ -3,17 +3,32 @@ const Templates = require('../../templates');
 module.exports = async function () {
   const wikiInfo = document.getElementById('wikiInfo');
   const data = await displayData();
+
   if (!data) {
     return;
   }
   const _data = { ...data };
 
-  const { P18: imageUrl = null, P154: logoUrl = null, ...info } = _data;
+  // destructuring to change order of data in ui
+  const {
+    P18: imageUrl = null,
+    P214: viaf = null,
+    P154: logoUrl = null,
+    P1415: oxfordDnb = null,
+    ...info
+  } = _data;
 
   const finalImageUrl = imageUrl || logoUrl;
+
+  const sortedInfo = {
+    ...info,
+    ...(viaf && { P214: viaf }),
+    ...(oxfordDnb && { P1415: oxfordDnb })
+  };
+
   const wikiData = {
     ...(finalImageUrl && { image: finalImageUrl }),
-    ...(JSON.stringify(info) !== '{}' && { info })
+    ...(JSON.stringify(sortedInfo) !== '{}' && { sortedInfo })
   };
 
   if (wikiData) {
