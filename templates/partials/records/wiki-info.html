@@ -24,11 +24,11 @@
                 {{#if this.related}}
                 <a href="{{this.related}}">
                     {{this.value}}
-                </a>{{comma this ../this.value.value false}}
+                </a>{{#unless this.list}}{{comma this ../this.value.value false}}{{/unless}}
                 {{else}}
                 {{#if (isWikiLink this.value)}}
-                <a href="{{this.value}}">{{/if}}{{this.value}}{{comma this
-                    ../this.value.value false}}
+                <a href="{{this.value}}">{{/if}}{{this.value}}{{#unless this.list}}{{comma this
+                    ../this.value.value false}}{{/unless}}
                     {{#if (isWikiLink this.value)}}</a>{{comma this ../this.value.value false}}{{/if}}
                 {{/if}}
             </li>
