@@ -295,7 +295,9 @@
                 rememberLastUsedCamera: false,
                 showTorchButtonIfSupported: true,
                 supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
-                facingMode: { exact: "environment" },
+                videoConstraints: {
+                    facingMode: { exact: "environment" },
+                },
                 aspectRatio: 1,
                 focusMode: "continuous",
 
