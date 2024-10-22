@@ -680,6 +680,32 @@ testWithServer(
 );
 
 testWithServer(
+  'Checking deeply nested child records under SPH grouping',
+  {},
+  async (t, ctx) => {
+    t.plan(3);
+
+    const htmlRequest = {
+      method: 'GET',
+      url: '/api/objects/co134863',
+      headers: { Accept: 'application/json' }
+    };
+
+    const res = await ctx.server.inject(htmlRequest);
+    const result = JSON.parse(res.payload);
+    t.ok(res.statusCode, 200, 'status is 200');
+    t.ok(result, 'Result was json');
+    t.equal(
+      result?.data?.children?.[2]?.data?.attributes.child[0]?.['@admin'].uid,
+      'co8917556',
+      'Correct nested object returned'
+    );
+    await ctx.server.stop();
+    t.end();
+  }
+);
+
+testWithServer(
   'Checking child records are redirected back to their parent record',
   {},
   async (t, ctx) => {
