@@ -12,7 +12,7 @@ $fonts: (
   ('Fat', 900, normal)
 );
 
-$font-path: '//smgco-images.s3.amazonaws.com/fonts/';
+$font-path: '//coimages.sciencemuseumgroup.org.uk/fonts/';
 
 @each $f in $fonts {
   @font-face {
