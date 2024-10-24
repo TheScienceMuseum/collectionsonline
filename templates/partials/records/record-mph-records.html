@@ -1,6 +1,6 @@
 <section class="mph-records o-container">
   <div class="mph-records__grid">
-    {{#each childRecords}}
+    {{#each (getMphCapacity childRecords 0 25)}}
     {{#if links}}
     <a href={{links.self}}>
       <article class="resultcard resultcard--objects mph-records__resultcard resultcard--priority-card">
@@ -28,7 +28,7 @@
     {{/if}}
     {{/each}}
 
-    {{#if (mphShowMore childRecords counts)}}
+    {{#if (mphShowMore (getMphCapacity childRecords 0 25) counts)}}
     <a href="/search/objects/mphc/{{uid}}">
       <article class="resultcard mph-records__resultcard resultcard--seemore resultcard--objects">
         <figure class="resultcard__figure">{{> global/icon i="search" size="48" }}</figure>

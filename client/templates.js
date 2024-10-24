@@ -482,6 +482,10 @@ Handlebars.registerHelper(
   'isWikiLink',
   require('../templates/helpers/isWikiLink.js')
 );
+Handlebars.registerHelper(
+  'isWikiLink',
+  require('../templates/helpers/getMphCapacity.js')
+);
 
 Handlebars.registerPartial(
   'records/record-sph-images',
@@ -498,7 +502,10 @@ Handlebars.registerPartial(
 
 Handlebars.registerPartial(
   'records/record-sph-priority-item',
-  Fs.readFileSync('./templates/partials/records/record-sph-priority-item.html', 'utf8')
+  Fs.readFileSync(
+    './templates/partials/records/record-sph-priority-item.html',
+    'utf8'
+  )
 );
 
 // Routes
