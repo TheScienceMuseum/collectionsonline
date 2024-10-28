@@ -157,6 +157,13 @@ ul {
   left: 10px;
 }
 
+.c-card__img {
+  > .resultcard__figure {
+    background-color: transparent;
+    position: static;
+  }
+}
+
 #qr-reader__scan_region {
   img {
     width: 150px;
