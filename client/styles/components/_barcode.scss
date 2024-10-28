@@ -151,6 +151,12 @@ ul {
   }
 }
 
+.fallback {
+  position: absolute;
+  top: 0;
+  left: 10px;
+}
+
 #qr-reader__scan_region {
   img {
     width: 150px;

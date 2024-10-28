@@ -176,15 +176,13 @@
             image,
             uid
         }) => {
-
             const navigate = useNavigate();
-
 
             return (
                 <>
                     <article className={`c-card c-card--default ${type === 'list' ? 'c-card--list' : 'c-card-individual'}`}>
                         <div className="c-card__img u-grad-yellow-orange-red">
-                            <img src={image} alt={`item ${uid}`} className='scan-card-img' />
+                            {!image.includes(undefined) ? (<img src={image} alt={`item ${uid}`} className='scan-card-img' />) : (<p className="fallback">{title} </p>)}
                             <a href={path} aria-label={`View item ${title}`} target="_blank" rel="noopener noreferrer">
                                 <button className='c-btn c-btn--primary c-btn--link'></button>
                             </a>
