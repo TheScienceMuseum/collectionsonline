@@ -177,7 +177,7 @@
         const Tab = ReactBootstrap.Tab
         const Tabs = ReactBootstrap.Tabs
         Modal.setAppElement('#root');
-        Modal.defaultStyles.overlay.backgroundColor = 'cornsilk';
+        Modal.defaultStyles.overlay.backgroundColor = 'rgba(0, 0, 0, 0.5)';
 
 
         const ScanCard = ({ scans,
@@ -198,18 +198,26 @@
             image,
             uid
         }) => {
-
             const navigate = useNavigate();
-
-
             return (
                 <>
                     <article className={`c-card c-card--default ${type === 'list' ? 'c-card--list' : 'c-card-individual'}`}>
                         <div className="c-card__img u-grad-yellow-orange-red">
-                            <img src={image} alt={`item ${uid}`} className='scan-card-img' />
-                            <a href={path} aria-label={`View item ${title}`} target="_blank" rel="noopener noreferrer">
-                                <button className='c-btn c-btn--primary c-btn--link'></button>
-                            </a>
+                            {image && !image.includes(undefined) ? (<>
+                                <img src={image} alt={`item ${uid}`} className='scan-card-img' />
+                                <a href={path} aria-label={`View item ${title}`} target="_blank" rel="noopener noreferrer">
+                                    <button className='c-btn c-btn--primary c-btn--link'></button>
+                                </a>
+                            </>
+                            ) : (
+
+                                <figure class="resultcard__figure">
+                                    <figcaption role="presentation">
+                                        {title}
+                                    </figcaption>
+                                </figure>
+
+                            )}
 
                         </div>
 
@@ -222,7 +230,9 @@
                             </div>
                             <p className="c-card__desc">{uid}</p>
                             <p className="c-card__desc">{description}</p>
-                            {type !== 'list' && <button aria-label="Scan QR code" className='c-btn' onClick={() => handleCopyText(path)}>{isCopied ? 'Copied' : 'Copy URL'}</button>}
+                            <a href={path} aria-label={`View item ${title}`} target="_blank" rel="noopener noreferrer">
+                                <button className='c-btn '>View Record</button>
+                            </a>
                         </div>
                     </article>
                 </>
@@ -392,7 +402,7 @@
                     const result = await fetch(`https://collection.sciencemuseumgroup.org.uk/barcode/${decodedText}`);
                     const data = await result.json();
 
-                    if (data) {
+                    if (result.ok && data) {
                         const { title, image, uid, path, description, barcodeId } = data;
                         let scans = JSON.parse(localStorage.getItem('scans') || '{}');
                         // if uid already exists in scans, don't duplicate
