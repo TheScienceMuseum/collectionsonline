@@ -16,21 +16,21 @@
         <h3>{{this.value.label}}</h3>
         <ul>
             {{#each this.value.value}}
-            {{#if (isWikiLink this.value)}}
-            <li>
-                {{else}}
+            {{#if this.list}}
             <li class='{{#if this.list}}wikidata-list{{/if}}' style="display: inline-block;">
+                {{else}}
+            <li style="display: inline;">
                 {{/if}}
                 {{#if this.related}}
                 <a href="{{this.related}}">
                     {{this.value}}
                 </a>{{#unless this.list}}{{comma this ../this.value.value false}}{{/unless}}
                 {{else}}
-                {{#if (isWikiLink this.value)}}
-                <a href="{{this.value}}">{{/if}}{{this.value}}{{#unless this.list}}{{comma this
-                    ../this.value.value false}}{{/unless}}
-                    {{#if (isWikiLink this.value)}}</a>{{comma this ../this.value.value false}}{{/if}}
+
+                {{this.value}}{{#unless this.list}}{{comma this
+                ../this.value.value false}}{{/unless}}
                 {{/if}}
+
             </li>
             {{/each}}
         </ul>
