@@ -100,7 +100,6 @@ async function configResponse (qCode, entities, elastic, config) {
             relatedRequired,
             list
           );
-
           obj[property] = {
             ...(value ? { label } : ''),
             value
@@ -117,7 +116,6 @@ async function configResponse (qCode, entities, elastic, config) {
             relatedRequired,
             list
           );
-
           if (value) {
             obj[property] = {
               ...(value ? { label } : ''),
@@ -141,11 +139,16 @@ async function configResponse (qCode, entities, elastic, config) {
           obj[property] = { label, value: [{ value: date }] };
         } else if (property === 'P214') {
           const viafString = await formatViaf(entities, qCode, property);
-          obj[property] = { label, value: [{ value: viafString }] };
+          obj[property] = { label, value: [{ value: { viaf: viafString } }] };
         } else if (furtherContext) {
           // for position held + qualifiers. N.B can be expanded to do further nesting, i.e value of value
           const qualifiersArr = entities[qCode].claims[property];
-          const context = await extraContext(qualifiersArr, elastic, config);
+          const context = await extraContext(
+            qualifiersArr,
+            elastic,
+            config,
+            list
+          );
 
           if (context.length > 0) {
             obj[property] = { label, value: context };

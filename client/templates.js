@@ -483,8 +483,13 @@ Handlebars.registerHelper(
   require('../templates/helpers/isWikiLink.js')
 );
 Handlebars.registerHelper(
-  'isWikiLink',
+  'getMphCapacity',
   require('../templates/helpers/getMphCapacity.js')
+);
+
+Handlebars.registerHelper(
+  'isWikiList',
+  require('../templates/helpers/isWikiList.js')
 );
 
 Handlebars.registerPartial(

@@ -14,22 +14,27 @@
     {{#unless (wikidataExcludeField this.value)}}
     <article class="property">
         <h3>{{this.value.label}}</h3>
-        <ul>
+        <ul class='{{#if (isWikiList this.value.value)}}wikidata-list{{/if}}'>
             {{#each this.value.value}}
-            {{#if (isWikiLink this.value)}}
-            <li>
+
+            {{#if this.list}}
+            <li class='{{#if this.list}}wikidata-list-item{{/if}}' style="display: inline-block;">
                 {{else}}
-            <li class='{{#if this.list}}wikidata-list{{/if}}' style="display: inline-block;">
+            <li style="display: inline;">
                 {{/if}}
                 {{#if this.related}}
                 <a href="{{this.related}}">
                     {{this.value}}
                 </a>{{#unless this.list}}{{comma this ../this.value.value false}}{{/unless}}
                 {{else}}
-                {{#if (isWikiLink this.value)}}
-                <a href="{{this.value}}">{{/if}}{{this.value}}{{#unless this.list}}{{comma this
-                    ../this.value.value false}}{{/unless}}
-                    {{#if (isWikiLink this.value)}}</a>{{comma this ../this.value.value false}}{{/if}}
+                {{#unless this.value.viaf}} {{this.value}}{{/unless}}{{#unless this.list}}{{comma this
+                ../this.value.value false}}{{/unless}}
+                {{/if}}
+                {{#if this.value.viaf}}
+                <a href="{{this.value.viaf}}">
+                    {{this.value.viaf}}
+                </a>
+
                 {{/if}}
             </li>
             {{/each}}

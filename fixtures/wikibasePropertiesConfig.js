@@ -24,12 +24,12 @@ module.exports = {
   'Official Name': { property: 'P1448', action: [match, display] },
   'Employer(s)': {
     property: 'P108',
-    action: [nest, match, display, displayLinked, context]
+    action: [nest, match, display, displayLinked, context, list]
   },
-  Industry: { property: 'P452', action: [nest, match] },
+  Industry: { property: 'P452', action: [nest, match, list] },
   'Position Held': {
     property: 'P39',
-    action: [nest, match, displayLinked, context]
+    action: [nest, match, displayLinked, context, list]
   },
   'Date of Birth': {
     property: 'P569',
@@ -41,7 +41,7 @@ module.exports = {
   },
   'Member Of': {
     property: 'P463',
-    action: [nest, display, displayLinked, context]
+    action: [nest, display, displayLinked, context, list]
   },
   'Owner Of': {
     property: 'P1830',
@@ -76,5 +76,5 @@ module.exports = {
   Relatives: { property: 'P1038', action: [nest, display, displayLinked] },
   'Educated At': { property: 'P69', action: [nest, display] },
   'Notable Work': { property: 'P800', action: [nest, display] },
-  'VIAF ID': { property: 'P214', action: [display] }
+  'VIAF ID': { property: 'P214', action: [display, isExternalLink] }
 };
