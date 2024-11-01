@@ -27,16 +27,15 @@
                     {{this.value}}
                 </a>{{#unless this.list}}{{comma this ../this.value.value false}}{{/unless}}
                 {{else}}
-                {{this.value}}{{#unless this.list}}{{comma this
+                {{#unless this.value.viaf}} {{this.value}}{{/unless}}{{#unless this.list}}{{comma this
                 ../this.value.value false}}{{/unless}}
                 {{/if}}
-
                 {{#if this.value.viaf}}
                 <a href="{{this.value.viaf}}">
                     {{this.value.viaf}}
                 </a>
-                {{/if}}
 
+                {{/if}}
             </li>
             {{/each}}
         </ul>
