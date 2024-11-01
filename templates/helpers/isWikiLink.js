@@ -1,6 +1,7 @@
 module.exports = (value) => {
-  if (typeof value === 'string' && value.startsWith('http')) {
+  console.log('the value');
+  if (typeof value === 'string' && value.includes('viaf')) {
     return true;
   }
-  return false;
+  return true;
 };

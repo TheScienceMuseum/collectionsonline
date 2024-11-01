@@ -14,10 +14,11 @@
     {{#unless (wikidataExcludeField this.value)}}
     <article class="property">
         <h3>{{this.value.label}}</h3>
-        <ul>
+        <ul class='{{#if (isWikiList this.value.value)}}wikidata-list{{/if}}'>
             {{#each this.value.value}}
+
             {{#if this.list}}
-            <li class='{{#if this.list}}wikidata-list{{/if}}' style="display: inline-block;">
+            <li class='{{#if this.list}}wikidata-list-item{{/if}}' style="display: inline-block;">
                 {{else}}
             <li style="display: inline;">
                 {{/if}}
@@ -26,9 +27,14 @@
                     {{this.value}}
                 </a>{{#unless this.list}}{{comma this ../this.value.value false}}{{/unless}}
                 {{else}}
-
                 {{this.value}}{{#unless this.list}}{{comma this
                 ../this.value.value false}}{{/unless}}
+                {{/if}}
+
+                {{#if this.value.viaf}}
+                <a href="{{this.value.viaf}}">
+                    {{this.value.viaf}}
+                </a>
                 {{/if}}
 
             </li>
