@@ -688,6 +688,7 @@ testWithServer(
     const htmlRequest = {
       method: 'GET',
       url: '/api/objects/co134863',
+
       headers: { Accept: 'application/json' }
     };
 
@@ -696,7 +697,7 @@ testWithServer(
     t.ok(res.statusCode, 200, 'status is 200');
     t.ok(result, 'Result was json');
     t.equal(
-      result?.data?.children?.[2]?.data?.attributes.child[0]?.['@admin'].uid,
+      result?.data?.children?.[6]?.data?.attributes.child?.[0]?.['@admin'].uid,
       'co8917556',
       'Correct nested object returned'
     );

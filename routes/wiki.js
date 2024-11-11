@@ -191,7 +191,7 @@ module.exports = (elastic, config) => ({
           config
         );
 
-        await setCache(cache, wikidata, result);
+        await setCache(cache, wikidata, result, clear);
 
         return h
           .response(JSON.stringify(result))
