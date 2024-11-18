@@ -10,8 +10,9 @@ const headerMenu = require('smg-web-design-system/dist/js/menu');
 const illuminate = require('smg-web-design-system/dist/js/illuminate');
 const osd = require('./osd');
 const lightbox = require('./lightbox');
+const skipLink = require('./skipLink');
 
-module.exports = ctx => {
+module.exports = (ctx) => {
   searchBox();
   clipboard();
   map();
@@ -24,4 +25,5 @@ module.exports = ctx => {
   illuminate();
   osd(ctx);
   lightbox();
+  skipLink();
 };
