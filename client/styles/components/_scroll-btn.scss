@@ -1,0 +1,47 @@
+.c-btn {
+  font-size: 1rem;
+  color: #fff;
+  background-color: #333;
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
+  padding-left: 1em;
+  padding-right: 1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: bold;
+  position: relative;
+  display: inline-flex;
+  line-height: 1;
+  border: 0;
+  transition: background-color 0.2s ease-in-out;
+  &:focus {
+    background-color: scale-color(#333, $lightness: +40%);
+    // -webkit-box-shadow: -1px 26px 71px 23px rgba(0, 0, 0, 0.75);
+    // -moz-box-shadow: -1px 26px 71px 23px rgba(0, 0, 0, 0.75);
+    box-shadow: -1px 26px 71px 23px rgba(0, 0, 0, 0.75);
+  }
+}
+
+// .c-btn--purple {
+//   background-color: #af1280;
+//   color: #fff;
+// }
+
+.scroll-to-top {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  cursor: pointer;
+  z-index: 500;
+}
+
+@media (min-width: 1152px) {
+  .c-btn {
+    font-size: 1.5rem;
+  }
+}
+@media (min-width: 320px) {
+  .c-btn {
+    font-size: calc(0.8076923077rem + 0.9615384615vw);
+  }
+}

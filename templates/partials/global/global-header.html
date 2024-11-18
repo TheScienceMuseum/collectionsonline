@@ -1,17 +1,20 @@
 <header class="c-masthead">
   <div class="o-flex-container">
     {{!--
-      <a href="https://group.sciencemuseum.org.uk/" class="c-masthead__logo">
-        <img src="/assets/img/global/smg-logo.svg" alt="Science Museum Group" width="118" height="71">
-      </a>
+    <a href="https://group.sciencemuseum.org.uk/" class="c-masthead__logo">
+      <img src="/assets/img/global/smg-logo.svg" alt="Science Museum Group" width="118" height="71">
+    </a>
     --}}
     <b class="c-masthead__logo">
-        <img src="/assets/img/global/smg-logo.svg" alt="Science Museum Group" width="118" height="71">
+      <img src="/assets/img/global/smg-logo.svg" alt="Science Museum Group" width="118" height="71">
     </b>
-      <div class="c-masthead__right c-menu">
-        <button class="c-menu__button" aria-controls="mobile-menu" aria-expanded="false">Collection</button>
-          {{> global/menu class="c-menu--global" items=navigation.global}}
-      </div>
+    <a href="#" id="skip-link" class="c-masthead__skip-link c-btn" aria-label="skip to main content">Skip to
+      main
+      content</a>
+    <div class="c-masthead__right c-menu">
+      <button class="c-menu__button" aria-controls="mobile-menu" aria-expanded="false">Collection</button>
+      {{> global/menu class="c-menu--global" items=navigation.global}}
+    </div>
   </div>
 </header>
 <header class="c-nav-site">
