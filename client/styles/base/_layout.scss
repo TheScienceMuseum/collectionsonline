@@ -11,26 +11,25 @@
   grid-template-rows: auto auto auto;
   grid-template-columns: repeat(2, 1fr);
   grid-template-areas:
-    "ctrl-view ctrl-filters"
-    "filters filters"
-    "searchresults searchresults";
+    'ctrl-view ctrl-filters'
+    'filters filters'
+    'searchresults searchresults';
 
-  @include media(">=medium") {
+  @include media('>=medium') {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto auto;
     grid-template-areas:
-      "ctrl-view ctrl-view ctrl-filters"
-      "searchresults searchresults filters";
+      'ctrl-view ctrl-view ctrl-filters'
+      'searchresults searchresults filters';
   }
 
-  @include media(">=large") {
+  @include media('>=large') {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto auto;
     grid-template-areas:
-      "ctrl-view ctrl-view ctrl-view ctrl-filters"
-      "searchresults searchresults searchresults filters";
+      'ctrl-view ctrl-view ctrl-view ctrl-filters'
+      'searchresults searchresults searchresults filters';
   }
-
 }
 
 .control--filters {
@@ -43,7 +42,6 @@
 }
 
 .searchresults {
-
   grid-column-start: searchresults;
   grid-column-end: filters;
   padding: 0;
@@ -53,22 +51,22 @@
   gap: $grid-gutter;
   grid-template-columns: repeat(2, 1fr);
 
-  @include media(">=medium") {
+  @include media('>=medium') {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  @include media(">=large") {
+  @include media('>=large') {
     grid-template-columns: repeat(4, 1fr);
   }
 
   &--filtersactive {
     grid-area: searchresults;
 
-    @include media(">=medium") {
+    @include media('>=medium') {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    @include media(">=large") {
+    @include media('>=large') {
       grid-template-columns: repeat(3, 1fr);
     }
   }
@@ -88,11 +86,19 @@
   }
 
   // positioned on top for small screens, col on right for larger
-  @include media("<=small") {
+  @include media('<=small') {
     position: absolute;
     z-index: 1;
     right: 0;
     left: 0;
     padding: 0;
   }
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+  min-inline-size: initial;
+  margin-inline: 0;
 }
