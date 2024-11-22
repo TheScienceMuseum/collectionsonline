@@ -8,13 +8,9 @@
 
     {{#if descriptionBox}}
 
-    <div
-      class="description-box"
-      data-description-box-type="{{descriptionBox.boxType}}"
-      data-description-box-sides="{{descriptionBox.sides}}"
-      {{#if descriptionBox.museum}}
-      style="background-image:url({{descriptionBox.museum.thumbnail}})"
-      {{/if}}>
+    <div class="description-box" data-description-box-type="{{descriptionBox.boxType}}"
+      data-description-box-sides="{{descriptionBox.sides}}" {{#if descriptionBox.museum}}
+      style="background-image:url({{descriptionBox.museum.thumbnail}})" {{/if}}>
 
       {{#if descriptionBox.category}}
       <div class="description-box__main">
@@ -45,8 +41,7 @@
 
 
       {{#if descriptionBox.collection}}
-      <div
-        class="description-box__main">
+      <div class="description-box__main">
         <h3 class="description-box__main-title">{{descriptionBox.collection.title}}</h3>
         <p>{{descriptionBox.collection.description}}</p>
       </div>
@@ -95,8 +90,8 @@
         <h3 class="description-box__main-title">{{descriptionBox.mphc.title}}</h3>
         <p>{{descriptionBox.mphc.description}}</p>
         <ul class="description-box__list">
-          <li>{{> global/icon i="external" }}<a
-              href="{{descriptionBox.mphc.link}}">{{descriptionBox.mphc.title}}</a></li>
+          <li>{{> global/icon i="external" }}<a href="{{descriptionBox.mphc.link}}">{{descriptionBox.mphc.title}}</a>
+          </li>
         </ul>
       </div>
       {{/if}}
@@ -121,7 +116,7 @@
     {{/if}}
 
     {{#ifpage 'noresults'}}{{else}}
-    <nav class="searchtabs" id="searchnav">
+    <nav class="searchtabs" id="searchnav" aria-label="search tabs">
       {{> global/search-nav}}
     </nav>
     {{/ifpage}}
