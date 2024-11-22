@@ -6,26 +6,26 @@
     </div>
     <ul role="tree" id="group1">
       {{#each tree.children}}
-        <li role="treeitem" aria-expanded="false">
-          <div class="archive-tree__label {{current this}}">
+      <li role="treeitem" aria-expanded="false">
+        <div class="archive-tree__label {{current this}}">
 
-              {{#if children}}
-                <label for="{{id}}"></label>
-              {{else}}
-                <button name="expanded" disabled value="{{id}}" type="submit" aria-controls="groupX"></button>
-              {{/if}}
-
-            <a class="summary" href="{{getlink this}}">{{identifier}} {{summary_title}}</a>
-          </div>
-
-          <input id="{{id}}" {{current this}} type="checkbox" value="{{id}}" aria-controls="groupX"></input>
           {{#if children}}
-            <ul role="tree" class="children">
-              {{> records/archive-tree-children}}
-            </ul>
+          <label for="{{id}}" aria-label="{{identifier}} {{summary_title}}"></label>
+          {{else}}
+          <button name="expanded" disabled value="{{id}}" type="submit" aria-controls="groupX"></button>
           {{/if}}
 
-        </li>
+          <a class="summary" href="{{getlink this}}">{{identifier}} {{summary_title}}</a>
+        </div>
+
+        <input id="{{id}}" {{current this}} type="checkbox" value="{{id}}" aria-controls="groupX"></input>
+        {{#if children}}
+        <ul role="tree" class="children">
+          {{> records/archive-tree-children}}
+        </ul>
+        {{/if}}
+
+      </li>
       {{/each}}
     </ul>
   </li>
