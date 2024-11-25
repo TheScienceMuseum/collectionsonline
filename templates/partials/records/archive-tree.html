@@ -12,13 +12,13 @@
           {{#if children}}
           <label for="{{id}}" aria-label="{{identifier}} {{summary_title}}"></label>
           {{else}}
-          <button name="expanded" disabled value="{{id}}" type="submit" aria-controls="groupX"></button>
+          <button name="expanded" disabled value="{{id}}" type="submit" aria-controls="children-{{id}}"></button>
           {{/if}}
 
           <a class="summary" href="{{getlink this}}">{{identifier}} {{summary_title}}</a>
         </div>
 
-        <input id="{{id}}" {{current this}} type="checkbox" value="{{id}}" aria-controls="groupX"></input>
+        <input id="{{id}}" {{current this}} type="checkbox" value="{{id}}" aria-controls="children-{{id}}"></input>
         {{#if children}}
         <ul role="tree" class="children">
           {{> records/archive-tree-children}}
