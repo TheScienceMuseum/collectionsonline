@@ -1,145 +1,222 @@
 <!-- IMAGE -->
 {{#if (or filters.image_license.0.count filters.has_image.0.count)}}
-  {{#if (or (activeFacet selectedFilters 'imageLicense') (activeFacet selectedFilters 'hasImage'))}}
-    <div class="filter filter--active filter--open" data-filter="Image">
+{{#if (or (activeFacet selectedFilters 'imageLicense') (activeFacet selectedFilters 'hasImage'))}}
+<fieldset class="filter filter--active filter--open" data-filter="Image">
   {{else}}
-    <div class="filter filter--open" data-filter="Image">
-  {{/if}}
-    <a href="{{lookup links.clearFacet "filter[images]"}}" class="filter__name">Image</a>
+  <fieldset class="filter filter--open" data-filter="Image">
+    {{/if}}
+    <a href="{{lookup links.clearFacet " filter[images]"}}" class="filter__name">
+      <legend>
+        Image
+      </legend>
+    </a>
     <div class="filter__options">
       <ul>
         {{#each filters.has_image}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[has_image]" value="true" {{isselected ../selectedFilters "hasImage" true}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
+        <li><label><input type="checkbox" class="filter__box" name="filter[has_image]" value="true" {{isselected
+              ../selectedFilters "hasImage" true}} />{{value}}<span class="filter__count">{{formatnumber
+              count}}</span></label></li>
         {{/each}}
         {{#each filters.image_license}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[image_license]" value="true" {{isselected ../selectedFilters "imageLicense" true}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
+        <li><label><input type="checkbox" class="filter__box" name="filter[image_license]" value="true" {{isselected
+              ../selectedFilters "imageLicense" true}} />{{value}}<span class="filter__count">{{formatnumber
+              count}}</span></label></li>
         {{/each}}
       </ul>
     </div>
-  </div>
-{{/if}}
+  </fieldset>
+  {{/if}}
 
-<!-- CATEGGORY -->
-{{#if filters.category.length}}
+  <!-- CATEGGORY -->
+  {{#if filters.category.length}}
   {{#if (activeFacet selectedFilters 'categories')}}
-    <div class="filter filter--open filter--active" data-filter="Category">
-      <a href="{{lookup links.clearFacet "filter[categories]"}}" class="filter__name">Category</a>
-  {{else}}
-    <div class="filter filter--open" data-filter="Category">
-      <a href="" class="filter__name">Category</a>
-  {{/if}}
-    <div class="filter__options">
-      <ul>
-        {{#each filters.category}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[categories]" value="{{value}}" {{isselected ../selectedFilters "categories" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
-        {{/each}}
-      </ul>
-    </div>
-  </div>
-{{/if}}
-
-<!-- COLLECTION -->
-{{#if filters.collection.length}}
-  {{#if (activeFacet selectedFilters 'collection')}}
-    <div class="filter filter--open filter--active" data-filter="Collection">
-      <a href="{{lookup links.clearFacet "filter[collection]"}}" class="filter__name">Collection</a>
-  {{else}}
-    <div class="filter filter--open" data-filter="Collection">
-      <a href="" class="filter__name">Collection</a>
-  {{/if}}
-    <div class="filter__options">
-      <ul>
-        {{#each filters.collection}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[collection]" value="{{value}}" {{isselected ../selectedFilters "collection" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
-        {{/each}}
-      </ul>
-    </div>
-  </div>
-{{/if}}
-
-<!-- ON DISPLAY: MUSEUM -->
-{{#if filters.museum.length}}
-  {{#if (activeFacet selectedFilters 'museum')}}
-  <div class="filter filter--active filter--open" data-filter="Museum">
-    <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">On Display</a>
+  <fieldset class="filter filter--open filter--active" data-filter="Category">
+    <a href="{{lookup links.clearFacet " filter[categories]"}}" class="filter__name">
+      <legend>
+        Category
+      </legend>
+    </a>
     {{else}}
-    <div class="filter filter--open" data-filter="Museum">
-      <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">On Display</a>
+    <fieldset class="filter filter--open" data-filter="Category">
+      <a href="" class="filter__name">
+        <legend>
+          Category
+        </legend>
+      </a>
+      {{/if}}
+      <div class="filter__options">
+        <ul>
+          {{#each filters.category}}
+          <li><label><input type="checkbox" class="filter__box" name="filter[categories]" value="{{value}}" {{isselected
+                ../selectedFilters "categories" value}} />{{value}}<span class="filter__count">{{formatnumber
+                count}}</span></label></li>
+          {{/each}}
+        </ul>
+      </div>
+    </fieldset>
     {{/if}}
-    <div class="filter__options">
-      <ul>
-        {{#each filters.museum}}
-        <li><label><input type="checkbox" class="filter__box filter__museum__{{classname value}}" name="filter[museum]" value="{{value}}" {{isselected ../selectedFilters "museum" value galleries}}/>{{displayValue}}<span class="filter__count">{{formatnumber count}}</span></label></li>
-          <li><ul class="nested-galleries">
-            {{#each galleries}}
-              <li><label><input type="checkbox" class="filter__box filter__gallery__{{classname ../value}}" name="filter[gallery]" value="{{key}}" {{isselected ../../selectedFilters "gallery" key}}/>{{key}}<span class="filter__count">{{doc_count}}</span></label></li>
+
+    <!-- COLLECTION -->
+    {{#if filters.collection.length}}
+    {{#if (activeFacet selectedFilters 'collection')}}
+    <fieldset class="filter filter--open filter--active" data-filter="Collection">
+      <a href="{{lookup links.clearFacet " filter[collection]"}}" class="filter__name">
+        <legend>
+          Collection
+        </legend>
+      </a>
+      {{else}}
+      <fieldset class="filter filter--open" data-filter="Collection">
+        <a href="" class="filter__name">
+          <legend>
+            Collection
+          </legend>
+        </a>
+        {{/if}}
+        <div class="filter__options">
+          <ul>
+            {{#each filters.collection}}
+            <li><label><input type="checkbox" class="filter__box" name="filter[collection]" value="{{value}}"
+                  {{isselected ../selectedFilters "collection" value}} />{{value}}<span
+                  class="filter__count">{{formatnumber count}}</span></label></li>
             {{/each}}
-          </ul></li>
-        {{/each}}
-      </ul>
-    </div>
-  </div>
-{{/if}}
+          </ul>
+        </div>
+      </fieldset>
+      {{/if}}
 
-<!-- TYPE -->
-{{#if filters.object_type.length}}
-  {{#if (activeFacet selectedFilters 'object_type')}}
-  <div class="filter filter--open filter--active" data-filter="Type">
-    <a href="{{lookup links.clearFacet "filter[object_type]"}}" class="filter__name">Object type</a>
-  {{else}}
-  <div class="filter filter--open" data-filter="Type">
-    <a href="{{lookup links.clearFacet "filter[object_type]"}}" class="filter__name">Object type</a>
-  {{/if}}
-    <div class="filter__options">
-      <ul>
-        {{#each filters.object_type}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[object_type]" value="{{value}}" {{isselected ../selectedFilters "object_type" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
-        {{/each}}
-      </ul>
-    </div>
-  </div>
-{{/if}}
+      <!-- ON DISPLAY: MUSEUM -->
+      {{#if filters.museum.length}}
+      {{#if (activeFacet selectedFilters 'museum')}}
+      <fieldset class="filter filter--active filter--open" data-filter="Museum">
+        <a href="{{lookup links.clearFacet " filter[museum]"}}" class="filter__name">
+          <legend>
+            On Display
+          </legend>
+        </a>
+        {{else}}
+        <fieldset class="filter filter--open" data-filter="Museum">
+          <a href="{{lookup links.clearFacet " filter[museum]"}}" class="filter__name">
+            <legend>
+              On Display
+            </legend>
+          </a>
+          {{/if}}
+          <div class="filter__options">
+            <ul>
+              {{#each filters.museum}}
+              <li><label><input type="checkbox" class="filter__box filter__museum__{{classname value}}"
+                    name="filter[museum]" value="{{value}}" {{isselected ../selectedFilters "museum" value
+                    galleries}} />{{displayValue}}<span class="filter__count">{{formatnumber count}}</span></label></li>
+              <li>
+                <ul class="nested-galleries">
+                  {{#each galleries}}
+                  <li><label><input type="checkbox" class="filter__box filter__gallery__{{classname ../value}}"
+                        name="filter[gallery]" value="{{key}}" {{isselected ../../selectedFilters "gallery"
+                        key}} />{{key}}<span class="filter__count">{{doc_count}}</span></label></li>
+                  {{/each}}
+                </ul>
+              </li>
+              {{/each}}
+            </ul>
+          </div>
+        </fieldset>
+        {{/if}}
 
-<!-- MAKER -->
-{{#if filters.maker.length}}
-  {{#if (activeFacet selectedFilters 'makers')}}
-    <div class="filter filter--open filter--active" data-filter="Maker">
-      <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">Maker</a>
-  {{else}}
-    <div class="filter filter--open" data-filter="Maker">
-      <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">Maker</a>
-  {{/if}}
-  <div class="filter__options">
-    <ul>
-      {{#each filters.maker}}
-        <li><label><input type="checkbox" class="filter__box" name="filter[makers]" value="{{value}}" {{isselected ../selectedFilters "makers" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
-      {{/each}}
-    </ul>
-  </div>
-</div>
-{{/if}}
+        <!-- TYPE -->
+        {{#if filters.object_type.length}}
+        {{#if (activeFacet selectedFilters 'object_type')}}
+        <fieldset class="filter filter--open filter--active" data-filter="Type">
+          <a href="{{lookup links.clearFacet " filter[object_type]"}}" class="filter__name">
+            <legend>
+              Object type
+            </legend>
+          </a>
+          {{else}}
+          <fieldset class="filter filter--open" data-filter="Type">
+            <a href="{{lookup links.clearFacet " filter[object_type]"}}" class="filter__name">
+              <legend>
+                Object type
+              </legend>
+            </a>
+            {{/if}}
+            <div class="filter__options">
+              <ul>
+                {{#each filters.object_type}}
+                <li><label><input type="checkbox" class="filter__box" name="filter[object_type]" value="{{value}}"
+                      {{isselected ../selectedFilters "object_type" value}} />{{value}}<span
+                      class="filter__count">{{formatnumber count}}</span></label></li>
+                {{/each}}
+              </ul>
+            </div>
+          </fieldset>
+          {{/if}}
 
-<!-- PLACE -->
-{{#if filters.place.length}}
-  {{#if (activeFacet selectedFilters 'places')}}
-    <div class="filter filter--active filter--open" data-filter="Place">
-      <a href="{{lookup links.clearFacet "filter[places]"}}" class="filter__name">Place of origin</a>
-  {{else}}
-    <div class="filter filter--open" data-filter="Place">
-      <a href="{{lookup links.clearFacet "filter[places]"}}" class="filter__name">Place of origin</a>
-  {{/if}}
-    <div class="filter__options">
-      <ul>
-        {{#each filters.place}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[places]" value="{{value}}" {{isselected ../selectedFilters "places" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
-        {{/each}}
-      </ul>
-    </div>
-  </div>
-{{/if}}
+          <!-- MAKER -->
+          {{#if filters.maker.length}}
+          {{#if (activeFacet selectedFilters 'makers')}}
+          <fieldset class="filter filter--open filter--active" data-filter="Maker">
+            <a href="{{lookup links.clearFacet " filter[makers]"}}" class="filter__name">
+              <legend>
+                Maker
+              </legend>
+            </a>
+            {{else}}
+            <fieldset class="filter filter--open" data-filter="Maker">
+              <a href="{{lookup links.clearFacet " filter[makers]"}}" class="filter__name">
+                <legend>
+                  Maker
+                </legend>
+              </a>
+              {{/if}}
+              <div class="filter__options">
+                <ul>
+                  {{#each filters.maker}}
+                  <li><label><input type="checkbox" class="filter__box" name="filter[makers]" value="{{value}}"
+                        {{isselected ../selectedFilters "makers" value}} />{{value}}<span
+                        class="filter__count">{{formatnumber count}}</span></label></li>
+                  {{/each}}
+                </ul>
+              </div>
+            </fieldset>
+            {{/if}}
 
-<!-- USER -->
-<!-- {{#if filters.user.length}}
+            <!-- PLACE -->
+            {{#if filters.place.length}}
+            {{#if (activeFacet selectedFilters 'places')}}
+            <fieldset class="filter filter--active filter--open" data-filter="Place">
+              <legend>
+                <a href="{{lookup links.clearFacet " filter[places]"}}" class="filter__name">
+                  <legend>
+
+                    Place of origin
+                  </legend>
+
+                </a>
+                {{else}}
+                <fieldset class="filter filter--open" data-filter="Place">
+                  <a href="{{lookup links.clearFacet " filter[places]"}}" class="filter__name">
+                    <legend>
+
+                      Place of origin
+                    </legend>
+
+                  </a>
+                  {{/if}}
+                  <div class="filter__options">
+                    <ul>
+                      {{#each filters.place}}
+                      <li><label><input type="checkbox" class="filter__box" name="filter[places]" value="{{value}}"
+                            {{isselected ../selectedFilters "places" value}} />{{value}}<span
+                            class="filter__count">{{formatnumber count}}</span></label></li>
+                      {{/each}}
+                    </ul>
+                  </div>
+                </fieldset>
+                {{/if}}
+
+                <!-- USER -->
+                <!-- {{#if filters.user.length}}
   {{#if (activeFacet selectedFilters 'user')}}
     <div class="filter filter--active filter--open" data-filter="User">
       <a href="{{lookup links.clearFacet "filter[user]"}}" class="filter__name">User</a>
@@ -157,34 +234,49 @@
   </div>
 {{/if}} -->
 
-<!-- ARCHIVE -->
-{{#if filters.archive.length}}
-  {{#if (activeFacet selectedFilters 'archive')}}
-    <div class="filter filter--active filter--open" data-filter="Archive">
-      <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name">Archive</a>
-  {{else}}
-    <div class="filter filter--open" data-filter="Archive">
-      <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name">Archive</a>
-  {{/if}}
-    <div class="filter__options">
-      <ul>
-        {{#each filters.archive}}
-          <li><label><input type="checkbox" class="filter__box" name="filter[archive]" value="{{value}}" {{isselected ../selectedFilters "archive" value}}/>{{value}}<span class="filter__count">{{formatnumber count}}</span></label></li>
-        {{/each}}
-      </ul>
-    </div>
-  </div>
-{{/if}}
+                <!-- ARCHIVE -->
+                {{#if filters.archive.length}}
+                {{#if (activeFacet selectedFilters 'archive')}}
+                <fieldset class="filter filter--active filter--open" data-filter="Archive">
+                  <a href="{{lookup links.clearFacet " filter[archive]"}}" class="filter__name">Archive</a>
+                  {{else}}
+                  <fieldset class="filter filter--open" data-filter="Archive">
+                    <a href="{{lookup links.clearFacet " filter[archive]"}}" class="filter__name">
+                      <legend>
+                        Archive
+                      </legend>
 
-<!-- DATE -->
-{{#if (or (lookup selectedFilters "date[from]") (lookup selectedFilters "date[to]"))}}
-  <div class="filter filter--active filter--open" data-filter="Dates">
-{{ else }}
-  <div class="filter filter--open" data-filter="Dates">
-{{/if}}
-  <a href="{{lookup links.clearFacet "dates"}}" class="filter__name">Date</a>
-  <div class="filter__options filter__daterange">
-    <label>From year <input type="number" placeholder="e.g. 1600" name="filter[date[from]]" value="{{lookup selectedFilters "date[from]"}}" /></label>
-    <label>To year <input type="number" placeholder="e.g. 2016" name="filter[date[to]]" value="{{lookup selectedFilters "date[to]"}}" /></label>
-  </div>
-</div>
+                    </a>
+                    {{/if}}
+                    <div class="filter__options">
+                      <ul>
+                        {{#each filters.archive}}
+                        <li><label><input type="checkbox" class="filter__box" name="filter[archive]" value="{{value}}"
+                              {{isselected ../selectedFilters "archive" value}} />{{value}}<span
+                              class="filter__count">{{formatnumber count}}</span></label></li>
+                        {{/each}}
+                      </ul>
+                    </div>
+                  </fieldset>
+                  {{/if}}
+
+                  <!-- DATE -->
+                  {{#if (or (lookup selectedFilters "date[from]") (lookup selectedFilters "date[to]"))}}
+                  <fieldset class="filter filter--active filter--open" data-filter="Dates">
+                    {{ else }}
+                    <fieldset class="filter filter--open" data-filter="Dates">
+                      {{/if}}
+                      <a href="{{lookup links.clearFacet " dates"}}" class="filter__name">
+                        <legend>
+                          Date
+                        </legend>
+
+
+                      </a>
+                      <div class="filter__options filter__daterange">
+                        <label>From year <input type="number" placeholder="e.g. 1600" name="filter[date[from]]"
+                            value="{{lookup selectedFilters " date[from]"}}" /></label>
+                        <label>To year <input type="number" placeholder="e.g. 2016" name="filter[date[to]]"
+                            value="{{lookup selectedFilters " date[to]"}}" /></label>
+                      </div>
+                    </fieldset>
