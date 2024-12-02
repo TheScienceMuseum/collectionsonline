@@ -11,7 +11,7 @@
     <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-96x96.png" sizes="96x96">
     <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-16x16.png" sizes="16x16">
     <link rel="apple-touch-icon" href="/assets/img/favicon/apple-icon-180x180.png" sizes="180x180">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/snackbarjs/4.0.0/snackbar.min.css" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -25,6 +25,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-modal/3.14.3/react-modal.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
     <!-- Google Tag Manager -->
@@ -178,8 +179,9 @@
         const useLocation = ReactRouterDOM.useLocation;
         const Link = ReactRouterDOM.Link;
         const Modal = ReactModal;
-        const Tab = ReactBootstrap.Tab
-        const Tabs = ReactBootstrap.Tabs
+        const Tab = ReactBootstrap.Tab;
+        const Tabs = ReactBootstrap.Tabs;
+
         Modal.setAppElement('#root');
         Modal.defaultStyles.overlay.backgroundColor = 'rgba(0, 0, 0, 0.5)';
 
@@ -396,6 +398,20 @@
             const [error, setError] = useState(null);
             const navigate = useNavigate();
 
+            const handleError = (error) => {
+                toast.error(error, {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            };
+
+
+
             const onScanSuccessWrapper = useCallback(async (decodedText, decodedResult) => {
                 console.log(`Scan result: ${decodedText}`, decodedResult);
                 setLoading(true);
@@ -404,7 +420,21 @@
 
                 try {
                     const result = await fetch(`https://collection.sciencemuseumgroup.org.uk/barcode/${decodedText}`);
+
                     const data = await result.json();
+                    if (!result.ok) {
+                        const { error } = data;
+
+                        Swal.fire({
+                            title: 'Item not found:',
+                            text: error,
+                            icon: 'error',
+                            timer: 10000,
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false
+                        });
+                    }
 
                     if (result.ok && data) {
                         const { title, image, uid, path, description, barcodeId } = data;
@@ -420,8 +450,6 @@
 
                         openModal()
 
-                    } else {
-                        throw new Error('Collection item not found');
                     }
                 } catch (error) {
                     setError(error.message || 'An error occurred while fetching the barcode data.');
