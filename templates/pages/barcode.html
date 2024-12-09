@@ -49,7 +49,8 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // React state management
+        // React state management with context hook
+
         const { createContext } = React;
 
         const BarcodeContext = createContext();
@@ -67,6 +68,7 @@
 
             let subtitle;
 
+            // modal state + styles
             const openModal = () => {
                 setIsOpen(true);
             }
@@ -94,6 +96,7 @@
                 },
             };
 
+            // currently unused state for copying collection item urls to clipboard
             const copyTextToClipboard = async (text) => {
                 if ('clipboard' in navigator) {
                     return await navigator.clipboard.writeText(text);
@@ -168,7 +171,9 @@
         };
         window.BarcodeContext = BarcodeContext;
     </script>
+
     <script type="text/babel">
+        // 3rd party libraries, accessed on window object 
         const ReactDOM = window.ReactDOM;
         const { useState, useEffect, useCallback, useContext, useRef } = React;
         const Html5QrcodeScanner = window.Html5QrcodeScanner;
@@ -185,7 +190,7 @@
         Modal.setAppElement('#root');
         Modal.defaultStyles.overlay.backgroundColor = 'rgba(0, 0, 0, 0.5)';
 
-
+        // component for scans, used by scan history and scan results
         const ScanCard = ({ scans,
             setScans,
             isCopied,
@@ -197,8 +202,8 @@
             handleCopyText,
             handleShareCard,
             description,
-            backBtn = true,
-            type = 'list',
+            backBtn = true, // for scan results
+            type = 'list', //default type for styling purpose is list (scan history), or can be individual for scan results
             title,
             path,
             image,
@@ -245,7 +250,8 @@
             );
         };
 
-        const ModalElement = ({ modalIsOpen, afterOpenModal, closeModal, customStyles, resultData, scans, handleUpdateResult }) => {
+        const ModalElement = ({ modalIsOpen, afterOpenModal, closeModal, customStyles, resultData, scans, handleUpdateResult
+        }) => {
             const [key, setKey] = useState('result');
             // fetches latest scan for modal result card
             const fetchResultData = useCallback(async () => {
@@ -269,29 +275,22 @@
             }, []);
 
             return (
-                <Modal
-                    isOpen={modalIsOpen}
-                    onAfterOpen={afterOpenModal}
-                    onRequestClose={closeModal}
-                    style={customStyles}
-                    className="ReactModal__Content--animated"
-                    closeTimeoutMS={800}
-                >
+                <Modal isOpen={modalIsOpen} onAfterOpen={afterOpenModal} onRequestClose={closeModal} style={customStyles}
+                    className="ReactModal__Content--animated" closeTimeoutMS={800}>
                     <div>
                         <button className='c-btn' aria-label="close modal" onClick={closeModal}>X</button>
-                        <Tabs
-                            id="controlled-tab-example"
-                            activeKey={key}
-                            onSelect={(k) => setKey(k)}
+                        <Tabs id="controlled-tab-example" activeKey={key} onSelect={(k) => setKey(k)}
                             className="mb-3"
                         >
                             {resultData &&
                                 (
-                                    <Tab eventKey="result" title="Result" >
-                                        {resultData && <Result resultData={resultData} />}
+                                    <Tab eventKey="result" title="Result">
+                                        {resultData &&
+                                            <Result resultData={resultData} />}
                                     </Tab>)
                             }
-                            <Tab eventKey="scan-history" title="Scan History" disabled={!scans.length} className={`${!scans.length && 'show'}`}>
+                            <Tab eventKey="scan-history" title="Scan History" disabled={!scans.length} className={`${!scans.length
+                                && 'show'}`}>
 
                                 <section class="scan-container">
                                     {scans.length > 0 ? (
@@ -308,13 +307,16 @@
             );
 
         }
-
+        // home component
         const Home = ({ scans,
             updateScans
         }) => {
             const {
-                handleCopyText, isCopied, modalIsOpen, afterOpenModal, closeModal, customStyles, setIsOpen, resultData, setResultData, openModal
+                handleCopyText, isCopied, modalIsOpen, afterOpenModal, closeModal, customStyles, setIsOpen, resultData,
+                setResultData, openModal
             } = useContext(BarcodeContext);
+
+            // configuration for barcode scanner ui on smaller screens - needed to ensure that it doesn't break
             const width = window.innerWidth
             const height = window.innerHeight
             const aspectRatio = width / height
@@ -324,50 +326,32 @@
                 ? reverseAspectRatio + (reverseAspectRatio * 12 / 100)
                 : reverseAspectRatio
 
-            // passed to scanner child component
+            // config passed to scanner child component
             const config = {
                 fps: 10,
-                qrbox: width < 600
-                    ? { width: 300, height: 150 }
-                    : { width: 400, height: 400 },
-                rememberLastUsedCamera: false,
-                showTorchButtonIfSupported: true,
-                supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
-                videoConstraints: {
-                    facingMode: { ideal: "environment" },
-                },
-                aspectRatio: 1,
-                focusMode: "continuous",
+                qrbox: width < 600 ? { width: 300, height: 150 } : { width: 400, height: 400 }, rememberLastUsedCamera: false,
+                showTorchButtonIfSupported: true, supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA], videoConstraints:
+                    { facingMode: { ideal: "environment" }, }, aspectRatio: 1, focusMode: "continuous",
+            }; let data; const
+                handleUpdateResult = useCallback((data) => {
+                    setResultData(data);
+                }, [data]);
 
-            };
-            let data;
-            const handleUpdateResult = useCallback((data) => {
-                setResultData(data);
-            }, [data])
             return (
                 <>
-                    <Scanner config={config}
-                        updateScans={updateScans}
-                        openModal={openModal}
-                    />
+                    <Scanner config={config} updateScans={updateScans} openModal={openModal} />
                     <button className='c-btn' aria-label="open modal" onClick={openModal}>Open Scan History</button>
 
                     {modalIsOpen &&
-                        (<ModalElement
-                            modalIsOpen={modalIsOpen}
-                            afterOpenModal={afterOpenModal}
-                            closeModal={closeModal}
-                            customStyles={customStyles}
-                            resultData={resultData}
-                            scans={scans}
-                            handleUpdateResult={handleUpdateResult}
-
-                        />)}
+                        (
+                            <ModalElement modalIsOpen={modalIsOpen} afterOpenModal={afterOpenModal} closeModal={closeModal}
+                                customStyles={customStyles} resultData={resultData} scans={scans}
+                                handleUpdateResult={handleUpdateResult} />)}
                 </>
             );
         };
 
-        // Result card on scanning item
+        // Result card on scanning barcode
         const Result = ({ resultData }) => {
 
             const {
@@ -377,10 +361,10 @@
             const navigate = useNavigate();
 
             return (
-                <section
-                    className="scan-result"
-                >
-                    <ScanCard uid={resultData.uid} title={resultData.title} path={resultData.path} image={resultData.image} description={resultData.description} barcodeId={resultData.barcodeId} isCopied={isCopied} handleCopyText={handleCopyText} type='individual' />
+                <section className="scan-result">
+                    <ScanCard uid={resultData.uid} title={resultData.title} path={resultData.path} image={resultData.image}
+                        description={resultData.description} barcodeId={resultData.barcodeId} isCopied={isCopied}
+                        handleCopyText={handleCopyText} type='individual' />
                 </section>
             );
         };
@@ -390,27 +374,13 @@
             updateScans,
             openModal
         }) => {
-
+            // unused writing to clipboard functionality
             const { handleCopyText, isCopied } = useContext(BarcodeContext);
             // note uid and loading state not currently used, but could be in future if needed
             const [uid, setUid] = useState(null);
             const [loading, setLoading] = useState(false);
             const [error, setError] = useState(null);
             const navigate = useNavigate();
-
-            const handleError = (error) => {
-                toast.error(error, {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
-            };
-
-
 
             const onScanSuccessWrapper = useCallback(async (decodedText, decodedResult) => {
                 console.log(`Scan result: ${decodedText}`, decodedResult);
@@ -422,6 +392,8 @@
                     const result = await fetch(`https://collection.sciencemuseumgroup.org.uk/barcode/${decodedText}`);
 
                     const data = await result.json();
+
+                    // meaningful error messaging for user, used with Sweet Alert toast popup
                     if (!result.ok) {
                         const { error } = data;
 
@@ -441,6 +413,7 @@
                         let scans = JSON.parse(localStorage.getItem('scans') || '{}');
                         // if uid already exists in scans, don't duplicate
                         if (!scans[uid]) {
+                            // otherwise set in localstorage with date for cleanup later
                             const date = new Date();
                             scans[uid] = { barcodeId, title, image, path, description, date: date.getTime() };
 
@@ -475,10 +448,12 @@
             );
         };
 
+        // scans history list 
         const Scans = ({ scans }) => {
             const {
                 handleShareCard, handleCopyText, isCopied, isSharing, sharingError
             } = useContext(BarcodeContext);
+
             const navigate = useNavigate();
 
             return (
@@ -487,7 +462,9 @@
                         {scans &&
                             scans.map((scan) => (
                                 <li key={scan.uid}>
-                                    <ScanCard uid={scan.uid} title={scan.title} path={scan.path} image={scan.image} description={scan.description} handleShareCard={handleShareCard} isCopied={isCopied} handleCopyText={handleCopyText} isSharing={isSharing} sharingError={sharingError} />
+                                    <ScanCard uid={scan.uid} title={scan.title} path={scan.path} image={scan.image}
+                                        description={scan.description} handleShareCard={handleShareCard} isCopied={isCopied}
+                                        handleCopyText={handleCopyText} isSharing={isSharing} sharingError={sharingError} />
                                 </li>
                             ))}
                     </ul>
@@ -513,23 +490,13 @@
                     for (let [key, value] of Object.entries(scans)) {
                         const timeDiff = currentTime - value.date;
                         const weekInMs = 604800000;
-                        if (timeDiff < weekInMs) {
-                            filteredScans[key] = value;
-                        } else {
-                            localStorage.removeItem(key);
-                        }
+                        if (timeDiff < weekInMs) { filteredScans[key] = value; } else { localStorage.removeItem(key); }
                     }
-                } catch (error) {
-                    console.error('Error parsing scans:', error);
-                    return [];
-                }
-
-                // Update localStorage with filtered scans
-                localStorage.setItem('scans', JSON.stringify(filteredScans));
-
-                return Object.values(filteredScans);
+                } catch (error) { console.error('Error parsing scans:', error); return []; } // Update localStorage with filtered scans
+                localStorage.setItem('scans', JSON.stringify(filteredScans)); return Object.values(filteredScans);
             }, []);
 
+            // initiates and fetches scans on load
             const fetchAllScans = useCallback(async () => {
                 const newScans = await handleScans();
                 setScans(newScans);
@@ -547,21 +514,17 @@
                 <BarcodeProvider>
                     <BrowserRouter>
                         <Routes>
-                            <Route path="/barcode" element={<Home
-                                scans={scans}
-                                updateScans={updateScans}
-                            />} />
+                            <Route path="/barcode" element={<Home scans={scans} updateScans={updateScans} />} />
                             <Route path="/barcode/:uid" element={<Result />} />
-                            <Route
-
-                            />
+                            <Route />
                         </Routes>
                     </BrowserRouter>
                 </BarcodeProvider>
             );
         };
 
-        ReactDOM.render(<App />, document.getElementById('root'));
+        ReactDOM.render(
+            <App />, document.getElementById('root'));
     </script>
 
 </body>
