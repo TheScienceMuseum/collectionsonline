@@ -1,12 +1,11 @@
 const nest = { nest: true }; // nested data
 const match = { match: true }; // currently unused
 const display = { display: true }; // currently unused
-const hide = { hide: true };
+const hide = { hide: true }; // to hide properties from ui, but include in json response
 const displayLinked = { displayLinked: true }; // if no related record in our systems - n.b doesn't work on every field due to how processed
-const isExternalLink = { isExternalLink: true };
-const list = { list: true };
-const context = { context: true };
-// to add further context. Note property needs qualifiers obj with further dates for this to work, and some don't have this or contain desired data
+const isExternalLink = { isExternalLink: true }; // formatting links, not widely used, but could be useful in future
+const list = { list: true }; // used to conditionally format long lists as li in css
+const context = { context: true }; // to add further context. Note property needs qualifiers obj with further dates for this to work, and some don't have this or contain desired data
 // can check using this url with any qCode https://www.wikidata.org/w/api.php?action=wbgetentities&ids=<<QCODE>>&format=json&redirects=no&languages=en%7Cfr%7Cde&props=info%7Cclaims
 module.exports = {
   Image: { property: 'P18', action: [display] },
