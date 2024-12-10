@@ -11,9 +11,9 @@ module.exports = (elastic, config) => ({
         const body = {
           query: {
             bool: {
-              must: [{ match: { 'barcode.value': barcode } }],
-            },
-          },
+              must: [{ match: { 'barcode.value': barcode } }]
+            }
+          }
         };
         try {
           const result = await elastic.search({ index: 'ciim', body });
@@ -50,13 +50,13 @@ module.exports = (elastic, config) => ({
               image,
               uid,
               description,
-              barcodeId,
+              barcodeId
             });
           } else {
             return h
               .response({
                 error:
-                  'Either an invalid barcode was used, or that item has not yet been added to the database',
+                  'Either an invalid barcode was used, or that item has not yet been added to the database'
               })
               .code(404)
               .type('application/json');
@@ -67,6 +67,6 @@ module.exports = (elastic, config) => ({
       } else {
         return h.view('barcode', {}, { layout: 'basic' });
       }
-    },
-  },
+    }
+  }
 });
