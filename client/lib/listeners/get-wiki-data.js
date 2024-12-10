@@ -7,6 +7,7 @@ module.exports = async function () {
   if (!data) {
     return;
   }
+
   const _data = { ...data };
 
   // destructuring to change order of data in ui
@@ -18,7 +19,11 @@ module.exports = async function () {
     ...info
   } = _data;
 
+  // prioritises image or logo url, as some companies will only have a logo, not an image
+
   const finalImageUrl = imageUrl || logoUrl;
+
+  // we want all wikidata records to have the viaf and oxford dnb at the bottom
 
   const sortedInfo = {
     ...info,
@@ -26,6 +31,7 @@ module.exports = async function () {
     ...(oxfordDnb && { P1415: oxfordDnb })
   };
 
+  // final wikidata object
   const wikiData = {
     ...(finalImageUrl && { image: finalImageUrl }),
     ...(JSON.stringify(sortedInfo) !== '{}' && { sortedInfo })
@@ -43,6 +49,7 @@ module.exports = async function () {
   }
 };
 
+// makes call to route handler and wikibase-sdk - brings back wikidata
 async function displayData () {
   const wikiInfo = document.getElementById('wikiInfo');
   const url = '/wiki/' + wikiInfo?.dataset.name;

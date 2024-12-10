@@ -17,23 +17,33 @@ module.exports = (elastic, config) => ({
         };
         try {
           const result = await elastic.search({ index: 'ciim', body });
+
           if (result.body.hits.hits && result.body.hits.hits.length) {
             const obj = result.body.hits.hits[0];
+
             if (!obj) {
               return h.redirect(config.rootUrl + '/barcode').permanent();
             }
+
             let slugValue =
               obj?._source?.summary_title &&
               slug(obj?._source?.summary_title).toLowerCase();
+
             const title = obj?._source?.summary?.title;
+
             const image =
               config.mediaPath +
               obj?._source?.multimedia?.[0]?.['@processed']?.medium?.location;
+
             const uid = obj?._id;
             slugValue = slugValue ? '/' + slugValue : '';
+
             const path = '/objects/' + obj?._id + slugValue;
+
             const description = obj?._source?.description?.[0]?.value;
+
             const barcodeId = obj?._source?.barcode?.value;
+
             return h.response({
               path,
               title,

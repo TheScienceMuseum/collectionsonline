@@ -168,7 +168,7 @@ module.exports = (elastic, config) => ({
     handler: async (req, h) => {
       try {
         const { wikidata } = req.params;
-        // ! note when clearing cache with postman, the item is set again immediately below unless commented out
+        // ! note when clearing cache with postman (clear=true), the item is set again immediately below unless setCache is commented out
         const { clear } = req.query;
         const cachedWikidataJson = await fetchCache(cache, wikidata, clear);
 
