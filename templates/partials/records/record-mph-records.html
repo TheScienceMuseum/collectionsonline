@@ -7,8 +7,14 @@
 
         <figure class="resultcard__figure">
           {{#if images}}
+          {{#if (twoChildRecords ../childRecords)}}
+          <img src="{{firstImage images 0 'large' }}" class="" alt="{{title}}" />
+
+          {{else}}
           <img src="{{firstImage images 0 'card' }}" class="" alt="{{title}}" />
           {{/if }}
+          {{/if }}
+
         </figure>
 
         <div class="resultcard__info">

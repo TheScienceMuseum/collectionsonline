@@ -492,6 +492,11 @@ Handlebars.registerHelper(
   require('../templates/helpers/isWikiList.js')
 );
 
+Handlebars.registerHelper(
+  'twoChildRecords',
+  require('../templates/helpers/twoChildRecords.js')
+);
+
 Handlebars.registerPartial(
   'records/record-sph-images',
   Fs.readFileSync('./templates/partials/records/record-sph-images.html', 'utf8')
