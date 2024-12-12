@@ -3,10 +3,10 @@
   @include sm-gradient-animated($layers: 2);
   color: white;
   padding: 1rem 0;
-  @include media(">=medium") {
+  @include media('>=medium') {
     padding: 2rem 0;
   }
-  @include media(">=large") {
+  @include media('>=large') {
     padding: 3rem 0;
   }
 
@@ -14,20 +14,35 @@
     color: inherit;
   }
 
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+
+    .js-back-top {
+      scroll-behavior: smooth;
+      text-decoration: none;
+      span {
+        text-decoration: underline;
+      }
+    }
+  }
+
   &__title {
     margin-bottom: 1rem;
     text-transform: uppercase;
     font-size: 1.125rem;
-    @include media(">=medium") {
+    @include media('>=medium') {
       margin-bottom: 2rem;
     }
-    @include media(">=large") {
+    @include media('>=large') {
       margin-bottom: 3rem;
     }
   }
 
   &__items {
-    @include media(">=medium") {
+    @include media('>=medium') {
       display: flex;
       flex-flow: row wrap;
       justify-content: space-between;
@@ -44,7 +59,7 @@
     display: block;
     margin: 0.4rem 0;
 
-    @include media(">=medium") {
+    @include media('>=medium') {
       display: none;
     }
   }
@@ -56,10 +71,10 @@
     width: auto;
     max-width: none;
 
-    @include media(">=medium") {
+    @include media('>=medium') {
       display: block;
     }
-    @include media(">=large") {
+    @include media('>=large') {
       height: 4rem;
     }
   }
