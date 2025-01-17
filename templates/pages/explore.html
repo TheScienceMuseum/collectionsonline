@@ -31,7 +31,7 @@
     <div class="explore-carousel__flickity">
       {{#each this.topics}}
       <div class="explore-carousel__cell">
-        <a href="{{ this.link }}">
+        <a href="{{ this.link }}" aria-label="{{ this.title }}">
           <article class="resultcard {{#if @../first}}resultcard--dark{{/if}} resultcard--topic">
             <figure class="resultcard__figure">
               {{#if collage}}

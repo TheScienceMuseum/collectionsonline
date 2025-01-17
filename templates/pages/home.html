@@ -128,17 +128,17 @@
       </div>
       <div class="explore-carousel__flickity">
         {{#each this.collection}}
-        <div class="explore-carousel__cell" ">
-          <a href=" {{ this.link }}">
-          <article class="resultcard resultcard--dark {{#if type}}resultcard--{{ this.type }}{{/if}}">
-            <figure class="resultcard__figure">
-              <img src="{{ this.figure }}" alt="" />
-            </figure>
-            <div class="resultcard__info">
-              <h3 class="resultcard__title">{{ this.title }}</h3>
-              <p class="resultcard__description">{{ this.description }}</p>
-            </div>
-          </article>
+        <div class="explore-carousel__cell">
+          <a href="{{ this.link }}" aria-label="{{ this.title }}">
+            <article class="resultcard resultcard--dark {{#if type}}resultcard--{{ this.type }}{{/if}}">
+              <figure class="resultcard__figure">
+                <img src="{{ this.figure }}" alt="" />
+              </figure>
+              <div class="resultcard__info">
+                <h3 class="resultcard__title">{{ this.title }}</h3>
+                <p class="resultcard__description">{{ this.description }}</p>
+              </div>
+            </article>
           </a>
         </div>
         {{/each}}

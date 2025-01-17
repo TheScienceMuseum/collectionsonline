@@ -2,7 +2,7 @@
   <div class="mph-records__grid">
     {{#each (getMphCapacity childRecords 0 25)}}
     {{#if links}}
-    <a href={{links.self}}>
+    <a href="{{links.self}}" aria-label="{{title}}">
       <article class="resultcard resultcard--objects mph-records__resultcard resultcard--priority-card">
 
         <figure class="resultcard__figure">
@@ -35,11 +35,11 @@
     {{/each}}
 
     {{#if (mphShowMore (getMphCapacity childRecords 0 25) counts)}}
-    <a href="/search/objects/mphc/{{uid}}">
+    <a href="/search/objects/mphc/{{uid}}" aria-labelledby="seemore-label">
       <article class="resultcard mph-records__resultcard resultcard--seemore resultcard--objects">
         <figure class="resultcard__figure">{{> global/icon i="search" size="48" }}</figure>
         <div class="resultcard__info">
-          <h3 class="resultcard__title">See more</h3>
+          <h3 class="resultcard__title" id="seemore-label">See more</h3>
         </div>
       </article>
     </a>

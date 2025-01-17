@@ -1,5 +1,5 @@
 {{#each results}}
-<a href="{{ this.link }}">
+<a href="{{ this.link }}" aria-label="{{ this.title }}">
   <article class="resultcard {{#if type}}resultcard--{{ this.type }}{{/if}}">
     <figure class="resultcard__figure">
       {{#if figure}}
