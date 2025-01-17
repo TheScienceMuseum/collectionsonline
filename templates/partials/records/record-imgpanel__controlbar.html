@@ -1,5 +1,12 @@
 <div class="o-container u-clearfix record-imgpanel__controlbar">
 
+  {{#each images}}
+  {{#ifsmgorccrights rights}}
+  <button id="cite__button-{{@index}}" class="cite__button">{{> global/icon i="toggle" size="16" }} <span>Use this
+      image</span></button>
+  {{/ifsmgorccrights}}
+  {{/each}}
+
   <div class="cite__menu-pos-wrap">
     <div class="cite__menu" id="cite__menu">
       {{#each images}}
@@ -37,13 +44,6 @@
       {{/each}}
     </div>
   </div>
-
-  {{#each images}}
-  {{#ifsmgorccrights rights}}
-  <button id="cite__button-{{@index}}" class="cite__button">{{> global/icon i="toggle" size="16" }} <span>Use this
-      image</span></button>
-  {{/ifsmgorccrights}}
-  {{/each}}
 
   {{#each images}}
   {{#if this.zoom}}
