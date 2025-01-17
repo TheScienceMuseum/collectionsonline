@@ -34,7 +34,7 @@
 
     <div
       class="searchresults {{#if results.length}}searchresults--filtersactive{{/if}} {{#ifpage 'results-list'}}searchresults--list{{/ifpage}}"
-      id="searchresults">
+      id="searchresults" aria-live="polite">
 
       {{#ifpage 'search'}}{{> search/results-grid}}{{/ifpage}}
       {{#ifpage 'results-list'}}{{> search/results-list }}{{/ifpage}}
