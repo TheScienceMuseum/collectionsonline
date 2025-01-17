@@ -113,11 +113,11 @@
     justify-content: center;
     align-items: center;
     float: left;
-    background-color: rgba(black, 0.1);
+    background-color: rgba(black, 0.5);
     transition: background-color $transition-default;
 
     &:hover {
-      background-color: rgba(black, 0.2);
+      background-color: rgba(black, 0.66);
     }
   }
 
