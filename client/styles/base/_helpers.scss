@@ -139,13 +139,6 @@ $transition-default: 0.2s ease-in-out;
   }
 }
 
-//certain icons used to represent recordtype should always be a mapped color.
-@each $type, $props in $recordtypes {
-  .icon-#{$type} {
-    color: map-get($props, bg);
-  }
-}
-
 @mixin small-caps {
   font-size: 75%;
   text-transform: uppercase;
