@@ -14,4 +14,16 @@ module.exports = () => {
       page.show(url);
     });
   }
+
+  const archiveToggles = document.querySelectorAll('[aria-controls]');
+  archiveToggles.forEach((toggle) => {
+    toggle.addEventListener('click', function (e) {
+      const target = document.getElementById(this.getAttribute('aria-controls'));
+      const expand = target.hidden;
+      this.setAttribute('aria-expanded', expand);
+      const label = this.getAttribute('aria-label');
+      this.setAttribute('aria-label', expand ? label.replace('Show', 'Hide') : label.replace('Hide', 'Show'));
+      target.hidden = !expand;
+    });
+  });
 };

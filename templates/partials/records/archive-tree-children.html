@@ -1,18 +1,20 @@
 {{#each children}}
-<li role="treeitem" aria-expanded={{#if children}}true{{else}}false{{/if}}>
+<li data-has-children={{#if children}}true{{else}}false{{/if}}>
   <div class="archive-tree__label {{current this}}">
-    <form class="expand" id="expand-{{id}}" action="{{getlink this}}">
-      {{#if children}}
-      <label for="{{id}}" "{{current this}}"></label>
-      {{else}}
-      <button name="expanded" disabled value="{{id}}" type="submit" aria-controls="children-{{id}}"></button>
-      {{/if}}
-    </form>
+    {{#if children}}
+    <button
+      type="button"
+      aria-controls="children-{{id}}"
+      aria-expanded="{{#if current}}true{{else}}false{{/if}}"
+      aria-label="Show child records"></button>
+    {{else}}
+    <span class="archive-tree__leafnode"></span>
+    {{/if}}
     <a class="" href="{{getlink this}}">{{identifier}} {{summary_title}}</a>
   </div>
-  <input id="{{id}}" {{current this}} type="checkbox" value="{{id}}" aria-controls="children-{{id}}"></input>
   {{#if children}}
-  <ul role="tree" class="children">
+  <ul class="children" data-current="{{current this}}" id="children-{{id}}"
+    {{#if current}}{{else}}hidden{{/if}}>
     {{> records/archive-tree-children}}
   </ul>
   {{/if}}
