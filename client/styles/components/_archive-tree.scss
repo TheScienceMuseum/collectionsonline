@@ -27,7 +27,6 @@
   li {
     display: block;
     min-height: rem(40);
-    clear: left;
     margin-bottom: -1px;
   }
 
@@ -39,14 +38,12 @@
   &__leafnode {
     width: rem(40);
     height: rem(40);
-    border-width: 0 0 1px 1px;
-    border-color: white;
-    border-style: solid;
-    float: left;
+    border: 1px white solid;
     background-size: 1rem;
     background-position: center center;
     background-repeat: no-repeat;
     position: absolute;
+    margin-right: -1px;
   }
 
   button:hover {
@@ -72,7 +69,7 @@
   }
 
   li li {
-    margin-left: rem(40);
+    margin-left: calc(2.5rem - 1px);
 
     button,
     a {
@@ -94,8 +91,7 @@
   }
 
   &__label {
-    @include clearfix;
-    border-top: 1px white solid;
+    display: flex;
     position: relative;
   }
 
@@ -109,11 +105,11 @@
 
   &__label a {
     display: block;
-    margin-left: rem(40);
-    padding: rem(9 16 8 16);
+    width: 100%;
+    margin-left: calc(2.5rem - 1px);
+    padding: 0.5rem 1rem;
     line-height: rem(22);
-    border-left: 1px white solid;
-    border-bottom: 1px white solid;
+    border: 1px white solid;
     color: black;
     text-decoration: none;
 
