@@ -9,15 +9,25 @@
     text-transform: uppercase;
   }
 
+  .o-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
   ul {
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem
   }
 
   li {
     display: inline-block;
     list-style: none;
-    margin: 0 1rem 0.5rem 0;
     font-size: 1rem;
   }
 
@@ -28,5 +38,64 @@
     &:hover {
       color: black;
     }
+  }
+
+  &__btt {
+    @include type-h4;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-decoration: none !important;
+    display: flex;
+    align-items: flex-end;
+
+    span {
+      position: relative;
+      display: inline-block;
+      margin-right: 0.5em;
+
+      // similar to .c-menu @toplink
+      &:before {
+        content: "";
+        position: absolute;
+        height: 2px;
+        bottom: 0;
+        background-color: currentColor;
+        left: 0;
+        right: 0;
+        visibility: hidden;
+        transform: scaleX(0);
+        transform-origin: 0 center;
+        transition: transform 0.3s ease-in-out 0s;
+        margin: 0 auto;
+      }
+    }
+
+    &:hover span:before {
+      visibility: visible;
+      transform: scaleX(1);
+    }
+
+    svg {
+      font-size: 1.125em;
+    }
+
+    &:hover svg {
+      animation: arrow-up-pulse 0.5s;
+      animation-timing-function: cubic-bezier(0.17, 0.89, 0.32, 1.28);
+    }
+  }
+}
+
+@keyframes arrow-up-pulse {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -0.5rem, 0);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
   }
 }

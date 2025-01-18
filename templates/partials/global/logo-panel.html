@@ -1,20 +1,13 @@
 <footer class="c-logo-panel" aria-label="Science Museum Group Footer">
   <div class="o-container">
-    <div class="c-logo-panel__container">
-
-      <h2 class="c-logo-panel__title">{{museums.strap}}</h2>
-      <a href="#main-page" class=" js-back-top" ">
-        <span>Back to Top</span>
-        ^
-      </a>
-    </div>
+    <h2 class="c-logo-panel__title">{{museums.strap}}</h2>
     <div class=" c-logo-panel__items">
-        {{#each museums.links}}
-        <a href="{{url}}" class="c-logo-panel__item">
-          <div class="c-logo-panel__text">{{name}}</div>
-          <img src="{{image}}" alt="{{name}}">
-        </a>
-        {{/each}}
+      {{#each museums.links}}
+      <a href="{{url}}" class="c-logo-panel__item">
+        <div class="c-logo-panel__text">{{name}}</div>
+        <img src="{{image}}" alt="{{name}}">
+      </a>
+      {{/each}}
     </div>
   </div>
 </footer>
