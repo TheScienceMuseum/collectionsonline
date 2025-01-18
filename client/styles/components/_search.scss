@@ -91,6 +91,8 @@
   &--focussed {
     border: 1px solid black;
     box-shadow: 0 2px 8px rgba(black, 0.2);
+    outline: 5px $focus-color solid;
+    outline-offset: 1px;
 
     .icon-search {
       fill: $c-blue;
@@ -141,7 +143,7 @@
     &:focus-visible {
       // focus drawn around parent instead
       border: 0;
-      box-shadow: none;
+      box-shadow: none !important;
       outline: none;
     }
 
