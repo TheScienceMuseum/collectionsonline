@@ -250,12 +250,14 @@
     flex-wrap: wrap;
 
     li {
+      // invisible border increases target size
       display: block;
       width: 1rem;
       height: 1rem;
       background-color: grey(20);
       border-radius: 50%;
-      border: 0.25rem solid white;
+      border: 0.25rem solid transparent;
+      background-clip: padding-box;
       cursor: pointer
     }
 
