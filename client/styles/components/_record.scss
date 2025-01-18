@@ -372,10 +372,10 @@
     grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
   }
 
-  [data-has-images='false'] .resultcard__figure {
-    display: none;
-  }
+}
 
+[data-has-images='false'] .resultcard__figure {
+  display: none;
 }
 
 @media only screen and (max-width: 304px) {
