@@ -1,6 +1,7 @@
 const searchBox = require('./search-box');
 const clipboard = require('./clipboard');
 const map = require('./map');
+const hashLinks = require('./hash-links');
 const moreButton = require('./more-button');
 const moreCordion = require('smg-web-design-system/dist/js/accordion');
 const carousel = require('./carousel');
@@ -15,6 +16,7 @@ module.exports = (ctx) => {
   searchBox();
   clipboard();
   map();
+  hashLinks();
   moreButton();
   moreCordion();
   carousel(ctx);
