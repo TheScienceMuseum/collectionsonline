@@ -3,12 +3,17 @@
 
   <main id="main-content">
     <section class="section --spacious home-banner">
-      {{!-- update /client/styles/components/_home.scss if no of images changes --}}
-      <div class="home-banner__bgimages">
-        {{#each headerImages}}
-        <img src="/assets/img/home/feature/1600/{{this}}"
-          srcset="/assets/img/home/feature/800/{{this}} 800w, /assets/img/home/feature/1600/{{this}} 1600w" alt="" />
-        {{/each}}
+      <div class="banner-slides">
+        <img src="/assets/img//home/feature/1600/{{headerImages.[0]}}"
+          srcset="/assets/img/home/feature/800/{{headerImages.[0]}} 800w, /assets/img/home/feature/1600/{{headerImages.[0]}} 1600w"
+          alt="" />
+        <template>
+          {{#each (reverse headerImages) }}
+          <img src="/assets/img/home/feature/1600/{{this}}"
+            srcset="/assets/img/home/feature/800/{{this}} 800w, /assets/img/home/feature/1600/{{this}} 1600w"
+            alt="" />
+          {{/each}}
+        </template>
       </div>
 
       <div class="searchbar searchbar--home">

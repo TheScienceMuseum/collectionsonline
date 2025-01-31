@@ -5,11 +5,17 @@
   {{#explore }}
 
   <section class="section --spacious explore-banner">
-    <div class="explore-banner__bgimages">
-      {{#each headerImages}}
-      <img src="/assets/img/explore/banner/1600/{{this}}"
-        srcset="/assets/img/explore/banner/800/{{this}} 800w, /assets/img/explore/banner/1600/{{this}} 1600w" alt="" />
-      {{/each}}
+    <div class="banner-slides">
+      <img src="/assets/img/explore/banner/1600/{{headerImages.[0]}}"
+        srcset="/assets/img/explore/banner/800/{{headerImages.[0]}} 800w, /assets/img/explore/banner/1600/{{headerImages.[0]}} 1600w"
+        alt="" />
+      <template>
+        {{#each (reverse headerImages)}}
+        <img src="/assets/img/explore/banner/1600/{{this}}"
+          srcset="/assets/img/explore/banner/800/{{this}} 800w, /assets/img/explore/banner/1600/{{this}} 1600w"
+          alt="" />
+        {{/each}}
+      </template>
     </div>
 
     <div class="searchbar searchbar--home">
