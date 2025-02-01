@@ -20,6 +20,30 @@
     }
   }
 
+  button {
+    @include button-reset;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    opacity: 0.5;
+
+    &:hover,
+    &:focus {
+      opacity: 1;
+    }
+  }
+
+  &.paused img {
+    animation-play-state: paused;
+  }
+
   .fade {
     animation-name: fade;
     animation-duration: var(--slide-duration);
