@@ -27,79 +27,56 @@
   li {
     display: block;
     min-height: rem(40);
-    clear: left;
     margin-bottom: -1px;
   }
 
-  .children {
+  .children[hidden] {
     display: none;
   }
 
-  .current ~ .children,
-  .open ~ .children {
-    display: block;
-  }
-
-  input[type=checkbox] {
-    position: fixed;
-    opacity: 0;
-    height: 0;
-    width: 0;
-  }
-
-  input[type=checkbox]:checked + .children {
-    display: block;
-  }
-
   button,
-  label {
+  &__leafnode {
     width: rem(40);
     height: rem(40);
-    outline: 0 red solid;
-    border-width: 0 0 1px 1px;
-    border-color: white;
-    border-style: solid;
-    float: left;
+    border: 1px white solid;
     background-size: 1rem;
     background-position: center center;
     background-repeat: no-repeat;
     position: absolute;
-
-    &:not([disabled]):hover {
-      background-color: $c-teal;
-    }
+    margin-right: -1px;
   }
 
-  [aria-expanded=true] button {
+  button:hover {
+    background-color: $c-teal;
+  }
+
+  button[aria-expanded=true] {
     background-image: url(/assets/icons/tree-contract.svg);
   }
 
-  [aria-expanded=false] button,
-  label {
+  button[aria-expanded=false] {
     background-image: url(/assets/icons/tree-expand.svg);
   }
 
-  button[disabled] {
+  &__leafnode {
     background-image: url(/assets/icons/tree-item.svg);
   }
 
   button,
-  label,
+  &__leafnode,
   &__label a {
     background-color: grey(20);
   }
 
   li li {
-    margin-left: rem(40);
+    margin-left: calc(2.5rem - 1px);
 
     button,
-    label,
     a {
       background-color: grey(30);
     }
 
     li button,
-    li label,
     li a {
       background-color: grey(40);
     }
@@ -107,7 +84,6 @@
 
   .current a,
   .current button,
-  .current label,
   .current a:hover {
     background-color: $c-teal;
     color: black;
@@ -115,19 +91,12 @@
   }
 
   &__label {
-    @include clearfix;
-    border-top: 1px white solid;
+    display: flex;
     position: relative;
   }
 
+  // toppermost level
   &__label--root {
-
-    //toppermost
-    button {
-      // height: rem(46);
-      // width: rem(46);
-    }
-
     a {
       font-size: rem(22);
       font-weight: 500;
@@ -136,11 +105,11 @@
 
   &__label a {
     display: block;
-    margin-left: rem(40);
-    padding: rem(9 16 8 16);
+    width: 100%;
+    margin-left: calc(2.5rem - 1px);
+    padding: 0.5rem 1rem;
     line-height: rem(22);
-    border-left: 1px white solid;
-    border-bottom: 1px white solid;
+    border: 1px white solid;
     color: black;
     text-decoration: none;
 

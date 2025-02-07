@@ -8,6 +8,18 @@ body {
   font-weight: 300; // other SMG sites appear to map the Light weight to normal/400? Either way, most text elements are better defaulted to the Light font.
 }
 
+:focus-visible {
+  box-shadow: 0 0 0 5px $focus-color !important;
+  outline: none;
+  z-index: 1; // should help to get outline foremost, but may require more, and still subject to overflow clipping
+}
+
+svg a:focus-visible {
+  // no box-shadow on svg elements
+  outline: 5px $focus-color solid;
+  outline-offset: -5px;
+}
+
 p,
 li,
 dt,

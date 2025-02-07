@@ -496,6 +496,10 @@ Handlebars.registerHelper(
   'twoChildRecords',
   require('../templates/helpers/twoChildRecords.js')
 );
+Handlebars.registerHelper(
+  'reverse',
+  require('../templates/helpers/reverse.js')
+);
 
 Handlebars.registerPartial(
   'records/record-sph-images',

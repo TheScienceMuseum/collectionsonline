@@ -34,6 +34,10 @@
 
 </article>
 
-{{#each children}}
-{{> records/record-sph-item record=. }}
-{{/each}}
+{{#if children}}
+<section class="sph-records__grid o-container" data-has-images="{{ this.childRecordsHaveImages }}">
+  {{#each children}}
+  {{> records/record-sph-item record=. }}
+  {{/each}}
+</section>
+{{/if}}

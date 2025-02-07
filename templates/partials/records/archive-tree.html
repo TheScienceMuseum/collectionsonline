@@ -1,26 +1,33 @@
-<ul role="tree">
-  <li role="treeitem" aria-expanded="true">
+<ul>
+  <li aria-expanded="true">
     <div class="archive-tree__label {{current this}} archive-tree__label--root archive-tree--fond">
-      <button aria-controls="group1" aria-label="Expand section"></button>
+      <button
+        type="button"
+        aria-controls="archive-root"
+        aria-expanded="true"
+        aria-label="Show archive records"></button>
       <a class="" href="{{getlink this}}">{{this.tree.summary_title}}</a>
     </div>
-    <ul role="tree" id="group1">
+    <ul id="archive-root">
       {{#each tree.children}}
-      <li role="treeitem" aria-expanded="false">
+      <li>
         <div class="archive-tree__label {{current this}}">
 
           {{#if children}}
-          <label for="{{id}}" aria-label="{{identifier}} {{summary_title}}"></label>
+          <button
+            type="button"
+            aria-controls="children-{{id}}"
+            aria-expanded="{{#if (current this) }}true{{else}}false{{/if}}"
+            aria-label="Show child records"></button>
           {{else}}
-          <button name="expanded" disabled value="{{id}}" type="submit" aria-controls="children-{{id}}"></button>
+          <span class="archive-tree__leafnode"></span>
           {{/if}}
 
           <a class="summary" href="{{getlink this}}">{{identifier}} {{summary_title}}</a>
         </div>
 
-        <input id="{{id}}" {{current this}} type="checkbox" value="{{id}}" aria-controls="children-{{id}}"></input>
         {{#if children}}
-        <ul role="tree" class="children">
+        <ul class="children" id="children-{{id}}" {{#if (current this) }}{{else}}hidden{{/if}}>
           {{> records/archive-tree-children}}
         </ul>
         {{/if}}

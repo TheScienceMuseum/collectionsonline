@@ -107,6 +107,17 @@ module.exports = ctx => {
           offsetContainer();
           window.addEventListener('resize', offsetContainer);
           window.addEventListener('orientationchange', offsetContainer);
+
+          // cells contain links, so we need to remove aria-hidden from them
+          // https://github.com/metafizzy/flickity/issues/1228
+          this.getCellElements().forEach((slide, i) => {
+            slide.removeAttribute('aria-hidden');
+          });
+        },
+        change: function () {
+          this.getCellElements().forEach((slide, i) => {
+            slide.removeAttribute('aria-hidden');
+          });
         }
       }
     });

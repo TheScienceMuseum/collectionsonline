@@ -5,7 +5,7 @@ module.exports = function () {
     const initialdesc = desc.innerHTML;
     maplinks.forEach(el => {
       el.addEventListener('mouseover', function (e) {
-        const hoverdesc = el.getAttribute('title');
+        const hoverdesc = el.dataset.desc;
         desc.innerHTML = hoverdesc;
       });
       el.addEventListener('mouseout', function (e) {

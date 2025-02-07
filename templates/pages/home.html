@@ -1,15 +1,20 @@
 <div id="main-page">
   {{> global/global-header}}
 
-  <main>
-    <a id="main-content" tabindex="0"></a>
+  <main id="main-content">
     <section class="section --spacious home-banner">
-      {{!-- update /client/styles/components/_home.scss if no of images changes --}}
-      <div class="home-banner__bgimages">
-        {{#each headerImages}}
-        <img src="/assets/img/home/feature/1600/{{this}}"
-          srcset="/assets/img/home/feature/800/{{this}} 800w, /assets/img/home/feature/1600/{{this}} 1600w" alt="" />
-        {{/each}}
+      <div class="banner-slides">
+        <img src="/assets/img//home/feature/1600/{{headerImages.[0]}}"
+          srcset="/assets/img/home/feature/800/{{headerImages.[0]}} 800w, /assets/img/home/feature/1600/{{headerImages.[0]}} 1600w"
+          alt="" />
+        <template>
+          {{#each (reverse headerImages) }}
+          <img src="/assets/img/home/feature/1600/{{this}}"
+            srcset="/assets/img/home/feature/800/{{this}} 800w, /assets/img/home/feature/1600/{{this}} 1600w"
+            alt="" />
+          {{/each}}
+          <button aria-label="Pause background animation">{{> global/icon i="pause" size="32"}}</button>
+        </template>
       </div>
 
       <div class="searchbar searchbar--home">
@@ -129,17 +134,17 @@
       </div>
       <div class="explore-carousel__flickity">
         {{#each this.collection}}
-        <div class="explore-carousel__cell" ">
-          <a href=" {{ this.link }}">
-          <article class="resultcard resultcard--dark {{#if type}}resultcard--{{ this.type }}{{/if}}">
-            <figure class="resultcard__figure">
-              <img src="{{ this.figure }}" alt="" />
-            </figure>
-            <div class="resultcard__info">
-              <h3 class="resultcard__title">{{ this.title }}</h3>
-              <p class="resultcard__description">{{ this.description }}</p>
-            </div>
-          </article>
+        <div class="explore-carousel__cell">
+          <a href="{{ this.link }}" aria-label="{{ this.title }}">
+            <article class="resultcard resultcard--dark {{#if type}}resultcard--{{ this.type }}{{/if}}">
+              <figure class="resultcard__figure">
+                <img src="{{ this.figure }}" alt="" />
+              </figure>
+              <div class="resultcard__info">
+                <h3 class="resultcard__title">{{ this.title }}</h3>
+                <p class="resultcard__description">{{ this.description }}</p>
+              </div>
+            </article>
           </a>
         </div>
         {{/each}}

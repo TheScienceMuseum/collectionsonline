@@ -372,10 +372,10 @@
     grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
   }
 
-  [data-has-images='false'] .resultcard__figure {
-    display: none;
-  }
+}
 
+[data-has-images='false'] .resultcard__figure {
+  display: none;
 }
 
 @media only screen and (max-width: 304px) {
@@ -388,6 +388,7 @@
 
 .sph-priority-item {
   padding-bottom: $grid-gutter;
+  margin-bottom: $grid-gutter;
   background-image: linear-gradient(to bottom, grey(0), grey(10));
 
   .o-container {
