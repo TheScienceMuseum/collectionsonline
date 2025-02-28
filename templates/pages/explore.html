@@ -35,7 +35,7 @@
       <p>{{this.description }}</p>
       <div class="flickity-buttonholder"></div>
     </div>
-    <div class="explore-carousel__flickity">
+    <div class="explore-carousel__flickity" aria-label="{{this.title}} carousel">
       {{#each this.topics}}
       <div class="explore-carousel__cell">
         <a href="{{ this.link }}" aria-label="{{ this.title }}">
