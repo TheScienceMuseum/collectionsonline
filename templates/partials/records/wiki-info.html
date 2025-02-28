@@ -1,53 +1,53 @@
 <section class="panel panel__text">
 
-    {{#if wikiData.image}}
-    <div class="panel" style="margin-bottom: 10px">
+  {{#if wikiData.image}}
+  <div class="panel" style="margin-bottom: 10px">
 
-        <img id="wikiImage" class="bleed" src="{{wikiData.image}}">
-    </div>
-    {{/if}}
-    <header>
-        <h2>Wikidata Information</h2>
-    </header>
-    {{#each (wikiInfoTransform wikiData.sortedInfo)}}
-    {{#if (isArray this.value.value)}}
-    {{#unless (wikidataExcludeField this.value)}}
-    <article class="property">
-        <h3>{{this.value.label}}</h3>
-        <ul class='{{#if (isWikiList this.value.value)}}wikidata-list{{/if}}'>
-            {{#each this.value.value}}
+    <img id="wikiImage" class="bleed" src="{{wikiData.image}}" alt="">
+  </div>
+  {{/if}}
+  <header>
+    <h2>Wikidata Information</h2>
+  </header>
+  {{#each (wikiInfoTransform wikiData.sortedInfo)}}
+  {{#if (isArray this.value.value)}}
+  {{#unless (wikidataExcludeField this.value)}}
+  <article class="property">
+    <h3>{{this.value.label}}</h3>
+    <ul class='{{#if (isWikiList this.value.value)}}wikidata-list{{/if}}'>
+      {{#each this.value.value}}
 
-            {{#if this.list}}
-            <li class='{{#if this.list}}wikidata-list-item{{/if}}' style="display: inline-block;">
-                {{else}}
-            <li style="display: inline;">
-                {{/if}}
-                {{#if this.related}}
-                <a href="{{this.related}}">
-                    {{this.value}}
-                </a>{{#unless this.list}}{{comma this ../this.value.value false}}{{/unless}}
-                {{else}}
-                {{#unless this.value.viaf}} {{this.value}}{{/unless}}{{#unless this.list}}{{comma this
+      {{#if this.list}}
+      <li class='{{#if this.list}}wikidata-list-item{{/if}}' style="display: inline-block;">
+        {{else}}
+      <li style="display: inline;">
+        {{/if}}
+        {{#if this.related}}
+        <a href="{{this.related}}">
+          {{this.value}}
+        </a>{{#unless this.list}}{{comma this ../this.value.value false}}{{/unless}}
+        {{else}}
+        {{#unless this.value.viaf}} {{this.value}}{{/unless}}{{#unless this.list}}{{comma this
                 ../this.value.value false}}{{/unless}}
-                {{/if}}
-                {{#if this.value.viaf}}
-                <a href="{{this.value.viaf}}">
-                    {{this.value.viaf}}
-                </a>
+        {{/if}}
+        {{#if this.value.viaf}}
+        <a href="{{this.value.viaf}}">
+          {{this.value.viaf}}
+        </a>
 
-                {{/if}}
-            </li>
-            {{/each}}
-        </ul>
-    </article>
-    {{/unless}}
-    {{/if}}
-    {{/each}}
-    <div class="panel panel--wikidata">
+        {{/if}}
+      </li>
+      {{/each}}
+    </ul>
+  </article>
+  {{/unless}}
+  {{/if}}
+  {{/each}}
+  <div class="panel panel--wikidata">
         <p style="font-size: smaller"><i>We’re testing a new feature to display  third party images and information on our people and
-                companies pages.
+        companies pages.
                 The data has been sourced from <a href="https://www.wikidata.org/wiki/Wikidata:Main_Page">Wikidata</a> under a CC0 licence, images have been sourced from <a href="https://commons.wikimedia.org/wiki/Main_Page">Wikimedia Commons</a> under a CC0 ot CC-BY licence. If you have a
-                question or
-                feedback please <a href="mailto:web.team@sciencemuseum.ac.uk">contact us</a></i></p>
-    </div>
+        question or
+        feedback please <a href="mailto:web.team@sciencemuseum.ac.uk">contact us</a></i></p>
+  </div>
 </section>

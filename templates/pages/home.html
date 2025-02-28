@@ -132,7 +132,7 @@
         <h2 class="section__h">{{this.title}}</h2>
         <div class="flickity-buttonholder"></div>
       </div>
-      <div class="explore-carousel__flickity">
+      <div class="explore-carousel__flickity" aria-label="{{this.title}} carousel">
         {{#each this.collection}}
         <div class="explore-carousel__cell">
           <a href="{{ this.link }}" aria-label="{{ this.title }}">

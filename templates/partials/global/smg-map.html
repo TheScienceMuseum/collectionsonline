@@ -46,9 +46,11 @@
   <circle cx="110.983" cy="318.289" r="3.92" fill="black" />
 
   {{#each museums.links}}
-  <a xlink:href="{{map.url}}" aria-label="{{name}}" data-desc="<h3>{{{name}}}</h3>{{{description}}}" pointer-events="all">
+  <a href="{{map.url}}" aria-label="{{name}}" data-desc="<h3>{{{name}}}</h3>{{{description}}}"
+    pointer-events="all">
     <rect x="0" y="{{map.hover.y}}" width="150" height="{{map.hover.height}}" fill="none" />
-    <svg x="0" y="{{map.logo.y}}" width="{{map.logo.width}}" height="{{map.logo.height}}" viewBox="0 0 {{map.logo.width}} {{map.logo.height}}">
+    <svg x="0" y="{{map.logo.y}}" width="{{map.logo.width}}" height="{{map.logo.height}}"
+      viewBox="0 0 {{map.logo.width}} {{map.logo.height}}">
       <defs>
         <mask id="{{map.key}}-logo">
           <image xlink:href="{{image}}" width="{{map.logo.width}}" height="50" />
