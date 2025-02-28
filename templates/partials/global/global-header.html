@@ -15,20 +15,21 @@
     </div>
   </nav>
 </header>
-<header class="c-nav-site" aria-label="collections sub-navigation">
-  <nav class="o-flex-container">
+
+<nav class="c-nav-site" aria-label="collections sub-navigation">
+  <div class="o-flex-container">
     <h1 class="c-nav-site__title"><a href="/" target="_self" aria-label="Home page">Collection</a></h1>
     <div class="c-nav-site__right c-menu">
       <nav class="c-menu__nav" aria-expanded="false">
         {{> global/menu class="c-menu--site" items=navigation.site}}
       </nav>
     </div>
-  </nav>
-</header>
-<header class="c-nav-mobile" id="mobile-menu" aria-expanded="false" aria-label="mobile navigation">
-  <nav class="c-menu {{class}}">
+  </div>
+</nav>
+
+<nav class="c-nav-mobile" id="mobile-menu" aria-expanded="false" aria-label="mobile navigation">
+  <div class="c-menu {{class}}">
     {{> global/menu class="c-menu--site" items=navigation.site}}
     {{> global/menu class="c-menu--global" items=navigation.global}}
-  </nav>
-
-</header>
+  </div>
+</nav>
