@@ -20,7 +20,7 @@ module.exports = (elastic, config) => ({
                       { term: { '@datatype.base': 'object' } },
                       { exists: { field: 'multimedia' } }
                     ],
-                    must_not: [{ exists: { field: 'admin.analytics.count.current' } }]
+                    must_not: [{ exists: { field: 'enhancement.analytics.current.count' } }]
                   }
                 },
                 functions: [{
