@@ -8,7 +8,6 @@ module.exports = (elastic, config) => ({
       try {
         const result = await elastic.search({
           index: 'ciim',
-          type: 'object',
           body: {
             size: 1,
             query: {
@@ -20,7 +19,10 @@ module.exports = (elastic, config) => ({
                       { term: { '@datatype.base': 'object' } },
                       { exists: { field: 'multimedia' } }
                     ],
-                    must_not: [{ exists: { field: 'enhancement.analytics.current.count' } }]
+                    must_not: [
+                      { exists: { field: 'enhancement.analytics.current.cumulative_views' } },
+                      { term: { 'grouping.@link.type': 'SPH' } }
+                    ]
                   }
                 },
                 functions: [{
@@ -33,6 +35,7 @@ module.exports = (elastic, config) => ({
             min_score: 0.01
           }
         });
+        console.log(result.body.hits);
         return h.response(
           result.body.hits.hits[0]
         );
