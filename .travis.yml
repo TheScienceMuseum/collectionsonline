@@ -14,6 +14,11 @@ node_js:
 cache:
   directories:
     - node_modules
+    
+before_install:
+  - rvm install 3.0.0  # Newer Ruby versions usually have OpenSSL
+  - rvm use 3.0.0
+  - gem install dpl
 
 before_script:
   - npm run start &
