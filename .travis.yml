@@ -1,24 +1,19 @@
 language: node_js
 
-dist: jammy
+dist: noble
 
 node_js:
-  - '22'
+  - '20'
 
-# addons:
-#   sauce_connect: true
-#   apt:
-#     packages:
-#       - openjdk-8-jdk
+addons:
+  sauce_connect: true
+  apt:
+    packages:
+      - openjdk-8-jdk
 
 cache:
   directories:
     - node_modules
-    
-before_install:
-  - rvm install 3.0.0  # Newer Ruby versions usually have OpenSSL
-  - rvm use 3.0.0
-  - gem install dpl
 
 before_script:
   - npm run start &
