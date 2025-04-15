@@ -3,21 +3,18 @@ language: node_js
 dist: jammy
 
 node_js:
-  - '19'
+  - '22'
 
-addons:
-  sauce_connect: true
-  apt:
-    packages:
-      - openjdk-8-jdk
+# addons:
+#   sauce_connect: true
+#   apt:
+#     packages:
+#       - openjdk-8-jdk
 
 cache:
   directories:
     - node_modules
 
-before_install:
-  - rm -f Gemfile.lock  # Remove Ruby lockfile if present
-  
 before_script:
   - npm run start &
 
