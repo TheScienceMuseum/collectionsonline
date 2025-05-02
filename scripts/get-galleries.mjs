@@ -23,7 +23,7 @@ const searchOpts = {
 const allGalleries = [];
 
 elastic.search(searchOpts, function getMoreUntilDone (err, result) {
-  if (err) console.log("error in ger galleries:" + err);
+  if (err) console.log('error in ger galleries:' + err);
   else {
     let galName;
     let musName;

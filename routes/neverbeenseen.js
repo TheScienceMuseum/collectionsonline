@@ -35,7 +35,7 @@ module.exports = (elastic, config) => ({
             min_score: 0.01
           }
         });
-        //console.log(result.body.hits);
+        // console.log(result.body.hits);
         return h.response(
           result.body.hits.hits[0]
         );
