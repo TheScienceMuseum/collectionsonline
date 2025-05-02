@@ -57,7 +57,7 @@ module.exports = (elastic, config) => ({
           }
           return response(h, JSONData, 'object', responseType);
         } catch (err) {
-          console.log(err);
+          console.log('Error in object.js' + err);
           if (err.statusCode === 404) {
             return Boom.notFound(err);
           }
