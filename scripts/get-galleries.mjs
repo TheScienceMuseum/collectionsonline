@@ -23,7 +23,7 @@ const searchOpts = {
 const allGalleries = [];
 
 elastic.search(searchOpts, function getMoreUntilDone (err, result) {
-  if (err) console.log(err);
+  if (err) console.log("error in ger galleries:" + err);
   else {
     let galName;
     let musName;
@@ -38,8 +38,8 @@ elastic.search(searchOpts, function getMoreUntilDone (err, result) {
     });
 
     if (result.body.hits.total.value !== allGalleries.length) {
-      console.log(result.body.hits.total.value);
-      console.log(allGalleries.length);
+      // console.log(result.body.hits.total.value);
+      // console.log(allGalleries.length);
       elastic.scroll({
         scrollId: result.body._scroll_id,
         scroll: '30s'

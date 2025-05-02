@@ -39,7 +39,7 @@ module.exports = (elastic, config) => ({
 
           return response(h, JSONData, 'group', responseType);
         } catch (err) {
-          console.log(err);
+          console.log('Err in groups.js:' + err);
           if (err.statusCode === 404) {
             return Boom.notFound(err);
           }
