@@ -1,16 +1,19 @@
-language: node_js
+!language: node_js
 
 dist: noble
 
 node_js:
   - '20'
 
-addons:
-  sauce_connect: true
-  apt:
-    packages:
-      - openjdk-8-jdk
+# addons:
+#   sauce_connect: true
+#   apt:
+#     packages:
+#       - openjdk-8-jdk
 
+jdk:
+  - openjdk11
+  
 cache:
   directories:
     - node_modules
