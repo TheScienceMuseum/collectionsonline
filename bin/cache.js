@@ -1,12 +1,20 @@
 const Catbox = require('@hapi/catbox');
 const CatboxRedis = require('@hapi/catbox-redis');
-let elasticacheHost = '127.0.0.1';
-let elasticachePort = '6379';
+const Redis = require('ioredis'); // or 'redis' if using node_redis
 
-if (process.env.ELASTICACHE_EP) {
-  const config = process.env.ELASTICACHE_EP.split(':');
-  elasticacheHost = config[0];
-  elasticachePort = config[1];
-}
+// Create Redis client with all your custom options
+const redisClient = new Redis({
+  host: process.env.ELASTICACHE_EP ? process.env.ELASTICACHE_EP.split(':')[0] : '127.0.0.1',
+  port: process.env.ELASTICACHE_EP ? process.env.ELASTICACHE_EP.split(':')[1] : '6379',
+  retryStrategy: (times) => Math.min(times * 100, 5000),
+  reconnectOnError: (err) => {
+    console.log('Reconnect on error:', err.message);
+    return true;
+  },
+  enableOfflineQueue: true,
+  maxRetriesPerRequest: 3,
+  connectTimeout: 10000
+});
 
-module.exports = new Catbox.Client(CatboxRedis, { host: elasticacheHost, port: elasticachePort });
+// Pass the client to Catbox
+module.exports = new Catbox.Client(CatboxRedis, { client: redisClient });
