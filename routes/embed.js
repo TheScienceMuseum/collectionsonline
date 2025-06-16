@@ -21,7 +21,7 @@ module.exports = {
 
             if (res.data.attributes.enhancement) {
               res.data.attributes.enhancement.web.forEach((el) => {
-                if (el.platform === '3D') {
+                if (el.platform && el.platform === '3D') {
                   const rid = el.id;
                   configUrl = 'https://s3-eu-west-1.amazonaws.com/' + rid + '/object.xml';
                 }
