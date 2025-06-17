@@ -20,11 +20,9 @@ module.exports = async function () {
   } = _data;
 
   // prioritises image or logo url, as some companies will only have a logo, not an image
-
   const finalImageUrl = imageUrl || logoUrl;
 
   // we want all wikidata records to have the viaf and oxford dnb at the bottom
-
   const sortedInfo = {
     ...info,
     ...(viaf && { P214: viaf }),
@@ -37,12 +35,14 @@ module.exports = async function () {
     ...(JSON.stringify(sortedInfo) !== '{}' && { sortedInfo })
   };
 
+  // add Wikidata URL to HB object
+  wikiData.wikidataUrl = data.wikidataUrl.value;
+
   if (wikiData) {
     wikiInfo.innerHTML = Templates.wikiInfo({ wikiData });
   }
 
   // handles black logos on black backgrounds
-
   if (finalImageUrl?.endsWith('svg')) {
     const imgPanel = document.querySelector('.bleed');
     imgPanel.style.backgroundColor = '#ffffff';

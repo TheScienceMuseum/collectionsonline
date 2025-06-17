@@ -7,8 +7,9 @@
   </div>
   {{/if}}
   <header>
-    <h2>Wikidata Information</h2>
+    <h2>Wikidata Information <a href="{{wikiData.wikidataUrl}}"><svg class="icon" aria-label="Link to Wikidata"><use xlink:href="/assets/icons/symbol/svg/sprite.symbol.svg#external"></use></svg></a></h2>
   </header>
+
   {{#each (wikiInfoTransform wikiData.sortedInfo)}}
   {{#if (isArray this.value.value)}}
   {{#unless (wikidataExcludeField this.value)}}
