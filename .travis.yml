@@ -7,9 +7,9 @@ node_js:
 
 addons:
   sauce_connect: true
-  apt:
-    packages:
-      - openjdk-8-jdk
+  # apt:
+  #   packages:
+  #     - openjdk-8-jdk
 
 cache:
   directories:
