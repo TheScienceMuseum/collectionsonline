@@ -36,7 +36,7 @@ module.exports = async function () {
   };
 
   // add Wikidata URL to HB object
-  wikiData.wikidataUrl = data.wikidataUrl.value;
+  wikiData.wikidataUrl = data.wikidataUrl ? data.wikidataUrl.value : 'https://www.wikidata.org';
 
   if (wikiData) {
     wikiInfo.innerHTML = Templates.wikiInfo({ wikiData });
