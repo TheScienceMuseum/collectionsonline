@@ -614,7 +614,7 @@ testWithServer('One gallery selected', {}, async (t, ctx) => {
 
   const htmlRequest = {
     method: 'GET',
-    url: '/search?q=locomotive&filter[gallery]=Energy-Hall-Gallery',
+    url: '/search/museum/science-museum/gallery/information-age-gallery?q=Sony%20Trinitron',
     headers: { Accept: 'application/json' }
   };
 
