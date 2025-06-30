@@ -10,13 +10,7 @@
       </h3>
 
       <div class="sph-priority-item__description">
-        {{#if (sphDescription description "moreDescription")}}
-        {{#each (sphDescription description "moreDescription")}}
-        <p>
-          {{this}}
-        </p>
-        {{/each}}
-        {{else}}
+
         {{#if (sphDescription description "initialDescription")}}
         {{#each (sphDescription description "initialDescription") }}
         <p>
@@ -24,6 +18,13 @@
         </p>
         {{/each}}
         {{/if}}
+
+        {{#if (sphDescription description "moreDescription")}}
+        {{#each (sphDescription description "moreDescription")}}
+        <p>
+          {{this}}
+        </p>
+        {{/each}}
         {{/if}}
 
       </div>
