@@ -1,4 +1,6 @@
 module.exports = (description, part) => {
+  // console.log(description);
+  // console.log(part);
   // for sph records that have no primary.initialDescription, make a summary from the web.initialDescription, and use the rest as moreDescription
   if (description) {
     if (part === 'initialDescription') {
