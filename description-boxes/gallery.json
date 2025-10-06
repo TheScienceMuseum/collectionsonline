@@ -5,6 +5,11 @@
     "description": "Short description (1 or 2 lines max)",
     "link-to-gallery-page": "http://www.sciencemuseum.org.uk/"
   },
+  "Space Gallery": {
+    "title": "Space",
+    "description": "Explore iconic objects including a three-billion-year-old piece of the Moon, the Soyuz descent module and the Apollo 10 command module"
+    "link-to-gallery-page": "https://www.sciencemuseum.org.uk/see-and-do/space"
+  },  
   "Clockmakers' Museum Gallery": {
     "title": "Clockmakers' Museum",
     "description": "Explore some of the many objects in the Clockmakers' Museum, which tells the story of clock and watchmaking in London and the British Isles from c.1600 to the present day.",
