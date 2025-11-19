@@ -522,6 +522,22 @@ Handlebars.registerPartial(
   )
 );
 
+Handlebars.registerPartial(
+  'records/record-ai-related-articles',
+  Fs.readFileSync(
+    './templates/partials/records/record-ai-related-articles.html',
+    'utf8'
+  )
+);
+
+Handlebars.registerPartial(
+  'records/record-ai-related-records',
+  Fs.readFileSync(
+    './templates/partials/records/record-ai-related-records.html',
+    'utf8'
+  )
+);
+
 // Routes
 module.exports = {
   404: Handlebars.compile(
