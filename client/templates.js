@@ -500,6 +500,10 @@ Handlebars.registerHelper(
   'reverse',
   require('../templates/helpers/reverse.js')
 );
+Handlebars.registerHelper(
+  'urlEncode',
+  require('../templates/helpers/urlEncode.js')
+);
 
 Handlebars.registerPartial(
   'records/record-sph-images',
