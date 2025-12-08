@@ -48,8 +48,7 @@ const endpoints = [
   {
     label: 'Science Museum Group Blog',
     url: 'https://blog.sciencemuseumgroup.org.uk/wp-json/collection-media/collection-usage'
-  },
-  
+  }
 ];
 module.exports = (config) => ({
   method: 'GET',
@@ -58,14 +57,20 @@ module.exports = (config) => ({
     cache: cacheHeaders(config, 3600 * 12),
     handler: async function (req, h) {
       try {
-        let data;
+        const allData = [];
+  
         for (const endpoint of endpoints) {
-          data = await fetchAndCacheEndpoint(endpoint);
+          const data = await fetchAndCacheEndpoint(endpoint);
+          allData.push({
+            label: endpoint.label,
+            url: endpoint.url,
+            data: data
+          });
         }
 
         return h.response({
           message: 'Article feeds cached successfully',
-          data
+          data: allData
         });
       } catch (err) {
         return new Boom.Boom('Failed to refresh and cache articles:', err);
