@@ -44,7 +44,12 @@ const endpoints = [
   {
     label: 'Science Museum Group',
     url: 'https://www.sciencemuseumgroup.org.uk/collection-media/collection-usage/objects'
-  }
+  },
+  {
+    label: 'Science Museum Group Blog',
+    url: 'https://blog.sciencemuseumgroup.org.uk/wp-json/collection-media/collection-usage'
+  },
+  
 ];
 module.exports = (config) => ({
   method: 'GET',
