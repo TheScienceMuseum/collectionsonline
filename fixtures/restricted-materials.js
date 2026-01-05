@@ -4,9 +4,11 @@
 
 module.exports = [
     'gold',
+    'gold (metal)',
     'platinum',
     'jade',
     'silver',
+    'silver (metal)',
     'ivory',
     'palladium',
     'rhodium',
