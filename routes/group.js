@@ -34,6 +34,7 @@ module.exports = (elastic, config) => ({
             result.body,
             config,
             null,
+            null,
             childRecords
           );
 

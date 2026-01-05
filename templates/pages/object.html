@@ -33,6 +33,9 @@
           {{#if related.articles}}{{> records/record-related-articles }}{{/if}}
           <div id="articles"></div>
 
+          {{#if aiRelated.hasArticles}}{{> records/record-ai-related-articles }}{{/if}}
+          {{#if aiRelated.hasRecords}}{{> records/record-ai-related-records }}{{/if}}
+
           {{!-- {{> records/panel-taxonomy}} moved lower to record-details. but panels could also be used here. --}}
 
         </aside>

@@ -500,6 +500,10 @@ Handlebars.registerHelper(
   'reverse',
   require('../templates/helpers/reverse.js')
 );
+Handlebars.registerHelper(
+  'urlEncode',
+  require('../templates/helpers/urlEncode.js')
+);
 
 Handlebars.registerPartial(
   'records/record-sph-images',
@@ -518,6 +522,22 @@ Handlebars.registerPartial(
   'records/record-sph-priority-item',
   Fs.readFileSync(
     './templates/partials/records/record-sph-priority-item.html',
+    'utf8'
+  )
+);
+
+Handlebars.registerPartial(
+  'records/record-ai-related-articles',
+  Fs.readFileSync(
+    './templates/partials/records/record-ai-related-articles.html',
+    'utf8'
+  )
+);
+
+Handlebars.registerPartial(
+  'records/record-ai-related-records',
+  Fs.readFileSync(
+    './templates/partials/records/record-ai-related-records.html',
     'utf8'
   )
 );
