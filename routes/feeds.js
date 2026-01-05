@@ -58,13 +58,13 @@ module.exports = (config) => ({
     handler: async function (req, h) {
       try {
         const allData = [];
-  
+
         for (const endpoint of endpoints) {
           const data = await fetchAndCacheEndpoint(endpoint);
           allData.push({
             label: endpoint.label,
             url: endpoint.url,
-            data: data
+            data
           });
         }
 
