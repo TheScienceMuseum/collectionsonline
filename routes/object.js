@@ -3,6 +3,7 @@ const buildJSONResponse = require('../lib/jsonapi-response');
 const TypeMapping = require('../lib/type-mapping');
 const contentType = require('./route-helpers/content-type.js');
 const getSimilarObjects = require('../lib/get-similar-objects');
+const getAIRelated = require('../lib/get-ai-related');
 const sortRelated = require('../lib/sort-related-items');
 const response = require('./route-helpers/response');
 const cacheHeaders = require('./route-helpers/cache-control');
@@ -25,6 +26,7 @@ module.exports = (elastic, config) => ({
             id: TypeMapping.toInternal(request.params.id)
           });
           const relatedItems = await getSimilarObjects(result.body, elastic);
+          const relatedAIItems = await getAIRelated(request.params.id, 'object');
 
           // handles different properties on parent/child records
           const { grouping, sub } = result.body._source['@datatype'];
@@ -42,6 +44,7 @@ module.exports = (elastic, config) => ({
             result.body,
             config,
             sortedRelatedItems,
+            relatedAIItems,
             childRecords
           );
           // handles redirect to parent record if child record is part of SPH grouping

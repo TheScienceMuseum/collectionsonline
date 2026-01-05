@@ -25,16 +25,21 @@
         </div>
         {{/if}}
         {{#ifsmgrights rights.details}}
-        <div class="cite__method">
+        <!-- <div class="cite__method">
           <p>Buy this image as a print </p>
           <a href="https://www.ssplprints.com/search?type=product&q={{title}}&ref=co" class="cite__menubutton">
             {{> global/icon i="external" size="16" }} Buy
           </a>
-        </div>
+        </div> -->
         <div class="cite__method">
           <p>License this image for commercial use at Science and Society Picture Library</p>
           <!--<a href="https://www.scienceandsociety.co.uk/results.asp?searchtxtkeys={{geturlsafeinventorynumber details}}&ref=co" class="cite__menubutton">-->
-          <a href="https://www.scienceandsociety.co.uk/results.asp?searchtxtkeys={{title}}&ref=co"
+          <!--<a href="https://www.scienceandsociety.co.uk/results.asp?searchtxtkeys={{title}}&ref=co"
+            class="cite__menubutton">
+            {{> global/icon i="external" size="16" }} License
+          </a> -->
+
+          <a href="https://www.scienceandsociety.co.uk/item-request.asp?object={{geturlsafeinventorynumber details}}&from={{urlEncode links.self}}&ref=co"
             class="cite__menubutton">
             {{> global/icon i="external" size="16" }} License
           </a>
