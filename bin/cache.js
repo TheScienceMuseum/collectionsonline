@@ -6,6 +6,7 @@ const Redis = require('ioredis'); // or 'redis' if using node_redis
 const redisClient = new Redis({
   host: process.env.ELASTICACHE_EP ? process.env.ELASTICACHE_EP.split(':')[0] : '127.0.0.1',
   port: process.env.ELASTICACHE_EP ? process.env.ELASTICACHE_EP.split(':')[1] : '6379',
+  lazyConnect: true,
   retryStrategy: (times) => Math.min(times * 100, 5000),
   reconnectOnError: (err) => {
     console.log('Reconnect on error:', err.message);

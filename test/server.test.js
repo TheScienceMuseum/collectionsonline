@@ -10,8 +10,9 @@ const file = dir + __filename.replace(__dirname, '') + ' > ';
 test(file + 'Should build a query param object from a html request', (t) => {
   t.plan(1);
 
-  server(elastic, config, (err, ctx) => {
+  server(elastic, config, async (err, ctx) => {
     t.notOk(err);
+    await ctx.server.stop();
     t.end();
   });
 });
