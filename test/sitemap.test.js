@@ -63,6 +63,7 @@ test(file + 'Should serve local sitemap if no sitemap URL configured', (t) => {
     const res = await ctx.server.inject(request);
     t.equal(res.statusCode, 200, 'Status was OK');
     t.equal(res.payload, sitemapXml, 'Sitemap XML was sent');
+    await ctx.server.stop();
     t.end();
   });
 });
@@ -86,6 +87,7 @@ test(file + 'Should serve local sitemap if sitemap URL is same as base URL', (t)
     const res = await ctx.server.inject(request);
     t.equal(res.statusCode, 200, 'Status was OK');
     t.equal(res.payload, sitemapXml, 'Sitemap XML was sent');
+    await ctx.server.stop();
     t.end();
   });
 });

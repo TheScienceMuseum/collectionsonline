@@ -44,8 +44,17 @@ module.exports = (description, options, cb, auth) => {
       }
     }
 
-    tape(description, (t) => {
-      cb(t, ctx);
+    tape(description, async (t) => {
+      let stopped = false;
+      const originalStop = ctx.server.stop.bind(ctx.server);
+      ctx.server.stop = async (...args) => {
+        stopped = true;
+        return originalStop(...args);
+      };
+      t.teardown(async () => {
+        if (!stopped) await ctx.server.stop();
+      });
+      await cb(t, ctx);
     });
   });
 };
