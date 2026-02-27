@@ -1,9 +1,6 @@
-const fs = require('fs');
-const binpath = './node_modules/nightwatch/bin/';
-const seleniumServer = require('selenium-server');
 const chromedriver = require('chromedriver');
 const TRAVIS_JOB_NUMBER = process.env.TRAVIS_JOB_NUMBER;
-const SELENIUM_PORT = process.env.NW_ENV === 'travis' ? 4445 : 4444;
+const SELENIUM_PORT = process.env.NW_ENV === 'travis' ? 4445 : 9515;
 
 module.exports = {
   src_folders: ['test/client'],
@@ -13,15 +10,10 @@ module.exports = {
   page_objects_path: '',
   globals_path: '',
 
-  selenium: {
+  webdriver: {
     start_process: true,
-    server_path: seleniumServer.path,
-    log_path: '',
-    host: '127.0.0.1',
-    port: SELENIUM_PORT,
-    cli_args: {
-      'webdriver.chrome.driver': chromedriver.path
-    }
+    server_path: chromedriver.path,
+    port: SELENIUM_PORT
   },
 
   test_settings: {
@@ -41,8 +33,7 @@ module.exports = {
       },
       desiredCapabilities: {
         browserName: 'chrome',
-        chromeOptions: {
-          w3c: false,
+        'goog:chromeOptions': {
           args: ['--disable-dev-shm-usage']
         },
         javascriptEnabled: true,
@@ -54,7 +45,7 @@ module.exports = {
 
     default: {
       launch_url: 'http://localhost',
-      selenium_port: 4444,
+      selenium_port: SELENIUM_PORT,
       selenium_host: 'localhost',
       silent: true,
       screenshots: {
@@ -66,8 +57,7 @@ module.exports = {
       },
       desiredCapabilities: {
         browserName: 'chrome',
-        chromeOptions: {
-          w3c: false,
+        'goog:chromeOptions': {
           args: ['--disable-dev-shm-usage']
         },
         javascriptEnabled: true,
@@ -78,8 +68,7 @@ module.exports = {
     chrome: {
       desiredCapabilities: {
         browserName: 'chrome',
-        chromeOptions: {
-          w3c: false,
+        'goog:chromeOptions': {
           args: ['--disable-dev-shm-usage']
         },
         javascriptEnabled: true,
@@ -88,12 +77,3 @@ module.exports = {
     }
   }
 };
-
-fs.stat(binpath + 'selenium.jar', function (err, stat) {
-  if (err || !stat || stat.size < 1) {
-  //   require('selenium-download').ensure(binpath, function (error) {
-  //     if (error) throw new Error(error);
-  //     console.log('✔ Selenium & Chromedriver downloaded to:', binpath);
-  //   });
-  }
-});

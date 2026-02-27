@@ -70,7 +70,6 @@
     "pre-commit": "^1.2.2",
     "sass": "^1.77.4",
     "selenium-download": "^2.0.16",
-    "selenium-server": "^3.141.59",
     "selenium-standalone": "^9.3.0",
     "selenium-webdriver": "^4.16.0",
     "semistandard": "^17.0.0",
@@ -147,6 +146,10 @@
       "backstop_data"
     ]
   },
+  "pre-commit": [
+    "test:lint",
+    "test:unit"
+  ],
   "browserslist": [
     "last 2 versions",
     ">1% in GB",
