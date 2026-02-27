@@ -47,6 +47,7 @@ module.exports = {
       launch_url: 'http://localhost',
       selenium_port: SELENIUM_PORT,
       selenium_host: 'localhost',
+      reuseDriverSession: true,
       silent: true,
       screenshots: {
         enabled: false,
