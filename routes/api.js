@@ -27,12 +27,15 @@ module.exports = (elastic, config) => ({
           undefined,
           grouping
         );
-        // TODO: come back and fix this
+
         const apiData = beautify(
-          buildJSONResponse(result.body, config, null, childRecords),
-          null,
-          2,
-          80
+          buildJSONResponse(
+            result.body,
+            config,
+            null,
+            null,
+            childRecords
+          ), null, 2, 80
         );
 
         if (responseType === 'json') {

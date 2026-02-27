@@ -17,12 +17,16 @@ const stub = require('sinon').stub;
 **/
 module.exports = (description, options, cb, auth) => {
   const elastic = createMockDatabase();
+
+  const serverConfig = Object.assign({}, options.config || config);
+
   if (auth) {
-    config.auth = true;
+    serverConfig.auth = true;
   } else {
-    config.auth = false;
+    serverConfig.auth = false;
   }
-  createServer(elastic, options.config || config, (err, ctx) => {
+
+  createServer(elastic, serverConfig, (err, ctx) => {
     if (err) {
       console.log(err);
       throw err;
