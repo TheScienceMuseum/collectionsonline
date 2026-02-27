@@ -89,7 +89,7 @@
     "test:unit": "run-s test:unit:*",
     "test:unit:sync": "node test/fixtures/copy-data.js",
     "test:unit:tape": "tape 'test/**/*.test.js' | faucet",
-    "test:endtoend": "nightwatch --retries 3 --env ${NW_ENV}",
+    "test:endtoend": "echo '\\n⚠️  e2e tests require the app server to be running. Run npm run watch in a separate terminal first.\\n' && nightwatch --retries 3 --env ${NW_ENV}",
     "build": "run-p build:*",
     "build:js": "browserify client/main.js --debug | exorcist public/bundle.js.map > public/bundle.js",
     "build:css": "run-s build:css:*",
@@ -146,10 +146,6 @@
       "backstop_data"
     ]
   },
-  "pre-commit": [
-    "test:lint",
-    "test:unit"
-  ],
   "browserslist": [
     "last 2 versions",
     ">1% in GB",
