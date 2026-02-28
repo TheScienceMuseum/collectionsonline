@@ -10,10 +10,10 @@ module.exports = {
       .click('.resultcard')
       .pause(1000)
       .assert.not.urlEquals(
-        'http://localhost:8000/objects/co8228143/fort-ada-alexandria-photograph'
+        'http://localhost:8000/objects/co67823/portrait-of-ada-countess-of-lovelace'
       )
       .assert.urlEquals(
-        'http://localhost:8000/objects/co65351/ada-countess-of-lovelace-print-engraving-portrait'
+        'http://localhost:8000/objects/co65351/ada-countess-of-lovelace'
       )
       .waitForElementVisible('.record-top__title', 1000)
       .assert.containsText('.record-top__title', 'Ada, Countess of Lovelace')

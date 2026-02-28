@@ -3,9 +3,9 @@ module.exports = {
     browser
       .url('http://localhost:8000/search')
       .waitForElementVisible('body', 1000)
-      .click('a[aria-label=Next]')
-      .waitForElementVisible('a[aria-label=Previous]')
-      .click('a[aria-label=Previous]')
+      .click('a.c-pagination__page--next')
+      .waitForElementVisible('a.c-pagination__page--prev')
+      .click('a.c-pagination__page--prev')
       .assert.elementPresent('.resultcard')
       .end();
   }

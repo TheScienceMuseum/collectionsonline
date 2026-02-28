@@ -27,7 +27,7 @@ module.exports = {
       .assert.urlEquals('http://localhost:8000/search/people?q=charles')
       .assert.containsText(
         '.resultcard',
-        '1806-1872, author, physician, Ireland'
+        '1500-1558, monarch; Emperor of the Holy Roman Empire, Belgian'
       )
       .pause(1000)
       .click('.filter__box[value=inventor]')
