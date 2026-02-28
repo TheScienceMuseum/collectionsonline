@@ -8,6 +8,11 @@ const cacheHeaders = require('./route-helpers/cache-control');
 const { promisify } = require('util');
 const setTimeoutPromise = promisify(setTimeout);
 
+// Pre-load the IIIF manifest template once at startup rather than on every request
+const iiifTemplate = Handlebars.compile(
+  fs.readFileSync(path.join(__dirname, '/../templates/iiif/iiifmanifest.json'), 'utf8')
+);
+
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/iiif/{type}/{id}/{slug?}',
@@ -51,11 +56,7 @@ module.exports = (elastic, config) => ({
           });
         }
 
-        return h.response(
-          Handlebars.compile(
-            fs.readFileSync(path.join(__dirname, '/../templates/iiif/iiifmanifest.json'), 'utf8')
-          )(iiifData)
-        ).header('content-type', 'application/json');
+        return h.response(iiifTemplate(iiifData)).header('content-type', 'application/json');
       } catch (err) {
         request.log({
           tags: ['iiif', 'error'],
