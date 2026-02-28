@@ -22,7 +22,7 @@ test(file + 'The filters date are included in the array filter', (t) => {
   const filtersAll = createFilterAll(queryParams, filters);
   const expected = {
     bool: {
-      must: [
+      filter: [
         {
           terms: { '@datatype.base': ['agent', 'object'] }
         },
@@ -149,7 +149,7 @@ test(
       }
     ];
 
-    t.deepEqual(filtersAll.bool.must, mustExpected, 'Must get all they types');
+    t.deepEqual(filtersAll.bool.filter, mustExpected, 'Must get all they types');
     t.plan(1);
     t.end();
   }

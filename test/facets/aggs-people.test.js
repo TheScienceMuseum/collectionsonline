@@ -12,9 +12,8 @@ test(file + 'The filters date are not included in the aggregation filters', (t) 
   queryParams.filter.people.birthDate = new Date('wrongDate');
   queryParams.filter.people.deathDate = new Date('wrongDate');
   const aggregation = aggregationPeople(queryParams);
-  // select the filters array
-  const filter = aggregation.aggs.occupation.filter.bool.must;
+  // When all date filters are invalid, no active clauses → filterQuery becomes match_all
   t.plan(1);
-  t.deepEqual(filter, [], 'Filter is empty and doens\'t contain the dates');
+  t.deepEqual(aggregation.aggs.occupation.filter, { match_all: {} }, 'Filter is match_all when no valid active filters');
   t.end();
 });

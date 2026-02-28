@@ -11,9 +11,8 @@ test(file + 'The filters date are not included in the aggregation filters', (t) 
   queryParams.filter.objects.dateFrom = new Date('wrongDate');
   queryParams.filter.objects.dateTo = new Date('wrongDate');
   const aggregation = aggregationObjects(queryParams);
-  // select the filters array
-  const filter = aggregation.aggs.category.filter.bool.must;
+  // When all date filters are invalid, no active clauses → filterQuery becomes match_all
   t.plan(1);
-  t.deepEqual(filter, [], 'Filter is empty and doens\'t contain the dates');
+  t.deepEqual(aggregation.aggs.category.filter, { match_all: {} }, 'Filter is match_all when no valid active filters');
   t.end();
 });
