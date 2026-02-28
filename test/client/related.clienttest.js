@@ -5,11 +5,11 @@ module.exports = {
       .waitForElementVisible('body', 1000)
       .click('.resultcard--seemore')
       .waitForElementVisible('body', 1000)
-      .assert.containsText('.resultcard', 'Babbage')
-      .url('http://localhost:8000/people/cp20600')
+      .assert.containsText('.resultcard', 'linkages')
+      .url('http://localhost:8000/people/cp36993')
       .waitForElementVisible('body', 1000)
       .click('.resultcard--seemore')
-      .assert.containsText('.resultcard', 'Apple')
+      .assert.containsText('.resultcard', 'Babbage')
       .end();
   }
 };
