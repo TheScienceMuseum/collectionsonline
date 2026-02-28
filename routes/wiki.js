@@ -1,5 +1,10 @@
 const cache = require('../bin/cache');
 const wbk = require('../lib/wikibase');
+
+// Deduplicates concurrent fetches for the same Wikidata ID.
+// Without this, concurrent requests for the same uncached ID each fire
+// 50+ sub-calls to the Wikidata API independently.
+const wikiInFlight = new Map();
 const {
   getImageUrl,
   getLogo,
@@ -201,26 +206,45 @@ module.exports = (elastic, config) => ({
         }
 
         log(`No cache found, fetching from Wikidata for ID: ${wikidata}`);
-        const data = await wikidataConn(req);
-        const { entities } = await fetch(data)
-          .then((res) => res.json())
-          .catch((err) => {
-            log(`Error parsing Wikidata response for ID: ${wikidata}`, err);
-            console.error(err);
-          });
 
-        log(`Processing Wikidata response for ID: ${wikidata}`);
-        const result = await configResponse(
-          wikidata,
-          entities,
-          elastic,
-          config
-        );
+        // If a fetch for this ID is already in progress, await it rather
+        // than firing a duplicate set of 50+ Wikidata sub-calls.
+        const existing = wikiInFlight.get(wikidata);
+        if (existing) {
+          const result = await existing;
+          if (!result) return h.response('Wikidata unavailable').code(503);
+          return h.response(JSON.stringify(result)).type('application/json').code(200);
+        }
 
-        log(`Storing in cache for Wikidata ID: ${wikidata}`);
-        await setCache(cache, wikidata, result, clear);
+        const dataPromise = (async () => {
+          try {
+            const data = await wikidataConn(req);
+            const fetchResult = await fetch(data, { signal: AbortSignal.timeout(10000) })
+              .then((res) => res.json())
+              .catch((err) => {
+                log(`Error parsing Wikidata response for ID: ${wikidata}`, err);
+                console.error(err);
+                return null;
+              });
 
-        // log(`Successfully processed request for Wikidata ID: ${wikidata}`);
+            if (!fetchResult) return null;
+            const { entities } = fetchResult;
+
+            log(`Processing Wikidata response for ID: ${wikidata}`);
+            const result = await configResponse(wikidata, entities, elastic, config);
+
+            log(`Storing in cache for Wikidata ID: ${wikidata}`);
+            await setCache(cache, wikidata, result, clear);
+
+            return result;
+          } finally {
+            wikiInFlight.delete(wikidata);
+          }
+        })();
+
+        wikiInFlight.set(wikidata, dataPromise);
+        const result = await dataPromise;
+        if (!result) return h.response('Wikidata unavailable').code(503);
         return h
           .response(JSON.stringify(result))
           .type('application/json')
