@@ -2,7 +2,9 @@
   <!--<img class="bleed" src="/assets/img/example/locations/scimus.png">-->
   <div class="panel__text">
     <h2 class="panel__withicon">{{> global/icon i="room" }} On display</h2>
-    <p><a href="{{displayLocation.link}}">{{displayLocation.museum}}: {{displayLocation.gallery}} </a></p>
+    {{#each displayLocation}}
+    <p><a href="{{link}}">{{museum}}: {{gallery}}</a></p>
+    {{/each}}
     <p>
       If you are visiting to see this object, <a
         href="https://www.sciencemuseumgroup.org.uk/our-work/our-collection/ask-about-our-collection">please contact
