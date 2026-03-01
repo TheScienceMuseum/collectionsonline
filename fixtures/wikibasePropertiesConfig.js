@@ -74,6 +74,7 @@ module.exports = {
   Children: { property: 'P40', action: [display, nest, displayLinked] },
   Relatives: { property: 'P1038', action: [nest, display, displayLinked] },
   'Educated At': { property: 'P69', action: [nest, display] },
-  'Notable Work': { property: 'P800', action: [nest, display] },
-  'VIAF ID': { property: 'P214', action: [display, isExternalLink] }
+  'Notable Work': { property: 'P800', action: [nest, display] }
+  // 'VIAF ID': { property: 'P214', action: [display, isExternalLink] }
+
 };
