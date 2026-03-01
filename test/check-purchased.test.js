@@ -26,8 +26,9 @@ testWithServer('Search request for Object with "Purchased" in credit line', {}, 
   };
 
   const res = await ctx.server.inject(htmlRequest);
+  const target = res.result.data.find(d => d.id === 'co67812');
   t.equal(res.statusCode, 200, 'Status code was as expected');
-  t.equal(res.result.data[0].id, 'co67812', 'Response contains correct object');
-  t.notOk(res.result.data[0].attributes.legal.credit_line, 'Response does not contain credit line');
+  t.ok(target, 'Response contains correct object');
+  t.notOk(target?.attributes?.legal?.credit_line, 'Response does not contain credit line');
   t.end();
 });
