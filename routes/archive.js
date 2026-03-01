@@ -25,7 +25,7 @@ module.exports = (elastic, config) => ({
             fondsId = result.body._source['@admin'].uid;
           }
 
-          const data = await getCachedDocument(elastic, TypeMapping.toInternal(request.params.id), fondsId);
+          const data = await getCachedDocument(elastic, TypeMapping.toInternal(request.params.id), fondsId, result.body);
 
           const JSONData = Object.assign(buildJSONResponse(result.body, config), { tree: data });
 

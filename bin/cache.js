@@ -1,21 +1,30 @@
+'use strict';
+
 const Catbox = require('@hapi/catbox');
 const CatboxRedis = require('@hapi/catbox-redis');
-const Redis = require('ioredis'); // or 'redis' if using node_redis
+const config = require('../config');
 
-// Create Redis client with all your custom options
-const redisClient = new Redis({
-  host: process.env.ELASTICACHE_EP ? process.env.ELASTICACHE_EP.split(':')[0] : '127.0.0.1',
-  port: process.env.ELASTICACHE_EP ? process.env.ELASTICACHE_EP.split(':')[1] : '6379',
-  lazyConnect: true,
-  retryStrategy: (times) => Math.min(times * 100, 5000),
-  reconnectOnError: (err) => {
-    console.log('Reconnect on error:', err.message);
-    return true;
-  },
-  enableOfflineQueue: true,
-  maxRetriesPerRequest: 3,
-  connectTimeout: 10000
-});
+let host, port;
 
-// Pass the client to Catbox
-module.exports = new Catbox.Client(CatboxRedis, { client: redisClient });
+if (process.env.ELASTICACHE_EP) {
+  const parts = process.env.ELASTICACHE_EP.split(':');
+  host = parts[0];
+  port = parseInt(parts[1], 10);
+} else if (config.elasticacheHost) {
+  host = config.elasticacheHost;
+  port = config.elasticachePort ? parseInt(config.elasticachePort, 10) : 6379;
+}
+
+// When no Redis is configured, export a null-safe stub so callers and sinon
+// stubs in tests always get a real object. isReady() returns false so all
+// cache operations are skipped gracefully.
+const NULL_CACHE = {
+  start: async () => {},
+  stop: async () => {},
+  isReady: () => false,
+  get: async () => null,
+  set: async () => null,
+  drop: async () => null
+};
+
+module.exports = host ? new Catbox.Client(CatboxRedis, { host, port }) : NULL_CACHE;
