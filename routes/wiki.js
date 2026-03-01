@@ -13,7 +13,9 @@ const {
   formatDate,
   extractNestedQCodeData,
   extraContext,
-  formatViaf
+  formatViaf,
+  batchFetchEntities,
+  collectNestedQCodes
 } = require('../lib/wikidataQueries');
 const { setCache, fetchCache } = require('../lib/cached-wikidata');
 const properties = require('../fixtures/wikibasePropertiesConfig');
@@ -63,9 +65,14 @@ const wikidataConn = async (req, h) => {
 
 async function configResponse (qCode, entities, elastic, config) {
   const obj = {};
-  log(`Starting to parse response for QCode: ${qCode}`);
 
-  // Add Wikidata URLs
+  // Pre-collect all nested Q-codes referenced in this entity's claims and qualifiers,
+  // then batch-fetch them all in a single HTTP request. This replaces the previous
+  // pattern of one network call per nested Q-code (up to 50+ for complex entities).
+  const nestedQCodes = collectNestedQCodes(entities, qCode, properties);
+  const prefetchedEntities = await batchFetchEntities(nestedQCodes);
+
+  // Add Wikidata URL
   obj.wikidataUrl = {
     label: 'Wikidata',
     value: `https://www.wikidata.org/wiki/${qCode}`
@@ -82,12 +89,14 @@ async function configResponse (qCode, entities, elastic, config) {
 
         if (typeof valueObj === 'string') {
           if (/^Q\d+$/.test(valueObj)) {
-            log(`Processing nested QCode reference: ${valueObj}`);
             finalValue = await extractNestedQCodeData(
               valueObj,
               elastic,
               config,
-              false
+              false,
+              false,
+              false,
+              prefetchedEntities
             );
           } else {
             finalValue = [{ value: valueObj }];
@@ -116,7 +125,8 @@ async function configResponse (qCode, entities, elastic, config) {
             config,
             hide,
             relatedRequired,
-            list
+            list,
+            prefetchedEntities
           );
           obj[property] = {
             ...(value ? { label } : ''),
@@ -131,7 +141,8 @@ async function configResponse (qCode, entities, elastic, config) {
             config,
             hide,
             relatedRequired,
-            list
+            list,
+            prefetchedEntities
           );
           if (value) {
             obj[property] = {
@@ -144,42 +155,36 @@ async function configResponse (qCode, entities, elastic, config) {
         if (property === 'P18') {
           const imgUrl = await getImageUrl(entities, qCode, property);
           obj[property] = imgUrl;
-          log('Processed image URL for property P18');
         } else if (property === 'P154') {
           const logoUrl = await getLogo(entities, qCode, property);
           obj[property] = logoUrl;
-          log('Processed logo URL for property P154');
         } else if (property === 'P569' || property === 'P570') {
           const date = formatDate(entities, qCode, property);
           obj[property] = { label, value: [{ value: date, hide: true }] };
-          log(`Processed date for property ${property}`);
         } else if (property === 'P571') {
           const date = formatDate(entities, qCode, property);
           obj[property] = { label, value: [{ value: date }] };
-          log('Processed date for property P571');
         } else if (property === 'P214') {
           const viafString = await formatViaf(entities, qCode, property);
           obj[property] = { label, value: [{ value: { viaf: viafString } }] };
-          log('Processed VIAF for property P214');
         } else if (furtherContext) {
           const qualifiersArr = entities[qCode].claims[property];
           const context = await extraContext(
             qualifiersArr,
             elastic,
             config,
-            list
+            list,
+            prefetchedEntities
           );
 
           if (context.length > 0) {
             obj[property] = { label, value: context };
-            log(`Added context for property ${property}`);
           }
         }
       }
     })
   );
 
-  log(`Successfully parsed response for QCode: ${qCode}`);
   return obj;
 }
 
