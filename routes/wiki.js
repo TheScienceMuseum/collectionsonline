@@ -33,6 +33,25 @@ function hasPropertyAction (property, action) {
   return action.some((item) => item[property] === true);
 }
 
+// Removes duplicate entries from a property's value array.
+// Wikidata entities can hold many claims for the same award/membership (e.g. the BBC
+// has 50+ separate P166 claims all resolving to "Peabody Awards"). We show each
+// distinct label once. Items are keyed by their value field; object values (e.g. VIAF)
+// are serialised with JSON.stringify so they deduplicate correctly too.
+function dedupeValueArray (items) {
+  if (!Array.isArray(items)) return items;
+  const seen = new Set();
+  return items.filter(item => {
+    const key = typeof item.value === 'object'
+      ? JSON.stringify(item.value)
+      : item.value;
+    if (key === undefined || key === null) return true;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 const wikidataConn = async (req, h) => {
   const { wikidata } = req.params;
 
@@ -184,6 +203,14 @@ async function configResponse (qCode, entities, elastic, config) {
       }
     })
   );
+
+  // Deduplicate every property's value array so repeated Wikidata claims for the same
+  // label (e.g. 50× "Peabody Awards") collapse to a single entry.
+  for (const key of Object.keys(obj)) {
+    if (obj[key] && Array.isArray(obj[key].value)) {
+      obj[key].value = dedupeValueArray(obj[key].value);
+    }
+  }
 
   return obj;
 }
