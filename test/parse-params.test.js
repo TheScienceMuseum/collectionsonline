@@ -178,3 +178,22 @@ test('multiple param names', function (t) {
   );
   t.end();
 });
+
+test('values with triple-dash (encoded space-dash-space)', function (t) {
+  t.deepEqual(
+    parseParameters({ filters: 'objects/object_type/box---container' }),
+    { params: { type: 'objects' }, categories: { object_type: 'box---container' } },
+    'triple-dash value is stored as raw URL string (decoded by dashToSpace in create-filters)'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'objects/object_type/toy---recreational-artefact' }),
+    { params: { type: 'objects' }, categories: { object_type: 'toy---recreational-artefact' } },
+    'triple-dash with additional dashes stored as raw URL string'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'objects/object_type/box---container+film-poster' }),
+    { params: { type: 'objects' }, categories: { object_type: ['box---container', 'film-poster'] } },
+    'multi-value with triple-dash splits correctly by +'
+  );
+  t.end();
+});

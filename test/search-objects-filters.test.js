@@ -76,3 +76,22 @@ testWithServer(file + 'Should accept params in filter[PARAM_NAME] format for obj
   t.equal(res.statusCode, 200, 'Status code was as expected');
   t.end();
 });
+
+testWithServer(file + 'Should handle object_type filter with space-dash-space values in URL', {}, async (t, ctx) => {
+  t.plan(2);
+
+  const res1 = await ctx.server.inject({
+    method: 'GET',
+    url: '/search/objects/object_type/box---container',
+    headers: { Accept: 'text/html' }
+  });
+  t.equal(res1.statusCode, 200, 'box---container URL returns 200');
+
+  const res2 = await ctx.server.inject({
+    method: 'GET',
+    url: '/search/objects/object_type/toy---recreational-artefact',
+    headers: { Accept: 'text/html' }
+  });
+  t.equal(res2.statusCode, 200, 'toy---recreational-artefact URL returns 200');
+  t.end();
+});
