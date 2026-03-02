@@ -5,7 +5,7 @@
   {{else}}
   <fieldset class="filter filter--open" data-filter="Image">
     {{/if}}
-    <a href="{{lookup links.clearFacet " filter[images]"}}" class="filter__name">
+    <a href="{{lookup links.clearFacet "filter[images]"}}" class="filter__name">
       <legend>
         Image
       </legend>
@@ -31,7 +31,7 @@
   {{#if filters.category.length}}
   {{#if (activeFacet selectedFilters 'categories')}}
   <fieldset class="filter filter--open filter--active" data-filter="Category">
-    <a href="{{lookup links.clearFacet " filter[categories]"}}" class="filter__name">
+    <a href="{{lookup links.clearFacet "filter[categories]"}}" class="filter__name">
       <legend>
         Category
       </legend>
@@ -60,7 +60,7 @@
     {{#if filters.collection.length}}
     {{#if (activeFacet selectedFilters 'collection')}}
     <fieldset class="filter filter--open filter--active" data-filter="Collection">
-      <a href="{{lookup links.clearFacet " filter[collection]"}}" class="filter__name">
+      <a href="{{lookup links.clearFacet "filter[collection]"}}" class="filter__name">
         <legend>
           Collection
         </legend>
@@ -89,14 +89,14 @@
       {{#if filters.museum.length}}
       {{#if (activeFacet selectedFilters 'museum')}}
       <fieldset class="filter filter--active filter--open" data-filter="Museum">
-        <a href="{{lookup links.clearFacet " filter[museum]"}}" class="filter__name">
+        <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">
           <legend>
             On Display
           </legend>
         </a>
         {{else}}
         <fieldset class="filter filter--open" data-filter="Museum">
-          <a href="{{lookup links.clearFacet " filter[museum]"}}" class="filter__name">
+          <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">
             <legend>
               On Display
             </legend>
@@ -127,14 +127,14 @@
         {{#if filters.object_type.length}}
         {{#if (activeFacet selectedFilters 'object_type')}}
         <fieldset class="filter filter--open filter--active" data-filter="Type">
-          <a href="{{lookup links.clearFacet " filter[object_type]"}}" class="filter__name">
+          <a href="{{lookup links.clearFacet "filter[object_type]"}}" class="filter__name">
             <legend>
               Object type
             </legend>
           </a>
           {{else}}
           <fieldset class="filter filter--open" data-filter="Type">
-            <a href="{{lookup links.clearFacet " filter[object_type]"}}" class="filter__name">
+            <a href="{{lookup links.clearFacet "filter[object_type]"}}" class="filter__name">
               <legend>
                 Object type
               </legend>
@@ -175,14 +175,14 @@
           {{#if filters.maker.length}}
           {{#if (activeFacet selectedFilters 'makers')}}
           <fieldset class="filter filter--open filter--active" data-filter="Maker">
-            <a href="{{lookup links.clearFacet " filter[makers]"}}" class="filter__name">
+            <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">
               <legend>
                 Maker
               </legend>
             </a>
             {{else}}
             <fieldset class="filter filter--open" data-filter="Maker">
-              <a href="{{lookup links.clearFacet " filter[makers]"}}" class="filter__name">
+              <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">
                 <legend>
                   Maker
                 </legend>
@@ -205,7 +205,7 @@
             {{#if (activeFacet selectedFilters 'places')}}
             <fieldset class="filter filter--active filter--open" data-filter="Place">
               <legend>
-                <a href="{{lookup links.clearFacet " filter[places]"}}" class="filter__name">
+                <a href="{{lookup links.clearFacet "filter[places]"}}" class="filter__name">
                   <legend>
 
                     Place of origin
@@ -214,7 +214,7 @@
                 </a>
                 {{else}}
                 <fieldset class="filter filter--open" data-filter="Place">
-                  <a href="{{lookup links.clearFacet " filter[places]"}}" class="filter__name">
+                  <a href="{{lookup links.clearFacet "filter[places]"}}" class="filter__name">
                     <legend>
 
                       Place of origin
@@ -257,10 +257,10 @@
                 {{#if filters.archive.length}}
                 {{#if (activeFacet selectedFilters 'archive')}}
                 <fieldset class="filter filter--active filter--open" data-filter="Archive">
-                  <a href="{{lookup links.clearFacet " filter[archive]"}}" class="filter__name">Archive</a>
+                  <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name">Archive</a>
                   {{else}}
                   <fieldset class="filter filter--open" data-filter="Archive">
-                    <a href="{{lookup links.clearFacet " filter[archive]"}}" class="filter__name">
+                    <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name">
                       <legend>
                         Archive
                       </legend>
@@ -285,7 +285,7 @@
                     {{ else }}
                     <fieldset class="filter filter--open" data-filter="Dates">
                       {{/if}}
-                      <a href="{{lookup links.clearFacet " dates"}}" class="filter__name">
+                      <a href="{{lookup links.clearFacet "dates"}}" class="filter__name">
                         <legend>
                           Date
                         </legend>
@@ -294,8 +294,8 @@
                       </a>
                       <div class="filter__options filter__daterange">
                         <label>From year <input type="number" placeholder="e.g. 1600" name="filter[date[from]]"
-                            value="{{lookup selectedFilters " date[from]"}}" /></label>
+                            value="{{lookup selectedFilters "date[from]"}}" /></label>
                         <label>To year <input type="number" placeholder="e.g. 2016" name="filter[date[to]]"
-                            value="{{lookup selectedFilters " date[to]"}}" /></label>
+                            value="{{lookup selectedFilters "date[to]"}}" /></label>
                       </div>
                     </fieldset>

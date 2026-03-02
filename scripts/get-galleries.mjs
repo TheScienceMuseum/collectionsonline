@@ -4,9 +4,15 @@ import { fileURLToPath } from 'url';
 const require = createRequire(import.meta.url);
 
 const config = require('../config');
-const elastic = new Client(config.elasticsearch);
 const path = require('path');
 const fs = require('fs');
+
+// Resolve __dirname before using it (ESM doesn't provide it natively)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const fixturePath = path.join(__dirname, '/../fixtures/galleries.json');
+
+const elastic = new Client(config.elasticsearch);
 
 const body = {
   query: {
@@ -22,8 +28,10 @@ const searchOpts = {
 
 const allGalleries = [];
 
+console.log('Fetching gallery data...');
+
 elastic.search(searchOpts, function getMoreUntilDone (err, result) {
-  if (err) console.log('error in ger galleries:' + err);
+  if (err) console.log('error in get galleries: ' + err);
   else {
     let galName;
     let musName;
@@ -37,9 +45,9 @@ elastic.search(searchOpts, function getMoreUntilDone (err, result) {
       }
     });
 
+    console.log(`  Fetched ${allGalleries.length} of ${result.body.hits.total.value} records...`);
+
     if (result.body.hits.total.value !== allGalleries.length) {
-      // console.log(result.body.hits.total.value);
-      // console.log(allGalleries.length);
       elastic.scroll({
         scrollId: result.body._scroll_id,
         scroll: '30s'
@@ -54,9 +62,8 @@ elastic.search(searchOpts, function getMoreUntilDone (err, result) {
         }
       });
 
-      const __filename = fileURLToPath(import.meta.url);
-      const __dirname = path.dirname(__filename);
-      fs.writeFileSync(path.join(__dirname, '/../fixtures/galleries.json'), JSON.stringify(gal));
+      fs.writeFileSync(fixturePath, JSON.stringify(gal));
+      console.log(`Found ${Object.keys(gal).length} unique galleries. Written fixtures/galleries.json`);
     }
   }
 });
