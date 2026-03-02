@@ -197,3 +197,27 @@ test('values with triple-dash (encoded space-dash-space)', function (t) {
   );
   t.end();
 });
+
+test('categories with triple-dash are title-cased correctly (space-dash-space preserved)', function (t) {
+  t.deepEqual(
+    parseParameters({ filters: 'objects/categories/science---technology' }),
+    { params: { type: 'objects' }, categories: { categories: 'Science - Technology' } },
+    'triple-dash in category decodes to title-cased space-dash-space'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'objects/categories/art' }),
+    { params: { type: 'objects' }, categories: { categories: 'Art' } },
+    'plain category still title-cased correctly'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'objects/categories/x-rays' }),
+    { params: { type: 'objects' }, categories: { categories: 'X Rays' } },
+    'x-rays single dash still becomes title-cased word pair'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'objects/categories/penn-gaskell-collection' }),
+    { params: { type: 'objects' }, categories: { categories: 'Penn Gaskell Collection' } },
+    'multi-word category with single dashes still title-cased correctly'
+  );
+  t.end();
+});

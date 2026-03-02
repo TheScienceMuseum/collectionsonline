@@ -17,6 +17,13 @@ test(file + 'decodes single-dash (encoded space) correctly', (t) => {
   t.end();
 });
 
+test(file + 'is idempotent on already-decoded values (space-dash-space preserved)', (t) => {
+  t.equal(dashToSpace('Science - Technology'), 'Science - Technology', 'already-decoded value unchanged');
+  t.equal(dashToSpace('box - container'), 'box - container', 'already-decoded value unchanged');
+  t.equal(dashToSpace('Science - Technology - Art'), 'Science - Technology - Art', 'multiple space-dash-space unchanged');
+  t.end();
+});
+
 test(file + 'round-trip: paramify encoding decodes correctly', (t) => {
   const encodeValue = (v) => v.split(' ').join('-');
   const cases = [
