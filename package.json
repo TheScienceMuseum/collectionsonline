@@ -85,7 +85,7 @@
     "test:lint": "semistandard",
     "test:unit": "run-s test:unit:*",
     "test:unit:sync": "node test/fixtures/copy-data.js",
-    "test:unit:tape": "tape 'test/**/*.test.js' | faucet",
+    "test:unit:tape": "NODE_ENV=test tape 'test/**/*.test.js' | faucet",
     "test:endtoend": "echo '\\n⚠️  e2e tests require the app server to be running. Run npm run watch in a separate terminal first.\\n' && nightwatch --retries 3 --env ${NW_ENV}",
     "build": "run-p build:*",
     "build:js": "browserify client/main.js --debug | exorcist public/bundle.js.map > public/bundle.js",
