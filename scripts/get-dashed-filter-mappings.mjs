@@ -8,11 +8,16 @@ const path = require('path');
 const fs = require('fs');
 const dashToSpace = require('../lib/helpers/dash-to-space');
 
-const elastic = new Client(config.elasticsearch);
+// Resolve __dirname before using it (ESM doesn't provide it natively)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const fixturePath = path.join(__dirname, '/../fixtures/dashed-filter-mappings.json');
 
+const elastic = new Client(config.elasticsearch);
+
+// Each ES field and the filterType key it maps to in the fixture.
+// size: 10000 ensures we capture dashed values in high-cardinality fields
+// (e.g. places, makers) where size: 1000 would only return the most common values.
 const fields = [
   { esField: 'category.name.keyword', filterType: 'categories' },
   { esField: 'name.value.keyword', filterType: 'object_type' },
@@ -29,24 +34,31 @@ async function run () {
   const existing = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
 
   for (const { esField, filterType } of fields) {
+    console.log(`Querying ${esField}...`);
+
     const result = await elastic.search({
       index: 'ciim',
       body: {
         size: 0,
         aggs: {
           values: {
-            terms: { field: esField, size: 1000 }
+            terms: { field: esField, size: 10000 }
           }
         }
       }
     });
 
+    let newCount = 0;
     for (const bucket of result.body.aggregations.values.buckets) {
+      // Only include values that contain a literal dash — these are the ones
+      // that get corrupted by the space↔dash URL encoding round-trip.
       const key = dashToSpace(bucket.key.toLowerCase());
       if (bucket.key.includes('-') && !existing[filterType][key]) {
         existing[filterType][key] = bucket.key;
+        newCount++;
       }
     }
+    console.log(`  → ${newCount} new dashed value(s) found`);
   }
 
   fs.writeFileSync(fixturePath, JSON.stringify(existing, null, 2));
