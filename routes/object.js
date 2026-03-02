@@ -20,13 +20,17 @@ module.exports = (elastic, config) => ({
       const responseType = contentType(request);
 
       if (responseType !== 'notAcceptable') {
+        const rawId = request.params.id;
+        if (!rawId || rawId === 'false') {
+          return Boom.notFound();
+        }
         try {
           const result = await elastic.get({
             index: 'ciim',
-            id: TypeMapping.toInternal(request.params.id)
+            id: TypeMapping.toInternal(rawId)
           });
           const relatedItems = await getSimilarObjects(result.body, elastic);
-          const relatedAIItems = await getAIRelated(request.params.id, 'object');
+          const relatedAIItems = await getAIRelated(rawId, 'object');
 
           // handles different properties on parent/child records
           // is this code needlessly complex?
@@ -50,7 +54,7 @@ module.exports = (elastic, config) => ({
           const groupingType = checkRecordType(grouping, sub);
           const childRecords = await getChildRecords(
             elastic,
-            TypeMapping.toInternal(request.params.id),
+            TypeMapping.toInternal(rawId),
             undefined,
             groupingType
           );
@@ -72,6 +76,9 @@ module.exports = (elastic, config) => ({
             childRecord === 'SPH' &&
             recordType === 'child'
           ) {
+            if (!parentRedirect) {
+              return Boom.notFound();
+            }
             return h.redirect(parentRedirect).permanent();
           }
           return response(h, JSONData, 'object', responseType);
