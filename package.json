@@ -81,7 +81,6 @@
     "index-update:galleries": "node scripts/get-galleries.mjs",
     "postinstall": "run-s build minify && node nightwatch.conf.js",
     "start": "node bin/server.mjs",
-    "start:analytics": "NODE_ENV=production node bin/server.mjs",
     "test": "run-s test:*",
     "test:lint": "semistandard",
     "test:unit": "run-s test:unit:*",
