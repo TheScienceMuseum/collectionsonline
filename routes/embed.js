@@ -19,7 +19,7 @@ module.exports = {
             });
             const res = await buildJSONResponse(result.body, config);
 
-            if (res.data.attributes.enhancement) {
+            if (res.data.attributes.enhancement && Array.isArray(res.data.attributes.enhancement.web)) {
               res.data.attributes.enhancement.web.forEach((el) => {
                 if (el.platform && el.platform === '3D') {
                   const rid = el.id;
