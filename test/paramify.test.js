@@ -13,6 +13,20 @@ test(file + 'paramify transforms query', (t) => {
   t.end();
 });
 
+test(file + 'paramify double-encodes forward slashes in values as %252f', (t) => {
+  t.equal(
+    paramify({ collection: ['buckingham movie museum/john burgoyne-johnson collection'] }),
+    '/collection/buckingham-movie-museum%252fjohn-burgoyne-johnson-collection',
+    'forward slash in array value double-encoded as %252f (survives Hapi %25 decode)'
+  );
+  t.equal(
+    paramify({ collection: 'buckingham movie museum/john burgoyne-johnson collection' }),
+    '/collection/buckingham movie museum%252fjohn burgoyne-johnson collection',
+    'forward slash in single string value double-encoded as %252f'
+  );
+  t.end();
+});
+
 test(file + 'paramify encodes values with space-dash-space correctly', (t) => {
   t.equal(
     paramify({ object_type: ['box - container'] }),

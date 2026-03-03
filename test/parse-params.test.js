@@ -198,6 +198,20 @@ test('values with triple-dash (encoded space-dash-space)', function (t) {
   t.end();
 });
 
+test('filter values with %2f are decoded back to forward slash', function (t) {
+  t.deepEqual(
+    parseParameters({ filters: 'collection/buckingham-movie-museum%2fjohn-burgoyne-johnson-collection' }),
+    { params: { type: 'all' }, categories: { collection: 'Buckingham Movie Museum/john Burgoyne Johnson Collection' } },
+    '%2f in collection value decoded to / before title-casing'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'objects/object_type/camera-accessory%2fplate' }),
+    { params: { type: 'objects' }, categories: { object_type: 'camera-accessory/plate' } },
+    '%2f in excluded filter type value decoded to / (no title-casing)'
+  );
+  t.end();
+});
+
 test('categories with triple-dash are title-cased correctly (space-dash-space preserved)', function (t) {
   t.deepEqual(
     parseParameters({ filters: 'objects/categories/science---technology' }),

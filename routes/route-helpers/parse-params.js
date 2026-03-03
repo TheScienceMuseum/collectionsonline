@@ -36,9 +36,9 @@ module.exports = function (urlParams) {
           urlCats[i] = 'categories';
         }
         if (urlCats[i + 1] && urlCats[i + 1].indexOf('+') > -1) {
-          categories[urlCats[i]] = urlCats[i + 1].split('+');
+          categories[urlCats[i]] = urlCats[i + 1].split('+').map(v => v.replace(/%2[Ff]/g, '/'));
         } else if (urlCats[i] !== 'search') {
-          categories[urlCats[i]] = urlCats[i + 1];
+          categories[urlCats[i]] = urlCats[i + 1] && urlCats[i + 1].replace(/%2[Ff]/g, '/');
         }
       }
     }
