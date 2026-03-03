@@ -212,6 +212,25 @@ test('filter values with %2f are decoded back to forward slash', function (t) {
   t.end();
 });
 
+test('filter values with commas in names have commas escaped for safe JSON API use', function (t) {
+  t.deepEqual(
+    parseParameters({ filters: 'objects/makers/science-museum,-london' }),
+    { params: { type: 'objects' }, categories: { makers: 'Science Museum\\, London' } },
+    'maker name with comma is escaped as \\, to prevent splitting in JSON API format'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'objects/makers/ray-jones,-tony' }),
+    { params: { type: 'objects' }, categories: { makers: 'Ray Jones\\, Tony' } },
+    'person-style maker name with comma is escaped'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'objects/makers/science-museum,-london+rolls-royce' }),
+    { params: { type: 'objects' }, categories: { makers: ['Science Museum\\, London', 'Rolls Royce'] } },
+    'multiple makers: comma-containing name is escaped, plain name is unchanged'
+  );
+  t.end();
+});
+
 test('categories with triple-dash are title-cased correctly (space-dash-space preserved)', function (t) {
   t.deepEqual(
     parseParameters({ filters: 'objects/categories/science---technology' }),

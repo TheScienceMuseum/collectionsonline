@@ -77,6 +77,25 @@ testWithServer(file + 'Should accept params in filter[PARAM_NAME] format for obj
   t.end();
 });
 
+testWithServer(file + 'Should handle maker filter with comma in name via URL path (HTML and JSON API)', {}, async (t, ctx) => {
+  t.plan(2);
+
+  const htmlRes = await ctx.server.inject({
+    method: 'GET',
+    url: '/search/objects/makers/science-museum,-london',
+    headers: { Accept: 'text/html' }
+  });
+  t.equal(htmlRes.statusCode, 200, 'HTML request for maker with comma in name returns 200');
+
+  const jsonRes = await ctx.server.inject({
+    method: 'GET',
+    url: '/search/objects/makers/science-museum,-london',
+    headers: { Accept: 'application/vnd.api+json' }
+  });
+  t.equal(jsonRes.statusCode, 200, 'JSON API request for maker with comma in name returns 200');
+  t.end();
+});
+
 testWithServer(file + 'Should handle object_type filter with space-dash-space values in URL', {}, async (t, ctx) => {
   t.plan(2);
 

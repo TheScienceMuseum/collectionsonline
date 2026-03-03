@@ -58,6 +58,15 @@ module.exports = function (urlParams) {
       categories[cat] = museumMap.toLong(categories[cat]);
     } else if (exclude.indexOf(cat) === -1) {
       categories[cat] = utils.uppercaseFirstChar(categories[cat]);
+      // Escape literal commas so they are not treated as value separators
+      // when the value is later processed by splitOnUnescapedCommas (JSON API format)
+      if (typeof categories[cat] === 'string') {
+        categories[cat] = categories[cat].replace(/,/g, '\\,');
+      } else if (Array.isArray(categories[cat])) {
+        categories[cat] = categories[cat].map(function (v) {
+          return typeof v === 'string' ? v.replace(/,/g, '\\,') : v;
+        });
+      }
     }
   }
   return { params, categories };
