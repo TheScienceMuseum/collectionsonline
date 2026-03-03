@@ -145,3 +145,32 @@ test('bad date range test', (t) => {
   t.equal(made.date.link, 'http://localhost:8000/search/date[from]/1912/date[to]/1912', 'uses one date if only one is good');
   t.end();
 });
+
+test('collection link with forward slash in name encodes slash as %252F', (t) => {
+  t.plan(1);
+
+  const resource = {
+    data: {
+      type: 'objects',
+      attributes: {
+        cumulation: {
+          collector: [
+            { summary: { title: 'Buckingham Movie Museum/John Burgoyne-Johnson Collection' } }
+          ]
+        }
+      },
+      links: { root: 'http://localhost:8000' },
+      record: {}
+    },
+    included: []
+  };
+  const JSONData = JSONToHTML(resource);
+  const collection = JSONData.details.find(el => el && el.key === 'Collection');
+
+  t.equal(
+    collection.link,
+    'http://localhost:8000/search/collection/buckingham-movie-museum%252fjohn-burgoyne-johnson-collection',
+    'forward slash in collection name is double-encoded as %252F'
+  );
+  t.end();
+});
