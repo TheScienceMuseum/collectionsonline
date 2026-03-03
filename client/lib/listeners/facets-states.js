@@ -14,7 +14,8 @@ module.exports = {
     Place: 'close',
     User: 'close',
     Archive: 'close',
-    Image: 'close'
+    Image: 'close',
+    Material: 'close'
   },
   people: {
     Dates: 'close',
