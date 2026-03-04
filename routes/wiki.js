@@ -79,7 +79,7 @@ const wikidataConn = async (req) => {
   const { wikidata } = req.params;
   if (!wikidata) return null;
   try {
-    return await wbk.getEntities(wikidata, ['en'], ['info', 'claims', 'labels'], 'json');
+    return await wbk.getEntities(wikidata, ['en'], ['info', 'claims', 'labels', 'sitelinks'], 'json');
   } catch (error) {
     console.error('Error fetching entities:', error);
     return null;
@@ -153,6 +153,13 @@ async function configResponse (qCode, entities, elastic, config) {
     if (obj[key] && Array.isArray(obj[key].value)) {
       obj[key].value = dedupeValueArray(obj[key].value);
     }
+  }
+
+  // Wikipedia sitelink — store English Wikipedia URL if present.
+  // Title uses underscores per Wikipedia URL convention.
+  const enwiki = entities[qCode]?.sitelinks?.enwiki;
+  if (enwiki && enwiki.title) {
+    obj.wikipediaUrl = 'https://en.wikipedia.org/wiki/' + enwiki.title.replace(/ /g, '_');
   }
 
   return obj;

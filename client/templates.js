@@ -479,10 +479,6 @@ Handlebars.registerHelper(
 );
 
 Handlebars.registerHelper(
-  'isWikiLink',
-  require('../templates/helpers/isWikiLink.js')
-);
-Handlebars.registerHelper(
   'getMphCapacity',
   require('../templates/helpers/getMphCapacity.js')
 );
