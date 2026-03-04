@@ -1,6 +1,6 @@
 # Collections Online — Architecture Guide
 
-A developer-oriented guide to how the application is structured and how data flows through it. For a deeper dive including code quality notes, see `site-architecture-and-code-overview.md`.
+A developer-oriented guide to how the application is structured and how data flows through it. For a deeper dive see `site-architecture-and-code-overview.md`.
 
 ---
 
