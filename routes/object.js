@@ -11,6 +11,17 @@ const getChildRecords = require('../lib/get-child-records.js');
 const checkRecordType = require('./route-helpers/recordType.js');
 // const { log } = require('handlebars');
 
+/**
+ * Returns true if this record is a child within a Single-Part Hierarchy (SPH).
+ * SPH children do not have their own display page — they should redirect to their parent.
+ *
+ * @param {Object} record - The record object from JSONData.data.record
+ * @returns {boolean}
+ */
+function isSPHChildRecord (record) {
+  return record.groupingType === 'SPH' && record.recordType === 'child';
+}
+
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/objects/{id}/{slug?}',
@@ -67,15 +78,9 @@ module.exports = (elastic, config) => ({
             relatedAIItems,
             childRecords
           );
-          // handles redirect to parent record if child record is part of SPH grouping
-          const childRecord = JSONData.data.record.groupingType;
-
-          const recordType = JSONData.data.record.recordType;
-          const parentRedirect = JSONData.data.links.parent;
-          if (
-            childRecord === 'SPH' &&
-            recordType === 'child'
-          ) {
+          // SPH child records are not displayed on their own page — redirect to parent
+          if (isSPHChildRecord(JSONData.data.record)) {
+            const parentRedirect = JSONData.data.links.parent;
             if (!parentRedirect) {
               return Boom.notFound();
             }
