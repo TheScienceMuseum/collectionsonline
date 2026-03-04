@@ -11,28 +11,22 @@ module.exports = async function () {
   const _data = { ...data };
 
   // destructuring to change order of data in ui
-  // imageMetadata, wikipediaUrl and alsoInCollection are pulled out explicitly
-  // so they don't end up in sortedInfo and get rendered as regular properties
+  // imageMetadata, wikipediaUrl, alsoInCollection and externalIdentifiers are pulled out
+  // explicitly so they don't end up in sortedInfo and get rendered as regular properties
   const {
     P18: imageUrl = null,
-    P214: viaf = null,
     P154: logoUrl = null,
-    P1415: oxfordDnb = null,
     imageMetadata = null,
     wikipediaUrl = null,
     alsoInCollection = null,
+    externalIdentifiers = null,
     ...info
   } = _data;
 
   // prioritises image or logo url, as some companies will only have a logo, not an image
   const finalImageUrl = imageUrl || logoUrl;
 
-  // we want all wikidata records to have the viaf and oxford dnb at the bottom
-  const sortedInfo = {
-    ...info,
-    ...(viaf && { P214: viaf }),
-    ...(oxfordDnb && { P1415: oxfordDnb })
-  };
+  const sortedInfo = { ...info };
 
   // final wikidata object
   const wikiData = {
@@ -40,6 +34,7 @@ module.exports = async function () {
     ...(imageMetadata && { imageMetadata }),
     ...(wikipediaUrl && { wikipediaUrl }),
     ...(alsoInCollection && { alsoInCollection }),
+    ...(externalIdentifiers && { externalIdentifiers }),
     ...(JSON.stringify(sortedInfo) !== '{}' && { sortedInfo })
   };
 

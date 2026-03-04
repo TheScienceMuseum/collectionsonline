@@ -24,6 +24,15 @@ const { batchRelatedWikidata } = require('../lib/getWikidataRelated');
 const WIKIDATA_USER_AGENT = 'CollectionsOnline/1.0 (https://collection.sciencemuseumgroup.org.uk; web.team@sciencemuseum.ac.uk)';
 const CACHE_CONTROL_HEADER = 'public, max-age=3600, stale-while-revalidate=86400';
 
+// Fixed set of external identifier properties rendered as a dedicated block at the
+// bottom of the Wikidata panel. Order here determines display order.
+const EXTERNAL_IDENTIFIER_CONFIG = [
+  { property: 'P3029', label: 'National Archive', urlTemplate: 'https://discovery.nationalarchives.gov.uk/details/c/' },
+  { property: 'P3074', label: 'Graces Guide', urlTemplate: 'https://www.gracesguide.co.uk/' },
+  { property: 'P1415', label: 'Oxford DNB', urlTemplate: 'https://www.oxforddnb.com/view/article/' },
+  { property: 'P214', label: 'VIAF', urlTemplate: 'https://viaf.org/viaf/' }
+];
+
 // Checks whether a string flag is present in a property's action array.
 // action arrays are plain string arrays, e.g. ['nest', 'display', 'list'].
 function hasPropertyAction (property, action) {
@@ -198,11 +207,13 @@ async function configResponse (qCode, entities, elastic, config) {
     }
   }
 
-  // Award/honour search links — make each P166 award label link to a collection search.
-  if (obj.P166 && Array.isArray(obj.P166.value)) {
-    obj.P166.value = obj.P166.value.map(v =>
-      v.value ? { ...v, searchUrl: `/search?q=${encodeURIComponent(v.value)}` } : v
-    );
+  // Product and Notable Work search links — link each label to a collection search.
+  for (const prop of ['P1056', 'P800']) {
+    if (obj[prop] && Array.isArray(obj[prop].value)) {
+      obj[prop].value = obj[prop].value.map(v =>
+        v.value ? { ...v, searchUrl: `/search?q=${encodeURIComponent(v.value)}` } : v
+      );
+    }
   }
 
   // "Also in our collection" — collect property values that have a related collection link.
@@ -218,6 +229,14 @@ async function configResponse (qCode, entities, elastic, config) {
   // Dedupe by URL before storing
   const dedupedAlso = [...new Map(alsoInCollection.map(x => [x.url, x])).values()];
   if (dedupedAlso.length) obj.alsoInCollection = dedupedAlso;
+
+  // External identifiers — fixed set rendered as a dedicated block, not regular properties.
+  const externalIds = EXTERNAL_IDENTIFIER_CONFIG.reduce((acc, { property, label, urlTemplate }) => {
+    const value = entities[qCode]?.claims?.[property]?.[0]?.mainsnak?.datavalue?.value;
+    if (value) acc.push({ label, value, url: urlTemplate + value });
+    return acc;
+  }, []);
+  if (externalIds.length) obj.externalIdentifiers = externalIds;
 
   // Wikipedia sitelink — store English Wikipedia URL if present.
   // Title uses underscores per Wikipedia URL convention.

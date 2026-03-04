@@ -55,7 +55,6 @@ module.exports = {
     property: 'P973',
     action: ['display', 'isExternalLink', 'hide']
   },
-  'Oxford DNB': { property: 'P1415', action: ['display'] },
   'Award Received': { property: 'P166', action: ['nest', 'display', 'list'] },
   'Named After': { property: 'P138', action: ['display'] },
   'Archives in': { property: 'P485', action: ['nest', 'display', 'list'] },
@@ -79,6 +78,5 @@ module.exports = {
   Relatives: { property: 'P1038', action: ['nest', 'display', 'displayLinked'] },
   'Educated At': { property: 'P69', action: ['nest', 'display'] },
   'Notable Work': { property: 'P800', action: ['nest', 'display'] }
-  // 'VIAF ID': { property: 'P214', action: ['display', 'isExternalLink'] }
 
 };

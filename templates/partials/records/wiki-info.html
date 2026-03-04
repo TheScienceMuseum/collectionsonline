@@ -35,17 +35,10 @@
         </a>{{#unless this.list}}{{comma this ../this.value.value false}}{{/unless}}
         {{else}}
         {{#if this.searchUrl}}
-        <a href="{{this.searchUrl}}">{{#unless this.value.viaf}}{{this.value}}{{/unless}}</a>{{#unless this.list}}{{comma this ../this.value.value false}}{{/unless}}
+        <a href="{{this.searchUrl}}">{{this.value}}</a>{{#unless this.list}}{{comma this ../this.value.value false}}{{/unless}}
         {{else}}
-        {{#unless this.value.viaf}} {{this.value}}{{/unless}}{{#unless this.list}}{{comma this
-                ../this.value.value false}}{{/unless}}
+        {{this.value}}{{#unless this.list}}{{comma this ../this.value.value false}}{{/unless}}
         {{/if}}
-        {{/if}}
-        {{#if this.value.viaf}}
-        <a href="{{this.value.viaf}}">
-          {{this.value.viaf}}
-        </a>
-
         {{/if}}
       </li>
       {{/each}}
@@ -65,6 +58,16 @@
     {{#each wikiData.alsoInCollection}}
     <a href="{{this.url}}">{{this.name}}</a>{{#unless @last}}, {{/unless}}
     {{/each}}
+  </div>
+  {{/if}}
+  {{#if wikiData.externalIdentifiers}}
+  <div class="panel wiki-external-ids" style="margin-top: 8px; font-size: smaller;">
+    <strong>External Identifiers</strong>
+    <ul style="list-style: none; margin: 4px 0 0; padding: 0;">
+      {{#each wikiData.externalIdentifiers}}
+      <li><a href="{{this.url}}" rel="noopener noreferrer">{{this.label}}: {{this.value}}</a></li>
+      {{/each}}
+    </ul>
   </div>
   {{/if}}
   <div class="panel panel--wikidata">
