@@ -19,6 +19,10 @@
     "Q94": {
       "id": "Q94",
       "labels": { "en": { "language": "en", "value": "Alphabet Inc." } }
+    },
+    "Q19837": {
+      "id": "Q19837",
+      "labels": { "en": { "language": "en", "value": "Steve Jobs" } }
     }
   }
 }

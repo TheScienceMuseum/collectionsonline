@@ -245,3 +245,47 @@ testWithServer('wiki Q312: CEO (P169) has related link when collection record fo
   );
   t.end();
 });
+
+// ─── Cross-link: Apple Inc. → Founded By → Steve Jobs (cp50119) ───────────
+
+testWithServer('wiki Q312: founded by (P112) includes "Steve Jobs"', { config: testConfig }, async (t, ctx) => {
+  t.plan(2);
+  const restore = stubCacheMiss();
+  t.teardown(restore);
+  sinon.stub(ctx.elastic, 'search').resolves({ body: { hits: { hits: [] } } });
+
+  const res = await ctx.server.inject({ method: 'GET', url: '/wiki/Q312' });
+  const body = JSON.parse(res.payload);
+
+  t.ok(body.P112 && Array.isArray(body.P112.value), 'P112 (Founded By) is present');
+  const val = body.P112.value[0] && body.P112.value[0].value;
+  t.ok(val && val.includes('Steve Jobs'), `founded by value includes "Steve Jobs": "${val}"`);
+  t.end();
+});
+
+testWithServer('wiki Q312: founded by (P112) has related link when collection record found', { config: testConfig }, async (t, ctx) => {
+  t.plan(2);
+  const restore = stubCacheMiss();
+  t.teardown(restore);
+  // Return cp50119 when ES is queried for Steve Jobs' wikidata URL (Q19837)
+  sinon.stub(ctx.elastic, 'search').callsFake(async (opts) => {
+    const queryStr = JSON.stringify(opts.body);
+    return {
+      body: {
+        hits: {
+          hits: queryStr.includes('Q19837') ? [{ _id: 'cp50119' }] : []
+        }
+      }
+    };
+  });
+
+  const res = await ctx.server.inject({ method: 'GET', url: '/wiki/Q312' });
+  const body = JSON.parse(res.payload);
+
+  t.ok(body.P112 && body.P112.value[0], 'P112 (Founded By) has a value entry');
+  t.ok(
+    body.P112.value[0].related && body.P112.value[0].related.includes('/people/cp50119'),
+    `founded by entry links to /people/cp50119: "${body.P112.value[0].related}"`
+  );
+  t.end();
+});

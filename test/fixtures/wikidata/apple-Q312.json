@@ -58,6 +58,16 @@
             }]
           }
         }],
+        "P112": [{
+          "mainsnak": {
+            "snaktype": "value",
+            "property": "P112",
+            "datavalue": {
+              "value": { "entity-type": "item", "id": "Q19837" },
+              "type": "wikibase-entityid"
+            }
+          }
+        }],
         "P127": [{
           "mainsnak": {
             "snaktype": "value",
