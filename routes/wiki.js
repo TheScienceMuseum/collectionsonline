@@ -266,7 +266,8 @@ module.exports = (elastic, config) => ({
             const result = await configResponse(wikidata, entities, elastic, config);
 
             log(`Storing in cache for Wikidata ID: ${wikidata}`);
-            await setCache(cache, wikidata, result, clear);
+            const ttl = config.wikidataCacheTtl || 2629746000;
+            await setCache(cache, wikidata, result, clear, ttl);
 
             return result;
           } finally {
