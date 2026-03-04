@@ -11,11 +11,13 @@ module.exports = async function () {
   const _data = { ...data };
 
   // destructuring to change order of data in ui
+  // imageMetadata is pulled out explicitly so it doesn't end up in sortedInfo
   const {
     P18: imageUrl = null,
     P214: viaf = null,
     P154: logoUrl = null,
     P1415: oxfordDnb = null,
+    imageMetadata = null,
     ...info
   } = _data;
 
@@ -32,6 +34,7 @@ module.exports = async function () {
   // final wikidata object
   const wikiData = {
     ...(finalImageUrl && { image: finalImageUrl }),
+    ...(imageMetadata && { imageMetadata }),
     ...(JSON.stringify(sortedInfo) !== '{}' && { sortedInfo })
   };
 

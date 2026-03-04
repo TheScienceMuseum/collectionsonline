@@ -11,7 +11,8 @@ const {
   extractNestedQCodeData,
   extraContext,
   batchFetchEntities,
-  collectNestedQCodes
+  collectNestedQCodes,
+  fetchImageMetadata
 } = require('../lib/wikidataQueries');
 const { setCache, fetchCache } = require('../lib/cached-wikidata');
 const properties = require('../fixtures/wikibasePropertiesConfig');
@@ -136,6 +137,15 @@ async function configResponse (qCode, entities, elastic, config) {
       }
     })
   );
+
+  // Fetch Wikimedia Commons metadata for whichever image will be displayed (P18 > P154).
+  // Runs after the property loop so both P18 and P154 are already resolved.
+  const imageFilename =
+    entities[qCode]?.claims?.P18?.[0]?.mainsnak?.datavalue?.value ||
+    entities[qCode]?.claims?.P154?.[0]?.mainsnak?.datavalue?.value;
+  if (imageFilename) {
+    obj.imageMetadata = await fetchImageMetadata(imageFilename);
+  }
 
   // Deduplicate every property's value array so repeated Wikidata claims for the same
   // label (e.g. 50× "Peabody Awards") collapse to a single entry.
