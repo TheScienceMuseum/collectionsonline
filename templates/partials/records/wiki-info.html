@@ -4,10 +4,10 @@
   <figure class="panel wiki-image-panel" style="margin-bottom: 10px; margin-top: 0;">
     <img id="wikiImage" class="bleed" src="{{wikiData.image}}" alt="{{wikiData.imageMetadata.caption}}">
     {{#if wikiData.imageMetadata}}
-    <figcaption class="wiki-image-credit" style="font-size: smaller; padding: 4px 8px; color: #555;">
-      {{#if wikiData.imageMetadata.caption}}<span class="wiki-caption">{{wikiData.imageMetadata.caption}}</span><br>{{/if}}
-      {{#if wikiData.imageMetadata.artist}}<span class="wiki-artist">Credit: {{wikiData.imageMetadata.artist}}</span><br>{{/if}}
-      <span class="wiki-license-commons">{{#if wikiData.imageMetadata.license}}{{#if wikiData.imageMetadata.licenseUrl}}<a href="{{wikiData.imageMetadata.licenseUrl}}" rel="noopener noreferrer">{{wikiData.imageMetadata.license}}</a>{{else}}{{wikiData.imageMetadata.license}}{{/if}}{{/if}}{{#if wikiData.imageMetadata.commonsUrl}} · <a href="{{wikiData.imageMetadata.commonsUrl}}" rel="noopener noreferrer">View on Wikimedia Commons</a>{{/if}}</span>
+    <figcaption class="wiki-image-credit" style="font-size: smaller; padding: 4px 8px; color: #aaa;">
+      {{!-- {{#if wikiData.imageMetadata.artist}}<span class="wiki-artist">Credit: {{wikiData.imageMetadata.artist}}</span><br>{{/if}} --}}
+      <span class="wiki-license-commons">{{#if wikiData.imageMetadata.caption}}{{wikiData.imageMetadata.caption}}{{/if}}{{#if wikiData.imageMetadata.license}} | {{#if wikiData.imageMetadata.licenseUrl}}<a href="{{wikiData.imageMetadata.licenseUrl}}" rel="noopener noreferrer" style="color: inherit;">{{wikiData.imageMetadata.license}}</a>{{else}}{{wikiData.imageMetadata.license}}{{/if}}{{/if}}</span>
+      {{!-- {{#if wikiData.imageMetadata.commonsUrl}}<br><a href="{{wikiData.imageMetadata.commonsUrl}}" rel="noopener noreferrer">View on Wikimedia Commons</a>{{/if}} --}}
     </figcaption>
     {{/if}}
   </figure>
