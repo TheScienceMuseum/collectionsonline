@@ -11,7 +11,8 @@ module.exports = async function () {
   const _data = { ...data };
 
   // destructuring to change order of data in ui
-  // imageMetadata and wikipediaUrl are pulled out explicitly so they don't end up in sortedInfo
+  // imageMetadata, wikipediaUrl and alsoInCollection are pulled out explicitly
+  // so they don't end up in sortedInfo and get rendered as regular properties
   const {
     P18: imageUrl = null,
     P214: viaf = null,
@@ -19,6 +20,7 @@ module.exports = async function () {
     P1415: oxfordDnb = null,
     imageMetadata = null,
     wikipediaUrl = null,
+    alsoInCollection = null,
     ...info
   } = _data;
 
@@ -37,6 +39,7 @@ module.exports = async function () {
     ...(finalImageUrl && { image: finalImageUrl }),
     ...(imageMetadata && { imageMetadata }),
     ...(wikipediaUrl && { wikipediaUrl }),
+    ...(alsoInCollection && { alsoInCollection }),
     ...(JSON.stringify(sortedInfo) !== '{}' && { sortedInfo })
   };
 

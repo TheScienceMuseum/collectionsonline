@@ -9,5 +9,12 @@
   "user": "",
   "password": "",
   "JWT_SECRET": "",
-  "mediaPath": ""
+  "mediaPath": "",
+
+  "___redis_comment": "Redis / ElastiCache connection — choose one format:",
+  "elasticacheEndpoint": "127.0.0.1:6379",
+  "___redis_note": "ELASTICACHE_EP env var (host:port) takes precedence over elasticacheEndpoint. Legacy keys elasticacheHost + elasticachePort are still supported.",
+
+  "___wikidata_comment": "Optional Wikidata cache TTL in milliseconds (default: ~30 days)",
+  "wikidataCacheTtl": 2629746000
 }
