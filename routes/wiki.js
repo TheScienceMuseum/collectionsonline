@@ -198,7 +198,13 @@ module.exports = (elastic, config) => ({
           try {
             const data = await wikidataConn(req);
             const fetchResult = await fetch(data, { signal: AbortSignal.timeout(10000) })
-              .then((res) => res.json())
+              .then((res) => {
+                if (!res.ok) {
+                  console.error(`Wikidata API returned ${res.status} ${res.statusText} for ${wikidata}`);
+                  return null;
+                }
+                return res.json();
+              })
               .catch((err) => {
                 console.error('Error parsing Wikidata response:', err);
                 return null;
