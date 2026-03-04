@@ -111,7 +111,7 @@ testWithServer('wiki Q19837: employer (P108) has related link when collection re
     return {
       body: {
         hits: {
-          hits: queryStr.includes('Q312') ? [{ _id: 'cp20600' }] : []
+          hits: queryStr.includes('Q312') ? [{ _id: 'cp20600', _source: { wikidata: 'https://www.wikidata.org/wiki/Q312' } }] : []
         }
       }
     };
@@ -229,7 +229,7 @@ testWithServer('wiki Q312: CEO (P169) has related link when collection record fo
     return {
       body: {
         hits: {
-          hits: queryStr.includes('Q5136071') ? [{ _id: 'cp99999' }] : []
+          hits: queryStr.includes('Q5136071') ? [{ _id: 'cp99999', _source: { wikidata: 'https://www.wikidata.org/wiki/Q5136071' } }] : []
         }
       }
     };
@@ -273,7 +273,7 @@ testWithServer('wiki Q312: founded by (P112) has related link when collection re
     return {
       body: {
         hits: {
-          hits: queryStr.includes('Q19837') ? [{ _id: 'cp50119' }] : []
+          hits: queryStr.includes('Q19837') ? [{ _id: 'cp50119', _source: { wikidata: 'https://www.wikidata.org/wiki/Q19837' } }] : []
         }
       }
     };
