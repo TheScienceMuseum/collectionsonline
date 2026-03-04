@@ -1,0 +1,74 @@
+{
+  "entities": {
+    "Q312": {
+      "id": "Q312",
+      "type": "item",
+      "labels": {
+        "en": { "language": "en", "value": "Apple Inc." }
+      },
+      "claims": {
+        "P154": [{
+          "mainsnak": {
+            "snaktype": "value",
+            "property": "P154",
+            "datavalue": { "value": "Apple_logo_black.svg", "type": "string" }
+          }
+        }],
+        "P571": [{
+          "mainsnak": {
+            "snaktype": "value",
+            "property": "P571",
+            "datavalue": {
+              "value": { "time": "+1976-04-01T00:00:00Z", "precision": 11 },
+              "type": "time"
+            }
+          }
+        }],
+        "P1830": [{
+          "mainsnak": {
+            "snaktype": "value",
+            "property": "P1830",
+            "datavalue": {
+              "value": { "entity-type": "item", "id": "Q24740" },
+              "type": "wikibase-entityid"
+            }
+          },
+          "qualifiers": {
+            "P580": [{
+              "snaktype": "value",
+              "property": "P580",
+              "datavalue": { "value": { "time": "+2001-01-01T00:00:00Z" }, "type": "time" }
+            }]
+          }
+        }],
+        "P169": [{
+          "mainsnak": {
+            "snaktype": "value",
+            "property": "P169",
+            "datavalue": {
+              "value": { "entity-type": "item", "id": "Q5136071" },
+              "type": "wikibase-entityid"
+            }
+          },
+          "qualifiers": {
+            "P580": [{
+              "snaktype": "value",
+              "property": "P580",
+              "datavalue": { "value": { "time": "+2011-01-01T00:00:00Z" }, "type": "time" }
+            }]
+          }
+        }],
+        "P127": [{
+          "mainsnak": {
+            "snaktype": "value",
+            "property": "P127",
+            "datavalue": {
+              "value": { "entity-type": "item", "id": "Q94" },
+              "type": "wikibase-entityid"
+            }
+          }
+        }]
+      }
+    }
+  }
+}

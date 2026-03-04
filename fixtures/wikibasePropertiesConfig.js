@@ -20,6 +20,9 @@ module.exports = {
     action: [match, display, displayLinked]
   },
   Logo: { property: 'P154', action: [display] },
+  // P1448 is shown (not hidden). A duplicate entry 'Official Name ' (with a trailing
+  // space, lower in this file) was silently overwriting this one in JS object literals.
+  // That duplicate has been removed; this single entry is canonical.
   'Official Name': { property: 'P1448', action: [match, display] },
   'Employer(s)': {
     property: 'P108',
@@ -57,7 +60,6 @@ module.exports = {
   Inception: { property: 'P571', action: [display, hide] },
   'Headquarters Location': { property: 'P159', action: [nest, hide] },
   Product: { property: 'P1056', action: [nest] },
-  'Official Name ': { property: 'P1448', action: [display, hide] },
   'Short Name': { property: 'P1813', action: [display, hide] },
   'Has Subsidiary': {
     property: 'P355',

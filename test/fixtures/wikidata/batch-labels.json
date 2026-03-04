@@ -1,0 +1,24 @@
+{
+  "entities": {
+    "Q312": {
+      "id": "Q312",
+      "labels": { "en": { "language": "en", "value": "Apple Inc." } }
+    },
+    "Q2651": {
+      "id": "Q2651",
+      "labels": { "en": { "language": "en", "value": "iPhone" } }
+    },
+    "Q24740": {
+      "id": "Q24740",
+      "labels": { "en": { "language": "en", "value": "iTunes" } }
+    },
+    "Q5136071": {
+      "id": "Q5136071",
+      "labels": { "en": { "language": "en", "value": "Tim Cook" } }
+    },
+    "Q94": {
+      "id": "Q94",
+      "labels": { "en": { "language": "en", "value": "Alphabet Inc." } }
+    }
+  }
+}

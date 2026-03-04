@@ -6,28 +6,15 @@ const wbk = require('../lib/wikibase');
 // 50+ sub-calls to the Wikidata API independently.
 const wikiInFlight = new Map();
 const {
-  getImageUrl,
-  getLogo,
-  extractClaimValue,
   nestedData,
   formatDate,
   extractNestedQCodeData,
   extraContext,
-  formatViaf,
   batchFetchEntities,
   collectNestedQCodes
 } = require('../lib/wikidataQueries');
 const { setCache, fetchCache } = require('../lib/cached-wikidata');
 const properties = require('../fixtures/wikibasePropertiesConfig');
-
-// Simple logger function
-const log = (message, data = null) => {
-  const timestamp = new Date().toISOString();
-  console.log(`[${timestamp}] ${message}`);
-  if (data) {
-    console.log(`[${timestamp}] Data:`, JSON.stringify(data, null, 2));
-  }
-};
 
 function hasPropertyAction (property, action) {
   return action.some((item) => item[property] === true);
@@ -52,32 +39,48 @@ function dedupeValueArray (items) {
   });
 }
 
-const wikidataConn = async (req, h) => {
+// ─── Property-type handler functions ─────────────────────────────────────────
+// Each handler encapsulates the logic for one category of Wikidata property,
+// eliminating the previous "set then immediately override" pattern in the loop.
+
+function handleImageOrLogo (entities, qCode, property) {
+  const value =
+    entities[qCode].claims[property]?.[0]?.mainsnak?.datavalue?.value ?? null;
+  if (!value) return null;
+  const imgPath = value.replace(/ /g, '_');
+  return `https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/${imgPath}`;
+}
+
+function handleDate (entities, qCode, label, property) {
+  const hide = property === 'P569' || property === 'P570';
+  const date = formatDate(entities, qCode, property);
+  return { label, value: [{ value: date, ...(hide ? { hide: true } : {}) }] };
+}
+
+async function handleContextProperty (qualifiersArr, elastic, config, label, list, prefetchedEntities) {
+  const context = await extraContext(qualifiersArr, elastic, config, list, prefetchedEntities);
+  if (context.length > 0) {
+    return { label, value: context };
+  }
+  return null;
+}
+
+async function handleNestedProperty (entities, qCode, property, label, elastic, config, flags, prefetchedEntities) {
+  const { hide, relatedRequired, list } = flags;
+  const nested = nestedData(entities, qCode, property);
+  const value = await extractNestedQCodeData(nested, elastic, config, hide, relatedRequired, list, prefetchedEntities);
+  return { ...(value ? { label } : {}), value };
+}
+
+// ─── Response builder ─────────────────────────────────────────────────────────
+
+const wikidataConn = async (req) => {
   const { wikidata } = req.params;
-
+  if (!wikidata) return null;
   try {
-    if (!wikidata) {
-      log('No wikidata ID supplied');
-      return h.response('No wikidata supplied').code(404);
-    }
-
-    const languages = ['en'];
-    const props = ['info', 'claims', 'labels'];
-    const format = 'json';
-
-    try {
-      log(`Initiating Wikidata connection for ID: ${wikidata}`);
-      const entities = await wbk.getEntities(wikidata, languages, props, format);
-      log(`Successfully connected to Wikidata for ID: ${wikidata}`);
-      return entities;
-    } catch (error) {
-      log(`Error fetching entities for ID: ${wikidata}`, error);
-      console.error('Error fetching entities:', error);
-      return null;
-    }
+    return await wbk.getEntities(wikidata, ['en'], ['info', 'claims', 'labels'], 'json');
   } catch (error) {
-    log('General error in wikidataConn function', error);
-    console.error('There was an error:', error);
+    console.error('Error fetching entities:', error);
     return null;
   }
 };
@@ -98,107 +101,37 @@ async function configResponse (qCode, entities, elastic, config) {
   };
 
   await Promise.all(
-    Object.entries(properties).map(async ([key, value]) => {
-      const { property, action } = value;
+    Object.entries(properties).map(async ([key, propConfig]) => {
+      const { property, action } = propConfig;
       const label = key;
-      if (entities[qCode]?.claims?.[property]) {
-        const valueObj =
-          entities[qCode].claims[property][0]?.mainsnak.datavalue?.value;
-        let finalValue;
 
-        if (typeof valueObj === 'string') {
-          if (/^Q\d+$/.test(valueObj)) {
-            finalValue = await extractNestedQCodeData(
-              valueObj,
-              elastic,
-              config,
-              false,
-              false,
-              false,
-              prefetchedEntities
-            );
-          } else {
-            finalValue = [{ value: valueObj }];
-          }
-        } else if (typeof valueObj === 'object' && valueObj !== null) {
-          finalValue = await extractClaimValue(valueObj);
-        }
+      if (!entities[qCode]?.claims?.[property]) return;
 
-        if (finalValue) {
-          obj[property] = {
-            ...(finalValue ? { label } : ''),
-            value: finalValue
-          };
-        }
-
-        const furtherContext = hasPropertyAction('context', action);
+      if (property === 'P18' || property === 'P154') {
+        obj[property] = handleImageOrLogo(entities, qCode, property);
+      } else if (property === 'P569' || property === 'P570' || property === 'P571') {
+        obj[property] = handleDate(entities, qCode, label, property);
+      } else if (hasPropertyAction('context', action)) {
+        const qualifiersArr = entities[qCode].claims[property];
         const list = hasPropertyAction('list', action);
-
-        if (hasPropertyAction('nest', action)) {
-          const hide = hasPropertyAction('hide', action);
-          const nested = await nestedData(entities, qCode, property);
-          const relatedRequired = hasPropertyAction('displayLinked', action);
-          const value = await extractNestedQCodeData(
-            nested,
-            elastic,
-            config,
-            hide,
-            relatedRequired,
-            list,
-            prefetchedEntities
-          );
-          obj[property] = {
-            ...(value ? { label } : ''),
-            value
-          };
-        } else {
-          const hide = hasPropertyAction('hide', action);
-          const relatedRequired = hasPropertyAction('displayLinked', action);
-          const value = await extractNestedQCodeData(
-            valueObj,
-            elastic,
-            config,
-            hide,
-            relatedRequired,
-            list,
-            prefetchedEntities
-          );
-          if (value) {
-            obj[property] = {
-              ...(value ? { label } : ''),
-              value
-            };
-          }
-        }
-
-        if (property === 'P18') {
-          const imgUrl = await getImageUrl(entities, qCode, property);
-          obj[property] = imgUrl;
-        } else if (property === 'P154') {
-          const logoUrl = await getLogo(entities, qCode, property);
-          obj[property] = logoUrl;
-        } else if (property === 'P569' || property === 'P570') {
-          const date = formatDate(entities, qCode, property);
-          obj[property] = { label, value: [{ value: date, hide: true }] };
-        } else if (property === 'P571') {
-          const date = formatDate(entities, qCode, property);
-          obj[property] = { label, value: [{ value: date }] };
-        } else if (property === 'P214') {
-          const viafString = await formatViaf(entities, qCode, property);
-          obj[property] = { label, value: [{ value: { viaf: viafString } }] };
-        } else if (furtherContext) {
-          const qualifiersArr = entities[qCode].claims[property];
-          const context = await extraContext(
-            qualifiersArr,
-            elastic,
-            config,
-            list,
-            prefetchedEntities
-          );
-
-          if (context.length > 0) {
-            obj[property] = { label, value: context };
-          }
+        const result = await handleContextProperty(qualifiersArr, elastic, config, label, list, prefetchedEntities);
+        if (result) obj[property] = result;
+      } else if (hasPropertyAction('nest', action)) {
+        const flags = {
+          hide: hasPropertyAction('hide', action),
+          relatedRequired: hasPropertyAction('displayLinked', action),
+          list: hasPropertyAction('list', action)
+        };
+        obj[property] = await handleNestedProperty(entities, qCode, property, label, elastic, config, flags, prefetchedEntities);
+      } else {
+        // Generic scalar / Q-code property (no nest, no context)
+        const valueObj = entities[qCode].claims[property][0]?.mainsnak.datavalue?.value;
+        const hide = hasPropertyAction('hide', action);
+        const relatedRequired = hasPropertyAction('displayLinked', action);
+        const list = hasPropertyAction('list', action);
+        const value = await extractNestedQCodeData(valueObj, elastic, config, hide, relatedRequired, list, prefetchedEntities);
+        if (value && value.length > 0) {
+          obj[property] = { label, value };
         }
       }
     })
@@ -225,19 +158,15 @@ module.exports = (elastic, config) => ({
         const { wikidata } = req.params;
         const { clear } = req.query;
 
-        // log(`Checking cache for Wikidata ID: ${wikidata}`);
         const cachedWikidataJson = await fetchCache(cache, wikidata, clear);
 
         if (cachedWikidataJson !== null && cachedWikidataJson !== undefined) {
           const { item } = cachedWikidataJson;
-          // log(`Retrieved from cache for Wikidata ID: ${wikidata}`);
           return h
             .response(JSON.stringify(item))
             .type('application/json')
             .code(200);
         }
-
-        log(`No cache found, fetching from Wikidata for ID: ${wikidata}`);
 
         // If a fetch for this ID is already in progress, await it rather
         // than firing a duplicate set of 50+ Wikidata sub-calls.
@@ -254,18 +183,15 @@ module.exports = (elastic, config) => ({
             const fetchResult = await fetch(data, { signal: AbortSignal.timeout(10000) })
               .then((res) => res.json())
               .catch((err) => {
-                log(`Error parsing Wikidata response for ID: ${wikidata}`, err);
-                console.error(err);
+                console.error('Error parsing Wikidata response:', err);
                 return null;
               });
 
             if (!fetchResult) return null;
             const { entities } = fetchResult;
 
-            log(`Processing Wikidata response for ID: ${wikidata}`);
             const result = await configResponse(wikidata, entities, elastic, config);
 
-            log(`Storing in cache for Wikidata ID: ${wikidata}`);
             const ttl = config.wikidataCacheTtl || 2629746000;
             await setCache(cache, wikidata, result, clear, ttl);
 
@@ -283,7 +209,6 @@ module.exports = (elastic, config) => ({
           .type('application/json')
           .code(200);
       } catch (error) {
-        log('Error processing request', error);
         console.error('Error processing request:', error);
         return h.response('Internal Server Error').code(500);
       }
