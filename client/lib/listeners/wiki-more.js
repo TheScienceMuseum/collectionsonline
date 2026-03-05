@@ -14,7 +14,7 @@
  * that promotes linked items to the top of long lists.
  */
 
-var THRESHOLD = 5;
+const THRESHOLD = 5;
 
 /**
  * Set up "Show more" truncation for a single <ul data-wiki-more> element.
@@ -22,21 +22,21 @@ var THRESHOLD = 5;
  * @param {HTMLUListElement} ul
  */
 function setupList (ul) {
-  var items = Array.from(ul.querySelectorAll('li'));
+  const items = Array.from(ul.querySelectorAll('li'));
   if (items.length <= THRESHOLD) return;
 
-  var hiddenCount = items.length - THRESHOLD;
+  const hiddenCount = items.length - THRESHOLD;
 
   // Hide items beyond the threshold.
-  for (var i = THRESHOLD; i < items.length; i++) {
+  for (let i = THRESHOLD; i < items.length; i++) {
     items[i].style.display = 'none';
   }
 
   // Build an accessible "Show all" button as a list item.
-  var btnLi = document.createElement('li');
+  const btnLi = document.createElement('li');
   btnLi.className = 'wikidata-list-item wikidata-more-btn';
 
-  var btn = document.createElement('button');
+  const btn = document.createElement('button');
   btn.type = 'button';
   btn.setAttribute('aria-expanded', 'false');
   btn.setAttribute('aria-label', 'Show all ' + items.length + ' items');
@@ -53,7 +53,7 @@ function setupList (ul) {
   btn.textContent = 'Show ' + hiddenCount + ' more\u2026';
 
   btn.addEventListener('click', function () {
-    for (var j = THRESHOLD; j < items.length; j++) {
+    for (let j = THRESHOLD; j < items.length; j++) {
       items[j].style.display = '';
     }
     btnLi.remove();
@@ -74,8 +74,8 @@ function setupList (ul) {
  */
 module.exports = function setupWikiMore (container) {
   if (!container) return;
-  var lists = container.querySelectorAll('ul[data-wiki-more]');
-  for (var i = 0; i < lists.length; i++) {
+  const lists = container.querySelectorAll('ul[data-wiki-more]');
+  for (let i = 0; i < lists.length; i++) {
     setupList(lists[i]);
   }
 };
