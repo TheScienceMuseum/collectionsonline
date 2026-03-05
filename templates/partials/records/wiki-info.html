@@ -37,7 +37,7 @@
   {{#if (isArray this.value.value)}}
   {{#unless (wikidataExcludeField this.value)}}
   <article class="property">
-    <h3>{{this.value.label}}</h3>
+    <h3>{{pluralizeLabel this.value.label this.value.value.length}}</h3>
     <ul class='{{#if (isWikiList this.value.value)}}wikidata-list{{/if}}' data-wiki-more>
       {{#each this.value.value}}
 
@@ -70,10 +70,10 @@
     <h3>External Identifiers</h3>
     <ul class="wikidata-list">
       {{#each wikiData.externalIdentifiers}}
-      <li class="wikidata-list-item">{{this.label}}: <a href="{{this.url}}" rel="noopener noreferrer">{{this.value}}</a></li>
+      <li class="wikidata-list-item">{{this.label}}: <a href="{{this.url}}" rel="noopener noreferrer">{{this.value}} <svg class="icon" aria-hidden="true"><use xlink:href="/assets/icons/symbol/svg/sprite.symbol.svg#external"></use></svg></a></li>
       {{/each}}
       {{#if (extractQCode wikiData.wikidataUrl)}}
-      <li class="wikidata-list-item">Wikidata: <a href="{{wikiData.wikidataUrl}}" rel="noopener noreferrer">{{extractQCode wikiData.wikidataUrl}}</a></li>
+      <li class="wikidata-list-item">Wikidata: <a href="{{wikiData.wikidataUrl}}" rel="noopener noreferrer">{{extractQCode wikiData.wikidataUrl}} <svg class="icon" aria-hidden="true"><use xlink:href="/assets/icons/symbol/svg/sprite.symbol.svg#external"></use></svg></a></li>
       {{/if}}
     </ul>
   </article>

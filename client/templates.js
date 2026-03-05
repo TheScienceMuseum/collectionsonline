@@ -508,6 +508,10 @@ Handlebars.registerHelper(
   'extractQCode',
   require('../templates/helpers/extractQCode.js')
 );
+Handlebars.registerHelper(
+  'pluralizeLabel',
+  require('../templates/helpers/pluralizeLabel.js')
+);
 
 Handlebars.registerPartial(
   'records/record-sph-images',
