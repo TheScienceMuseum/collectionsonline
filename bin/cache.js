@@ -34,4 +34,20 @@ const NULL_CACHE = {
   drop: async () => null
 };
 
-module.exports = host ? new Catbox.Client(CatboxRedis, { host, port }) : NULL_CACHE;
+// The Catbox client is the primary interface for all normal cache operations
+// (get/set/drop). The raw ioredis client (cache.connection.client) is exposed
+// separately so that admin operations (SCAN + bulk DEL) can bypass the
+// single-key Catbox API, which has no bulk-drop support.
+//
+// Catbox key format (default partition 'catbox' is used — no override set):
+//   catbox:{segment}:{encodeURIComponent(id)}
+// e.g. catbox:wikidata:Q937  |  catbox:documents:aa123456  |  catbox:feed:https%3A%2F%2F...
+const cache = host ? new Catbox.Client(CatboxRedis, { host, port }) : NULL_CACHE;
+
+// Expose the underlying ioredis instance for admin SCAN/DEL operations.
+// Only available when Redis is actually configured — callers must guard with
+// cache.isReady() before using this.
+const redis = host ? cache.connection.client : null;
+
+module.exports = cache;
+module.exports.redis = redis;

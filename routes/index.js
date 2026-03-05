@@ -32,6 +32,6 @@ module.exports = (elastic, config) => [
   require('./neverbeenseen')(elastic, config),
   require('./barcode')(elastic, config),
   require('./group')(elastic, config),
-  require('./feeds')(elastic, config),
-  require('./wiki')(elastic, config)
+  require('./wiki')(elastic, config),
+  ...require('./cache-admin')()
 ];

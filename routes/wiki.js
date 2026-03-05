@@ -256,9 +256,8 @@ module.exports = (elastic, config) => ({
     handler: async (req, h) => {
       try {
         const { wikidata } = req.params;
-        const { clear } = req.query;
 
-        const cachedWikidataJson = await fetchCache(cache, wikidata, clear);
+        const cachedWikidataJson = await fetchCache(cache, wikidata);
 
         if (cachedWikidataJson !== null && cachedWikidataJson !== undefined) {
           const { item } = cachedWikidataJson;
@@ -305,7 +304,7 @@ module.exports = (elastic, config) => ({
             const result = await configResponse(wikidata, entities, elastic, config);
 
             const ttl = config.wikidataCacheTtl || 2629746000;
-            await setCache(cache, wikidata, result, clear, ttl);
+            await setCache(cache, wikidata, result, undefined, ttl);
 
             return result;
           } finally {
