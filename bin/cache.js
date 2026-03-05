@@ -44,10 +44,15 @@ const NULL_CACHE = {
 // e.g. catbox:wikidata:Q937  |  catbox:documents:aa123456  |  catbox:feed:https%3A%2F%2F...
 const cache = host ? new Catbox.Client(CatboxRedis, { host, port }) : NULL_CACHE;
 
-// Expose the underlying ioredis instance for admin SCAN/DEL operations.
-// Only available when Redis is actually configured — callers must guard with
-// cache.isReady() before using this.
-const redis = host ? cache.connection.client : null;
-
 module.exports = cache;
-module.exports.redis = redis;
+
+// Expose the underlying ioredis instance for admin SCAN/DEL operations.
+// Defined as a getter rather than a static value because cache.connection.client
+// is only set DURING cache.start() (called at server boot in bin/server.mjs).
+// Capturing it at module-load time would always give undefined. The getter
+// is evaluated lazily — at handler invocation time — when start() has already run.
+// Callers must still guard with cache.isReady() before using this.
+Object.defineProperty(module.exports, 'redis', {
+  get () { return host ? cache.connection.client : null; },
+  enumerable: true
+});

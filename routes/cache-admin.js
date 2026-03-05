@@ -1,7 +1,8 @@
 'use strict';
 
 const cache = require('../bin/cache');
-const { redis } = require('../bin/cache');
+// Note: cache.redis is a getter — do NOT destructure it at module load time.
+// It must be read inside each handler (after cache.start() has run at boot).
 const {
   isValidToken,
   endpointForSlug,
@@ -48,9 +49,9 @@ module.exports = () => [
       handler: async (req, h) => {
         const denied = unauthorised(req, h);
         if (denied) return denied;
-        if (!cache.isReady() || !redis) return redisUnavailable(h);
+        if (!cache.isReady() || !cache.redis) return redisUnavailable(h);
         try {
-          const keys = await listSegment(redis, 'wikidata');
+          const keys = await listSegment(cache.redis, 'wikidata');
           return h.response({ segment: 'wikidata', count: keys.length, keys }).code(200);
         } catch (err) {
           console.error('[listcache/wikidata]', err.message);
@@ -68,9 +69,9 @@ module.exports = () => [
       handler: async (req, h) => {
         const denied = unauthorised(req, h);
         if (denied) return denied;
-        if (!cache.isReady() || !redis) return redisUnavailable(h);
+        if (!cache.isReady() || !cache.redis) return redisUnavailable(h);
         try {
-          const cachedUrls = await listSegment(redis, 'feed');
+          const cachedUrls = await listSegment(cache.redis, 'feed');
           // Annotate each URL with its human-readable label and slug where known.
           const slugMap = allSlugs();
           const urlToMeta = Object.entries(slugMap).reduce((m, [slug, ep]) => {
@@ -98,9 +99,9 @@ module.exports = () => [
       handler: async (req, h) => {
         const denied = unauthorised(req, h);
         if (denied) return denied;
-        if (!cache.isReady() || !redis) return redisUnavailable(h);
+        if (!cache.isReady() || !cache.redis) return redisUnavailable(h);
         try {
-          const keys = await listSegment(redis, 'documents');
+          const keys = await listSegment(cache.redis, 'documents');
           return h.response({ segment: 'documents', count: keys.length, keys }).code(200);
         } catch (err) {
           console.error('[listcache/documents]', err.message);
@@ -120,9 +121,9 @@ module.exports = () => [
       handler: async (req, h) => {
         const denied = unauthorised(req, h);
         if (denied) return denied;
-        if (!cache.isReady() || !redis) return redisUnavailable(h);
+        if (!cache.isReady() || !cache.redis) return redisUnavailable(h);
         try {
-          const deleted = await deleteSegment(redis, 'wikidata');
+          const deleted = await deleteSegment(cache.redis, 'wikidata');
           clearAllMemoryCache();
           console.log(`[clearcache] Cleared ${deleted} wikidata entries from Redis`);
           return h.response({ cleared: 'wikidata', count: deleted }).code(200);
@@ -170,9 +171,9 @@ module.exports = () => [
       handler: async (req, h) => {
         const denied = unauthorised(req, h);
         if (denied) return denied;
-        if (!cache.isReady() || !redis) return redisUnavailable(h);
+        if (!cache.isReady() || !cache.redis) return redisUnavailable(h);
         try {
-          const deleted = await deleteSegment(redis, 'feed');
+          const deleted = await deleteSegment(cache.redis, 'feed');
           console.log(`[clearcache] Dropped ${deleted} article feed entries from Redis — re-warming`);
 
           const slugMap = allSlugs();
@@ -238,9 +239,9 @@ module.exports = () => [
       handler: async (req, h) => {
         const denied = unauthorised(req, h);
         if (denied) return denied;
-        if (!cache.isReady() || !redis) return redisUnavailable(h);
+        if (!cache.isReady() || !cache.redis) return redisUnavailable(h);
         try {
-          const deleted = await deleteSegment(redis, 'documents');
+          const deleted = await deleteSegment(cache.redis, 'documents');
           console.log(`[clearcache] Cleared ${deleted} document entries from Redis`);
           return h.response({ cleared: 'documents', count: deleted }).code(200);
         } catch (err) {
