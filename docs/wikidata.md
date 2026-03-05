@@ -52,7 +52,7 @@ Browser
 
 `GET /wiki/{wikidata}` is the server-side endpoint. On each request:
 
-1. **Cache check** — `fetchCache()` returns a stored result from Redis (or in-memory fallback). If found and `?clear` is absent, the cached JSON is returned immediately.
+1. **Cache check** — `fetchCache()` returns a stored result from Redis (or in-memory fallback). If found, the cached JSON is returned immediately.
 2. **In-flight deduplication** — `wikiInFlight` is a `Map<qCode, Promise>`. If a fetch for the same Q-code is already running (e.g. concurrent page loads), subsequent requests await the same promise rather than firing duplicate Wikidata calls.
 3. **Primary entity fetch** — `wikibase-sdk` builds the URL; `fetch()` retrieves `info`, `claims`, `labels`, and `sitelinks` for the Q-code.
 4. **`res.ok` guard** — if Wikidata returns a non-2xx status (e.g. HTTP 429 rate-limit), the error is logged and `null` is returned (503 to client) rather than attempting to parse an HTML error body as JSON.
@@ -133,24 +133,27 @@ The template HTML block that would display a "Read more on Wikipedia" link is cu
 | Redis (`@hapi/catbox-redis`) | ~30 days (configurable) | When Redis host is configured |
 | In-memory `Map` | 5 minutes | When Redis is unavailable (local dev) |
 
-Cache keys use `{ segment: 'wikidata', id: qCode }` → Redis key `wikidata:Q312`.
-
-**Cache bypass:** append `?clear` to any `/wiki/{qCode}` request to drop the cached entry and re-fetch from Wikidata.
+Cache keys use `{ segment: 'wikidata', id: qCode }` → Redis key `catbox:wikidata:Q312`.
 
 **Configuration:**
 ```
 # .corc or environment variables (prefix co_)
 wikidataCacheTtl    TTL in milliseconds (default: 2629746000 ≈ 30.4 days)
-elasticacheHost     Redis host
-elasticachePort     Redis port (default: 6379)
+elasticacheEndpoint Redis host:port (e.g. 127.0.0.1:6379)
 # or via environment variable:
-ELASTICACHE_EP      host:port
+ELASTICACHE_ENDPOINT  host:port
 ```
 
-**Clearing all Wikidata cache entries from Redis:**
+**Clearing Wikidata cache entries** — use the token-gated admin routes:
 ```sh
-redis-cli --scan --pattern 'wikidata:*' | xargs redis-cli DEL
+# Clear a single entry
+GET /clearcache/wikidata/Q937?token=<CACHE_CLEAR_TOKEN>
+
+# Clear all entries
+GET /clearcache/wikidata/all?token=<CACHE_CLEAR_TOKEN>
 ```
+
+Both routes clear Redis **and** the in-memory fallback Map. See [`docs/cache.md`](cache.md) for full admin route documentation and token setup.
 
 ---
 

@@ -11,10 +11,21 @@
   "JWT_SECRET": "",
   "mediaPath": "",
 
-  "___redis_comment": "Redis / ElastiCache connection — choose one format:",
+  "___redis_comment": "Redis / ElastiCache connection (host:port). Use ELASTICACHE_ENDPOINT env var in production.",
   "elasticacheEndpoint": "127.0.0.1:6379",
-  "___redis_note": "ELASTICACHE_EP env var (host:port) takes precedence over elasticacheEndpoint. Legacy keys elasticacheHost + elasticachePort are still supported.",
+  "___redis_note": "Legacy keys elasticacheHost + elasticachePort are still supported.",
 
   "___wikidata_comment": "Optional Wikidata cache TTL in milliseconds (default: ~30 days)",
-  "wikidataCacheTtl": 2629746000
+  "wikidataCacheTtl": 2629746000,
+
+  "___article_comment": "Optional article feed cache TTL in milliseconds (default: 24 hours)",
+  "articleCacheTtl": 86400000,
+
+  "___document_comment": "Optional archive/document cache TTL in milliseconds (default: 24 hours)",
+  "documentCacheTtl": 86400000,
+
+  "___token_comment": "Secret token for /clearcache/* and /listcache/* admin routes.",
+  "___token_generate": "Generate with: node -e \"console.log(require('crypto').randomBytes(16).toString('hex'))\"",
+  "___token_envvar": "In production set the CACHE_CLEAR_TOKEN environment variable instead.",
+  "cacheClearToken": ""
 }

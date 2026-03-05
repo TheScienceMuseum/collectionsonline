@@ -160,10 +160,12 @@ All caching uses `@hapi/catbox` + Redis. If Redis is unavailable, a `NULL_CACHE`
 
 | What | TTL | How to clear |
 |------|-----|-------------|
-| Wikidata | 30 days | `GET /wiki/{qcode}?clear` |
-| Archive/document trees | 24 hours | Wait for TTL |
-| Article/blog feeds | 24 hours | `GET /feeds/refresh` |
+| Wikidata | 30 days (configurable) | `GET /clearcache/wikidata/{qcode}?token=` or `/all` |
+| Archive/document trees | 24 hours (configurable) | `GET /clearcache/documents/{id}?token=` or `/all` |
+| Article/blog feeds | 24 hours (configurable) | `GET /clearcache/articles/{slug}?token=` or `/all` |
 | HTTP responses | 1–24 hours (route-specific) | Deploy / CDN purge |
+
+Article feeds are also pre-warmed at startup and automatically re-warmed when cleared via the route. See [`docs/cache.md`](docs/cache.md) for the full admin route reference, token setup, and article slugs.
 
 ---
 
