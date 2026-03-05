@@ -32,13 +32,12 @@ const BTN_STYLE = [
 
 /**
  * Build a toggle <li> button and append it to ul.
- * Returns a function that, when called, recreates the opposite state.
  *
  * @param {HTMLUListElement} ul
  * @param {HTMLElement[]} items - the full ordered list of content <li> elements
  * @param {'collapsed'|'expanded'} state - which button to render
  */
-function appendToggle (ul, items, state, originalDisplay) {
+function appendToggle (ul, items, state) {
   const hiddenCount = items.length - THRESHOLD;
   const li = document.createElement('li');
   li.className = 'wikidata-list-item wikidata-more-btn';
@@ -53,10 +52,10 @@ function appendToggle (ul, items, state, originalDisplay) {
     btn.setAttribute('aria-label', 'Show all ' + items.length + ' items');
     btn.addEventListener('click', function () {
       for (let i = THRESHOLD; i < items.length; i++) {
-        items[i].style.display = originalDisplay[i] || '';
+        items[i].classList.remove('wikidata-more-hidden');
       }
       li.remove();
-      appendToggle(ul, items, 'expanded', originalDisplay);
+      appendToggle(ul, items, 'expanded');
     });
   } else {
     btn.textContent = 'Show less';
@@ -64,10 +63,10 @@ function appendToggle (ul, items, state, originalDisplay) {
     btn.setAttribute('aria-label', 'Show fewer items');
     btn.addEventListener('click', function () {
       for (let i = THRESHOLD; i < items.length; i++) {
-        items[i].style.display = 'none';
+        items[i].classList.add('wikidata-more-hidden');
       }
       li.remove();
-      appendToggle(ul, items, 'collapsed', originalDisplay);
+      appendToggle(ul, items, 'collapsed');
     });
   }
 
@@ -84,16 +83,13 @@ function setupList (ul) {
   const items = Array.from(ul.querySelectorAll('li'));
   if (items.length <= THRESHOLD) return;
 
-  // Capture each item's original display value before hiding, so we can
-  // restore it exactly (template sets display: inline-block on list items).
-  const originalDisplay = items.map(li => li.style.display || '');
-
-  // Hide items beyond the threshold.
+  // Hide items beyond the threshold using a CSS class so that
+  // !important rules in the stylesheet cannot override the hiding.
   for (let i = THRESHOLD; i < items.length; i++) {
-    items[i].style.display = 'none';
+    items[i].classList.add('wikidata-more-hidden');
   }
 
-  appendToggle(ul, items, 'collapsed', originalDisplay);
+  appendToggle(ul, items, 'collapsed');
 }
 
 /**
