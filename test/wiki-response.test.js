@@ -289,3 +289,80 @@ testWithServer('wiki Q312: founded by (P112) has related link when collection re
   );
   t.end();
 });
+
+// ─── Colleagues (Q19837 / People who worked alongside) ───────────────────────
+
+// The Steve Jobs fixture has P108: Q312 (Apple). These tests verify that
+// colleagues are surfaced when SPARQL returns colleague Q-codes that are
+// also found in the ES collection.
+
+testWithServer('wiki Q19837: colleagues present when SPARQL + ES return matches', { config: testConfig }, async (t, ctx) => {
+  t.plan(4);
+  const restore = stubCacheMiss();
+  t.teardown(restore);
+
+  // Per-test fetch sandbox: intercept SPARQL and fall back to the shared fixtures
+  const testFetch = fetchMock.sandbox();
+  testFetch.get(/ids=Q19837/, steveJobsFixture);
+  // SPARQL query for P108=Q312 colleagues → returns one Q-code
+  testFetch.get((url) => url.includes('query.wikidata.org'), {
+    results: {
+      bindings: [
+        { item: { type: 'uri', value: 'http://www.wikidata.org/entity/Q1234567' } }
+      ]
+    }
+  });
+  testFetch.get(/wikidata\.org/, batchLabelsFixture);
+
+  const prevFetch = global.fetch;
+  global.fetch = testFetch;
+  t.teardown(() => { global.fetch = prevFetch; });
+
+  // ES returns a collection record for the colleague Q-code
+  sinon.stub(ctx.elastic, 'search').callsFake(async (opts) => {
+    const queryStr = JSON.stringify(opts.body);
+    if (queryStr.includes('Q1234567')) {
+      return {
+        body: {
+          hits: {
+            hits: [{
+              _id: 'cp11111',
+              _source: {
+                wikidata: 'https://www.wikidata.org/wiki/Q1234567',
+                name: [{ value: 'Ada Lovelace', primary: true }]
+              }
+            }]
+          }
+        }
+      };
+    }
+    return { body: { hits: { hits: [] } } };
+  });
+
+  const res = await ctx.server.inject({ method: 'GET', url: '/wiki/Q19837' });
+  const body = JSON.parse(res.payload);
+
+  t.ok(Array.isArray(body.colleagues), 'colleagues array is present');
+  t.ok(body.colleagues.length > 0, 'colleagues array is non-empty');
+  const group = body.colleagues[0];
+  t.ok(group && group.employer, 'colleague group has employer label');
+  t.ok(
+    group && group.colleagues && group.colleagues[0]?.name === 'Ada Lovelace',
+    `first colleague is "Ada Lovelace": "${group && group.colleagues && group.colleagues[0]?.name}"`
+  );
+  t.end();
+});
+
+testWithServer('wiki Q19837: colleagues absent when no collection records match', { config: testConfig }, async (t, ctx) => {
+  t.plan(1);
+  const restore = stubCacheMiss();
+  t.teardown(restore);
+  // Default catch-all returns batchLabelsFixture (no results.bindings → empty colleagues)
+  sinon.stub(ctx.elastic, 'search').resolves({ body: { hits: { hits: [] } } });
+
+  const res = await ctx.server.inject({ method: 'GET', url: '/wiki/Q19837' });
+  const body = JSON.parse(res.payload);
+
+  t.notOk(body.colleagues, 'colleagues is absent when no collection records match');
+  t.end();
+});

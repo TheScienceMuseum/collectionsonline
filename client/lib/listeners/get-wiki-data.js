@@ -19,6 +19,7 @@ module.exports = async function () {
     imageMetadata = null,
     wikipediaUrl = null,
     alsoInCollection = null,
+    colleagues = null,
     externalIdentifiers = null,
     ...info
   } = _data;
@@ -34,6 +35,7 @@ module.exports = async function () {
     ...(imageMetadata && { imageMetadata }),
     ...(wikipediaUrl && { wikipediaUrl }),
     ...(alsoInCollection && { alsoInCollection }),
+    ...(colleagues && { colleagues }),
     ...(externalIdentifiers && { externalIdentifiers }),
     ...(JSON.stringify(sortedInfo) !== '{}' && { sortedInfo })
   };
