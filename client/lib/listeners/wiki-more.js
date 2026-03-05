@@ -38,7 +38,7 @@ const BTN_STYLE = [
  * @param {HTMLElement[]} items - the full ordered list of content <li> elements
  * @param {'collapsed'|'expanded'} state - which button to render
  */
-function appendToggle (ul, items, state) {
+function appendToggle (ul, items, state, originalDisplay) {
   const hiddenCount = items.length - THRESHOLD;
   const li = document.createElement('li');
   li.className = 'wikidata-list-item wikidata-more-btn';
@@ -53,10 +53,10 @@ function appendToggle (ul, items, state) {
     btn.setAttribute('aria-label', 'Show all ' + items.length + ' items');
     btn.addEventListener('click', function () {
       for (let i = THRESHOLD; i < items.length; i++) {
-        items[i].style.display = '';
+        items[i].style.display = originalDisplay[i] || '';
       }
       li.remove();
-      appendToggle(ul, items, 'expanded');
+      appendToggle(ul, items, 'expanded', originalDisplay);
     });
   } else {
     btn.textContent = 'Show less';
@@ -67,7 +67,7 @@ function appendToggle (ul, items, state) {
         items[i].style.display = 'none';
       }
       li.remove();
-      appendToggle(ul, items, 'collapsed');
+      appendToggle(ul, items, 'collapsed', originalDisplay);
     });
   }
 
@@ -84,12 +84,16 @@ function setupList (ul) {
   const items = Array.from(ul.querySelectorAll('li'));
   if (items.length <= THRESHOLD) return;
 
+  // Capture each item's original display value before hiding, so we can
+  // restore it exactly (template sets display: inline-block on list items).
+  const originalDisplay = items.map(li => li.style.display || '');
+
   // Hide items beyond the threshold.
   for (let i = THRESHOLD; i < items.length; i++) {
     items[i].style.display = 'none';
   }
 
-  appendToggle(ul, items, 'collapsed');
+  appendToggle(ul, items, 'collapsed', originalDisplay);
 }
 
 /**
