@@ -2,6 +2,7 @@
 
 const cache = require('../bin/cache');
 const wbk = require('../lib/wikibase');
+const { processPropertyValues } = require('../lib/wikiPropertySort');
 const wikidataCircuitBreaker = require('../lib/wikidata-circuit-breaker');
 
 // Deduplicates concurrent fetches for the same Wikidata ID.
@@ -317,6 +318,13 @@ async function configResponse (qCode, entities, elastic, config) {
       obj[prop].value = obj[prop].value.map(v =>
         v.value ? { ...v, searchUrl: `/search?q=${encodeURIComponent(v.value)}` } : v
       );
+    }
+  }
+
+  // Sort and merge each property's value array (date-sort, range-merge, alpha).
+  for (const key of Object.keys(obj)) {
+    if (obj[key] && Array.isArray(obj[key].value)) {
+      obj[key].value = processPropertyValues(obj[key].value);
     }
   }
 

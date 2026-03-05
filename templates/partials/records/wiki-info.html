@@ -38,7 +38,7 @@
   {{#unless (wikidataExcludeField this.value)}}
   <article class="property">
     <h3>{{this.value.label}}</h3>
-    <ul class='{{#if (isWikiList this.value.value)}}wikidata-list{{/if}}'>
+    <ul class='{{#if (isWikiList this.value.value)}}wikidata-list{{/if}}' data-wiki-more>
       {{#each this.value.value}}
 
       {{#if this.list}}

@@ -1,5 +1,6 @@
 const getData = require('../get-data');
 const Templates = require('../../templates');
+const setupWikiMore = require('./wiki-more');
 module.exports = async function () {
   const wikiInfo = document.getElementById('wikiInfo');
   const data = await displayData();
@@ -45,6 +46,7 @@ module.exports = async function () {
 
   if (wikiData) {
     wikiInfo.innerHTML = Templates.wikiInfo({ wikiData });
+    setupWikiMore(wikiInfo);
   }
 
   // handles black logos on black backgrounds
