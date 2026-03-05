@@ -53,22 +53,21 @@
   {{/if}}
   --}}
   {{#if wikiData.alsoInCollection}}
-  <div class="panel wiki-also-in-collection" style="margin-top: 8px; font-size: smaller;">
-    <strong>Also in our collection:</strong>
+  <p style="margin-top: 0.5em;"><strong>Also in our collection:</strong>
     {{#each wikiData.alsoInCollection}}
     <a href="{{this.url}}">{{this.name}}</a>{{#unless @last}}, {{/unless}}
     {{/each}}
-  </div>
+  </p>
   {{/if}}
   {{#if wikiData.externalIdentifiers}}
-  <div class="panel wiki-external-ids" style="margin-top: 8px; font-size: smaller;">
-    <strong>External Identifiers</strong>
-    <ul style="list-style: none; margin: 4px 0 0; padding: 0;">
+  <article class="property">
+    <h3>External Identifiers</h3>
+    <ul class="wikidata-list">
       {{#each wikiData.externalIdentifiers}}
-      <li><a href="{{this.url}}" rel="noopener noreferrer">{{this.label}}: {{this.value}}</a></li>
+      <li class="wikidata-list-item"><a href="{{this.url}}" rel="noopener noreferrer">{{this.label}}: {{this.value}}</a></li>
       {{/each}}
     </ul>
-  </div>
+  </article>
   {{/if}}
   <div class="panel panel--wikidata">
         <p style="font-size: smaller"><i>We’re testing a new feature to display  third party images and information on our people and
