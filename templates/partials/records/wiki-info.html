@@ -64,7 +64,7 @@
     <h3>External Identifiers</h3>
     <ul class="wikidata-list">
       {{#each wikiData.externalIdentifiers}}
-      <li class="wikidata-list-item"><a href="{{this.url}}" rel="noopener noreferrer">{{this.label}}: {{this.value}}</a></li>
+      <li class="wikidata-list-item">{{this.label}}: <a href="{{this.url}}" rel="noopener noreferrer">{{this.value}}</a></li>
       {{/each}}
     </ul>
   </article>
