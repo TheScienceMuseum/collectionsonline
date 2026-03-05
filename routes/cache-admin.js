@@ -5,12 +5,14 @@ const cache = require('../bin/cache');
 // It must be read inside each handler (after cache.start() has run at boot).
 const {
   isValidToken,
-  endpointForSlug,
-  allSlugs,
+  allEndpoints,
+  endpointsForHost,
+  allHosts,
+  deleteFeedsByHost,
   listSegment,
   deleteSegment
 } = require('../lib/cache-admin');
-const { fetchAndCacheEndpoint, dropFeed } = require('../lib/cached-feed');
+const { fetchAndCacheEndpoint } = require('../lib/cached-feed');
 const { dropCache: dropDocument } = require('../lib/cached-document');
 const { clearMemoryCache, clearAllMemoryCache } = require('../lib/cached-wikidata');
 
@@ -61,7 +63,7 @@ module.exports = () => [
     }
   },
 
-  // List all article feed URLs currently cached in Redis, alongside their slugs.
+  // List all article feed URLs currently cached in Redis, alongside their host and label.
   {
     method: 'GET',
     path: '/listcache/articles',
@@ -72,10 +74,9 @@ module.exports = () => [
         if (!cache.isReady() || !cache.redis) return redisUnavailable(h);
         try {
           const cachedUrls = await listSegment(cache.redis, 'feed');
-          // Annotate each URL with its human-readable label and slug where known.
-          const slugMap = allSlugs();
-          const urlToMeta = Object.entries(slugMap).reduce((m, [slug, ep]) => {
-            m[ep.url] = { slug, label: ep.label };
+          // Annotate each URL with its hostname and human-readable label where known.
+          const urlToMeta = allEndpoints().reduce((m, ep) => {
+            try { m[ep.url] = { host: new URL(ep.url).host, label: ep.label }; } catch (_) {}
             return m;
           }, {});
           const keys = cachedUrls.map(url => ({
@@ -176,11 +177,14 @@ module.exports = () => [
           const deleted = await deleteSegment(cache.redis, 'feed');
           console.log(`[clearcache] Dropped ${deleted} article feed entries from Redis — re-warming`);
 
-          const slugMap = allSlugs();
           const results = [];
-          for (const [slug, endpoint] of Object.entries(slugMap)) {
+          for (const endpoint of allEndpoints()) {
             const data = await fetchAndCacheEndpoint(endpoint);
-            results.push({ slug, label: endpoint.label, url: endpoint.url, warmed: !!data });
+            try {
+              results.push({ host: new URL(endpoint.url).host, label: endpoint.label, url: endpoint.url, warmed: !!data });
+            } catch (_) {
+              results.push({ label: endpoint.label, url: endpoint.url, warmed: !!data });
+            }
           }
 
           return h.response({ cleared: 'articles', dropped: deleted, rewarmed: results }).code(200);
@@ -192,36 +196,39 @@ module.exports = () => [
     }
   },
 
-  // Clear a single article feed by its label slug, then re-warm it.
-  // Slugs map to the labels in fixtures/article-endpoints.js, e.g.:
-  //   "Science Museum Blog" → science-museum-blog
-  //   "Railway Museum"      → railway-museum
+  // Clear article feeds for a given hostname, then re-warm them.
+  // Uses a Redis SCAN glob (catbox:feed:*{host}*) so it catches all feed keys
+  // for that host regardless of URL path.
+  // e.g. /clearcache/articles/www.sciencemuseum.org.uk
   {
     method: 'GET',
-    path: '/clearcache/articles/{slug}',
+    path: '/clearcache/articles/{host}',
     config: {
       handler: async (req, h) => {
         const denied = unauthorised(req, h);
         if (denied) return denied;
-        const { slug } = req.params;
-        const endpoint = endpointForSlug(slug);
-        if (!endpoint) {
-          const available = Object.keys(allSlugs());
-          return h.response({ error: `Unknown article slug: "${slug}"`, available }).code(404);
+        if (!cache.isReady() || !cache.redis) return redisUnavailable(h);
+        const { host } = req.params;
+        const matched = endpointsForHost(host);
+        if (!matched.length) {
+          return h.response({ error: `Unknown article host: "${host}"`, available: allHosts() }).code(404);
         }
         try {
-          await dropFeed(endpoint.url);
-          const data = await fetchAndCacheEndpoint(endpoint);
-          console.log(`[clearcache] Cleared and re-warmed article feed: ${endpoint.label}`);
+          const dropped = await deleteFeedsByHost(cache.redis, host);
+          const results = [];
+          for (const endpoint of matched) {
+            const data = await fetchAndCacheEndpoint(endpoint);
+            results.push({ label: endpoint.label, url: endpoint.url, warmed: !!data });
+          }
+          console.log(`[clearcache] Cleared ${dropped} feed key(s) for ${host} — re-warmed ${matched.length} endpoint(s)`);
           return h.response({
             cleared: 'articles',
-            slug,
-            label: endpoint.label,
-            url: endpoint.url,
-            warmed: !!data
+            host,
+            dropped,
+            rewarmed: results
           }).code(200);
         } catch (err) {
-          console.error(`[clearcache/articles/${slug}]`, err.message);
+          console.error(`[clearcache/articles/${host}]`, err.message);
           return h.response({ error: 'Failed to clear article feed' }).code(500);
         }
       }
