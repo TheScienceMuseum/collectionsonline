@@ -6,13 +6,9 @@ const config = require('../config');
 
 let host, port;
 
-if (process.env.ELASTICACHE_EP) {
-  // Highest priority: ELASTICACHE_EP environment variable (e.g. "127.0.0.1:6379")
-  const parts = process.env.ELASTICACHE_EP.split(':');
-  host = parts[0];
-  port = parseInt(parts[1], 10);
-} else if (config.elasticacheEndpoint) {
-  // .corc single-key format: elasticacheEndpoint = "host:port"
+if (config.elasticacheEndpoint) {
+  // Reads from ELASTICACHE_ENDPOINT env var (via config.js default) or
+  // elasticacheEndpoint / co_elasticacheEndpoint from .corc / environment.
   const parts = config.elasticacheEndpoint.split(':');
   host = parts[0];
   port = parseInt(parts[1], 10);

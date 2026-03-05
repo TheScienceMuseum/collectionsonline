@@ -3,6 +3,9 @@ module.exports = require('rc')('co', {
   elasticsearch: {
     node: process.env.ELASTIC_HOST || ''
   },
+  // Redis / ElastiCache connection (host:port). Set ELASTICACHE_ENDPOINT in
+  // production or elasticacheEndpoint in .corc for local dev.
+  elasticacheEndpoint: process.env.ELASTICACHE_ENDPOINT || '',
   auth: process.env.auth !== undefined ? (process.env.auth) : false,
   user: process.env.co_auth_user,
   password: process.env.co_auth_pass,

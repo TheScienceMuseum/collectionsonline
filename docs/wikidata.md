@@ -141,7 +141,7 @@ Cache keys use `{ segment: 'wikidata', id: qCode }` → Redis key `catbox:wikida
 wikidataCacheTtl    TTL in milliseconds (default: 2629746000 ≈ 30.4 days)
 elasticacheEndpoint Redis host:port (e.g. 127.0.0.1:6379)
 # or via environment variable:
-ELASTICACHE_EP      host:port
+ELASTICACHE_ENDPOINT  host:port
 ```
 
 **Clearing Wikidata cache entries** — use the token-gated admin routes:

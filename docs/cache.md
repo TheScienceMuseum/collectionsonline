@@ -27,7 +27,7 @@ All values can be set in `.corc` or as environment variables (prefix `co_` for `
 
 | Config key (`.corc`) | Env var | Default | Description |
 |---------------------|---------|---------|-------------|
-| `elasticacheEndpoint` | `ELASTICACHE_EP` | — | Redis host:port (e.g. `127.0.0.1:6379`) |
+| `elasticacheEndpoint` | `ELASTICACHE_ENDPOINT` | — | Redis host:port (e.g. `127.0.0.1:6379`) |
 | `wikidataCacheTtl` | `co_wikidataCacheTtl` | `2629746000` (~30 days) | Wikidata TTL in milliseconds |
 | `articleCacheTtl` | `co_articleCacheTtl` | `86400000` (24 hours) | Article feed TTL in milliseconds |
 | `documentCacheTtl` | `co_documentCacheTtl` | `86400000` (24 hours) | Document/archive TTL in milliseconds |
@@ -80,7 +80,7 @@ List what is currently in each Redis segment. Useful before deciding what to cle
 | Route | Returns |
 |-------|---------|
 | `GET /listcache/wikidata?token=` | All cached Q-codes |
-| `GET /listcache/articles?token=` | All cached feed URLs with their label and slug |
+| `GET /listcache/articles?token=` | All cached feed URLs with their hostname and label |
 | `GET /listcache/documents?token=` | All cached fondsIds |
 
 **Example response** — `/listcache/wikidata?token=<TOKEN>`:
@@ -100,7 +100,7 @@ List what is currently in each Redis segment. Useful before deciding what to cle
   "keys": [
     {
       "url": "https://www.sciencemuseum.org.uk/collection-media/collection-usage/objects",
-      "slug": "science-museum",
+      "host": "www.sciencemuseum.org.uk",
       "label": "Science Museum"
     }
   ]
@@ -136,10 +136,10 @@ Clears entries from Redis and **immediately re-warms** them (fetching fresh data
 
 | Route | Effect |
 |-------|--------|
-| `GET /clearcache/articles/all?token=` | Drop all feeds, re-warm all 10 endpoints |
-| `GET /clearcache/articles/{slug}?token=` | Drop one feed, re-warm it |
+| `GET /clearcache/articles/all?token=` | Drop all feeds, re-warm all endpoints |
+| `GET /clearcache/articles/{host}?token=` | Drop feeds for one hostname via SCAN glob, re-warm it |
 
-If a slug is not recognised, a `404` is returned listing all available slugs.
+The `{host}` parameter is the feed URL's hostname (e.g. `www.sciencemuseum.org.uk`). Uses a Redis SCAN glob `catbox:feed:*{host}*` so it catches all keys for that host regardless of URL path. If the host is not recognised, a `404` is returned listing all available hosts.
 
 **Example response** — `/clearcache/articles/all?token=<TOKEN>`:
 ```json
@@ -147,26 +147,38 @@ If a slug is not recognised, a `404` is returned listing all available slugs.
   "cleared": "articles",
   "dropped": 10,
   "rewarmed": [
-    { "slug": "science-museum", "label": "Science Museum", "url": "https://...", "warmed": true },
-    { "slug": "railway-museum", "label": "Railway Museum", "url": "https://...", "warmed": true }
+    { "host": "www.sciencemuseum.org.uk", "label": "Science Museum", "url": "https://...", "warmed": true },
+    { "host": "www.railwaymuseum.org.uk", "label": "Railway Museum", "url": "https://...", "warmed": true }
   ]
 }
 ```
 
-**Article slugs** (derived from labels in `fixtures/article-endpoints.js`):
+**Example response** — `/clearcache/articles/www.sciencemuseum.org.uk?token=<TOKEN>`:
+```json
+{
+  "cleared": "articles",
+  "host": "www.sciencemuseum.org.uk",
+  "dropped": 1,
+  "rewarmed": [
+    { "label": "Science Museum", "url": "https://...", "warmed": true }
+  ]
+}
+```
 
-| Slug | Label |
+**Article feed hosts** (from `fixtures/article-endpoints.js`):
+
+| Host | Label |
 |------|-------|
-| `national-science-and-media-museum` | National Science and Media Museum |
-| `science-and-industry-museum` | Science and Industry Museum |
-| `science-museum` | Science Museum |
-| `railway-museum` | Railway Museum |
-| `science-museum-blog` | Science Museum Blog |
-| `railway-museum-blog` | Railway Museum Blog |
-| `science-and-media-museum-blog` | Science and Media Museum Blog |
-| `science-and-industry-museum-blog` | Science and Industry Museum Blog |
-| `science-museum-group` | Science Museum Group |
-| `science-museum-group-blog` | Science Museum Group Blog |
+| `www.scienceandmediamuseum.org.uk` | National Science and Media Museum |
+| `www.scienceandindustrymuseum.org.uk` | Science and Industry Museum |
+| `www.sciencemuseum.org.uk` | Science Museum |
+| `www.railwaymuseum.org.uk` | Railway Museum |
+| `blog.sciencemuseum.org.uk` | Science Museum Blog |
+| `blog.railwaymuseum.org.uk` | Railway Museum Blog |
+| `blog.scienceandmediamuseum.org.uk` | Science and Media Museum Blog |
+| `blog.scienceandindustrymuseum.org.uk` | Science and Industry Museum Blog |
+| `www.sciencemuseumgroup.org.uk` | Science Museum Group |
+| `blog.sciencemuseumgroup.org.uk` | Science Museum Group Blog |
 
 ---
 
@@ -196,7 +208,7 @@ Clears document hierarchy trees from Redis. Entries are re-fetched from Elastics
 | File | Purpose |
 |------|---------|
 | `bin/cache.js` | Catbox client initialisation; exports `cache` (Catbox) and `redis` (raw ioredis for SCAN/DEL) |
-| `lib/cache-admin.js` | SCAN helpers, token validation, article slug map |
+| `lib/cache-admin.js` | SCAN helpers, token validation, article host helpers |
 | `routes/cache-admin.js` | All `/clearcache/*` and `/listcache/*` route handlers |
 | `lib/cached-wikidata.js` | Wikidata Redis + in-memory cache layer |
 | `lib/cached-document.js` | Archive hierarchy cache layer |
