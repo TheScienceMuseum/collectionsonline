@@ -49,6 +49,11 @@ public/bundle.js
 public/bundle.js.map
 public/bundle.css
 public/bundle.css.map
+public/bundle-*.js
+public/bundle-*.js.map
+public/bundle-*.css
+public/bundle-*.css.map
+public/asset-manifest.json
 public/assets/icons/*
 !public/assets/icons/.gitkeep
 

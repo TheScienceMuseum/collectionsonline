@@ -29,7 +29,7 @@
   {{#if this.links.self}}
   <link rel="canonical" href="{{this.links.self}}" />
   {{/if}}
-  <link rel="stylesheet" href="/bundle.css">
+  <link rel="stylesheet" href="{{assetPath 'bundle.css'}}">
   <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-32x32.png" sizes="32x32">
   <link rel="icon" type="image/png" href="/assets/img/favicon/android-icon-192x192.png" sizes="192x192">
   <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-96x96.png" sizes="96x96">
@@ -66,7 +66,7 @@
   {{/unless}}
   <!-- End Google Tag Manager -->
   {{{content}}}
-  <script src="/bundle.js"></script>
+  <script src="{{assetPath 'bundle.js'}}"></script>
 </body>
 
 </html>
