@@ -1,5 +1,6 @@
 const getData = require('../get-data');
 const Templates = require('../../templates');
+const setupWikiMore = require('./wiki-more');
 module.exports = async function () {
   const wikiInfo = document.getElementById('wikiInfo');
   const data = await displayData();
@@ -19,6 +20,7 @@ module.exports = async function () {
     imageMetadata = null,
     wikipediaUrl = null,
     alsoInCollection = null,
+    colleagues = null,
     externalIdentifiers = null,
     ...info
   } = _data;
@@ -34,6 +36,7 @@ module.exports = async function () {
     ...(imageMetadata && { imageMetadata }),
     ...(wikipediaUrl && { wikipediaUrl }),
     ...(alsoInCollection && { alsoInCollection }),
+    ...(colleagues && { colleagues }),
     ...(externalIdentifiers && { externalIdentifiers }),
     ...(JSON.stringify(sortedInfo) !== '{}' && { sortedInfo })
   };
@@ -43,6 +46,7 @@ module.exports = async function () {
 
   if (wikiData) {
     wikiInfo.innerHTML = Templates.wikiInfo({ wikiData });
+    setupWikiMore(wikiInfo);
   }
 
   // handles black logos on black backgrounds

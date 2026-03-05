@@ -2,6 +2,7 @@
 
 const cache = require('../bin/cache');
 const wbk = require('../lib/wikibase');
+const { processPropertyValues } = require('../lib/wikiPropertySort');
 const wikidataCircuitBreaker = require('../lib/wikidata-circuit-breaker');
 
 // Deduplicates concurrent fetches for the same Wikidata ID.
@@ -121,6 +122,91 @@ async function handleNestedProperty (entities, qCode, property, label, elastic, 
   return { ...(value ? { label } : {}), value };
 }
 
+// ─── Colleagues lookup ────────────────────────────────────────────────────────
+// For each employer Q-code (from P108 claims), runs a SPARQL query to find other
+// humans who share the same employer, then cross-references with the ES collection
+// to find those with collection records. Returns an array grouped by employer:
+//   [{ employer: 'Science Museum Group', colleagues: [{ name, url }] }]
+//
+// Runs concurrently with the property loop so SPARQL latency is hidden.
+async function fetchColleagues (employers, currentQCode, elastic, config) {
+  if (!employers || employers.length === 0) return [];
+
+  // Step 1: SPARQL query per employer, in parallel
+  const sparqlResults = await Promise.allSettled(
+    employers.map(async ({ qCode: employerQCode, label }) => {
+      const sparql = [
+        'SELECT DISTINCT ?item WHERE {',
+        `  ?item wdt:P108 wd:${employerQCode} ;`,
+        '        wdt:P31 wd:Q5 .',
+        '} LIMIT 100'
+      ].join('\n');
+      const url = wbk.sparqlQuery(sparql);
+      const res = await fetchWithRetry(url, { signal: AbortSignal.timeout(10000) });
+      if (!res) return { employerQCode, label, qCodes: [] };
+      let json;
+      try { json = await res.json(); } catch (e) { return { employerQCode, label, qCodes: [] }; }
+      const qCodes = (json.results?.bindings || [])
+        .map(b => b.item?.value?.match(/\/(Q\d+)$/)?.[1])
+        .filter(Boolean)
+        .filter(q => q !== currentQCode);
+      return { employerQCode, label, qCodes };
+    })
+  );
+
+  const employerData = sparqlResults
+    .filter(r => r.status === 'fulfilled')
+    .map(r => r.value)
+    .filter(e => e.qCodes.length > 0);
+
+  const allQCodes = [...new Set(employerData.flatMap(e => e.qCodes))];
+  if (!allQCodes.length) return [];
+
+  // Step 2: Single ES query — find which Q-codes are in the collection, fetch names
+  const inCollection = new Map();
+  try {
+    const result = await elastic.search({
+      index: 'ciim',
+      body: {
+        size: Math.min(allQCodes.length, 200),
+        _source: ['wikidata', 'name'],
+        query: {
+          terms: {
+            'wikidata.keyword': allQCodes.map(q => `https://www.wikidata.org/wiki/${q}`)
+          }
+        }
+      }
+    });
+    for (const hit of (result.body.hits.hits || [])) {
+      const m = (hit._source?.wikidata || '').match(/\/(Q\d+)$/);
+      if (m) inCollection.set(m[1], hit);
+    }
+  } catch (err) {
+    console.error('[wiki] ES error fetching colleague records:', err.message);
+    return [];
+  }
+
+  if (!inCollection.size) return [];
+
+  // Step 3: Group by employer, max 6 colleagues per employer
+  return employerData
+    .map(({ label, qCodes }) => {
+      const colleagues = qCodes
+        .filter(q => inCollection.has(q))
+        .slice(0, 6)
+        .map(q => {
+          const hit = inCollection.get(q);
+          const nameArr = hit._source?.name;
+          const name = nameArr?.find(n => n.primary)?.value ||
+                       nameArr?.[0]?.value ||
+                       hit._id;
+          return { name, url: `${config.rootUrl}/people/${hit._id}` };
+        });
+      return colleagues.length > 0 ? { employer: label, colleagues } : null;
+    })
+    .filter(Boolean);
+}
+
 // ─── Response builder ─────────────────────────────────────────────────────────
 
 const wikidataConn = async (req) => {
@@ -152,6 +238,23 @@ async function configResponse (qCode, entities, elastic, config) {
   const imageMetaPromise = imageFilename
     ? fetchImageMetadata(imageFilename)
     : Promise.resolve(null);
+
+  // Start colleagues lookup concurrently with the property loop.
+  // Extracts employer Q-codes from P108 claims; SPARQL queries run in parallel
+  // so their latency is hidden behind the property processing time.
+  const p108Claims = entities[qCode]?.claims?.P108 || [];
+  const employerQCodes = [...new Set(
+    p108Claims
+      .map(c => c?.mainsnak?.datavalue?.value?.id)
+      .filter(id => id && /^Q\d+/.test(id))
+  )];
+  const employers = employerQCodes.map(q => ({
+    qCode: q,
+    label: prefetchedEntities?.[q]?.labels?.en?.value || q
+  }));
+  const colleaguesPromise = employers.length > 0
+    ? fetchColleagues(employers, qCode, elastic, config)
+    : Promise.resolve([]);
 
   // Add Wikidata URL
   obj.wikidataUrl = {
@@ -196,8 +299,10 @@ async function configResponse (qCode, entities, elastic, config) {
     })
   );
 
-  // Await image metadata (started before property loop for parallelism).
-  obj.imageMetadata = await imageMetaPromise;
+  // Await image metadata and colleagues (both started before the property loop).
+  const [imageMetadata, colleagues] = await Promise.all([imageMetaPromise, colleaguesPromise]);
+  obj.imageMetadata = imageMetadata;
+  if (colleagues.length > 0) obj.colleagues = colleagues;
 
   // Deduplicate every property's value array so repeated Wikidata claims for the same
   // label (e.g. 50× "Peabody Awards") collapse to a single entry.
@@ -213,6 +318,13 @@ async function configResponse (qCode, entities, elastic, config) {
       obj[prop].value = obj[prop].value.map(v =>
         v.value ? { ...v, searchUrl: `/search?q=${encodeURIComponent(v.value)}` } : v
       );
+    }
+  }
+
+  // Sort and merge each property's value array (date-sort, range-merge, alpha).
+  for (const key of Object.keys(obj)) {
+    if (obj[key] && Array.isArray(obj[key].value)) {
+      obj[key].value = processPropertyValues(obj[key].value);
     }
   }
 

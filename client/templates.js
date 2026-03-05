@@ -500,6 +500,14 @@ Handlebars.registerHelper(
   'urlEncode',
   require('../templates/helpers/urlEncode.js')
 );
+Handlebars.registerHelper(
+  'capitalizeFirst',
+  require('../templates/helpers/capitalizeFirst.js')
+);
+Handlebars.registerHelper(
+  'extractQCode',
+  require('../templates/helpers/extractQCode.js')
+);
 
 Handlebars.registerPartial(
   'records/record-sph-images',
