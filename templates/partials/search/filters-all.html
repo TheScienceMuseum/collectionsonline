@@ -225,10 +225,10 @@
 <div class="filter filter--open" data-filter="Dates">
 {{/if}}
   <a href="{{lookup links.clearFacet "dates"}}" class="filter__name">Date</a>
-  <div class="filter__options filter__daterange">
-    <label>From year <input type="number" placeholder="e.g. 1600" name="filter[date[from]]"
-        value="{{lookup selectedFilters "date[from]"}}" /></label>
-    <label>To year <input type="number" placeholder="e.g. 2016" name="filter[date[to]]"
-        value="{{lookup selectedFilters "date[to]"}}" /></label>
+  <div class="filter__options filter__daterange" role="group" aria-label="Date range">
+    <label for="date-filter-from">From year <input type="number" id="date-filter-from" placeholder="e.g. 1600" name="filter[date[from]]"
+        value="{{lookup selectedFilters "date[from]"}}" min="1" max="9999" /></label>
+    <label for="date-filter-to">To year <input type="number" id="date-filter-to" placeholder="e.g. 2016" name="filter[date[to]]"
+        value="{{lookup selectedFilters "date[to]"}}" min="1" max="9999" /></label>
   </div>
 </div>
