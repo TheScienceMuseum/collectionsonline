@@ -40,35 +40,17 @@ module.exports = (elastic, config) => ({
             index: 'ciim',
             id: TypeMapping.toInternal(rawId)
           });
-          const relatedItems = await getSimilarObjects(result.body, elastic);
-          const relatedAIItems = await getAIRelated(rawId, 'object');
 
-          // handles different properties on parent/child records
-          // is this code needlessly complex?
-          // can we not just check the SPH / MPH type direct?
-          // see api.js which handles this slihgtly differently?
-          //  "record": {
-          //    "groupingType": "SPH",
-          //    "recordType": "parent"
-          //  },
-          // see ES index for this version which seems to be removed from API
-          // "@datatype": {
-          //   "scope": "1",
-          //   "grouping": "SPH",
-          //   "base": "object"
-          //  },
-          // "options": {
-          //   "option13": "WHOLE"
-          // },
-          // child records held in "child": [] node in ES index
+          // @datatype is needed to determine groupingType before child records can be fetched,
+          // but all three queries are independent of each other so run them in parallel.
           const { grouping, sub } = result.body._source['@datatype'];
           const groupingType = checkRecordType(grouping, sub);
-          const childRecords = await getChildRecords(
-            elastic,
-            TypeMapping.toInternal(rawId),
-            undefined,
-            groupingType
-          );
+
+          const [relatedItems, relatedAIItems, childRecords] = await Promise.all([
+            getSimilarObjects(result.body, elastic),
+            getAIRelated(rawId, 'object'),
+            getChildRecords(elastic, TypeMapping.toInternal(rawId), undefined, groupingType)
+          ]);
 
           const sortedRelatedItems = sortRelated(relatedItems);
           const JSONData = buildJSONResponse(

@@ -45,8 +45,7 @@ test('getSimilarObjects — query excludes the current object from results', asy
 
   await getSimilarObjects(makeResource(uid), elastic);
 
-  const query = elastic.search.firstCall.args[0].body.query.function_score.query;
-  const mustNot = query.bool.must_not;
+  const mustNot = elastic.search.firstCall.args[0].body.query.bool.must_not;
   const excludesSelf = mustNot.some(function (clause) {
     return clause.term && clause.term['@admin.uid'] === uid;
   });
@@ -60,8 +59,7 @@ test('getSimilarObjects — query excludes SPH child records from results', asyn
 
   await getSimilarObjects(makeResource('co12345'), elastic);
 
-  const query = elastic.search.firstCall.args[0].body.query.function_score.query;
-  const mustNot = query.bool.must_not;
+  const mustNot = elastic.search.firstCall.args[0].body.query.bool.must_not;
   const excludesSPH = mustNot.some(function (clause) {
     return clause.term && clause.term['grouping.@link.type'] === 'SPH';
   });
@@ -75,7 +73,7 @@ test('getSimilarObjects — adds category term to should clause when resource ha
 
   await getSimilarObjects(makeResource('co12345', { category: 'Locomotives' }), elastic);
 
-  const shouldClauses = elastic.search.firstCall.args[0].body.query.function_score.query.bool.should;
+  const shouldClauses = elastic.search.firstCall.args[0].body.query.bool.should;
   const hasCategoryTerm = shouldClauses.some(function (clause) {
     return clause.term && clause.term['category.name.keyword'] === 'Locomotives';
   });
@@ -89,7 +87,7 @@ test('getSimilarObjects — adds gallery term to should clause when resource has
 
   await getSimilarObjects(makeResource('co12345', { gallery: 'Space Gallery' }), elastic);
 
-  const shouldClauses = elastic.search.firstCall.args[0].body.query.function_score.query.bool.should;
+  const shouldClauses = elastic.search.firstCall.args[0].body.query.bool.should;
   const hasGalleryTerm = shouldClauses.some(function (clause) {
     return clause.term && clause.term['facility.name.value.keyword'] === 'Space Gallery';
   });
@@ -103,7 +101,7 @@ test('getSimilarObjects — should clause is empty when resource has no category
 
   await getSimilarObjects(makeResource('co12345'), elastic);
 
-  const shouldClauses = elastic.search.firstCall.args[0].body.query.function_score.query.bool.should;
+  const shouldClauses = elastic.search.firstCall.args[0].body.query.bool.should;
   t.deepEqual(shouldClauses, [], 'should array is empty when no category or gallery present');
   t.end();
 });
