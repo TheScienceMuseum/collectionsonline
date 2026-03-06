@@ -259,16 +259,23 @@ function listeners (ctx, next) {
   }
 
   /**
-   * Search when one of the input date onblur
+   * Search when focus leaves the date range container entirely.
+   * Using focusout on the container (rather than blur on each input) prevents
+   * a premature search firing when the user tabs from the "From" field to the
+   * "To" field — we only run the search once both fields have been filled.
    */
-  const filtersDate = document.querySelectorAll(
-    '.filter:not(.filter--uncollapsible) [type=number]'
+  const filtersDateContainers = document.querySelectorAll(
+    '.filter:not(.filter--uncollapsible) .filter__daterange'
   );
-  for (i = 0; i < filtersDate.length; i++) {
-    filtersDate[i].addEventListener('blur', function () {
-      filterResults(ctx, page);
+  for (i = 0; i < filtersDateContainers.length; i++) {
+    filtersDateContainers[i].addEventListener('focusout', function (e) {
+      // relatedTarget is the element receiving focus; if it's still inside this
+      // date range container the user is just moving between from/to, so skip.
+      if (!this.contains(e.relatedTarget)) {
+        filterResults(ctx, page);
+      }
     });
-    filtersDate[i].addEventListener('keydown', function (e) {
+    filtersDateContainers[i].addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.keyCode === 13) {
         e.preventDefault();
         filterResults(ctx, page);
