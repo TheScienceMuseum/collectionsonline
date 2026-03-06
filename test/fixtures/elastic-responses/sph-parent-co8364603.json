@@ -1,0 +1,120 @@
+{
+  "_index": "ciim",
+  "_type": "_doc",
+  "_id": "co8364603",
+  "_version": 1,
+  "_seq_no": 1,
+  "_primary_term": 1,
+  "found": true,
+  "_source": {
+    "summary": {
+      "title": "Newcomen atmospheric engine (SPH parent)"
+    },
+    "@admin": {
+      "uid": "co8364603",
+      "id": "object-8364603",
+      "uuid": "aaaaaaaa-0000-0000-0000-000000000001"
+    },
+    "@datatype": {
+      "base": "object",
+      "grouping": "SPH",
+      "sub": "SPH",
+      "actual": "Collections Online",
+      "set": true
+    },
+    "title": [
+      {
+        "type": "catalogue title",
+        "value": "Newcomen atmospheric engine",
+        "primary": true
+      }
+    ],
+    "description": [
+      {
+        "type": "catalogue description",
+        "value": "Atmospheric engine built after the design of Thomas Newcomen, used for pumping water from mines.",
+        "primary": true
+      }
+    ],
+    "identifier": [
+      {
+        "type": "accession number",
+        "value": "1857-79",
+        "primary": true
+      }
+    ],
+    "category": [
+      {
+        "value": "Science & Technology"
+      }
+    ],
+    "location": [
+      {
+        "type": "name",
+        "value": "Science Museum, Energy Hall",
+        "primary": true
+      }
+    ],
+    "facility": [
+      {
+        "value": "Science Museum"
+      }
+    ],
+    "ondisplay": [
+      {
+        "type": "name",
+        "value": "Science Museum, Energy Hall",
+        "primary": true
+      }
+    ],
+    "child": [
+      {
+        "summary": {
+          "title": "Newcomen engine component A"
+        },
+        "@admin": {
+          "uid": "co8364603-child1",
+          "id": "object-8364603-child1",
+          "uuid": "aaaaaaaa-0000-0000-0000-000000000002"
+        }
+      },
+      {
+        "summary": {
+          "title": "Newcomen engine component B"
+        },
+        "@admin": {
+          "uid": "co8364603-child2",
+          "id": "object-8364603-child2",
+          "uuid": "aaaaaaaa-0000-0000-0000-000000000003"
+        }
+      }
+    ],
+    "grouping": [
+      {
+        "@admin": {
+          "uid": "co8364603",
+          "id": "object-8364603"
+        },
+        "@link": {
+          "type": "SPH"
+        }
+      }
+    ],
+    "counts": {
+      "direct-descendants": 2,
+      "all-descendants": 2
+    },
+    "enhancement": {
+      "analytics": {
+        "current": {
+          "date": {
+            "from": "2015-08-15",
+            "to": "2026-03-06"
+          },
+          "cumulative_views": 450,
+          "views": 12
+        }
+      }
+    }
+  }
+}

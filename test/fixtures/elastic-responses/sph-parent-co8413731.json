@@ -1,0 +1,99 @@
+{
+  "_index": "ciim",
+  "_type": "_doc",
+  "_id": "co8413731",
+  "_version": 1,
+  "_seq_no": 3,
+  "_primary_term": 1,
+  "found": true,
+  "_source": {
+    "summary": {
+      "title": "SPH object with multimedia children"
+    },
+    "@admin": {
+      "uid": "co8413731",
+      "id": "object-8413731",
+      "uuid": "cccccccc-0000-0000-0000-000000000001"
+    },
+    "@datatype": {
+      "base": "object",
+      "grouping": "MPH",
+      "sub": "MPH",
+      "actual": "Collections Online",
+      "set": true
+    },
+    "title": [
+      {
+        "type": "catalogue title",
+        "value": "SPH object with multimedia children",
+        "primary": true
+      }
+    ],
+    "description": [
+      {
+        "type": "catalogue description",
+        "value": "A parent object with child components that have multimedia and location data.",
+        "primary": true
+      }
+    ],
+    "identifier": [
+      {
+        "type": "accession number",
+        "value": "2001-123",
+        "primary": true
+      }
+    ],
+    "child": [
+      {
+        "summary": {
+          "title": "Component with multimedia"
+        },
+        "@admin": {
+          "uid": "co8413731-child1",
+          "id": "object-8413731-child1",
+          "uuid": "cccccccc-0000-0000-0000-000000000002"
+        }
+      },
+      {
+        "summary": {
+          "title": "Component with enhancement web block"
+        },
+        "@admin": {
+          "uid": "co8413731-child2",
+          "id": "object-8413731-child2",
+          "uuid": "cccccccc-0000-0000-0000-000000000003"
+        }
+      }
+    ],
+    "grouping": [
+      {
+        "@admin": {
+          "uid": "co8413731",
+          "id": "object-8413731"
+        },
+        "@link": {
+          "type": "MPH"
+        }
+      }
+    ],
+    "counts": {
+      "direct-descendants": 2,
+      "all-descendants": 2
+    },
+    "enhancement": {
+      "analytics": {
+        "current": {
+          "cumulative_views": 200,
+          "views": 5
+        }
+      },
+      "web": [
+        {
+          "id": "smgco-360/co8413731-parent-3d",
+          "title": "Parent 3D Model",
+          "platform": "3D"
+        }
+      ]
+    }
+  }
+}

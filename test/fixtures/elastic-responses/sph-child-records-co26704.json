@@ -1,0 +1,68 @@
+[
+  {
+    "_index": "ciim",
+    "_type": "_doc",
+    "_id": "co26704-child1",
+    "_source": {
+      "@admin": {
+        "uid": "co26704-child1",
+        "id": "object-26704-child1"
+      },
+      "@datatype": {
+        "base": "object",
+        "sub": "MPH"
+      },
+      "title": [
+        {
+          "type": "catalogue title",
+          "value": "Rocket locomotive tender",
+          "primary": true
+        }
+      ],
+      "summary": {
+        "title": "Rocket locomotive tender"
+      },
+      "identifier": [
+        {
+          "type": "accession number",
+          "value": "1862-37/2",
+          "primary": true
+        }
+      ],
+      "description": [
+        {
+          "type": "catalogue description",
+          "value": "Tender for the Rocket locomotive.",
+          "primary": true
+        }
+      ],
+      "ondisplay": [
+        {
+          "type": "name",
+          "value": "Science Museum, Making the Modern World Gallery",
+          "primary": true
+        }
+      ],
+      "category": [
+        {
+          "value": "Transport"
+        }
+      ],
+      "enhancement": {
+        "analytics": {
+          "current": {
+            "cumulative_views": 8200,
+            "views": 150
+          }
+        },
+        "web": [
+          {
+            "id": "smgco-360/rocket-tender-3d",
+            "title": "Rocket Tender 3D Model",
+            "platform": "3D"
+          }
+        ]
+      }
+    }
+  }
+]
