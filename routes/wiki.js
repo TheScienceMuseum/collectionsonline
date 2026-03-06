@@ -369,6 +369,10 @@ module.exports = (elastic, config) => ({
       try {
         const { wikidata } = req.params;
 
+        if (!/^Q\d+$/i.test(wikidata)) {
+          return h.response('Invalid Wikidata ID').code(400);
+        }
+
         const cachedWikidataJson = await fetchCache(cache, wikidata);
 
         if (cachedWikidataJson !== null && cachedWikidataJson !== undefined) {
@@ -402,6 +406,11 @@ module.exports = (elastic, config) => ({
               fetchResult = await wikidataCircuitBreaker.call(async () => {
                 const res = await fetchWithRetry(data, { signal: AbortSignal.timeout(10000) });
                 if (!res) return null;
+                const ct = res.headers.get('content-type') || '';
+                if (!ct.includes('application/json') && !ct.includes('text/javascript')) {
+                  console.error(`[wiki] Wikidata returned non-JSON response (${ct}) for ${wikidata}`);
+                  return null;
+                }
                 return res.json();
               });
             } catch (err) {

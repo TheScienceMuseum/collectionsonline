@@ -15,6 +15,15 @@
  */
 
 const sinon = require('sinon');
+
+// fetch-mock v10 requires global Request/Response/Headers to be present.
+// Node.js v16 doesn't have them built-in, so polyfill from node-fetch.
+// Must be set before requiring fetch-mock so it picks them up at load time.
+const nodeFetch = require('node-fetch');
+if (!global.Request) global.Request = nodeFetch.Request;
+if (!global.Response) global.Response = nodeFetch.Response;
+if (!global.Headers) global.Headers = nodeFetch.Headers;
+
 const fetchMock = require('fetch-mock');
 const testWithServer = require('./helpers/test-with-server');
 const cache = require('../bin/cache');
@@ -364,5 +373,41 @@ testWithServer('wiki Q19837: colleagues absent when no collection records match'
   const body = JSON.parse(res.payload);
 
   t.notOk(body.colleagues, 'colleagues is absent when no collection records match');
+  t.end();
+});
+
+// ─── Input validation ─────────────────────────────────────────────────────────
+
+testWithServer('wiki: invalid entity ID returns 400', { config: testConfig }, async (t, ctx) => {
+  t.plan(3);
+
+  const invalidIds = ['Hans_Christian_Ørsted', 'cabaça', 'not-a-qcode'];
+  for (const id of invalidIds) {
+    const res = await ctx.server.inject({ method: 'GET', url: `/wiki/${encodeURIComponent(id)}` });
+    t.equal(res.statusCode, 400, `${id} returns 400`);
+  }
+  t.end();
+});
+
+// ─── HTML error page handling ─────────────────────────────────────────────────
+
+testWithServer('wiki: HTML response from Wikidata returns 503', { config: testConfig }, async (t, ctx) => {
+  t.plan(1);
+  const restore = stubCacheMiss();
+  t.teardown(restore);
+  sinon.stub(ctx.elastic, 'search').resolves({ body: { hits: { hits: [] } } });
+
+  const htmlFetch = fetchMock.sandbox();
+  htmlFetch.get(/wikidata\.org/, {
+    status: 200,
+    body: '<!DOCTYPE html><html><body>Bot protection</body></html>',
+    headers: { 'content-type': 'text/html' }
+  });
+  const prevFetch = global.fetch;
+  global.fetch = htmlFetch;
+  t.teardown(() => { global.fetch = prevFetch; });
+
+  const res = await ctx.server.inject({ method: 'GET', url: '/wiki/Q19837' });
+  t.equal(res.statusCode, 503, 'HTML Wikidata response yields 503');
   t.end();
 });
