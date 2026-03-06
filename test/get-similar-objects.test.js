@@ -7,7 +7,7 @@ function makeResource (uid, opts) {
   opts = opts || {};
   return {
     _source: {
-      '@admin': { uid: uid },
+      '@admin': { uid },
       category: opts.category ? [{ name: opts.category }] : undefined,
       facility: opts.gallery
         ? [{ name: [{ type: 'gallery', value: opts.gallery }] }]
