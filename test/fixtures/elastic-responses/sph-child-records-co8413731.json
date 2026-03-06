@@ -1,0 +1,153 @@
+[
+  {
+    "_index": "ciim",
+    "_type": "_doc",
+    "_id": "co8413731-child1",
+    "_source": {
+      "@admin": {
+        "uid": "co8413731-child1",
+        "id": "object-8413731-child1"
+      },
+      "@datatype": {
+        "base": "object",
+        "sub": "MPH"
+      },
+      "title": [
+        {
+          "type": "catalogue title",
+          "value": "Component with multimedia",
+          "primary": true
+        }
+      ],
+      "summary": {
+        "title": "Component with multimedia"
+      },
+      "identifier": [
+        {
+          "type": "accession number",
+          "value": "2001-123/1",
+          "primary": true
+        }
+      ],
+      "location": [
+        {
+          "type": "name",
+          "value": "Store A, Shelf 3",
+          "primary": true
+        }
+      ],
+      "facility": [
+        {
+          "value": "Blythe House"
+        }
+      ],
+      "ondisplay": [],
+      "multimedia": [
+        {
+          "@admin": {
+            "uid": "co8413731-child1-img1"
+          },
+          "@processed": {
+            "large": {
+              "location": "images/co8413731-child1-large.jpg",
+              "location_is_relative": true,
+              "width": 800,
+              "height": 600
+            }
+          }
+        }
+      ],
+      "description": [
+        {
+          "type": "catalogue description",
+          "value": "A component with an attached image.",
+          "primary": true
+        }
+      ],
+      "material": [
+        {
+          "value": "brass"
+        }
+      ],
+      "measurements": [
+        {
+          "dimension": "length",
+          "value": "45",
+          "units": "cm"
+        }
+      ],
+      "category": [
+        {
+          "value": "Science & Technology"
+        }
+      ],
+      "enhancement": {
+        "analytics": {
+          "current": {
+            "cumulative_views": 50,
+            "views": 3
+          }
+        }
+      }
+    }
+  },
+  {
+    "_index": "ciim",
+    "_type": "_doc",
+    "_id": "co8413731-child2",
+    "_source": {
+      "@admin": {
+        "uid": "co8413731-child2",
+        "id": "object-8413731-child2"
+      },
+      "@datatype": {
+        "base": "object",
+        "sub": "MPH"
+      },
+      "title": [
+        {
+          "type": "catalogue title",
+          "value": "Component with enhancement web block",
+          "primary": true
+        }
+      ],
+      "summary": {
+        "title": "Component with enhancement web block"
+      },
+      "identifier": [
+        {
+          "type": "accession number",
+          "value": "2001-123/2",
+          "primary": true
+        }
+      ],
+      "description": [
+        {
+          "type": "catalogue description",
+          "value": "A component with an embedded web enhancement block.",
+          "primary": true
+        }
+      ],
+      "category": [
+        {
+          "value": "Science & Technology"
+        }
+      ],
+      "enhancement": {
+        "analytics": {
+          "current": {
+            "cumulative_views": 30,
+            "views": 2
+          }
+        },
+        "web": [
+          {
+            "id": "smgco-360/co8413731-child2-3d",
+            "title": "Component 3D Model",
+            "platform": "3D"
+          }
+        ]
+      }
+    }
+  }
+]

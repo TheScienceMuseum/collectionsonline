@@ -1,0 +1,86 @@
+{
+  "_index": "ciim",
+  "_type": "_doc",
+  "_id": "co26704",
+  "_version": 1,
+  "_seq_no": 2,
+  "_primary_term": 1,
+  "found": true,
+  "_source": {
+    "summary": {
+      "title": "Rocket locomotive"
+    },
+    "@admin": {
+      "uid": "co26704",
+      "id": "object-26704",
+      "uuid": "bbbbbbbb-0000-0000-0000-000000000001"
+    },
+    "@datatype": {
+      "base": "object",
+      "grouping": "SPH",
+      "sub": "SPH",
+      "actual": "Collections Online",
+      "set": true
+    },
+    "title": [
+      {
+        "type": "catalogue title",
+        "value": "Rocket locomotive",
+        "primary": true
+      }
+    ],
+    "description": [
+      {
+        "type": "catalogue description",
+        "value": "Locomotive 'Rocket', designed and built by Robert Stephenson & Co., Newcastle, England, 1829.",
+        "primary": true
+      }
+    ],
+    "identifier": [
+      {
+        "type": "accession number",
+        "value": "1862-37",
+        "primary": true
+      }
+    ],
+    "category": [
+      {
+        "value": "Transport"
+      }
+    ],
+    "ondisplay": [
+      {
+        "type": "name",
+        "value": "Science Museum, Making the Modern World Gallery",
+        "primary": true
+      }
+    ],
+    "child": [
+      {
+        "summary": {
+          "title": "Rocket locomotive tender"
+        },
+        "@admin": {
+          "uid": "co26704-child1",
+          "id": "object-26704-child1",
+          "uuid": "bbbbbbbb-0000-0000-0000-000000000002"
+        }
+      }
+    ],
+    "grouping": [
+      {
+        "@admin": {
+          "uid": "co26704",
+          "id": "object-26704"
+        },
+        "@link": {
+          "type": "SPH"
+        }
+      }
+    ],
+    "counts": {
+      "direct-descendants": 1,
+      "all-descendants": 1
+    }
+  }
+}

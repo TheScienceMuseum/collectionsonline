@@ -1,0 +1,156 @@
+[
+  {
+    "_index": "ciim",
+    "_type": "_doc",
+    "_id": "co8364603-child1",
+    "_source": {
+      "@admin": {
+        "uid": "co8364603-child1",
+        "id": "object-8364603-child1"
+      },
+      "@datatype": {
+        "base": "object",
+        "sub": "MPH"
+      },
+      "title": [
+        {
+          "type": "catalogue title",
+          "value": "Newcomen engine component A",
+          "primary": true
+        }
+      ],
+      "summary": {
+        "title": "Newcomen engine component A"
+      },
+      "identifier": [
+        {
+          "type": "accession number",
+          "value": "1857-79/1",
+          "primary": true
+        }
+      ],
+      "location": [
+        {
+          "type": "name",
+          "value": "Science Museum, Energy Hall, Case 1",
+          "primary": true
+        }
+      ],
+      "facility": [
+        {
+          "value": "Science Museum"
+        }
+      ],
+      "ondisplay": [
+        {
+          "type": "name",
+          "value": "Science Museum, Energy Hall",
+          "primary": true
+        }
+      ],
+      "description": [
+        {
+          "type": "catalogue description",
+          "value": "Cylinder component of the Newcomen engine.",
+          "primary": true
+        }
+      ],
+      "measurements": [
+        {
+          "dimension": "height",
+          "value": "120",
+          "units": "cm"
+        }
+      ],
+      "category": [
+        {
+          "value": "Science & Technology"
+        }
+      ],
+      "enhancement": {
+        "analytics": {
+          "current": {
+            "cumulative_views": 10,
+            "views": 2
+          }
+        }
+      }
+    }
+  },
+  {
+    "_index": "ciim",
+    "_type": "_doc",
+    "_id": "co8364603-child2",
+    "_source": {
+      "@admin": {
+        "uid": "co8364603-child2",
+        "id": "object-8364603-child2"
+      },
+      "@datatype": {
+        "base": "object",
+        "sub": "MPH"
+      },
+      "title": [
+        {
+          "type": "catalogue title",
+          "value": "Newcomen engine component B",
+          "primary": true
+        }
+      ],
+      "summary": {
+        "title": "Newcomen engine component B"
+      },
+      "identifier": [
+        {
+          "type": "accession number",
+          "value": "1857-79/2",
+          "primary": true
+        }
+      ],
+      "location": [
+        {
+          "type": "name",
+          "value": "Science Museum, Energy Hall, Case 2",
+          "primary": true
+        }
+      ],
+      "facility": [
+        {
+          "value": "Science Museum"
+        }
+      ],
+      "ondisplay": [
+        {
+          "type": "name",
+          "value": "Science Museum, Energy Hall",
+          "primary": true
+        }
+      ],
+      "description": [
+        {
+          "type": "catalogue description",
+          "value": "Boiler component of the Newcomen engine.",
+          "primary": true
+        }
+      ],
+      "material": [
+        {
+          "value": "iron"
+        }
+      ],
+      "category": [
+        {
+          "value": "Science & Technology"
+        }
+      ],
+      "enhancement": {
+        "analytics": {
+          "current": {
+            "cumulative_views": 5,
+            "views": 1
+          }
+        }
+      }
+    }
+  }
+]
