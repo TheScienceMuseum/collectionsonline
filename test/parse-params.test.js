@@ -63,7 +63,7 @@ test('parsing lowercase url params', function (t) {
 });
 
 test('parsing museum params', function (t) {
-  t.plan(7);
+  t.plan(8);
 
   t.deepEqual(
     parseParameters({ filters: 'objects/museum/scm' }),
@@ -116,6 +116,10 @@ test('parsing museum params', function (t) {
       categories: { museum: 'Science and Industry Museum' }
     },
     'should convert museum name to correct case'
+  );
+  t.doesNotThrow(
+    function () { parseParameters({ filters: 'objects/museum' }); },
+    'should not throw when museum value is missing'
   );
   t.end();
 });
