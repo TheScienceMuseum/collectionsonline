@@ -13,6 +13,22 @@
 
 Or use `npm run watch` to rebuild and restart the server as you edit things.
 
+## Build
+
+The JS and CSS bundles are built from source on every `npm install` (via `postinstall`). They are content-hash fingerprinted (e.g. `bundle-abc12345.js`) and referenced via `public/asset-manifest.json`.
+
+| Command | Description |
+|---|---|
+| `npm run build` | Build JS and CSS in parallel (no minification) |
+| `npm run build:js` | Browserify `client/main.js` → `public/bundle.js` |
+| `npm run build:css` | Sass + autoprefixer → `public/bundle.css` |
+| `npm run minify` | Minify JS and CSS in place |
+| `npm run fingerprint` | Hash bundles and write `public/asset-manifest.json` |
+| `npm run package` | Full pipeline: build → minify → fingerprint → zip. Use this before a manual deployment to ensure bundles are fresh. |
+| `npm run package:zip` | Zip only (build already ran). Outputs `builds/collectionsonline.zip`, excluding `.git*`, `.npmrc`, `.corc` and the `builds/` directory itself. |
+
+> **Important:** always run `npm run package` (not just the zip command) before uploading a deployment zip. Running the zip alone risks shipping stale bundles if source files have changed since the last `npm install`.
+
 ## Testing
 
 Use `npm test` to run _all_ the tests (including linting).
@@ -198,19 +214,19 @@ Follow these steps to setup a new CI environment:
     ```
 
 * Add the following to the travis config:
-    * Zip up the built site before deploy
+    * Create the deployment zip before deploy (build already ran via `postinstall` on `npm install`)
 
-    ````yaml
+    ```yaml
     before_deploy:
-      - zip -q -x .git\* node_modules/\* -r collectionsonline *
-    ````
+      - npm run package:zip
+    ```
 
     * Add the bucket name, zip file path and skip cleanup to the deploy section:
 
     ```yaml
     deploy:
       bucket_name: elasticbeanstalk-eu-west-1-431258931377
-      zip_file: collectionsonline.zip
+      zip_file: builds/collectionsonline.zip
       skip_cleanup: true
     ```
 
