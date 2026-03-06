@@ -115,6 +115,10 @@
     &:nth-of-type(1) {
       margin-top: 0.5rem;
     }
+
+    &.wikidata-more-hidden {
+      display: none !important;
+    }
   }
 }
 
