@@ -69,4 +69,5 @@ test/fixtures/elastic-responses/example-*
 #package-lock.json
 
 # zips
-collectionsonline.zip
+builds/*
+!builds/.gitkeep
