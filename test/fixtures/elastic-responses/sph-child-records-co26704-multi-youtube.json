@@ -1,0 +1,72 @@
+[
+  {
+    "_index": "ciim",
+    "_type": "_doc",
+    "_id": "co26704-child1",
+    "_source": {
+      "@admin": {
+        "uid": "co26704-child1",
+        "id": "object-26704-child1",
+        "uuid": "bbbbbbbb-0000-0000-0000-000000000002"
+      },
+      "@datatype": {
+        "base": "object",
+        "sub": "SPH"
+      },
+      "title": [
+        {
+          "type": "catalogue title",
+          "value": "First child with YouTube",
+          "primary": true
+        }
+      ],
+      "summary": {
+        "title": "First child with YouTube"
+      },
+      "enhancement": {
+        "web": [
+          {
+            "id": "first-child-youtube-id",
+            "title": "First child YouTube video",
+            "platform": "youtube"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "_index": "ciim",
+    "_type": "_doc",
+    "_id": "co26704-child2",
+    "_source": {
+      "@admin": {
+        "uid": "co26704-child2",
+        "id": "object-26704-child2",
+        "uuid": "bbbbbbbb-0000-0000-0000-000000000003"
+      },
+      "@datatype": {
+        "base": "object",
+        "sub": "SPH"
+      },
+      "title": [
+        {
+          "type": "catalogue title",
+          "value": "Second child with YouTube",
+          "primary": true
+        }
+      ],
+      "summary": {
+        "title": "Second child with YouTube"
+      },
+      "enhancement": {
+        "web": [
+          {
+            "id": "second-child-youtube-id",
+            "title": "Second child YouTube video",
+            "platform": "youtube"
+          }
+        ]
+      }
+    }
+  }
+]

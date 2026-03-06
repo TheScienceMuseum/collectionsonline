@@ -1,0 +1,48 @@
+[
+  {
+    "_index": "ciim",
+    "_type": "_doc",
+    "_id": "co-yt-no-sf-child1",
+    "_source": {
+      "@admin": {
+        "uid": "co-yt-no-sf-child1",
+        "id": "object-yt-no-sf-child1",
+        "uuid": "dddddddd-0000-0000-0000-000000000002"
+      },
+      "@datatype": {
+        "base": "object",
+        "sub": "SPH"
+      },
+      "title": [
+        {
+          "type": "catalogue title",
+          "value": "Child with YouTube and SketchFab",
+          "primary": true
+        }
+      ],
+      "summary": {
+        "title": "Child with YouTube and SketchFab"
+      },
+      "enhancement": {
+        "analytics": {
+          "current": {
+            "cumulative_views": 80,
+            "views": 4
+          }
+        },
+        "web": [
+          {
+            "id": "child-youtube-id",
+            "title": "Child YouTube video",
+            "platform": "youtube"
+          },
+          {
+            "id": "child-sketchfab-id",
+            "title": "Child SketchFab model",
+            "platform": "sketchfab"
+          }
+        ]
+      }
+    }
+  }
+]

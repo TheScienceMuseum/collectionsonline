@@ -1,0 +1,60 @@
+{
+  "_index": "ciim",
+  "_type": "_doc",
+  "_id": "co-yt-no-sf",
+  "_version": 1,
+  "_seq_no": 10,
+  "_primary_term": 1,
+  "found": true,
+  "_source": {
+    "summary": {
+      "title": "Object with YouTube but no SketchFab"
+    },
+    "@admin": {
+      "uid": "co-yt-no-sf",
+      "id": "object-yt-no-sf",
+      "uuid": "dddddddd-0000-0000-0000-000000000001"
+    },
+    "@datatype": {
+      "base": "object",
+      "grouping": "SPH",
+      "sub": "SPH",
+      "actual": "Collections Online",
+      "set": true
+    },
+    "title": [
+      {
+        "type": "catalogue title",
+        "value": "Object with YouTube but no SketchFab",
+        "primary": true
+      }
+    ],
+    "child": [
+      {
+        "summary": {
+          "title": "Child with YouTube and SketchFab"
+        },
+        "@admin": {
+          "uid": "co-yt-no-sf-child1",
+          "id": "object-yt-no-sf-child1",
+          "uuid": "dddddddd-0000-0000-0000-000000000002"
+        }
+      }
+    ],
+    "enhancement": {
+      "analytics": {
+        "current": {
+          "cumulative_views": 500,
+          "views": 20
+        }
+      },
+      "web": [
+        {
+          "id": "parent-youtube-id",
+          "title": "Parent YouTube video",
+          "platform": "youtube"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,48 @@
+[
+  {
+    "_index": "ciim",
+    "_type": "_doc",
+    "_id": "co26704-child1",
+    "_source": {
+      "@admin": {
+        "uid": "co26704-child1",
+        "id": "object-26704-child1",
+        "uuid": "bbbbbbbb-0000-0000-0000-000000000002"
+      },
+      "@datatype": {
+        "base": "object",
+        "sub": "SPH"
+      },
+      "title": [
+        {
+          "type": "catalogue title",
+          "value": "Rocket locomotive tender",
+          "primary": true
+        }
+      ],
+      "summary": {
+        "title": "Rocket locomotive tender"
+      },
+      "enhancement": {
+        "analytics": {
+          "current": {
+            "cumulative_views": 120,
+            "views": 8
+          }
+        },
+        "web": [
+          {
+            "id": "dQw4w9WgXcQ",
+            "title": "Rocket locomotive tender YouTube video",
+            "platform": "youtube"
+          },
+          {
+            "id": "rocket-tender-sf-model",
+            "title": "Rocket locomotive tender SketchFab model",
+            "platform": "sketchfab"
+          }
+        ]
+      }
+    }
+  }
+]
