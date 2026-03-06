@@ -27,6 +27,12 @@ const childRecordsCo26704 = require('./fixtures/elastic-responses/sph-child-reco
 const parentCo8413731 = require('./fixtures/elastic-responses/sph-parent-co8413731.json');
 const childRecordsCo8413731 = require('./fixtures/elastic-responses/sph-child-records-co8413731.json');
 
+const childRecordsCo26704YoutubeSf = require('./fixtures/elastic-responses/sph-child-records-co26704-youtube-sketchfab.json');
+const childRecordsCo26704MultiYoutube = require('./fixtures/elastic-responses/sph-child-records-co26704-multi-youtube.json');
+
+const parentCoYtNoSf = require('./fixtures/elastic-responses/sph-parent-co-yt-no-sf.json');
+const childRecordsCoYtNoSf = require('./fixtures/elastic-responses/sph-child-records-co-yt-no-sf.json');
+
 // ─── co8364603: location data on children ────────────────────────────────────
 
 test(file + 'co8364603: response is built without throwing', function (t) {
@@ -195,5 +201,68 @@ test(file + 'children is empty array when childRecordsList is undefined', functi
   t.plan(1);
   const response = buildJSONResponse(parentCo8364603, config, null, null, undefined);
   t.equal(response.data.children.length, 0, 'children should be empty when childRecordsList is undefined');
+  t.end();
+});
+
+// ─── YouTube/SketchFab pull-up: basic pull-up from child ─────────────────────
+
+test(file + 'co26704 + youtube/sf child: YouTube is pulled up when parent has no enhancement', function (t) {
+  t.plan(2);
+  const response = buildJSONResponse(parentCo26704, config, null, null, childRecordsCo26704YoutubeSf);
+  const web = response.data.attributes.enhancement && response.data.attributes.enhancement.web;
+  t.ok(Array.isArray(web), 'enhancement.web should be an array');
+  const youtube = web.filter((el) => el.platform === 'youtube');
+  t.equal(youtube.length, 1, 'should have exactly 1 YouTube item pulled from child');
+  t.end();
+});
+
+test(file + 'co26704 + youtube/sf child: SketchFab is pulled up when parent has no enhancement', function (t) {
+  t.plan(1);
+  const response = buildJSONResponse(parentCo26704, config, null, null, childRecordsCo26704YoutubeSf);
+  const web = response.data.attributes.enhancement.web;
+  const sketchfab = web.filter((el) => el.platform === 'sketchfab');
+  t.equal(sketchfab.length, 1, 'should have exactly 1 SketchFab item pulled from child');
+  t.end();
+});
+
+test(file + 'co26704 + youtube/sf child: total enhancement.web has 2 items (1 youtube + 1 sketchfab)', function (t) {
+  t.plan(1);
+  const response = buildJSONResponse(parentCo26704, config, null, null, childRecordsCo26704YoutubeSf);
+  const web = response.data.attributes.enhancement.web;
+  t.equal(web.length, 2, 'should have 2 web enhancement items total');
+  t.end();
+});
+
+// ─── YouTube/SketchFab pull-up: parent priority ───────────────────────────────
+
+test(file + 'yt-no-sf parent + child: parent YouTube is not replaced by child YouTube', function (t) {
+  t.plan(2);
+  const response = buildJSONResponse(parentCoYtNoSf, config, null, null, childRecordsCoYtNoSf);
+  const web = response.data.attributes.enhancement.web;
+  const youtubeItems = web.filter((el) => el.platform === 'youtube');
+  t.equal(youtubeItems.length, 1, 'should have exactly 1 YouTube item (no duplicate from child)');
+  t.equal(youtubeItems[0].id, 'parent-youtube-id', 'YouTube id should be the parent\'s, not the child\'s');
+  t.end();
+});
+
+test(file + 'yt-no-sf parent + child: missing SketchFab is pulled from child (mixed case)', function (t) {
+  t.plan(2);
+  const response = buildJSONResponse(parentCoYtNoSf, config, null, null, childRecordsCoYtNoSf);
+  const web = response.data.attributes.enhancement.web;
+  const sfItems = web.filter((el) => el.platform === 'sketchfab');
+  t.equal(sfItems.length, 1, 'should have exactly 1 SketchFab item pulled from child');
+  t.equal(sfItems[0].id, 'child-sketchfab-id', 'SketchFab id should come from the child');
+  t.end();
+});
+
+// ─── YouTube/SketchFab pull-up: first-child priority ─────────────────────────
+
+test(file + 'co26704 + multi-youtube children: only first child\'s YouTube is used', function (t) {
+  t.plan(2);
+  const response = buildJSONResponse(parentCo26704, config, null, null, childRecordsCo26704MultiYoutube);
+  const web = response.data.attributes.enhancement.web;
+  const youtubeItems = web.filter((el) => el.platform === 'youtube');
+  t.equal(youtubeItems.length, 1, 'should have exactly 1 YouTube item even with multiple children');
+  t.equal(youtubeItems[0].id, 'first-child-youtube-id', 'YouTube id should come from the first child');
   t.end();
 });
