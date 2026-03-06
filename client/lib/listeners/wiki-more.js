@@ -15,7 +15,7 @@
  *   linked items to the top of long lists.
  *
  * INLINE LISTS  (<ul data-wiki-more> without .wikidata-list)
- *   Comma-separated inline lists with more than INLINE_THRESHOLD (12) items
+ *   Comma-separated inline lists with more than INLINE_THRESHOLD (10) items
  *   are truncated. A "Show N more" button is appended inline after the last
  *   visible item (inheriting the trailing comma from item 12). When expanded,
  *   a "· Show less" button is appended after the final item.
