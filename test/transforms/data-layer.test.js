@@ -58,3 +58,26 @@ test('data-layer return right object for people', (t) => {
   t.equal(layer, expected, 'The layer for people is ok');
   t.end();
 });
+
+test('data-layer return right object for organisations (industry key)', (t) => {
+  t.plan(1);
+  const data = [
+    {
+      key: 'industry',
+      value: [{ value: 'railway company' }]
+    },
+    {
+      key: 'based',
+      value: 'England, United Kingdom'
+    }
+  ];
+
+  const layer = dataLayer('people', data);
+  const expected = JSON.stringify({
+    recordType: 'people',
+    recordOccupation: ['railway company'],
+    recordBorn: 'England, United Kingdom'
+  });
+  t.equal(layer, expected, 'The layer for organisations uses industry key correctly');
+  t.end();
+});
