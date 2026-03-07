@@ -20,7 +20,7 @@ module.exports = {
   people: {
     Dates: 'close',
     Occupation: 'close',
-    'Place born': 'close',
+    Place: 'close',
     Organisation: 'close'
   },
   objects: {
