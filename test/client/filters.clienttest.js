@@ -37,7 +37,7 @@ module.exports = {
       )
       .click('.filter__box[value=inventor]')
       .pause(1000)
-      .click('.filter[data-filter="Place born"] > a')
+      .click('.filter[data-filter="Place"] > a')
       .pause(1000)
       .click('.filter__box[value="England, United Kingdom"]')
       .pause(1000)

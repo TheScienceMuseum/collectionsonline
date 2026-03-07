@@ -19,8 +19,8 @@ module.exports = {
   },
   people: {
     Dates: 'close',
-    Occupation: 'close',
-    'Place born': 'close',
+    Industry: 'close',
+    Place: 'close',
     Organisation: 'close'
   },
   objects: {
