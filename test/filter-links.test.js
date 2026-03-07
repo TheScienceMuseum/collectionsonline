@@ -146,6 +146,38 @@ test('bad date range test', (t) => {
   t.end();
 });
 
+test('Made fact is not shown on people records', (t) => {
+  t.plan(1);
+
+  const resource = {
+    data: {
+      type: 'people',
+      attributes: {
+        name: [{ value: 'Great Western Railway', primary: true }],
+        creation: {
+          date: [{ value: '1900' }]
+        }
+      },
+      links: { root: 'http://localhost:8000' },
+      record: {}
+    },
+    included: [
+      {
+        type: 'place',
+        attributes: {
+          role: { value: 'user' },
+          summary: { title: 'Railway Hotel, Taunton' }
+        }
+      }
+    ]
+  };
+  const JSONData = JSONToHTML(resource);
+  const made = JSONData.fact.find(el => el.key === 'Made');
+
+  t.notOk(made, 'Made fact is absent from people records');
+  t.end();
+});
+
 test('collection link with forward slash in name encodes slash as %252F', (t) => {
   t.plan(1);
 
