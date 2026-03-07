@@ -1,12 +1,8 @@
-module.exports = function normaliseName (name, obj) {
-  if (
-    obj.type !== 'people' ||
-    (obj.system && obj.system.value === 'AdLib') ||
-    name.indexOf(',') === -1
-  ) {
-    return name;
-  } else {
-    const splitName = name.split(',');
-    return (splitName[1] + ' ' + splitName[0]).trim();
-  }
+// Name transposition ("Last, First" → "First Last") was previously handled here
+// for Mimsy people records. It is now handled upstream in getValues.getTitle(),
+// which returns a display-ready name for all sources (Mimsy and AdLib).
+// This helper is kept as a pass-through so existing template call-sites remain
+// valid without changes.
+module.exports = function normaliseName (name) {
+  return name;
 };
