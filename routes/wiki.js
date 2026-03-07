@@ -129,6 +129,38 @@ async function handleNestedProperty (entities, qCode, property, label, elastic, 
 //   [{ employer: 'Science Museum Group', colleagues: [{ name, url }] }]
 //
 // Runs concurrently with the property loop so SPARQL latency is hidden.
+
+// Extract a display-ready name from a raw ES _source document.
+// Mirrors the system-aware logic in getValues.getTitle() so that Mimsy records
+// (which store name.value in "Last, First" catalogue order) use summary.title
+// (always natural display order), and AdLib person records are reconstructed
+// from name.first + name.last. This was broken by PR #2032 which removed the
+// comma-transposition from normalise.js without updating fetchColleagues().
+// Mirrors getValues.getSystemName() — raw ES source values to canonical names
+const SYSTEM_NAMES = { 'Mimsy XG': 'Mimsy', 'Adlib Archives': 'AdLib' };
+
+function colleagueDisplayName (src) {
+  const system = SYSTEM_NAMES[src && src['@admin'] && src['@admin'].source];
+  const nameArr = src && src.name;
+
+  if (system === 'Mimsy') {
+    return (src.summary && src.summary.title) || (nameArr && nameArr[0] && nameArr[0].value);
+  }
+
+  if (system === 'AdLib') {
+    const nameEntry = nameArr && nameArr[0];
+    if (nameEntry && nameEntry.first) {
+      const first = Array.isArray(nameEntry.first) ? nameEntry.first[0] : nameEntry.first;
+      const last = nameEntry.last;
+      return last ? (first + ' ' + last) : first;
+    }
+    return (src.summary && src.summary.title) || (nameEntry && nameEntry.value);
+  }
+
+  // Unknown/missing system — fall back to preferred-name logic
+  return (nameArr && (nameArr.find(function (n) { return n.primary; }) || nameArr[0]) && (nameArr.find(function (n) { return n.primary; }) || nameArr[0]).value) || null;
+}
+
 async function fetchColleagues (employers, currentQCode, elastic, config) {
   if (!employers || employers.length === 0) return [];
 
@@ -169,7 +201,7 @@ async function fetchColleagues (employers, currentQCode, elastic, config) {
       index: 'ciim',
       body: {
         size: Math.min(allQCodes.length, 200),
-        _source: ['wikidata', 'name'],
+        _source: ['wikidata', 'name', 'summary', '@admin'],
         query: {
           terms: {
             'wikidata.keyword': allQCodes.map(q => `https://www.wikidata.org/wiki/${q}`)
@@ -196,10 +228,7 @@ async function fetchColleagues (employers, currentQCode, elastic, config) {
         .slice(0, 6)
         .map(q => {
           const hit = inCollection.get(q);
-          const nameArr = hit._source?.name;
-          const name = nameArr?.find(n => n.primary)?.value ||
-                       nameArr?.[0]?.value ||
-                       hit._id;
+          const name = colleagueDisplayName(hit._source) || hit._id;
           return { name, url: `${config.rootUrl}/people/${hit._id}` };
         });
       return colleagues.length > 0 ? { employer: label, colleagues } : null;
