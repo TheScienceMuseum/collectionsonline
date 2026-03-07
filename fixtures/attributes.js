@@ -1,5 +1,6 @@
 module.exports = [
   '@admin',
+  '@datatype',
   'barcode',
   'autocomplete',
   'birth',

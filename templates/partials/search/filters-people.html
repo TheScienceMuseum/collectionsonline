@@ -2,11 +2,11 @@
 
 {{#if filters.occupation.length}}
   {{#if (activeFacet selectedFilters 'occupation')}}
-    <div class="filter filter--active filter--open" data-filter="Occupation">
-      <a href="{{lookup links.clearFacet "filter[occupation]"}}" class="filter__name">Occupation</a>
+    <div class="filter filter--active filter--open" data-filter="Industry">
+      <a href="{{lookup links.clearFacet "filter[occupation]"}}" class="filter__name">Industry</a>
   {{else}}
-    <div class="filter filter--open" data-filter="Occupation">
-      <a href="{{lookup links.clearFacet "filter[occupation]"}}" class="filter__name">Occupation</a>
+    <div class="filter filter--open" data-filter="Industry">
+      <a href="{{lookup links.clearFacet "filter[occupation]"}}" class="filter__name">Industry</a>
   {{/if}}
     <div class="filter__options">
       <ul>
@@ -20,11 +20,11 @@
 
 {{#if filters.place_born.length}}
   {{#if (activeFacet selectedFilters 'birth[place]')}}
-    <div class="filter filter--active filter--open" data-filter="Place born">
-      <a href="{{lookup links.clearFacet "filter[birth[place]]"}}" class="filter__name">Place born</a>
+    <div class="filter filter--active filter--open" data-filter="Place of origin">
+      <a href="{{lookup links.clearFacet "filter[birth[place]]"}}" class="filter__name">Place of origin</a>
   {{else}}
-    <div class="filter filter--open" data-filter="Place born">
-      <a href="{{lookup links.clearFacet "filter[birth[place]]"}}" class="filter__name">Place born</a>
+    <div class="filter filter--open" data-filter="Place of origin">
+      <a href="{{lookup links.clearFacet "filter[birth[place]]"}}" class="filter__name">Place of origin</a>
   {{/if}}
     <div class="filter__options">
       <ul>
