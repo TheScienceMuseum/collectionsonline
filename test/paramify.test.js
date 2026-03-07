@@ -27,6 +27,22 @@ test(file + 'paramify double-encodes forward slashes in values as %252f', (t) =>
   t.end();
 });
 
+test(file + 'paramify converts escaped commas (\\,) to %2C in URL so server does not double-escape', (t) => {
+  // Simulates values that came through parse-params.js comma-escaping on the client side.
+  // paramify must unescape \, → %2C so the server's parse-params only escapes once.
+  t.equal(
+    paramify({ places: 'Paddington\\, London' }),
+    '/places/paddington%2c london',
+    'string: escaped comma becomes %2C in URL (space kept as-is for string branch)'
+  );
+  t.equal(
+    paramify({ makers: ['Science Museum\\, London', 'Rolls Royce'] }),
+    '/makers/science-museum%2c-london+rolls-royce',
+    'array: escaped comma becomes %2C and spaces become dashes'
+  );
+  t.end();
+});
+
 test(file + 'paramify encodes values with space-dash-space correctly', (t) => {
   t.equal(
     paramify({ object_type: ['box - container'] }),
