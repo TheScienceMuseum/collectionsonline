@@ -22,9 +22,9 @@
       {{#seemore related.objects}}
 
       {{#ifcreator related.objects}}
-      <a href="/search/objects/makers/{{normalise this.title this}}" aria-labelledby="seemore-label">
+      <a href="/search/objects/makers/{{this.title}}" aria-labelledby="seemore-label">
         {{else}}
-        <a href="/search/objects?q=%22{{normalise this.title this}}%22" aria-labelledby="seemore-label">
+        <a href="/search/objects?q=%22{{this.title}}%22" aria-labelledby="seemore-label">
           {{/ifcreator}}
           <article class="resultcard resultcard--seemore see-more-objects">
             <figure class="resultcard__figure">{{> global/icon i="search" size="48" }}</figure>

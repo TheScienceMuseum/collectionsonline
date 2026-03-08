@@ -1,11 +1,7 @@
-const normaliseName = require('./normalise.js');
-
-module.exports = (name, obj) => {
-  const value = normaliseName(name, obj);
-
-  if (!value) {
+module.exports = (name) => {
+  if (!name) {
     return '';
   }
 
-  return value.length < 400 ? value : value.slice(0, 400) + '...';
+  return name.length < 400 ? name : name.slice(0, 400) + '...';
 };
