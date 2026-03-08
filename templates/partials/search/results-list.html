@@ -12,7 +12,7 @@
   <div class="listresult__info">
     <h4 class="listresult__title">
       {{#if ondisplay}}{{> global/icon i="room" size="16" label="On display" }}{{/if}}
-      {{ normalise this.title this }}
+      {{ this.title }}
     </h4>
     {{#if this.categoryOrArtist}}<p class="listresult__description" data-category-or-artist>{{this.categoryOrArtist}}
     </p>{{/if}}

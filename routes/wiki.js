@@ -134,8 +134,7 @@ async function handleNestedProperty (entities, qCode, property, label, elastic, 
 // Mirrors the system-aware logic in getValues.getTitle() so that Mimsy records
 // (which store name.value in "Last, First" catalogue order) use summary.title
 // (always natural display order), and AdLib person records are reconstructed
-// from name.first + name.last. This was broken by PR #2032 which removed the
-// comma-transposition from normalise.js without updating fetchColleagues().
+// from name.first + name.last.
 // Mirrors getValues.getSystemName() — raw ES source values to canonical names
 const SYSTEM_NAMES = { 'Mimsy XG': 'Mimsy', 'Adlib Archives': 'AdLib' };
 

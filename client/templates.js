@@ -375,11 +375,6 @@ Handlebars.registerHelper(
 );
 
 Handlebars.registerHelper(
-  'normalise',
-  require('../templates/helpers/normalise.js')
-);
-
-Handlebars.registerHelper(
   'truncate',
   require('../templates/helpers/truncate.js')
 );

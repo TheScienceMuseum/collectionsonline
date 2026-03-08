@@ -4,7 +4,7 @@
     {{#each related.people}}
     <li>
       {{> global/icon i="people" }}
-      <span>{{#if this.links}}<a href={{this.links.self}}>{{/if}}{{this.attributes.summary.title}}{{#if this.links}}</a>{{/if}}{{#if this.attributes.role}} ({{this.attributes.role.value}}){{/if}}</span>
+      <span>{{#if this.links}}<a href={{this.links.self}}>{{/if}}{{this.displayTitle}}{{#if this.links}}</a>{{/if}}{{#if this.attributes.role}} ({{this.attributes.role.value}}){{/if}}</span>
     </li>
     {{/each}}
   </ul>
