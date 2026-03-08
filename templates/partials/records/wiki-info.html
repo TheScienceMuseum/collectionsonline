@@ -5,7 +5,7 @@
     {{#if wikiData.imageMetadata}}
     <figcaption class="wiki-image-credit" style="font-size: smaller; padding: 4px 8px; color: #aaa;">
       {{!-- {{#if wikiData.imageMetadata.artist}}<span class="wiki-artist">Credit: {{wikiData.imageMetadata.artist}}</span><br>{{/if}} --}}
-      <span class="wiki-license-commons">{{#if wikiData.imageMetadata.caption}}{{wikiData.imageMetadata.caption}}{{/if}}{{#if wikiData.imageMetadata.requiresAttribution}} | <a href="{{wikiData.imageMetadata.commonsUrl}}" rel="noopener noreferrer" style="color: inherit;">Credit</a>{{/if}}{{#if wikiData.imageMetadata.license}} | {{#if wikiData.imageMetadata.licenseUrl}}<a href="{{wikiData.imageMetadata.licenseUrl}}" rel="noopener noreferrer" style="color: inherit;">{{wikiData.imageMetadata.license}}</a>{{else}}{{wikiData.imageMetadata.license}}{{/if}}{{/if}}</span>
+      <span class="wiki-license-commons">{{#if wikiData.imageMetadata.caption}}{{wikiData.imageMetadata.caption}}{{/if}}{{#if wikiData.imageMetadata.requiresAttribution}} | <a href="{{wikiData.imageMetadata.commonsUrl}}" rel="noopener noreferrer" style="color: inherit;">Credit</a>{{/if}}{{#if wikiData.imageMetadata.license}}{{#if wikiData.imageMetadata.caption}} | {{else}}{{#if wikiData.imageMetadata.requiresAttribution}} | {{/if}}{{/if}}{{#if wikiData.imageMetadata.licenseUrl}}<a href="{{wikiData.imageMetadata.licenseUrl}}" rel="noopener noreferrer" style="color: inherit;">{{wikiData.imageMetadata.license}}</a>{{else}}{{wikiData.imageMetadata.license}}{{/if}}{{/if}}</span>
       {{!-- {{#if wikiData.imageMetadata.commonsUrl}}<br><a href="{{wikiData.imageMetadata.commonsUrl}}" rel="noopener noreferrer">View on Wikimedia Commons</a>{{/if}} --}}
     </figcaption>
     {{/if}}
