@@ -255,6 +255,36 @@ testWithServer('wiki Q312: CEO (P169) has related link when collection record fo
   t.end();
 });
 
+// ─── Also in our collection: names should not include date ranges ──────────
+
+testWithServer('wiki Q312: alsoInCollection uses clean label without date ranges', { config: testConfig }, async (t, ctx) => {
+  t.plan(2);
+  const restore = stubCacheMiss();
+  t.teardown(restore);
+  // Return a fake collection record for Tim Cook (Q5136071) — appears under P169 (CEO)
+  sinon.stub(ctx.elastic, 'search').callsFake(async (opts) => {
+    const queryStr = JSON.stringify(opts.body);
+    return {
+      body: {
+        hits: {
+          hits: queryStr.includes('Q5136071') ? [{ _id: 'cp99999', _source: { wikidata: 'https://www.wikidata.org/wiki/Q5136071' } }] : []
+        }
+      }
+    };
+  });
+
+  const res = await ctx.server.inject({ method: 'GET', url: '/wiki/Q312' });
+  const body = JSON.parse(res.payload);
+
+  t.ok(body.alsoInCollection && body.alsoInCollection.length > 0, 'alsoInCollection is present');
+  const entry = body.alsoInCollection.find(e => e.url.includes('cp99999'));
+  t.ok(
+    entry && !/\(\d{4}/.test(entry.name),
+    `alsoInCollection name should not contain date ranges: "${entry && entry.name}"`
+  );
+  t.end();
+});
+
 // ─── Cross-link: Apple Inc. → Founded By → Steve Jobs (cp50119) ───────────
 
 testWithServer('wiki Q312: founded by (P112) includes "Steve Jobs"', { config: testConfig }, async (t, ctx) => {
