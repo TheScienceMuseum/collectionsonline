@@ -171,7 +171,7 @@ async function fetchColleagues (employers, currentQCode, elastic, config) {
         'SELECT DISTINCT ?item WHERE {',
         `  ?item wdt:P108 wd:${employerQCode} ;`,
         '        wdt:P31 wd:Q5 .',
-        '} LIMIT 100'
+        '} LIMIT 500'
       ].join('\n');
       const url = wbk.sparqlQuery(sparql);
       const res = await fetchWithRetry(url, { signal: AbortSignal.timeout(10000) });
