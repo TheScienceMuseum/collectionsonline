@@ -362,7 +362,7 @@ async function configResponse (qCode, entities, elastic, config) {
     if (!prop || !Array.isArray(prop.value)) continue;
     for (const v of prop.value) {
       if (v.related && v.value) {
-        alsoInCollection.push({ name: String(v.value).trim(), url: v.related });
+        alsoInCollection.push({ name: String(v.label || v.value).trim(), url: v.related });
       }
     }
   }
