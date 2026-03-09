@@ -65,6 +65,20 @@
   {{#if images.0.title}}
   <meta property="og:image:alt" content="{{images.0.title}}" />
   {{/if}}
+  {{#if dublinCore}}
+  <!-- Dublin Core -->
+  <meta name="DC.title" content="{{dublinCore.title}}">
+  {{#if dublinCore.creator}}<meta name="DC.creator" content="{{dublinCore.creator}}">{{/if}}
+  {{#if dublinCore.subject}}<meta name="DC.subject" content="{{dublinCore.subject}}">{{/if}}
+  {{#if dublinCore.description}}<meta name="DC.description" content="{{dublinCore.description}}">{{/if}}
+  <meta name="DC.publisher" content="{{dublinCore.publisher}}">
+  {{#if dublinCore.date}}<meta name="DC.date" content="{{dublinCore.date}}">{{/if}}
+  {{#if dublinCore.type}}<meta name="DC.type" content="{{dublinCore.type}}">{{/if}}
+  {{#if dublinCore.format}}<meta name="DC.format" content="{{dublinCore.format}}">{{/if}}
+  {{#if dublinCore.identifier}}<meta name="DC.identifier" content="{{dublinCore.identifier}}">{{/if}}
+  {{#if dublinCore.rights}}<meta name="DC.rights" content="{{dublinCore.rights}}">{{/if}}
+  {{#if dublinCore.relation}}<meta name="DC.relation" content="{{dublinCore.relation}}">{{/if}}
+  {{/if}}
   {{#if jsonLD}}
   <script type="application/ld+json">
       {{{jsonLD}}}
