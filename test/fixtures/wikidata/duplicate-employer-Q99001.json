@@ -1,0 +1,47 @@
+{
+  "entities": {
+    "Q99001": {
+      "id": "Q99001",
+      "type": "item",
+      "labels": {
+        "en": { "language": "en", "value": "Test Person" }
+      },
+      "claims": {
+        "P108": [
+          {
+            "mainsnak": {
+              "snaktype": "value",
+              "property": "P108",
+              "datavalue": {
+                "value": { "entity-type": "item", "id": "Q312" },
+                "type": "wikibase-entityid"
+              }
+            },
+            "qualifiers": {
+              "P580": [{
+                "snaktype": "value",
+                "property": "P580",
+                "datavalue": { "value": { "time": "+1997-01-01T00:00:00Z" }, "type": "time" }
+              }],
+              "P582": [{
+                "snaktype": "value",
+                "property": "P582",
+                "datavalue": { "value": { "time": "+2011-01-01T00:00:00Z" }, "type": "time" }
+              }]
+            }
+          },
+          {
+            "mainsnak": {
+              "snaktype": "value",
+              "property": "P108",
+              "datavalue": {
+                "value": { "entity-type": "item", "id": "Q312" },
+                "type": "wikibase-entityid"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -43,19 +43,33 @@ function hasPropertyAction (property, action) {
 // Removes duplicate entries from a property's value array.
 // Wikidata entities can hold many claims for the same award/membership (e.g. the BBC
 // has 50+ separate P166 claims all resolving to "Peabody Awards"). We show each
-// distinct label once. Items are keyed by their string value field; object values
-// are serialised with JSON.stringify so they deduplicate correctly too.
+// distinct label once.
+// For context properties (e.g. employers, positions) items carry a clean `label` field
+// alongside a `value` that includes date ranges. We key by `label` when present so that
+// two claims for the same entity — one with dates, one without — collapse to one entry,
+// keeping whichever has the richer (longer) value.
 function dedupeValueArray (items) {
   if (!Array.isArray(items)) return items;
-  const seen = new Set();
-  return items.filter(item => {
-    const key = (item.value !== null && typeof item.value === 'object')
-      ? JSON.stringify(item.value)
-      : String(item.value ?? '');
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+  const seen = new Map(); // key → index in result
+  const result = [];
+  for (const item of items) {
+    const key = item.label
+      ? String(item.label)
+      : (item.value !== null && typeof item.value === 'object')
+          ? JSON.stringify(item.value)
+          : String(item.value ?? '');
+    if (seen.has(key)) {
+      // Prefer the entry with more context (e.g. one that includes a date range)
+      const existingIdx = seen.get(key);
+      if (String(item.value ?? '').length > String(result[existingIdx].value ?? '').length) {
+        result[existingIdx] = item;
+      }
+    } else {
+      seen.set(key, result.length);
+      result.push(item);
+    }
+  }
+  return result;
 }
 
 // Retry with exponential back-off on HTTP 429. Any other non-ok status or network
