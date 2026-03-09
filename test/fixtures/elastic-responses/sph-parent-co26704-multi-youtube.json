@@ -1,0 +1,66 @@
+{
+  "_index": "ciim",
+  "_type": "_doc",
+  "_id": "co26704-multi-youtube",
+  "_version": 1,
+  "_seq_no": 2,
+  "_primary_term": 1,
+  "found": true,
+  "_source": {
+    "summary": {
+      "title": "Rocket locomotive"
+    },
+    "@admin": {
+      "uid": "co26704-multi-youtube",
+      "id": "object-26704-multi-youtube",
+      "uuid": "bbbbbbbb-0000-0000-0000-000000000010"
+    },
+    "@datatype": {
+      "base": "object",
+      "grouping": "SPH",
+      "sub": "SPH",
+      "actual": "Collections Online",
+      "set": true
+    },
+    "title": [
+      {
+        "type": "catalogue title",
+        "value": "Rocket locomotive",
+        "primary": true
+      }
+    ],
+    "child": [
+      {
+        "summary": {
+          "title": "First child with YouTube"
+        },
+        "@admin": {
+          "uid": "co26704-child1",
+          "id": "object-26704-child1",
+          "uuid": "bbbbbbbb-0000-0000-0000-000000000002"
+        }
+      },
+      {
+        "summary": {
+          "title": "Second child with YouTube"
+        },
+        "@admin": {
+          "uid": "co26704-child2",
+          "id": "object-26704-child2",
+          "uuid": "bbbbbbbb-0000-0000-0000-000000000003"
+        }
+      }
+    ],
+    "grouping": [
+      {
+        "@admin": {
+          "uid": "co26704-multi-youtube",
+          "id": "object-26704-multi-youtube"
+        },
+        "@link": {
+          "type": "SPH"
+        }
+      }
+    ]
+  }
+}
