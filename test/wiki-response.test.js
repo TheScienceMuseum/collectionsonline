@@ -32,6 +32,7 @@ const config = require('../config');
 const steveJobsFixture = require('./fixtures/wikidata/steve-jobs-Q19837.json');
 const appleFixture = require('./fixtures/wikidata/apple-Q312.json');
 const batchLabelsFixture = require('./fixtures/wikidata/batch-labels.json');
+const duplicateEmployerFixture = require('./fixtures/wikidata/duplicate-employer-Q99001.json');
 
 // Point global.fetch at a persistent fetch-mock sandbox so the wiki route
 // never makes real HTTP calls. Matchers are registered in specificity order
@@ -42,6 +43,8 @@ global.fetch = sandboxFetch;
 
 // Q19837 primary entity fetch (single ID, full props)
 sandboxFetch.get(/ids=Q19837/, steveJobsFixture);
+// Q99001 duplicate-employer fixture (two P108 claims for the same employer)
+sandboxFetch.get(/ids=Q99001/, duplicateEmployerFixture);
 // Q312 primary entity fetch — 'ids=Q312&' identifies a single-ID request.
 // Batch calls use pipe-separated IDs encoded as %7C, e.g. 'ids=Q312%7CQ24740'.
 sandboxFetch.get((url) => url.includes('ids=Q312&'), appleFixture);
@@ -403,6 +406,28 @@ testWithServer('wiki Q19837: colleagues absent when no collection records match'
   const body = JSON.parse(res.payload);
 
   t.notOk(body.colleagues, 'colleagues is absent when no collection records match');
+  t.end();
+});
+
+// ─── Duplicate context-property deduplication ─────────────────────────────────
+//
+// Regression for the case where Wikidata holds two claims for the same employer
+// (one with date qualifiers, one without). Both resolve to the same label, so
+// only the richer entry (the one with dates) should appear in the output.
+
+testWithServer('wiki Q99001: duplicate P108 claims for same employer collapse to one entry', { config: testConfig }, async (t, ctx) => {
+  t.plan(3);
+  const restore = stubCacheMiss();
+  t.teardown(restore);
+  sinon.stub(ctx.elastic, 'search').resolves({ body: { hits: { hits: [] } } });
+
+  const res = await ctx.server.inject({ method: 'GET', url: '/wiki/Q99001' });
+  const body = JSON.parse(res.payload);
+
+  t.ok(body.P108 && Array.isArray(body.P108.value), 'P108 is present');
+  t.equal(body.P108.value.length, 1, 'deduplicated to exactly one entry');
+  const val = body.P108.value[0] && body.P108.value[0].value;
+  t.ok(val && val.includes('1997') && val.includes('2011'), `surviving entry includes date range: "${val}"`);
   t.end();
 });
 
