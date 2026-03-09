@@ -53,6 +53,12 @@ module.exports = (elastic, config) => ({
           result.categories
         );
 
+        // q may end up as an array if path segments like /q/foo+bar are used
+        // (parse-params splits on + for filter values). Coerce to string.
+        if (Array.isArray(query.q)) {
+          query.q = query.q.join(' ').trim() || undefined;
+        }
+
         const queryParams = createQueryParams(responseType, { query, params });
 
         // Only set a Cache-Control if we don't have a freetext query string and aren't running on production
