@@ -21,6 +21,7 @@ const loadingBar = require('../lib/loading-bar');
 const hideKeyboard = require('../lib/hide-keyboard');
 const findCategory = require('../lib/find-category.js');
 
+const updateMetaTags = require('../lib/update-meta-tags');
 const displayFilters = require('../lib/listeners/display-filters.js');
 const searchListener = require('../lib/listeners/search-listener');
 const descriptionBoxCloseListener = require('../lib/listeners/close-description-box.js');
@@ -153,9 +154,10 @@ function render (ctx, next) {
     }
   }
 
-  // refresh the title of the page
+  // refresh the title and meta tags of the page
   document.getElementsByTagName('title')[0].textContent =
     ctx.state.data.titlePage;
+  updateMetaTags(ctx.state.data);
   document.body.className = ctx.state.data.type;
   next();
 }

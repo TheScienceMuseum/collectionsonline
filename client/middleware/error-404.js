@@ -14,7 +14,7 @@ module.exports = function (page) {
       data.items = require('../../fixtures/404.js');
       pageEl.innerHTML = Templates['404'](data);
       // refresh the title of the page
-      document.getElementsByTagName('title')[0].textContent = 'Page not found';
+      document.getElementsByTagName('title')[0].textContent = 'Page not found | Science Museum Group Collection';
       next();
     } else {
       listeners();

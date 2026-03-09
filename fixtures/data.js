@@ -1,6 +1,9 @@
 module.exports = {
   title: 'Science Museum Group Collection',
   titlePage: 'Science Museum Group Collection',
+  metaDescription: 'Explore over 500,000 objects and archives from the Science Museum, Science and Industry Museum, National Science and Media Museum, National Railway Museum and Locomotion.',
+  ogType: 'website',
+  robotsMeta: 'index, follow',
   strap: 'Search our collection',
   intro:
     'Explore over 500,000 <a href="/search/objects">objects</a> and <a href="/search/documents">archives</a> from the <a href="/search/museum/science-museum">Science Museum</a>, <a href="/search/museum/science-and-industry-museum">Science and Industry Museum</a>, <a href="/search/museum/national-science-and-media-museum">National Science and Media Museum</a>, <a href="/search/museum/national-railway-museum">National Railway Museum</a> and <a href="/search/museum/locomotion">Locomotion</a>.<div style="font-size:1.3rem; margin-top: 1rem">Did you know that the <a href="https://www.scienceinnovationpark.org.uk">Science and Innovation Park</a> is home to around 80% of objects from our collection?</div><div style="font-size:1rem; margin-top: 1rem"><a href="https://collection.sciencemuseumgroup.org.uk/about">Please be aware some historic records may include inaccurate or offensive content.</a></div>',

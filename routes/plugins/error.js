@@ -31,6 +31,10 @@ exports.plugin = {
           data.navigation = require('../../fixtures/navigation');
           data.museums = require('../../fixtures/museums');
           data.items = require('../../fixtures/404.js')(options.config);
+          data.titlePage = 'Page not found | Science Museum Group Collection';
+          data.metaDescription = 'The page you requested could not be found. Search over 500,000 objects and archives in the Science Museum Group Collection.';
+          data.ogType = 'website';
+          data.robotsMeta = 'noindex, follow';
           return h.view('404', data).code(404);
         }
 
