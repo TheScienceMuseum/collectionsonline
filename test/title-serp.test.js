@@ -100,7 +100,7 @@ test(file + 'serp title - no filters selected', (t) => {
     'filter museum & gallery - title within 150 char limit (got ' + title.length + ')'
   );
   t.ok(
-    title.indexOf('display at') > -1,
+    title.indexOf('display in') > -1,
     'filter museum & gallery - contains on display text'
   );
   t.end();
