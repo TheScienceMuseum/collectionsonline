@@ -19,6 +19,7 @@ module.exports = config => ({
         data.navigation = require('../fixtures/navigation');
         data.museums = require('../fixtures/museums');
         data.inProduction = config && config.NODE_ENV === 'production';
+        data.links = { self: config.rootUrl };
         return h.view('home', data);
       }
 

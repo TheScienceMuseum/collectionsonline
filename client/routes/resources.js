@@ -3,6 +3,7 @@ const Snackbar = require('snackbarlightjs');
 const Templates = require('../templates');
 
 const JSONToHTML = require('../../lib/transforms/json-to-html-data');
+const updateMetaTags = require('../lib/update-meta-tags');
 
 const getData = require('../lib/get-data.js');
 const hideKeyboard = require('../lib/hide-keyboard');
@@ -72,6 +73,7 @@ function render (ctx, next, type) {
   hideKeyboard();
   document.getElementsByTagName('title')[0].textContent =
     ctx.state.data.titlePage;
+  updateMetaTags(ctx.state.data);
   document.body.className = ctx.state.data.type;
   pageEl.innerHTML = Templates[pageType](ctx.state.data);
 

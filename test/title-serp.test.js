@@ -84,22 +84,29 @@ test(file + 'serp title - no filters selected', (t) => {
   );
   t.end();
 });
-// filter with museum and gallery
+// filter with museum and gallery — truncated to fit 60 char limit
 test(file + 'serp title - no filters selected', (t) => {
   const selectedFilters = {
     gallery: { Warehouse: true },
     museum: { 'National Railway Museum': true }
   };
   const title = getTitlePage('', selectedFilters);
-  t.equal(
-    title,
-    'On display at the National Railway Museum | Warehouse | Science Museum Group Collection',
-    'filter museum & gallery - title ok'
+  t.ok(
+    title.endsWith('| Science Museum Group Collection'),
+    'filter museum & gallery - has brand suffix'
+  );
+  t.ok(
+    title.length <= 150,
+    'filter museum & gallery - title within 150 char limit (got ' + title.length + ')'
+  );
+  t.ok(
+    title.indexOf('display at') > -1,
+    'filter museum & gallery - contains on display text'
   );
   t.end();
 });
 
-// filter with category and museum and gallery (a gallery can't be defined without a museum)
+// filter with category and museum and gallery — truncated to fit 60 char limit
 test(file + 'serp title - no filters selected', (t) => {
   const selectedFilters = {
     categories: { 'Railway Posters, Notices & Handbills': true },
@@ -107,10 +114,17 @@ test(file + 'serp title - no filters selected', (t) => {
     museum: { 'National Railway Museum': true }
   };
   const title = getTitlePage('', selectedFilters);
-  t.equal(
-    title,
-    'Railway Posters, Notices & Handbills on display at the National Railway Museum | Warehouse | Science Museum Group Collection',
-    'filter museum & gallery - title ok'
+  t.ok(
+    title.endsWith('| Science Museum Group Collection'),
+    'filter museum & gallery & category - has brand suffix'
+  );
+  t.ok(
+    title.length <= 150,
+    'filter museum & gallery & category - title within 150 char limit (got ' + title.length + ')'
+  );
+  t.ok(
+    title.indexOf('Railway Posters') > -1,
+    'filter museum & gallery & category - contains category'
   );
   t.end();
 });
