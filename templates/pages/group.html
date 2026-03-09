@@ -9,6 +9,7 @@
       <div class="o-container o-grid o-grid--3cols@m">
         <div class="section__content o-grid__span2@m">
 
+          {{#unless masthead.image}}<h1 class="record-top__title">{{title}}</h1>{{/unless}}
           {{> records/record-description}}
         </div>
         <aside aria-labelledby="aside-related-links">
