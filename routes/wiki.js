@@ -174,16 +174,35 @@ function colleagueDisplayName (src) {
   return (nameArr && (nameArr.find(function (n) { return n.primary; }) || nameArr[0]) && (nameArr.find(function (n) { return n.primary; }) || nameArr[0]).value) || null;
 }
 
-async function fetchColleagues (employers, currentQCode, elastic, config) {
+async function fetchColleagues (employers, currentQCode, elastic, config, subjectBirthYear, subjectDeathYear) {
   if (!employers || employers.length === 0) return [];
 
   // Step 1: SPARQL query per employer, in parallel
   const sparqlResults = await Promise.allSettled(
     employers.map(async ({ qCode: employerQCode, label }) => {
+      // Build optional lifetime-overlap filters.
+      // A colleague overlaps with the subject iff:
+      //   colleague born <= subject died  (colleague existed before subject died)
+      //   colleague died >= subject born  (colleague was alive when subject was born)
+      // We use OPTIONAL so that colleagues with no dates in Wikidata are still included.
+      const dateFilters = [];
+      if (subjectDeathYear) {
+        dateFilters.push(
+          '  OPTIONAL { ?item wdt:P569 ?born . }',
+          `  FILTER(!bound(?born) || ?born <= "${subjectDeathYear}-12-31T00:00:00Z"^^xsd:dateTime)`
+        );
+      }
+      if (subjectBirthYear) {
+        dateFilters.push(
+          '  OPTIONAL { ?item wdt:P570 ?died . }',
+          `  FILTER(!bound(?died) || ?died >= "${subjectBirthYear}-01-01T00:00:00Z"^^xsd:dateTime)`
+        );
+      }
       const sparql = [
         'SELECT DISTINCT ?item WHERE {',
         `  ?item wdt:P108 wd:${employerQCode} ;`,
         '        wdt:P31 wd:Q5 .',
+        ...dateFilters,
         '} LIMIT 500'
       ].join('\n');
       const url = wbk.sparqlQuery(sparql);
@@ -294,8 +313,13 @@ async function configResponse (qCode, entities, elastic, config) {
     qCode: q,
     label: prefetchedEntities?.[q]?.labels?.en?.value || q
   }));
+  // Extract the subject's birth/death years to filter out temporally impossible colleagues.
+  const subjectBirthStr = entities[qCode]?.claims?.P569?.[0]?.mainsnak?.datavalue?.value?.time;
+  const subjectDeathStr = entities[qCode]?.claims?.P570?.[0]?.mainsnak?.datavalue?.value?.time;
+  const subjectBirthYear = subjectBirthStr ? (subjectBirthStr.match(/^\+?(\d{4})/) || [])[1] : null;
+  const subjectDeathYear = subjectDeathStr ? (subjectDeathStr.match(/^\+?(\d{4})/) || [])[1] : null;
   const colleaguesPromise = employers.length > 0
-    ? fetchColleagues(employers, qCode, elastic, config)
+    ? fetchColleagues(employers, qCode, elastic, config, subjectBirthYear, subjectDeathYear)
     : Promise.resolve([]);
 
   // Add Wikidata URL
