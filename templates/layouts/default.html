@@ -42,12 +42,12 @@
   <link rel="icon" type="image/png" href="/assets/img/favicon/favicon-16x16.png" sizes="16x16">
   <link rel="apple-touch-icon" href="/assets/img/favicon/apple-icon-180x180.png" sizes="180x180">
   <!-- Twitter Cards -->
-  <meta name="twitter:card" content="{{#if images.0.medium}}summary_large_image{{else}}summary{{/if}}" />
+  <meta name="twitter:card" content="{{#if images.0.large}}summary_large_image{{else}}summary{{/if}}" />
   <meta name="twitter:site" content="@sciencemuseum" />
   <meta name="twitter:title" content="{{titlePage}}" />
   <meta name="twitter:description" content="{{#if metaDescription}}{{metaDescription}}{{else}}{{description.primary.initialDescription}}{{/if}}" />
   <meta name="twitter:image"
-    content="{{#if images.0.medium}}{{images.0.medium}}{{else}}https://collection.sciencemuseumgroup.org.uk/assets/img/global/smgco-default.png{{/if}}">
+    content="{{#if images.0.large}}{{images.0.large}}{{else}}https://collection.sciencemuseumgroup.org.uk/assets/img/global/smgco-default.png{{/if}}">
   {{#if images.0.title}}
   <meta name="twitter:image:alt" content="{{images.0.title}}" />
   {{/if}}
@@ -61,7 +61,7 @@
   <meta property="og:locale" content="en_GB" />
   <meta property="og:description" content="{{#if metaDescription}}{{metaDescription}}{{else}}{{description.primary.initialDescription}}{{/if}}" />
   <meta property="og:image"
-    content="{{#if images.0.card}}{{images.0.card}}{{else}}https://collection.sciencemuseumgroup.org.uk/assets/img/global/smgco-default.png{{/if}}">
+    content="{{#if images.0.large}}{{images.0.large}}{{else}}https://collection.sciencemuseumgroup.org.uk/assets/img/global/smgco-default.png{{/if}}">
   {{#if images.0.title}}
   <meta property="og:image:alt" content="{{images.0.title}}" />
   {{/if}}
