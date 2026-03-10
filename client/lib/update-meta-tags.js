@@ -13,7 +13,7 @@ module.exports = function updateMetaTags (data) {
   const url = (data.links && data.links.self) || window.location.href;
   const ogType = data.ogType || 'website';
   const robotsMeta = data.robotsMeta || '';
-  const image = (data.images && data.images[0] && data.images[0].medium) || '';
+  const image = (data.images && data.images[0] && data.images[0].large) || '';
   const imageAlt = (data.images && data.images[0] && data.images[0].title) || '';
 
   // If description is an array (from format-description), join it
