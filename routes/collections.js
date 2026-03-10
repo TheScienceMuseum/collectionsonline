@@ -6,7 +6,7 @@ module.exports = (elastic, config) => ({
   config: {
     handler: async function (request, h) {
       try {
-        const result = await elastic.search({
+        const { body: result } = await elastic.search({
           index: 'ciim',
           type: 'object',
           body: {
