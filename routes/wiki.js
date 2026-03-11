@@ -112,7 +112,7 @@ function handleImageOrLogo (entities, qCode, property) {
     entities[qCode].claims[property]?.[0]?.mainsnak?.datavalue?.value ?? null;
   if (!value) return null;
   const imgPath = value.replace(/ /g, '_');
-  return `https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/${imgPath}`;
+  return `https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/${imgPath}&width=800`;
 }
 
 function handleDate (entities, qCode, label, property) {
