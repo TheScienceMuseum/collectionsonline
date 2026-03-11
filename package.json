@@ -1,7 +1,9 @@
 {
   "name": "collectionsonline",
   "version": "1.0.1",
-  "pre-commit": ["test:lint"],
+  "pre-commit": [
+    "test:lint"
+  ],
   "description": "Science Museum Group : Collections Online",
   "main": "index.js",
   "directories": {
@@ -37,7 +39,7 @@
     "promise": "^8.3.0",
     "rc": "^1.2.8",
     "slugg": "^1.2.1",
-    "smg-web-design-system": "^0.11.7",
+    "smg-web-design-system": "github:TheScienceMuseum/web-design-system#0.11.8",
     "snackbarlightjs": "^1.1.2",
     "stream": "^0.0.3",
     "stream-browserify": "^3.0.0",
