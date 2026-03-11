@@ -16,29 +16,51 @@ test(file + 'paramify transforms query', (t) => {
 test(file + 'paramify double-encodes forward slashes in values as %252f', (t) => {
   t.equal(
     paramify({ collection: ['buckingham movie museum/john burgoyne-johnson collection'] }),
-    '/collection/buckingham-movie-museum%252fjohn-burgoyne-johnson-collection',
-    'forward slash in array value double-encoded as %252f (survives Hapi %25 decode)'
+    '/collection/buckingham-movie-museum%252fjohn-burgoyne%252djohnson-collection',
+    'forward slash and hyphen both double-encoded in array value'
   );
   t.equal(
     paramify({ collection: 'buckingham movie museum/john burgoyne-johnson collection' }),
-    '/collection/buckingham movie museum%252fjohn burgoyne-johnson collection',
-    'forward slash in single string value double-encoded as %252f'
+    '/collection/buckingham-movie-museum%252fjohn-burgoyne%252djohnson-collection',
+    'forward slash and hyphen both double-encoded in string value'
   );
   t.end();
 });
 
-test(file + 'paramify converts escaped commas (\\,) to %2C in URL so server does not double-escape', (t) => {
-  // Simulates values that came through parse-params.js comma-escaping on the client side.
-  // paramify must unescape \, → %2C so the server's parse-params only escapes once.
+test(file + 'paramify double-encodes hyphens in values as %252D', (t) => {
   t.equal(
-    paramify({ places: 'Paddington\\, London' }),
-    '/places/paddington%2c london',
-    'string: escaped comma becomes %2C in URL (space kept as-is for string branch)'
+    paramify({ makers: ['Rolls-Royce'] }),
+    '/makers/rolls%252droyce',
+    'hyphen in array value encoded as %252D (lowercased)'
   );
   t.equal(
-    paramify({ makers: ['Science Museum\\, London', 'Rolls Royce'] }),
-    '/makers/science-museum%2c-london+rolls-royce',
-    'array: escaped comma becomes %2C and spaces become dashes'
+    paramify({ makers: 'Rolls-Royce' }),
+    '/makers/rolls%252droyce',
+    'hyphen in string value encoded as %252D (lowercased)'
+  );
+  t.equal(
+    paramify({ collection: ['Tony Ray-Jones Collection'] }),
+    '/collection/tony-ray%252djones-collection',
+    'hyphen in collection name encoded correctly'
+  );
+  t.end();
+});
+
+test(file + 'paramify double-encodes commas in values as %252C', (t) => {
+  t.equal(
+    paramify({ places: ['Science Museum, London'] }),
+    '/places/science-museum%252c-london',
+    'comma in array value encoded as %252C'
+  );
+  t.equal(
+    paramify({ places: 'Science Museum, London' }),
+    '/places/science-museum%252c-london',
+    'comma in string value encoded as %252C'
+  );
+  t.equal(
+    paramify({ makers: ['Science Museum, London', 'Rolls-Royce'] }),
+    '/makers/science-museum%252c-london+rolls%252droyce',
+    'multiple values: comma and hyphen both encoded'
   );
   t.end();
 });
@@ -46,12 +68,12 @@ test(file + 'paramify converts escaped commas (\\,) to %2C in URL so server does
 test(file + 'paramify encodes values with space-dash-space correctly', (t) => {
   t.equal(
     paramify({ object_type: ['box - container'] }),
-    '/object_type/box---container',
-    'space-dash-space in value becomes triple dash in URL'
+    '/object_type/box-%252d-container',
+    'space-dash-space: the dash is encoded as %252D, spaces become dashes'
   );
   t.equal(
     paramify({ object_type: ['toy - recreational artefact'] }),
-    '/object_type/toy---recreational-artefact',
+    '/object_type/toy-%252d-recreational-artefact',
     'space-dash-space plus normal spaces encoded correctly'
   );
   t.equal(

@@ -19,7 +19,7 @@ module.exports = function (statesFacets, typeSearch) {
   }
   for (let i = 0; i < statesFacetsActive.length; i++) {
     if (activeFacetNames.indexOf(statesFacetsActive[i]) === -1) {
-      statesFacets[type][statesFacetsActive[i]] = 'open';
+      statesFacets[type][statesFacetsActive[i]] = 'close';
     }
   }
 };

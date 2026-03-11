@@ -1,7 +1,6 @@
 module.exports = function findCategory (path) {
-  const categoryRegex = /(objects|people|documents|group)/g;
-  const match = categoryRegex.exec(path);
-  if (match) {
-    return match[1];
-  }
+  const types = ['objects', 'people', 'documents', 'group'];
+  return path.split('/').find(function (segment) {
+    return types.indexOf(segment) !== -1;
+  });
 };

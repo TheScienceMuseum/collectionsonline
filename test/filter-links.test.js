@@ -201,8 +201,8 @@ test('collection link with forward slash in name encodes slash as %252F', (t) =>
 
   t.equal(
     collection.link,
-    'http://localhost:8000/search/collection/buckingham-movie-museum%252fjohn-burgoyne-johnson-collection',
-    'forward slash in collection name is double-encoded as %252F'
+    'http://localhost:8000/search/collection/buckingham-movie-museum%252fjohn-burgoyne%252djohnson-collection',
+    'forward slash and hyphen in collection name are double-encoded as %252F and %252D'
   );
   t.end();
 });

@@ -79,7 +79,6 @@
   "scripts": {
     "index-update": "run-s index-update:*",
     "index-update:galleries": "node scripts/get-galleries.mjs",
-    "index-update:dashed-filter-mappings": "node scripts/get-dashed-filter-mappings.mjs",
     "postinstall": "run-s build minify fingerprint && node nightwatch.conf.js",
     "package": "run-s build minify fingerprint package:zip",
     "package:zip": "rm -f builds/collectionsonline.zip && zip -q -x '.git*' -x '.npmrc' -x '.corc' -x 'builds/*' -r builds/collectionsonline.zip .",

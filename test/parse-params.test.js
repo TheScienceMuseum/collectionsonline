@@ -169,7 +169,7 @@ test('alternative param names', function (t) {
   t.deepEqual(
     parseParameters({ filters: 'images' }),
     parseParameters({ filters: 'has_image' }),
-    'immges/has_images gives same result'
+    'images/has_image gives same result'
   );
   t.end();
 });
@@ -178,69 +178,98 @@ test('multiple param names', function (t) {
   t.deepEqual(
     parseParameters({ filters: 'places/London+France' }),
     { params: { type: 'all' }, categories: { places: ['London', 'France'] } },
-    'images/has_images gives same result'
+    'multiple values split by + correctly'
   );
   t.end();
 });
 
-test('values with triple-dash (encoded space-dash-space)', function (t) {
+test('excluded filter values (object_type, material, occupation) are decoded but not title-cased', function (t) {
+  t.deepEqual(
+    parseParameters({ filters: 'objects/object_type/film-poster' }),
+    { params: { type: 'objects' }, categories: { object_type: 'film poster' } },
+    'single-dash decodes to space (no title-case for excluded filter)'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'objects/object_type/black%2dand%2dwhite-print' }),
+    { params: { type: 'objects' }, categories: { object_type: 'black-and-white print' } },
+    '%2D in excluded filter decodes to hyphen via decodeURIComponent'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'objects/object_type/black%2dand%2dwhite-print+film-poster' }),
+    { params: { type: 'objects' }, categories: { object_type: ['black-and-white print', 'film poster'] } },
+    'multi-value excluded filter decoded correctly'
+  );
+  t.end();
+});
+
+test('triple-dash (legacy space-dash-space encoding) still works for both excluded and non-excluded', function (t) {
   t.deepEqual(
     parseParameters({ filters: 'objects/object_type/box---container' }),
-    { params: { type: 'objects' }, categories: { object_type: 'box---container' } },
-    'triple-dash value is stored as raw URL string (decoded by dashToSpace in create-filters)'
+    { params: { type: 'objects' }, categories: { object_type: 'box - container' } },
+    'triple-dash in excluded filter decoded to space-dash-space'
   );
-  t.deepEqual(
-    parseParameters({ filters: 'objects/object_type/toy---recreational-artefact' }),
-    { params: { type: 'objects' }, categories: { object_type: 'toy---recreational-artefact' } },
-    'triple-dash with additional dashes stored as raw URL string'
-  );
-  t.deepEqual(
-    parseParameters({ filters: 'objects/object_type/box---container+film-poster' }),
-    { params: { type: 'objects' }, categories: { object_type: ['box---container', 'film-poster'] } },
-    'multi-value with triple-dash splits correctly by +'
-  );
-  t.end();
-});
-
-test('filter values with %2f are decoded back to forward slash', function (t) {
-  t.deepEqual(
-    parseParameters({ filters: 'collection/buckingham-movie-museum%2fjohn-burgoyne-johnson-collection' }),
-    { params: { type: 'all' }, categories: { collection: 'Buckingham Movie Museum/john Burgoyne Johnson Collection' } },
-    '%2f in collection value decoded to / before title-casing'
-  );
-  t.deepEqual(
-    parseParameters({ filters: 'objects/object_type/camera-accessory%2fplate' }),
-    { params: { type: 'objects' }, categories: { object_type: 'camera-accessory/plate' } },
-    '%2f in excluded filter type value decoded to / (no title-casing)'
-  );
-  t.end();
-});
-
-test('filter values with commas in names have commas escaped for safe JSON API use', function (t) {
-  t.deepEqual(
-    parseParameters({ filters: 'objects/makers/science-museum,-london' }),
-    { params: { type: 'objects' }, categories: { makers: 'Science Museum\\, London' } },
-    'maker name with comma is escaped as \\, to prevent splitting in JSON API format'
-  );
-  t.deepEqual(
-    parseParameters({ filters: 'objects/makers/ray-jones,-tony' }),
-    { params: { type: 'objects' }, categories: { makers: 'Ray Jones\\, Tony' } },
-    'person-style maker name with comma is escaped'
-  );
-  t.deepEqual(
-    parseParameters({ filters: 'objects/makers/science-museum,-london+rolls-royce' }),
-    { params: { type: 'objects' }, categories: { makers: ['Science Museum\\, London', 'Rolls Royce'] } },
-    'multiple makers: comma-containing name is escaped, plain name is unchanged'
-  );
-  t.end();
-});
-
-test('categories with triple-dash are title-cased correctly (space-dash-space preserved)', function (t) {
   t.deepEqual(
     parseParameters({ filters: 'objects/categories/science---technology' }),
     { params: { type: 'objects' }, categories: { categories: 'Science - Technology' } },
     'triple-dash in category decodes to title-cased space-dash-space'
   );
+  t.end();
+});
+
+test('filter values with %2f are decoded back to forward slash with per-segment capitalisation', function (t) {
+  t.deepEqual(
+    parseParameters({ filters: 'collection/buckingham-movie-museum%2fjohn-burgoyne-johnson-collection' }),
+    { params: { type: 'all' }, categories: { collection: 'Buckingham Movie Museum/John Burgoyne Johnson Collection' } },
+    '%2f in collection value decoded to / before title-casing (each segment capitalised separately)'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'objects/object_type/camera-accessory%2fplate' }),
+    { params: { type: 'objects' }, categories: { object_type: 'camera accessory/plate' } },
+    '%2f in excluded filter type value decoded to / (no title-casing, dashes to spaces)'
+  );
+  t.end();
+});
+
+test('new %2D encoding: hyphens in filter values survive the round-trip', function (t) {
+  // Hapi decodes %25 → %, so the app sees %2D after Hapi processing; then decodeURIComponent converts %2D → -
+  t.deepEqual(
+    parseParameters({ filters: 'collection/tony-ray%2djones-collection' }),
+    { params: { type: 'all' }, categories: { collection: 'Tony Ray-Jones Collection' } },
+    'hyphen in collection name decoded correctly and title-cased'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'collection/buckingham-movie-museum%2fjohn-burgoyne%2djohnson-collection' }),
+    { params: { type: 'all' }, categories: { collection: 'Buckingham Movie Museum/John Burgoyne-Johnson Collection' } },
+    'slash + hyphen in collection decoded correctly with proper word-boundary capitalisation'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'makers/rolls%2droyce' }),
+    { params: { type: 'all' }, categories: { makers: 'Rolls-Royce' } },
+    'hyphenated maker name decoded correctly'
+  );
+  t.end();
+});
+
+test('filter values with commas decoded correctly (no backslash escaping)', function (t) {
+  t.deepEqual(
+    parseParameters({ filters: 'objects/makers/science-museum,-london' }),
+    { params: { type: 'objects' }, categories: { makers: 'Science Museum, London' } },
+    'comma in maker name decoded to literal comma (no backslash escape)'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'objects/makers/science-museum%2c-london' }),
+    { params: { type: 'objects' }, categories: { makers: 'Science Museum, London' } },
+    'old %2C comma URL decoded correctly'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'objects/makers/science-museum,-london+rolls%2droyce' }),
+    { params: { type: 'objects' }, categories: { makers: ['Science Museum, London', 'Rolls-Royce'] } },
+    'multiple makers: comma-containing name decoded, hyphenated name decoded'
+  );
+  t.end();
+});
+
+test('categories with single-dash still title-cased correctly', function (t) {
   t.deepEqual(
     parseParameters({ filters: 'objects/categories/art' }),
     { params: { type: 'objects' }, categories: { categories: 'Art' } },
