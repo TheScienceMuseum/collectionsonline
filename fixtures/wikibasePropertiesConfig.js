@@ -13,11 +13,11 @@ module.exports = {
   Image: { property: 'P18', action: ['display'] },
   Mother: { property: 'P25', action: ['match', 'display', 'displayLinked'] },
   Father: { property: 'P22', action: ['match', 'display', 'displayLinked'] },
-  'Founded By': {
+  'Founded by': {
     property: 'P112',
     action: ['nest', 'match', 'display']
   },
-  'Significant Person': {
+  'Significant person': {
     property: 'P3342',
     action: ['match', 'display', 'displayLinked']
   },
@@ -25,58 +25,58 @@ module.exports = {
   // P1448 is shown (not hidden). A duplicate entry 'Official Name ' (with a trailing
   // space, lower in this file) was silently overwriting this one in JS object literals.
   // That duplicate has been removed; this single entry is canonical.
-  'Official Name': { property: 'P1448', action: ['match', 'display'] },
+  'Official name': { property: 'P1448', action: ['match', 'display'] },
   'Employer(s)': {
     property: 'P108',
     action: ['nest', 'match', 'display', 'displayLinked', 'context', 'list']
   },
   Industry: { property: 'P452', action: ['nest', 'match', 'list'] },
-  'Position Held': {
+  'Position held': {
     property: 'P39',
     action: ['nest', 'match', 'displayLinked', 'context', 'list']
   },
-  'Date of Birth': {
+  'Date of birth': {
     property: 'P569',
     action: ['match', 'display', 'hide']
   },
-  'Owned By': {
+  'Owned by': {
     property: 'P127',
     action: ['nest', 'display', 'displayLinked', 'context']
   },
-  'Member Of': {
+  'Member of': {
     property: 'P463',
     action: ['nest', 'display', 'displayLinked', 'context', 'list']
   },
-  'Owner Of': {
+  'Owner of': {
     property: 'P1830',
     action: ['nest', 'display', 'context']
   },
-  'described at URL': {
+  'Described at URL': {
     property: 'P973',
     action: ['display', 'isExternalLink', 'hide']
   },
-  'Award Received': { property: 'P166', action: ['nest', 'display', 'list'] },
-  'Named After': { property: 'P138', action: ['display'] },
+  'Award received': { property: 'P166', action: ['nest', 'display', 'list'] },
+  'Named after': { property: 'P138', action: ['display'] },
   'Archives in': { property: 'P485', action: ['nest', 'display', 'list'] },
   Inception: { property: 'P571', action: ['display', 'hide'] },
-  'Headquarters Location': { property: 'P159', action: ['nest', 'hide'] },
+  'Headquarters location': { property: 'P159', action: ['nest', 'hide'] },
   Product: { property: 'P1056', action: ['nest'] },
-  'Short Name': { property: 'P1813', action: ['display', 'hide'] },
-  'Has Subsidiary': {
+  'Short name': { property: 'P1813', action: ['display', 'hide'] },
+  'Has subsidiary': {
     property: 'P355',
     action: ['nest', 'display', 'displayLinked', 'context']
   },
-  'Chief Executive Officers': {
+  'Chief executive officers': {
     property: 'P169',
     action: ['nest', 'display', 'displayLinked', 'context']
   },
-  'Given Name': { property: 'P735', action: ['nest', 'display', 'hide'] },
-  'Date of Death': { property: 'P570', action: ['display', 'hide'] },
+  'Given name': { property: 'P735', action: ['nest', 'display', 'hide'] },
+  'Date of death': { property: 'P570', action: ['display', 'hide'] },
   Sibling: { property: 'P3373', action: ['nest', 'display', 'displayLinked'] },
   Spouse: { property: 'P26', action: ['nest', 'display', 'displayLinked'] },
   Children: { property: 'P40', action: ['display', 'nest', 'displayLinked'] },
   Relatives: { property: 'P1038', action: ['nest', 'display', 'displayLinked'] },
-  'Educated At': { property: 'P69', action: ['nest', 'display'] },
-  'Notable Work': { property: 'P800', action: ['nest', 'display'] }
+  'Educated at': { property: 'P69', action: ['nest', 'display'] },
+  'Notable work': { property: 'P800', action: ['nest', 'display'] }
 
 };
