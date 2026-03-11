@@ -1,7 +1,7 @@
 {{#if wikiData.image}}
 <section class="panel panel__text">
-  <figure class="panel wiki-image-panel" style="margin-bottom: 0; margin-top: 0;">
-    <img id="wikiImage" class="bleed" src="{{wikiData.image}}" alt="{{wikiData.imageMetadata.caption}}">
+  <figure class="panel wiki-image-panel" style="margin-bottom: 0; margin-top: 0; aspect-ratio: 4/3; overflow: hidden;">
+    <img id="wikiImage" class="bleed" src="{{wikiData.image}}" alt="{{wikiData.imageMetadata.caption}}" style="height: 100%; object-fit: contain;">
     {{#if wikiData.imageMetadata}}
     <figcaption class="wiki-image-credit" style="font-size: smaller; padding: 4px 8px; color: #aaa;">
       {{!-- {{#if wikiData.imageMetadata.artist}}<span class="wiki-artist">Credit: {{wikiData.imageMetadata.artist}}</span><br>{{/if}} --}}

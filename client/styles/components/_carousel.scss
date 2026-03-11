@@ -75,13 +75,21 @@
 .single_image_container {
   display: flex;
   justify-content: center;
+  align-items: center;
   border: 1px white solid;
   border-width: 1px 0;
+  // Reserve the same height as the multi-image carousel to prevent CLS
+  height: 36rem;
+  overflow: hidden;
 
-  // img { display: block;}
+  @include media("<=small") {
+    height: 25rem;
+  }
 
   .single_image {
-    max-height: 36rem;
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
     border: 1px white solid;
     border-width: 0 1px;
   }
