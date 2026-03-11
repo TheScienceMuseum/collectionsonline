@@ -6,15 +6,17 @@ const dir = __dirname.split('/')[__dirname.split('/').length - 1];
 const file = dir + __filename.replace(__dirname, '') + ' > ';
 
 test(file + 'Maker filter with comma in name is not split when building ES query', (t) => {
-  // Simulates the value after parse-params + uppercaseFirstChar + comma escaping
-  // e.g. URL: /search/objects/makers/science-museum,-london -> 'Science Museum\\, London'
-  const query = { 'filter[makers]': 'Science Museum\\, London' };
+  // Simulates the value after parse-params decodes the encoded URL segment.
+  // e.g. URL: /search/objects/makers/science-museum%252c-london
+  //   Hapi pre-decodes %25→%:  science-museum%2c-london
+  //   parse-params dashToSpace + decodeURIComponent × 2: 'Science Museum, London'
+  const query = { 'filter[makers]': 'Science Museum, London' };
 
   const htmlQueryParams = createQueryParams('html', { query, params: { type: 'objects' } });
   t.deepEqual(
     htmlQueryParams.filter.objects.makers,
     ['Science Museum, London'],
-    'HTML: maker name with escaped comma is unescaped to a single value'
+    'HTML: maker name with comma is preserved as a single value'
   );
   const htmlFilters = createFilters(htmlQueryParams, 'object');
   const makerFilter = htmlFilters.bool.filter.find((f) => f.terms && f.terms['creation.maker.summary.title.lower']);
@@ -28,11 +30,14 @@ test(file + 'Maker filter with comma in name is not split when building ES query
     'HTML: ES terms does not contain the incorrectly split first part'
   );
 
+  // JSON/SPA path: space-after-comma heuristic — 'Science Museum, London' splits to
+  // ['Science Museum', ' London']; the leading space on ' London' signals a literal
+  // comma, so the whole string is kept as one value.
   const jsonQueryParams = createQueryParams('json', { query, params: { type: 'objects' } });
   t.deepEqual(
     jsonQueryParams.filter.objects.makers,
     ['Science Museum, London'],
-    'JSON string input: maker name with escaped comma is unescaped to a single value'
+    'JSON string input: maker name with comma (space after) is preserved as a single value'
   );
   const jsonFilters = createFilters(jsonQueryParams, 'object');
   const jsonMakerFilter = jsonFilters.bool.filter.find((f) => f.terms && f.terms['creation.maker.summary.title.lower']);
@@ -42,22 +47,20 @@ test(file + 'Maker filter with comma in name is not split when building ES query
     'JSON string input: ES terms includes the full maker name with comma, not split parts'
   );
 
-  // Simulates the route handler path: URL path categories go through filterSchema('html') resultSchema
-  // which uses Joi .single() to wrap the string into an array before createQueryParams is called.
-  // This is what actually happens when a JSON API client requests /search/objects/makers/science-museum,-london
-  const queryWithArray = { 'filter[makers]': ['Science Museum\\, London'] };
+  // Array input: simulates the URL-path route where Joi .single() wraps the string in an array.
+  const queryWithArray = { 'filter[makers]': ['Science Museum, London'] };
   const jsonArrayQueryParams = createQueryParams('json', { query: queryWithArray, params: { type: 'objects' } });
   t.deepEqual(
     jsonArrayQueryParams.filter.objects.makers,
     ['Science Museum, London'],
-    'JSON array input (URL path route): array with escaped comma is unescaped to a single value'
+    'JSON array input (URL path route): array value with comma is preserved as a single value'
   );
   const jsonArrayFilters = createFilters(jsonArrayQueryParams, 'object');
   const jsonArrayMakerFilter = jsonArrayFilters.bool.filter.find((f) => f.terms && f.terms['creation.maker.summary.title.lower']);
   t.ok(jsonArrayMakerFilter, 'JSON array input: maker terms filter is present');
   t.ok(
     jsonArrayMakerFilter.terms['creation.maker.summary.title.lower'].includes('science museum, london'),
-    'JSON array input: ES terms includes the full maker name without backslash'
+    'JSON array input: ES terms includes the full maker name with comma'
   );
   t.notOk(
     jsonArrayMakerFilter.terms['creation.maker.summary.title.lower'].some((v) => v.includes('\\')),

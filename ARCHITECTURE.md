@@ -71,21 +71,37 @@ The server and client use the **same route, the same transform, the same Handleb
 Filters live in the URL **path**, not the query string:
 
 ```
-/search/objects/makers/Science Museum, London/categories/Clocks?q=rocket&page=2
-         │      │      │                       │          │
-         type   key    value                   key        value
+/search/objects/makers/science-museum%252c-london/categories/clocks?q=rocket&page=2
+         │      │      │                           │          │
+         type   key    value (encoded)             key        value
 ```
+
+### Filter Value Encoding
+
+Filter values are encoded by `lib/helpers/encode-filter-value.js`:
+
+| Character | Encoded as | Example |
+|-----------|-----------|---------|
+| space | `-` | `Science Museum` → `science-museum` |
+| hyphen | `%252D` | `Rolls-Royce` → `rolls%252droyce` |
+| slash | `%252F` | `Museum/Gallery` → `museum%252fgallery` |
+| comma | `%252C` | `Science Museum, London` → `science-museum%252c-london` |
+
+The double-encoding (`%25` = `%`) is intentional: Hapi pre-decodes `%25→%` in path params, leaving `%2X` for the app to decode with `decodeURIComponent`.
 
 ### Filter Pipeline
 
 ```
-URL path
+URL path (e.g. /search/objects/makers/science-museum%252c-london)
     │
+    ▼  Hapi pre-decodes %25→% in path params
+    │  → science-museum%2c-london
     ▼
 routes/route-helpers/parse-params.js
     │  - Extracts type (objects/people/documents/group/all)
     │  - Reads alternating key/value pairs
-    │  - Escapes literal commas as \,  ← critical for names like "Science Museum, London"
+    │  - Decodes each value: dashToSpace() then decodeURIComponent() × 2
+    │    → 'Science Museum, London'
     │
     ▼
 lib/query-params/query-params.js
@@ -94,8 +110,10 @@ lib/query-params/query-params.js
     │
     ▼
 lib/query-params/format-value.js
-    │  HTML path: array already — unescapes \, → ,
-    │  JSON path: string — splits on unescaped commas, then unescapes each value
+    │  HTML path: wraps string in array → ['Science Museum, London']
+    │  JSON path: splits on commas only when no part starts with a space
+    │             (space-after-comma heuristic distinguishes literal commas
+    │              in a value from multi-value separators)
     │
     ▼
 lib/search.js  →  Elasticsearch function_score query
@@ -105,15 +123,15 @@ lib/search.js  →  Elasticsearch function_score query
     └── lib/facets/create-post-filter.js  which type tab is active
 ```
 
-### Why Commas Are Tricky
+### Why Special Characters Are Tricky
 
-Multiple filter values for the same key are separated by `,` in the URL. But some values *contain* commas (e.g. `Science Museum, London`). The solution:
+Multiple filter values for the same key are separated by `,` in the URL. But some values *contain* commas, hyphens, or slashes. The canonical encoding scheme handles all of these:
 
-- Literal commas inside a value are **escaped as `\,`** when building the URL
-- `splitOnUnescapedCommas()` splits only on bare `,` — not `\,`
-- After splitting, `\,` is unescaped back to `,`
+- `encodeFilterValue()` (in `lib/helpers/encode-filter-value.js`) encodes hyphens, slashes and commas with `%252X` before replacing spaces with `-`
+- `parse-params.js` decodes with `dashToSpace()` then two passes of `decodeURIComponent()` — the second pass is a no-op server-side (Hapi already did one decode) but is required for the SPA client path which has no Hapi pre-decode
+- `format-value.js` uses a space-after-comma heuristic: multi-value separators never have a following space; literal commas in place/collection names always do
 
-This logic lives in `parse-params.js` (escaping) and `format-value.js` (unescaping). **Do not change either file without testing both the HTML path and the JSON/SPA path.**
+**Do not change `encode-filter-value.js`, `parse-params.js` or `format-value.js` without testing both the HTML (server) path and the JSON/SPA path.**
 
 ### Facet Counts
 
