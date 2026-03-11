@@ -21,7 +21,14 @@
 
 
           {{#if wikidata}}
-          <div id="wikiInfo" data-name="{{wikidata}}" style="margin-top: 1em"></div>
+          <div id="wikiInfo" data-name="{{wikidata}}" style="margin-top: 1em">
+            {{!-- Skeleton placeholder: reserves space before async wikidata loads to prevent CLS --}}
+            <section class="panel panel__text">
+              <figure class="panel wiki-image-panel" style="margin-bottom: 0; margin-top: 0;">
+                <div style="aspect-ratio: 4/3; overflow: hidden;"></div>
+              </figure>
+            </section>
+          </div>
           <script type="text/javascript">
             (window.CE_API || (window.CE_API = [])).push(function () {
               CE2.showSurvey("e6766cf0-e3af-4dc9-b7ea-ae7e1de448c8");
