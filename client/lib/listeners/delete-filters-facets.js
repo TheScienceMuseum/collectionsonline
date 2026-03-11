@@ -8,7 +8,7 @@ module.exports = function (facetsStates, typeSearch) {
 
     link.addEventListener('click', function (e) {
       const facetName = facet.getAttribute('data-filter');
-      facetsStates[type][facetName] = 'open';
+      facetsStates[type][facetName] = 'close';
     });
   });
 };

@@ -1,5 +1,6 @@
 const museumMap = require('../../lib/museum-mapping');
 const utils = require('../../lib/helpers/utils');
+const dashToSpace = require('../../lib/helpers/dash-to-space');
 
 module.exports = function (urlParams) {
   const params = {};
@@ -44,7 +45,7 @@ module.exports = function (urlParams) {
     }
   }
 
-  // Capitalise certian filter values
+  // Decode and capitalise filter values
   for (const cat in categories) {
     const exclude = [
       'has_image',
@@ -58,15 +59,13 @@ module.exports = function (urlParams) {
       categories[cat] = museumMap.toLong(categories[cat]);
     } else if (exclude.indexOf(cat) === -1) {
       categories[cat] = utils.uppercaseFirstChar(categories[cat]);
-      // Escape literal commas so they are not treated as value separators
-      // when the value is later processed by splitOnUnescapedCommas (JSON API format)
-      if (typeof categories[cat] === 'string') {
-        categories[cat] = categories[cat].replace(/,/g, '\\,');
-      } else if (Array.isArray(categories[cat])) {
-        categories[cat] = categories[cat].map(function (v) {
-          return typeof v === 'string' ? v.replace(/,/g, '\\,') : v;
-        });
-      }
+    } else {
+      // Excluded filters: decode but do not title-case (ES terms are stored lowercase)
+      const applyDecode = v =>
+        typeof v === 'string' ? decodeURIComponent(dashToSpace(v)) : v;
+      categories[cat] = Array.isArray(categories[cat])
+        ? categories[cat].map(applyDecode)
+        : applyDecode(categories[cat]);
     }
   }
   return { params, categories };

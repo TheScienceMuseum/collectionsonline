@@ -244,13 +244,6 @@ Some scripts need to be run whenever the index is updated. To do this run the co
 
 `npm run index-update`
 
-The `index-update:dashed-filter-mappings` script queries the index for filter values
-that contain literal dashes (e.g. `Pharmacy-ware`, `stoke-on-trent`) and updates
-`fixtures/dashed-filter-mappings.json` with the mappings needed to match them correctly
-from URL-encoded filter parameters. Run it standalone with:
-
-`npm run index-update:dashed-filter-mappings`
-
 ---
 
 Browser testing courtesy of [BrowserStack](https://www.browserstack.com/)
