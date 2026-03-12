@@ -93,7 +93,7 @@
     "build": "run-p build:*",
     "build:js": "browserify client/main.js --debug | exorcist public/bundle.js.map > public/bundle.js",
     "build:css": "run-s build:css:*",
-    "build:css:sass": "sass --load-path=node_modules --load-path=node_modules/smg-web-design-system/node_modules client/styles/main.scss public/bundle.css",
+    "build:css:sass": "sass --quiet-deps --load-path=node_modules --load-path=node_modules/smg-web-design-system/node_modules client/styles/main.scss public/bundle.css",
     "build:css:prefix": "postcss public/bundle.css -r -u autoprefixer",
     "build:img": "cp -R client/icons/* public/assets/icons",
     "build:wds": "cp -R node_modules/smg-web-design-system/dist/assets/logos public/assets/logos",
