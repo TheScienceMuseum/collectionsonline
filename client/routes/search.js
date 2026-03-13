@@ -160,7 +160,7 @@ function render (ctx, next) {
   updateMetaTags(ctx.state.data);
   document.body.className = ctx.state.data.type;
 
-  // Announce result count to screen readers and move focus for keyboard users
+  // Announce result count and return focus to search input
   if (!ctx.isInitialRender) {
     const announcement = document.getElementById('results-announcement');
     if (announcement && ctx.state.data.meta && ctx.state.data.meta.count) {
@@ -168,17 +168,8 @@ function render (ctx, next) {
       const q = ctx.state.data.q || '';
       announcement.textContent = q ? count + ' results for \u201c' + q + '\u201d' : count + ' results';
     }
-    if (searchResults) {
-      // Already on search page: focus announcement so screen readers hear the count,
-      // and keyboard users can Tab naturally to the first result (with :focus-visible ring)
-      if (announcement) {
-        announcement.focus();
-      }
-    } else {
-      // Arriving at search from elsewhere: focus the search input
-      const searchInput = document.querySelector('.searchbox__search');
-      if (searchInput) searchInput.focus();
-    }
+    const searchInput = document.querySelector('.searchbox__search');
+    if (searchInput) searchInput.focus();
   }
 
   next();
