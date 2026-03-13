@@ -160,14 +160,8 @@ function render (ctx, next) {
   updateMetaTags(ctx.state.data);
   document.body.className = ctx.state.data.type;
 
-  // Announce result count and return focus to search input
+  // Return focus to search input after SPA navigation
   if (!ctx.isInitialRender) {
-    const announcement = document.getElementById('results-announcement');
-    if (announcement && ctx.state.data.meta && ctx.state.data.meta.count) {
-      const count = ctx.state.data.meta.count.type.all;
-      const q = ctx.state.data.q || '';
-      announcement.textContent = q ? count + ' results for \u201c' + q + '\u201d' : count + ' results';
-    }
     const searchInput = document.querySelector('.searchbox__search');
     if (searchInput) searchInput.focus();
   }
