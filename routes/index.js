@@ -3,7 +3,7 @@ module.exports = (elastic, config) => [
   require('./redirects').medicine(),
   require('./redirects').dailyherald(config),
   require('./redirects').dailyheraldarchive(config),
-  require('./home')(config),
+  require('./home')(elastic, config),
   require('./search')(elastic, config),
   require('./public')(config),
   require('./archive')(elastic, config),

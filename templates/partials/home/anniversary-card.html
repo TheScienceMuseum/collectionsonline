@@ -1,0 +1,24 @@
+<a href="{{this.link}}" class="anniversary-card anniversary-card--{{this.type}}"
+   aria-label="{{this.label}}"
+   data-anniversary-type="{{this.type}}"
+   data-anniversary-id="{{this.id}}">
+  <article class="resultcard resultcard--{{this.type}}">
+    <figure class="resultcard__figure">
+      {{#if this.figure}}
+        <img src="{{this.figure}}" alt="" loading="lazy" />
+      {{else}}
+        <figcaption role="presentation">
+          {{> global/icon i=this.type }}
+          {{#if this.figcaption}}{{ this.figcaption }}{{/if}}
+        </figcaption>
+      {{/if}}
+    </figure>
+    <div class="resultcard__info">
+      <p class="anniversary-card__milestone">{{this.milestoneLabel}}</p>
+      <h4 class="resultcard__title">{{this.title}}</h4>
+      {{#if this.subtitle}}
+        <p class="resultcard__description">{{this.subtitle}}</p>
+      {{/if}}
+    </div>
+  </article>
+</a>

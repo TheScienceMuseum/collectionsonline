@@ -16,6 +16,9 @@ require('./routes/api')(page);
 require('./routes/iiif')(page);
 require('./routes/embed')(page);
 
+// Anniversary widget analytics tracking
+require('./lib/anniversary-tracking')();
+
 // Post-route middleware for all pages
 require('./middleware/error-404')(page);
 // do not decode the url received by page.js
