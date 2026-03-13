@@ -1,13 +1,13 @@
-var test = require('tape');
-var anniversary = require('../lib/anniversary');
-var transformObjectHit = anniversary._transformObjectHit;
-var transformPersonHit = anniversary._transformPersonHit;
-var getOverridesForDate = anniversary._getOverridesForDate;
-var secondsUntilMidnightUTC = anniversary.secondsUntilMidnightUTC;
-var objectFixture = require('./fixtures/elastic-responses/anniversary-objects.json');
-var peopleFixture = require('./fixtures/elastic-responses/anniversary-people.json');
+const test = require('tape');
+const anniversary = require('../lib/anniversary');
+const transformObjectHit = anniversary._transformObjectHit;
+const transformPersonHit = anniversary._transformPersonHit;
+const getOverridesForDate = anniversary._getOverridesForDate;
+const secondsUntilMidnightUTC = anniversary.secondsUntilMidnightUTC;
+const objectFixture = require('./fixtures/elastic-responses/anniversary-objects.json');
+const peopleFixture = require('./fixtures/elastic-responses/anniversary-people.json');
 
-var mockConfig = {
+const mockConfig = {
   rootUrl: 'http://localhost:8000',
   mediaPath: 'https://media.example.com'
 };
@@ -15,8 +15,8 @@ var mockConfig = {
 // --- Transform Object Hit ---
 
 test('transformObjectHit returns correct shape', function (t) {
-  var hit = objectFixture.body.hits.hits[0];
-  var result = transformObjectHit(hit, mockConfig, 2026);
+  const hit = objectFixture.body.hits.hits[0];
+  const result = transformObjectHit(hit, mockConfig, 2026);
 
   t.equal(result.id, 'co8364603', 'has correct id');
   t.equal(result.type, 'objects', 'type is objects');
@@ -35,7 +35,7 @@ test('transformObjectHit returns correct shape', function (t) {
 });
 
 test('transformObjectHit handles missing maker gracefully', function (t) {
-  var hit = {
+  const hit = {
     _id: 'co999',
     _source: {
       '@admin': { uid: 'co999' },
@@ -44,7 +44,7 @@ test('transformObjectHit handles missing maker gracefully', function (t) {
       creation: { date: [{ from: '1976' }] }
     }
   };
-  var result = transformObjectHit(hit, mockConfig, 2026);
+  const result = transformObjectHit(hit, mockConfig, 2026);
 
   t.equal(result.title, 'Test Object', 'still has title');
   t.equal(result.yearsAgo, 50, 'calculates years ago');
@@ -53,7 +53,7 @@ test('transformObjectHit handles missing maker gracefully', function (t) {
 });
 
 test('transformObjectHit handles missing creation date', function (t) {
-  var hit = {
+  const hit = {
     _id: 'co888',
     _source: {
       '@admin': { uid: 'co888' },
@@ -61,7 +61,7 @@ test('transformObjectHit handles missing creation date', function (t) {
       summary: { title: 'Dateless Object' }
     }
   };
-  var result = transformObjectHit(hit, mockConfig, 2026);
+  const result = transformObjectHit(hit, mockConfig, 2026);
 
   t.equal(result.yearsAgo, null, 'yearsAgo is null');
   t.equal(result.subtitle, '', 'subtitle is empty');
@@ -71,8 +71,8 @@ test('transformObjectHit handles missing creation date', function (t) {
 // --- Transform Person Hit ---
 
 test('transformPersonHit returns correct shape', function (t) {
-  var hit = peopleFixture.body.hits.hits[0];
-  var result = transformPersonHit(hit, mockConfig, 2026);
+  const hit = peopleFixture.body.hits.hits[0];
+  const result = transformPersonHit(hit, mockConfig, 2026);
 
   t.equal(result.id, 'cp36993', 'has correct id');
   t.equal(result.type, 'people', 'type is people');
@@ -88,7 +88,7 @@ test('transformPersonHit returns correct shape', function (t) {
 });
 
 test('transformPersonHit handles organisation type', function (t) {
-  var hit = {
+  const hit = {
     _id: 'cp555',
     _source: {
       '@admin': { uid: 'cp555', source: 'Mimsy XG' },
@@ -97,7 +97,7 @@ test('transformPersonHit handles organisation type', function (t) {
       birth: { date: { value: '1799-01-25', from: '1799' } }
     }
   };
-  var result = transformPersonHit(hit, mockConfig, 2026);
+  const result = transformPersonHit(hit, mockConfig, 2026);
 
   t.equal(result.entityType, 'organisation', 'entity type is organisation');
   t.ok(result.milestoneLabel.indexOf('Founded') >= 0, 'uses Founded label for organisations');
@@ -105,7 +105,7 @@ test('transformPersonHit handles organisation type', function (t) {
 });
 
 test('transformPersonHit handles missing image', function (t) {
-  var hit = {
+  const hit = {
     _id: 'cp444',
     _source: {
       '@admin': { uid: 'cp444' },
@@ -114,7 +114,7 @@ test('transformPersonHit handles missing image', function (t) {
       birth: { date: { from: '1900' } }
     }
   };
-  var result = transformPersonHit(hit, mockConfig, 2026);
+  const result = transformPersonHit(hit, mockConfig, 2026);
 
   t.equal(result.figure, null, 'figure is null when no multimedia');
   t.equal(result.subtitle, null, 'subtitle is null when no occupation');
@@ -126,8 +126,8 @@ test('transformPersonHit handles missing image', function (t) {
 test('getOverridesForDate returns matching override', function (t) {
   // This depends on the config file having overrides.dates entries
   // With an empty overrides.dates config, should return null
-  var date = new Date('2026-06-15');
-  var result = getOverridesForDate(date);
+  const date = new Date('2026-06-15');
+  const result = getOverridesForDate(date);
   t.equal(result, null, 'returns null when no override for date');
   t.end();
 });
@@ -135,7 +135,7 @@ test('getOverridesForDate returns matching override', function (t) {
 // --- Midnight Cache ---
 
 test('secondsUntilMidnightUTC returns positive integer', function (t) {
-  var result = secondsUntilMidnightUTC();
+  const result = secondsUntilMidnightUTC();
   t.ok(typeof result === 'number', 'returns a number');
   t.ok(result > 0, 'is positive');
   t.ok(result <= 86400, 'is at most 24 hours');
@@ -147,8 +147,8 @@ test('secondsUntilMidnightUTC returns positive integer', function (t) {
 
 test('getAnniversaryData returns null when disabled', async function (t) {
   // The config has enabled:false by default, so without env var it returns null
-  var mockElastic = {};
-  var result = await anniversary(mockElastic, mockConfig);
+  const mockElastic = {};
+  const result = await anniversary(mockElastic, mockConfig);
   t.equal(result, null, 'returns null when widget is disabled');
   t.end();
 });

@@ -1,6 +1,6 @@
-var contentType = require('./route-helpers/content-type.js');
-var cacheHeaders = require('./route-helpers/cache-control');
-var getAnniversaryData = require('../lib/anniversary');
+const contentType = require('./route-helpers/content-type.js');
+const cacheHeaders = require('./route-helpers/cache-control');
+const getAnniversaryData = require('../lib/anniversary');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -8,7 +8,7 @@ module.exports = (elastic, config) => ({
   config: {
     cache: cacheHeaders(config, 3600 * 24),
     handler: async function (request, h) {
-      var responseType = contentType(request);
+      const responseType = contentType(request);
       if (responseType === 'json') {
         return h.response(
           'See https://github.com/TheScienceMuseum/collectionsonline/wiki/Collections-Online-API on how to use the api'
@@ -16,13 +16,13 @@ module.exports = (elastic, config) => ({
       }
 
       if (responseType === 'html') {
-        var data = require('../fixtures/data');
+        const data = require('../fixtures/data');
         data.navigation = require('../fixtures/navigation');
         data.museums = require('../fixtures/museums');
         data.inProduction = config && config.NODE_ENV === 'production';
         data.links = { self: config.rootUrl };
 
-        var anniversary = await getAnniversaryData(elastic, config);
+        const anniversary = await getAnniversaryData(elastic, config);
         if (anniversary) {
           data.anniversary = anniversary;
         }

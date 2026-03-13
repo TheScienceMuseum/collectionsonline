@@ -1,13 +1,13 @@
 module.exports = function initAnniversaryTracking () {
   document.addEventListener('click', function (e) {
-    var card = e.target.closest('[data-anniversary-type]');
+    const card = e.target.closest('[data-anniversary-type]');
     if (!card) return;
 
-    var type = card.getAttribute('data-anniversary-type');
-    var id = card.getAttribute('data-anniversary-id');
+    const type = card.getAttribute('data-anniversary-type');
+    const id = card.getAttribute('data-anniversary-id');
     if (!type || !id) return;
 
-    var label = type + ':' + id;
+    const label = type + ':' + id;
 
     // Push to GTM dataLayer (primary analytics method in this project)
     if (typeof window.dataLayer !== 'undefined') {
