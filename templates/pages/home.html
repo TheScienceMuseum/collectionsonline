@@ -68,33 +68,6 @@
 
     </section> -->
 
-    <section class="home-map section --spacious">
-      <div class="o-container">
-        <h2 class="section__h">See what’s on display</h2>
-        <div class="smg-map">
-          <div class="smg-map__imgratio" style="display: flex">
-            {{> global/smg-map}}
-          </div>
-          <div class="smg-map__divider"></div>
-          <div class="smg-map__intro">
-            <div class="smg-map__logo">
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="118" height="71"
-                viewBox="0 0 118 71">
-                <title>Science Museum Group</title>
-                <defs>
-                  <mask id="logo">
-                    <image xlink:href="/assets/img/global/smg-logo.svg" width="118px" height="71px" />
-                  </mask>
-                </defs>
-                <rect x="0" y="0" width="118px" height="71px" fill="black" style="mask:url(#logo)" />
-              </svg>
-            </div>
-            <p class="smg-map__desc">{{{ smg__description }}}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section class="home-cards section --spacious o-container">
       {{#each collectionThemes}}
 
@@ -152,6 +125,34 @@
 
     </section>
     {{/collectionCarousel}}
+
+    <section class="home-map section --spacious">
+      <div class="o-container">
+        <h2 class="section__h">See what’s on display</h2>
+        <div class="smg-map">
+          <div class="smg-map__imgratio" style="display: flex">
+            {{> global/smg-map}}
+          </div>
+          <div class="smg-map__divider"></div>
+          <div class="smg-map__intro">
+            <div class="smg-map__logo">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="118" height="71"
+                viewBox="0 0 118 71">
+                <title>Science Museum Group</title>
+                <defs>
+                  <mask id="logo">
+                    <image xlink:href="/assets/img/global/smg-logo.svg" width="118px" height="71px" />
+                  </mask>
+                </defs>
+                <rect x="0" y="0" width="118px" height="71px" fill="black" style="mask:url(#logo)" />
+              </svg>
+            </div>
+            <p class="smg-map__desc">{{{ smg__description }}}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   {{> global/global-footer}}
