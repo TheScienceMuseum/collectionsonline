@@ -8,11 +8,10 @@ module.exports = config => ({
     cache: cacheHeaders(config, 3600 * 24),
     handler: function (request, h) {
       const data = require('../fixtures/data');
-      return h.view('about', Object.assign({}, data, {
-        museums: require('../fixtures/museums'),
-        navigation: require('../fixtures/navigation'),
-        titlePage: 'About | Science Museum Group Collection'
-      }));
+      data.museums = require('../fixtures/museums');
+      data.navigation = require('../fixtures/navigation');
+      data.titlePage = 'About | Science Museum Group Collection';
+      return h.view('about', data);
     }
   }
 });
