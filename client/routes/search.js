@@ -169,11 +169,10 @@ function render (ctx, next) {
       announcement.textContent = q ? count + ' results for \u201c' + q + '\u201d' : count + ' results';
     }
     if (searchResults) {
-      // Already on search page: focus first result heading so keyboard users reach new results
-      const resultsHeading = document.querySelector('#searchresults h2, #searchresults h3');
-      if (resultsHeading) {
-        resultsHeading.setAttribute('tabindex', '-1');
-        resultsHeading.focus();
+      // Already on search page: focus first result link so keyboard users reach new results
+      const firstResult = document.querySelector('#searchresults a');
+      if (firstResult) {
+        firstResult.focus();
       }
     } else {
       // Arriving at search from elsewhere: focus the search input
