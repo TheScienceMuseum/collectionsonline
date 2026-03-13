@@ -114,6 +114,7 @@
   &__main-title {
     font-size: 2rem;
     margin-bottom: -0.125em; // vague baseline alignment with smaller titles
+    text-transform: none; // override global h2 { text-transform: uppercase }
   }
 
   &__list-title {

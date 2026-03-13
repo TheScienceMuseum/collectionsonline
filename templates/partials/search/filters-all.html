@@ -1,11 +1,11 @@
 <!-- IMAGE -->
 {{#if (or filters.image_license.0.count filters.has_image.0.count)}}
   {{#if (or (activeFacet selectedFilters 'imageLicense') (activeFacet selectedFilters 'hasImage'))}}
-  <div class="filter filter--active filter--open" data-filter="Image">
-    <a href="{{lookup links.clearFacet "filter[images]"}}" class="filter__name">Image</a>
+  <div class="filter filter--active filter--open" data-filter="Image" role="group" aria-labelledby="filter-lbl-image">
+    <a href="{{lookup links.clearFacet "filter[images]"}}" class="filter__name" id="filter-lbl-image">Image</a>
   {{else}}
-  <div class="filter filter--open" data-filter="Image">
-    <a href="{{lookup links.clearFacet "filter[images]"}}" class="filter__name">Image</a>
+  <div class="filter filter--open" data-filter="Image" role="group" aria-labelledby="filter-lbl-image">
+    <a href="{{lookup links.clearFacet "filter[images]"}}" class="filter__name" id="filter-lbl-image">Image</a>
   {{/if}}
     <div class="filter__options">
       <ul>
@@ -27,11 +27,11 @@
 <!-- CATEGORY -->
 {{#if filters.category.length}}
   {{#if (activeFacet selectedFilters 'categories')}}
-  <div class="filter filter--open filter--active" data-filter="Category">
-    <a href="{{lookup links.clearFacet "filter[categories]"}}" class="filter__name">Category</a>
+  <div class="filter filter--open filter--active" data-filter="Category" role="group" aria-labelledby="filter-lbl-category">
+    <a href="{{lookup links.clearFacet "filter[categories]"}}" class="filter__name" id="filter-lbl-category">Category</a>
   {{else}}
-  <div class="filter filter--open" data-filter="Category">
-    <a href="" class="filter__name">Category</a>
+  <div class="filter filter--open" data-filter="Category" role="group" aria-labelledby="filter-lbl-category">
+    <a href="" class="filter__name" id="filter-lbl-category">Category</a>
   {{/if}}
     <div class="filter__options">
       <ul>
@@ -48,11 +48,11 @@
 <!-- COLLECTION -->
 {{#if filters.collection.length}}
   {{#if (activeFacet selectedFilters 'collection')}}
-  <div class="filter filter--open filter--active" data-filter="Collection">
-    <a href="{{lookup links.clearFacet "filter[collection]"}}" class="filter__name">Collection</a>
+  <div class="filter filter--open filter--active" data-filter="Collection" role="group" aria-labelledby="filter-lbl-collection">
+    <a href="{{lookup links.clearFacet "filter[collection]"}}" class="filter__name" id="filter-lbl-collection">Collection</a>
   {{else}}
-  <div class="filter filter--open" data-filter="Collection">
-    <a href="" class="filter__name">Collection</a>
+  <div class="filter filter--open" data-filter="Collection" role="group" aria-labelledby="filter-lbl-collection">
+    <a href="" class="filter__name" id="filter-lbl-collection">Collection</a>
   {{/if}}
     <div class="filter__options">
       <ul>
@@ -69,11 +69,11 @@
 <!-- ON DISPLAY: MUSEUM -->
 {{#if filters.museum.length}}
   {{#if (activeFacet selectedFilters 'museum')}}
-  <div class="filter filter--active filter--open" data-filter="Museum">
-    <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">On Display</a>
+  <div class="filter filter--active filter--open" data-filter="Museum" role="group" aria-labelledby="filter-lbl-museum">
+    <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name" id="filter-lbl-museum">On Display</a>
   {{else}}
-  <div class="filter filter--open" data-filter="Museum">
-    <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name">On Display</a>
+  <div class="filter filter--open" data-filter="Museum" role="group" aria-labelledby="filter-lbl-museum">
+    <a href="{{lookup links.clearFacet "filter[museum]"}}" class="filter__name" id="filter-lbl-museum">On Display</a>
   {{/if}}
     <div class="filter__options">
       <ul>
@@ -99,11 +99,11 @@
 <!-- TYPE -->
 {{#if filters.object_type.length}}
   {{#if (activeFacet selectedFilters 'object_type')}}
-  <div class="filter filter--open filter--active" data-filter="Type">
-    <a href="{{lookup links.clearFacet "filter[object_type]"}}" class="filter__name">Object type</a>
+  <div class="filter filter--open filter--active" data-filter="Type" role="group" aria-labelledby="filter-lbl-type">
+    <a href="{{lookup links.clearFacet "filter[object_type]"}}" class="filter__name" id="filter-lbl-type">Object type</a>
   {{else}}
-  <div class="filter filter--open" data-filter="Type">
-    <a href="{{lookup links.clearFacet "filter[object_type]"}}" class="filter__name">Object type</a>
+  <div class="filter filter--open" data-filter="Type" role="group" aria-labelledby="filter-lbl-type">
+    <a href="{{lookup links.clearFacet "filter[object_type]"}}" class="filter__name" id="filter-lbl-type">Object type</a>
   {{/if}}
     <div class="filter__options">
       <ul>
@@ -120,11 +120,11 @@
 <!-- MATERIAL -->
 {{#if filters.material.length}}
   {{#if (activeFacet selectedFilters 'material')}}
-  <div class="filter filter--active filter--open" data-filter="Material">
-    <a href="{{lookup links.clearFacet "filter[material]"}}" class="filter__name">Material</a>
+  <div class="filter filter--active filter--open" data-filter="Material" role="group" aria-labelledby="filter-lbl-material">
+    <a href="{{lookup links.clearFacet "filter[material]"}}" class="filter__name" id="filter-lbl-material">Material</a>
   {{else}}
-  <div class="filter filter--open" data-filter="Material">
-    <a href="{{lookup links.clearFacet "filter[material]"}}" class="filter__name">Material</a>
+  <div class="filter filter--open" data-filter="Material" role="group" aria-labelledby="filter-lbl-material">
+    <a href="{{lookup links.clearFacet "filter[material]"}}" class="filter__name" id="filter-lbl-material">Material</a>
   {{/if}}
     <div class="filter__options">
       <ul>
@@ -139,11 +139,11 @@
 <!-- MAKER -->
 {{#if filters.maker.length}}
   {{#if (activeFacet selectedFilters 'makers')}}
-  <div class="filter filter--open filter--active" data-filter="Maker">
-    <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">Maker</a>
+  <div class="filter filter--open filter--active" data-filter="Maker" role="group" aria-labelledby="filter-lbl-maker">
+    <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name" id="filter-lbl-maker">Maker</a>
   {{else}}
-  <div class="filter filter--open" data-filter="Maker">
-    <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name">Maker</a>
+  <div class="filter filter--open" data-filter="Maker" role="group" aria-labelledby="filter-lbl-maker">
+    <a href="{{lookup links.clearFacet "filter[makers]"}}" class="filter__name" id="filter-lbl-maker">Maker</a>
   {{/if}}
     <div class="filter__options">
       <ul>
@@ -160,11 +160,11 @@
 <!-- PLACE -->
 {{#if filters.place.length}}
   {{#if (activeFacet selectedFilters 'places')}}
-  <div class="filter filter--active filter--open" data-filter="Place">
-    <a href="{{lookup links.clearFacet "filter[places]"}}" class="filter__name">Place</a>
+  <div class="filter filter--active filter--open" data-filter="Place" role="group" aria-labelledby="filter-lbl-place">
+    <a href="{{lookup links.clearFacet "filter[places]"}}" class="filter__name" id="filter-lbl-place">Place</a>
   {{else}}
-  <div class="filter filter--open" data-filter="Place">
-    <a href="{{lookup links.clearFacet "filter[places]"}}" class="filter__name">Place</a>
+  <div class="filter filter--open" data-filter="Place" role="group" aria-labelledby="filter-lbl-place">
+    <a href="{{lookup links.clearFacet "filter[places]"}}" class="filter__name" id="filter-lbl-place">Place</a>
   {{/if}}
     <div class="filter__options">
       <ul>
@@ -200,11 +200,11 @@
 <!-- ARCHIVE -->
 {{#if filters.archive.length}}
   {{#if (activeFacet selectedFilters 'archive')}}
-  <div class="filter filter--active filter--open" data-filter="Archive">
-    <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name">Archive</a>
+  <div class="filter filter--active filter--open" data-filter="Archive" role="group" aria-labelledby="filter-lbl-archive">
+    <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name" id="filter-lbl-archive">Archive</a>
   {{else}}
-  <div class="filter filter--open" data-filter="Archive">
-    <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name">Archive</a>
+  <div class="filter filter--open" data-filter="Archive" role="group" aria-labelledby="filter-lbl-archive">
+    <a href="{{lookup links.clearFacet "filter[archive]"}}" class="filter__name" id="filter-lbl-archive">Archive</a>
   {{/if}}
     <div class="filter__options">
       <ul>
@@ -220,11 +220,11 @@
 
 <!-- DATE -->
 {{#if (or (lookup selectedFilters "date[from]") (lookup selectedFilters "date[to]"))}}
-<div class="filter filter--active filter--open" data-filter="Dates">
+<div class="filter filter--active filter--open" data-filter="Dates" role="group" aria-labelledby="filter-lbl-date">
 {{else}}
-<div class="filter filter--open" data-filter="Dates">
+<div class="filter filter--open" data-filter="Dates" role="group" aria-labelledby="filter-lbl-date">
 {{/if}}
-  <a href="{{lookup links.clearFacet "dates"}}" class="filter__name">Date</a>
+  <a href="{{lookup links.clearFacet "dates"}}" class="filter__name" id="filter-lbl-date">Date</a>
   <div class="filter__options filter__daterange" role="group" aria-label="Date range">
     <label for="date-filter-from">From year <input type="number" id="date-filter-from" placeholder="e.g. 1600" name="filter[date[from]]"
         value="{{lookup selectedFilters "date[from]"}}" min="1" max="9999" /></label>

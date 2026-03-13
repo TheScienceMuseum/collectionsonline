@@ -112,7 +112,7 @@
   .flickity-enabled {
     padding-left: $grid-gutter; // match container
 
-    &:focus {
+    &:focus-visible {
       outline: none;
     }
   }
@@ -180,7 +180,7 @@
     grid-template-rows: auto auto; // carousel, page-dots
     grid-template-areas: "carousel" "dots";
 
-    &:focus {
+    &:focus-visible {
       outline: none;
     }
   }
