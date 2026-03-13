@@ -168,10 +168,17 @@ function render (ctx, next) {
       const q = ctx.state.data.q || '';
       announcement.textContent = q ? count + ' results for \u201c' + q + '\u201d' : count + ' results';
     }
-    const resultsHeading = document.querySelector('#searchresults h2, #searchresults h3');
-    if (resultsHeading) {
-      resultsHeading.setAttribute('tabindex', '-1');
-      resultsHeading.focus();
+    if (searchResults) {
+      // Already on search page: focus first result heading so keyboard users reach new results
+      const resultsHeading = document.querySelector('#searchresults h2, #searchresults h3');
+      if (resultsHeading) {
+        resultsHeading.setAttribute('tabindex', '-1');
+        resultsHeading.focus();
+      }
+    } else {
+      // Arriving at search from elsewhere: focus the search input
+      const searchInput = document.querySelector('.searchbox__search');
+      if (searchInput) searchInput.focus();
     }
   }
 
