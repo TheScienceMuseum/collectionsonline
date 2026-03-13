@@ -160,12 +160,6 @@ function render (ctx, next) {
   updateMetaTags(ctx.state.data);
   document.body.className = ctx.state.data.type;
 
-  // Return focus to search input after SPA navigation
-  if (!ctx.isInitialRender) {
-    const searchInput = document.querySelector('.searchbox__search');
-    if (searchInput) searchInput.focus();
-  }
-
   next();
 }
 
