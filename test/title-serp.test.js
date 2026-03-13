@@ -63,8 +63,8 @@ test(file + 'serp title - no filters selected', (t) => {
   );
   t.end();
 });
-// filter with category only bit with a query parameter q
-test(file + 'serp title - no filters selected', (t) => {
+// filter with category and a query parameter q — query takes precedence
+test(file + 'serp title - query with category filter', (t) => {
   const selectedFilters = {
     '': {
       Search: true
@@ -79,8 +79,19 @@ test(file + 'serp title - no filters selected', (t) => {
   const title = getTitlePage('babbage', selectedFilters);
   t.equal(
     title,
-    'Search our collection | Science Museum Group Collection',
-    'filter category - title ok'
+    'Search for babbage | Science Museum Group Collection',
+    'query with category filter - query included in title'
+  );
+  t.end();
+});
+
+// query only, no filters
+test(file + 'serp title - query only', (t) => {
+  const title = getTitlePage('cars', {});
+  t.equal(
+    title,
+    'Search for cars | Science Museum Group Collection',
+    'query only - search results title'
   );
   t.end();
 });
