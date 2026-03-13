@@ -8,9 +8,11 @@ module.exports = config => ({
     cache: cacheHeaders(config, 3600 * 24),
     handler: function (request, h) {
       const data = require('../fixtures/data');
-      data.museums = require('../fixtures/museums');
-      data.navigation = require('../fixtures/navigation');
-      return h.view('about', data);
+      return h.view('about', Object.assign({}, data, {
+        museums: require('../fixtures/museums'),
+        navigation: require('../fixtures/navigation'),
+        titlePage: 'About | Science Museum Group Collection'
+      }));
     }
   }
 });
