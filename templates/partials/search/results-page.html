@@ -9,9 +9,9 @@
       <label class="control__label">View:</label>
       <div class="control__buttons">
         <a href="{{links.grid}}" class="control__button {{#ifpage 'search'}}control__button--active{{/ifpage}}"
-          id="results-grid" title="View as grid">{{> global/icon i="grid" }}</a>
+          id="results-grid" title="View as grid" aria-label="View as grid">{{> global/icon i="grid" }}</a>
         <a href="{{links.list}}" class="control__button {{#ifpage 'results-list'}}control__button--active{{/ifpage}}"
-          id="results-list" title="View as list">{{> global/icon i="list" }}</a>
+          id="results-list" title="View as list" aria-label="View as list">{{> global/icon i="list" }}</a>
       </div>
     </div>
 
@@ -31,6 +31,8 @@
       {{/if}}
       {{/if}}
     </div>
+
+    <div id="results-announcement" class="u-visually-hidden" role="status" aria-live="assertive" aria-atomic="true"></div>
 
     <div
       class="searchresults {{#if results.length}}searchresults--filtersactive{{/if}} {{#ifpage 'results-list'}}searchresults--list{{/ifpage}}"

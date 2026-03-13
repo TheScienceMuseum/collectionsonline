@@ -2,7 +2,7 @@
 <a href="{{this.link}}" class="listresult {{#if type}}listresult--{{ this.type }}{{/if}}">
   {{#if figure}}
   <figure class="listresult__figure">
-    <img src="{{ this.figure }}" alt="" />
+    <img src="{{ this.figure }}" alt="{{ this.title }}" />
   </figure>
   {{else}}
   <figure class="listresult__type">
@@ -10,10 +10,10 @@
   </figure>
   {{/if}}
   <div class="listresult__info">
-    <h4 class="listresult__title">
+    <h2 class="listresult__title">
       {{#if ondisplay}}{{> global/icon i="room" size="16" label="On display" }}{{/if}}
       {{ this.title }}
-    </h4>
+    </h2>
     {{#if this.categoryOrArtist}}<p class="listresult__description" data-category-or-artist>{{this.categoryOrArtist}}
     </p>{{/if}}
     {{#if this.date}}<p class="listresult__description" data-date>{{this.date}}</p>{{/if}}

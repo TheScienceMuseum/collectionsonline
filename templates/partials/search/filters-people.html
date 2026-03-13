@@ -2,11 +2,11 @@
 
 {{#if filters.occupation.length}}
   {{#if (activeFacet selectedFilters 'occupation')}}
-    <div class="filter filter--active filter--open" data-filter="Industry">
-      <a href="{{lookup links.clearFacet "filter[occupation]"}}" class="filter__name">Industry</a>
+    <div class="filter filter--active filter--open" data-filter="Industry" role="group" aria-labelledby="filter-lbl-industry">
+      <a href="{{lookup links.clearFacet "filter[occupation]"}}" class="filter__name" id="filter-lbl-industry">Industry</a>
   {{else}}
-    <div class="filter filter--open" data-filter="Industry">
-      <a href="{{lookup links.clearFacet "filter[occupation]"}}" class="filter__name">Industry</a>
+    <div class="filter filter--open" data-filter="Industry" role="group" aria-labelledby="filter-lbl-industry">
+      <a href="{{lookup links.clearFacet "filter[occupation]"}}" class="filter__name" id="filter-lbl-industry">Industry</a>
   {{/if}}
     <div class="filter__options">
       <ul>
@@ -20,11 +20,11 @@
 
 {{#if filters.place_born.length}}
   {{#if (activeFacet selectedFilters 'birth[place]')}}
-    <div class="filter filter--active filter--open" data-filter="Place">
-      <a href="{{lookup links.clearFacet "filter[birth[place]]"}}" class="filter__name">Place</a>
+    <div class="filter filter--active filter--open" data-filter="Place" role="group" aria-labelledby="filter-lbl-birthplace">
+      <a href="{{lookup links.clearFacet "filter[birth[place]]"}}" class="filter__name" id="filter-lbl-birthplace">Place</a>
   {{else}}
-    <div class="filter filter--open" data-filter="Place">
-      <a href="{{lookup links.clearFacet "filter[birth[place]]"}}" class="filter__name">Place</a>
+    <div class="filter filter--open" data-filter="Place" role="group" aria-labelledby="filter-lbl-birthplace">
+      <a href="{{lookup links.clearFacet "filter[birth[place]]"}}" class="filter__name" id="filter-lbl-birthplace">Place</a>
   {{/if}}
     <div class="filter__options">
       <ul>
@@ -38,11 +38,11 @@
 
 {{#if filters.organisation}}
   {{#if (activeFacet selectedFilters 'organisations')}}
-    <div class="filter filter--active filter--open" data-filter="Organisation">
-      <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name">Organisation / Person</a>
+    <div class="filter filter--active filter--open" data-filter="Organisation" role="group" aria-labelledby="filter-lbl-organisation">
+      <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name" id="filter-lbl-organisation">Organisation / Person</a>
   {{else}}
-    <div class="filter filter--open" data-filter="Organisation">
-      <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name">Organisation / Person</a>
+    <div class="filter filter--open" data-filter="Organisation" role="group" aria-labelledby="filter-lbl-organisation">
+      <a href="{{lookup links.clearFacet "filter[organisations]"}}" class="filter__name" id="filter-lbl-organisation">Organisation / Person</a>
   {{/if}}
     <div class="filter__options">
       <ul>
@@ -55,11 +55,11 @@
 {{/if}}
 
 {{#if (or (lookup selectedFilters "date[from]") (lookup selectedFilters "date[to]"))}}
-  <div class="filter filter--active filter--open" data-filter="Dates">
+  <div class="filter filter--active filter--open" data-filter="Dates" role="group" aria-labelledby="filter-lbl-date">
 {{ else }}
-  <div class="filter filter--open" data-filter="Dates">
+  <div class="filter filter--open" data-filter="Dates" role="group" aria-labelledby="filter-lbl-date">
 {{/if}}
-  <a href="{{lookup links.clearFacet "dates"}}" class="filter__name">Date (born / died)</a>
+  <a href="{{lookup links.clearFacet "dates"}}" class="filter__name" id="filter-lbl-date">Date (born / died)</a>
   <div class="filter__options filter__daterange" role="group" aria-label="Date range (born / died)">
     <label for="date-filter-from">From year <input type="number" id="date-filter-from" placeholder="e.g. 1600" name="date[from]" value="{{lookup selectedFilters "date[from]"}}" min="1" max="9999" /></label>
     <label for="date-filter-to">To year <input type="number" id="date-filter-to" placeholder="e.g. 2016" name="date[to]" value="{{lookup selectedFilters "date[to]"}}" min="1" max="9999" /></label>

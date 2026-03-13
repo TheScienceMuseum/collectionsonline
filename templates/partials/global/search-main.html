@@ -14,12 +14,12 @@
 
       {{#if descriptionBox.category}}
       <div class="description-box__main">
-        <h3 class="description-box__main-title">{{descriptionBox.category.title}}</h3>
+        <h2 class="description-box__main-title">{{descriptionBox.category.title}}</h2>
         <p>{{descriptionBox.category.description}}</p>
       </div>
       {{#if descriptionBox.category.sub-categories}}
       <div class="description-box__side">
-        <h5 class="description-box__list-title">Topics</h5>
+        <h3 class="description-box__list-title">Topics</h3>
         <ul class="description-box__list">
           {{#each descriptionBox.category.sub-categories}}
           <li>{{> global/icon i="objects" }}<a href="{{link}}">{{title}}</a></li>
@@ -29,7 +29,7 @@
       {{/if}}
       {{#if descriptionBox.category.related-articles}}
       <div class="description-box__side">
-        <h5 class="description-box__list-title">Read about</h5>
+        <h3 class="description-box__list-title">Read about</h3>
         <ul class="description-box__list">
           {{#each descriptionBox.category.related-articles}}
           <li>{{> global/icon i="external" }}<a href="{{link}}">{{title}}</a></li>
@@ -42,12 +42,12 @@
 
       {{#if descriptionBox.collection}}
       <div class="description-box__main">
-        <h3 class="description-box__main-title">{{descriptionBox.collection.title}}</h3>
+        <h2 class="description-box__main-title">{{descriptionBox.collection.title}}</h2>
         <p>{{descriptionBox.collection.description}}</p>
       </div>
       {{#if descriptionBox.collection.related-articles}}
       <div class="description-box__side">
-        <h5 class="description-box__list-title">Read about</h5>
+        <h3 class="description-box__list-title">Read about</h3>
         <ul class="description-box__list">
           {{#each descriptionBox.collection.related-articles}}
           <li>{{> global/icon i="external" }}<a href="{{link}}">{{title}}</a></li>
@@ -64,7 +64,7 @@
       </div>
       {{/if}}
       <div class="description-box__main">
-        <h3 class="description-box__main-title">{{descriptionBox.gallery.title}}</h3>
+        <h2 class="description-box__main-title">{{descriptionBox.gallery.title}}</h2>
         <p>{{descriptionBox.gallery.description}}</p>
       </div>
       <div class="description-box__side">
@@ -77,7 +77,7 @@
 
       {{#if descriptionBox.museum}}
       <div class="description-box__main">
-        <h3 class="description-box__main-title">{{descriptionBox.museum.title}}</h3>
+        <h2 class="description-box__main-title">{{descriptionBox.museum.title}}</h2>
         <p>{{descriptionBox.museum.description}}</p>
         <ul class="description-box__list">
           <li>{{> global/icon i="external" }}<a href="{{descriptionBox.museum.link}}">Visitor information</a></li>
@@ -87,7 +87,7 @@
 
       {{#if descriptionBox.mphc}}
       <div class="description-box__main">
-        <h3 class="description-box__main-title">{{descriptionBox.mphc.title}}</h3>
+        <h2 class="description-box__main-title">{{descriptionBox.mphc.title}}</h2>
         <p>{{descriptionBox.mphc.description}}</p>
         <ul class="description-box__list">
           <li>{{> global/icon i="external" }}<a href="{{descriptionBox.mphc.link}}">{{descriptionBox.mphc.title}}</a>
@@ -103,7 +103,7 @@
       </div>
       {{/if}}
       <div class="description-box__main">
-        <h3 class="description-box__main-title">{{descriptionBox.explore.title}}</h3>
+        <h2 class="description-box__main-title">{{descriptionBox.explore.title}}</h2>
         <p>{{{descriptionBox.explore.description}}}</p>
       </div>
       {{/if}}

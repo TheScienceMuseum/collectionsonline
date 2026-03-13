@@ -35,7 +35,7 @@
     opacity: 0.5;
 
     &:hover,
-    &:focus {
+    &:focus-visible {
       opacity: 1;
     }
   }

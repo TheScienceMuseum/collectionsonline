@@ -3,7 +3,7 @@
   <article class="resultcard {{#if type}}resultcard--{{ this.type }}{{/if}}">
     <figure class="resultcard__figure">
       {{#if figure}}
-      <img src="{{ this.figure }}" alt="" />
+      <img src="{{ this.figure }}" alt="{{ this.title }}" />
       <div class="resultcard__type">
         {{#if level}}{{> global/icon i=this.level }}{{else}}{{> global/icon i=this.type }}{{/if}}
       </div>
