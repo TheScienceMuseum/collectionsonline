@@ -60,15 +60,4 @@ module.exports = function () {
     },
     false
   );
-
-  if (document.location.pathname === '/') {
-    const focused = document.activeElement;
-    if (
-      !focused ||
-      focused === document.body ||
-      focused === document.documentElement
-    ) {
-      searchinput.focus();
-    }
-  }
 };
