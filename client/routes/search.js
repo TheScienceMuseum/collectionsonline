@@ -169,10 +169,10 @@ function render (ctx, next) {
       announcement.textContent = q ? count + ' results for \u201c' + q + '\u201d' : count + ' results';
     }
     if (searchResults) {
-      // Already on search page: focus first result link so keyboard users reach new results
-      const firstResult = document.querySelector('#searchresults a');
-      if (firstResult) {
-        firstResult.focus();
+      // Already on search page: focus announcement so screen readers hear the count,
+      // and keyboard users can Tab naturally to the first result (with :focus-visible ring)
+      if (announcement) {
+        announcement.focus();
       }
     } else {
       // Arriving at search from elsewhere: focus the search input
