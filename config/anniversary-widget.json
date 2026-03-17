@@ -62,7 +62,7 @@
   },
 
   "cache": {
-    "expiresAtMidnight": true,
-    "_comment": "When expiresAtMidnight is true, Cache-Control max-age is set to seconds until midnight UTC."
+    "refreshPeriodHours": 4,
+    "_comment": "Results rotate every refreshPeriodHours (default 4). Cache TTL is aligned to the next period boundary."
   }
 }

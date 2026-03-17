@@ -1,12 +1,13 @@
 const contentType = require('./route-helpers/content-type.js');
 const cacheHeaders = require('./route-helpers/cache-control');
-const getAnniversaryData = require('../lib/anniversary');
+const anniversary = require('../lib/anniversary');
+const getAnniversaryData = anniversary;
 
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/',
   config: {
-    cache: cacheHeaders(config, 3600 * 24),
+    cache: cacheHeaders(config, anniversary.secondsUntilNextPeriodUTC()),
     handler: async function (request, h) {
       const responseType = contentType(request);
       if (responseType === 'json') {
