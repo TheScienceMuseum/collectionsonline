@@ -61,11 +61,19 @@
 
           {{else}}
 
+          {{#if this.places}}
+          {{#each (dedupe this.places)}}
+          <a href="{{link}}">{{ value }}</a>{{#unless @last}},{{/unless}}
+          {{/each}}
+          {{else}}
+
           {{#each this.value}}
           {{#if this.link }}<a href="{{this.link}}">{{ this.value }}</a>{{else}}{{ this.value }}{{/if}}
           {{else}}
           {{#if this.link }}<a href="{{this.link}}">{{ this.value }}</a>{{else}}{{ this.value }}{{/if}}
           {{/each}}
+
+          {{/if}}
 
           {{/isequal}}
         </dd>
