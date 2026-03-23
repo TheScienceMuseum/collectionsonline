@@ -83,7 +83,7 @@
     "index-update:galleries": "node scripts/get-galleries.mjs",
     "postinstall": "run-s build minify fingerprint && node nightwatch.conf.js",
     "package": "run-s build minify fingerprint package:zip",
-    "package:zip": "rm -f builds/collectionsonline.zip && zip -q -x '.git*' -x '.npmrc' -x '.corc' -x 'builds/*' -r builds/collectionsonline.zip .",
+    "package:zip": "rm -f builds/collectionsonline.zip && zip -q -x '.git*' -x '.npmrc' -x '.corc' -x 'builds/*' -x '.claude/*' -r builds/collectionsonline.zip .",
     "fingerprint": "node scripts/fingerprint.js",
     "start": "node bin/server.mjs",
     "test": "run-s test:*",
