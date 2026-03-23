@@ -5,16 +5,16 @@
 
   "objects": {
     "enabled": true,
-    "count": 3,
+    "count": 4,
     "mobileCount": 1,
     "milestones": [100, 75, 50, 25, 20, 10, 5],
     "milestoneBoosts": {
-      "100": 10,
-      "75": 9,
-      "50": 8,
+      "100": 5,
+      "75": 5,
+      "50": 5,
       "25": 5,
-      "20": 3,
-      "10": 2,
+      "20": 5,
+      "10": 5,
       "5": 1
     },
     "requireImage": true,
@@ -32,7 +32,7 @@
 
   "people": {
     "enabled": true,
-    "count": 1,
+    "count": 0,
     "mobileCount": 1,
     "mimsyOnly": true,
     "requireBirthDayPrecision": true,
@@ -62,7 +62,7 @@
   },
 
   "cache": {
-    "refreshPeriodHours": 4,
+    "refreshPeriodHours": 1,
     "_comment": "Results rotate every refreshPeriodHours (default 4). Cache TTL is aligned to the next period boundary."
   }
 }
