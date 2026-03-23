@@ -17,7 +17,7 @@ module.exports = (elastic, config) => ({
 
       if (responseType !== 'notAcceptable') {
         try {
-          const result = await elastic.get({ index: 'ciim', id: TypeMapping.toInternal(request.params.id) });
+          const result = await elastic.get({ index: config.elasticIndex, id: TypeMapping.toInternal(request.params.id) });
 
           let relatedItems;
           let sortedRelatedItems;

@@ -31,7 +31,7 @@ module.exports = (elastic, config) => ({
         // Implement timeout using Promise.race
         const result = await Promise.race([
           elastic.get({
-            index: 'ciim',
+            index: config.elasticIndex,
             id: internalId
           }),
           setTimeoutPromise(DEFAULT_TIMEOUT).then(() => {

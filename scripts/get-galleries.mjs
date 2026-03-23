@@ -21,7 +21,7 @@ const body = {
 };
 
 const searchOpts = {
-  index: 'ciim',
+  index: config.elasticIndex,
   body,
   scroll: '30s'
 };

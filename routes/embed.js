@@ -14,7 +14,7 @@ module.exports = {
           try {
             let configUrl;
             const result = await elastic.get({
-              index: 'ciim',
+              index: config.elasticIndex,
               id: TypeMapping.toInternal(request.params.coid)
             });
             const res = await buildJSONResponse(result.body, config);
