@@ -37,7 +37,7 @@ module.exports = (elastic, config) => ({
         }
         try {
           const result = await elastic.get({
-            index: 'ciim',
+            index: config.elasticIndex,
             id: TypeMapping.toInternal(rawId)
           });
 

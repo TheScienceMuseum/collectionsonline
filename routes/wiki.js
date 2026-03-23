@@ -230,7 +230,7 @@ async function fetchColleagues (employers, currentQCode, elastic, config, subjec
   const inCollection = new Map();
   try {
     const result = await elastic.search({
-      index: 'ciim',
+      index: config.elasticIndex,
       body: {
         size: Math.min(allQCodes.length, 200),
         _source: ['wikidata', 'name', 'summary', '@admin'],

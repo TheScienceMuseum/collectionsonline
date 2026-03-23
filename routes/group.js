@@ -16,7 +16,7 @@ module.exports = (elastic, config) => ({
       if (responseType !== 'notAcceptable') {
         try {
           const result = await elastic.get({
-            index: 'ciim',
+            index: config.elasticIndex,
             id: TypeMapping.toInternal(request.params.id)
           });
 

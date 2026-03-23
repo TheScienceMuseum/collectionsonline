@@ -1,5 +1,6 @@
 module.exports = require('rc')('co', {
   port: 8000,
+  elasticIndex: process.env.ELASTIC_INDEX || 'ciim',
   elasticsearch: {
     node: process.env.ELASTIC_HOST || ''
   },

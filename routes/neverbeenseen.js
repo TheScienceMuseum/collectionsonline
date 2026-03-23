@@ -7,7 +7,7 @@ module.exports = (elastic, config) => ({
     handler: async function (request, h) {
       try {
         const result = await elastic.search({
-          index: 'ciim',
+          index: config.elasticIndex,
           body: {
             size: 1,
             query: {

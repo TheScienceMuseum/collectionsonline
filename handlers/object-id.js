@@ -10,7 +10,7 @@ module.exports = function (elastic, config) {
       }
     };
     const searchOpts = {
-      index: 'ciim',
+      index: config.elasticIndex,
       body
     };
     const jsonResult = {};
