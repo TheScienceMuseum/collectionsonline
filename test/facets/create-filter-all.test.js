@@ -143,8 +143,7 @@ test(
     const mustExpected = [
       {
         terms: {
-          // '@datatype.base': ['agent', 'object', 'archive'],
-          '@datatype.base': ['agent', 'object', 'archive', 'group']
+          '@datatype.base': ['agent', 'object', 'archive']
         }
       }
     ];
