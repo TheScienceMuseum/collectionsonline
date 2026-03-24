@@ -2,7 +2,8 @@ module.exports = require('rc')('co', {
   port: 8000,
   elasticIndex: process.env.ELASTIC_INDEX || 'ciim',
   elasticsearch: {
-    node: process.env.ELASTIC_HOST || ''
+    node: process.env.ELASTIC_HOST || '',
+    requestTimeout: 10000
   },
   // Redis / ElastiCache connection (host:port). Set ELASTICACHE_ENDPOINT in
   // production or elasticacheEndpoint in .corc for local dev.

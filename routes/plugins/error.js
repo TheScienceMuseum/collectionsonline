@@ -39,7 +39,7 @@ exports.plugin = {
         }
 
         return h
-          .view(options.template || 'error', { error, isDevelopment })
+          .view(options.template || 'error', { error, isDevelopment, is503: error.output.statusCode === 503 })
           .code(error.output.statusCode);
       }
 
