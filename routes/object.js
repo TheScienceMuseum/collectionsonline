@@ -46,11 +46,22 @@ module.exports = (elastic, config) => ({
           const { grouping, sub } = result.body._source['@datatype'];
           const groupingType = checkRecordType(grouping, sub);
 
-          const [relatedItems, relatedAIItems, childRecords] = await Promise.all([
+          const [relatedResult, aiResult, childResult] = await Promise.allSettled([
             getSimilarObjects(result.body, elastic),
             getAIRelated(rawId, 'object'),
             getChildRecords(elastic, TypeMapping.toInternal(rawId), undefined, groupingType)
           ]);
+
+          if (relatedResult.status === 'rejected') {
+            console.warn(`[object/${rawId}] similar objects failed: ${relatedResult.reason}`);
+          }
+          if (childResult.status === 'rejected') {
+            console.warn(`[object/${rawId}] child records failed: ${childResult.reason}`);
+          }
+
+          const relatedItems = relatedResult.status === 'fulfilled' ? relatedResult.value : [];
+          const relatedAIItems = aiResult.status === 'fulfilled' ? aiResult.value : null;
+          const childRecords = childResult.status === 'fulfilled' ? childResult.value : [];
 
           const sortedRelatedItems = sortRelated(relatedItems);
           const JSONData = buildJSONResponse(

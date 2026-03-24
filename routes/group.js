@@ -22,13 +22,17 @@ module.exports = (elastic, config) => ({
 
           //   const inProduction = config && config.NODE_ENV === 'production';
           const { grouping } = result.body._source['@datatype'];
-          const childRecords = await getChildRecords(
-            elastic,
-            TypeMapping.toInternal(request.params.id),
-
-            undefined,
-            grouping
-          );
+          let childRecords = [];
+          try {
+            childRecords = await getChildRecords(
+              elastic,
+              TypeMapping.toInternal(request.params.id),
+              undefined,
+              grouping
+            );
+          } catch (err) {
+            console.warn(`[group/${request.params.id}] child records failed: ${err}`);
+          }
 
           const JSONData = buildJSONResponse(
             result.body,
