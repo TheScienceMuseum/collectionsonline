@@ -20,7 +20,7 @@ module.exports = (elastic, config) => ({
               }
             }
           }
-        });
+        }, { requestTimeout: 5000 });
 
         const categories = [];
         if (result.body.aggregations.categories.buckets) {
@@ -36,7 +36,7 @@ module.exports = (elastic, config) => ({
         }
         return h.view('categories', { categories });
       } catch (err) {
-        return new Boom.Boom(err);
+        return Boom.serverUnavailable();
       }
     }
   }

@@ -1,4 +1,5 @@
 const slug = require('slugg');
+const Boom = require('@hapi/boom');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -16,7 +17,7 @@ module.exports = (elastic, config) => ({
           }
         };
         try {
-          const result = await elastic.search({ index: config.elasticIndex, body });
+          const result = await elastic.search({ index: config.elasticIndex, body }, { requestTimeout: 5000 });
 
           if (result.body.hits.hits && result.body.hits.hits.length) {
             const obj = result.body.hits.hits[0];
@@ -62,7 +63,7 @@ module.exports = (elastic, config) => ({
               .type('application/json');
           }
         } catch (err) {
-          return 'Error: ' + err;
+          return Boom.serverUnavailable();
         }
       } else {
         return h.view('barcode', {}, { layout: 'basic' });

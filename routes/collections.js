@@ -21,7 +21,7 @@ module.exports = (elastic, config) => ({
               }
             }
           }
-        });
+        }, { requestTimeout: 5000 });
 
         const collections = [];
 
@@ -37,7 +37,7 @@ module.exports = (elastic, config) => ({
 
         return h.view('collections', { collections });
       } catch (err) {
-        return new Boom.Boom(err);
+        return Boom.serverUnavailable();
       }
     }
   }

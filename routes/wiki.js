@@ -240,7 +240,7 @@ async function fetchColleagues (employers, currentQCode, elastic, config, subjec
           }
         }
       }
-    });
+    }, { requestTimeout: 5000 });
     for (const hit of (result.body.hits.hits || [])) {
       const m = (hit._source?.wikidata || '').match(/\/(Q\d+)$/);
       if (m) inCollection.set(m[1], hit);
