@@ -56,14 +56,14 @@
           {{/if}}
 
           {{#each (dedupe this.place)}}
-          <a href="{{link}}">{{ value }}</a>{{comma this ../this.place true}}
+          {{#if link}}<a href="{{link}}">{{ value }}</a>{{else}}{{ value }}{{/if}}{{comma this ../this.place true}}
           {{/each}}
 
           {{else}}
 
           {{#if this.places}}
           {{#each (dedupe this.places)}}
-          <a href="{{link}}">{{ value }}</a>{{#unless @last}},{{/unless}}
+          {{#if link}}<a href="{{link}}">{{ value }}</a>{{else}}{{ value }}{{/if}}{{#unless @last}},{{/unless}}
           {{/each}}
           {{else}}
 
