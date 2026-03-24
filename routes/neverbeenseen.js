@@ -34,13 +34,13 @@ module.exports = (elastic, config) => ({
             },
             min_score: 0.01
           }
-        });
+        }, { requestTimeout: 5000 });
         // console.log(result.body.hits);
         return h.response(
           result.body.hits.hits[0]
         );
       } catch (err) {
-        return new Boom.Boom(err);
+        return Boom.serverUnavailable();
       }
     }
   }
