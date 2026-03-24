@@ -176,6 +176,8 @@ module.exports = (elastic, config) => ({
               'Cache-Control',
               'max-age=43200, must-revalidate'
             );
+          } else {
+            response.header('Cache-Control', 'public, max-age=60');
           }
           return response;
         } else if (responseType === 'json') {
@@ -196,6 +198,8 @@ module.exports = (elastic, config) => ({
               'Cache-Control',
               'max-age=43200, must-revalidate'
             );
+          } else {
+            response.header('Cache-Control', 'public, max-age=60');
           }
           return response.header('content-type', 'application/vnd.api+json');
         }
