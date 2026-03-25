@@ -68,6 +68,9 @@ test/fixtures/elastic-responses/example-*
 #package lock : Allow 18th October 2023 / Jamie
 #package-lock.json
 
+# WAF rules (environment-specific, not deployed with app)
+/waf-rules
+
 # zips
 builds/*
 !builds/.gitkeep
