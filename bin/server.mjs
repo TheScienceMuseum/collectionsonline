@@ -20,6 +20,7 @@ createServer(elastic, config, async (err, ctx) => {
   try {
     await ctx.server.start();
     console.log(ctx.server.info.uri);
+    console.log('Elasticsearch index:', config.elasticIndex);
   } catch (err) {
     console.log(err);
     throw err;
