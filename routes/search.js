@@ -204,7 +204,9 @@ module.exports = (elastic, config) => ({
           return response.header('content-type', 'application/vnd.api+json');
         }
       } catch (err) {
-        return Boom.serverUnavailable(err);
+        const error = Boom.serverUnavailable(err);
+        error.output.headers['Retry-After'] = '60';
+        return error;
       }
     }
   }
