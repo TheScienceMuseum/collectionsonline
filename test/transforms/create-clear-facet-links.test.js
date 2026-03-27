@@ -10,7 +10,8 @@ test(file + 'Selected filters should be build from the queryParams', (t) => {
   const qp = queryParams('html', { query: QueryString.parse(url), params: {} });
   const links = createClearFacetLinks(qp, 'http://localhost:8000');
   t.plan(1);
-  t.equal(links.dates, 'http://localhost:8000/search?q=ada&page[size]=50', 'The clear filter dates link is ok');
+  // querify now omits page[size]=50 as it is the default (commit 69b70931)
+  t.equal(links.dates, 'http://localhost:8000/search?q=ada', 'The clear filter dates link is ok');
   t.end();
 });
 

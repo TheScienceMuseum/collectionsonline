@@ -103,7 +103,11 @@ test('Get single document with no fonds: returns minimal record', async function
   archiveTreeSort.restore();
 });
 
-test('Elasticsearch search error propagates', async function (t) {
+// Search errors are now caught gracefully in getFullArchive (commit 8b0455ba)
+// and return a partial/incomplete tree instead of throwing, so the previous
+// assertions (error thrown, no data) no longer apply. We now verify that a
+// result is returned despite the search failure.
+test('Elasticsearch search error returns incomplete tree instead of throwing', async function (t) {
   t.plan(2);
   const cacheIsReady = stub(cache, 'isReady').returns(true);
   const cacheGet = stub(cache, 'get').resolves(null);
@@ -123,7 +127,7 @@ test('Elasticsearch search error propagates', async function (t) {
   const elasticSearch = stub(elastic, 'search').rejects(new Error('ES error'));
 
   const archiveTreeSort = stub(archiveTree, 'sortChildren').callsFake(function (data) {
-    return {};
+    return data;
   });
 
   let data;
@@ -135,8 +139,8 @@ test('Elasticsearch search error propagates', async function (t) {
     error = err;
   }
 
-  t.ok(error, 'Error propagated from Elasticsearch');
-  t.notOk(data, 'no data returned on error');
+  t.notOk(error, 'No error thrown — search failure handled gracefully');
+  t.ok(data, 'Partial data returned despite search error');
   cacheIsReady.restore();
   cacheGet.restore();
   cacheSet.restore();
