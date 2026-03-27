@@ -64,19 +64,17 @@ testWithServer(file + 'Return html if neither json or html header are defined', 
   t.end();
 });
 
-// testWithServer(file + 'Not acceptable if json and html header are defined at the same time', {}, async (t, ctx) => {
-testWithServer(file + 'Return html if both json and html header are defined at the same time', {}, async (t, ctx) => {
+testWithServer(file + 'Return json if both json and html header are defined at the same time', {}, async (t, ctx) => {
   t.plan(1);
 
   const acceptableJSONRequest = {
     method: 'GET',
-    url: '/',
+    url: '/search?q=test',
     headers: { Accept: 'text/html, application/json' }
   };
 
   const res = await ctx.server.inject(acceptableJSONRequest);
-  // t.equal(res.statusCode, 406, 'Not acceptable request when a json and html header are defined at the same time');
-  t.ok(res.headers['content-type'].indexOf('text/html') > -1, 'Response header should be text/html');
+  t.ok(res.headers['content-type'].indexOf('application/vnd.api+json') > -1, 'Explicit JSON accept should take priority over HTML');
   t.end();
 });
 
