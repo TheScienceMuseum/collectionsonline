@@ -133,7 +133,9 @@ testWithServer(file + 'Search for HTML', { mock: { method: 'search', response: {
   t.end();
 });
 
-testWithServer(file + 'Request for Archive JSON with children', { mock: { method: 'search', response: { error: true } } }, async (t, ctx) => {
+// Archive search errors are now caught gracefully in getFullArchive (commit 8b0455ba)
+// and return a partial/incomplete tree instead of a 503, so we expect 200.
+testWithServer(file + 'Request for Archive JSON with children returns partial result on search error', { mock: { method: 'search', response: { error: true } } }, async (t, ctx) => {
   t.plan(1);
 
   const cacheGet = stub(cache, 'get').rejects(new Error());
@@ -145,7 +147,7 @@ testWithServer(file + 'Request for Archive JSON with children', { mock: { method
   };
 
   const res = await ctx.server.inject(htmlRequest);
-  t.equal(res.statusCode, 503, 'Status code was as expected, 503');
+  t.equal(res.statusCode, 200, 'Status code 200 — partial tree returned despite search error');
   cacheGet.restore();
   t.end();
 });
