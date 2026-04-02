@@ -1,0 +1,68 @@
+{
+  "body": {
+    "hits": {
+      "total": { "value": 2, "relation": "eq" },
+      "hits": [
+        {
+          "_index": "ciim",
+          "_id": "co8364603",
+          "_score": 42.5,
+          "_source": {
+            "@admin": { "uid": "co8364603", "source": "Mimsy XG" },
+            "@datatype": { "base": "object", "actual": "object" },
+            "summary": { "title": "Newcomen atmospheric engine" },
+            "creation": {
+              "date": [{ "from": "1926", "to": "1926" }],
+              "maker": [{
+                "@link": {
+                  "role": [{ "value": "maker" }],
+                  "summary": { "title": "Thomas Newcomen" }
+                }
+              }]
+            },
+            "multimedia": {
+              "@processed": {
+                "large": { "location": "/media/large/co8364603.jpg" }
+              }
+            },
+            "enhancement": {
+              "analytics": {
+                "current": { "cumulative_views": 15420 }
+              }
+            },
+            "facility": [{ "name": [{ "value": "Science Museum" }] }]
+          }
+        },
+        {
+          "_index": "ciim",
+          "_id": "co207888",
+          "_score": 28.1,
+          "_source": {
+            "@admin": { "uid": "co207888", "source": "Mimsy XG" },
+            "@datatype": { "base": "object", "actual": "object" },
+            "summary": { "title": "Concorde prototype model" },
+            "creation": {
+              "date": [{ "from": "1976", "to": "1976" }],
+              "maker": [{
+                "@link": {
+                  "role": [{ "value": "designed" }],
+                  "summary": { "title": "British Aircraft Corporation" }
+                }
+              }]
+            },
+            "multimedia": {
+              "@processed": {
+                "large": { "location": "/media/large/co207888.jpg" }
+              }
+            },
+            "enhancement": {
+              "analytics": {
+                "current": { "cumulative_views": 8320 }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

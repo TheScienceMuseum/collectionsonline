@@ -1,0 +1,68 @@
+{
+  "_comment": "Anniversary widget configuration. Set enabled:true (or env ANNIVERSARY_ENABLED=true) to activate on the home page.",
+
+  "enabled": true,
+
+  "objects": {
+    "enabled": true,
+    "count": 4,
+    "mobileCount": 1,
+    "milestones": [10, 25, 50, 100, 20, 10, 5],
+    "milestoneBoosts": {
+      "100": 5,
+      "75": 5,
+      "50": 5,
+      "25": 5,
+      "20": 5,
+      "10": 5,
+      "5": 1
+    },
+    "requireImage": true,
+    "preferOnDisplay": true,
+    "onDisplayBoost": 5,
+    "viewsBoostFactor": 0.01,
+    "viewsBoostModifier": "sqrt",
+    "excludeCategories": [],
+    "fallbackToAnyYear": true,
+    "dayRange": 0,
+    "_comment_dayRange": "0 = today only. Set to 3 for +/-3 day window. For objects this widens milestone years considered.",
+    "sectionTitle": "On this day in history",
+    "labelTemplate": "{milestone} years ago — {title}"
+  },
+
+  "people": {
+    "enabled": true,
+    "count": 0,
+    "mobileCount": 1,
+    "mimsyOnly": true,
+    "requireBirthDayPrecision": true,
+    "imageBoost": 8,
+    "biographyBoost": 3,
+    "viewsBoostFactor": 0.1,
+    "viewsBoostModifier": "sqrt",
+    "deathDateBoost": 1.5,
+    "dayRange": 3,
+    "_comment_dayRange": "0 = today only. Set to 3 for +/-3 day window.",
+    "fallbackToBirthMonth": true,
+    "fallbackMinResults": 1,
+    "sectionTitle": "Born on this day",
+    "personLabel": "Born on this day in {year}",
+    "organisationLabel": "Founded on this day in {year}"
+  },
+
+  "overrides": {
+    "_comment": "Pin specific records to specific dates. Date format: MM-DD. IDs are ES document UIDs. Overrides take priority over query results.",
+    "dates": {}
+  },
+
+  "analytics": {
+    "enabled": true,
+    "eventCategory": "anniversary-widget",
+    "eventAction": "click"
+  },
+
+  "cache": {
+    "refreshPeriodHours": 1,
+    "_comment": "Results rotate every refreshPeriodHours (default 4). Cache TTL is aligned to the next period boundary."
+  }
+}

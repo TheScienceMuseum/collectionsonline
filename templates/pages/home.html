@@ -98,6 +98,30 @@
       {{/each}}
     </section>
 
+    {{#if anniversary}}
+    <section class="anniversary section --spacious" aria-label="Anniversaries">
+      <div class="o-container">
+        <h2 class="section__h">Anniversaries</h2>
+        <div class="o-grid o-grid--2cols@s o-grid--4cols@m">
+          {{#if anniversary.objects}}
+            {{#each anniversary.objects.items}}
+              <div class="o-grid__item anniversary__card{{#if @index}} anniversary__card--hide-mobile{{/if}}">
+                {{> home/anniversary-card}}
+              </div>
+            {{/each}}
+          {{/if}}
+          {{#if anniversary.people}}
+            {{#each anniversary.people.items}}
+              <div class="o-grid__item anniversary__card">
+                {{> home/anniversary-card}}
+              </div>
+            {{/each}}
+          {{/if}}
+        </div>
+      </div>
+    </section>
+    {{/if}}
+
     {{#collectionCarousel}}
     <section class="section --spacious explore-carousel explore-carousel--dark">
       <div class="o-container">

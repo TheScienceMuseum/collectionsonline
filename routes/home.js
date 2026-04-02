@@ -1,12 +1,14 @@
 const contentType = require('./route-helpers/content-type.js');
 const cacheHeaders = require('./route-helpers/cache-control');
+const anniversary = require('../lib/anniversary');
+const getAnniversaryData = anniversary;
 
-module.exports = config => ({
+module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/',
   config: {
-    cache: cacheHeaders(config, 3600 * 24),
-    handler: function (request, h) {
+    cache: cacheHeaders(config, anniversary.secondsUntilNextPeriodUTC()),
+    handler: async function (request, h) {
       const responseType = contentType(request);
       if (responseType === 'json') {
         return h.response(
@@ -20,6 +22,12 @@ module.exports = config => ({
         data.museums = require('../fixtures/museums');
         data.inProduction = config && config.NODE_ENV === 'production';
         data.links = { self: config.rootUrl };
+
+        const anniversary = await getAnniversaryData(elastic, config);
+        if (anniversary) {
+          data.anniversary = anniversary;
+        }
+
         return h.view('home', data);
       }
 

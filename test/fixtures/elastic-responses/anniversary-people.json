@@ -1,0 +1,39 @@
+{
+  "body": {
+    "hits": {
+      "total": { "value": 1, "relation": "eq" },
+      "hits": [
+        {
+          "_index": "ciim",
+          "_id": "cp36993",
+          "_score": 35.2,
+          "_source": {
+            "@admin": { "uid": "cp36993", "source": "Mimsy XG" },
+            "@datatype": { "base": "agent", "actual": "person" },
+            "summary": { "title": "Charles Babbage" },
+            "name": [{ "value": "Babbage, Charles", "primary": true }],
+            "birth": {
+              "date": { "value": "1791-12-26", "from": "1791" },
+              "place": { "name": [{ "value": "London" }] }
+            },
+            "death": {
+              "date": { "value": "1871-10-18", "from": "1871" }
+            },
+            "occupation": [{ "value": "mathematician" }],
+            "description": [{ "value": "Charles Babbage was a mathematician and inventor.", "type": "biography", "primary": true }],
+            "multimedia": {
+              "@processed": {
+                "large": { "location": "/media/large/cp36993.jpg" }
+              }
+            },
+            "enhancement": {
+              "analytics": {
+                "current": { "cumulative_views": 24150 }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,38 @@
+.anniversary {
+  background-color: grey(10);
+
+  &__card {
+    &--hide-mobile {
+      display: none;
+
+      @include media('>=small') {
+        display: block;
+      }
+    }
+  }
+}
+
+.anniversary-card {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 100%;
+
+  &__milestone {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: grey(60);
+    margin-bottom: 0.25rem;
+  }
+
+  &:hover .resultcard__figure img,
+  &:focus-visible .resultcard__figure img {
+    transform: scale(1.06);
+
+    @media (prefers-reduced-motion: reduce) {
+      transform: none;
+    }
+  }
+}
