@@ -4,7 +4,7 @@ module.exports = function () {
     el.addEventListener('toggle', function (e) {
       if (e.target && e.target.className === 'c-truncated') {
         const summary = e.target.querySelector('summary');
-        summary.innerHTML = e.target.hasAttribute('open') ? 'Less' : 'More';
+        summary.innerHTML = e.target.hasAttribute('open') ? 'Hide' : 'Show';
       }
     });
   });
