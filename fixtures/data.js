@@ -224,7 +224,7 @@ module.exports = {
           type: 'collection',
           title: 'Information Age',
           figure: '/assets/img/home/collections/informationage.jpg',
-          link: '/search/gallery/information-age-gallery%3A-web'
+          link: '/search/museum/science-museum/gallery/information-age-gallery'
         },
         {
           type: 'collection',
