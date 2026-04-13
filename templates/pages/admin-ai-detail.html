@@ -1,0 +1,111 @@
+{{#if notFound}}
+<div class="admin-banner">Record not found.</div>
+<a href="/admin/ai" class="btn btn--secondary">Back to list</a>
+{{else}}
+
+<div style="margin-bottom: 1rem;">
+  <a href="/admin/ai">&larr; Back to list</a>
+</div>
+
+<h2>{{record.personName}} <span class="badge badge--{{record.status}}">{{record.status}}</span></h2>
+<p><a href="{{record.pageUrl}}" target="_blank">View on site &rarr;</a></p>
+
+<div class="detail-meta">
+  <div>
+    <dt>Record ID</dt>
+    <dd>{{record.PK}}</dd>
+  </div>
+  <div>
+    <dt>Model</dt>
+    <dd>{{record.model}}</dd>
+  </div>
+  <div>
+    <dt>Prompt Version</dt>
+    <dd>{{record.promptVersion}}</dd>
+  </div>
+  <div>
+    <dt>Input Tokens</dt>
+    <dd>{{record.inputTokens}}</dd>
+  </div>
+  <div>
+    <dt>Output Tokens</dt>
+    <dd>{{record.outputTokens}}</dd>
+  </div>
+  <div>
+    <dt>Generated</dt>
+    <dd>{{record.generatedAt}}</dd>
+  </div>
+  <div>
+    <dt>Updated</dt>
+    <dd>{{record.updatedAt}}</dd>
+  </div>
+  <div>
+    <dt>Existing Description</dt>
+    <dd>{{record.existingDescriptionChars}} chars</dd>
+  </div>
+</div>
+
+{{#if record.skipReason}}
+<div class="detail-section">
+  <h3>Skip Reason</h3>
+  <p>{{record.skipReason}}</p>
+</div>
+{{/if}}
+
+{{#if record.sourcesSummary}}
+<div class="detail-section">
+  <h3>Sources Summary</h3>
+  <p>{{record.sourcesSummary}}</p>
+</div>
+{{/if}}
+
+{{#if record.biographyHtml}}
+<div class="detail-section">
+  <h3>Biography</h3>
+  <div style="background: #1a1a1a; padding: 1rem; border-radius: 4px;">
+    {{{record.biographyHtml}}}
+  </div>
+</div>
+{{/if}}
+
+{{#if record.contextHtml}}
+<div class="detail-section">
+  <h3>Collection Context</h3>
+  <div style="background: #1a1a1a; padding: 1rem; border-radius: 4px;">
+    {{{record.contextHtml}}}
+  </div>
+</div>
+{{/if}}
+
+{{#if record.prompt}}
+<details class="collapsible">
+  <summary>View prompt sent to Claude</summary>
+  <div class="detail-section">
+    <pre style="white-space: pre-wrap; font-size: 0.8rem; color: #aaa;">{{record.prompt}}</pre>
+  </div>
+</details>
+{{/if}}
+
+<hr style="border-color: #333; margin: 1.5rem 0;">
+
+<div class="actions">
+  <form method="POST" action="/admin/ai/{{record.PK}}/status" style="display: flex; gap: 0.5rem; align-items: center;">
+    <select name="status">
+      <option value="live" {{#isequal record.status "live"}}selected{{/isequal}}>Live</option>
+      <option value="flagged" {{#isequal record.status "flagged"}}selected{{/isequal}}>Flagged</option>
+      <option value="hidden" {{#isequal record.status "hidden"}}selected{{/isequal}}>Hidden</option>
+      <option value="insufficient_data" {{#isequal record.status "insufficient_data"}}selected{{/isequal}}>Insufficient Data</option>
+    </select>
+    <button type="submit" class="btn btn--primary">Update Status</button>
+  </form>
+
+  <form method="POST" action="/admin/ai/{{record.PK}}/regenerate">
+    <button type="submit" class="btn btn--secondary">Regenerate</button>
+  </form>
+
+  <form method="POST" action="/admin/ai/{{record.PK}}/delete" onsubmit="return confirm('Delete this biography record? This cannot be undone.');">
+    <button type="submit" class="btn btn--danger">Delete</button>
+  </form>
+</div>
+
+{{/if}}

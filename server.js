@@ -33,6 +33,17 @@ module.exports = async (elastic, config, cb) => {
     return cb(err);
   }
 
+  // Register admin cookie for AI biography admin interface
+  server.state('adminToken', {
+    ttl: 24 * 60 * 60 * 1000,
+    isSecure: config.NODE_ENV === 'production',
+    isHttpOnly: true,
+    isSameSite: 'Strict',
+    path: '/admin',
+    encoding: 'none',
+    strictHeader: false
+  });
+
   server.views({
     engines: { html: { module: require('handlebars'), compileMode: 'sync' } },
     relativeTo: __dirname,

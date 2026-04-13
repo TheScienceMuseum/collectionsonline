@@ -122,3 +122,71 @@
 .wikidata-inline-hidden {
   display: none !important;
 }
+
+// AI Biography panel
+.panel--ai-biography {
+  background-color: grey(90);
+  margin-top: 1.5rem;
+
+  .ai-biography-details {
+    summary {
+      cursor: pointer;
+      list-style: none;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      h2 {
+        display: inline;
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  .ai-badge {
+    display: inline-block;
+    background-color: $c-teal;
+    color: black;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    vertical-align: middle;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .ai-disclaimer {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+
+    a {
+      color: $c-teal;
+    }
+  }
+
+  .ai-biography__section {
+    p {
+      margin-bottom: 0.8rem;
+      line-height: 1.6;
+    }
+
+    a {
+      color: $c-teal;
+      text-decoration: underline;
+    }
+
+    h3 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .ai-biography__divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    margin: 1.2rem 0;
+  }
+}

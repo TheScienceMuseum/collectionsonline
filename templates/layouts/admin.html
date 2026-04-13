@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Admin - Collections Online</title>
+    <link rel="stylesheet" href="/bundle.css" />
+    <style>
+      body { background: #1a1a1a; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; }
+      .admin-container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+      .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #333; padding-bottom: 1rem; }
+      .admin-header h1 { font-size: 1.4rem; margin: 0; }
+      .admin-header a { color: #4ecdc4; text-decoration: none; font-size: 0.9rem; }
+      .admin-header a:hover { text-decoration: underline; }
+      .admin-banner { background: #d32f2f; color: white; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 1rem; }
+      .admin-banner--warn { background: #f57c00; }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 1px solid #333; }
+      th { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #999; }
+      td a { color: #4ecdc4; text-decoration: none; }
+      td a:hover { text-decoration: underline; }
+      .badge { display: inline-block; padding: 0.15em 0.5em; border-radius: 3px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+      .badge--live { background: #2e7d32; color: white; }
+      .badge--flagged { background: #f57c00; color: white; }
+      .badge--hidden { background: #616161; color: white; }
+      .badge--insufficient_data { background: #5d4037; color: white; }
+      .btn { display: inline-block; padding: 0.4em 0.8em; border: none; border-radius: 3px; font-size: 0.85rem; cursor: pointer; text-decoration: none; }
+      .btn--primary { background: #4ecdc4; color: #1a1a1a; font-weight: 600; }
+      .btn--danger { background: #d32f2f; color: white; }
+      .btn--secondary { background: #444; color: #e0e0e0; }
+      .btn:hover { opacity: 0.85; }
+      .filter-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+      .filter-tabs a { padding: 0.3em 0.7em; border-radius: 3px; background: #333; color: #ccc; text-decoration: none; font-size: 0.85rem; }
+      .filter-tabs a.active { background: #4ecdc4; color: #1a1a1a; font-weight: 600; }
+      .detail-section { background: #222; border-radius: 4px; padding: 1rem; margin-bottom: 1rem; }
+      .detail-section h3 { margin-top: 0; font-size: 1rem; color: #999; }
+      .detail-meta { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem; margin-bottom: 1rem; }
+      .detail-meta dt { font-size: 0.75rem; color: #999; text-transform: uppercase; }
+      .detail-meta dd { margin: 0 0 0.5rem; }
+      .form-group { margin-bottom: 1rem; }
+      .form-group label { display: block; margin-bottom: 0.3rem; font-size: 0.85rem; }
+      .form-group input, .form-group select { padding: 0.4em 0.6em; border: 1px solid #444; background: #333; color: #e0e0e0; border-radius: 3px; font-size: 0.9rem; }
+      .form-group input[type="password"] { width: 300px; }
+      .actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+      details.collapsible summary { cursor: pointer; color: #4ecdc4; font-size: 0.85rem; margin-bottom: 0.5rem; }
+    </style>
+  </head>
+  <body>
+    <div class="admin-container">
+      <div class="admin-header">
+        <h1>AI Biographies Admin</h1>
+        <a href="/">Back to site</a>
+      </div>
+      {{{content}}}
+    </div>
+  </body>
+</html>

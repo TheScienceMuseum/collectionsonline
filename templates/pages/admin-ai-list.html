@@ -1,0 +1,60 @@
+{{#if dynamoUnavailable}}
+<div class="admin-banner admin-banner--warn">DynamoDB is unavailable. AI biographies cannot be listed or managed.</div>
+{{/if}}
+
+{{#if error}}
+<div class="admin-banner">Error: {{error}}</div>
+{{/if}}
+
+<div class="filter-tabs">
+  <a href="/admin/ai?status=all" class="{{#isequal currentStatus "all"}}active{{/isequal}}">All</a>
+  <a href="/admin/ai?status=live" class="{{#isequal currentStatus "live"}}active{{/isequal}}">Live</a>
+  <a href="/admin/ai?status=flagged" class="{{#isequal currentStatus "flagged"}}active{{/isequal}}">Flagged</a>
+  <a href="/admin/ai?status=hidden" class="{{#isequal currentStatus "hidden"}}active{{/isequal}}">Hidden</a>
+  <a href="/admin/ai?status=insufficient_data" class="{{#isequal currentStatus "insufficient_data"}}active{{/isequal}}">Insufficient Data</a>
+</div>
+
+{{#if records.length}}
+<table>
+  <thead>
+    <tr>
+      <th>Person / Company</th>
+      <th>Status</th>
+      <th>Model</th>
+      <th>Prompt</th>
+      <th>Tokens</th>
+      <th>Generated</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each records}}
+    <tr>
+      <td>
+        <a href="/admin/ai/{{this.PK}}">{{this.personName}}</a>
+        <br><small><a href="{{this.pageUrl}}" target="_blank">{{this.PK}}</a></small>
+      </td>
+      <td><span class="badge badge--{{this.status}}">{{this.status}}</span></td>
+      <td><small>{{this.model}}</small></td>
+      <td><small>{{this.promptVersion}}</small></td>
+      <td><small>{{this.inputTokens}} / {{this.outputTokens}}</small></td>
+      <td><small>{{this.generatedAt}}</small></td>
+      <td>
+        <a href="/admin/ai/{{this.PK}}" class="btn btn--secondary">View</a>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+{{#if nextKey}}
+<div style="margin-top: 1rem; text-align: center;">
+  <a href="/admin/ai?status={{currentStatus}}&lastKey={{nextKey}}" class="btn btn--secondary">Load more</a>
+</div>
+{{/if}}
+
+{{else}}
+{{#unless dynamoUnavailable}}
+<p style="color: #999; margin-top: 2rem;">No biography records found{{#unless (isequal currentStatus "all")}} with status "{{currentStatus}}"{{/unless}}.</p>
+{{/unless}}
+{{/if}}
