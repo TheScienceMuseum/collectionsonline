@@ -9,7 +9,6 @@ const getRelatedItems = require('../lib/get-related-items');
 const sortRelated = require('../lib/sort-related-items');
 const TypeMapping = require('../lib/type-mapping');
 const normaliseWikidata = require('../lib/helpers/normalise-wikidata');
-const cache = require('../bin/cache');
 
 function redirectToLogin (h) {
   return h.redirect('/admin/ai/login');
@@ -68,6 +67,7 @@ module.exports = function (elastic, config) {
           if (authRedirect) return authRedirect;
 
           const status = request.query.status || 'all';
+          const search = (request.query.search || '').trim();
           const limit = parseInt(request.query.limit, 10) || 25;
           const lastKey = request.query.lastKey
             ? JSON.parse(decodeURIComponent(request.query.lastKey))
@@ -78,8 +78,33 @@ module.exports = function (elastic, config) {
               records: [],
               dynamoUnavailable: true,
               currentStatus: status,
+              search,
               nextKey: null
             }, { layout: 'admin' });
+          }
+
+          // Direct lookup by record ID
+          if (search && /^[a-z]{2}\d+$/i.test(search)) {
+            try {
+              const record = await biographyStore.fetchBiographyAny(search);
+              return h.view('admin-ai-list', {
+                records: record ? [record] : [],
+                dynamoUnavailable: false,
+                currentStatus: status,
+                search,
+                nextKey: null
+              }, { layout: 'admin' });
+            } catch (err) {
+              console.error('Admin AI search error:', err.message);
+              return h.view('admin-ai-list', {
+                records: [],
+                dynamoUnavailable: false,
+                currentStatus: status,
+                search,
+                nextKey: null,
+                error: err.message
+              }, { layout: 'admin' });
+            }
           }
 
           try {
@@ -88,6 +113,7 @@ module.exports = function (elastic, config) {
               records: result.items,
               dynamoUnavailable: false,
               currentStatus: status,
+              search,
               nextKey: result.lastKey ? encodeURIComponent(JSON.stringify(result.lastKey)) : null
             }, { layout: 'admin' });
           } catch (err) {
@@ -96,6 +122,7 @@ module.exports = function (elastic, config) {
               records: [],
               dynamoUnavailable: true,
               currentStatus: status,
+              search,
               nextKey: null,
               error: err.message
             }, { layout: 'admin' });
@@ -185,7 +212,7 @@ module.exports = function (elastic, config) {
             const source = esResult.body._source;
             const personData = extractPersonData(source);
 
-            let sortedRelated = { object: [], archive: [] };
+            let sortedRelated = { relatedObjects: [], relatedDocuments: [] };
             try {
               const relatedItems = await getRelatedItems(elastic, id);
               sortedRelated = sortRelated(relatedItems, id);
@@ -195,18 +222,17 @@ module.exports = function (elastic, config) {
 
             const allItems = flattenRelated(sortedRelated);
 
-            let wikidataCache = null;
+            let wikidataContext = null;
             const qCode = normaliseWikidata.getQCode(personData.wikidata);
             if (qCode) {
               try {
-                const fetchWikiCache = require('../lib/cached-wikidata').fetchCache;
-                wikidataCache = await fetchWikiCache(cache, qCode);
+                wikidataContext = await fetchWikidataLive(qCode);
               } catch (err) {
-                // Fine without wikidata
+                console.debug('Admin regenerate: Wikidata fetch failed:', err.message);
               }
             }
 
-            const result = await generateBiography(personData, allItems, wikidataCache, config.anthropicApiKey);
+            const result = await generateBiography(personData, allItems, wikidataContext, config.anthropicApiKey);
 
             if (!result) {
               await biographyStore.saveBiography(id, {
@@ -275,23 +301,116 @@ module.exports = function (elastic, config) {
 
 function flattenRelated (sortedRelated) {
   const items = [];
-  (sortedRelated.object || []).forEach(function (item) {
+  (sortedRelated.relatedObjects || []).forEach(function (item) {
     items.push({
       id: item.id,
-      title: item.title || item.name || '',
+      title: (item.attributes && item.attributes.summary_title) || item.title || item.name || '',
       link: item.links ? item.links.self : '/objects/' + item.id,
       type: 'object',
       role: item.role || ''
     });
   });
-  (sortedRelated.archive || []).forEach(function (item) {
+  (sortedRelated.relatedDocuments || []).forEach(function (item) {
     items.push({
       id: item.id,
-      title: item.title || item.name || '',
+      title: (item.attributes && item.attributes.summary_title) || item.title || item.name || '',
       link: item.links ? item.links.self : '/documents/' + item.id,
       type: 'document',
       role: item.role || ''
     });
   });
   return items;
+}
+
+async function fetchWikidataLive (qCode) {
+  const url = 'https://www.wikidata.org/w/api.php?action=wbgetentities' +
+    '&ids=' + qCode + '&languages=en&props=labels|descriptions|claims|sitelinks&format=json';
+
+  const controller = new AbortController();
+  const timeout = setTimeout(function () { controller.abort(); }, 8000);
+
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const entity = data.entities && data.entities[qCode];
+    if (!entity) return null;
+
+    const result = {};
+    const desc = entity.descriptions && entity.descriptions.en;
+    if (desc) result.description = { value: desc.value };
+
+    const claimProps = {
+      P106: 'occupation',
+      P27: 'country of citizenship',
+      P69: 'educated at',
+      P108: 'employer',
+      P101: 'field of work',
+      P800: 'notable work',
+      P166: 'awards received',
+      P463: 'member of',
+      P1412: 'languages spoken'
+    };
+
+    Object.keys(claimProps).forEach(function (prop) {
+      const claims = entity.claims && entity.claims[prop];
+      if (!claims || !claims.length) return;
+
+      const values = claims.slice(0, 5).map(function (claim) {
+        const snak = claim.mainsnak;
+        if (!snak || !snak.datavalue) return null;
+        if (snak.datavalue.type === 'wikibase-entityid') {
+          return snak.datavalue.value.id;
+        }
+        if (snak.datavalue.type === 'string') {
+          return snak.datavalue.value;
+        }
+        return null;
+      }).filter(Boolean);
+
+      if (values.length) {
+        result[claimProps[prop]] = { value: values.join(', ') };
+      }
+    });
+
+    const qCodes = [];
+    Object.keys(result).forEach(function (key) {
+      if (!result[key] || !result[key].value) return;
+      const matches = result[key].value.match(/Q\d+/g);
+      if (matches) qCodes.push.apply(qCodes, matches);
+    });
+
+    if (qCodes.length > 0) {
+      try {
+        const labelUrl = 'https://www.wikidata.org/w/api.php?action=wbgetentities' +
+          '&ids=' + qCodes.slice(0, 50).join('|') + '&languages=en&props=labels&format=json';
+        const labelRes = await fetch(labelUrl, { signal: controller.signal });
+        if (labelRes.ok) {
+          const labelData = await labelRes.json();
+          const labels = {};
+          Object.keys(labelData.entities || {}).forEach(function (id) {
+            const label = labelData.entities[id].labels && labelData.entities[id].labels.en;
+            if (label) labels[id] = label.value;
+          });
+          Object.keys(result).forEach(function (key) {
+            if (!result[key] || !result[key].value) return;
+            result[key].value = result[key].value.replace(/Q\d+/g, function (q) {
+              return labels[q] || q;
+            });
+          });
+        }
+      } catch (err) {
+        // Label resolution failed — Q-codes remain
+      }
+    }
+
+    const enwiki = entity.sitelinks && entity.sitelinks.enwiki;
+    if (enwiki) {
+      result.wikipediaUrl = 'https://en.wikipedia.org/wiki/' + encodeURIComponent(enwiki.title.replace(/ /g, '_'));
+    }
+
+    return Object.keys(result).length > 0 ? result : null;
+  } finally {
+    clearTimeout(timeout);
+  }
 }

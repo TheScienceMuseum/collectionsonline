@@ -6,12 +6,19 @@
 <div class="admin-banner">Error: {{error}}</div>
 {{/if}}
 
+<form method="GET" action="/admin/ai" style="margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center;">
+  <input type="text" name="search" value="{{search}}" placeholder="Search by record ID (e.g. cp37054)" style="padding: 0.4rem 0.6rem; border: 1px solid #444; border-radius: 4px; background: #1a1a1a; color: #eee; flex: 1; max-width: 300px;">
+  <input type="hidden" name="status" value="{{currentStatus}}">
+  <button type="submit" class="btn btn--secondary">Search</button>
+  {{#if search}}<a href="/admin/ai?status={{currentStatus}}" style="color: #aaa; font-size: 0.85rem;">Clear</a>{{/if}}
+</form>
+
 <div class="filter-tabs">
-  <a href="/admin/ai?status=all" class="{{#isequal currentStatus "all"}}active{{/isequal}}">All</a>
-  <a href="/admin/ai?status=live" class="{{#isequal currentStatus "live"}}active{{/isequal}}">Live</a>
-  <a href="/admin/ai?status=flagged" class="{{#isequal currentStatus "flagged"}}active{{/isequal}}">Flagged</a>
-  <a href="/admin/ai?status=hidden" class="{{#isequal currentStatus "hidden"}}active{{/isequal}}">Hidden</a>
-  <a href="/admin/ai?status=insufficient_data" class="{{#isequal currentStatus "insufficient_data"}}active{{/isequal}}">Insufficient Data</a>
+  <a href="/admin/ai?status=all" class="{{#isequal currentStatus "all" this}}active{{/isequal}}">All</a>
+  <a href="/admin/ai?status=live" class="{{#isequal currentStatus "live" this}}active{{/isequal}}">Live</a>
+  <a href="/admin/ai?status=flagged" class="{{#isequal currentStatus "flagged" this}}active{{/isequal}}">Flagged</a>
+  <a href="/admin/ai?status=hidden" class="{{#isequal currentStatus "hidden" this}}active{{/isequal}}">Hidden</a>
+  <a href="/admin/ai?status=insufficient_data" class="{{#isequal currentStatus "insufficient_data" this}}active{{/isequal}}">Insufficient Data</a>
 </div>
 
 {{#if records.length}}
@@ -55,6 +62,6 @@
 
 {{else}}
 {{#unless dynamoUnavailable}}
-<p style="color: #999; margin-top: 2rem;">No biography records found{{#unless (isequal currentStatus "all")}} with status "{{currentStatus}}"{{/unless}}.</p>
+<p style="color: #999; margin-top: 2rem;">No biography records found{{#isequal currentStatus "all" this}}{{else}} with status "{{currentStatus}}"{{/isequal}}.</p>
 {{/unless}}
 {{/if}}

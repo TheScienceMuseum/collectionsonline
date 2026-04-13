@@ -7,22 +7,23 @@ const extractPersonData = require('../lib/ai/extract-person-data');
 const generateBiography = require('../lib/ai/generate-biography');
 const biographyStore = require('../lib/ai/biography-store');
 const dynamo = require('../lib/ai/dynamo');
-const cache = require('../bin/cache');
 const normaliseWikidata = require('../lib/helpers/normalise-wikidata');
 
 const inFlight = new Map();
 
-const CACHE_CONTROL = 'public, max-age=3600, stale-while-revalidate=86400';
+const CACHE_CONTROL = process.env.NODE_ENV === 'production'
+  ? 'public, max-age=3600, stale-while-revalidate=86400'
+  : 'no-cache, no-store';
 
 function flattenRelated (sortedRelated, personId) {
   const items = [];
-  const objects = sortedRelated.object || [];
-  const documents = sortedRelated.archive || [];
+  const objects = sortedRelated.relatedObjects || [];
+  const documents = sortedRelated.relatedDocuments || [];
 
   objects.forEach(function (item) {
     items.push({
       id: item.id,
-      title: item.title || item.name || '',
+      title: (item.attributes && item.attributes.summary_title) || item.title || item.name || '',
       link: item.links ? item.links.self : '/objects/' + item.id,
       type: 'object',
       role: item.role || ''
@@ -32,7 +33,7 @@ function flattenRelated (sortedRelated, personId) {
   documents.forEach(function (item) {
     items.push({
       id: item.id,
-      title: item.title || item.name || '',
+      title: (item.attributes && item.attributes.summary_title) || item.title || item.name || '',
       link: item.links ? item.links.self : '/documents/' + item.id,
       type: 'document',
       role: item.role || ''
@@ -134,7 +135,7 @@ async function generate (elastic, config, id) {
     }
 
     // Fetch related items
-    let sortedRelated = { object: [], archive: [] };
+    let sortedRelated = { relatedObjects: [], relatedDocuments: [] };
     try {
       const relatedItems = await getRelatedItems(elastic, id);
       sortedRelated = sortRelated(relatedItems, id);
@@ -143,28 +144,38 @@ async function generate (elastic, config, id) {
     }
 
     const allItems = flattenRelated(sortedRelated, id);
+    console.log('AI Biography: Related items for', id, '- objects:', (sortedRelated.relatedObjects || []).length, 'documents:', (sortedRelated.relatedDocuments || []).length, 'flattened:', allItems.length);
 
-    // Try to get cached wikidata
-    let wikidataCache = null;
+    // Fetch Wikidata properties directly from the API (single lightweight call)
+    let wikidataContext = null;
     const qCode = normaliseWikidata.getQCode(personData.wikidata);
     if (qCode) {
       try {
-        const fetchWikiCache = require('../lib/cached-wikidata').fetchCache;
-        wikidataCache = await fetchWikiCache(cache, qCode);
+        wikidataContext = await fetchWikidataLive(qCode);
       } catch (err) {
-        // Wikidata cache miss is fine
+        console.debug('AI Biography: Wikidata fetch failed for', qCode, '-', err.message);
       }
     }
 
     // Generate biography
-    const result = await generateBiography(personData, allItems, wikidataCache, config.anthropicApiKey);
+    let result;
+    try {
+      result = await generateBiography(personData, allItems, wikidataContext, config.anthropicApiKey);
+    } catch (err) {
+      if (err.isApiError) {
+        // Transient API error (overload, timeout, network) — don't persist, allow retry next page load
+        console.warn('AI Biography: Transient API error for', id, '-', err.message);
+        return null;
+      }
+      throw err;
+    }
 
     if (!result) {
-      // Record insufficient data
+      // Record insufficient data (only for genuine data issues, not API failures)
       if (dynamo.isReady()) {
         await biographyStore.saveBiography(id, {
           status: 'insufficient_data',
-          skipReason: 'Generation returned null — insufficient input data or API error',
+          skipReason: 'Generation returned null — insufficient input data',
           personName: personData.name,
           pageUrl: '/people/' + id,
           existingDescriptionChars: personData.descriptionChars
@@ -233,5 +244,108 @@ async function generate (elastic, config, id) {
     };
   } finally {
     inFlight.delete(id);
+  }
+}
+
+/**
+ * Fetch basic Wikidata entity properties directly from the API.
+ * Lightweight alternative to the full /wiki route — just gets key facts
+ * for the AI prompt (description, notable work, field of work, etc).
+ */
+async function fetchWikidataLive (qCode) {
+  const url = 'https://www.wikidata.org/w/api.php?action=wbgetentities' +
+    '&ids=' + qCode + '&languages=en&props=labels|descriptions|claims|sitelinks&format=json';
+
+  const controller = new AbortController();
+  const timeout = setTimeout(function () { controller.abort(); }, 8000);
+
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const entity = data.entities && data.entities[qCode];
+    if (!entity) return null;
+
+    const result = {};
+    const desc = entity.descriptions && entity.descriptions.en;
+    if (desc) result.description = { value: desc.value };
+
+    // Extract key claims as simple label/value pairs
+    const claimProps = {
+      P106: 'occupation',
+      P27: 'country of citizenship',
+      P69: 'educated at',
+      P108: 'employer',
+      P101: 'field of work',
+      P800: 'notable work',
+      P166: 'awards received',
+      P463: 'member of',
+      P1412: 'languages spoken'
+    };
+
+    Object.keys(claimProps).forEach(function (prop) {
+      const claims = entity.claims && entity.claims[prop];
+      if (!claims || !claims.length) return;
+
+      const values = claims.slice(0, 5).map(function (claim) {
+        const snak = claim.mainsnak;
+        if (!snak || !snak.datavalue) return null;
+        if (snak.datavalue.type === 'wikibase-entityid') {
+          return snak.datavalue.value.id;
+        }
+        if (snak.datavalue.type === 'string') {
+          return snak.datavalue.value;
+        }
+        return null;
+      }).filter(Boolean);
+
+      if (values.length) {
+        result[claimProps[prop]] = { value: values.join(', ') };
+      }
+    });
+
+    // Resolve Q-code values to labels in a single batch
+    const qCodes = [];
+    Object.keys(result).forEach(function (key) {
+      if (!result[key] || !result[key].value) return;
+      const matches = result[key].value.match(/Q\d+/g);
+      if (matches) qCodes.push.apply(qCodes, matches);
+    });
+
+    if (qCodes.length > 0) {
+      try {
+        const labelUrl = 'https://www.wikidata.org/w/api.php?action=wbgetentities' +
+          '&ids=' + qCodes.slice(0, 50).join('|') + '&languages=en&props=labels&format=json';
+        const labelRes = await fetch(labelUrl, { signal: controller.signal });
+        if (labelRes.ok) {
+          const labelData = await labelRes.json();
+          const labels = {};
+          Object.keys(labelData.entities || {}).forEach(function (id) {
+            const label = labelData.entities[id].labels && labelData.entities[id].labels.en;
+            if (label) labels[id] = label.value;
+          });
+
+          // Replace Q-codes with labels
+          Object.keys(result).forEach(function (key) {
+            if (!result[key] || !result[key].value) return;
+            result[key].value = result[key].value.replace(/Q\d+/g, function (q) {
+              return labels[q] || q;
+            });
+          });
+        }
+      } catch (err) {
+        // Label resolution failed — Q-codes will remain, which is fine
+      }
+    }
+
+    // Wikipedia URL
+    const enwiki = entity.sitelinks && entity.sitelinks.enwiki;
+    if (enwiki) {
+      result.wikipediaUrl = 'https://en.wikipedia.org/wiki/' + encodeURIComponent(enwiki.title.replace(/ /g, '_'));
+    }
+
+    return Object.keys(result).length > 0 ? result : null;
+  } finally {
+    clearTimeout(timeout);
   }
 }

@@ -52,13 +52,6 @@
 </div>
 {{/if}}
 
-{{#if record.sourcesSummary}}
-<div class="detail-section">
-  <h3>Sources Summary</h3>
-  <p>{{record.sourcesSummary}}</p>
-</div>
-{{/if}}
-
 {{#if record.biographyHtml}}
 <div class="detail-section">
   <h3>Biography</h3>
@@ -77,9 +70,27 @@
 </div>
 {{/if}}
 
+{{#if record.sourcesSummary}}
+<details class="collapsible">
+  <summary>Sources Summary</summary>
+  <div class="detail-section">
+    <p style="font-size: 0.85rem; color: #aaa;">{{record.sourcesSummary}}</p>
+  </div>
+</details>
+{{/if}}
+
+{{#if record.systemPrompt}}
+<details class="collapsible">
+  <summary>View system prompt</summary>
+  <div class="detail-section">
+    <pre style="white-space: pre-wrap; font-size: 0.8rem; color: #aaa;">{{record.systemPrompt}}</pre>
+  </div>
+</details>
+{{/if}}
+
 {{#if record.prompt}}
 <details class="collapsible">
-  <summary>View prompt sent to Claude</summary>
+  <summary>View user prompt sent to Claude</summary>
   <div class="detail-section">
     <pre style="white-space: pre-wrap; font-size: 0.8rem; color: #aaa;">{{record.prompt}}</pre>
   </div>
@@ -91,10 +102,10 @@
 <div class="actions">
   <form method="POST" action="/admin/ai/{{record.PK}}/status" style="display: flex; gap: 0.5rem; align-items: center;">
     <select name="status">
-      <option value="live" {{#isequal record.status "live"}}selected{{/isequal}}>Live</option>
-      <option value="flagged" {{#isequal record.status "flagged"}}selected{{/isequal}}>Flagged</option>
-      <option value="hidden" {{#isequal record.status "hidden"}}selected{{/isequal}}>Hidden</option>
-      <option value="insufficient_data" {{#isequal record.status "insufficient_data"}}selected{{/isequal}}>Insufficient Data</option>
+      <option value="live" {{#isequal record.status "live" this}}selected{{/isequal}}>Live</option>
+      <option value="flagged" {{#isequal record.status "flagged" this}}selected{{/isequal}}>Flagged</option>
+      <option value="hidden" {{#isequal record.status "hidden" this}}selected{{/isequal}}>Hidden</option>
+      <option value="insufficient_data" {{#isequal record.status "insufficient_data" this}}selected{{/isequal}}>Insufficient Data</option>
     </select>
     <button type="submit" class="btn btn--primary">Update Status</button>
   </form>
