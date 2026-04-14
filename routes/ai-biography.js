@@ -160,7 +160,7 @@ async function generate (elastic, config, id) {
     // Generate biography
     let result;
     try {
-      result = await generateBiography(personData, allItems, wikidataContext, config.anthropicApiKey);
+      result = await generateBiography(personData, allItems, wikidataContext, config.anthropicApiKey, config.aiBiographyModel);
     } catch (err) {
       if (err.isApiError) {
         // Transient API error (overload, timeout, network) — don't persist, allow retry next page load

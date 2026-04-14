@@ -232,7 +232,7 @@ module.exports = function (elastic, config) {
               }
             }
 
-            const result = await generateBiography(personData, allItems, wikidataContext, config.anthropicApiKey);
+            const result = await generateBiography(personData, allItems, wikidataContext, config.anthropicApiKey, config.aiBiographyModel);
 
             if (!result) {
               await biographyStore.saveBiography(id, {
