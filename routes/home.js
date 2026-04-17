@@ -2,6 +2,7 @@ const contentType = require('./route-helpers/content-type.js');
 const cacheHeaders = require('./route-helpers/cache-control');
 const anniversary = require('../lib/anniversary');
 const getAnniversaryData = anniversary;
+const getNameCollectionsData = require('../lib/name-collections');
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -26,6 +27,11 @@ module.exports = (elastic, config) => ({
         const anniversary = await getAnniversaryData(elastic, config);
         if (anniversary) {
           data.anniversary = anniversary;
+        }
+
+        const nameCollections = await getNameCollectionsData(elastic, config);
+        if (nameCollections) {
+          data.nameCollections = nameCollections;
         }
 
         return h.view('home', data);
