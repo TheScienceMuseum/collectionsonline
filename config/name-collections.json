@@ -4,14 +4,16 @@
   "enabled": true,
 
   "title": "Explore our collections",
-  "count": 10,
+  "count": 20,
 
-  "poolSize": 30,
+  "poolSize": 80,
   "_comment_poolSize": "How many top collectors to sample random picks from (after featured entries).",
 
   "excludeCollectors": [
     "Unknown",
-    "Unknown collector"
+    "Unknown collector",
+    "collector, Unknown",
+    "Collector, Unknown"
   ],
 
   "featured": [
