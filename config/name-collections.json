@@ -4,7 +4,7 @@
   "enabled": true,
 
   "title": "Explore our collections",
-  "count": 20,
+  "count": 25,
 
   "poolSize": 80,
   "_comment_poolSize": "How many top collectors to sample random picks from (after featured entries).",
