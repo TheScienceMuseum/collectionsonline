@@ -24,7 +24,7 @@ module.exports = require('rc')('co', {
     tableName: process.env.DYNAMODB_TABLE || 'collectionsonline-ai'
   },
   aiBiographyEnabled: process.env.AI_BIOGRAPHY_ENABLED === 'true',
-  aiBiographyModel: process.env.AI_BIOGRAPHY_MODEL || 'claude-sonnet-4-20250514',
+  aiBiographyModel: process.env.AI_BIOGRAPHY_MODEL || 'claude-3-haiku-20240307',
   anthropicApiKey: process.env.ANTHROPIC_API_KEY || '',
   // Token for /admin/ai routes. Falls back to cacheClearToken if not set.
   adminToken: process.env.ADMIN_TOKEN || '',

@@ -8,6 +8,7 @@ const generateBiography = require('../lib/ai/generate-biography');
 const biographyStore = require('../lib/ai/biography-store');
 const dynamo = require('../lib/ai/dynamo');
 const normaliseWikidata = require('../lib/helpers/normalise-wikidata');
+const fetchWikidataLive = require('../lib/ai/fetch-wikidata-live');
 
 const inFlight = new Map();
 
@@ -152,9 +153,18 @@ async function generate (elastic, config, id) {
     if (qCode) {
       try {
         wikidataContext = await fetchWikidataLive(qCode);
+        if (!wikidataContext) {
+          console.warn('AI Biography: Wikidata fetch for', qCode, '(', id, ') returned no usable properties');
+        } else {
+          console.log('AI Biography: Wikidata fetch OK for', qCode, '(', id, ') - keys:', Object.keys(wikidataContext).join(', '));
+        }
       } catch (err) {
-        console.debug('AI Biography: Wikidata fetch failed for', qCode, '-', err.message);
+        console.warn('AI Biography: Wikidata fetch failed for', qCode, '(', id, ') -', err.message);
       }
+    } else if (personData.wikidata) {
+      console.warn('AI Biography: Could not extract Q-code from wikidata value for', id, ':', JSON.stringify(personData.wikidata));
+    } else {
+      console.log('AI Biography: No wikidata field present on', id);
     }
 
     // Generate biography
@@ -244,108 +254,5 @@ async function generate (elastic, config, id) {
     };
   } finally {
     inFlight.delete(id);
-  }
-}
-
-/**
- * Fetch basic Wikidata entity properties directly from the API.
- * Lightweight alternative to the full /wiki route — just gets key facts
- * for the AI prompt (description, notable work, field of work, etc).
- */
-async function fetchWikidataLive (qCode) {
-  const url = 'https://www.wikidata.org/w/api.php?action=wbgetentities' +
-    '&ids=' + qCode + '&languages=en&props=labels|descriptions|claims|sitelinks&format=json';
-
-  const controller = new AbortController();
-  const timeout = setTimeout(function () { controller.abort(); }, 8000);
-
-  try {
-    const res = await fetch(url, { signal: controller.signal });
-    if (!res.ok) return null;
-    const data = await res.json();
-    const entity = data.entities && data.entities[qCode];
-    if (!entity) return null;
-
-    const result = {};
-    const desc = entity.descriptions && entity.descriptions.en;
-    if (desc) result.description = { value: desc.value };
-
-    // Extract key claims as simple label/value pairs
-    const claimProps = {
-      P106: 'occupation',
-      P27: 'country of citizenship',
-      P69: 'educated at',
-      P108: 'employer',
-      P101: 'field of work',
-      P800: 'notable work',
-      P166: 'awards received',
-      P463: 'member of',
-      P1412: 'languages spoken'
-    };
-
-    Object.keys(claimProps).forEach(function (prop) {
-      const claims = entity.claims && entity.claims[prop];
-      if (!claims || !claims.length) return;
-
-      const values = claims.slice(0, 5).map(function (claim) {
-        const snak = claim.mainsnak;
-        if (!snak || !snak.datavalue) return null;
-        if (snak.datavalue.type === 'wikibase-entityid') {
-          return snak.datavalue.value.id;
-        }
-        if (snak.datavalue.type === 'string') {
-          return snak.datavalue.value;
-        }
-        return null;
-      }).filter(Boolean);
-
-      if (values.length) {
-        result[claimProps[prop]] = { value: values.join(', ') };
-      }
-    });
-
-    // Resolve Q-code values to labels in a single batch
-    const qCodes = [];
-    Object.keys(result).forEach(function (key) {
-      if (!result[key] || !result[key].value) return;
-      const matches = result[key].value.match(/Q\d+/g);
-      if (matches) qCodes.push.apply(qCodes, matches);
-    });
-
-    if (qCodes.length > 0) {
-      try {
-        const labelUrl = 'https://www.wikidata.org/w/api.php?action=wbgetentities' +
-          '&ids=' + qCodes.slice(0, 50).join('|') + '&languages=en&props=labels&format=json';
-        const labelRes = await fetch(labelUrl, { signal: controller.signal });
-        if (labelRes.ok) {
-          const labelData = await labelRes.json();
-          const labels = {};
-          Object.keys(labelData.entities || {}).forEach(function (id) {
-            const label = labelData.entities[id].labels && labelData.entities[id].labels.en;
-            if (label) labels[id] = label.value;
-          });
-
-          // Replace Q-codes with labels
-          Object.keys(result).forEach(function (key) {
-            if (!result[key] || !result[key].value) return;
-            result[key].value = result[key].value.replace(/Q\d+/g, function (q) {
-              return labels[q] || q;
-            });
-          });
-        }
-      } catch (err) {
-        // Label resolution failed — Q-codes will remain, which is fine
-      }
-    }
-
-    // Wikipedia URL
-    const enwiki = entity.sitelinks && entity.sitelinks.enwiki;
-    if (enwiki) {
-      result.wikipediaUrl = 'https://en.wikipedia.org/wiki/' + encodeURIComponent(enwiki.title.replace(/ /g, '_'));
-    }
-
-    return Object.keys(result).length > 0 ? result : null;
-  } finally {
-    clearTimeout(timeout);
   }
 }
