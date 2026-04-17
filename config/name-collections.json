@@ -18,7 +18,7 @@
     { "collector": "BBC Heritage Collection" },
     { "collector": "Daily Herald Archive", "figure": "/assets/img/home/collections/daily-herald-archive.jpg" },
     { "collector": "Monotype Corporation Collection" },
-    { "collector": "Stephen Hawking\u2019s Office" },
+    { "collector": "Stephen Hawking\u2019s Office", "figure": "/assets/img/home/collections/stephen-hawkings-office.jpg" },
     { "collector": "The Worshipful Company of Clockmakers" }
   ],
 
