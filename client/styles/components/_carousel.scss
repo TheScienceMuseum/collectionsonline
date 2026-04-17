@@ -152,6 +152,14 @@
     width: 18rem;
   }
 
+  // Hide card descriptions on narrow viewports — the block gets too
+  // bulky to scroll comfortably on mobile if every card has body copy.
+  @include media("<=small") {
+    .resultcard__description {
+      display: none;
+    }
+  }
+
   &__cta {
     margin-top: $grid-gutter;
     display: inline-block;
