@@ -9,6 +9,9 @@
   "poolSize": 80,
   "_comment_poolSize": "How many top collectors to sample random picks from (after featured entries).",
 
+  "minDocCount": 100,
+  "_comment_minDocCount": "Minimum number of records a collection must have to appear as a random pick. Featured entries bypass this.",
+
   "excludeCollectors": [
     "Unknown",
     "Unknown collector",
