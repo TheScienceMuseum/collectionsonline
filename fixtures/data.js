@@ -174,12 +174,6 @@ module.exports = {
         },
         {
           type: 'collection',
-          title: 'Daily Herald Photo Archive',
-          figure: '/assets/img/home/collections/daily-herald-archive.jpg',
-          link: '/search/collection/daily-herald-archive'
-        },
-        {
-          type: 'collection',
           title: 'A Brief History of Stuff',
           figure: '/assets/img/home/collections/brief-history-of-stuff.jpg',
           link: 'https://www.sciencemuseumgroup.org.uk/brief-history-stuff-podcast/'

@@ -1,0 +1,28 @@
+{
+  "_comment": "Name collections carousel on the homepage. Featured entries appear first, then random popular collectors fill to `count`. Descriptions auto-populate from description-boxes/collection.json when the `collector` key matches. Collections with no image (neither configured nor found in ES) are dropped.",
+
+  "enabled": true,
+
+  "title": "Explore our collections",
+  "count": 10,
+
+  "poolSize": 30,
+  "_comment_poolSize": "How many top collectors to sample random picks from (after featured entries).",
+
+  "excludeCollectors": [
+    "Unknown",
+    "Unknown collector"
+  ],
+
+  "featured": [
+    { "collector": "BBC Heritage Collection" },
+    { "collector": "Daily Herald Archive", "figure": "/assets/img/home/collections/daily-herald-archive.jpg" },
+    { "collector": "Monotype Corporation Collection" },
+    { "collector": "Stephen Hawking\u2019s Office" },
+    { "collector": "The Worshipful Company of Clockmakers" }
+  ],
+
+  "cache": {
+    "refreshPeriodHours": 4
+  }
+}
