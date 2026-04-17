@@ -96,7 +96,11 @@
     font-weight: 400; //never reverse out 300!
     margin: 0;
     line-height: 1.25;
-    grid-area: main;
+    // grid-row only: grid-area: main would also set grid-column-start: main,
+    // and "main" isn't a column line — the browser then spawns a zero-width
+    // implicit column named "main", pushing the item rightward in wide
+    // layouts. Rows-only keeps the named-line placement working as intended.
+    grid-row: main;
   }
 
   img {
@@ -106,7 +110,8 @@
 
   &__main-title,
   &__list-title {
-    grid-area: header;
+    // rows-only — see the p/ul rule above for why grid-area is avoided.
+    grid-row: header;
     align-self: end;
     margin: 0;
   }

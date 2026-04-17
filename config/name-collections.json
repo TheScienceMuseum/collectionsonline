@@ -4,21 +4,26 @@
   "enabled": true,
 
   "title": "Explore our collections",
-  "count": 10,
+  "count": 25,
 
-  "poolSize": 30,
+  "poolSize": 80,
   "_comment_poolSize": "How many top collectors to sample random picks from (after featured entries).",
+
+  "minDocCount": 100,
+  "_comment_minDocCount": "Minimum number of records a collection must have to appear as a random pick. Featured entries bypass this.",
 
   "excludeCollectors": [
     "Unknown",
-    "Unknown collector"
+    "Unknown collector",
+    "collector, Unknown",
+    "Collector, Unknown"
   ],
 
   "featured": [
     { "collector": "BBC Heritage Collection" },
     { "collector": "Daily Herald Archive", "figure": "/assets/img/home/collections/daily-herald-archive.jpg" },
     { "collector": "Monotype Corporation Collection" },
-    { "collector": "Stephen Hawking\u2019s Office" },
+    { "collector": "Stephen Hawking\u2019s Office", "figure": "/assets/img/home/collections/stephen-hawkings-office.jpg" },
     { "collector": "The Worshipful Company of Clockmakers" }
   ],
 

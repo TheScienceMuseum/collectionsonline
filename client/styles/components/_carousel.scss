@@ -112,7 +112,12 @@
   .flickity-enabled {
     padding-left: $grid-gutter; // match container
 
+    // Flickity sets tabIndex=0 on the viewport so arrow keys page slides.
+    // The global rule would then paint a 5px green box-shadow right across
+    // the section — we don't need a focus ring on the container itself,
+    // the focus ring on each card's <a> is enough for a11y.
     &:focus-visible {
+      box-shadow: none !important;
       outline: none;
     }
   }
@@ -150,6 +155,14 @@
     max-width: 30%;
     padding-right: $grid-gutter;
     width: 18rem;
+  }
+
+  // Hide card descriptions on narrow viewports — the block gets too
+  // bulky to scroll comfortably on mobile if every card has body copy.
+  @include media("<=small") {
+    .resultcard__description {
+      display: none;
+    }
   }
 
   &__cta {
