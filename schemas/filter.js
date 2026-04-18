@@ -2,8 +2,8 @@ const Joi = require('joi');
 
 const sharedSchema = {
   // All
-  'filter[date[from]]': Joi.number().allow('', null).integer().min(0),
-  'filter[date[to]]': Joi.number().allow('', null).integer().min(0),
+  'filter[date[from]]': Joi.number().allow('', null).integer().min(0).max(2200),
+  'filter[date[to]]': Joi.number().allow('', null).integer().min(0).max(2200),
   // Objects
   'filter[on_display]': Joi.boolean().truthy('true').falsy('false'),
   'filter[has_image]': Joi.string(),
@@ -11,8 +11,8 @@ const sharedSchema = {
   'filter[rotational]': Joi.string(),
   'filter[mphc]': Joi.string(),
   // People
-  'filter[birth[date]]': Joi.number().allow('', null).integer().min(0),
-  'filter[death[date]]': Joi.number().allow('', null).integer().min(0)
+  'filter[birth[date]]': Joi.number().allow('', null).integer().min(0).max(2200),
+  'filter[death[date]]': Joi.number().allow('', null).integer().min(0).max(2200)
   // Documents
 };
 
