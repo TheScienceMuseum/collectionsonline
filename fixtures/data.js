@@ -10,14 +10,14 @@ module.exports = {
   smg__description:
     'We share our world-leading collection – spanning science, technology, engineering and medicine – with over five million visitors each year.',
   headerImages: [
-    '_D819175-ret.jpg',
-    '1970-0025_0007.jpg',
-    '_D818504.jpg',
-    'textile-sign.jpg',
-    'switches.jpg',
-    '_D817130-Edit2.jpg',
-    '1878-0005_0004_A163_0002.jpg',
-    'cd0634_030_100924_1988_242.jpg'
+    { file: '_D819175-ret.jpg', alt: 'Close-up of intricate brass clockwork mechanism from the collection' },
+    { file: '1970-0025_0007.jpg', alt: 'Vintage scientific instrument from the Science Museum Group collection' },
+    { file: '_D818504.jpg', alt: 'Detail of a historic object from the collection, softly lit against a dark background' },
+    { file: 'textile-sign.jpg', alt: 'Enamel sign from the textile industry collection' },
+    { file: 'switches.jpg', alt: 'Row of industrial electrical switches from the collection' },
+    { file: '_D817130-Edit2.jpg', alt: 'Close-up of a polished metal scientific instrument from the collection' },
+    { file: '1878-0005_0004_A163_0002.jpg', alt: 'Archive photograph from the collection' },
+    { file: 'cd0634_030_100924_1988_242.jpg', alt: 'Historic object from the collection, photographed in studio' }
   ],
   collectionGroup: [
     {
@@ -64,6 +64,7 @@ module.exports = {
       theme: [
         {
           title: 'Medicine',
+          alt: 'Surgical instruments and medical apparatus from the Medicine collection',
           description: 'Explore global medical developments and advances over time',
           figure: '/assets/img/home/collections/medicine.jpg',
           links: [
@@ -91,6 +92,7 @@ module.exports = {
         },
         {
           title: 'Railways',
+          alt: 'Historic steam locomotive from the Railways collection',
           description: 'The development of railways from goods transport to commuter travel',
           figure: '/assets/img/home/collections/railway.jpg',
           links: [
@@ -114,6 +116,7 @@ module.exports = {
         },
         {
           title: 'Art',
+          alt: 'Artwork from the collection depicting scientific and industrial themes',
           description: 'From innovative processes to depicting our connection with science',
           figure: '/assets/img/home/collections/art-theme.jpg',
           links: [
@@ -138,6 +141,7 @@ module.exports = {
         },
         {
           title: 'Industrial Revolution',
+          alt: 'Heavy industrial machinery from the Industrial Revolution collection',
           description: 'The machines and industries that powered the Industrial Revolution',
           figure: '/assets/img/home/collections/industrial-revolution.jpg',
           links: [
@@ -175,6 +179,7 @@ module.exports = {
         {
           type: 'collection',
           title: 'A Brief History of Stuff',
+          alt: 'Artwork for the A Brief History of Stuff podcast',
           figure: '/assets/img/home/collections/brief-history-of-stuff.jpg',
           link: 'https://www.sciencemuseumgroup.org.uk/brief-history-stuff-podcast/'
         },

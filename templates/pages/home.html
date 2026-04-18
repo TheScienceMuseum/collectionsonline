@@ -4,14 +4,14 @@
   <main id="main-content">
     <section class="section --spacious home-banner">
       <div class="banner-slides">
-        <img src="/assets/img//home/feature/1600/{{headerImages.[0]}}"
-          srcset="/assets/img/home/feature/800/{{headerImages.[0]}} 800w, /assets/img/home/feature/1600/{{headerImages.[0]}} 1600w"
-          alt="" />
+        <img src="/assets/img//home/feature/1600/{{headerImages.[0].file}}"
+          srcset="/assets/img/home/feature/800/{{headerImages.[0].file}} 800w, /assets/img/home/feature/1600/{{headerImages.[0].file}} 1600w"
+          alt="{{headerImages.[0].alt}}" />
         <template>
           {{#each (reverse headerImages) }}
-          <img src="/assets/img/home/feature/1600/{{this}}"
-            srcset="/assets/img/home/feature/800/{{this}} 800w, /assets/img/home/feature/1600/{{this}} 1600w"
-            alt="" />
+          <img src="/assets/img/home/feature/1600/{{this.file}}"
+            srcset="/assets/img/home/feature/800/{{this.file}} 800w, /assets/img/home/feature/1600/{{this.file}} 1600w"
+            alt="{{this.alt}}" />
           {{/each}}
           <button aria-label="Pause background animation">{{> global/icon i="pause" size="32"}}</button>
         </template>
@@ -80,7 +80,7 @@
           <a href="{{this.link}}" aria-label="{{this.title}}">
             <article class="resultcard resultcard--collection">
               <figure class="resultcard__figure">
-                <img src="{{this.figure}}" alt="" />
+                <img src="{{this.figure}}" alt="{{this.alt}}" />
               </figure>
               <div class="resultcard__info">
                 <h3 class="resultcard__title">{{this.title}}</h3>
@@ -103,7 +103,7 @@
 
         <article class="resultcard resultcard--collection">
           <figure class="resultcard__figure">
-            <img src="{{ this.figure }}" alt="" />
+            <img src="{{ this.figure }}" alt="{{#if this.alt}}{{ this.alt }}{{else}}{{ this.title }}{{/if}}" />
           </figure>
           <div class="resultcard__info">
             <h3 class="resultcard__title">{{ this.title }}</h3>
@@ -160,7 +160,7 @@
           <a href="{{ this.link }}" aria-label="{{ this.title }}">
             <article class="resultcard resultcard--dark {{#if type}}resultcard--{{ this.type }}{{/if}}">
               <figure class="resultcard__figure">
-                <img src="{{ this.figure }}" alt="" />
+                <img src="{{ this.figure }}" alt="{{#if this.alt}}{{ this.alt }}{{else}}{{ this.title }}{{/if}}" />
               </figure>
               <div class="resultcard__info">
                 <h3 class="resultcard__title">{{ this.title }}</h3>

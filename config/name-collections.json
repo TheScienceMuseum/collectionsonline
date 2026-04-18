@@ -1,5 +1,5 @@
 {
-  "_comment": "Name collections carousel on the homepage. Featured entries appear first, then random popular collectors fill to `count`. Descriptions auto-populate from description-boxes/collection.json when the `collector` key matches. Collections with no image (neither configured nor found in ES) are dropped.",
+  "_comment": "Name collections carousel on the homepage. Featured entries appear first, then random popular collectors fill to `count`. Descriptions auto-populate from description-boxes/collection.json when the `collector` key matches. Collections with no image (neither configured nor found in ES) are dropped. Optional `alt` overrides the default alt text (collector name) — set this where a configured `figure` depicts something more specific than the collection name.",
 
   "enabled": true,
 
@@ -21,9 +21,9 @@
 
   "featured": [
     { "collector": "BBC Heritage Collection" },
-    { "collector": "Daily Herald Archive", "figure": "/assets/img/home/collections/daily-herald-archive.jpg" },
+    { "collector": "Daily Herald Archive", "figure": "/assets/img/home/collections/daily-herald-archive.jpg", "alt": "Press photograph from the Daily Herald Archive" },
     { "collector": "Monotype Corporation Collection" },
-    { "collector": "Stephen Hawking\u2019s Office", "figure": "/assets/img/home/collections/stephen-hawkings-office.jpg" },
+    { "collector": "Stephen Hawking\u2019s Office", "figure": "/assets/img/home/collections/stephen-hawkings-office.jpg", "alt": "Stephen Hawking\u2019s office with his desk, wheelchair and personal belongings" },
     { "collector": "The Worshipful Company of Clockmakers" }
   ],
 
