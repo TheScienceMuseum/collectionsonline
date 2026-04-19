@@ -13,15 +13,16 @@ testWithServer('Request for login Page', {}, async (t, ctx) => {
   t.end();
 }, true);
 
-testWithServer('Attempt to acces the home page without authorisation', {}, async (t, ctx) => {
+testWithServer('Attempt to acces the home page without authorisation returns 401 for JSON clients', {}, async (t, ctx) => {
   t.plan(1);
 
-  const htmlRequest = {
+  const jsonRequest = {
     method: 'GET',
-    url: '/'
+    url: '/',
+    headers: { Accept: 'application/json' }
   };
 
-  const res = await ctx.server.inject(htmlRequest);
+  const res = await ctx.server.inject(jsonRequest);
   t.equal(res.statusCode, 401, 'Status code was 401 not authorized');
   t.end();
 }, true);
