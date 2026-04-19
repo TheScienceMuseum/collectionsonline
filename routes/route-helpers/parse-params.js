@@ -60,9 +60,17 @@ module.exports = function (urlParams) {
     } else if (exclude.indexOf(cat) === -1) {
       categories[cat] = utils.uppercaseFirstChar(categories[cat]);
     } else {
-      // Excluded filters: decode but do not title-case (ES terms are stored lowercase)
-      const applyDecode = v =>
-        typeof v === 'string' ? decodeURIComponent(dashToSpace(v)) : v;
+      // Excluded filters: decode but do not title-case (ES terms are stored lowercase).
+      // Apply decodeURIComponent twice to cover both the server path (Hapi pre-decodes
+      // %25→%, so %252D → %2D → -) and the SPA client path (no pre-decode, so the raw
+      // %252D needs two passes to reach -). The second pass is a no-op server-side.
+      const applyDecode = v => {
+        if (typeof v !== 'string') return v;
+        let s = dashToSpace(v);
+        try { s = decodeURIComponent(s); } catch (e) { /* malformed, keep as-is */ }
+        try { s = decodeURIComponent(s); } catch (e) { /* malformed, keep as-is */ }
+        return s;
+      };
       categories[cat] = Array.isArray(categories[cat])
         ? categories[cat].map(applyDecode)
         : applyDecode(categories[cat]);
