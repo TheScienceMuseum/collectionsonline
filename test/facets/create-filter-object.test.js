@@ -117,6 +117,72 @@ test(file + 'The filter people array do not include a term filter of a wrong dat
   t.end();
 });
 
+test(file + 'Category filter is case-insensitive via term + case_insensitive (not a plain terms query)', (t) => {
+  // category.name.keyword has no lowercase normalizer, so a plain `terms` query
+  // was case-sensitive and relied on our title-case heuristic matching the exact ES
+  // value. The bool.should / term / case_insensitive form removes that dependency —
+  // e.g. "Photographic Collections (railway)" (from the URL) will match the ES
+  // value "Photographic Collections (Railway)" regardless of the parenthesised word's case.
+  const query = { 'filter[categories]': 'Photographic Collections (railway)' };
+  const queryParams = createQueryParams('html', { query, params: { type: 'objects' } });
+  const filters = createFilters(queryParams, 'object');
+
+  const categoryFilter = filters.bool.filter.find(
+    (f) => f.bool && f.bool.should && f.bool.should[0] && f.bool.should[0].term && f.bool.should[0].term['category.name.keyword']
+  );
+  t.ok(categoryFilter, 'category filter is a bool.should of term queries');
+  t.ok(
+    categoryFilter.bool.should.every((c) => c.term['category.name.keyword'].case_insensitive === true),
+    'every term candidate has case_insensitive: true'
+  );
+  t.ok(
+    categoryFilter.bool.should.some((c) => c.term['category.name.keyword'].value === 'Photographic Collections (railway)'),
+    'original value is a candidate'
+  );
+  t.notOk(
+    filters.bool.filter.some((f) => f.terms && f.terms['category.name.keyword']),
+    'no legacy terms query for category.name.keyword remains'
+  );
+  t.end();
+});
+
+test(file + 'Occupation, material and object_type keyword filters use case_insensitive term queries', (t) => {
+  // occupation.value.keyword, material.value.keyword and name.value.keyword (for object_type)
+  // are case-sensitive keyword fields in ES with no .lower normalizer. A plain `terms`
+  // query would require the URL/user case to exactly match the stored case — e.g.
+  // "Make-up artist" vs "make-up artist", "Copper alloy" vs "copper alloy". Using
+  // term + case_insensitive: true wrapped in bool.should removes this dependency.
+  const cases = [
+    { filter: 'occupation', queryType: 'people', value: 'Make-up Artist', field: 'occupation.value.keyword' },
+    { filter: 'material', queryType: 'objects', value: 'Copper Alloy', field: 'material.value.keyword' },
+    { filter: 'object_type', queryType: 'objects', value: 'Film Poster', field: 'name.value.keyword' }
+  ];
+
+  cases.forEach(({ filter, queryType, value, field }) => {
+    const query = { ['filter[' + filter + ']']: value };
+    const queryParams = createQueryParams('html', { query, params: { type: queryType } });
+    const filters = createFilters(queryParams, queryType === 'people' ? 'agent' : 'object');
+
+    const match = filters.bool.filter.find(
+      (f) => f.bool && f.bool.should && f.bool.should[0] && f.bool.should[0].term && f.bool.should[0].term[field]
+    );
+    t.ok(match, filter + ': filter uses bool.should of term queries');
+    t.ok(
+      match.bool.should.every((c) => c.term[field].case_insensitive === true),
+      filter + ': every term candidate has case_insensitive: true'
+    );
+    t.ok(
+      match.bool.should.some((c) => c.term[field].value === value),
+      filter + ': original value is a candidate'
+    );
+    t.notOk(
+      filters.bool.filter.some((f) => f.terms && f.terms[field]),
+      filter + ': no legacy terms query for ' + field + ' remains'
+    );
+  });
+  t.end();
+});
+
 test(file + 'The filter people array do not include a term filter of a wrong date format - fiter by create-filter', (t) => {
   const query = queryString.parse('q=ada&filter%5Bdate%5Bfrom%5D%5D=wrongDate&page%5Bsize%5D=50');
   const queryParams = createQueryParams('html', { query, params: { type: 'objects' } });

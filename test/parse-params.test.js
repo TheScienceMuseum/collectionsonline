@@ -269,6 +269,28 @@ test('filter values with commas decoded correctly (no backslash escaping)', func
   t.end();
 });
 
+test('SPA client path: excluded filter values with raw %252D decode via two decodeURIComponent passes', function (t) {
+  // On the SPA (page.js) route the browser does not pre-decode the URL, so the raw
+  // %252D reaches parseParams and must be decoded twice to become a literal hyphen.
+  // This test mirrors a user clicking an occupation filter link without a full page load.
+  t.deepEqual(
+    parseParameters({ filters: 'people/occupation/make%252dup-artist' }),
+    { params: { type: 'people' }, categories: { occupation: 'make-up artist' } },
+    'occupation with %252D decodes correctly on the SPA path'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'objects/object_type/black%252dand%252dwhite-print' }),
+    { params: { type: 'objects' }, categories: { object_type: 'black-and-white print' } },
+    'object_type with multiple %252D decodes correctly on the SPA path'
+  );
+  t.deepEqual(
+    parseParameters({ filters: 'objects/material/stainless%252dsteel+brushed-aluminium' }),
+    { params: { type: 'objects' }, categories: { material: ['stainless-steel', 'brushed aluminium'] } },
+    'multi-value material filter with %252D decoded correctly on the SPA path'
+  );
+  t.end();
+});
+
 test('categories with single-dash still title-cased correctly', function (t) {
   t.deepEqual(
     parseParameters({ filters: 'objects/categories/art' }),
