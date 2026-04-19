@@ -1,4 +1,5 @@
 const Boom = require('@hapi/boom');
+const contentType = require('../route-helpers/content-type.js');
 const isDevelopment = (process.env.NODE_ENV || 'development') === 'development';
 
 // Heavily based on the excellent https://github.com/dwyl/hapi-error
@@ -15,12 +16,13 @@ exports.plugin = {
 
       const error = new Boom.Boom(request.response);
       const accept = request.headers.accept || '';
+      const wants = contentType(request);
 
       if (error.output.statusCode >= 500) {
         console.error(error.stack);
       }
 
-      if (accept.indexOf('text/html') === 0) {
+      if (wants === 'html') {
         // Respond with an error template
         if (error.output.statusCode === 401) {
           return h.redirect('/login');
