@@ -1,18 +1,7 @@
-const ponyfillFetch = require('fetch-ponyfill')().fetch;
-
-// Use the AWS WAF Application Integration SDK's fetch wrapper when available.
-// It catches 202 Challenge responses from WAF, solves the silent PoW, refreshes
-// the aws-waf-token cookie, and retries the request transparently. Falls back
-// to the ponyfill in test environments where the SDK global isn't present.
-function wafAwareFetch (url, opts) {
-  if (typeof window !== 'undefined' && window.AwsWafIntegration && typeof window.AwsWafIntegration.fetch === 'function') {
-    return window.AwsWafIntegration.fetch(url, opts);
-  }
-  return ponyfillFetch(url, opts);
-}
+const fetch = require('fetch-ponyfill')().fetch;
 
 module.exports = function (url, opts, cb) {
-  wafAwareFetch(url, opts)
+  fetch(url, opts)
     .then(function (res) {
       if (res.ok) {
         return res.json();
