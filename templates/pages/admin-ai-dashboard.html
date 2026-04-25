@@ -1,0 +1,190 @@
+{{#if dynamoUnavailable}}
+<div class="admin-banner admin-banner--warn">DynamoDB is unavailable. Dashboard shows zeroed values.</div>
+{{/if}}
+{{#if error}}
+<div class="admin-banner">Error: {{error}}</div>
+{{/if}}
+
+{{#if stats}}
+
+{{> admin-headline-strip stats=stats}}
+
+<div class="dashboard-grid">
+
+  {{!-- Status breakdown --}}
+  <section class="dashboard-panel">
+    <h3>Status</h3>
+    {{#if stats.totals.biographies}}
+    <table class="dashboard-bars">
+      <tr>
+        <th>Live</th>
+        <td><span class="dashboard-bar dashboard-bar--live" style="width: {{percentOf stats.totals.live stats.totals.biographies}}%;"></span></td>
+        <td class="dashboard-bars__count">{{stats.totals.live}}</td>
+      </tr>
+      <tr>
+        <th>Flagged</th>
+        <td><span class="dashboard-bar dashboard-bar--flagged" style="width: {{percentOf stats.totals.flagged stats.totals.biographies}}%;"></span></td>
+        <td class="dashboard-bars__count">{{stats.totals.flagged}}</td>
+      </tr>
+      <tr>
+        <th>Hidden</th>
+        <td><span class="dashboard-bar dashboard-bar--hidden" style="width: {{percentOf stats.totals.hidden stats.totals.biographies}}%;"></span></td>
+        <td class="dashboard-bars__count">{{stats.totals.hidden}}</td>
+      </tr>
+      <tr>
+        <th>Insufficient data</th>
+        <td><span class="dashboard-bar dashboard-bar--insufficient_data" style="width: {{percentOf stats.totals.insufficient_data stats.totals.biographies}}%;"></span></td>
+        <td class="dashboard-bars__count">{{stats.totals.insufficient_data}}</td>
+      </tr>
+    </table>
+    {{#if stats.totals.liveSuppressed}}
+    <p class="dashboard-panel__note">{{stats.totals.liveSuppressed}} of {{stats.totals.live}} live {{#isequal stats.totals.liveSuppressed 1 this}}record is{{else}}records are{{/isequal}} suppressed on the public site by the living-person policy.</p>
+    {{/if}}
+    {{else}}
+    <p class="dashboard-panel__note">No biographies yet.</p>
+    {{/if}}
+  </section>
+
+  {{!-- Subjects --}}
+  <section class="dashboard-panel">
+    <h3>Subjects</h3>
+    {{#if stats.totals.biographies}}
+    <table class="dashboard-bars">
+      <tr>
+        <th>People</th>
+        <td><span class="dashboard-bar dashboard-bar--neutral" style="width: {{percentOf stats.subjects.person stats.totals.biographies}}%;"></span></td>
+        <td class="dashboard-bars__count">{{stats.subjects.person}}</td>
+      </tr>
+      <tr>
+        <th>Companies</th>
+        <td><span class="dashboard-bar dashboard-bar--neutral" style="width: {{percentOf stats.subjects.company stats.totals.biographies}}%;"></span></td>
+        <td class="dashboard-bars__count">{{stats.subjects.company}}</td>
+      </tr>
+      <tr>
+        <th>Organisations</th>
+        <td><span class="dashboard-bar dashboard-bar--neutral" style="width: {{percentOf stats.subjects.organisation stats.totals.biographies}}%;"></span></td>
+        <td class="dashboard-bars__count">{{stats.subjects.organisation}}</td>
+      </tr>
+      {{#if stats.subjects.unknown}}
+      <tr>
+        <th title="Classification missing from the stored record — older biographies generated before subjectType was added.">Unknown</th>
+        <td><span class="dashboard-bar dashboard-bar--neutral" style="width: {{percentOf stats.subjects.unknown stats.totals.biographies}}%;"></span></td>
+        <td class="dashboard-bars__count">{{stats.subjects.unknown}}</td>
+      </tr>
+      {{/if}}
+    </table>
+    {{else}}
+    <p class="dashboard-panel__note">No biographies yet.</p>
+    {{/if}}
+  </section>
+
+  {{!-- Costs --}}
+  <section class="dashboard-panel" id="costs">
+    <h3>Spend</h3>
+    <dl class="dashboard-meta">
+      <dt>This month</dt><dd>{{stats.costs.thisMonthFormatted}}</dd>
+      <dt>Last 30 days</dt><dd>{{stats.costs.last30DaysFormatted}}</dd>
+      <dt>Lifetime</dt><dd>{{stats.costs.lifetimeFormatted}}</dd>
+    </dl>
+    {{#if stats.costs.byModel.length}}
+    <h4 class="dashboard-panel__subhead">By model</h4>
+    <table class="dashboard-bars">
+      {{#each stats.costs.byModel}}
+      <tr>
+        <th>{{this.label}}</th>
+        <td><span class="dashboard-bar dashboard-bar--neutral" style="width: {{percentOf this.count ../stats.totals.biographies}}%;"></span></td>
+        <td class="dashboard-bars__count">{{this.costFormatted}} <small style="color:#888;">· {{this.count}}</small></td>
+      </tr>
+      {{/each}}
+    </table>
+    {{/if}}
+    {{#if stats.costs.unknownModelCount}}
+    <p class="dashboard-panel__note">{{stats.costs.unknownModelCount}} {{#isequal stats.costs.unknownModelCount 1 this}}record{{else}}records{{/isequal}} generated with a model that's no longer in the registry — cost unknown, excluded from totals.</p>
+    {{/if}}
+  </section>
+
+  {{!-- Activity --}}
+  <section class="dashboard-panel" id="activity">
+    <h3>Activity</h3>
+    <dl class="dashboard-meta">
+      <dt>This week</dt><dd>+{{stats.activity.thisWeek}}</dd>
+      <dt>Last week</dt><dd>+{{stats.activity.lastWeek}}</dd>
+    </dl>
+    <h4 class="dashboard-panel__subhead">Last 8 weeks</h4>
+    <div class="dashboard-sparkline" title="New biographies generated per ISO week. Oldest week on the left, most recent on the right.">
+      {{#each stats.activity.byWeek}}
+      <div class="dashboard-sparkline__bar" title="{{this.weekStart}}: {{this.count}} generated" style="height: {{percentOf this.count ../stats.activity.maxWeekCount}}%;">
+        <span class="dashboard-sparkline__count">{{this.count}}</span>
+      </div>
+      {{/each}}
+    </div>
+  </section>
+
+  {{!-- Flags --}}
+  <section class="dashboard-panel">
+    <h3>Public reports</h3>
+    <dl class="dashboard-meta">
+      <dt>Pending</dt><dd>{{stats.flags.pendingReports}}{{#if stats.flags.pendingAcrossRecords}} <small style="color:#888;">across {{stats.flags.pendingAcrossRecords}} {{#isequal stats.flags.pendingAcrossRecords 1 this}}record{{else}}records{{/isequal}}</small>{{/if}}</dd>
+      <dt>Lifetime</dt><dd>{{stats.flags.lifetimeReports}}</dd>
+    </dl>
+    {{#if stats.flags.topReasons.length}}
+    <h4 class="dashboard-panel__subhead">Top reasons</h4>
+    <ul class="dashboard-list">
+      {{#each stats.flags.topReasons}}
+      <li><span class="dashboard-list__label">{{this.reason}}</span><span class="dashboard-list__count">{{this.count}}</span></li>
+      {{/each}}
+    </ul>
+    {{/if}}
+    <h4 class="dashboard-panel__subhead">Staff activity</h4>
+    <dl class="dashboard-meta">
+      <dt>Flagged records</dt><dd>{{stats.staff.flaggedRecords}}</dd>
+      <dt>Notes</dt><dd>{{stats.staff.notes}}</dd>
+    </dl>
+  </section>
+
+  {{!-- Skip reasons --}}
+  <section class="dashboard-panel">
+    <h3>Why records are skipped</h3>
+    {{#if stats.skipReasons.length}}
+    <ul class="dashboard-list">
+      {{#each stats.skipReasons}}
+      <li><span class="dashboard-list__label">{{this.reason}}</span><span class="dashboard-list__count">{{this.count}}</span></li>
+      {{/each}}
+    </ul>
+    {{else}}
+    <p class="dashboard-panel__note">Nothing in the insufficient-data bucket.</p>
+    {{/if}}
+  </section>
+
+</div>
+
+{{!-- Exports + backup. Kept together at the foot of the dashboard so the
+      flow of the page is "numbers at the top, actions at the bottom". --}}
+<section class="dashboard-panel" style="margin-top: 1rem;">
+  <h3>Downloads</h3>
+  <ul class="dashboard-list">
+    <li>
+      <span class="dashboard-list__label"><a href="/admin/ai/export.csv?status=flagged">Export flagged records (CSV)</a></span>
+      <span class="dashboard-list__count">one row per flagged record</span>
+    </li>
+    <li>
+      <span class="dashboard-list__label"><a href="/admin/ai/export.csv?status=all">Export all records (CSV)</a></span>
+      <span class="dashboard-list__count">one row per biography</span>
+    </li>
+    <li>
+      <span class="dashboard-list__label"><a href="/admin/ai/export-summary.csv">Management summary (CSV)</a></span>
+      <span class="dashboard-list__count">Metric / Value for monthly report</span>
+    </li>
+    <li>
+      <span class="dashboard-list__label"><a href="/admin/ai/backup.jsonl.gz">Full backup (JSONL, gzipped)</a></span>
+      <span class="dashboard-list__count">every item — restore via <code>scripts/restore-from-backup.js</code></span>
+    </li>
+  </ul>
+</section>
+
+<p class="dashboard-footer">
+  Stats cached — recomputed every 5 minutes. Last computed <span title="{{stats.computedAt}}">{{formatDate stats.computedAt "short"}}</span>.
+  Living-person policy: <strong>{{#if includeLiving}}release{{else}}suppress{{/if}}</strong> on public site (<code>aiBiographyIncludeLiving</code>).
+</p>
+
+{{/if}}

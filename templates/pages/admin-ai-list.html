@@ -6,32 +6,55 @@
 <div class="admin-banner">Error: {{error}}</div>
 {{/if}}
 
-<form method="GET" action="/admin/ai" style="margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center;">
-  <input type="text" name="search" value="{{search}}" placeholder="Search by record ID (e.g. cp37054)" style="padding: 0.4rem 0.6rem; border: 1px solid #444; border-radius: 4px; background: #1a1a1a; color: #eee; flex: 1; max-width: 300px;">
+{{#if headlineStats}}
+{{> admin-headline-strip stats=headlineStats}}
+{{/if}}
+
+<form method="GET" action="/admin/ai" style="margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+  <input type="text" name="search" value="{{search}}" placeholder="Search by ID, name, or URL" title="Examples: cp37054 · Isaac Newton · /people/cp37054" style="padding: 0.4rem 0.6rem; border: 1px solid #444; border-radius: 4px; background: #1a1a1a; color: #eee; flex: 1; min-width: 200px; max-width: 300px;">
+  <select name="promptVersion" style="padding: 0.4rem 0.6rem; border: 1px solid #444; border-radius: 4px; background: #1a1a1a; color: #eee;">
+    <option value="">All prompt versions</option>
+    {{#each availableVersions}}
+    <option value="{{this}}" {{#isequal this ../promptVersionFilter this}}selected{{/isequal}}>{{this}}</option>
+    {{/each}}
+  </select>
+  <select name="model" style="padding: 0.4rem 0.6rem; border: 1px solid #444; border-radius: 4px; background: #1a1a1a; color: #eee;">
+    <option value="">All models</option>
+    {{#each availableModels}}
+    <option value="{{this.id}}" {{#isequal this.id ../modelFilter this}}selected{{/isequal}}>{{this.label}}</option>
+    {{/each}}
+  </select>
   <input type="hidden" name="status" value="{{currentStatus}}">
-  <button type="submit" class="btn btn--secondary">Search</button>
-  {{#if search}}<a href="/admin/ai?status={{currentStatus}}" style="color: #aaa; font-size: 0.85rem;">Clear</a>{{/if}}
+  <button type="submit" class="btn btn--secondary">Apply</button>
+  {{#if search}}<a href="/admin/ai?status={{currentStatus}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}" style="color: #aaa; font-size: 0.85rem;">Clear search</a>{{/if}}
+  {{#if promptVersionFilter}}<a href="/admin/ai?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}" style="color: #aaa; font-size: 0.85rem;">Clear version filter</a>{{/if}}
+  {{#if modelFilter}}<a href="/admin/ai?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}" style="color: #aaa; font-size: 0.85rem;">Clear model filter</a>{{/if}}
 </form>
 
-<div class="filter-tabs">
-  <a href="/admin/ai?status=all" class="{{#isequal currentStatus "all" this}}active{{/isequal}}">All</a>
-  <a href="/admin/ai?status=live" class="{{#isequal currentStatus "live" this}}active{{/isequal}}">Live</a>
-  <a href="/admin/ai?status=flagged" class="{{#isequal currentStatus "flagged" this}}active{{/isequal}}">Flagged</a>
-  <a href="/admin/ai?status=hidden" class="{{#isequal currentStatus "hidden" this}}active{{/isequal}}">Hidden</a>
-  <a href="/admin/ai?status=insufficient_data" class="{{#isequal currentStatus "insufficient_data" this}}active{{/isequal}}">Insufficient Data</a>
+<div class="filter-tabs" style="justify-content: space-between;">
+  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+    <a href="/admin/ai?status=all" class="{{#isequal currentStatus "all" this}}active{{/isequal}}">All</a>
+    <a href="/admin/ai?status=live" class="{{#isequal currentStatus "live" this}}active{{/isequal}}">Live</a>
+    <a href="/admin/ai?status=flagged" class="{{#isequal currentStatus "flagged" this}}active{{/isequal}}">Flagged</a>
+    <a href="/admin/ai?status=hidden" class="{{#isequal currentStatus "hidden" this}}active{{/isequal}}">Hidden</a>
+    <a href="/admin/ai?status=insufficient_data" class="{{#isequal currentStatus "insufficient_data" this}}active{{/isequal}}">Insufficient Data</a>
+  </div>
+  <a href="/admin/ai/export.csv?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}" style="padding: 0.3em 0.7em; border-radius: 3px; background: #333; color: #ccc; text-decoration: none; font-size: 0.85rem;" title="Download the current filtered view as CSV — opens in Excel / Sheets.">Export CSV</a>
 </div>
 
 {{#if records.length}}
 <table>
   <thead>
     <tr>
-      <th>Person / Company</th>
+      <th>Record</th>
       <th>Status</th>
+      <th title="Pending public reports on this record · lifetime total">Reports</th>
+      <th aria-label="Internal flags and notes" title="Indicates staff flags or notes on this record. Open the record for detail."></th>
+      <th title="Weighted score of data signals present at generation time (strong anchors count for more). Records below the configured minimum are auto-skipped as insufficient_data.">Score</th>
       <th>Model</th>
       <th>Prompt</th>
       <th>Tokens</th>
       <th>Generated</th>
-      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -41,14 +64,42 @@
         <a href="/admin/ai/{{this.PK}}">{{this.personName}}</a>
         <br><small><a href="{{this.pageUrl}}" target="_blank">{{this.PK}}</a></small>
       </td>
-      <td><span class="badge badge--{{this.status}}">{{this.status}}</span></td>
-      <td><small>{{this.model}}</small></td>
-      <td><small>{{this.promptVersion}}</small></td>
-      <td><small>{{this.inputTokens}} / {{this.outputTokens}}</small></td>
-      <td><small>{{this.generatedAt}}</small></td>
       <td>
-        <a href="/admin/ai/{{this.PK}}" class="btn btn--secondary">View</a>
+        {{#isequal this.publicVisibility "hidden" this}}
+        <span class="badge badge--{{this.status}} badge--restricted" title="Stored status is {{this.status}} — biography is generated normally, but the public site suppresses it while aiBiographyIncludeLiving is off.">{{this.status}}</span>
+        {{else}}
+        <span class="badge badge--{{this.status}}">{{this.status}}</span>
+        {{/isequal}}
       </td>
+      <td>
+        {{#if this.publicReports}}
+          {{#isequal this.flagSeverity "high" this}}
+            <small title="{{this.publicReports.pendingFlags}} pending · {{this.publicReports.totalFlags}} lifetime" style="color: #e99; font-weight: 600;">{{this.publicReports.pendingFlags}} new</small>
+          {{/isequal}}
+          {{#isequal this.flagSeverity "some" this}}
+            <small title="{{this.publicReports.pendingFlags}} pending · {{this.publicReports.totalFlags}} lifetime" style="color: #c96; font-weight: 600;">{{this.publicReports.pendingFlags}} new</small>
+          {{/isequal}}
+          {{#unless this.flagSeverity}}
+            <small title="{{this.publicReports.totalFlags}} lifetime, all addressed" style="color: #888;">{{this.publicReports.totalFlags}} old</small>
+          {{/unless}}
+        {{else}}
+          <small style="color: #666;">—</small>
+        {{/if}}
+      </td>
+      <td style="white-space: nowrap;">
+        {{#if this.staffSummary.flagCount}}<small title="Staff flag(s) on this record" style="display: inline-block; font-size: 0.7rem; padding: 0 0.35rem; border-radius: 3px; background: rgba(204, 153, 102, 0.15); color: #c96; border: 1px solid rgba(204, 153, 102, 0.4);">flag</small>{{/if}}{{#if this.staffSummary.noteCount}}{{#if this.staffSummary.flagCount}} {{/if}}<small title="Staff note(s) on this record" style="display: inline-block; font-size: 0.7rem; padding: 0 0.35rem; border-radius: 3px; background: rgba(255, 255, 255, 0.05); color: #aaa; border: 1px solid rgba(255, 255, 255, 0.15);">note</small>{{/if}}{{#unless this.staffSummary.flagCount}}{{#unless this.staffSummary.noteCount}}<small style="color: #666;">—</small>{{/unless}}{{/unless}}
+      </td>
+      <td>
+        {{#if this.signalMaxScore}}
+          <small title="Weighted signal score at generation time">{{this.signalScore}} / {{this.signalMaxScore}}</small>
+        {{else}}
+          <small style="color: #666;">—</small>
+        {{/if}}
+      </td>
+      <td><small>{{#if this.model}}{{this.model}}{{else}}<span style="color: #666;">—</span>{{/if}}</small></td>
+      <td><small>{{#if this.promptVersion}}{{this.promptVersion}}{{else}}<span style="color: #666;">—</span>{{/if}}</small></td>
+      <td><small>{{#if this.inputTokens}}{{this.inputTokens}} / {{this.outputTokens}}{{else}}<span style="color: #666;">—</span>{{/if}}</small></td>
+      <td><small title="{{formatDate this.generatedAt}} · raw: {{this.generatedAt}}">{{formatDate this.generatedAt "auto"}}</small></td>
     </tr>
     {{/each}}
   </tbody>

@@ -189,4 +189,151 @@
     border-top: 1px solid rgba(255, 255, 255, 0.15);
     margin: 1.2rem 0;
   }
+
+  // "Report a problem" widget — deliberately quiet, text-link style (Option A).
+  // The goal is that someone spotting a factual error can act on it easily,
+  // while the vast majority of visitors barely notice it. No loud colour, no
+  // icon, no prominent button.
+  // Extra breathing room above/below the report widget so it reads as a
+  // distinct "coda" after the content, not a trailing scrap.
+  .ai-biography__divider--report {
+    margin-top: 1.75rem;
+  }
+
+  .ai-biography-flag {
+    margin-top: 0.75rem;
+    padding-bottom: 0.5rem;
+    font-size: 0.85rem;
+
+    &__prompt {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    &__trigger {
+      background: none;
+      border: none;
+      padding: 0;
+      margin-left: 0.25rem;
+      color: inherit;
+      font: inherit;
+      text-decoration: underline;
+      cursor: pointer;
+
+      &:hover,
+      &:focus { color: #fff; }
+
+      // When open, the trigger is also the close control. Keep it visually
+      // stable — no drastic change — but drop the underline so it reads as
+      // "currently-active" rather than "clickable link".
+      &[aria-expanded="true"] { text-decoration: none; color: #fff; }
+    }
+
+    &__form {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      // Must explicitly re-honour [hidden] because `display: flex` above
+      // overrides the UA stylesheet's `[hidden] { display: none }` rule.
+      &[hidden] { display: none; }
+    }
+
+    // Single-row layout — select + submit + cancel on one line, wrapping to
+    // a new row on narrow viewports.
+    &__row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    // Custom-styled native <select> — appearance:none strips the UA chevron
+    // so we can draw our own via background-image. Keeps native keyboard /
+    // accessibility behaviour while looking consistent on Chrome / Safari /
+    // Firefox.
+    &__reason {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      font: inherit;
+      font-size: 0.9rem;
+      padding: 0.5rem 2.25rem 0.5rem 0.75rem;
+      background-color: rgba(0, 0, 0, 0.3);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 3px;
+      cursor: pointer;
+      flex: 1 1 14rem;
+      transition: border-color 0.15s ease;
+
+      // Chevron icon — inline SVG so no external asset.
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23ccc' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M2 4.5l4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 10px;
+
+      &:hover { border-color: rgba(255, 255, 255, 0.4); }
+      // Focus indication by border-brightening rather than an outline ring.
+      // More restrained than a halo, still clearly visible for keyboard
+      // users. `outline: none` + `box-shadow: none` suppresses native focus
+      // treatments across Chrome / Safari / Firefox.
+      &:focus {
+        outline: none;
+        box-shadow: none;
+        border-color: rgba(255, 255, 255, 0.65);
+      }
+    }
+
+    &__submit {
+      font: inherit;
+      font-size: 0.85rem;
+      padding: 0.5rem 1rem;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+
+      &:focus { outline: none; box-shadow: none; }
+      // Focus indicator: brighten the existing border (rather than adding a
+      // ring). Submit is already high-contrast (white on dark), so this is a
+      // subtle darken-outline via inset shadow — barely-there but present.
+      &:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.5) inset;
+      }
+    }
+
+    &__submit {
+      background: rgba(255, 255, 255, 0.9);
+      color: #000;
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      font-weight: 500;
+
+      &:hover:not(:disabled) { background: #fff; }
+      &:disabled { opacity: 0.5; cursor: not-allowed; }
+    }
+
+
+    // Visually hidden but present for bots to fill. Off-screen rather than
+    // display:none, because some bots skip display:none fields.
+    &__honeypot {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    &__thanks {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.7);
+      font-style: italic;
+    }
+
+    &__error {
+      margin: 0;
+      color: #e66;
+    }
+  }
 }

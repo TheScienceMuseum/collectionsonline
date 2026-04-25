@@ -37,11 +37,13 @@ createServer(elastic, config, async (err, ctx) => {
     console.warn('Cache unavailable at startup, running without cache:', err.message);
   }
 
-  // Initialise DynamoDB client for AI biographies.
+  // Initialise DynamoDB clients for AI biographies.
   try {
     const dynamo = require('../lib/ai/dynamo');
+    const flagStore = require('../lib/ai/flag-store');
     dynamo.init(config);
-    console.log('DynamoDB connected:', dynamo.isReady());
+    flagStore.init(config);
+    console.log('DynamoDB connected:', dynamo.isReady(), '· flag-store:', flagStore.isReady());
   } catch (err) {
     console.warn('DynamoDB unavailable, AI biographies will not be persisted:', err.message);
   }

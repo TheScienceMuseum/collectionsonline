@@ -24,12 +24,69 @@ module.exports = require('rc')('co', {
     tableName: process.env.DYNAMODB_TABLE || 'collectionsonline-ai'
   },
   aiBiographyEnabled: process.env.AI_BIOGRAPHY_ENABLED === 'true',
-  aiBiographyModel: process.env.AI_BIOGRAPHY_MODEL || 'claude-3-haiku-20240307',
+  aiBiographyModel: process.env.AI_BIOGRAPHY_MODEL || 'claude-haiku-4-5-20251001',
+  // Which prompt version to use by default when generating biographies.
+  // See prompts/biographies/README.md for the authoring workflow.
+  // If unset, the system picks the latest version by filename sort order.
+  aiBiographyPromptVersion: process.env.AI_BIOGRAPHY_PROMPT_VERSION || '',
   anthropicApiKey: process.env.ANTHROPIC_API_KEY || '',
   // Token for /admin/ai routes. Falls back to cacheClearToken if not set.
   adminToken: process.env.ADMIN_TOKEN || '',
   // Skip AI biography generation if existing description exceeds this (chars)
   aiBiographyMaxExistingChars: parseInt(process.env.AI_BIO_MAX_EXISTING_CHARS, 10) || 500,
   // Suppress original description and show only AI biography if under this (chars)
-  aiBiographySuppressExistingChars: parseInt(process.env.AI_BIO_SUPPRESS_EXISTING_CHARS, 10) || 50
+  aiBiographySuppressExistingChars: parseInt(process.env.AI_BIO_SUPPRESS_EXISTING_CHARS, 10) || 50,
+  // Minimum concrete signals required in the source data before we call Claude.
+  // Records below this threshold are marked insufficient_data without
+  // generation. See lib/ai/assess-sufficiency.js for the signal list.
+  aiBiographyMinSignals: parseInt(process.env.AI_BIO_MIN_SIGNALS, 10) || 2,
+  // When false (default), the generator skips records for living PEOPLE —
+  // subjects with no death date internally AND no death date in Wikidata.
+  // Companies and organisations are always eligible regardless of whether
+  // their dissolution is recorded, because (a) defamation risk is much
+  // lower for corporations and (b) dissolution dates are poorly tracked in
+  // the catalogue, so "active" often means "actually defunct, just not
+  // recorded". Lift this flag only after comms/legal are comfortable with
+  // the surface for contemporary people.
+  aiBiographyIncludeLiving: process.env.AI_BIOGRAPHY_INCLUDE_LIVING === 'true',
+  // Kill switch for the public "Report a problem" feature. When false the
+  // flag button is not rendered on biography blocks and the flag route
+  // returns 404. Default false — enable in .corc / env only when the
+  // feature is intentionally live.
+  aiBiographyPublicFlagEnabled: process.env.AI_BIOGRAPHY_PUBLIC_FLAG_ENABLED === 'true',
+  // Named admin users — an object of { username: token } pairs. When
+  // set, these take precedence over the shared adminToken for login.
+  // Attributed usernames flow through to staff notes / flags / reviews
+  // instead of always being 'admin'. The shared adminToken remains as a
+  // break-glass fallback. See lib/ai/admin-auth.js for resolution order.
+  //
+  // Two ways to populate (rc merges both — match your environment):
+  //
+  //   Local dev (.corc, NOT committed to git):
+  //     "adminUsers": { "jamie": "<token>", "alice": "<token>" }
+  //
+  //   Staging / production (env vars, no .corc on deploy):
+  //     co_adminUsers__jamie=<token>
+  //     co_adminUsers__alice=<token>
+  //     (rc's double-underscore = nested key; matches how
+  //      co_elasticsearch__node etc. already work in this project.)
+  //
+  // Tokens: generate with
+  //   node -e "console.log(require('crypto').randomBytes(16).toString('hex'))"
+  //
+  // Revoke: remove the user's entry (delete .corc line or unset env var)
+  // and restart / let nodemon pick it up. Live cookies fail the next
+  // request — no server-side session store to flush.
+  adminUsers: {},
+  // USD→GBP conversion rate used for cost display in the admin UI. Anthropic
+  // bills in USD; the museum talks about budget in GBP. Ballpark accuracy
+  // is fine — update occasionally if the rate drifts noticeably. Does NOT
+  // affect anything customer-facing or stored; admin display only.
+  aiBiographyGbpPerUsd: parseFloat(process.env.AI_BIOGRAPHY_GBP_PER_USD) || 0.80,
+  // AI Review (triage tool) — manually triggered per-record by staff to
+  // fact-check / sanity-check biographies when reports come in. Uses the
+  // premium model by default (deliberately expensive — "pay for quality
+  // when you click the button"). Kill switch for launch / emergencies.
+  aiBiographyReviewEnabled: process.env.AI_BIOGRAPHY_REVIEW_ENABLED === 'true',
+  aiBiographyReviewModel: process.env.AI_BIOGRAPHY_REVIEW_MODEL || 'claude-opus-4-7'
 });

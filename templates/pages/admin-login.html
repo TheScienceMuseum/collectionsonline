@@ -1,12 +1,13 @@
 <div style="max-width: 400px; margin: 4rem auto;">
-  <h2>Admin Login</h2>
+  <h2>Login</h2>
   {{#if error}}
   <div class="admin-banner">Invalid token. Please try again.</div>
   {{/if}}
   <form method="POST" action="/admin/ai/login">
     <div class="form-group">
-      <label for="token">Admin Token</label>
-      <input type="password" id="token" name="token" placeholder="Enter admin token" required autofocus />
+      <label for="token">Token</label>
+      <input type="password" id="token" name="token" placeholder="Paste your token" autocomplete="current-password" required autofocus />
+      <p style="font-size: 0.75rem; color: #888; margin: 0.3rem 0 0;">Your token identifies both you and your access.</p>
     </div>
     <button type="submit" class="btn btn--primary">Login</button>
   </form>

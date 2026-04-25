@@ -51,7 +51,16 @@ module.exports = async (elastic, config, cb) => {
     layout: 'default',
     layoutPath: './templates/layouts',
     partialsPath: './templates/partials',
-    helpersPath: './templates/helpers'
+    helpersPath: './templates/helpers',
+    // Global view context — merged into every h.view() render. Exposes
+    // the logged-in admin username (if any) so layouts can surface it
+    // in the header without every admin-route handler having to pass
+    // it individually. Empty string for unauthenticated / non-admin
+    // requests.
+    context: function (request) {
+      const cookieUser = request && request.state && request.state.adminUser;
+      return { loggedInUser: cookieUser || '' };
+    }
   });
 
   cb(null, { server, elastic });
