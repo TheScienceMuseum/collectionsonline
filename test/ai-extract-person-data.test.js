@@ -51,18 +51,53 @@ test('extractPersonData: handles missing fields gracefully', function (t) {
   t.end();
 });
 
-test('extractPersonData: calculates total description chars across all entries', function (t) {
+test('extractPersonData: separates brief biography from main biography', function (t) {
   const source = {
-    summary: { title: 'Test' },
+    summary: { title: 'John Smith' },
     description: [
-      { type: 'biography', value: '12345' },
-      { type: 'web description', value: '67890' }
+      { type: 'brief biography', value: 'active 1817-1839, optical & mathematical instrument maker, London, England' },
+      { type: 'biography', value: 'Traded at 126 High St., Wapping, (1817-39) & 35 Leicester Sq.(1836), both London, England' }
     ]
   };
 
   const result = extractPersonData(source);
-  t.equal(result.descriptionChars, 10, 'counts across all entries');
-  t.equal(result.biography, '12345', 'gets biography entry');
+  t.equal(result.briefBiography, 'active 1817-1839, optical & mathematical instrument maker, London, England', 'brief biography exposed separately');
+  t.equal(result.biography, 'Traded at 126 High St., Wapping, (1817-39) & 35 Leicester Sq.(1836), both London, England', 'main biography exposed separately');
+  t.equal(result.briefBiographyChars, 74, 'brief biography char count');
+  t.equal(result.descriptionChars, 89, 'main biography char count');
+  t.end();
+});
+
+test('extractPersonData: brief-biography-only record (e.g. cp38424)', function (t) {
+  const source = {
+    summary: { title: 'Lone Brief' },
+    description: [
+      { type: 'brief biography', value: 'active 1990s, recycled paper product manufacturer, Britain' }
+    ]
+  };
+  const result = extractPersonData(source);
+  t.equal(result.briefBiography.indexOf('active 1990s'), 0, 'brief biography captured');
+  t.equal(result.biography, '', 'main biography empty');
+  t.ok(result.briefBiographyChars > 0, 'brief char count populated');
+  // descriptionChars mirrors what the public template renders in the
+  // description.primary slot — for brief-only records that's the brief
+  // biography text, via getPrimaryValue's getFirst() fallback.
+  t.equal(result.descriptionChars, result.briefBiographyChars,
+    'descriptionChars reflects rendered text (brief biography)');
+  t.end();
+});
+
+test('extractPersonData: falls back to first entry when no typed match', function (t) {
+  const source = {
+    summary: { title: 'Test' },
+    description: [
+      { type: 'web description', value: 'first-text' }
+    ]
+  };
+
+  const result = extractPersonData(source);
+  t.equal(result.biography, 'first-text', 'falls back to first entry');
+  t.equal(result.briefBiography, '', 'no brief biography');
   t.end();
 });
 
