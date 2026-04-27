@@ -5,8 +5,16 @@ const Joi = require('joi');
 const Vision = require('@hapi/vision');
 const routes = require('./routes');
 const auth = require('./auth');
+const checkBundleFreshness = require('./lib/check-bundle-freshness');
 
 module.exports = async (elastic, config, cb) => {
+  // Boot-time sanity check — warns loudly if public/bundle.js is older
+  // than the source files baked into it. Catches the "I edited a partial
+  // but forgot to rebuild" failure mode before visitors notice. No-op in
+  // production where postinstall keeps the bundle current. See module
+  // header for context.
+  checkBundleFreshness();
+
   const server = new Hapi.Server({ port: config.port, routes: { cors: { origin: 'ignore' }, log: { collect: true } } });
   server.validator(Joi);
   server.route(routes(elastic, config));
