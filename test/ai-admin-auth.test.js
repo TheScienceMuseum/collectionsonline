@@ -120,24 +120,39 @@ test('validateCredentials: break-glass token with no username cookie → returns
   t.end();
 });
 
-test('validateCredentials: malformed username falls through to break-glass path', function (t) {
-  // A malformed username cookie (special chars, too short, etc.) is
-  // treated as "no username" by validateCredentials and falls through to
-  // the break-glass branch. The session itself remains valid because the
-  // token resolves correctly. Attribution-time injection is prevented
-  // separately by getStaffIdentity, which returns 'admin' for any
-  // non-USERNAME_RE-matching cookie value (covered below).
-  //
-  // Why split it this way: the legacy single-cookie session path needs
-  // validateCredentials to accept token-only auth. Treating malformed
-  // usernames as "tampered → reject" would also reject legacy sessions
-  // mid-migration. The defence-in-depth lives at the attribution layer
-  // where the actual identity-trust decision happens.
+test('validateCredentials: malformed username cookie is rejected', function (t) {
+  // A username cookie present but in an unexpected shape (specials, wrong
+  // length, etc.) is treated as tampering and rejected outright at the
+  // session-validation layer. The token alone — even if valid — isn't
+  // sufficient when paired with a malformed username; the safe response
+  // is to drop the request. getStaffIdentity provides a second defence
+  // layer at attribution time (returns 'admin' rather than the malformed
+  // value), but session rejection at this layer means the request never
+  // gets to the attribution stage.
   const config = { adminUsers: { jamie: 'tok' } };
-  t.equal(adminAuth.validateCredentials('jamie<script>', 'tok', config), 'jamie',
-    'malformed username treated as missing → resolves token-owner');
-  t.equal(adminAuth.validateCredentials('a', 'tok', config), 'jamie',
-    'too-short username treated as missing → resolves token-owner');
+  t.equal(adminAuth.validateCredentials('jamie<script>', 'tok', config), null,
+    'special chars in username rejected');
+  t.equal(adminAuth.validateCredentials('a', 'tok', config), null,
+    'too-short username rejected');
+  t.equal(adminAuth.validateCredentials('a'.repeat(31), 'tok', config), null,
+    'too-long username rejected');
+  t.equal(adminAuth.validateCredentials('Jamie', 'tok', config), null,
+    'uppercase username rejected (USERNAME_RE is lowercase only)');
+  t.end();
+});
+
+test('validateCredentials: missing username (legacy session) → token-owner accepted', function (t) {
+  // Legacy single-cookie sessions from before the named-users refactor:
+  // only the token cookie is set. Treated as break-glass — accept any
+  // token-owner resolution. Distinct from "malformed username" which is
+  // rejected (covered above).
+  const config = { adminUsers: { jamie: 'tok' } };
+  t.equal(adminAuth.validateCredentials(undefined, 'tok', config), 'jamie',
+    'undefined username → break-glass accept');
+  t.equal(adminAuth.validateCredentials(null, 'tok', config), 'jamie',
+    'null username → break-glass accept');
+  t.equal(adminAuth.validateCredentials('', 'tok', config), 'jamie',
+    'empty-string username → break-glass accept');
   t.end();
 });
 
@@ -172,11 +187,19 @@ test('validateAdminToken: invalid token → false', function (t) {
   t.end();
 });
 
-test('validateAdminToken: tampered username cookie → false', function (t) {
+test('validateAdminToken: tampered username cookie (claims wrong user) → false', function (t) {
   const config = { adminUsers: { jamie: 'tok-jamie', alice: 'tok-alice' } };
   const request = { state: { adminUser: 'alice', adminToken: 'tok-jamie' } };
   t.notOk(adminAuth.validateAdminToken(request, config),
     'token belongs to jamie, cookie claims alice');
+  t.end();
+});
+
+test('validateAdminToken: malformed username cookie → false', function (t) {
+  const config = { adminUsers: { jamie: 'tok' } };
+  const request = { state: { adminUser: 'jamie<script>', adminToken: 'tok' } };
+  t.notOk(adminAuth.validateAdminToken(request, config),
+    'malformed username rejected even with valid token');
   t.end();
 });
 
