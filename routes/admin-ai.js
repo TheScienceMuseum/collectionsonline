@@ -514,6 +514,22 @@ module.exports = function (elastic, config) {
             // link out to Wikipedia (the only source we can safely infer a
             // URL for) while other sources stay as plain text.
             const reviews = rawReviews.map(function (r) {
+              // Two distinct staleness signals — each triggered by a different
+              // change since the review was produced:
+              //
+              //   stale (biography regenerated): the underlying biography has
+              //     been re-generated since this review ran, so the review's
+              //     findings refer to a superseded snapshot.
+              //
+              //   reviewPromptStale (outdated review prompt): the review was
+              //     produced under an older version of the review prompt
+              //     (lib/ai/review-biography.js::PROMPT_VERSION). Findings
+              //     may not reflect current reviewer behaviour — e.g. older
+              //     versions had a field-name bug that starved Opus of the
+              //     catalogue biography text, producing "no dates / addresses
+              //     to anchor" complaints even when the data was present.
+              //     Treated as a soft signal: the OLD findings are not
+              //     necessarily wrong, but worth re-running to confirm.
               const stale = !!(
                 r.biographyPromptVersion &&
                 record.promptVersion &&
@@ -521,6 +537,10 @@ module.exports = function (elastic, config) {
                   r.biographyPromptVersion !== record.promptVersion ||
                   (r.biographyGeneratedAt && record.generatedAt && r.biographyGeneratedAt !== record.generatedAt)
                 )
+              );
+              const reviewPromptStale = !!(
+                r.reviewPromptVersion &&
+                r.reviewPromptVersion !== reviewBiography.PROMPT_VERSION
               );
               const costObj = modelsRegistry.calculateCost(
                 r.reviewModel, r.inputTokens, r.outputTokens, config.aiBiographyGbpPerUsd
@@ -532,6 +552,8 @@ module.exports = function (elastic, config) {
               });
               return Object.assign({}, r, {
                 stale,
+                reviewPromptStale,
+                currentReviewPromptVersion: reviewBiography.PROMPT_VERSION,
                 costFormatted: costObj ? costObj.perBioFormatted : null,
                 factualIssues
               });

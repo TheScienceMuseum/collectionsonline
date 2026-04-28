@@ -338,7 +338,7 @@
 
   {{#if reviews.length}}
     {{#each reviews}}
-    <details style="background: #1a1a1a; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 0.5rem; {{#if this.stale}}border-left: 3px solid #c96;{{/if}}" {{#if @first}}open{{/if}}>
+    <details style="background: #1a1a1a; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 0.5rem; {{#if this.stale}}border-left: 3px solid #c96;{{else}}{{#if this.reviewPromptStale}}border-left: 3px solid #c96;{{/if}}{{/if}}" {{#if @first}}open{{/if}}>
       <summary style="cursor: pointer; outline: none;">
         <span style="display: inline-block; font-size: 0.7rem; padding: 0.1rem 0.45rem; border-radius: 3px; text-transform: uppercase; font-weight: 600; vertical-align: middle;
           {{#isequal this.overallVerdict "likely_correct" this}}background: #1e2a1e; color: #9c9; border: 1px solid #383;{{/isequal}}
@@ -346,7 +346,8 @@
           {{#isequal this.overallVerdict "likely_issues" this}}background: #2a1e1e; color: #e99; border: 1px solid #a44;{{/isequal}}
         ">{{this.overallVerdict}}</span>
         <strong style="color: #ddd; margin-left: 0.4rem;">{{this.verdictReasoning}}</strong>
-        {{#if this.stale}} <span style="color: #c96; font-size: 0.75rem;" title="Biography has been regenerated since this review was produced — findings may no longer apply.">⚠ stale</span>{{/if}}
+        {{#if this.stale}} <span style="color: #c96; font-size: 0.75rem;" title="Biography has been regenerated since this review was produced — findings may no longer apply.">⚠ stale biography</span>{{/if}}
+        {{#if this.reviewPromptStale}} <span style="color: #c96; font-size: 0.75rem;" title="This review was produced under an older review prompt ({{this.reviewPromptVersion}}). Reviewer behaviour has changed since (current: {{this.currentReviewPromptVersion}}) — findings may not reflect current reviewer logic. Worth re-running to confirm.">⚠ outdated review prompt</span>{{/if}}
       </summary>
       <div style="font-size: 0.75rem; color: #888; margin: 0.5rem 0 0.2rem 0;">
         <span title="Model that produced this review and who triggered it.">Reviewed by {{this.reviewModel}} · {{this.createdBy}} · <span title="{{this.createdAt}}">{{formatDate this.createdAt "auto"}}</span></span>{{#if this.costFormatted}} · {{this.costFormatted}}{{/if}}{{#if this.inputTokens}} · {{this.inputTokens}} in / {{this.outputTokens}} out{{/if}}
