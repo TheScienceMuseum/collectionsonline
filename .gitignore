@@ -71,6 +71,13 @@ test/fixtures/elastic-responses/example-*
 # WAF rules (environment-specific, not deployed with app)
 /waf-rules
 
+# Local DynamoDB compose file — per-developer working copy. The
+# committed template is `devops/dynamodb-local/docker-compose.example.yml`;
+# copy that to `docker-compose.yml` in the same folder and tweak. The
+# generic filename means `cd devops/dynamodb-local && docker compose up
+# -d` just works (compose auto-finds docker-compose.yml in cwd).
+/devops/dynamodb-local/docker-compose.yml
+
 # zips
 builds/*
 !builds/.gitkeep

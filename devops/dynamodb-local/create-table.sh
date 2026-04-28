@@ -1,6 +1,6 @@
 #!/bin/bash
 # Creates the AI biographies table in local DynamoDB.
-# Usage: ./scripts/create-dynamodb-table.sh [endpoint]
+# Usage: ./devops/dynamodb-local/create-table.sh [endpoint]
 #   endpoint defaults to http://localhost:8100
 #
 # Prerequisites:
