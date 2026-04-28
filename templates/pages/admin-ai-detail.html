@@ -174,6 +174,18 @@
       {{/isequal}}
       {{#if record.subjectStatus.deathDate}}
         <span style="color: #888; font-size: 0.85rem; white-space: nowrap;" title="Source: {{record.subjectStatus.deathDateSource}} · raw: {{record.subjectStatus.deathDate}}">· {{formatDate record.subjectStatus.deathDate "date"}}{{#isequal record.subjectStatus.deathDateSource "wikidata" this}}<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 16 16" aria-hidden="true" style="color: #c96; vertical-align: -1px; margin-left: 0.3rem;"><title>Sourced from Wikidata — not in our collection record</title><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.1"/></svg>{{/isequal}}</span>
+      {{else}}
+        {{!-- Living person: show "· born YYYY" alongside the pill, mirroring
+              the deceased treatment so staff can see at a glance how recent
+              the subject is without expanding the record details. Only
+              rendered for persons (not active orgs — "founded" / "inception"
+              would need different copy and the inception field isn't
+              stored on the canonical record yet). --}}
+        {{#isequal record.subjectStatus.subjectType "person" this}}
+          {{#if record.subjectStatus.birthDate}}
+            <span style="color: #888; font-size: 0.85rem; white-space: nowrap;" title="Source: {{record.subjectStatus.birthDateSource}} · raw: {{record.subjectStatus.birthDate}}">· born {{formatDate record.subjectStatus.birthDate "date"}}{{#isequal record.subjectStatus.birthDateSource "wikidata" this}}<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 16 16" aria-hidden="true" style="color: #c96; vertical-align: -1px; margin-left: 0.3rem;"><title>Sourced from Wikidata — not in our collection record</title><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.1"/></svg>{{/isequal}}</span>
+          {{/if}}
+        {{/isequal}}
       {{/if}}
     </dd>
   </div>
