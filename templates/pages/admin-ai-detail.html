@@ -172,8 +172,26 @@
       {{#isequal record.subjectStatus.status "dissolved" this}}
         <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #1e2a1e; color: #9c9; border: 1px solid #383;" title="Organisation dissolution date recorded.">dissolved</span>
       {{/isequal}}
+      {{!-- Two new organisation states (Apr 2026): 'unknown' and
+            'historical'. Both apply only when there's no structured
+            dissolution date — they refine the previous blanket 'active'
+            using brief-biography activity prose. See subject-status.js
+            for semantics. Pill colour signals certainty: green = known,
+            amber = uncertain, grey = past. --}}
+      {{#isequal record.subjectStatus.status "unknown" this}}
+        <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #2a241e; color: #cc9; border: 1px solid #993;" title="{{record.subjectStatus.organisationStatusReasoning}}">unknown</span>
+      {{/isequal}}
+      {{#isequal record.subjectStatus.status "historical" this}}
+        <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #1f1f1f; color: #aaa; border: 1px solid #555;" title="{{record.subjectStatus.organisationStatusReasoning}}">historical</span>
+      {{/isequal}}
       {{#if record.subjectStatus.deathDate}}
         <span style="color: #888; font-size: 0.85rem; white-space: nowrap;" title="Source: {{record.subjectStatus.deathDateSource}} · raw: {{record.subjectStatus.deathDate}}">· {{formatDate record.subjectStatus.deathDate "date"}}{{#isequal record.subjectStatus.deathDateSource "wikidata" this}}<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 16 16" aria-hidden="true" style="color: #c96; vertical-align: -1px; margin-left: 0.3rem;"><title>Sourced from Wikidata — not in our collection record</title><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.1"/></svg>{{/isequal}}</span>
+      {{else}}{{#if record.subjectStatus.activityText}}
+        {{!-- Organisation 'unknown' or 'historical' state — show the matched
+              brief-biography activity range inline so staff can see at a
+              glance what the classification was based on (e.g.
+              "unknown · active 1990s" or "historical · 1856-1905"). --}}
+        <span style="color: #888; font-size: 0.85rem; white-space: nowrap;" title="{{record.subjectStatus.organisationStatusReasoning}}">· {{record.subjectStatus.activityText}}</span>
       {{else}}
         {{!-- Living person: show "· born YYYY" alongside the pill, mirroring
               the deceased treatment so staff can see at a glance how recent
@@ -186,6 +204,7 @@
             <span style="color: #888; font-size: 0.85rem; white-space: nowrap;" title="Source: {{record.subjectStatus.birthDateSource}} · raw: {{record.subjectStatus.birthDate}}">· born {{formatDate record.subjectStatus.birthDate "date"}}{{#isequal record.subjectStatus.birthDateSource "wikidata" this}}<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 16 16" aria-hidden="true" style="color: #c96; vertical-align: -1px; margin-left: 0.3rem;"><title>Sourced from Wikidata — not in our collection record</title><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.1"/></svg>{{/isequal}}</span>
           {{/if}}
         {{/isequal}}
+      {{/if}}
       {{/if}}
     </dd>
   </div>
