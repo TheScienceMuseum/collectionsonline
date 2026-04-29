@@ -260,7 +260,7 @@ test('org status: "Present" marker → active', function (t) {
   t.end();
 });
 
-test('org status: latest activity > 50 years ago → historical', function (t) {
+test('org status: latest activity past the historical cutoff → historical', function (t) {
   const r = subjectStatus.inspect(
     { briefBiography: 'active 1856-1905, manufacturer of sewing machines' },
     null,
@@ -274,7 +274,7 @@ test('org status: latest activity > 50 years ago → historical', function (t) {
   t.end();
 });
 
-test('org status: latest activity within last 50 years → unknown (recent enough to be ambiguous)', function (t) {
+test('org status: latest activity within the cutoff window → unknown (recent enough to be ambiguous)', function (t) {
   // Use a year that's clearly within the cutoff window — current year minus
   // 10 — so the test stays correct when the year rolls over.
   const recentYear = NOW_YEAR - 10;
