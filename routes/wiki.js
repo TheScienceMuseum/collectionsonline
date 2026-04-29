@@ -261,7 +261,11 @@ async function fetchColleagues (employers, currentQCode, elastic, config, subjec
         .map(q => {
           const hit = inCollection.get(q);
           const name = colleagueDisplayName(hit._source) || hit._id;
-          return { name, url: `${config.rootUrl}/people/${hit._id}` };
+          // Relative path — this object is cached in shared Redis (segment
+          // 'wikidata', 30-day TTL). Embedding config.rootUrl here would
+          // poison the cross-environment cache: a write from staging could
+          // serve staging URLs to production for up to a month.
+          return { name, url: `/people/${hit._id}` };
         });
       return colleagues.length > 0 ? { employer: label, colleagues } : null;
     })
