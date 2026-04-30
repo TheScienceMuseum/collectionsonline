@@ -53,12 +53,20 @@ DEFAULT_BATCH_SIZE = 64
 DEFAULT_CONCURRENCY = 12
 DEFAULT_HTTP_TIMEOUT = 30.0
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+DEFAULT_CACHE_DIR = SCRIPT_DIR / "image-cache"
+
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--input", "-i", required=True, type=Path, help="Path to feed.jsonl")
     p.add_argument("--output-dir", "-o", required=True, type=Path, help="Where to write embeddings.bin + manifest.json")
-    p.add_argument("--cache-dir", type=Path, default=None, help="Image cache dir (default: <output-dir>/image-cache)")
+    p.add_argument(
+        "--cache-dir",
+        type=Path,
+        default=None,
+        help=f"Image cache dir (shared across builds, default: {DEFAULT_CACHE_DIR})",
+    )
     p.add_argument("--limit", type=int, default=None, help="Process only the first N records (for dev)")
     p.add_argument("--batch-size", type=int, default=DEFAULT_BATCH_SIZE)
     p.add_argument("--concurrency", type=int, default=DEFAULT_CONCURRENCY)
@@ -173,7 +181,7 @@ async def run(args: argparse.Namespace) -> int:
 
     output_dir = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
-    cache_dir = args.cache_dir or (output_dir / "image-cache")
+    cache_dir = args.cache_dir or DEFAULT_CACHE_DIR
     cache_dir.mkdir(parents=True, exist_ok=True)
 
     print(f"Loading feed from {args.input}")
