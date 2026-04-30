@@ -260,7 +260,27 @@ function createScanner () {
     return !!track.getCapabilities().torch;
   }
 
-  return { start, pause, resume, stop, setTorch, torchSupported };
+  // Returns true if every video track on the current stream is still
+  // delivering frames. iOS Safari will set tracks to 'ended' when the page
+  // has been backgrounded for long enough (e.g. phone goes to sleep), at
+  // which point the only fix is to acquire a fresh stream.
+  function isStreamAlive () {
+    if (!stream) return false;
+    const tracks = stream.getVideoTracks();
+    if (!tracks.length) return false;
+    return tracks.every(function (t) { return t.readyState === 'live'; });
+  }
+
+  // Nudge the <video> element back into playback after the page returns
+  // from being hidden. Returns a Promise that resolves true on success.
+  function poke () {
+    if (!videoEl) return Promise.resolve(false);
+    const p = videoEl.play();
+    if (!p || typeof p.then !== 'function') return Promise.resolve(true);
+    return p.then(function () { return true; }).catch(function () { return false; });
+  }
+
+  return { start, pause, resume, stop, setTorch, torchSupported, isStreamAlive, poke };
 }
 
 module.exports = { createScanner };

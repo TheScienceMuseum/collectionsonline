@@ -75,8 +75,22 @@ function showSheet (mountEl, data, handlers) {
     ? el('img', { class: 'barcode-sheet__img', src: data.image, alt: data.title || '' })
     : el('div', { class: 'barcode-sheet__img barcode-sheet__img--placeholder', 'aria-hidden': 'true' });
 
-  const title = el('h2', { class: 'barcode-sheet__title', text: data.title || 'Untitled record' });
+  const titleRow = el('div', { class: 'barcode-sheet__title-row' }, [
+    el('h2', { class: 'barcode-sheet__title', text: data.title || 'Untitled record' }),
+    data.isPart ? el('span', { class: 'barcode-sheet__tag', text: 'Part' }) : null
+  ]);
   const meta = el('p', { class: 'barcode-sheet__meta', text: 'Barcode: ' + (data.barcodeId || data.uid) });
+
+  // When the scanned record is a child part of a larger object, parts have
+  // no public catalogue page of their own — we link to the parent instead.
+  // Surface the relationship explicitly so the user understands the
+  // "View record" button will open the parent rather than the part itself.
+  const partOf = data.isPart && data.parentTitle
+    ? el('p', { class: 'barcode-sheet__partof' }, [
+      el('span', { class: 'barcode-sheet__partof-label', text: 'Part of: ' }),
+      el('span', { class: 'barcode-sheet__partof-title', text: data.parentTitle })
+    ])
+    : null;
 
   const desc = data.description
     ? el('p', { class: 'barcode-sheet__desc', text: data.description })
@@ -96,7 +110,7 @@ function showSheet (mountEl, data, handlers) {
     target: '_blank',
     rel: 'noopener noreferrer'
   }, [
-    el('span', { class: 'barcode-btn__label', text: 'View record' }),
+    el('span', { class: 'barcode-btn__label', text: data.isPart ? 'Open parent' : 'View record' }),
     icon('external', 'barcode-btn__icon')
   ]);
 
@@ -116,8 +130,9 @@ function showSheet (mountEl, data, handlers) {
     handle,
     el('div', { class: 'barcode-sheet__row' }, [
       img,
-      el('div', { class: 'barcode-sheet__text' }, [title, meta])
+      el('div', { class: 'barcode-sheet__text' }, [titleRow, meta])
     ]),
+    partOf,
     desc,
     el('div', { class: 'barcode-sheet__actions' }, [scanBtn, viewBtn])
   ]);
@@ -299,10 +314,9 @@ function renderScanning (mountEl, scanCount, handlers) {
     type: 'button',
     'aria-label': 'Toggle torch',
     'aria-pressed': 'false',
-    text: '💡',
     hidden: 'hidden',
     onclick: function () { if (handlers && handlers.onTorch) handlers.onTorch(torchBtn); }
-  });
+  }, [icon('torch')]);
 
   const historyBtn = el('button', {
     class: 'barcode-bar__btn barcode-bar__history',
@@ -322,7 +336,10 @@ function renderScanning (mountEl, scanCount, handlers) {
     historyBtn
   ]);
 
-  const hint = el('p', { class: 'barcode-hint', text: 'Point camera at a barcode' });
+  const hint = el('div', { class: 'barcode-hint' }, [
+    el('p', { class: 'barcode-hint__primary', text: 'Point camera at a barcode' }),
+    el('p', { class: 'barcode-hint__tip', text: 'Tip: barcodes scan in any orientation' })
+  ]);
 
   mountEl.appendChild(video);
   mountEl.appendChild(overlay);

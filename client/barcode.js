@@ -174,11 +174,30 @@ function main () {
     });
   }
 
-  // Stop the camera when the page is hidden (saves battery on phones if the
-  // user switches tabs); resume when shown again.
+  // When the phone sleeps or the user switches tabs, iOS Safari pauses the
+  // <video> element and may eventually kill the camera tracks. We don't
+  // want users to come back to a frozen black screen and have to manually
+  // close + restart the scanner.
+  //
+  // On hide:    pause the scan loop so we don't burn cycles on stale frames.
+  // On show:    if tracks are still live, just nudge play() and resume.
+  //             If tracks are dead (the common iOS-after-sleep case), do a
+  //             full restart — which will reuse the existing camera
+  //             permission, so it's silent and instant in practice.
   document.addEventListener('visibilitychange', function () {
-    if (document.hidden && scanning) {
+    if (document.hidden) {
+      if (scanning) scanner.pause();
+      return;
+    }
+    if (!scanning) return;
+    if (scanner.isStreamAlive()) {
+      scanner.poke().then(function (ok) {
+        if (ok) scanner.resume();
+        else { stopScanning(); startScanning(); }
+      });
+    } else {
       stopScanning();
+      startScanning();
     }
   });
 
