@@ -1,12 +1,45 @@
-<main id="main-content" class="scan-page">
-  <header class="scan-page__header">
-    <h1>Scan an object</h1>
-    <p>Point your camera at an object to find it in our collection.</p>
-  </header>
+<div id="main-page">
+  {{> global/global-header}}
+  {{> global/search-main reduced="reduced"}}
 
-  <div id="scan-app" data-ready="{{ready}}"></div>
+  <main id="main-content">
+    <div class="o-container scan">
+      <header class="scan__intro">
+        <h1>Scan an object</h1>
+        <p>
+          Point your camera at an object in our museums (or a printed photo) to find the closest matches in our collection.
+        </p>
+      </header>
 
-  <noscript>
-    <p>Visual search needs JavaScript and a camera to work.</p>
-  </noscript>
-</main>
+      <section
+        id="scan-app"
+        class="scan__app"
+        data-ready="{{ready}}"
+        aria-live="polite">
+        <div class="scan__idle">
+          <p class="scan__hint">
+            Works best with a clear photo of a single object, well-lit, against a plain background. Setup the first time you scan takes around 30 seconds.
+          </p>
+          <div class="scan__actions">
+            <button
+              type="button"
+              class="c-btn c-btn--primary scan__start-btn"
+              data-scan-action="start"
+              {{#unless ready}}disabled{{/unless}}>
+              {{#if ready}}Start scan{{else}}Visual search loading…{{/if}}
+            </button>
+          </div>
+        </div>
+        <noscript>
+          <p>Visual search needs JavaScript and a camera to work.</p>
+        </noscript>
+      </section>
+
+      <p class="scan__privacy-note">
+        The photo is processed in your browser. We only send an anonymised representation of the image to our servers to find matches.
+      </p>
+    </div>
+  </main>
+
+  {{> global/global-footer}}
+</div>

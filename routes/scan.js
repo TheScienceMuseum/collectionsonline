@@ -85,10 +85,13 @@ exports.page = (elastic, config) => ({
   path: '/scan',
   config: {
     handler: function (request, h) {
-      return h.view('scan', {
-        title: 'Scan an object — Science Museum Group Collection',
+      const data = require('../fixtures/data');
+      return h.view('scan', Object.assign({}, data, {
+        navigation: require('../fixtures/navigation'),
+        museums: require('../fixtures/museums'),
+        titlePage: 'Scan an object | Science Museum Group Collection',
         ready: visualSearch.isReady()
-      });
+      }));
     }
   }
 });

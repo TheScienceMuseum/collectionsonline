@@ -15,6 +15,7 @@ require('./routes/museums')(page);
 require('./routes/api')(page);
 require('./routes/iiif')(page);
 require('./routes/embed')(page);
+require('./routes/scan')(page);
 
 // Anniversary widget analytics tracking
 require('./lib/anniversary-tracking')();
