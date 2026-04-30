@@ -43,6 +43,19 @@ module.exports = (elastic, config) => ({
 
             const barcodeId = obj?._source?.barcode?.value;
 
+            // Object accession number — what staff in the stores will
+            // recognise on the labels (e.g. "1935-502 Pt1"). Identifier
+            // records are tagged with type/primary; prefer the primary
+            // accession number, fall back to the first identifier value.
+            const identifiers = obj?._source?.identifier;
+            const primaryAcc = Array.isArray(identifiers) &&
+              identifiers.find(function (i) {
+                return i && i.primary && i.type === 'accession number';
+              });
+            const objectId = (primaryAcc && primaryAcc.value) ||
+              (Array.isArray(identifiers) && identifiers[0] && identifiers[0].value) ||
+              null;
+
             // Many barcoded records are *parts* of a larger object (e.g. an
             // engine bay scanned individually as a child record of the car).
             // Parts don't have their own public catalogue pages — visiting
@@ -73,6 +86,7 @@ module.exports = (elastic, config) => ({
               uid,
               description,
               barcodeId,
+              objectId,
               isPart,
               parentTitle: isPart ? parentTitle : null,
               parentUid: isPart ? parentUid : null

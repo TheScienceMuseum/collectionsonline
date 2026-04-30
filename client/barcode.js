@@ -97,10 +97,13 @@ function main () {
         scans = store.add({
           uid: res.body.uid,
           barcodeId: res.body.barcodeId || text,
+          objectId: res.body.objectId,
           title: res.body.title,
           image: res.body.image,
           path: res.body.path,
-          description: res.body.description
+          description: res.body.description,
+          isPart: res.body.isPart,
+          parentTitle: res.body.parentTitle
         });
         if (scanningRefs) scanningRefs.setHistoryCount(scans.length);
         openSheet(res.body);
