@@ -39,11 +39,32 @@ module.exports = (elastic, config) => ({
             const uid = obj?._id;
             slugValue = slugValue ? '/' + slugValue : '';
 
-            const path = '/objects/' + obj?._id + slugValue;
-
             const description = obj?._source?.description?.[0]?.value;
 
             const barcodeId = obj?._source?.barcode?.value;
+
+            // Many barcoded records are *parts* of a larger object (e.g. an
+            // engine bay scanned individually as a child record of the car).
+            // Parts don't have their own public catalogue pages — visiting
+            // /objects/{partId} redirects to the parent. We surface this in
+            // the API so the client can:
+            //   1. show a "Part of …" line in the scan preview
+            //   2. link directly to the parent path, avoiding the redirect
+            const parentEntry = obj?._source?.parent?.[0];
+            const parentUid = parentEntry?.['@admin']?.uid;
+            const parentTitle = parentEntry?.summary?.title;
+            const isPart = !!parentUid;
+
+            // Default: the scanned record's own path. If it's a part, point
+            // the client at the parent path instead — that's where the user
+            // will end up anyway after the redirect.
+            let path;
+            if (isPart) {
+              const parentSlug = parentTitle ? '/' + slug(parentTitle).toLowerCase() : '';
+              path = '/objects/' + parentUid + parentSlug;
+            } else {
+              path = '/objects/' + obj?._id + slugValue;
+            }
 
             return h.response({
               path,
@@ -51,7 +72,10 @@ module.exports = (elastic, config) => ({
               image,
               uid,
               description,
-              barcodeId
+              barcodeId,
+              isPart,
+              parentTitle: isPart ? parentTitle : null,
+              parentUid: isPart ? parentUid : null
             });
           } else {
             return h
