@@ -79,7 +79,15 @@ function showSheet (mountEl, data, handlers) {
     el('h2', { class: 'barcode-sheet__title', text: data.title || 'Untitled record' }),
     data.isPart ? el('span', { class: 'barcode-sheet__tag', text: 'Part' }) : null
   ]);
-  const meta = el('p', { class: 'barcode-sheet__meta', text: 'Barcode: ' + (data.barcodeId || data.uid) });
+
+  // Two meta lines stacked: object accession number (the human-readable
+  // catalogue ID staff know) above the scanned barcode value.
+  const metaList = el('div', { class: 'barcode-sheet__meta' }, [
+    data.objectId
+      ? el('p', { class: 'barcode-sheet__meta-row', text: 'Object ID: ' + data.objectId })
+      : null,
+    el('p', { class: 'barcode-sheet__meta-row', text: 'Barcode: ' + (data.barcodeId || data.uid) })
+  ]);
 
   // When the scanned record is a child part of a larger object, parts have
   // no public catalogue page of their own — we link to the parent instead.
@@ -130,7 +138,7 @@ function showSheet (mountEl, data, handlers) {
     handle,
     el('div', { class: 'barcode-sheet__row' }, [
       img,
-      el('div', { class: 'barcode-sheet__text' }, [titleRow, meta])
+      el('div', { class: 'barcode-sheet__text' }, [titleRow, metaList])
     ]),
     partOf,
     desc,

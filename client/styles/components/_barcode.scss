@@ -463,11 +463,19 @@ $barcode-gradient: linear-gradient(135deg, $c-green 0%, $c-blue 50%, $c-teal 100
   margin-top: 2px;
 }
 
+// Stacked meta rows — Object ID (accession number) above Barcode value.
+// Each row is its own line so they read cleanly on narrow phones.
 .barcode-sheet__meta {
+  margin: 0;
+}
+
+.barcode-sheet__meta-row {
   @include type-metasmall;
   margin: 0;
   color: $barcode-primary;
   letter-spacing: 0.04em;
+
+  & + & { margin-top: 2px; }
 }
 
 // "Part of: <parent title>" — sits just below the meta line, before the
