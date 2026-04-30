@@ -1,234 +1,631 @@
-$btn-bg: rgb(51, 51, 51);
+// /barcode page — vanilla JS scanner. Self-contained styles, on-brand with
+// the rest of the SMG site (SMGSans, brand palette, sharp corners, uppercase
+// bold buttons with arrow icons). Mobile-first.
 
-li {
-  list-style: none;
-}
+// Local aliases over the brand palette so this file is grep-able.
+$barcode-bg: #000;
+$barcode-surface: #fff;
+$barcode-text: #1a1a1a;
+$barcode-muted: #5a5a5a;
+$barcode-border: rgba(0, 0, 0, 0.1);
+$barcode-primary: $c-blue;          // #004899 — SMG primary
+$barcode-primary-hover: #000;       // SIP pattern: hover → black
+$barcode-accent: $c-teal;           // #4bbecf — secondary accent
+$barcode-success: $c-green;         // #95c11f — flash on successful decode
+$barcode-warn: $c-orange;           // #ec6408
+$barcode-error: $c-red;             // #e60060
+$barcode-shadow: 0 -8px 32px rgba(0, 0, 0, 0.18);
+$barcode-transition: 0.2s ease-in-out;
 
-ul {
-  padding: 0;
+// Objects gradient — celebrates the link between this tool and the
+// /objects records it pulls up.
+$barcode-gradient: linear-gradient(135deg, $c-green 0%, $c-blue 50%, $c-teal 100%);
+
+.barcode-body {
   margin: 0;
+  background: $barcode-bg;
+  font-family: $base-font-family; // SMGSans
+  color: $barcode-text;
+  font-weight: 300;               // Light by default, matches site body
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
 }
 
-.ReactModal__Overlay {
-  overflow: scroll;
-}
-
-.ReactModal__Content {
-  min-height: 100vh;
-  width: 80%;
-}
-
-.nav-tabs {
-  margin-bottom: 1em;
-}
-
-.nav-tabs {
-  display: flex;
-  border-bottom: 1px inset #000000;
-  .nav-item {
-    .nav-link {
-      border-radius: 0.5em 0.5em 0 0;
-      z-index: 400;
-      margin-right: -10px;
-    }
-    .nav-link.active {
-      background-color: red;
-      z-index: 500;
-      margin-right: -10px;
-    }
-  }
-}
-
-.ReactModal__Overlay--animated {
-  animation: slideIn 0.8s ease-in-out;
-}
-
-.ReactModal__Content--animated {
-  animation: slideIn 0.8s ease-in-out;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-#html5-qrcode-button-camera-permission,
-#html5-qrcode-button-camera-stop,
-#html5-qrcode-button-camera-start,
-#html5-qrcode-button-torch,
-.nav-tabs .nav-item .nav-link {
-  font-size: clamp(1rem, 0.8076923077rem + 0.9615384615vw, 1.5rem);
-  color: white;
-  background-color: rgb(51, 51, 51);
-  padding-top: 0.75em;
-  padding-bottom: 0.75em;
-  padding-left: 1em;
-  padding-right: 1em;
-  text-transform: uppercase;
-  text-decoration: none;
-  font-weight: bold;
-  position: relative;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  line-height: 1;
-  border: 0;
-  -webkit-transition: background-color 0.2s ease-in-out;
-  transition: background-color 0.2s ease-in-out;
-  cursor: pointer;
-}
-
-.tab-pane {
-  display: none;
-}
-
-.tab-pane.show {
-  display: block;
-}
-
-.scan-card-img {
-  position: relative;
+.barcode-app {
+  position: fixed;
+  inset: 0;
   width: 100%;
-  height: auto;
+  height: 100%;
+  background: $barcode-bg;
+  overflow: hidden;
 }
 
-.c-btn {
-  margin-block-end: 2em;
-  cursor: pointer;
-}
+// ---------------------------------------------------------------------------
+// Landing screen — branded entry point. Uses the objects gradient as a strap
+// at the top so the page feels of-the-site without the chrome.
 
-.c-btn--link {
-  position: absolute;
-  bottom: -15%;
-  right: 0;
-  z-index: 1;
-  opacity: 0.3;
-  transition: opacity 0.4s ease-in-out;
-  &:hover {
-    opacity: 1;
-  }
-}
-
-.scan-history {
-  display: flex;
-  justify-content: space-between;
-  margin-block-end: 2em;
-}
-
-.scans {
-  margin-block-end: 2em;
-  .scans__list {
-    display: flex;
-    flex-direction: column;
-  }
-}
-
-.scan-result {
+.barcode-app--landing {
+  background: $barcode-surface;
+  color: $barcode-text;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+
+  // Gradient strap across the top
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: $barcode-gradient;
+    z-index: 1;
+  }
+}
+
+.barcode-landing {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  text-align: left;
+}
+
+.barcode-landing__mark {
+  width: 64px;
+  height: 64px;
+  background: $barcode-gradient;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-block-start: 0.5em;
-}
+  margin-bottom: 24px;
 
-.c-card-individual {
-  max-width: 300px;
-}
-
-.c-card--list {
-  margin-block: 0.5em;
-}
-
-.scanner-container {
-  transition: all 0.5s ease-in-out;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  min-height: 100vh;
-
-  .scanner-reader {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  .icon {
+    width: 36px;
+    height: 36px;
+    fill: #fff;
   }
 }
 
-.fallback {
+.barcode-landing__eyebrow {
+  @include type-metasmall;
+  color: $barcode-primary;
+  margin: 0 0 8px;
+  font-size: rem(14);
+}
+
+.barcode-landing__title {
+  @include type-h1(uc);
+  margin: 0 0 16px;
+  color: $barcode-text;
+}
+
+.barcode-landing__hint {
+  @include type-p;
+  color: $barcode-muted;
+  margin: 0 0 32px;
+  max-width: 30em;
+}
+
+.barcode-landing__cta {
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 16px;
+}
+
+.barcode-landing__history {
+  background: none;
+  border: 0;
+  color: $barcode-primary;
+  padding: 12px 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: rem(15);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.015em;
+  text-decoration: underline;
+
+  &:hover { color: $barcode-primary-hover; }
+}
+
+// ---------------------------------------------------------------------------
+// Scanning view — full-bleed video + reticle overlay + top bar
+
+.barcode-app--scanning {
+  background: $barcode-bg;
+}
+
+.barcode-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: $barcode-bg;
+}
+
+.barcode-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0,
+    transparent 35%,
+    rgba(0, 0, 0, 0.55) 75%
+  );
+}
+
+// Reticle — four corner brackets only (no full outline). Orientation-
+// agnostic, modern Apple-Pay-style aim cue. zxing decodes the whole frame
+// regardless; this is purely a UI hint.
+//
+// Implementation: two linear-gradients per corner (one horizontal arm, one
+// vertical arm), positioned at the four corners of the box. Colour is driven
+// by a custom property so the flash state can swap it cleanly.
+.barcode-reticle {
+  --reticle-col: #{$barcode-accent};
+  $arm: 32px;
+  $thick: 3px;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(70vw, 70vh, 320px);
+  height: min(70vw, 70vh, 320px);
+  background:
+    // top-left: horizontal arm, then vertical arm
+    linear-gradient(var(--reticle-col), var(--reticle-col)) 0    0    / #{$arm} #{$thick} no-repeat,
+    linear-gradient(var(--reticle-col), var(--reticle-col)) 0    0    / #{$thick} #{$arm} no-repeat,
+    // top-right
+    linear-gradient(var(--reticle-col), var(--reticle-col)) 100% 0    / #{$arm} #{$thick} no-repeat,
+    linear-gradient(var(--reticle-col), var(--reticle-col)) 100% 0    / #{$thick} #{$arm} no-repeat,
+    // bottom-left
+    linear-gradient(var(--reticle-col), var(--reticle-col)) 0    100% / #{$arm} #{$thick} no-repeat,
+    linear-gradient(var(--reticle-col), var(--reticle-col)) 0    100% / #{$thick} #{$arm} no-repeat,
+    // bottom-right
+    linear-gradient(var(--reticle-col), var(--reticle-col)) 100% 100% / #{$arm} #{$thick} no-repeat,
+    linear-gradient(var(--reticle-col), var(--reticle-col)) 100% 100% / #{$thick} #{$arm} no-repeat;
+  transition: --reticle-col 150ms ease-out;
+}
+
+.barcode-reticle--flash {
+  --reticle-col: #{$barcode-success};
+  animation: barcode-flash 200ms ease-out;
+}
+
+@keyframes barcode-flash {
+  0%   { box-shadow: 0 0 0 0 rgba(149, 193, 31, 0.8); }
+  100% { box-shadow: 0 0 0 24px rgba(149, 193, 31, 0); }
+}
+
+.barcode-bar {
   position: absolute;
   top: 0;
-  left: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: max(12px, env(safe-area-inset-top)) 16px 12px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.6), transparent);
 }
 
-.c-card__img {
-  > .resultcard__figure {
-    background-color: transparent;
-    position: static;
+.barcode-bar__spacer { flex: 1; }
+
+.barcode-bar__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 12px;
+  border: 0;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-family: inherit;
+  font-size: rem(16);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color $barcode-transition;
+
+  .icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+
+  &[aria-pressed='true'] {
+    background: $c-yellow;
+    color: #000;
+  }
+
+  &:hover { background: rgba(0, 0, 0, 0.7); }
+  &[aria-pressed='true']:hover { background: darken($c-yellow, 5%); }
+}
+
+.barcode-bar__badge {
+  background: $barcode-primary;
+  color: #fff;
+  font-size: rem(12);
+  font-weight: 700;
+  padding: 2px 6px;
+  min-width: 18px;
+  text-align: center;
+  letter-spacing: 0.015em;
+}
+
+.barcode-hint {
+  @include type-metasmall;
+  position: absolute;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+// ---------------------------------------------------------------------------
+// Buttons — SIP/SMG pattern: sharp corners, uppercase bold, arrow icon on
+// the right that translates on hover, hover/focus → black.
+
+.barcode-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  position: relative;
+  height: auto;
+  min-height: 48px;
+  padding: 14px 16px;
+  border: 0;
+  border-radius: 0;                  // sharp corners — SMG/SIP language
+  font-family: inherit;
+  font-size: rem(15);
+  font-weight: 700;                  // SMGSans Bold
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.015em;
+  line-height: 1.1;
+  cursor: pointer;
+  transition: background-color $barcode-transition, color $barcode-transition;
+  -webkit-tap-highlight-color: transparent;
+
+  &__label {
+    flex: 1;
+    text-align: left;
+    white-space: nowrap;             // short labels (Scan another / View record)
+                                     // should never wrap onto two lines
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__icon {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    flex-shrink: 0;
+    transition: transform $barcode-transition;
+  }
+
+  &:hover &__icon,
+  &:focus &__icon {
+    transform: translateX(4px);
   }
 }
 
-#qr-reader__scan_region {
-  img {
-    width: 150px;
-    max-width: 150px;
-    height: auto;
+.barcode-btn--primary {
+  background: $barcode-primary;
+  color: #fff;
+
+  &:hover,
+  &:focus {
+    background: $barcode-primary-hover;
+    color: #fff;
   }
 }
 
-@media screen and (max-width: 767px) {
-  .scans__list {
-    align-items: center;
-  }
-  .scan-history-slice {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-  }
-  .c-card--list {
-    max-width: 300px;
-    flex-direction: column;
-    gap: 1em;
-    .c-card__img {
-      width: 100%;
-    }
+.barcode-btn--secondary {
+  background: transparent;
+  color: $barcode-text;
+  border: 2px solid $barcode-text;
+  padding: 12px 18px;                // tighter to compensate for border
+
+  &:hover,
+  &:focus {
+    background: $barcode-text;
+    color: #fff;
   }
 }
 
-@media (max-width: 579px) {
-  .c-card--list .c-card__img {
+// ---------------------------------------------------------------------------
+// Bottom sheet — sits over the live camera. Branded with a thin gradient
+// strap at the top.
+
+.barcode-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background-color 200ms ease-out;
+  z-index: 10;
+}
+.barcode-backdrop--in { background: rgba(0, 0, 0, 0.4); }
+.barcode-backdrop--leaving { background: rgba(0, 0, 0, 0); }
+
+.barcode-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $barcode-surface;
+  box-shadow: $barcode-shadow;
+  transform: translateY(100%);
+  transition: transform 220ms ease-out;
+  z-index: 11;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+
+  // Brand gradient strap at the top of the sheet
+  &::before {
+    content: '';
+    position: sticky;
+    top: 0;
     display: block;
-    width: 100%;
+    height: 4px;
+    background: $barcode-gradient;
+    z-index: 1;
+  }
+}
+.barcode-sheet--in { transform: translateY(0); }
+.barcode-sheet--leaving { transform: translateY(100%); }
+
+.barcode-sheet__handle {
+  width: 40px;
+  height: 4px;
+  background: #d8d8d8;
+  margin: 12px auto 16px;
+}
+
+.barcode-sheet__content { padding: 0 20px; }
+
+.barcode-sheet__row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.barcode-sheet__img {
+  width: 96px;
+  height: 96px;
+  flex-shrink: 0;
+  object-fit: cover;
+  background: #f0f0f0;
+}
+.barcode-sheet__img--placeholder {
+  background: $barcode-gradient;
+}
+
+.barcode-sheet__text { flex: 1; min-width: 0; }
+
+.barcode-sheet__title {
+  @include type-h3(uc);
+  margin: 0 0 8px;
+  color: $barcode-text;
+  line-height: 1.2;
+}
+
+.barcode-sheet__meta {
+  @include type-metasmall;
+  margin: 0;
+  color: $barcode-primary;
+  letter-spacing: 0.04em;
+}
+
+.barcode-sheet__desc {
+  @include type-p;
+  margin: 0 0 24px;
+  color: $barcode-text;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.barcode-sheet__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 8px 0 16px;
+}
+
+// ---------------------------------------------------------------------------
+// Top toast (not-found, errors)
+
+.barcode-toast {
+  @include type-label;
+  position: absolute;
+  top: max(12px, calc(env(safe-area-inset-top) + 12px));
+  left: 50%;
+  transform: translate(-50%, -120%);
+  padding: 14px 20px;
+  background: $barcode-warn;
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.015em;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  max-width: calc(100% - 24px);
+  text-align: center;
+  z-index: 20;
+  transition: transform 200ms ease-out;
+}
+.barcode-toast--in { transform: translate(-50%, 0); }
+.barcode-toast--error { background: $barcode-error; }
+
+// ---------------------------------------------------------------------------
+// History drawer
+
+.barcode-drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(420px, 100%);
+  background: $barcode-surface;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.25);
+  transform: translateX(100%);
+  transition: transform 220ms ease-out;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+
+  &::before {
+    content: '';
+    display: block;
+    height: 4px;
+    background: $barcode-gradient;
+  }
+}
+.barcode-drawer--in { transform: translateX(0); }
+
+.barcode-drawer__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: max(12px, env(safe-area-inset-top)) 16px 12px;
+  border-bottom: 1px solid $barcode-border;
+}
+
+.barcode-drawer__close {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color $barcode-transition;
+
+  .icon { width: 18px; height: 18px; fill: $barcode-text; }
+
+  &:hover { background: #f0f0f0; }
+}
+
+.barcode-drawer__title {
+  @include type-h3(uc);
+  margin: 0;
+  color: $barcode-text;
+}
+
+.barcode-drawer__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.barcode-drawer__list li { border-bottom: 1px solid $barcode-border; }
+
+.barcode-drawer__empty {
+  padding: 24px;
+  text-align: center;
+  color: $barcode-muted;
+  font-size: rem(15);
+}
+
+.barcode-drawer__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+  transition: background-color $barcode-transition;
+
+  &:hover { background: #f7f7f7; }
+}
+
+.barcode-drawer__thumb {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  object-fit: cover;
+  background: #f0f0f0;
+}
+.barcode-drawer__thumb--placeholder {
+  background: $barcode-gradient;
+}
+
+.barcode-drawer__info { flex: 1; min-width: 0; }
+
+.barcode-drawer__item-title {
+  font-size: rem(15);
+  font-weight: 500;
+  color: $barcode-text;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.barcode-drawer__item-meta {
+  margin-top: 2px;
+  font-size: rem(13);
+  color: $barcode-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+.barcode-drawer__clear {
+  margin: 16px;
+  padding: 14px;
+  border: 1px solid $barcode-border;
+  background: transparent;
+  color: $barcode-error;
+  font-family: inherit;
+  font-size: rem(14);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.015em;
+  cursor: pointer;
+  transition: background-color $barcode-transition, color $barcode-transition;
+
+  &:hover {
+    background: $barcode-error;
+    color: #fff;
   }
 }
 
-@media screen and (min-width: 767px) {
-  .c-card--list {
-    align-self: baseline;
-    width: 100%;
-  }
-  .ReactModal__Content {
-    width: calc(100vw - 25%);
-  }
-}
+// ---------------------------------------------------------------------------
+// Reduced-motion users get instant transitions
 
-@media screen and (min-width: 600px) {
-  .scanner-container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    .scanner-reader {
-      width: max(50vw, 200px);
-    }
+@media (prefers-reduced-motion: reduce) {
+  .barcode-sheet,
+  .barcode-backdrop,
+  .barcode-drawer,
+  .barcode-toast,
+  .barcode-reticle,
+  .barcode-btn,
+  .barcode-btn__icon,
+  .barcode-bar__btn {
+    transition: none;
+    animation: none;
   }
 }
