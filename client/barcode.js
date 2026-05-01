@@ -109,13 +109,21 @@ function main () {
         openSheet(res.body);
       } else if (res.status === 404) {
         ui.showToast(mount, 'Barcode ' + text + ' not found in the catalogue.', { variant: 'warn' });
+        // Suppress this specific barcode for 30s so we don't refire the
+        // lookup (and re-toast) every 2s while the user is still pointing
+        // at the same wrapper. Other barcodes still scan instantly.
+        scanner.suppress(text, 30000);
         scanner.resume();
       } else {
         ui.showToast(mount, 'Lookup failed. Please try again.', { variant: 'error' });
+        // Server-side error — short suppression so the user doesn't see a
+        // wall of error toasts, but recovers if it was a transient blip.
+        scanner.suppress(text, 5000);
         scanner.resume();
       }
     }).catch(function () {
       ui.showToast(mount, 'Network error. Please try again.', { variant: 'error' });
+      scanner.suppress(text, 5000);
       scanner.resume();
     });
   }
