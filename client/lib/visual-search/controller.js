@@ -1,21 +1,29 @@
-// Visual search client controller. Owns the /scan UX state machine —
-// idle → active → searching → results — plus all camera lifecycle
-// concerns (permissions, iOS quirks, cleanup).
+// Visual search client controller. Owns the /scan UX state machine
+// and all camera lifecycle concerns (permissions, iOS quirks, cleanup).
 //
-// This first pass only does idle → active → captured-preview. The ML
-// pipeline (lazy-load Transformers.js, embed, POST /api/scan/search,
-// render results) lands in a follow-up so we can validate the camera
-// flow on real iOS Safari first.
+// State machine:
+//   idle → active → loading-model? → searching → results
+//                ↘ idle (cancel)        ↘ idle (error)
+//   results → active (scan again)
 //
-// Camera robustness patterns (error mapping, playsinline+muted, track
-// cleanup, visibilitychange) are adapted from the existing /barcode
-// scanner — different code, same lessons. They were learned the hard
-// way; reinventing them is asking for support tickets.
+// loading-model only fires the first time per session — once
+// Transformers.js + the CLIP weights are cached, subsequent captures
+// jump straight to "searching".
+//
+// Camera robustness (error mapping, playsinline+muted, track cleanup,
+// visibilitychange) is adapted from /barcode — different code, same
+// lessons. They were learned the hard way; reinventing them is asking
+// for support tickets.
+
+const { embedFrame, preload } = require('./embed');
 
 const STATE_IDLE = 'idle';
 const STATE_ACTIVE = 'active';
-const STATE_CAPTURED = 'captured';
-const STATE_ERROR = 'error';
+const STATE_LOADING_MODEL = 'loading-model';
+const STATE_SEARCHING = 'searching';
+const STATE_RESULTS = 'results';
+
+const SEARCH_ENDPOINT = '/api/scan/search';
 
 function buzz () {
   if (typeof navigator.vibrate === 'function') {
@@ -46,6 +54,7 @@ function createController (mountEl) {
   let stream = null;
   let videoEl = null;
   let lastCapture = null; // { dataUrl, width, height }
+  let modelWarm = false; // becomes true after the first successful preload
 
   function escapeHtml (s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -60,10 +69,10 @@ function createController (mountEl) {
     mountEl.innerHTML =
       errBanner +
       '<div class="scan__idle">' +
-        '<p class="scan__hint">Works best with a clear photo of a single object, well-lit, against a plain background. Setup the first time you scan takes around 30 seconds.</p>' +
+        '<p class="scan__hint">Works best with a clear photo of a single object, well-lit, against a plain background. Setup the first time takes around 30 seconds.</p>' +
         '<div class="scan__actions">' +
           '<button type="button" class="c-btn c-btn--primary scan__start-btn" data-scan-action="start">' +
-            'Start scan' +
+            'Use your camera' +
           '</button>' +
         '</div>' +
       '</div>';
@@ -83,17 +92,125 @@ function createController (mountEl) {
     videoEl = mountEl.querySelector('.scan__video');
   }
 
-  function renderCaptured (capture) {
+  function renderProcessing (capture, label, sublabel) {
     mountEl.innerHTML =
-      '<div class="scan__captured">' +
+      '<div class="scan__processing">' +
         '<figure class="scan__captured-figure">' +
           '<img class="scan__captured-image" alt="Your captured photo" src="' + capture.dataUrl + '">' +
-          '<figcaption>Captured ' + capture.width + '×' + capture.height + '. Search not implemented yet — back-end POST lands in the next change.</figcaption>' +
         '</figure>' +
-        '<div class="scan__actions">' +
-          '<button type="button" class="c-btn c-btn--primary scan__again-btn" data-scan-action="rescan">Scan again</button>' +
+        '<div class="scan__progress" role="status">' +
+          '<div class="scan__spinner" aria-hidden="true"></div>' +
+          '<p class="scan__progress-label">' + escapeHtml(label) + '</p>' +
+          (sublabel ? '<p class="scan__progress-sublabel">' + escapeHtml(sublabel) + '</p>' : '') +
         '</div>' +
       '</div>';
+  }
+
+  function renderCapturedPhoto (capture) {
+    // Captured-photo block shared by all three result tiers. Includes
+    // the floating "↻ camera" overlay button (top-right) so users can
+    // restart the scan without scrolling all the way to the bottom of
+    // the results. The bottom "Try another photo" button stays for
+    // users who prefer to act after reviewing the matches.
+    return (
+      '<figure class="scan__captured-figure scan__captured-figure--small">' +
+        '<img class="scan__captured-image" alt="Your captured photo" src="' + capture.dataUrl + '">' +
+        '<button type="button" class="scan__captured-rescan" data-scan-action="rescan" aria-label="Try another photo">' +
+          '<svg class="icon icon-refresh" aria-hidden="true">' +
+            '<use xlink:href="/assets/icons/symbol/svg/sprite.symbol.svg#refresh"></use>' +
+          '</svg>' +
+        '</button>' +
+      '</figure>'
+    );
+  }
+
+  function renderResultCard (r) {
+    const safeTitle = escapeHtml(r.title || 'Untitled');
+    // Prefer maker + date; fall back to category if neither is set.
+    const makerDate = [r.maker, r.date].filter(Boolean).join(', ');
+    const meta = makerDate || r.category || '';
+    const safeMeta = escapeHtml(meta);
+    const figure = r.figure
+      ? '<img src="' + escapeHtml(r.figure) + '" alt="">'
+      : '<div class="scan__result-figure-placeholder" aria-hidden="true"></div>';
+    return (
+      '<a class="scan__result-card" href="' + escapeHtml(r.link || '#') + '">' +
+        '<div class="scan__result-figure">' + figure + '</div>' +
+        '<div class="scan__result-info">' +
+          '<h3 class="scan__result-title">' + safeTitle + '</h3>' +
+          (safeMeta ? '<p class="scan__result-meta">' + safeMeta + '</p>' : '') +
+        '</div>' +
+      '</a>'
+    );
+  }
+
+  function renderResultsHigh (capture, data) {
+    const top = data.results[0];
+    const rest = data.results.slice(1, 7);
+    const restMarkup = rest.length
+      ? '<h2 class="scan__results-subheading">Other possibilities</h2>' +
+        '<div class="scan__results-grid">' +
+          rest.map(renderResultCard).join('') +
+        '</div>'
+      : '';
+    mountEl.innerHTML =
+      '<div class="scan__results scan__results--high">' +
+        renderCapturedPhoto(capture) +
+        '<h2 class="scan__results-heading">We think this is:</h2>' +
+        '<div class="scan__results-hero">' +
+          renderResultCard(top) +
+        '</div>' +
+        restMarkup +
+        '<div class="scan__actions">' +
+          '<button type="button" class="c-btn c-btn--primary scan__again-btn" data-scan-action="rescan">Try another photo</button>' +
+        '</div>' +
+      '</div>';
+  }
+
+  function renderResultsMedium (capture, data) {
+    const items = data.results.slice(0, 10);
+    mountEl.innerHTML =
+      '<div class="scan__results scan__results--medium">' +
+        renderCapturedPhoto(capture) +
+        '<h2 class="scan__results-heading">Closest matches in our collection</h2>' +
+        '<div class="scan__results-grid">' +
+          items.map(renderResultCard).join('') +
+        '</div>' +
+        '<div class="scan__actions">' +
+          '<button type="button" class="c-btn c-btn--primary scan__again-btn" data-scan-action="rescan">Try another photo</button>' +
+        '</div>' +
+      '</div>';
+  }
+
+  function renderResultsLow (capture, data) {
+    const items = data.results.slice(0, 5);
+    const longShots = items.length
+      ? '<details class="scan__longshots">' +
+          '<summary>Show our closest guesses anyway</summary>' +
+          '<div class="scan__results-grid">' +
+            items.map(renderResultCard).join('') +
+          '</div>' +
+        '</details>'
+      : '';
+    mountEl.innerHTML =
+      '<div class="scan__results scan__results--low">' +
+        renderCapturedPhoto(capture) +
+        '<h2 class="scan__results-heading">We could not find a confident match</h2>' +
+        '<p class="scan__results-body">Try a different angle, a closer view, or better lighting. Plain backgrounds and well-lit objects work best.</p>' +
+        longShots +
+        '<div class="scan__actions">' +
+          '<button type="button" class="c-btn c-btn--primary scan__again-btn" data-scan-action="rescan">Try another photo</button>' +
+        '</div>' +
+      '</div>';
+  }
+
+  function renderResults (capture, data) {
+    if (!data || !Array.isArray(data.results) || data.results.length === 0) {
+      return renderResultsLow(capture, { results: [] });
+    }
+    if (data.confidence === 'high') return renderResultsHigh(capture, data);
+    if (data.confidence === 'medium') return renderResultsMedium(capture, data);
+    return renderResultsLow(capture, data);
   }
 
   async function startCamera () {
@@ -172,24 +289,88 @@ function createController (mountEl) {
   async function transitionToActive () {
     state = STATE_ACTIVE;
     renderActive();
+    // Start downloading the model in the background while the user
+    // frames their shot. By the time they hit Capture, the heavy work
+    // is often already done.
+    if (!modelWarm) {
+      preload().then(function () {
+        modelWarm = true;
+      }).catch(function (err) {
+        console.warn('[visual-search] preload failed; will retry on capture:', err);
+      });
+    }
     try {
       await startCamera();
     } catch (err) {
       console.error('[visual-search] camera start failed:', err);
       stopCamera();
-      state = STATE_ERROR;
       renderIdle({ error: permissionMessage(err) });
     }
   }
 
-  function transitionToCaptured () {
+  async function postEmbedding (vec) {
+    const res = await fetch(SEARCH_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/octet-stream' },
+      // Slice() to detach from any underlying SharedArrayBuffer that
+      // some Transformers.js builds may use; fetch can't send those.
+      body: new Float32Array(vec).buffer
+    });
+    if (!res.ok) {
+      const text = await res.text().catch(function () { return ''; });
+      throw new Error('Search failed (' + res.status + '): ' + text);
+    }
+    return res.json();
+  }
+
+  async function transitionToSearch () {
     const cap = captureFrame();
     if (!cap) return;
     buzz();
     lastCapture = cap;
     stopCamera();
-    state = STATE_CAPTURED;
-    renderCaptured(cap);
+
+    // First scan in this session: show the model-loading state while
+    // Transformers.js + weights download (~30s on cold cache, instant
+    // after that). On warm scans, jump straight to "searching".
+    if (!modelWarm) {
+      state = STATE_LOADING_MODEL;
+      renderProcessing(cap, 'Setting up visual search', 'First time only — about 30 seconds');
+    } else {
+      state = STATE_SEARCHING;
+      renderProcessing(cap, 'Searching the collection', null);
+    }
+
+    let vec;
+    try {
+      vec = await embedFrame(cap.dataUrl);
+      modelWarm = true;
+    } catch (err) {
+      console.error('[visual-search] embed failed:', err);
+      state = STATE_IDLE;
+      renderIdle({ error: 'Visual search setup failed: ' + (err && err.message ? err.message : 'unknown error') });
+      return;
+    }
+
+    // Once the model has run, the visual progress should switch to
+    // "searching" even if we were in loading-model previously.
+    if (state === STATE_LOADING_MODEL) {
+      state = STATE_SEARCHING;
+      renderProcessing(cap, 'Searching the collection', null);
+    }
+
+    let data;
+    try {
+      data = await postEmbedding(vec);
+    } catch (err) {
+      console.error('[visual-search] search request failed:', err);
+      state = STATE_IDLE;
+      renderIdle({ error: 'We could not reach the search service. Please try again.' });
+      return;
+    }
+
+    state = STATE_RESULTS;
+    renderResults(cap, data);
   }
 
   function transitionToIdle () {
@@ -205,9 +386,9 @@ function createController (mountEl) {
     if (!btn) return;
     const action = btn.getAttribute('data-scan-action');
     if (action === 'start' && state === STATE_IDLE) transitionToActive();
-    else if (action === 'capture' && state === STATE_ACTIVE) transitionToCaptured();
+    else if (action === 'capture' && state === STATE_ACTIVE) transitionToSearch();
     else if (action === 'cancel' && state === STATE_ACTIVE) transitionToIdle();
-    else if (action === 'rescan' && state === STATE_CAPTURED) transitionToActive();
+    else if (action === 'rescan' && state === STATE_RESULTS) transitionToActive();
   });
 
   // Pause/recover when iOS background-kills the camera.

@@ -40,7 +40,15 @@ module.exports = async (elastic, config, cb) => {
     layout: 'default',
     layoutPath: './templates/layouts',
     partialsPath: './templates/partials',
-    helpersPath: './templates/helpers'
+    helpersPath: './templates/helpers',
+    // Globals injected into every view render so partials (e.g. the
+    // searchbox) can gate UI on the feature flag without each route
+    // having to thread it through.
+    context: function () {
+      return {
+        visualSearchEnabled: !!config.visualSearchEnabled
+      };
+    }
   });
 
   cb(null, { server, elastic });

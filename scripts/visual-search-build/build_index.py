@@ -47,8 +47,17 @@ from PIL import Image, UnidentifiedImageError
 from tqdm import tqdm
 
 
-DEFAULT_MODEL = "ViT-B-32"
-DEFAULT_PRETRAINED = "laion2b_s34b_b79k"
+# Use the QuickGELU architecture variant. OpenAI's original CLIP was
+# trained with QuickGELU activations; loading those weights into the
+# default ViT-B-32 (which uses standard GELU) produces silently-wrong
+# outputs. open_clip prints a UserWarning for this — heed it.
+DEFAULT_MODEL = "ViT-B-32-quickgelu"
+# OpenAI weights — must match the Transformers.js model used in the
+# browser (Xenova/clip-vit-base-patch32, which is a port of
+# openai/clip-vit-base-patch32). DO NOT change to a LAION variant
+# without simultaneously swapping the browser model — preprocessing
+# parity is necessary but not sufficient; weight parity matters too.
+DEFAULT_PRETRAINED = "openai"
 DEFAULT_BATCH_SIZE = 64
 DEFAULT_CONCURRENCY = 12
 DEFAULT_HTTP_TIMEOUT = 30.0

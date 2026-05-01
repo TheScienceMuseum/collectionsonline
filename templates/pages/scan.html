@@ -5,9 +5,9 @@
   <main id="main-content">
     <div class="o-container scan">
       <header class="scan__intro">
-        <h1>Scan an object</h1>
+        <h1>Visual search</h1>
         <p>
-          Point your camera at an object in our museums (or a printed photo) to find the closest matches in our collection.
+          Use your camera to find objects in our collection. Works for things in our museums, photos in a magazine, or anything you’re curious to look up.
         </p>
       </header>
 
@@ -18,7 +18,7 @@
         aria-live="polite">
         <div class="scan__idle">
           <p class="scan__hint">
-            Works best with a clear photo of a single object, well-lit, against a plain background. Setup the first time you scan takes around 30 seconds.
+            Works best with a clear photo of a single object, well-lit, against a plain background. Setup the first time takes around 30 seconds.
           </p>
           <div class="scan__actions">
             <button
@@ -26,7 +26,7 @@
               class="c-btn c-btn--primary scan__start-btn"
               data-scan-action="start"
               {{#unless ready}}disabled{{/unless}}>
-              {{#if ready}}Start scan{{else}}Visual search loading…{{/if}}
+              {{#if ready}}Use your camera{{else}}Visual search loading…{{/if}}
             </button>
           </div>
         </div>

@@ -29,11 +29,11 @@ module.exports = function (page) {
       if (pageEl) {
         pageEl.innerHTML = Templates.scan({
           ready: true,
-          titlePage: 'Scan an object | Science Museum Group Collection'
+          titlePage: 'Visual search | Science Museum Group Collection'
         });
       }
       document.body.className = '';
-      document.title = 'Scan an object | Science Museum Group Collection';
+      document.title = 'Visual search | Science Museum Group Collection';
       searchListener();
       requestAnimationFrame(function () {
         initComp();

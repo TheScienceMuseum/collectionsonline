@@ -33,17 +33,29 @@ function pickThumbnailLocation (multimedia) {
 }
 
 function getCategory (source) {
-  if (Array.isArray(source.categories) && source.categories[0]) {
-    return source.categories[0].name || '';
+  // ES field is `category` (singular), array of objects with .name.
+  if (Array.isArray(source.category) && source.category[0]) {
+    return source.category[0].name || '';
   }
   return '';
 }
 
 function getDate (source) {
-  const creation = source.lifecycle && source.lifecycle.creation;
-  if (Array.isArray(creation) && creation[0] && Array.isArray(creation[0].date)) {
-    const d = creation[0].date[0];
-    if (d && d.value) return d.value;
+  // ES doc: source.creation.date[0].value (creation is an object, not
+  // an array, despite what the JSON:API-shaped templates make it look
+  // like — the transform layer reshapes this to lifecycle.creation).
+  const creation = source.creation;
+  if (creation && Array.isArray(creation.date) && creation.date[0]) {
+    return creation.date[0].value || '';
+  }
+  return '';
+}
+
+function getMaker (source) {
+  const creation = source.creation;
+  if (creation && Array.isArray(creation.maker) && creation.maker[0]) {
+    const m = creation.maker[0];
+    if (m.summary && m.summary.title) return m.summary.title;
   }
   return '';
 }
@@ -66,8 +78,9 @@ function buildResult (id, score, source, config) {
     title,
     link,
     figure,
-    categoryOrArtist: getCategory(source),
+    maker: getMaker(source),
     date: getDate(source),
+    category: getCategory(source),
     score
   };
 }
@@ -89,7 +102,7 @@ exports.page = (elastic, config) => ({
       return h.view('scan', Object.assign({}, data, {
         navigation: require('../fixtures/navigation'),
         museums: require('../fixtures/museums'),
-        titlePage: 'Scan an object | Science Museum Group Collection',
+        titlePage: 'Visual search | Science Museum Group Collection',
         ready: visualSearch.isReady()
       }));
     }

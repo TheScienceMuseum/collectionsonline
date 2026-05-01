@@ -174,6 +174,71 @@
     }
   }
 
+  // Camera entry-point — sits left of the search submit when the
+  // visual-search feature flag is on. Mirrors the submit button's
+  // sizing/positioning for visual consistency.
+  &__visual {
+    display: none;
+  }
+
+  // Camera icon + hairline separator only show on phone-sized
+  // viewports — visual search is a camera-driven feature and isn't
+  // useful on a desktop, where the icon would just clutter the
+  // searchbox without an obvious action behind it.
+  &--has-visual {
+    .searchbox__search[type=search] {
+      margin-right: 7rem;
+      width: calc(100% - 7rem);
+    }
+
+    .searchbox__visual {
+      height: 3.5rem;
+      width: 3.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 0;
+      right: 3.5rem;
+      border: 0;
+      background-color: transparent;
+      color: grey(50);
+      transition: all $transition-default;
+
+      // Hairline separator on the right edge between the camera
+      // icon and the search submit. Centred vertically on the icon
+      // (50% top/bottom inset gives a ~1.75rem high line).
+      &::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 25%;
+        bottom: 25%;
+        width: 1px;
+        background: rgba(0, 0, 0, 0.15);
+      }
+
+      &:hover {
+        color: black;
+        transform: scale(1.1, 1.1);
+      }
+    }
+
+    // Desktop only: drop the camera entry-point and reclaim the
+    // right-hand space. Phones AND tablets keep it (tablets have
+    // cameras too — iPads in portrait are < 64 em).
+    @media (min-width: 64em) {
+      .searchbox__search[type=search] {
+        margin-right: 3.5rem;
+        width: calc(100% - 3.5rem);
+      }
+
+      .searchbox__visual {
+        display: none;
+      }
+    }
+  }
+
   &__filters {
     border-top: 1px solid mix($c-blue, white, 25%);
     display: flex;
