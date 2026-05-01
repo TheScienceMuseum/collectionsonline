@@ -57,6 +57,11 @@ function createScanner () {
   let tickCount = 0;
   let lastDecoded = null;
   let lastDecodedAt = 0;
+  // Suppression list: text → expiresAt (epoch ms). Used by the entry point
+  // to silence repeat lookups for a barcode that just 404'd, since the
+  // user is likely still pointing the camera at the same code. Without
+  // this we'd refire the lookup every 2s and re-toast indefinitely.
+  const suppressed = new Map();
   let debugEl = null;
   let lastHitDeg = null;
 
@@ -171,11 +176,29 @@ function createScanner () {
   function handleHit (text, deg, onResult) {
     const now = Date.now();
     if (text === lastDecoded && now - lastDecodedAt < DEDUPE_WINDOW_MS) return;
+
+    // Caller asked us to suppress this barcode (typically after a 404
+    // lookup). Pretend we didn't see it; suppression entry self-expires.
+    const expiry = suppressed.get(text);
+    if (expiry !== undefined) {
+      if (expiry > now) return;
+      suppressed.delete(text);
+    }
+
     lastDecoded = text;
     lastDecodedAt = now;
     // eslint-disable-next-line no-console
     console.log('[barcode] decoded at', deg + '°:', text);
     onResult(text);
+  }
+
+  // Mark `text` as suppressed for `ttlMs` so the scan loop ignores it
+  // even if the camera continues to resolve it. Used by the entry point
+  // when a barcode is genuinely not in the catalogue, to avoid hammering
+  // the lookup endpoint and re-toasting on every frame.
+  function suppress (text, ttlMs) {
+    if (!text) return;
+    suppressed.set(text, Date.now() + (ttlMs || 30000));
   }
 
   // ---- debug overlay (only when ?debug=1) -------------------------------
@@ -223,6 +246,7 @@ function createScanner () {
   function stop () {
     stopped = true;
     paused = true;
+    suppressed.clear();
     if (timer) { clearTimeout(timer); timer = null; }
     if (stream) {
       stream.getTracks().forEach(function (t) {
@@ -280,7 +304,7 @@ function createScanner () {
     return p.then(function () { return true; }).catch(function () { return false; });
   }
 
-  return { start, pause, resume, stop, setTorch, torchSupported, isStreamAlive, poke };
+  return { start, pause, resume, stop, setTorch, torchSupported, isStreamAlive, poke, suppress };
 }
 
 module.exports = { createScanner };
