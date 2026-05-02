@@ -93,7 +93,7 @@
       <tr>
         <th>{{this.label}}</th>
         <td><span class="dashboard-bar dashboard-bar--neutral" style="width: {{percentOf this.count ../stats.totals.biographies}}%;"></span></td>
-        <td class="dashboard-bars__count">{{this.costFormatted}} <small style="color:#888;">· {{this.count}}</small></td>
+        <td class="dashboard-bars__count">{{this.costFormatted}} <small style="color:#646464;">· {{this.count}}</small></td>
       </tr>
       {{/each}}
     </table>
@@ -124,7 +124,7 @@
   <section class="dashboard-panel">
     <h3>Public reports</h3>
     <dl class="dashboard-meta">
-      <dt>Pending</dt><dd>{{stats.flags.pendingReports}}{{#if stats.flags.pendingAcrossRecords}} <small style="color:#888;">across {{stats.flags.pendingAcrossRecords}} {{#isequal stats.flags.pendingAcrossRecords 1 this}}record{{else}}records{{/isequal}}</small>{{/if}}</dd>
+      <dt>Pending</dt><dd>{{stats.flags.pendingReports}}{{#if stats.flags.pendingAcrossRecords}} <small style="color:#646464;">across {{stats.flags.pendingAcrossRecords}} {{#isequal stats.flags.pendingAcrossRecords 1 this}}record{{else}}records{{/isequal}}</small>{{/if}}</dd>
       <dt>Lifetime</dt><dd>{{stats.flags.lifetimeReports}}</dd>
     </dl>
     {{#if stats.flags.topReasons.length}}

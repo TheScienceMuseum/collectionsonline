@@ -15,20 +15,20 @@
 
 
 {{#if publicReports}}
-<div id="public-reports" style="background: #1a1a1a; border: 1px solid #c96; border-radius: 6px; padding: 1rem 1.25rem; margin: 0 0 1.25rem 0;">
+<div id="public-reports" style="background: #fbf9f4; border: 1px solid #c87a1e; border-radius: 6px; padding: 1rem 1.25rem; margin: 0 0 1.25rem 0;">
   <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap;">
-    <h3 style="margin: 0; font-size: 1rem; color: #eee;">Public reports</h3>
+    <h3 style="margin: 0; font-size: 1rem; color: #2a2a2a;">Public reports</h3>
     {{#if publicReports.pendingFlags}}
-      <div style="font-size: 0.85rem; color: #c96;"><strong>{{publicReports.pendingFlags}} pending</strong></div>
+      <div style="font-size: 0.85rem; color: #c87a1e;"><strong>{{publicReports.pendingFlags}} pending</strong></div>
     {{else}}
-      <div style="font-size: 0.85rem; color: #888;">no pending reports</div>
+      <div style="font-size: 0.85rem; color: #646464;">no pending reports</div>
     {{/if}}
   </div>
 
   {{#if publicReports.pendingCounts.length}}
   <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem; flex-wrap: wrap; font-size: 0.85rem;">
     {{#each publicReports.pendingCounts}}
-      <span style="background: #2a1e1e; border: 1px solid #633; border-radius: 3px; padding: 0.15rem 0.5rem; color: #eee;">
+      <span style="background: #f5e2e2; border: 1px solid #9c5050; border-radius: 3px; padding: 0.15rem 0.5rem; color: #2a2a2a;">
         {{this.label}} · <strong>{{this.count}}</strong>
       </span>
     {{/each}}
@@ -36,7 +36,7 @@
   {{/if}}
 
   {{#if publicReports.pendingFromPreviousBio}}
-  <div style="margin-top: 0.75rem; padding: 0.5rem 0.75rem; background: rgba(204, 153, 102, 0.08); border: 1px solid rgba(204, 153, 102, 0.25); border-radius: 3px; font-size: 0.8rem; color: #ddba96;">
+  <div style="margin-top: 0.75rem; padding: 0.5rem 0.75rem; background: rgba(204, 153, 102, 0.08); border: 1px solid rgba(204, 153, 102, 0.25); border-radius: 3px; font-size: 0.8rem; color: #9c5a16;">
     ⚠ Some pending reports were submitted against an earlier biography version. The current biography may or may not address them — check the content before marking as reviewed.
   </div>
   {{/if}}
@@ -46,14 +46,14 @@
     <form method="POST" action="/admin/ai/{{record.PK}}/flags/reviewed" style="display: inline;">
       <button type="submit" class="btn btn--secondary">Mark as reviewed</button>
     </form>
-    <span style="color: #888; font-size: 0.75rem; margin-left: 0.5rem;">
+    <span style="color: #646464; font-size: 0.75rem; margin-left: 0.5rem;">
       Records that you've looked at the pending reports and decided what to do.
     </span>
   </div>
   {{/if}}
 
   {{#if publicReports.lifetimeCounts.length}}
-  <details style="margin-top: 0.9rem; font-size: 0.8rem; color: #888;">
+  <details style="margin-top: 0.9rem; font-size: 0.8rem; color: #646464;">
     <summary style="cursor: pointer;">
       {{publicReports.totalFlags}} lifetime reports across all versions
       {{#if publicReports.lastFlaggedAt}}
@@ -77,12 +77,12 @@
     <dt>Record ID</dt>
     <dd>
       {{record.PK}}
-      <a href="{{record.pageUrl}}" target="_blank" rel="noopener" title="Open the public page for this record in a new tab" style="font-size: 0.8rem; color: #aaa; margin-left: 0.3rem;">view on site ↗</a>
+      <a href="{{record.pageUrl}}" target="_blank" rel="noopener" title="Open the public page for this record in a new tab" style="font-size: 0.8rem; color: #646464; margin-left: 0.3rem;">view on site ↗</a>
     </dd>
   </div>
   <div>
     <dt>Model</dt>
-    <dd>{{#if record.model}}{{record.model}}{{else}}<span style="color: #888;" title="No AI generation — this record was skipped.">— (skipped)</span>{{/if}}</dd>
+    <dd>{{#if record.model}}{{record.model}}{{else}}<span style="color: #646464;" title="No AI generation — this record was skipped.">— (skipped)</span>{{/if}}</dd>
   </div>
   <div>
     <dt>Prompt Version</dt>
@@ -90,12 +90,12 @@
       {{#if record.promptVersion}}
         {{record.promptVersion}}
         {{#isequal record.promptVersion activeVersion this}}
-          <span style="color: #6c6; font-size: 0.75rem;" title="This record uses the current default prompt."> · current default</span>
+          <span style="color: #2e7d4a; font-size: 0.75rem;" title="This record uses the current default prompt."> · current default</span>
         {{else}}
-          <span style="color: #c96; font-size: 0.75rem;" title="Default is now {{activeVersion}}. Regenerate to update, or keep this version for comparison."> · older than default ({{activeVersion}})</span>
+          <span style="color: #c87a1e; font-size: 0.75rem;" title="Default is now {{activeVersion}}. Regenerate to update, or keep this version for comparison."> · older than default ({{activeVersion}})</span>
         {{/isequal}}
       {{else}}
-        <span style="color: #888;" title="No AI generation — this record was skipped.">— (skipped)</span>
+        <span style="color: #646464;" title="No AI generation — this record was skipped.">— (skipped)</span>
       {{/if}}
     </dd>
   </div>
@@ -105,10 +105,10 @@
       {{#if record.inputTokens}}
         {{record.inputTokens}} / {{record.outputTokens}}
         {{#if cost}}
-          <span style="color: #888; font-size: 0.85rem;" title="Cost for this generation; extrapolated cost shown for 1,000 biographies of the same token shape">· {{cost.perBioFormatted}} ({{cost.per1kBioFormatted}} / 1k)</span>
+          <span style="color: #646464; font-size: 0.85rem;" title="Cost for this generation; extrapolated cost shown for 1,000 biographies of the same token shape">· {{cost.perBioFormatted}} ({{cost.per1kBioFormatted}} / 1k)</span>
         {{/if}}
       {{else}}
-        <span style="color: #888;" title="No AI generation — this record was skipped.">— (skipped)</span>
+        <span style="color: #646464;" title="No AI generation — this record was skipped.">— (skipped)</span>
       {{/if}}
     </dd>
   </div>
@@ -118,7 +118,7 @@
     <dd>
       <span title="Weighted score of source-data signals. Strong anchors (existing description, related collection items) count 3 each; Wikidata 2 each; supporting fields 1 each. Records below the minimum are skipped as insufficient_data.">
         {{signalView.score}} / {{signalView.maxScore}}
-        <span style="color: #888; font-size: 0.85rem;">· min {{signalView.minScore}} to generate</span>
+        <span style="color: #646464; font-size: 0.85rem;">· min {{signalView.minScore}} to generate</span>
       </span>
     </dd>
   </div>
@@ -139,17 +139,17 @@
     <dd>
       {{record.existingDescriptionChars}} chars
       {{#isequal displayState "suppressed" this}}
-        <span style="display: inline-block; margin-left: 0.3rem; font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #2a241e; color: #cc9; border: 1px solid #993;" title="Shorter than {{suppressThreshold}} chars — the public page hides the existing description and shows the AI biography only.">
+        <span style="display: inline-block; margin-left: 0.3rem; font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #fcf3e1; color: #9c5a16; border: 1px solid #cfa050;" title="Shorter than {{suppressThreshold}} chars — the public page hides the existing description and shows the AI biography only.">
           hidden on page
         </span>
       {{/isequal}}
       {{#isequal displayState "replaced" this}}
-        <span style="display: inline-block; margin-left: 0.3rem; font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #2a1e1e; color: #c99; border: 1px solid #933;" title="Longer than {{maxThreshold}} chars — AI generation is skipped; public page shows the existing description only.">
+        <span style="display: inline-block; margin-left: 0.3rem; font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #f5e2e2; color: #b03030; border: 1px solid #c87878;" title="Longer than {{maxThreshold}} chars — AI generation is skipped; public page shows the existing description only.">
           AI skipped
         </span>
       {{/isequal}}
       {{#isequal displayState "both" this}}
-        <span style="display: inline-block; margin-left: 0.3rem; font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #1e2a1e; color: #9c9; border: 1px solid #383;" title="Both the existing description and the AI biography are shown on the public page.">
+        <span style="display: inline-block; margin-left: 0.3rem; font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #e6f0e9; color: #2e7d4a; border: 1px solid #a4c4a8;" title="Both the existing description and the AI biography are shown on the public page.">
           existing + AI
         </span>
       {{/isequal}}
@@ -161,16 +161,16 @@
     <dd>
       {{#isequal record.subjectStatus.status "active" this}}
         {{#isequal record.subjectStatus.subjectType "person" this}}
-          <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #2a241e; color: #cc9; border: 1px solid #993;" title="No death date recorded. Biography is generated normally; the public site suppresses it while aiBiographyIncludeLiving is off.">living</span>
+          <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #fcf3e1; color: #9c5a16; border: 1px solid #cfa050;" title="No death date recorded. Biography is generated normally; the public site suppresses it while aiBiographyIncludeLiving is off.">living</span>
         {{else}}
-          <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #2a241e; color: #cc9; border: 1px solid #993;" title="No dissolution date recorded — assumed to be an active organisation.">active</span>
+          <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #fcf3e1; color: #9c5a16; border: 1px solid #cfa050;" title="No dissolution date recorded — assumed to be an active organisation.">active</span>
         {{/isequal}}
       {{/isequal}}
       {{#isequal record.subjectStatus.status "deceased" this}}
-        <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #1e2a1e; color: #9c9; border: 1px solid #383;" title="Death date recorded.">deceased</span>
+        <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #e6f0e9; color: #2e7d4a; border: 1px solid #a4c4a8;" title="Death date recorded.">deceased</span>
       {{/isequal}}
       {{#isequal record.subjectStatus.status "dissolved" this}}
-        <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #1e2a1e; color: #9c9; border: 1px solid #383;" title="Organisation dissolution date recorded.">dissolved</span>
+        <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #e6f0e9; color: #2e7d4a; border: 1px solid #a4c4a8;" title="Organisation dissolution date recorded.">dissolved</span>
       {{/isequal}}
       {{!-- Two new organisation states (Apr 2026): 'unknown' and
             'historical'. Both apply only when there's no structured
@@ -179,19 +179,19 @@
             for semantics. Pill colour signals certainty: green = known,
             amber = uncertain, grey = past. --}}
       {{#isequal record.subjectStatus.status "unknown" this}}
-        <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #2a241e; color: #cc9; border: 1px solid #993;" title="{{record.subjectStatus.organisationStatusReasoning}}">unknown</span>
+        <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #fcf3e1; color: #9c5a16; border: 1px solid #cfa050;" title="{{record.subjectStatus.organisationStatusReasoning}}">unknown</span>
       {{/isequal}}
       {{#isequal record.subjectStatus.status "historical" this}}
-        <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #1f1f1f; color: #aaa; border: 1px solid #555;" title="{{record.subjectStatus.organisationStatusReasoning}}">historical</span>
+        <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #fbf9f4; color: #646464; border: 1px solid #c5c1b5;" title="{{record.subjectStatus.organisationStatusReasoning}}">historical</span>
       {{/isequal}}
       {{#if record.subjectStatus.deathDate}}
-        <span style="color: #888; font-size: 0.85rem; white-space: nowrap;" title="Source: {{record.subjectStatus.deathDateSource}} · raw: {{record.subjectStatus.deathDate}}">· {{formatDate record.subjectStatus.deathDate "date"}}{{#isequal record.subjectStatus.deathDateSource "wikidata" this}}<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 16 16" aria-hidden="true" style="color: #c96; vertical-align: -1px; margin-left: 0.3rem;"><title>Sourced from Wikidata — not in our collection record</title><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.1"/></svg>{{/isequal}}</span>
+        <span style="color: #646464; font-size: 0.85rem; white-space: nowrap;" title="Source: {{record.subjectStatus.deathDateSource}} · raw: {{record.subjectStatus.deathDate}}">· {{formatDate record.subjectStatus.deathDate "date"}}{{#isequal record.subjectStatus.deathDateSource "wikidata" this}}<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 16 16" aria-hidden="true" style="color: #c87a1e; vertical-align: -1px; margin-left: 0.3rem;"><title>Sourced from Wikidata — not in our collection record</title><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.1"/></svg>{{/isequal}}</span>
       {{else}}{{#if record.subjectStatus.activityText}}
         {{!-- Organisation 'unknown' or 'historical' state — show the matched
               brief-biography activity range inline so staff can see at a
               glance what the classification was based on (e.g.
               "unknown · active 1990s" or "historical · 1856-1905"). --}}
-        <span style="color: #888; font-size: 0.85rem; white-space: nowrap;" title="{{record.subjectStatus.organisationStatusReasoning}}">· {{record.subjectStatus.activityText}}</span>
+        <span style="color: #646464; font-size: 0.85rem; white-space: nowrap;" title="{{record.subjectStatus.organisationStatusReasoning}}">· {{record.subjectStatus.activityText}}</span>
       {{else}}
         {{!-- Living person: show "· born YYYY" alongside the pill, mirroring
               the deceased treatment so staff can see at a glance how recent
@@ -201,7 +201,7 @@
               stored on the canonical record yet). --}}
         {{#isequal record.subjectStatus.subjectType "person" this}}
           {{#if record.subjectStatus.birthDate}}
-            <span style="color: #888; font-size: 0.85rem; white-space: nowrap;" title="Source: {{record.subjectStatus.birthDateSource}} · raw: {{record.subjectStatus.birthDate}}">· born {{formatDate record.subjectStatus.birthDate "date"}}{{#isequal record.subjectStatus.birthDateSource "wikidata" this}}<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 16 16" aria-hidden="true" style="color: #c96; vertical-align: -1px; margin-left: 0.3rem;"><title>Sourced from Wikidata — not in our collection record</title><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.1"/></svg>{{/isequal}}</span>
+            <span style="color: #646464; font-size: 0.85rem; white-space: nowrap;" title="Source: {{record.subjectStatus.birthDateSource}} · raw: {{record.subjectStatus.birthDate}}">· born {{formatDate record.subjectStatus.birthDate "date"}}{{#isequal record.subjectStatus.birthDateSource "wikidata" this}}<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 16 16" aria-hidden="true" style="color: #c87a1e; vertical-align: -1px; margin-left: 0.3rem;"><title>Sourced from Wikidata — not in our collection record</title><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.1"/></svg>{{/isequal}}</span>
           {{/if}}
         {{/isequal}}
       {{/if}}
@@ -213,7 +213,7 @@
     <dt>Confidence</dt>
     <dd title="The model's self-reported confidence in its own output (0 = no data, 10 = rich, well-grounded). LLM self-reporting is a weak signal — we track it to observe calibration over time. The Signal score (data in) is a stronger quality proxy.">
       {{#if record.confidence}}{{record.confidence}} / 10{{else}}—{{/if}}
-      <span style="color: #888; font-size: 0.75rem;">· self-reported</span>
+      <span style="color: #646464; font-size: 0.75rem;">· self-reported</span>
     </dd>
   </div>
 </div>
@@ -228,22 +228,22 @@
         prefix match is simple and stable (we write these strings in
         routes/ai-biography.js and admin-ai.js). --}}
   {{#isequal record.skipCategory "failed" this}}
-  <p style="font-size: 0.85rem; color: #c96; margin-top: 0.4rem;">
+  <p style="font-size: 0.85rem; color: #c87a1e; margin-top: 0.4rem;">
     Claude was called and billed but returned content we couldn't use (empty / truncated / unparseable). We persist the skip to avoid burning tokens on repeated page loads — but the underlying record may be fine. Click <strong>Regenerate</strong> to try again; if it keeps failing, check the server logs around <span title="{{record.generatedAt}}">{{formatDate record.generatedAt "auto"}}</span> for the underlying Claude error.
   </p>
   {{/isequal}}
   {{#isequal record.skipCategory "living" this}}
-  <p style="font-size: 0.85rem; color: #888; margin-top: 0.4rem;">
+  <p style="font-size: 0.85rem; color: #646464; margin-top: 0.4rem;">
     This record was skipped under the old generation-time living-person policy (since superseded). It should self-resolve on the next regeneration — the current policy generates for everyone and suppresses at render time instead.
   </p>
   {{/isequal}}
   {{#isequal record.skipCategory "insufficient" this}}
-  <p style="font-size: 0.85rem; color: #888; margin-top: 0.4rem;">
+  <p style="font-size: 0.85rem; color: #646464; margin-top: 0.4rem;">
     The record doesn't have enough source signal (dates / occupation / related items / wikidata) for the generator to produce a meaningful biography. Adding more metadata to the underlying catalogue record is the fix — regenerating won't help until the data improves.
   </p>
   {{/isequal}}
   {{#isequal record.skipCategory "low_confidence" this}}
-  <p style="font-size: 0.85rem; color: #888; margin-top: 0.4rem;">
+  <p style="font-size: 0.85rem; color: #646464; margin-top: 0.4rem;">
     Claude produced content but self-reported low confidence — we store the attempt but don't surface it publicly. Regenerating occasionally clears this; if it keeps recurring the source data is probably borderline.
   </p>
   {{/isequal}}
@@ -253,7 +253,7 @@
 {{#if record.biographyHtml}}
 <div class="detail-section">
   <h3>Biography</h3>
-  <div style="background: #1a1a1a; padding: 1rem; border-radius: 4px;">
+  <div style="background: #fbf9f4; padding: 1rem; border-radius: 4px;">
     {{{record.biographyHtml}}}
   </div>
 </div>
@@ -262,7 +262,7 @@
 {{#if record.contextHtml}}
 <div class="detail-section">
   <h3>Collection Context</h3>
-  <div style="background: #1a1a1a; padding: 1rem; border-radius: 4px;">
+  <div style="background: #fbf9f4; padding: 1rem; border-radius: 4px;">
     {{{record.contextHtml}}}
   </div>
 </div>
@@ -270,37 +270,37 @@
 
 {{#if existingDescription.briefText}}
 <details class="collapsible" style="margin-top: 0.75rem;">
-  <summary>Existing brief biography ({{existingDescription.briefChars}} chars) <span style="color: #888; font-weight: normal; font-size: 0.85rem;">— terse structured summary; often contains "active YYYY-YYYY" date text</span></summary>
+  <summary>Existing brief biography ({{existingDescription.briefChars}} chars) <span style="color: #646464; font-weight: normal; font-size: 0.85rem;">— terse structured summary; often contains "active YYYY-YYYY" date text</span></summary>
   <div class="detail-section">
-    <div style="background: #1a1a1a; padding: 1rem; border-radius: 4px; font-size: 0.9rem; white-space: pre-wrap;">{{existingDescription.briefText}}</div>
+    <div style="background: #fbf9f4; padding: 1rem; border-radius: 4px; font-size: 0.9rem; white-space: pre-wrap;">{{existingDescription.briefText}}</div>
   </div>
 </details>
 {{/if}}
 
 {{#if existingDescription.text}}
 <details class="collapsible" style="margin-top: 0.75rem;">
-  <summary>Existing biography ({{existingDescription.chars}} chars) <span style="color: #888; font-weight: normal; font-size: 0.85rem;">— freeform curatorial prose from the collection record</span></summary>
+  <summary>Existing biography ({{existingDescription.chars}} chars) <span style="color: #646464; font-weight: normal; font-size: 0.85rem;">— freeform curatorial prose from the collection record</span></summary>
   <div class="detail-section">
-    <div style="background: #1a1a1a; padding: 1rem; border-radius: 4px; font-size: 0.9rem; white-space: pre-wrap;">{{existingDescription.text}}</div>
+    <div style="background: #fbf9f4; padding: 1rem; border-radius: 4px; font-size: 0.9rem; white-space: pre-wrap;">{{existingDescription.text}}</div>
   </div>
 </details>
 {{/if}}
 
 {{#if signalView}}
 <details class="collapsible" style="margin-top: 0.75rem;">
-  <summary>Signal breakdown (score {{signalView.score}} / {{signalView.maxScore}}) <span style="color: #888; font-weight: normal; font-size: 0.85rem;">— which data signals were present at generation time, and their weights</span></summary>
+  <summary>Signal breakdown (score {{signalView.score}} / {{signalView.maxScore}}) <span style="color: #646464; font-weight: normal; font-size: 0.85rem;">— which data signals were present at generation time, and their weights</span></summary>
   <div class="detail-section">
     <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.3rem; font-size: 0.85rem;">
       {{#each signalView.signals}}
-      <li style="display: flex; gap: 0.5rem; align-items: center; background: #1a1a1a; padding: 0.4rem 0.6rem; border-radius: 3px;">
+      <li style="display: flex; gap: 0.5rem; align-items: center; background: #fbf9f4; padding: 0.4rem 0.6rem; border-radius: 3px;">
         {{#if this.present}}
-          <span style="color: #6c6; font-family: ui-monospace, monospace;">✓</span>
+          <span style="color: #2e7d4a; font-family: ui-monospace, monospace;">✓</span>
           <span style="flex: 1;">{{this.label}}</span>
-          <span style="color: #6c6; font-size: 0.75rem;" title="Weight of this signal">+{{this.weight}}</span>
+          <span style="color: #2e7d4a; font-size: 0.75rem;" title="Weight of this signal">+{{this.weight}}</span>
         {{else}}
-          <span style="color: #666; font-family: ui-monospace, monospace;">✗</span>
-          <span style="color: #888; flex: 1;">{{this.label}}</span>
-          <span style="color: #666; font-size: 0.75rem;" title="Weight of this signal if present">({{this.weight}})</span>
+          <span style="color: #646464; font-family: ui-monospace, monospace;">✗</span>
+          <span style="color: #646464; flex: 1;">{{this.label}}</span>
+          <span style="color: #646464; font-size: 0.75rem;" title="Weight of this signal if present">({{this.weight}})</span>
         {{/if}}
       </li>
       {{/each}}
@@ -311,23 +311,23 @@
 
 {{#if record.systemPrompt}}
 <details class="collapsible" style="margin-top: 0.75rem;">
-  <summary>View system prompt <span style="color: #888; font-weight: normal; font-size: 0.85rem;">— the instructions sent to the model</span></summary>
+  <summary>View system prompt <span style="color: #646464; font-weight: normal; font-size: 0.85rem;">— the instructions sent to the model</span></summary>
   <div class="detail-section">
-    <pre style="white-space: pre-wrap; font-size: 0.8rem; color: #aaa;">{{record.systemPrompt}}</pre>
+    <pre style="white-space: pre-wrap; font-size: 0.8rem; color: #646464;">{{record.systemPrompt}}</pre>
   </div>
 </details>
 {{/if}}
 
 {{#if record.prompt}}
 <details class="collapsible" style="margin-top: 0.75rem;">
-  <summary>View user prompt <span style="color: #888; font-weight: normal; font-size: 0.85rem;">— the record data sent alongside the system prompt</span></summary>
+  <summary>View user prompt <span style="color: #646464; font-weight: normal; font-size: 0.85rem;">— the record data sent alongside the system prompt</span></summary>
   <div class="detail-section">
-    <pre style="white-space: pre-wrap; font-size: 0.8rem; color: #aaa;">{{record.prompt}}</pre>
+    <pre style="white-space: pre-wrap; font-size: 0.8rem; color: #646464;">{{record.prompt}}</pre>
   </div>
 </details>
 {{/if}}
 
-<hr style="border-color: #333; margin: 1.5rem 0;">
+<hr style="border-color: #e4e0d4; margin: 1.5rem 0;">
 
 {{!-- AI review sits above the Flag-a-problem + Notes blocks so staff
       see the most structured triage signal first. Deciding whether to
@@ -335,7 +335,7 @@
 {{#if reviewConfig.enabled}}
 <div class="detail-section" id="reviews">
   <h3>AI review</h3>
-  <p style="font-size: 0.85rem; color: #888; margin: 0 0 0.75rem 0;">
+  <p style="font-size: 0.85rem; color: #646464; margin: 0 0 0.75rem 0;">
     A premium-model fact-check of the biography above. Use when a public report or staff flag raises a specific concern and you want a structured second opinion before acting. Findings are investigative prompts — staff decide what to do.
   </p>
 
@@ -354,33 +354,33 @@
         the browser happens to repaint between handler and submission,
         which varies by hardware / tab state. The double rAF guarantees
         one full paint cycle before .submit() fires. --}}
-  <form id="review-form" method="POST" action="/admin/ai/{{record.PK}}/review" style="background: #1a1a1a; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 1rem;" onsubmit="if(this.dataset.submitting)return true;this.dataset.submitting='1';this.classList.add('is-loading');var f=this;requestAnimationFrame(function(){requestAnimationFrame(function(){f.submit();});});return false;">
+  <form id="review-form" method="POST" action="/admin/ai/{{record.PK}}/review" style="background: #fbf9f4; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 1rem;" onsubmit="if(this.dataset.submitting)return true;this.dataset.submitting='1';this.classList.add('is-loading');var f=this;requestAnimationFrame(function(){requestAnimationFrame(function(){f.submit();});});return false;">
     <div class="review-form__ready" style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;">
       <button type="submit" class="btn btn--primary">⚠ Run AI review</button>
-      <span style="font-size: 0.8rem; color: #d9a441;" title="This call uses our most expensive model. Use only when triaging a specific report or concern.">⚠ Uses premium model {{reviewConfig.modelLabel}} (~{{reviewConfig.estimatedCost}} per review). Use with care.</span>
+      <span style="font-size: 0.8rem; color: #c87a1e;" title="This call uses our most expensive model. Use only when triaging a specific report or concern.">⚠ Uses premium model {{reviewConfig.modelLabel}} (~{{reviewConfig.estimatedCost}} per review). Use with care.</span>
     </div>
-    <div class="review-form__loading" style="display: flex; align-items: center; gap: 0.6rem; color: #4ecdc4; font-size: 0.95rem;">
+    <div class="review-form__loading" style="display: flex; align-items: center; gap: 0.6rem; color: #1f4068; font-size: 0.95rem;">
       <span class="admin-spinner" style="width: 1.1em; height: 1.1em;"></span>
       <strong>Reviewing biography</strong>
-      <span style="color: #888; font-size: 0.85rem;">— usually 10–30 seconds. Don't navigate away.</span>
+      <span style="color: #646464; font-size: 0.85rem;">— usually 10–30 seconds. Don't navigate away.</span>
     </div>
   </form>
   {{/if}}
 
   {{#if reviews.length}}
     {{#each reviews}}
-    <details style="background: #1a1a1a; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 0.5rem; {{#if this.stale}}border-left: 3px solid #c96;{{else}}{{#if this.reviewPromptStale}}border-left: 3px solid #c96;{{/if}}{{/if}}" {{#if @first}}open{{/if}}>
+    <details style="background: #fbf9f4; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 0.5rem; {{#if this.stale}}border-left: 3px solid #c87a1e;{{else}}{{#if this.reviewPromptStale}}border-left: 3px solid #c87a1e;{{/if}}{{/if}}" {{#if @first}}open{{/if}}>
       <summary style="cursor: pointer; outline: none;">
         <span style="display: inline-block; font-size: 0.7rem; padding: 0.1rem 0.45rem; border-radius: 3px; text-transform: uppercase; font-weight: 600; vertical-align: middle;
-          {{#isequal this.overallVerdict "likely_correct" this}}background: #1e2a1e; color: #9c9; border: 1px solid #383;{{/isequal}}
-          {{#isequal this.overallVerdict "possible_issues" this}}background: #2a241e; color: #cc9; border: 1px solid #993;{{/isequal}}
-          {{#isequal this.overallVerdict "likely_issues" this}}background: #2a1e1e; color: #e99; border: 1px solid #a44;{{/isequal}}
+          {{#isequal this.overallVerdict "likely_correct" this}}background: #e6f0e9; color: #2e7d4a; border: 1px solid #a4c4a8;{{/isequal}}
+          {{#isequal this.overallVerdict "possible_issues" this}}background: #fcf3e1; color: #9c5a16; border: 1px solid #cfa050;{{/isequal}}
+          {{#isequal this.overallVerdict "likely_issues" this}}background: #f5e2e2; color: #b03030; border: 1px solid #cb7a7a;{{/isequal}}
         ">{{this.overallVerdict}}</span>
-        <strong style="color: #ddd; margin-left: 0.4rem;">{{this.verdictReasoning}}</strong>
-        {{#if this.stale}} <span style="color: #c96; font-size: 0.75rem;" title="Biography has been regenerated since this review was produced — findings may no longer apply.">⚠ stale biography</span>{{/if}}
-        {{#if this.reviewPromptStale}} <span style="color: #c96; font-size: 0.75rem;" title="This review was produced under an older review prompt ({{this.reviewPromptVersion}}). Reviewer behaviour has changed since (current: {{this.currentReviewPromptVersion}}) — findings may not reflect current reviewer logic. Worth re-running to confirm.">⚠ outdated review prompt</span>{{/if}}
+        <strong style="color: #2a2a2a; margin-left: 0.4rem;">{{this.verdictReasoning}}</strong>
+        {{#if this.stale}} <span style="color: #c87a1e; font-size: 0.75rem;" title="Biography has been regenerated since this review was produced — findings may no longer apply.">⚠ stale biography</span>{{/if}}
+        {{#if this.reviewPromptStale}} <span style="color: #c87a1e; font-size: 0.75rem;" title="This review was produced under an older review prompt ({{this.reviewPromptVersion}}). Reviewer behaviour has changed since (current: {{this.currentReviewPromptVersion}}) — findings may not reflect current reviewer logic. Worth re-running to confirm.">⚠ outdated review prompt</span>{{/if}}
       </summary>
-      <div style="font-size: 0.75rem; color: #888; margin: 0.5rem 0 0.2rem 0;">
+      <div style="font-size: 0.75rem; color: #646464; margin: 0.5rem 0 0.2rem 0;">
         <span title="Model that produced this review and who triggered it.">Reviewed by {{this.reviewModel}} · {{this.createdBy}} · <span title="{{this.createdAt}}">{{formatDate this.createdAt "auto"}}</span></span>{{#if this.costFormatted}} · {{this.costFormatted}}{{/if}}{{#if this.inputTokens}} · {{this.inputTokens}} in / {{this.outputTokens}} out{{/if}}
       </div>
       {{!-- Which biography version was actually reviewed. Critical when
@@ -389,7 +389,7 @@
             was examining a superseded snapshot. The `stale` marker in the
             summary already flags "biography has changed since"; this line
             surfaces the specific version so you know *which* old one. --}}
-      <div style="font-size: 0.72rem; color: #777; margin: 0 0 0.75rem 0;" title="The biography snapshot that was fed to the reviewer. If the biography has since been regenerated, the review's findings relate to this older version, not the current content.">
+      <div style="font-size: 0.72rem; color: #c5c1b5; margin: 0 0 0.75rem 0;" title="The biography snapshot that was fed to the reviewer. If the biography has since been regenerated, the review's findings relate to this older version, not the current content.">
         Reviewing biography:
         {{#if this.biographyModel}}{{this.biographyModel}}{{else}}unknown model{{/if}}
         {{#if this.biographyPromptVersion}} / {{this.biographyPromptVersion}}{{/if}}
@@ -397,11 +397,11 @@
       </div>
 
       {{#if this.offensive}}
-      <div style="background: #2a1e1e; padding: 0.6rem 0.8rem; border-radius: 3px; margin-bottom: 0.75rem; border-left: 3px solid #e99;">
-        <h4 style="margin: 0 0 0.3rem 0; font-size: 0.85rem; color: #e99;">Offensive concerns</h4>
-        <p style="margin: 0 0 0.4rem 0; font-size: 0.9rem; color: #ddd;">{{this.offensive.explanation}}</p>
+      <div style="background: #f5e2e2; padding: 0.6rem 0.8rem; border-radius: 3px; margin-bottom: 0.75rem; border-left: 3px solid #b03030;">
+        <h4 style="margin: 0 0 0.3rem 0; font-size: 0.85rem; color: #b03030;">Offensive concerns</h4>
+        <p style="margin: 0 0 0.4rem 0; font-size: 0.9rem; color: #2a2a2a;">{{this.offensive.explanation}}</p>
         {{#if this.offensive.passages.length}}
-        <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.85rem; color: #ccc;">
+        <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.85rem; color: #2a2a2a;">
           {{#each this.offensive.passages}}<li><em>{{this}}</em></li>{{/each}}
         </ul>
         {{/if}}
@@ -410,23 +410,23 @@
 
       {{#if this.factualIssues.length}}
       <div style="margin-bottom: 0.75rem;">
-        <h4 style="margin: 0 0 0.4rem 0; font-size: 0.85rem; color: #c96;">Factual claims to check</h4>
+        <h4 style="margin: 0 0 0.4rem 0; font-size: 0.85rem; color: #c87a1e;">Factual claims to check</h4>
         <ul style="list-style: none; padding: 0; margin: 0;">
           {{#each this.factualIssues}}
-          <li style="background: #0a0a0a; padding: 0.5rem 0.75rem; border-radius: 3px; margin-bottom: 0.3rem;">
-            <div style="font-size: 0.7rem; color: #888; margin-bottom: 0.15rem;">
+          <li style="background: #fdfdfa; padding: 0.5rem 0.75rem; border-radius: 3px; margin-bottom: 0.3rem;">
+            <div style="font-size: 0.7rem; color: #646464; margin-bottom: 0.15rem;">
               <span style="display: inline-block; padding: 0.05rem 0.35rem; border-radius: 3px; text-transform: uppercase; font-weight: 600;
-                {{#isequal this.confidence "high" this}}background: #3a1e1e; color: #e99;{{/isequal}}
-                {{#isequal this.confidence "medium" this}}background: #2a241e; color: #cc9;{{/isequal}}
-                {{#isequal this.confidence "low" this}}background: #1e241e; color: #9c9;{{/isequal}}
+                {{#isequal this.confidence "high" this}}background: #f0d5d5; color: #b03030;{{/isequal}}
+                {{#isequal this.confidence "medium" this}}background: #fcf3e1; color: #9c5a16;{{/isequal}}
+                {{#isequal this.confidence "low" this}}background: #e6f0e9; color: #2e7d4a;{{/isequal}}
               " title="Reviewer's confidence that this claim needs investigation (raw value: {{this.confidence}})">{{#isequal this.confidence "high" this}}Likely issue{{/isequal}}{{#isequal this.confidence "medium" this}}Possible issue{{/isequal}}{{#isequal this.confidence "low" this}}Hunch{{/isequal}}</span>
             </div>
-            <div style="color: #ddd; font-size: 0.9rem; margin-bottom: 0.25rem;"><em>"{{this.claim}}"</em></div>
-            <div style="color: #bbb; font-size: 0.85rem; margin-bottom: 0.25rem;">{{this.reasoning}}</div>
+            <div style="color: #2a2a2a; font-size: 0.9rem; margin-bottom: 0.25rem;"><em>"{{this.claim}}"</em></div>
+            <div style="color: #2a2a2a; font-size: 0.85rem; margin-bottom: 0.25rem;">{{this.reasoning}}</div>
             {{#if this.suggestedChecks.length}}
-            <div style="font-size: 0.8rem; color: #888;">
-              <span style="color: #666;" title="The reviewer hasn't read these sources — it's guessing based on topic. Treat them as starting points, not verified citations. Your own knowledge of where to look is often better.">Suggested sources to check (AI-guessed, not verified):</span>
-              {{#each this.suggestedChecks}}{{#unless @first}} · {{/unless}}{{#if this.url}}<a href="{{this.url}}" target="_blank" rel="noopener noreferrer" title="Opens in a new tab" style="color: #4ecdc4; text-decoration: underline;">{{this.text}}<span aria-hidden="true" style="font-size: 0.85em; opacity: 0.75; margin-left: 0.15em;">↗</span></a>{{else}}{{this.text}}{{/if}}{{/each}}
+            <div style="font-size: 0.8rem; color: #646464;">
+              <span style="color: #646464;" title="The reviewer hasn't read these sources — it's guessing based on topic. Treat them as starting points, not verified citations. Your own knowledge of where to look is often better.">Suggested sources to check (AI-guessed, not verified):</span>
+              {{#each this.suggestedChecks}}{{#unless @first}} · {{/unless}}{{#if this.url}}<a href="{{this.url}}" target="_blank" rel="noopener noreferrer" title="Opens in a new tab" style="color: #1f4068; text-decoration: underline;">{{this.text}}<span aria-hidden="true" style="font-size: 0.85em; opacity: 0.75; margin-left: 0.15em;">↗</span></a>{{else}}{{this.text}}{{/if}}{{/each}}
             </div>
             {{/if}}
           </li>
@@ -437,14 +437,14 @@
 
       {{#if this.identityConfidence}}
       <div style="margin-bottom: 0.5rem;">
-        <h4 style="margin: 0 0 0.4rem 0; font-size: 0.85rem; color: #aaa;">Identity confidence {{#if this.identityConfidence.score}}({{this.identityConfidence.score}}/10){{/if}}</h4>
-        <p style="margin: 0 0 0.4rem 0; font-size: 0.9rem; color: #ccc;">{{this.identityConfidence.reasoning}}</p>
+        <h4 style="margin: 0 0 0.4rem 0; font-size: 0.85rem; color: #646464;">Identity confidence {{#if this.identityConfidence.score}}({{this.identityConfidence.score}}/10){{/if}}</h4>
+        <p style="margin: 0 0 0.4rem 0; font-size: 0.9rem; color: #2a2a2a;">{{this.identityConfidence.reasoning}}</p>
         {{#if this.identityConfidence.possibleConfusions.length}}
-        <div style="font-size: 0.85rem; color: #c96;">
+        <div style="font-size: 0.85rem; color: #c87a1e;">
           Possible confusion with:
           <ul style="margin: 0.2rem 0 0 1.2rem; padding: 0;">
             {{#each this.identityConfidence.possibleConfusions}}
-            <li><strong style="color: #ddd;">{{this.name}}</strong> — {{this.reason}}</li>
+            <li><strong style="color: #2a2a2a;">{{this.name}}</strong> — {{this.reason}}</li>
             {{/each}}
           </ul>
         </div>
@@ -452,19 +452,19 @@
       </div>
       {{/if}}
 
-      {{#unless this.offensive}}{{#unless this.factualIssues.length}}{{#isequal this.overallVerdict "likely_correct" this}}<p style="font-size: 0.85rem; color: #9c9; margin: 0 0 0.5rem 0;">No specific issues flagged by the reviewer.</p>{{/isequal}}{{/unless}}{{/unless}}
+      {{#unless this.offensive}}{{#unless this.factualIssues.length}}{{#isequal this.overallVerdict "likely_correct" this}}<p style="font-size: 0.85rem; color: #2e7d4a; margin: 0 0 0.5rem 0;">No specific issues flagged by the reviewer.</p>{{/isequal}}{{/unless}}{{/unless}}
 
       <form method="POST" action="/admin/ai/{{../record.PK}}/reviews/delete" style="margin-top: 0.75rem;" onsubmit="return confirm('Delete this review? This cannot be undone.');">
         <input type="hidden" name="sk" value="{{this.SK}}">
-        <button type="submit" style="background: none; border: none; color: #866; cursor: pointer; font-size: 0.75rem; padding: 0;">delete review</button>
+        <button type="submit" style="background: none; border: none; color: #b03030; cursor: pointer; font-size: 0.75rem; padding: 0;">delete review</button>
       </form>
     </details>
     {{/each}}
   {{else}}
     {{#if reviewConfig.canRun}}
-    <p style="font-size: 0.85rem; color: #888; margin: 0;">No reviews yet for this record.</p>
+    <p style="font-size: 0.85rem; color: #646464; margin: 0;">No reviews yet for this record.</p>
     {{else}}
-    <p style="font-size: 0.85rem; color: #888; margin: 0;">No biography content available to review.</p>
+    <p style="font-size: 0.85rem; color: #646464; margin: 0;">No biography content available to review.</p>
     {{/if}}
   {{/if}}
 </div>
@@ -472,11 +472,11 @@
 
 <div class="detail-section" id="flag">
   <h3>Flag a problem</h3>
-  <p style="color: #888; font-size: 0.8rem; margin: 0 0 0.5rem 0;">
+  <p style="color: #646464; font-size: 0.8rem; margin: 0 0 0.5rem 0;">
     Click an icon to raise a flag (also sets this record's status to <em>flagged</em>). Click it again (or Clear) to remove your flag — but note the record status stays flagged until you change it manually.
   </p>
 
-  <div style="background: #1a1a1a; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+  <div style="background: #fbf9f4; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
     <form method="POST" action="/admin/ai/{{record.PK}}/flag" style="display: inline;">
       <input type="hidden" name="reason" value="{{#isequal myCurrentFlag "inaccurate" this}}{{else}}inaccurate{{/isequal}}">
       <button type="submit" class="rating-btn{{#isequal myCurrentFlag "inaccurate" this}} rating-btn--active{{/isequal}}" title="{{#isequal myCurrentFlag "inaccurate" this}}Click again to clear{{else}}Flag as inaccurate{{/isequal}}">❌ Inaccurate</button>
@@ -498,26 +498,26 @@
   </div>
 
   <style>
-    .rating-btn { background: #0a0a0a; border: 1px solid #444; color: #ccc; border-radius: 4px; padding: 0.4rem 0.75rem; font-size: 0.9rem; cursor: pointer; font-family: inherit; }
-    .rating-btn:hover { border-color: #888; color: #eee; }
+    .rating-btn { background: #fdfdfa; border: 1px solid #c5c1b5; color: #2a2a2a; border-radius: 4px; padding: 0.4rem 0.75rem; font-size: 0.9rem; cursor: pointer; font-family: inherit; }
+    .rating-btn:hover { border-color: #646464; color: #2a2a2a; }
     /* Active = amber/red tone because every flag is a "there's a problem" signal. */
-    .rating-btn--active { background: #3a2a1e; border-color: #c96; color: #fff; box-shadow: 0 0 0 1px #c96 inset; }
-    .rating-btn--active:hover { background: #2a1e10; }
-    .rating-btn--clear { border-color: #555; color: #aaa; }
-    .rating-btn--clear:hover { border-color: #866; color: #c88; }
+    .rating-btn--active { background: #f3e9da; border-color: #c87a1e; color: #2a2a2a; box-shadow: 0 0 0 1px #c87a1e inset; }
+    .rating-btn--active:hover { background: #f4eada; }
+    .rating-btn--clear { border-color: #c5c1b5; color: #646464; }
+    .rating-btn--clear:hover { border-color: #b03030; color: #a83a3a; }
   </style>
 
   {{#if otherFlags.length}}
-  <p style="font-size: 0.8rem; color: #888; margin: 0 0 1rem 0;">
+  <p style="font-size: 0.8rem; color: #646464; margin: 0 0 1rem 0;">
     Other flags on this record:
     {{#each otherFlags}}
-      <span style="color: #aaa;">{{this.staff}}</span>
-      <span style="color: #c96;">
+      <span style="color: #646464;">{{this.staff}}</span>
+      <span style="color: #c87a1e;">
         {{#isequal this.reason "inaccurate" this}}❌{{/isequal}}
         {{#isequal this.reason "wrong_tone" this}}🎭{{/isequal}}
         {{#isequal this.reason "wrong_subject" this}}🔀{{/isequal}}
       </span>
-      {{#if this.stale}}<span style="color: #c96; font-size: 0.7rem;" title="For an earlier version of this biography">⚠</span>{{/if}}
+      {{#if this.stale}}<span style="color: #c87a1e; font-size: 0.7rem;" title="For an earlier version of this biography">⚠</span>{{/if}}
       &nbsp;
     {{/each}}
   </p>
@@ -527,8 +527,8 @@
 <div class="detail-section" id="notes">
   <h3>Notes</h3>
 
-  <form method="POST" action="/admin/ai/{{record.PK}}/notes" style="background: #1a1a1a; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
-    <textarea name="text" rows="3" placeholder="Note (e.g. 'wrong that he founded the company, he co-founded it')" style="width: 100%; background: #0a0a0a; color: #eee; border: 1px solid #444; border-radius: 4px; padding: 0.5rem; font-family: inherit;" required></textarea>
+  <form method="POST" action="/admin/ai/{{record.PK}}/notes" style="background: #fbf9f4; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+    <textarea name="text" rows="3" placeholder="Note (e.g. 'wrong that he founded the company, he co-founded it')" style="width: 100%; background: #fdfdfa; color: #2a2a2a; border: 1px solid #c5c1b5; border-radius: 4px; padding: 0.5rem; font-family: inherit;" required></textarea>
     <div style="margin-top: 0.5rem;">
       <button type="submit" class="btn btn--primary">Add note</button>
     </div>
@@ -537,24 +537,24 @@
   {{#if notes.length}}
     <ul style="list-style: none; padding: 0; margin: 0;">
       {{#each notes}}
-      <li style="background: #1a1a1a; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 0.5rem; {{#if this.stale}}border-left: 3px solid #c96;{{/if}}">
-        <div style="display: flex; justify-content: space-between; gap: 1rem; font-size: 0.8rem; color: #888;">
+      <li style="background: #fbf9f4; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 0.5rem; {{#if this.stale}}border-left: 3px solid #c87a1e;{{/if}}">
+        <div style="display: flex; justify-content: space-between; gap: 1rem; font-size: 0.8rem; color: #646464;">
           <span>
-            <strong style="color: #ddd;">{{this.staff}}</strong> · <span title="{{this.createdAt}}">{{formatDate this.createdAt "short"}}</span>
+            <strong style="color: #2a2a2a;">{{this.staff}}</strong> · <span title="{{this.createdAt}}">{{formatDate this.createdAt "short"}}</span>
           </span>
           <form method="POST" action="/admin/ai/{{../record.PK}}/notes/delete" style="display: inline;" onsubmit="return confirm('Delete this note?');">
             <input type="hidden" name="sk" value="{{this.SK}}">
-            <button type="submit" style="background: none; border: none; color: #866; cursor: pointer; font-size: 0.75rem;">delete</button>
+            <button type="submit" style="background: none; border: none; color: #b03030; cursor: pointer; font-size: 0.75rem;">delete</button>
           </form>
         </div>
         {{#if this.biographyPromptVersion}}
-          <div style="font-size: 0.72rem; color: #666; margin-top: 0.15rem;">
-            for <code style="color: #888;">{{this.biographyPromptVersion}}</code>
+          <div style="font-size: 0.72rem; color: #646464; margin-top: 0.15rem;">
+            for <code style="color: #646464;">{{this.biographyPromptVersion}}</code>
             {{#if this.biographyGeneratedAt}} · generated <span title="{{this.biographyGeneratedAt}}">{{formatDate this.biographyGeneratedAt "short"}}</span>{{/if}}
-            {{#if this.biographyModel}} · <code style="color: #888;">{{this.biographyModel}}</code>{{/if}}
+            {{#if this.biographyModel}} · <code style="color: #646464;">{{this.biographyModel}}</code>{{/if}}
           </div>
           {{#if this.stale}}
-            <div style="font-size: 0.75rem; color: #c96; margin-top: 0.35rem;">
+            <div style="font-size: 0.75rem; color: #c87a1e; margin-top: 0.35rem;">
               ⚠ This note was written for an earlier generation of this biography. It may no longer apply to the current output.
             </div>
           {{/if}}
@@ -566,12 +566,12 @@
       {{/each}}
     </ul>
   {{else}}
-    <p style="color: #888; font-size: 0.9rem;">No notes yet.</p>
+    <p style="color: #646464; font-size: 0.9rem;">No notes yet.</p>
   {{/if}}
 </div>
 
 
-<hr style="border-color: #333; margin: 1.5rem 0;">
+<hr style="border-color: #e4e0d4; margin: 1.5rem 0;">
 
 <div class="actions" style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
   <form method="POST" action="/admin/ai/{{record.PK}}/status" style="display: flex; gap: 0.5rem; align-items: center;">
@@ -597,7 +597,7 @@
   </form>
 </div>
 
-<div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #333;">
+<div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e4e0d4;">
   <a href="/admin/ai">&larr; Back to list</a>
 </div>
 

@@ -11,14 +11,14 @@
 {{/if}}
 
 <form method="GET" action="/admin/ai" style="margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-  <input type="text" name="search" value="{{search}}" placeholder="Search by ID, name, or URL" title="Examples: cp37054 · Isaac Newton · /people/cp37054" style="padding: 0.4rem 0.6rem; border: 1px solid #444; border-radius: 4px; background: #1a1a1a; color: #eee; flex: 1; min-width: 200px; max-width: 300px;">
-  <select name="promptVersion" style="padding: 0.4rem 0.6rem; border: 1px solid #444; border-radius: 4px; background: #1a1a1a; color: #eee;">
+  <input type="text" name="search" value="{{search}}" placeholder="Search by ID, name, or URL" title="Examples: cp37054 · Isaac Newton · /people/cp37054" style="padding: 0.4rem 0.6rem; border: 1px solid #c5c1b5; border-radius: 4px; background: #fdfdfa; color: #2a2a2a; flex: 1; min-width: 200px; max-width: 300px;">
+  <select name="promptVersion" style="padding: 0.4rem 0.6rem; border: 1px solid #c5c1b5; border-radius: 4px; background: #fdfdfa; color: #2a2a2a;">
     <option value="">All prompt versions</option>
     {{#each availableVersions}}
     <option value="{{this}}" {{#isequal this ../promptVersionFilter this}}selected{{/isequal}}>{{this}}</option>
     {{/each}}
   </select>
-  <select name="model" style="padding: 0.4rem 0.6rem; border: 1px solid #444; border-radius: 4px; background: #1a1a1a; color: #eee;">
+  <select name="model" style="padding: 0.4rem 0.6rem; border: 1px solid #c5c1b5; border-radius: 4px; background: #fdfdfa; color: #2a2a2a;">
     <option value="">All models</option>
     {{#each availableModels}}
     <option value="{{this.id}}" {{#isequal this.id ../modelFilter this}}selected{{/isequal}}>{{this.label}}</option>
@@ -26,9 +26,9 @@
   </select>
   <input type="hidden" name="status" value="{{currentStatus}}">
   <button type="submit" class="btn btn--secondary">Apply</button>
-  {{#if search}}<a href="/admin/ai?status={{currentStatus}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}" style="color: #aaa; font-size: 0.85rem;">Clear search</a>{{/if}}
-  {{#if promptVersionFilter}}<a href="/admin/ai?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}" style="color: #aaa; font-size: 0.85rem;">Clear version filter</a>{{/if}}
-  {{#if modelFilter}}<a href="/admin/ai?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}" style="color: #aaa; font-size: 0.85rem;">Clear model filter</a>{{/if}}
+  {{#if search}}<a href="/admin/ai?status={{currentStatus}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}" style="color: #646464; font-size: 0.85rem;">Clear search</a>{{/if}}
+  {{#if promptVersionFilter}}<a href="/admin/ai?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}" style="color: #646464; font-size: 0.85rem;">Clear version filter</a>{{/if}}
+  {{#if modelFilter}}<a href="/admin/ai?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}" style="color: #646464; font-size: 0.85rem;">Clear model filter</a>{{/if}}
 </form>
 
 <div class="filter-tabs" style="justify-content: space-between;">
@@ -39,7 +39,7 @@
     <a href="/admin/ai?status=hidden" class="{{#isequal currentStatus "hidden" this}}active{{/isequal}}">Hidden</a>
     <a href="/admin/ai?status=insufficient_data" class="{{#isequal currentStatus "insufficient_data" this}}active{{/isequal}}">Insufficient Data</a>
   </div>
-  <a href="/admin/ai/export.csv?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}" style="padding: 0.3em 0.7em; border-radius: 3px; background: #333; color: #ccc; text-decoration: none; font-size: 0.85rem;" title="Download the current filtered view as CSV — opens in Excel / Sheets.">Export CSV</a>
+  <a href="/admin/ai/export.csv?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}" style="padding: 0.3em 0.7em; border-radius: 3px; background: #e9e5d9; color: #2a2a2a; text-decoration: none; font-size: 0.85rem;" title="Download the current filtered view as CSV — opens in Excel / Sheets.">Export CSV</a>
 </div>
 
 {{#if records.length}}
@@ -74,31 +74,31 @@
       <td>
         {{#if this.publicReports}}
           {{#isequal this.flagSeverity "high" this}}
-            <small title="{{this.publicReports.pendingFlags}} pending · {{this.publicReports.totalFlags}} lifetime" style="color: #e99; font-weight: 600;">{{this.publicReports.pendingFlags}} new</small>
+            <small title="{{this.publicReports.pendingFlags}} pending · {{this.publicReports.totalFlags}} lifetime" style="color: #b03030; font-weight: 600;">{{this.publicReports.pendingFlags}} new</small>
           {{/isequal}}
           {{#isequal this.flagSeverity "some" this}}
-            <small title="{{this.publicReports.pendingFlags}} pending · {{this.publicReports.totalFlags}} lifetime" style="color: #c96; font-weight: 600;">{{this.publicReports.pendingFlags}} new</small>
+            <small title="{{this.publicReports.pendingFlags}} pending · {{this.publicReports.totalFlags}} lifetime" style="color: #c87a1e; font-weight: 600;">{{this.publicReports.pendingFlags}} new</small>
           {{/isequal}}
           {{#unless this.flagSeverity}}
-            <small title="{{this.publicReports.totalFlags}} lifetime, all addressed" style="color: #888;">{{this.publicReports.totalFlags}} old</small>
+            <small title="{{this.publicReports.totalFlags}} lifetime, all addressed" style="color: #646464;">{{this.publicReports.totalFlags}} old</small>
           {{/unless}}
         {{else}}
-          <small style="color: #666;">—</small>
+          <small style="color: #a8a8a8;">—</small>
         {{/if}}
       </td>
       <td style="white-space: nowrap;">
-        {{#if this.staffSummary.flagCount}}<small title="Staff flag(s) on this record" style="display: inline-block; font-size: 0.7rem; padding: 0 0.35rem; border-radius: 3px; background: rgba(204, 153, 102, 0.15); color: #c96; border: 1px solid rgba(204, 153, 102, 0.4);">flag</small>{{/if}}{{#if this.staffSummary.noteCount}}{{#if this.staffSummary.flagCount}} {{/if}}<small title="Staff note(s) on this record" style="display: inline-block; font-size: 0.7rem; padding: 0 0.35rem; border-radius: 3px; background: rgba(255, 255, 255, 0.05); color: #aaa; border: 1px solid rgba(255, 255, 255, 0.15);">note</small>{{/if}}{{#unless this.staffSummary.flagCount}}{{#unless this.staffSummary.noteCount}}<small style="color: #666;">—</small>{{/unless}}{{/unless}}
+        {{#if this.staffSummary.flagCount}}<small title="Staff flag(s) on this record" style="display: inline-block; font-size: 0.7rem; padding: 0 0.35rem; border-radius: 3px; background: rgba(200, 122, 30, 0.12); color: #9c5a16; border: 1px solid rgba(200, 122, 30, 0.35);">flag</small>{{/if}}{{#if this.staffSummary.noteCount}}{{#if this.staffSummary.flagCount}} {{/if}}<small title="Staff note(s) on this record" style="display: inline-block; font-size: 0.7rem; padding: 0 0.35rem; border-radius: 3px; background: rgba(31, 64, 104, 0.06); color: #4d4d4d; border: 1px solid rgba(31, 64, 104, 0.18);">note</small>{{/if}}{{#unless this.staffSummary.flagCount}}{{#unless this.staffSummary.noteCount}}<small style="color: #a8a8a8;">—</small>{{/unless}}{{/unless}}
       </td>
       <td>
         {{#if this.signalMaxScore}}
           <small title="Weighted signal score at generation time">{{this.signalScore}} / {{this.signalMaxScore}}</small>
         {{else}}
-          <small style="color: #666;">—</small>
+          <small style="color: #a8a8a8;">—</small>
         {{/if}}
       </td>
-      <td><small>{{#if this.model}}{{this.model}}{{else}}<span style="color: #666;">—</span>{{/if}}</small></td>
-      <td><small>{{#if this.promptVersion}}{{this.promptVersion}}{{else}}<span style="color: #666;">—</span>{{/if}}</small></td>
-      <td><small>{{#if this.inputTokens}}{{this.inputTokens}} / {{this.outputTokens}}{{else}}<span style="color: #666;">—</span>{{/if}}</small></td>
+      <td><small>{{#if this.model}}{{this.model}}{{else}}<span style="color: #a8a8a8;">—</span>{{/if}}</small></td>
+      <td><small>{{#if this.promptVersion}}{{this.promptVersion}}{{else}}<span style="color: #a8a8a8;">—</span>{{/if}}</small></td>
+      <td><small>{{#if this.inputTokens}}{{this.inputTokens}} / {{this.outputTokens}}{{else}}<span style="color: #a8a8a8;">—</span>{{/if}}</small></td>
       <td><small title="{{formatDate this.generatedAt}} · raw: {{this.generatedAt}}">{{formatDate this.generatedAt "auto"}}</small></td>
     </tr>
     {{/each}}
@@ -113,6 +113,6 @@
 
 {{else}}
 {{#unless dynamoUnavailable}}
-<p style="color: #999; margin-top: 2rem;">No biography records found{{#isequal currentStatus "all" this}}{{else}} with status "{{currentStatus}}"{{/isequal}}.</p>
+<p style="color: #646464; margin-top: 2rem;">No biography records found{{#isequal currentStatus "all" this}}{{else}} with status "{{currentStatus}}"{{/isequal}}.</p>
 {{/unless}}
 {{/if}}

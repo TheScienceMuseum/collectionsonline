@@ -6,43 +6,53 @@
     <title>AI Admin - Collections Online</title>
     <link rel="stylesheet" href="/bundle.css" />
     <style>
-      body { background: #1a1a1a; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; }
+      /* === Admin theme: warm parchment, institutional navy ===
+         Apr 2026 redesign — moved away from the previous dark
+         "developer-tool" palette to a light, reading-room style more
+         appropriate for museum staff. Page bg sits at #f3f0e9 (warm
+         off-white, parchment-like), panels are an off-white card on
+         that surface, accents use institutional navy in place of the
+         previous neon teal. Status colours sit in distinct hue families
+         (forest green / amber / grey / taupe / navy) so live / flagged
+         / hidden / insufficient_data are visually distinct at a
+         glance. Body text passes WCAG AAA contrast; muted and heading
+         text pass AA comfortably. */
+      body { background: #f3f0e9; color: #2a2a2a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 0; }
       .admin-container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
-      .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #333; padding-bottom: 1rem; }
-      .admin-header h1 { font-size: 1.4rem; margin: 0; }
-      .admin-header a { color: #4ecdc4; text-decoration: none; font-size: 0.9rem; }
+      .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #ddd9cf; padding-bottom: 1rem; }
+      .admin-header h1 { font-size: 1.4rem; margin: 0; color: #1a1a1a; font-weight: 600; }
+      .admin-header a { color: #1f4068; text-decoration: none; font-size: 0.9rem; }
       .admin-header a:hover { text-decoration: underline; }
-      .admin-banner { background: #d32f2f; color: white; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 1rem; }
-      .admin-banner--warn { background: #f57c00; }
+      .admin-banner { background: #b03030; color: white; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 1rem; }
+      .admin-banner--warn { background: #c98014; }
       table { width: 100%; border-collapse: collapse; }
-      th, td { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 1px solid #333; }
-      th { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #999; }
-      td a { color: #4ecdc4; text-decoration: none; }
+      th, td { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 1px solid #e4e0d4; }
+      th { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #4d4d4d; }
+      td a { color: #1f4068; text-decoration: none; }
       td a:hover { text-decoration: underline; }
       .badge { display: inline-block; padding: 0.15em 0.5em; border-radius: 3px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
-      .badge--live { background: #2e7d32; color: white; }
-      .badge--flagged { background: #f57c00; color: white; }
-      .badge--hidden { background: #616161; color: white; }
-      .badge--insufficient_data { background: #5d4037; color: white; }
+      .badge--live { background: #2e7d4a; color: white; }
+      .badge--flagged { background: #c87a1e; color: white; }
+      .badge--hidden { background: #888888; color: white; }
+      .badge--insufficient_data { background: #7d6c5e; color: white; }
       /* Modifier: stored status is set, but a render-time rule suppresses
          the record on the public site (currently only the living-person
-         policy). Flat grey overrides the base status colour — reads clearly
-         as "inactive / not publicly visible" while the label text still
+         policy). Light grey on the parchment surface — reads clearly as
+         "inactive / not publicly visible" while the label text still
          tells you what status was set. Sits AFTER the other .badge--<status>
          rules so its background/color win for composed classes. */
-      .badge--restricted { background: #3a3a3a; color: #aaa; }
+      .badge--restricted { background: #ddd8cb; color: #646464; }
 
       /* Generic admin processing indicator. Used on forms that kick off a
-         slow server-side action (AI review, future: regenerate). Teal ring
-         with a darker-teal rotating arc — matches the admin accent colour,
-         no emoji, no external asset. Sized to sit inline with surrounding
-         text; adjust width/height to scale. */
+         slow server-side action (AI review, future: regenerate). Navy
+         ring with a darker-navy rotating arc — matches the admin accent
+         colour, no emoji, no external asset. */
       .admin-spinner {
         display: inline-block;
         width: 0.95em;
         height: 0.95em;
-        border: 2px solid rgba(78, 205, 196, 0.2);
-        border-top-color: #4ecdc4;
+        border: 2px solid rgba(31, 64, 104, 0.18);
+        border-top-color: #1f4068;
         border-radius: 50%;
         animation: admin-spinner-rotate 0.8s linear infinite;
         vertical-align: -0.2em;
@@ -54,103 +64,108 @@
 
       /* AI-review form has two states: ready (button + warning) and
          loading (spinner + "Reviewing…"). onsubmit adds .is-loading on
-         the form; CSS flips which child div is displayed. Plain class
-         toggle — no :disabled, no [hidden] attribute, no flex-child
-         quirks. The .review-form__loading element starts hidden via
-         this rule and is unhidden when .is-loading is on the form. */
+         the form; CSS flips which child div is displayed. */
       .review-form__loading { display: none !important; }
       #review-form.is-loading .review-form__ready { display: none !important; }
       #review-form.is-loading .review-form__loading { display: flex !important; }
 
       /* ---- Headline strip (main /admin/ai top + dashboard top) ----
          Four compact metric cards. Each card is a link, hover lifts the
-         border. Grid auto-fits to available width so the strip collapses
-         to 2×2 on narrow viewports without a media query. */
+         border to the institutional accent. */
       .headline-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
-      .headline-card { display: block; background: #222; border: 1px solid #333; border-radius: 4px; padding: 0.75rem 1rem; color: inherit; text-decoration: none; }
-      .headline-card:hover { border-color: #4ecdc4; text-decoration: none; }
-      .headline-card__label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #999; margin-bottom: 0.25rem; }
-      .headline-card__value { font-size: 1.6rem; font-weight: 600; color: #e0e0e0; line-height: 1.1; }
-      .headline-card__hint { font-size: 0.75rem; color: #888; margin-top: 0.25rem; }
-      /* Attention variant — used when pendingReports > 0, amber border so it
-         reads as "something to look at" without crying wolf with red. */
-      .headline-card--attention { border-color: #f57c00; }
-      .headline-card--attention .headline-card__value { color: #ffb74d; }
+      .headline-card { display: block; background: #fbf9f4; border: 1px solid #e4e0d4; border-radius: 4px; padding: 0.75rem 1rem; color: #1a1a1a; text-decoration: none; }
+      .headline-card:hover { border-color: #1f4068; text-decoration: none; }
+      .headline-card__label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #646464; margin-bottom: 0.25rem; }
+      .headline-card__value { font-size: 1.6rem; font-weight: 600; color: #1a1a1a; line-height: 1.1; }
+      .headline-card__hint { font-size: 0.75rem; color: #646464; margin-top: 0.25rem; }
+      /* Attention variant — used when pendingReports > 0. Uses the same
+         warm amber as the flagged status bar so the visual cue stays
+         consistent across the dashboard. */
+      .headline-card--attention { border-color: #c87a1e; }
+      .headline-card--attention .headline-card__value { color: #9c5a16; }
 
       /* ---- Dashboard layout ---- */
       .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-      .dashboard-panel { background: #222; border-radius: 4px; padding: 1rem 1.25rem; }
-      .dashboard-panel h3 { margin: 0 0 0.75rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; color: #999; }
-      .dashboard-panel__subhead { margin: 1rem 0 0.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #888; font-weight: 500; }
-      .dashboard-panel__note { font-size: 0.8rem; color: #888; margin: 0.75rem 0 0; }
+      .dashboard-panel { background: #fbf9f4; border: 1px solid #e4e0d4; border-radius: 4px; padding: 1.25rem 1.5rem; }
+      .dashboard-panel h3 { margin: 0 0 0.75rem; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.06em; color: #4d4d4d; font-weight: 600; }
+      .dashboard-panel__subhead { margin: 1rem 0 0.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #646464; font-weight: 600; }
+      .dashboard-panel__note { font-size: 0.8rem; color: #646464; margin: 0.75rem 0 0; }
 
       /* dl/dt/dd metadata rows — label/value pairs laid out tightly. */
       .dashboard-meta { display: grid; grid-template-columns: 1fr auto; gap: 0.3rem 0.75rem; margin: 0; }
-      .dashboard-meta dt { font-size: 0.8rem; color: #999; }
-      .dashboard-meta dd { margin: 0; font-size: 0.9rem; color: #e0e0e0; text-align: right; }
+      .dashboard-meta dt { font-size: 0.8rem; color: #646464; }
+      .dashboard-meta dd { margin: 0; font-size: 0.9rem; color: #1a1a1a; font-weight: 500; text-align: right; }
 
-      /* Horizontal bar chart for status / subject / cost breakdowns.
-         Uses a simple <table> for label-bar-count alignment. */
+      /* Horizontal bar chart for status / subject / cost breakdowns. */
       .dashboard-bars { width: 100%; border-collapse: collapse; }
-      .dashboard-bars th { font-weight: normal; font-size: 0.8rem; color: #999; text-transform: none; letter-spacing: 0; text-align: left; padding: 0.25rem 0.5rem 0.25rem 0; white-space: nowrap; border: 0; }
+      .dashboard-bars th { font-weight: normal; font-size: 0.8rem; color: #4d4d4d; text-transform: none; letter-spacing: 0; text-align: left; padding: 0.25rem 0.5rem 0.25rem 0; white-space: nowrap; border: 0; }
       .dashboard-bars td { padding: 0.25rem 0; border: 0; vertical-align: middle; }
-      .dashboard-bars__count { text-align: right; font-size: 0.85rem; color: #ccc; padding-left: 0.5rem !important; white-space: nowrap; }
-      .dashboard-bar { display: inline-block; height: 8px; border-radius: 2px; background: #444; vertical-align: middle; min-width: 2px; }
-      .dashboard-bar--live { background: #2e7d32; }
-      .dashboard-bar--flagged { background: #f57c00; }
-      .dashboard-bar--hidden { background: #616161; }
-      .dashboard-bar--insufficient_data { background: #5d4037; }
-      .dashboard-bar--neutral { background: #4ecdc4; }
+      .dashboard-bars__count { text-align: right; font-size: 0.85rem; color: #2a2a2a; padding-left: 0.5rem !important; white-space: nowrap; }
+      .dashboard-bar { display: inline-block; height: 8px; border-radius: 2px; background: #ddd8cd; vertical-align: middle; min-width: 2px; }
+      /* Status colours sit in distinct hue families so live / flagged /
+         hidden / insufficient / neutral are distinguishable at a glance. */
+      .dashboard-bar--live { background: #2e7d4a; }
+      .dashboard-bar--flagged { background: #c87a1e; }
+      .dashboard-bar--hidden { background: #888888; }
+      .dashboard-bar--insufficient_data { background: #7d6c5e; }
+      .dashboard-bar--neutral { background: #1f4068; }
 
       /* Vertical sparkline — 8 bars side by side, bar height proportional to
-         count. The .dashboard-sparkline__count inside each bar is only visible
-         on hover via the wrapping [title] attribute — the in-bar span is a
-         fallback for screen readers. */
+         count. */
       .dashboard-sparkline { display: flex; align-items: flex-end; gap: 3px; height: 80px; padding: 0.25rem 0; }
-      .dashboard-sparkline__bar { flex: 1; background: #4ecdc4; border-radius: 2px 2px 0 0; min-height: 2px; position: relative; }
-      .dashboard-sparkline__count { position: absolute; left: 0; right: 0; top: -1.1rem; text-align: center; font-size: 0.7rem; color: #888; }
+      .dashboard-sparkline__bar { flex: 1; background: #1f4068; border-radius: 2px 2px 0 0; min-height: 2px; position: relative; }
+      .dashboard-sparkline__count { position: absolute; left: 0; right: 0; top: -1.1rem; text-align: center; font-size: 0.7rem; color: #646464; }
 
       /* Simple label+count list for top-reasons / skip-reasons panels. */
       .dashboard-list { list-style: none; padding: 0; margin: 0; }
-      .dashboard-list li { display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px solid #2a2a2a; font-size: 0.85rem; }
+      .dashboard-list li { display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px solid #e9e5d9; font-size: 0.85rem; color: #2a2a2a; }
       .dashboard-list li:last-child { border-bottom: 0; }
-      .dashboard-list__label { color: #ccc; }
-      .dashboard-list__count { color: #888; }
+      .dashboard-list__label { color: #2a2a2a; }
+      .dashboard-list__count { color: #646464; }
+      .dashboard-list a { color: #1f4068; text-decoration: none; }
+      .dashboard-list a:hover { text-decoration: underline; }
 
-      .dashboard-footer { font-size: 0.8rem; color: #888; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #333; }
+      .dashboard-footer { font-size: 0.8rem; color: #646464; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #ddd9cf; }
+      .dashboard-footer code { background: #e9e4d6; color: #2a2a2a; padding: 0 0.25em; border-radius: 2px; }
+
       /* 1px transparent border so .btn has the same total height as
-         <select> / <input> (which have a visible 1px border). Keeps the
-         action row visually aligned without changing the button's look. */
+         <select> / <input> (which have a visible 1px border). */
       .btn { display: inline-block; padding: 0.4em 0.8em; border: 1px solid transparent; border-radius: 3px; font-size: 0.85rem; cursor: pointer; text-decoration: none; }
-      .btn--primary { background: #4ecdc4; color: #1a1a1a; font-weight: 600; }
-      .btn--danger { background: #d32f2f; color: white; }
-      .btn--secondary { background: #444; color: #e0e0e0; }
-      .btn:hover { opacity: 0.85; }
+      .btn--primary { background: #1f4068; color: #fff; font-weight: 600; }
+      .btn--danger { background: #b03030; color: #fff; }
+      .btn--secondary { background: #e9e5d9; color: #2a2a2a; border-color: #d8d3c4; }
+      .btn:hover { opacity: 0.88; }
+
       .filter-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
-      .filter-tabs a { padding: 0.3em 0.7em; border-radius: 3px; background: #333; color: #ccc; text-decoration: none; font-size: 0.85rem; }
-      .filter-tabs a.active { background: #4ecdc4; color: #1a1a1a; font-weight: 600; }
-      .detail-section { background: #222; border-radius: 4px; padding: 1rem; margin-bottom: 1rem; }
-      .detail-section h3 { margin-top: 0; font-size: 1rem; color: #999; }
+      .filter-tabs a { padding: 0.3em 0.7em; border-radius: 3px; background: #e9e5d9; color: #2a2a2a; text-decoration: none; font-size: 0.85rem; }
+      .filter-tabs a.active { background: #1f4068; color: #fff; font-weight: 600; }
+
+      .detail-section { background: #fbf9f4; border: 1px solid #e4e0d4; border-radius: 4px; padding: 1rem; margin-bottom: 1rem; }
+      .detail-section h3 { margin-top: 0; font-size: 1rem; color: #4d4d4d; font-weight: 600; }
       .detail-meta { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem; margin-bottom: 1rem; }
-      .detail-meta dt { font-size: 0.75rem; color: #999; text-transform: uppercase; }
+      .detail-meta dt { font-size: 0.75rem; color: #646464; text-transform: uppercase; }
       .detail-meta dd { margin: 0 0 0.5rem; }
+
       .form-group { margin-bottom: 1rem; }
-      .form-group label { display: block; margin-bottom: 0.3rem; font-size: 0.85rem; }
-      .form-group input, .form-group select { padding: 0.4em 0.6em; border: 1px solid #444; background: #333; color: #e0e0e0; border-radius: 3px; font-size: 0.9rem; }
+      .form-group label { display: block; margin-bottom: 0.3rem; font-size: 0.85rem; color: #2a2a2a; }
+      .form-group input, .form-group select { padding: 0.4em 0.6em; border: 1px solid #c5c1b5; background: #fdfdfa; color: #2a2a2a; border-radius: 3px; font-size: 0.9rem; }
       .form-group input[type="password"] { width: 300px; }
 
       /* Admin-scoped form elements. `appearance: none` on <select> is
          necessary because macOS Safari otherwise ignores background /
-         border / padding rules and renders the OS-native chrome. We draw a
-         minimal chevron ourselves so the element still reads as a dropdown. */
+         border / padding rules and renders the OS-native chrome. We draw
+         a minimal chevron ourselves so the element still reads as a
+         dropdown. Stroke colour darkened from the previous dark-theme
+         '%23aaa' to '%23808080' so the chevron remains visible against
+         the lighter background. */
       .admin-container select,
       .admin-container input[type="text"],
       .admin-container input[type="search"],
       .admin-container textarea {
         padding: 0.4em 0.6em;
-        border: 1px solid #555;
-        background: #333;
-        color: #e0e0e0;
+        border: 1px solid #c5c1b5;
+        background: #fdfdfa;
+        color: #2a2a2a;
         border-radius: 3px;
         font-family: inherit;
         font-size: 0.85rem;
@@ -160,7 +175,7 @@
         -moz-appearance: none;
         appearance: none;
         padding-right: 2em;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23aaa' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M2 4.5l4 4 4-4'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23808080' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M2 4.5l4 4 4-4'/%3E%3C/svg%3E");
         background-repeat: no-repeat;
         background-position: right 0.6em center;
         background-size: 10px;
@@ -169,19 +184,19 @@
       .admin-container select:hover,
       .admin-container input[type="text"]:hover,
       .admin-container input[type="search"]:hover,
-      .admin-container textarea:hover { border-color: #888; }
+      .admin-container textarea:hover { border-color: #1f4068; }
 
       /* Admin scope: suppress the site-wide heavy green focus ring (from
-         base/_general.scss) which is designed for public WCAG treatment and
+         base/_general.scss) — designed for public WCAG treatment and
          reads as visual noise inside a dense admin UI. Replace with a
-         restrained white outline so keyboard users still see focus. */
+         navy outline at moderate alpha so keyboard users still see focus. */
       .admin-container :focus-visible {
         box-shadow: none !important;
-        outline: 2px solid rgba(255, 255, 255, 0.5);
+        outline: 2px solid rgba(31, 64, 104, 0.55);
         outline-offset: 1px;
       }
       .actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
-      details.collapsible summary { cursor: pointer; color: #4ecdc4; font-size: 0.85rem; margin-bottom: 0.5rem; }
+      details.collapsible summary { cursor: pointer; color: #1f4068; font-size: 0.85rem; margin-bottom: 0.5rem; }
     </style>
   </head>
   <body>
@@ -190,9 +205,9 @@
         <div style="display: flex; align-items: baseline; gap: 0.6rem;">
           <h1>AI Biographies Admin</h1>
           {{#if loggedInUser}}
-          <span style="color: #888; font-size: 1rem; font-weight: 400;" title="Logged in as {{loggedInUser}}">· {{capitalizeFirst loggedInUser}}</span>
+          <span style="color: #646464; font-size: 1rem; font-weight: 400;" title="Logged in as {{loggedInUser}}">· {{capitalizeFirst loggedInUser}}</span>
           <form method="POST" action="/admin/ai/logout" style="display: inline; margin: 0;">
-            <button type="submit" title="Sign out" style="background: none; border: none; padding: 0; color: #666; cursor: pointer; font: inherit; font-size: 0.85rem; text-decoration: underline; opacity: 0.8;">sign out</button>
+            <button type="submit" title="Sign out" style="background: none; border: none; padding: 0; color: #646464; cursor: pointer; font: inherit; font-size: 0.85rem; text-decoration: underline; opacity: 0.85;">sign out</button>
           </form>
           {{/if}}
         </div>
