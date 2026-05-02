@@ -128,13 +128,31 @@
       .dashboard-footer { font-size: 0.8rem; color: #646464; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #ddd9cf; }
       .dashboard-footer code { background: #e9e4d6; color: #2a2a2a; padding: 0 0.25em; border-radius: 2px; }
 
-      /* 1px transparent border so .btn has the same total height as
-         <select> / <input> (which have a visible 1px border). */
-      .btn { display: inline-block; padding: 0.4em 0.8em; border: 1px solid transparent; border-radius: 3px; font-size: 0.85rem; cursor: pointer; text-decoration: none; }
-      .btn--primary { background: #1f4068; color: #fff; font-weight: 600; }
-      .btn--danger { background: #b03030; color: #fff; }
-      .btn--secondary { background: #e9e5d9; color: #2a2a2a; border-color: #d8d3c4; }
-      .btn:hover { opacity: 0.88; }
+      /* === Buttons ===
+         Primary action is OUTLINED navy rather than filled — fits the
+         museum-tool aesthetic and doesn't dominate the page visually
+         when sitting next to body text. Hover fills with navy so the
+         affordance is still clear. Secondary action is outlined grey,
+         a step further back. Danger stays filled red — destructive
+         actions SHOULD be visually heavy on purpose, the visual weight
+         is the safety guardrail.
+
+         Buttons sit on a faint paper-fill (#fdfdfa) instead of being
+         transparent so they read as a slightly raised tile against the
+         #f3f0e9 parchment surface. Combined with a 1px hairline shadow,
+         this distinguishes buttons from .pill chips (which are tinted
+         flush with their semantic colour) — same outlined geometry,
+         different surface treatment. Without the fill, an outlined
+         button next to a tinted pill reads as "two boxes" of the same
+         class, which the museum staff feedback flagged as confusing. */
+      .btn { display: inline-block; padding: 0.4em 0.9em; border: 1.5px solid transparent; border-radius: 3px; font-size: 0.85rem; cursor: pointer; text-decoration: none; transition: background-color 0.12s, color 0.12s, border-color 0.12s, box-shadow 0.12s; line-height: 1.2; box-shadow: 0 1px 0 rgba(45, 35, 18, 0.05); }
+      .btn:active { box-shadow: inset 0 1px 1px rgba(45, 35, 18, 0.08); transform: translateY(0.5px); }
+      .btn--primary { background: #fdfdfa; color: #1f4068; border-color: #1f4068; font-weight: 600; }
+      .btn--primary:hover { background: #1f4068; color: #fff; }
+      .btn--secondary { background: #fdfdfa; color: #4d4d4d; border-color: #c5c1b5; font-weight: 500; }
+      .btn--secondary:hover { background: #f5f3ec; color: #2a2a2a; border-color: #b3aea0; }
+      .btn--danger { background: #b03030; color: #fff; border-color: #b03030; font-weight: 500; }
+      .btn--danger:hover { background: #993939; border-color: #993939; }
 
       .filter-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
       .filter-tabs a { padding: 0.3em 0.7em; border-radius: 3px; background: #e9e5d9; color: #2a2a2a; text-decoration: none; font-size: 0.85rem; }
@@ -142,9 +160,142 @@
 
       .detail-section { background: #fbf9f4; border: 1px solid #e4e0d4; border-radius: 4px; padding: 1rem; margin-bottom: 1rem; }
       .detail-section h3 { margin-top: 0; font-size: 1rem; color: #4d4d4d; font-weight: 600; }
+
+      /* === Inline links inside content panels ===
+         The biography + collection context bodies contain heavy use of
+         catalogue cross-links (collection items, people, etc.). A plain
+         underlined-on-default link reads as visually noisy in long-form
+         curatorial prose. Solution: softer underline by default
+         (navy at ~35% alpha, offset slightly from the baseline so it
+         reads as decoration rather than baseline-clipped text); on
+         hover the underline deepens to solid navy + the colour bumps
+         from the muted body navy to the accent navy. The user pushed
+         back on the previous "underline disappears on hover" treatment
+         — links should gain affordance on hover, not lose it.
+         Scoped to .detail-section / .panel-card / .biography-body so
+         we don't accidentally restyle nav and table-row links. */
+      .detail-section a:not(.btn):not(.headline-card),
+      .panel-card a:not(.btn):not(.headline-card) {
+        color: #2c5288;
+        text-decoration: underline;
+        text-decoration-color: rgba(31, 64, 104, 0.32);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 2.5px;
+      }
+      .detail-section a:not(.btn):hover,
+      .panel-card a:not(.btn):hover {
+        color: #1f4068;
+        text-decoration-color: #1f4068;
+        text-decoration-thickness: 1.5px;
+      }
+
+      /* === Prose body — biography, context, existing description ===
+         Long-form curatorial content (biography, collection context,
+         existing description) reads as a wall of text in the default
+         sans + dense line-height + cross-links combo. Staff feedback
+         called out the biography and context blocks specifically. This
+         class swaps:
+           - serif body (Georgia / system serif) for reading rhythm
+           - 1.05rem at 1.65 leading for comfortable scanning
+           - warm-dark body colour (#3a342c) — not pure black, sits in
+             the same warm family as the parchment surface
+           - tighter max-width (~68ch) so line length doesn't tax the
+             eye scrolling line-to-line on a wide admin viewport
+           - quieter underline (~22% alpha + 3px offset) so cross-links
+             don't dominate every paragraph
+         Apply to: biography body, context body, existing-description
+         text blocks. Don't apply to UI copy (form notes, hints, etc.)
+         — those stay sans for clarity at small sizes. */
+      .prose-body {
+        font-family: Georgia, 'Iowan Old Style', 'Charter', Cambria, serif;
+        font-size: 0.98rem;
+        line-height: 1.65;
+        color: #4a4239;
+        max-width: 72ch;
+      }
+      .prose-body p { margin: 0 0 0.85em; }
+      .prose-body p:last-child { margin-bottom: 0; }
+      .prose-body a:not(.btn) {
+        color: #1f4068;
+        text-decoration: underline;
+        text-decoration-color: rgba(31, 64, 104, 0.14);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+      }
+      .prose-body a:not(.btn):hover {
+        text-decoration-color: #1f4068;
+        text-decoration-thickness: 1.5px;
+      }
       .detail-meta { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem; margin-bottom: 1rem; }
-      .detail-meta dt { font-size: 0.75rem; color: #646464; text-transform: uppercase; }
-      .detail-meta dd { margin: 0 0 0.5rem; }
+      .detail-meta dt { font-size: 0.75rem; color: #4d4d4d; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.15rem; }
+      .detail-meta dd { margin: 0 0 0.5rem; font-weight: 500; color: #2a2a2a; }
+      /* Secondary meta variant — Model, Prompt Version, Tokens, Snapshots,
+         Existing Description chars. These are diagnostic / auditing
+         fields rather than primary identity (Record ID, Generated). The
+         label drops to body weight and the value to muted-body so they
+         step back visually and don't compete with the records' core
+         anchors. The grid layout / dt-dd structure is unchanged. */
+      .detail-meta__field--secondary dt { font-weight: 400; letter-spacing: 0.02em; color: #6b6b6b; }
+      .detail-meta__field--secondary dd { font-weight: 400; color: #5a5a5a; }
+
+      /* === Pill system — single source of truth for status pills ===
+         All "this entity / record is in state X" badges across the admin
+         UI use these classes. Six flavours, semantically named so the
+         class makes the intent obvious without having to know the
+         palette:
+           positive  — currently operational / publicly visible
+                       (LIVE biography, ACTIVE org, LIVING person)
+           attention — genuinely uncertain / needs review
+                       (FLAGGED biography, UNKNOWN org, possible_issues)
+           danger    — likely problem / high-severity issue
+                       (likely_issues verdict, "likely issue" claim)
+           inactive  — historical / no longer operational
+                       (DECEASED, DISSOLVED, HISTORICAL, HIDDEN biography)
+           sparse    — incomplete / thin data
+                       (INSUFFICIENT_DATA biography)
+           neutral   — informational, non-status
+                       (counts, identifiers, version markers) */
+      .pill { display: inline-block; font-size: 0.75rem; padding: 0.15em 0.55em; border-radius: 3px; border: 1px solid; line-height: 1.4; vertical-align: 0.05em; white-space: nowrap; font-weight: 600; text-transform: lowercase; letter-spacing: 0.02em; }
+      .pill--positive  { background: #e6f0e9; color: #2e7d4a; border-color: #a4c4a8; }
+      .pill--attention { background: #fcf3e1; color: #9c5a16; border-color: #cfa050; }
+      .pill--danger    { background: #f5e2e2; color: #b03030; border-color: #cb7a7a; }
+      .pill--inactive  { background: #ececea; color: #4d4d4d; border-color: #c5c1b5; }
+      .pill--sparse    { background: #f3e9da; color: #7d6c5e; border-color: #d8c5a8; }
+      .pill--neutral   { background: #e8eef3; color: #1f4068; border-color: #b8c5d4; }
+
+      /* === Title with inline status pill ===
+         Used for record headers like "OXFORD RAILWAY [LIVE]". Flex
+         container with align-items:center so the pill sits visually
+         centred against the cap-height of the heading rather than
+         dropping to its baseline. The slight translateY nudge on the
+         pill tunes the optical centre — without it, the small-text
+         pill reads as low against the H1's cap-height. */
+      .title-with-status { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; margin: 0 0 0.5rem; }
+      .title-with-status h2 { margin: 0; }
+      .title-with-status .pill { transform: translateY(-0.05em); }
+
+      /* === Panel cards ===
+         Off-white card on the parchment surface. Used for biography,
+         collection context, history blocks, etc. Slightly lighter
+         padding than the previous .detail-section to give air without
+         feeling floaty. Variant `panel-card--inset` is for nested
+         panels (e.g. inside a parent panel-card) — slightly tinted to
+         differentiate visually. */
+      .panel-card { background: #fbf9f4; border: 1px solid #e4e0d4; border-radius: 4px; padding: 1.1rem 1.4rem; margin-bottom: 1rem; }
+      .panel-card__title { margin: 0 0 0.6rem; font-size: 0.9rem; font-weight: 600; color: #2a2a2a; }
+      .panel-card--inset { background: #f5f3ec; border-color: #e0dccf; }
+
+      /* === Inline text helpers ===
+         placeholder-em — for em-dash placeholders ("no value yet"),
+                          intentionally lighter than muted text so it
+                          reads as "absence" rather than "subdued info"
+         text-meta      — secondary inline text (dates, byline, etc.)
+         text-meta--sm  — same colour, smaller font
+         text-warn      — inline warning copy (cost notes, caveats) */
+      .placeholder-em  { color: #a8a8a8; }
+      .text-meta       { color: #646464; font-size: 0.85rem; }
+      .text-meta--sm   { color: #646464; font-size: 0.75rem; }
+      .text-warn       { color: #c87a1e; }
 
       .form-group { margin-bottom: 1rem; }
       .form-group label { display: block; margin-bottom: 0.3rem; font-size: 0.85rem; color: #2a2a2a; }
@@ -197,6 +348,83 @@
       }
       .actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
       details.collapsible summary { cursor: pointer; color: #1f4068; font-size: 0.85rem; margin-bottom: 0.5rem; }
+
+      /* === Disclosure summaries — unified SVG chevron marker ===
+         Browsers' default <details> markers vary visibly across
+         Safari / Chrome / Firefox. Previous attempt was a CSS-drawn
+         chevron from two rotated borders, but that approach had
+         irreducible visual offset between the element's bounding box
+         and the visible mark (the rotation pushes the visible chevron
+         ~0.18em inward), making it impossible to align with adjacent
+         elements without per-context fudging.
+         New approach: SVG chevron via background-image. The SVG path
+         is drawn flush against the viewBox left edge (with a half
+         stroke-width inset for line-cap clearance), so the element's
+         bounding-box left edge IS the chevron's visible left edge.
+         No nudging required for alignment — putting the box at x=N
+         puts the chevron's visible tip at x=N. Used everywhere:
+         review summaries, danger zone, signal breakdown, prompts,
+         existing description, lifetime reports. */
+      .admin-container details > summary { list-style: none; cursor: pointer; }
+      .admin-container details > summary::-webkit-details-marker { display: none; }
+      .admin-container details > summary::before {
+        content: "";
+        display: inline-block;
+        width: 0.5em;
+        height: 0.85em;
+        margin-right: 0.5em;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 5 10'%3E%3Cpath d='M0.8 1.2L4.2 5L0.8 8.8' fill='none' stroke='%23909090' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: left center;
+        background-size: contain;
+        transition: transform 0.15s ease;
+        vertical-align: -0.05em;
+      }
+      .admin-container details[open] > summary::before { transform: rotate(90deg); }
+
+      /* === Review summary — natural inline flow + hanging indent ===
+         Earlier iterations used flex layout, but flex makes wrapped
+         content awkward: the chevron sits in a flex item whose height
+         is the entire wrapped row, so align-self:center floats it
+         vertically between the wrapped lines (looks lost). Switching
+         to natural inline flow: chevron, pill, verdict prose, and
+         warning chips are inline / inline-block elements that wrap
+         like ordinary text.
+
+         Hanging indent:
+           padding-left on summary:    1.6em → pushes content rightward
+           margin-left on ::before:   -1.6em → pulls chevron back to
+                                                summary's outer edge
+         Net effect — chevron sits at x=0 of summary's outer box
+         (aligns with the Run-AI-review button above), pill + verdict
+         flow naturally from the chevron, and wrapped continuation
+         lines start at x=1.6em (the content edge), giving them
+         breathing room instead of running flush under the chevron.
+
+         An earlier attempt used text-indent: -1.6em for this, but
+         text-indent shifts the entire first line including
+         inline-blocks, which made the pill overlap the chevron.
+         Negative margin-left on the chevron specifically pulls only
+         the chevron, leaving the pill in its natural position
+         relative to the chevron's right edge.
+
+         line-height bumped to 1.55 so wrapped lines have a touch
+         more vertical separation. */
+      .review-summary { outline: none; padding-left: 1.6em; line-height: 1.55; }
+      .review-summary::before { vertical-align: middle; margin-left: -1.6em; }
+      .review-summary > .pill { vertical-align: middle; margin-right: 0.4em; }
+      .review-verdict { font-weight: 500; color: #3a3a3a; }
+      .review-verdict + .text-meta--sm,
+      .review-verdict + .text-meta--sm + .text-meta--sm { margin-left: 0.5em; }
+
+      /* === Claim "jump to biography" link ===
+         Subtle anchor sitting next to a factual-issue claim that
+         scrolls the page back up to the biography (#biography). The
+         claim card sits inside a .detail-section so the global panel
+         link rule would otherwise apply a heavy underline; explicit
+         override here keeps the icon quiet until hover. */
+      .claim-jump { display: inline-block; margin-left: 0.3rem; font-size: 0.8em; color: #8a8a8a; text-decoration: none !important; opacity: 0.7; transition: opacity 0.12s, color 0.12s; vertical-align: 0.05em; white-space: nowrap; }
+      .claim-jump:hover { color: #1f4068; opacity: 1; }
     </style>
   </head>
   <body>

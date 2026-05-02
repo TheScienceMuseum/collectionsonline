@@ -7,7 +7,19 @@
   <a href="/admin/ai">&larr; Back to list</a>
 </div>
 
-<h2>{{record.personName}} {{#isequal record.publicVisibility "hidden" this}}<span class="badge badge--{{record.status}} badge--restricted" title="Stored status is {{record.status}} — biography is generated normally, but the public site suppresses it while aiBiographyIncludeLiving is off.">{{record.status}}</span>{{else}}<span class="badge badge--{{record.status}}">{{record.status}}</span>{{/isequal}}</h2>
+{{!-- Title + status badge in a flex row so the pill is vertically
+      centred against the heading rather than dropping to its baseline.
+      The .badge classes are kept here (rather than swapping to .pill)
+      because biography status colour mapping is well-established and
+      mirrored in the list view — uniform across the admin. --}}
+<div class="title-with-status">
+  <h2>{{record.personName}}</h2>
+  {{#isequal record.publicVisibility "hidden" this}}
+    <span class="badge badge--{{record.status}} badge--restricted" title="Stored status is {{record.status}} — biography is generated normally, but the public site suppresses it while aiBiographyIncludeLiving is off.">{{record.status}}</span>
+  {{else}}
+    <span class="badge badge--{{record.status}}">{{record.status}}</span>
+  {{/isequal}}
+</div>
 
 {{#if error}}
 <div class="admin-banner admin-banner--warn">Error: {{error}}</div>
@@ -19,9 +31,9 @@
   <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap;">
     <h3 style="margin: 0; font-size: 1rem; color: #2a2a2a;">Public reports</h3>
     {{#if publicReports.pendingFlags}}
-      <div style="font-size: 0.85rem; color: #c87a1e;"><strong>{{publicReports.pendingFlags}} pending</strong></div>
+      <div class="text-meta text-warn"><strong>{{publicReports.pendingFlags}} pending</strong></div>
     {{else}}
-      <div style="font-size: 0.85rem; color: #646464;">no pending reports</div>
+      <div class="text-meta">no pending reports</div>
     {{/if}}
   </div>
 
@@ -46,14 +58,14 @@
     <form method="POST" action="/admin/ai/{{record.PK}}/flags/reviewed" style="display: inline;">
       <button type="submit" class="btn btn--secondary">Mark as reviewed</button>
     </form>
-    <span style="color: #646464; font-size: 0.75rem; margin-left: 0.5rem;">
+    <span class="text-meta--sm" style="margin-left: 0.5rem;">
       Records that you've looked at the pending reports and decided what to do.
     </span>
   </div>
   {{/if}}
 
   {{#if publicReports.lifetimeCounts.length}}
-  <details style="margin-top: 0.9rem; font-size: 0.8rem; color: #646464;">
+  <details class="text-meta--sm" style="margin-top: 0.9rem;">
     <summary style="cursor: pointer;">
       {{publicReports.totalFlags}} lifetime reports across all versions
       {{#if publicReports.lastFlaggedAt}}
@@ -77,48 +89,48 @@
     <dt>Record ID</dt>
     <dd>
       {{record.PK}}
-      <a href="{{record.pageUrl}}" target="_blank" rel="noopener" title="Open the public page for this record in a new tab" style="font-size: 0.8rem; color: #646464; margin-left: 0.3rem;">view on site ↗</a>
+      <a href="{{record.pageUrl}}" target="_blank" rel="noopener" title="Open the public page for this record in a new tab" class="text-meta--sm" style="margin-left: 0.3rem;">view on site ↗</a>
     </dd>
   </div>
-  <div>
+  <div class="detail-meta__field--secondary">
     <dt>Model</dt>
-    <dd>{{#if record.model}}{{record.model}}{{else}}<span style="color: #646464;" title="No AI generation — this record was skipped.">— (skipped)</span>{{/if}}</dd>
+    <dd>{{#if record.model}}{{record.model}}{{else}}<span class="text-meta" title="No AI generation — this record was skipped.">— (skipped)</span>{{/if}}</dd>
   </div>
-  <div>
+  <div class="detail-meta__field--secondary">
     <dt>Prompt Version</dt>
     <dd>
       {{#if record.promptVersion}}
         {{record.promptVersion}}
         {{#isequal record.promptVersion activeVersion this}}
-          <span style="color: #2e7d4a; font-size: 0.75rem;" title="This record uses the current default prompt."> · current default</span>
+          <span class="text-meta--sm" style="color: #2e7d4a;" title="This record uses the current default prompt."> · current default</span>
         {{else}}
-          <span style="color: #c87a1e; font-size: 0.75rem;" title="Default is now {{activeVersion}}. Regenerate to update, or keep this version for comparison."> · older than default ({{activeVersion}})</span>
+          <span class="text-meta--sm text-warn" title="Default is now {{activeVersion}}. Regenerate to update, or keep this version for comparison."> · older than default ({{activeVersion}})</span>
         {{/isequal}}
       {{else}}
-        <span style="color: #646464;" title="No AI generation — this record was skipped.">— (skipped)</span>
+        <span class="text-meta" title="No AI generation — this record was skipped.">— (skipped)</span>
       {{/if}}
     </dd>
   </div>
-  <div>
+  <div class="detail-meta__field--secondary">
     <dt>Tokens (input / output)</dt>
     <dd>
       {{#if record.inputTokens}}
         {{record.inputTokens}} / {{record.outputTokens}}
         {{#if cost}}
-          <span style="color: #646464; font-size: 0.85rem;" title="Cost for this generation; extrapolated cost shown for 1,000 biographies of the same token shape">· {{cost.perBioFormatted}} ({{cost.per1kBioFormatted}} / 1k)</span>
+          <span class="text-meta" title="Cost for this generation; extrapolated cost shown for 1,000 biographies of the same token shape">· {{cost.perBioFormatted}} ({{cost.per1kBioFormatted}} / 1k)</span>
         {{/if}}
       {{else}}
-        <span style="color: #646464;" title="No AI generation — this record was skipped.">— (skipped)</span>
+        <span class="text-meta" title="No AI generation — this record was skipped.">— (skipped)</span>
       {{/if}}
     </dd>
   </div>
   {{#if signalView}}
-  <div>
+  <div class="detail-meta__field--secondary">
     <dt>Signal score</dt>
     <dd>
       <span title="Weighted score of source-data signals. Strong anchors (existing description, related collection items) count 3 each; Wikidata 2 each; supporting fields 1 each. Records below the minimum are skipped as insufficient_data.">
         {{signalView.score}} / {{signalView.maxScore}}
-        <span style="color: #646464; font-size: 0.85rem;">· min {{signalView.minScore}} to generate</span>
+        <span class="text-meta">· min {{signalView.minScore}} to generate</span>
       </span>
     </dd>
   </div>
@@ -127,31 +139,33 @@
     <dt>Generated</dt>
     <dd title="Biography text last produced at {{record.generatedAt}} · record last touched (any field) at {{record.updatedAt}}">{{formatDate record.generatedAt "auto"}}</dd>
   </div>
-  <div>
+  <div class="detail-meta__field--secondary">
     <dt>Snapshots</dt>
     <dd>
       {{snapshotCount}}
       {{#if snapshotCount}} · <a href="/admin/ai/{{record.PK}}/compare">compare versions</a>{{/if}}
     </dd>
   </div>
-  <div>
+  <div class="detail-meta__field--secondary">
     <dt>Existing Description</dt>
     <dd>
       {{record.existingDescriptionChars}} chars
+      {{!-- Render-state pills: how the existing description plays with
+            the AI biography on the public page.
+              suppressed → hidden-on-page (attention)
+              replaced   → AI-skipped    (attention; uses inline red on
+                                          the badge below for stronger
+                                          warning since this is the only
+                                          state where AI work is bypassed)
+              both       → existing + AI (positive) --}}
       {{#isequal displayState "suppressed" this}}
-        <span style="display: inline-block; margin-left: 0.3rem; font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #fcf3e1; color: #9c5a16; border: 1px solid #cfa050;" title="Shorter than {{suppressThreshold}} chars — the public page hides the existing description and shows the AI biography only.">
-          hidden on page
-        </span>
+        <span class="pill pill--attention" style="margin-left: 0.3rem;" title="Shorter than {{suppressThreshold}} chars — the public page hides the existing description and shows the AI biography only.">hidden on page</span>
       {{/isequal}}
       {{#isequal displayState "replaced" this}}
-        <span style="display: inline-block; margin-left: 0.3rem; font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #f5e2e2; color: #b03030; border: 1px solid #c87878;" title="Longer than {{maxThreshold}} chars — AI generation is skipped; public page shows the existing description only.">
-          AI skipped
-        </span>
+        <span class="pill" style="margin-left: 0.3rem; background: #f5e2e2; color: #b03030; border-color: #c87878;" title="Longer than {{maxThreshold}} chars — AI generation is skipped; public page shows the existing description only.">AI skipped</span>
       {{/isequal}}
       {{#isequal displayState "both" this}}
-        <span style="display: inline-block; margin-left: 0.3rem; font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #e6f0e9; color: #2e7d4a; border: 1px solid #a4c4a8;" title="Both the existing description and the AI biography are shown on the public page.">
-          existing + AI
-        </span>
+        <span class="pill pill--positive" style="margin-left: 0.3rem;" title="Both the existing description and the AI biography are shown on the public page.">existing + AI</span>
       {{/isequal}}
     </dd>
   </div>
@@ -159,39 +173,39 @@
   <div>
     <dt>Subject status</dt>
     <dd>
+      {{!-- Subject-status pill — single .pill class, semantic --modifier.
+            Colour palette is documented in admin.html. Briefly:
+              positive  = currently operational (LIVING / ACTIVE)
+              attention = uncertain (UNKNOWN org)
+              inactive  = no longer operational (DECEASED / DISSOLVED /
+                          HISTORICAL) --}}
       {{#isequal record.subjectStatus.status "active" this}}
         {{#isequal record.subjectStatus.subjectType "person" this}}
-          <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #fcf3e1; color: #9c5a16; border: 1px solid #cfa050;" title="No death date recorded. Biography is generated normally; the public site suppresses it while aiBiographyIncludeLiving is off.">living</span>
+          <span class="pill pill--positive" title="No death date recorded. The public site suppresses the biography for living people while aiBiographyIncludeLiving is off; that visibility status is shown on the biography pill above (with a 'restricted' modifier).">living</span>
         {{else}}
-          <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #fcf3e1; color: #9c5a16; border: 1px solid #cfa050;" title="No dissolution date recorded — assumed to be an active organisation.">active</span>
+          <span class="pill pill--positive" title="No dissolution date recorded — assumed to be an active organisation.">active</span>
         {{/isequal}}
       {{/isequal}}
       {{#isequal record.subjectStatus.status "deceased" this}}
-        <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #e6f0e9; color: #2e7d4a; border: 1px solid #a4c4a8;" title="Death date recorded.">deceased</span>
+        <span class="pill pill--inactive" title="Death date recorded.">deceased</span>
       {{/isequal}}
       {{#isequal record.subjectStatus.status "dissolved" this}}
-        <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #e6f0e9; color: #2e7d4a; border: 1px solid #a4c4a8;" title="Organisation dissolution date recorded.">dissolved</span>
+        <span class="pill pill--inactive" title="Organisation dissolution date recorded.">dissolved</span>
       {{/isequal}}
-      {{!-- Two new organisation states (Apr 2026): 'unknown' and
-            'historical'. Both apply only when there's no structured
-            dissolution date — they refine the previous blanket 'active'
-            using brief-biography activity prose. See subject-status.js
-            for semantics. Pill colour signals certainty: green = known,
-            amber = uncertain, grey = past. --}}
       {{#isequal record.subjectStatus.status "unknown" this}}
-        <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #fcf3e1; color: #9c5a16; border: 1px solid #cfa050;" title="{{record.subjectStatus.organisationStatusReasoning}}">unknown</span>
+        <span class="pill pill--attention" title="{{record.subjectStatus.organisationStatusReasoning}}">unknown</span>
       {{/isequal}}
       {{#isequal record.subjectStatus.status "historical" this}}
-        <span style="display: inline-block; font-size: 0.75rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: #fbf9f4; color: #646464; border: 1px solid #c5c1b5;" title="{{record.subjectStatus.organisationStatusReasoning}}">historical</span>
+        <span class="pill pill--inactive" title="{{record.subjectStatus.organisationStatusReasoning}}">historical</span>
       {{/isequal}}
       {{#if record.subjectStatus.deathDate}}
-        <span style="color: #646464; font-size: 0.85rem; white-space: nowrap;" title="Source: {{record.subjectStatus.deathDateSource}} · raw: {{record.subjectStatus.deathDate}}">· {{formatDate record.subjectStatus.deathDate "date"}}{{#isequal record.subjectStatus.deathDateSource "wikidata" this}}<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 16 16" aria-hidden="true" style="color: #c87a1e; vertical-align: -1px; margin-left: 0.3rem;"><title>Sourced from Wikidata — not in our collection record</title><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.1"/></svg>{{/isequal}}</span>
+        <span class="text-meta" style="white-space: nowrap;" title="Source: {{record.subjectStatus.deathDateSource}} · raw: {{record.subjectStatus.deathDate}}">· {{formatDate record.subjectStatus.deathDate "date"}}{{#isequal record.subjectStatus.deathDateSource "wikidata" this}}<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 16 16" aria-hidden="true" class="text-warn" style="vertical-align: -1px; margin-left: 0.3rem;"><title>Sourced from Wikidata — not in our collection record</title><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.1"/></svg>{{/isequal}}</span>
       {{else}}{{#if record.subjectStatus.activityText}}
         {{!-- Organisation 'unknown' or 'historical' state — show the matched
               brief-biography activity range inline so staff can see at a
               glance what the classification was based on (e.g.
               "unknown · active 1990s" or "historical · 1856-1905"). --}}
-        <span style="color: #646464; font-size: 0.85rem; white-space: nowrap;" title="{{record.subjectStatus.organisationStatusReasoning}}">· {{record.subjectStatus.activityText}}</span>
+        <span class="text-meta" style="white-space: nowrap;" title="{{record.subjectStatus.organisationStatusReasoning}}">· {{record.subjectStatus.activityText}}</span>
       {{else}}
         {{!-- Living person: show "· born YYYY" alongside the pill, mirroring
               the deceased treatment so staff can see at a glance how recent
@@ -201,7 +215,7 @@
               stored on the canonical record yet). --}}
         {{#isequal record.subjectStatus.subjectType "person" this}}
           {{#if record.subjectStatus.birthDate}}
-            <span style="color: #646464; font-size: 0.85rem; white-space: nowrap;" title="Source: {{record.subjectStatus.birthDateSource}} · raw: {{record.subjectStatus.birthDate}}">· born {{formatDate record.subjectStatus.birthDate "date"}}{{#isequal record.subjectStatus.birthDateSource "wikidata" this}}<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 16 16" aria-hidden="true" style="color: #c87a1e; vertical-align: -1px; margin-left: 0.3rem;"><title>Sourced from Wikidata — not in our collection record</title><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.1"/></svg>{{/isequal}}</span>
+            <span class="text-meta" style="white-space: nowrap;" title="Source: {{record.subjectStatus.birthDateSource}} · raw: {{record.subjectStatus.birthDate}}">· born {{formatDate record.subjectStatus.birthDate "date"}}{{#isequal record.subjectStatus.birthDateSource "wikidata" this}}<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 16 16" aria-hidden="true" class="text-warn" style="vertical-align: -1px; margin-left: 0.3rem;"><title>Sourced from Wikidata — not in our collection record</title><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.1"/></svg>{{/isequal}}</span>
           {{/if}}
         {{/isequal}}
       {{/if}}
@@ -213,7 +227,7 @@
     <dt>Confidence</dt>
     <dd title="The model's self-reported confidence in its own output (0 = no data, 10 = rich, well-grounded). LLM self-reporting is a weak signal — we track it to observe calibration over time. The Signal score (data in) is a stronger quality proxy.">
       {{#if record.confidence}}{{record.confidence}} / 10{{else}}—{{/if}}
-      <span style="color: #646464; font-size: 0.75rem;">· self-reported</span>
+      <span class="text-meta--sm">· self-reported</span>
     </dd>
   </div>
 </div>
@@ -228,32 +242,39 @@
         prefix match is simple and stable (we write these strings in
         routes/ai-biography.js and admin-ai.js). --}}
   {{#isequal record.skipCategory "failed" this}}
-  <p style="font-size: 0.85rem; color: #c87a1e; margin-top: 0.4rem;">
+  <p class="text-meta text-warn" style="margin-top: 0.4rem;">
     Claude was called and billed but returned content we couldn't use (empty / truncated / unparseable). We persist the skip to avoid burning tokens on repeated page loads — but the underlying record may be fine. Click <strong>Regenerate</strong> to try again; if it keeps failing, check the server logs around <span title="{{record.generatedAt}}">{{formatDate record.generatedAt "auto"}}</span> for the underlying Claude error.
   </p>
   {{/isequal}}
   {{#isequal record.skipCategory "living" this}}
-  <p style="font-size: 0.85rem; color: #646464; margin-top: 0.4rem;">
+  <p class="text-meta" style="margin-top: 0.4rem;">
     This record was skipped under the old generation-time living-person policy (since superseded). It should self-resolve on the next regeneration — the current policy generates for everyone and suppresses at render time instead.
   </p>
   {{/isequal}}
   {{#isequal record.skipCategory "insufficient" this}}
-  <p style="font-size: 0.85rem; color: #646464; margin-top: 0.4rem;">
+  <p class="text-meta" style="margin-top: 0.4rem;">
     The record doesn't have enough source signal (dates / occupation / related items / wikidata) for the generator to produce a meaningful biography. Adding more metadata to the underlying catalogue record is the fix — regenerating won't help until the data improves.
   </p>
   {{/isequal}}
   {{#isequal record.skipCategory "low_confidence" this}}
-  <p style="font-size: 0.85rem; color: #646464; margin-top: 0.4rem;">
+  <p class="text-meta" style="margin-top: 0.4rem;">
     Claude produced content but self-reported low confidence — we store the attempt but don't surface it publicly. Regenerating occasionally clears this; if it keeps recurring the source data is probably borderline.
   </p>
   {{/isequal}}
 </div>
 {{/if}}
 
+{{!-- Biography + Collection Context use .prose-body for long-form
+      reading typography (serif, 1.65 leading, ~68ch max-width). The
+      previous nested-card pattern (a #fbf9f4 box inside the parent
+      #fbf9f4 .detail-section) doubled the padding and added no
+      visual benefit, so the inner wrapper has been dropped — the
+      biographyHtml renders directly into the section with prose
+      typography applied via the wrapper class. --}}
 {{#if record.biographyHtml}}
-<div class="detail-section">
+<div class="detail-section" id="biography">
   <h3>Biography</h3>
-  <div style="background: #fbf9f4; padding: 1rem; border-radius: 4px;">
+  <div class="prose-body">
     {{{record.biographyHtml}}}
   </div>
 </div>
@@ -262,33 +283,37 @@
 {{#if record.contextHtml}}
 <div class="detail-section">
   <h3>Collection Context</h3>
-  <div style="background: #fbf9f4; padding: 1rem; border-radius: 4px;">
+  <div class="prose-body">
     {{{record.contextHtml}}}
   </div>
 </div>
 {{/if}}
 
+{{!-- Existing brief / full biography: same prose treatment as the
+      AI biography + context above. white-space:pre-wrap retained so
+      catalogue-formatted line breaks are preserved (the brief field
+      in particular sometimes uses inline structural breaks). --}}
 {{#if existingDescription.briefText}}
 <details class="collapsible" style="margin-top: 0.75rem;">
-  <summary>Existing brief biography ({{existingDescription.briefChars}} chars) <span style="color: #646464; font-weight: normal; font-size: 0.85rem;">— terse structured summary; often contains "active YYYY-YYYY" date text</span></summary>
+  <summary>Existing brief biography ({{existingDescription.briefChars}} chars) <span class="text-meta" style="font-weight: normal;">— terse structured summary; often contains "active YYYY-YYYY" date text</span></summary>
   <div class="detail-section">
-    <div style="background: #fbf9f4; padding: 1rem; border-radius: 4px; font-size: 0.9rem; white-space: pre-wrap;">{{existingDescription.briefText}}</div>
+    <div class="prose-body" style="white-space: pre-wrap;">{{existingDescription.briefText}}</div>
   </div>
 </details>
 {{/if}}
 
 {{#if existingDescription.text}}
 <details class="collapsible" style="margin-top: 0.75rem;">
-  <summary>Existing biography ({{existingDescription.chars}} chars) <span style="color: #646464; font-weight: normal; font-size: 0.85rem;">— freeform curatorial prose from the collection record</span></summary>
+  <summary>Existing biography ({{existingDescription.chars}} chars) <span class="text-meta" style="font-weight: normal;">— freeform curatorial prose from the collection record</span></summary>
   <div class="detail-section">
-    <div style="background: #fbf9f4; padding: 1rem; border-radius: 4px; font-size: 0.9rem; white-space: pre-wrap;">{{existingDescription.text}}</div>
+    <div class="prose-body" style="white-space: pre-wrap;">{{existingDescription.text}}</div>
   </div>
 </details>
 {{/if}}
 
 {{#if signalView}}
 <details class="collapsible" style="margin-top: 0.75rem;">
-  <summary>Signal breakdown (score {{signalView.score}} / {{signalView.maxScore}}) <span style="color: #646464; font-weight: normal; font-size: 0.85rem;">— which data signals were present at generation time, and their weights</span></summary>
+  <summary>Signal breakdown (score {{signalView.score}} / {{signalView.maxScore}}) <span class="text-meta" style="font-weight: normal;">— which data signals were present at generation time, and their weights</span></summary>
   <div class="detail-section">
     <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.3rem; font-size: 0.85rem;">
       {{#each signalView.signals}}
@@ -311,7 +336,7 @@
 
 {{#if record.systemPrompt}}
 <details class="collapsible" style="margin-top: 0.75rem;">
-  <summary>View system prompt <span style="color: #646464; font-weight: normal; font-size: 0.85rem;">— the instructions sent to the model</span></summary>
+  <summary>View system prompt <span class="text-meta" style="font-weight: normal;">— the instructions sent to the model</span></summary>
   <div class="detail-section">
     <pre style="white-space: pre-wrap; font-size: 0.8rem; color: #646464;">{{record.systemPrompt}}</pre>
   </div>
@@ -320,7 +345,7 @@
 
 {{#if record.prompt}}
 <details class="collapsible" style="margin-top: 0.75rem;">
-  <summary>View user prompt <span style="color: #646464; font-weight: normal; font-size: 0.85rem;">— the record data sent alongside the system prompt</span></summary>
+  <summary>View user prompt <span class="text-meta" style="font-weight: normal;">— the record data sent alongside the system prompt</span></summary>
   <div class="detail-section">
     <pre style="white-space: pre-wrap; font-size: 0.8rem; color: #646464;">{{record.prompt}}</pre>
   </div>
@@ -335,7 +360,7 @@
 {{#if reviewConfig.enabled}}
 <div class="detail-section" id="reviews">
   <h3>AI review</h3>
-  <p style="font-size: 0.85rem; color: #646464; margin: 0 0 0.75rem 0;">
+  <p class="text-meta" style="margin: 0 0 0.75rem 0;">
     A premium-model fact-check of the biography above. Use when a public report or staff flag raises a specific concern and you want a structured second opinion before acting. Findings are investigative prompts — staff decide what to do.
   </p>
 
@@ -354,15 +379,23 @@
         the browser happens to repaint between handler and submission,
         which varies by hardware / tab state. The double rAF guarantees
         one full paint cycle before .submit() fires. --}}
+  {{!-- Form uses the shared "inner control area" pattern (same tinted
+        padding box as Flag-a-problem and Notes below), so the Run-AI-
+        review button aligns horizontally with the flag buttons and
+        Add-note button. The original concern that drove the
+        flush-with-heading layout (button being mistaken for a child
+        of an individual review) no longer applies now that each
+        review has a coloured-stripe pill identity that's clearly
+        distinct from a navy outlined button. --}}
   <form id="review-form" method="POST" action="/admin/ai/{{record.PK}}/review" style="background: #fbf9f4; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 1rem;" onsubmit="if(this.dataset.submitting)return true;this.dataset.submitting='1';this.classList.add('is-loading');var f=this;requestAnimationFrame(function(){requestAnimationFrame(function(){f.submit();});});return false;">
     <div class="review-form__ready" style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;">
       <button type="submit" class="btn btn--primary">⚠ Run AI review</button>
-      <span style="font-size: 0.8rem; color: #c87a1e;" title="This call uses our most expensive model. Use only when triaging a specific report or concern.">⚠ Uses premium model {{reviewConfig.modelLabel}} (~{{reviewConfig.estimatedCost}} per review). Use with care.</span>
+      <span class="text-warn" style="font-size: 0.8rem;" title="This call uses our most expensive model. Use only when triaging a specific report or concern.">⚠ Uses premium model {{reviewConfig.modelLabel}} (~{{reviewConfig.estimatedCost}} per review). Use with care.</span>
     </div>
     <div class="review-form__loading" style="display: flex; align-items: center; gap: 0.6rem; color: #1f4068; font-size: 0.95rem;">
       <span class="admin-spinner" style="width: 1.1em; height: 1.1em;"></span>
       <strong>Reviewing biography</strong>
-      <span style="color: #646464; font-size: 0.85rem;">— usually 10–30 seconds. Don't navigate away.</span>
+      <span class="text-meta">— usually 10–30 seconds. Don't navigate away.</span>
     </div>
   </form>
   {{/if}}
@@ -370,17 +403,23 @@
   {{#if reviews.length}}
     {{#each reviews}}
     <details style="background: #fbf9f4; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 0.5rem; {{#if this.stale}}border-left: 3px solid #c87a1e;{{else}}{{#if this.reviewPromptStale}}border-left: 3px solid #c87a1e;{{/if}}{{/if}}" {{#if @first}}open{{/if}}>
-      <summary style="cursor: pointer; outline: none;">
-        <span style="display: inline-block; font-size: 0.7rem; padding: 0.1rem 0.45rem; border-radius: 3px; text-transform: uppercase; font-weight: 600; vertical-align: middle;
-          {{#isequal this.overallVerdict "likely_correct" this}}background: #e6f0e9; color: #2e7d4a; border: 1px solid #a4c4a8;{{/isequal}}
-          {{#isequal this.overallVerdict "possible_issues" this}}background: #fcf3e1; color: #9c5a16; border: 1px solid #cfa050;{{/isequal}}
-          {{#isequal this.overallVerdict "likely_issues" this}}background: #f5e2e2; color: #b03030; border: 1px solid #cb7a7a;{{/isequal}}
-        ">{{this.overallVerdict}}</span>
-        <strong style="color: #2a2a2a; margin-left: 0.4rem;">{{this.verdictReasoning}}</strong>
-        {{#if this.stale}} <span style="color: #c87a1e; font-size: 0.75rem;" title="Biography has been regenerated since this review was produced — findings may no longer apply.">⚠ stale biography</span>{{/if}}
-        {{#if this.reviewPromptStale}} <span style="color: #c87a1e; font-size: 0.75rem;" title="This review was produced under an older review prompt ({{this.reviewPromptVersion}}). Reviewer behaviour has changed since (current: {{this.currentReviewPromptVersion}}) — findings may not reflect current reviewer logic. Worth re-running to confirm.">⚠ outdated review prompt</span>{{/if}}
+      {{!-- Summary uses natural inline flow: chevron (::before),
+            pill, verdict prose, and warning chips all sit inline so
+            long verdict text wraps cleanly under the chevron column
+            on subsequent lines. The chevron and pill share
+            vertical-align: middle so they optically centre on the
+            first line's x-height. Verdict text weight is 500 — the
+            pill already carries severity at a glance, prose steps
+            back. --}}
+      <summary class="review-summary">
+        {{#isequal this.overallVerdict "likely_correct" this}}<span class="pill pill--positive">{{this.overallVerdict}}</span>{{/isequal}}
+        {{#isequal this.overallVerdict "possible_issues" this}}<span class="pill pill--attention">{{this.overallVerdict}}</span>{{/isequal}}
+        {{#isequal this.overallVerdict "likely_issues" this}}<span class="pill pill--danger">{{this.overallVerdict}}</span>{{/isequal}}
+        <span class="review-verdict">{{this.verdictReasoning}}</span>
+        {{#if this.stale}} <span class="text-warn text-meta--sm" title="Biography has been regenerated since this review was produced — findings may no longer apply.">⚠ stale biography</span>{{/if}}
+        {{#if this.reviewPromptStale}} <span class="text-warn text-meta--sm" title="This review was produced under an older review prompt ({{this.reviewPromptVersion}}). Reviewer behaviour has changed since (current: {{this.currentReviewPromptVersion}}) — findings may not reflect current reviewer logic. Worth re-running to confirm.">⚠ outdated review prompt</span>{{/if}}
       </summary>
-      <div style="font-size: 0.75rem; color: #646464; margin: 0.5rem 0 0.2rem 0;">
+      <div class="text-meta--sm" style="margin: 0.5rem 0 0.2rem 0;">
         <span title="Model that produced this review and who triggered it.">Reviewed by {{this.reviewModel}} · {{this.createdBy}} · <span title="{{this.createdAt}}">{{formatDate this.createdAt "auto"}}</span></span>{{#if this.costFormatted}} · {{this.costFormatted}}{{/if}}{{#if this.inputTokens}} · {{this.inputTokens}} in / {{this.outputTokens}} out{{/if}}
       </div>
       {{!-- Which biography version was actually reviewed. Critical when
@@ -409,24 +448,45 @@
       {{/if}}
 
       {{#if this.factualIssues.length}}
+      {{!-- Factual-issues block redesigned for readability:
+            - Each card has a 3px coloured left border in the severity
+              hue (red / amber / green) — primary at-a-glance cue.
+            - Confidence pill moves to top-right of the card, smaller +
+              quieter, just confirming the severity colour.
+            - Quote text uses quote marks but not italics (the previous
+              "italic + quotes" combo was double-affordance).
+            - Sources sit in a small footer separated from the reasoning
+              by a hairline border, with an explicit lighter link
+              treatment that overrides the global .detail-section a
+              underline (which is too heavy in this dense block).
+            - The "AI-guessed, not verified" disclaimer is lifted to a
+              single intro line under the heading, so the per-card
+              source label is just "Sources to check:". --}}
       <div style="margin-bottom: 0.75rem;">
-        <h4 style="margin: 0 0 0.4rem 0; font-size: 0.85rem; color: #c87a1e;">Factual claims to check</h4>
-        <ul style="list-style: none; padding: 0; margin: 0;">
+        <h4 style="margin: 0 0 0.15rem 0; font-size: 0.85rem; color: #c87a1e;">Factual claims to check</h4>
+        <p class="text-meta--sm" style="margin: 0 0 0.65rem 0;">
+          Suggested sources are AI-guessed starting points, not verified citations — your own knowledge of where to look is often better.
+        </p>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem;">
           {{#each this.factualIssues}}
-          <li style="background: #fdfdfa; padding: 0.5rem 0.75rem; border-radius: 3px; margin-bottom: 0.3rem;">
-            <div style="font-size: 0.7rem; color: #646464; margin-bottom: 0.15rem;">
-              <span style="display: inline-block; padding: 0.05rem 0.35rem; border-radius: 3px; text-transform: uppercase; font-weight: 600;
-                {{#isequal this.confidence "high" this}}background: #f0d5d5; color: #b03030;{{/isequal}}
-                {{#isequal this.confidence "medium" this}}background: #fcf3e1; color: #9c5a16;{{/isequal}}
-                {{#isequal this.confidence "low" this}}background: #e6f0e9; color: #2e7d4a;{{/isequal}}
-              " title="Reviewer's confidence that this claim needs investigation (raw value: {{this.confidence}})">{{#isequal this.confidence "high" this}}Likely issue{{/isequal}}{{#isequal this.confidence "medium" this}}Possible issue{{/isequal}}{{#isequal this.confidence "low" this}}Hunch{{/isequal}}</span>
+          <li style="background: #fdfdfa; border: 1px solid #e4e0d4; border-left: 3px solid {{#isequal this.confidence "high" this}}#b03030{{/isequal}}{{#isequal this.confidence "medium" this}}#c87a1e{{/isequal}}{{#isequal this.confidence "low" this}}#7ea585{{/isequal}}; border-radius: 3px; padding: 0.7rem 0.9rem;">
+            {{!-- Header row: claim quote (the AI text being reviewed) +
+                  pill on the right. Claim is weight 500 / colour #2a2a2a
+                  so it reads as the "subject under review"; the reasoning
+                  below is lighter weight + lighter colour so the
+                  hierarchy ("here's what the biography said" → "here's
+                  what the reviewer thinks") is unambiguous. --}}
+            <div style="display: flex; justify-content: space-between; gap: 0.75rem; align-items: baseline;">
+              <span style="color: #2a2a2a; font-size: 0.92rem; line-height: 1.45; font-weight: 500;">&ldquo;{{this.claim}}&rdquo;<a href="#biography" class="claim-jump" title="Jump up to the biography to read this claim in context">↑ in biography</a></span>
+              {{#isequal this.confidence "high" this}}<span class="pill pill--danger" style="flex-shrink: 0;" title="Reviewer's confidence that this claim needs investigation (raw value: high)">likely issue</span>{{/isequal}}
+              {{#isequal this.confidence "medium" this}}<span class="pill pill--attention" style="flex-shrink: 0;" title="Reviewer's confidence that this claim needs investigation (raw value: medium)">possible issue</span>{{/isequal}}
+              {{#isequal this.confidence "low" this}}<span class="pill pill--positive" style="flex-shrink: 0;" title="Reviewer's confidence that this claim needs investigation (raw value: low)">hunch</span>{{/isequal}}
             </div>
-            <div style="color: #2a2a2a; font-size: 0.9rem; margin-bottom: 0.25rem;"><em>"{{this.claim}}"</em></div>
-            <div style="color: #2a2a2a; font-size: 0.85rem; margin-bottom: 0.25rem;">{{this.reasoning}}</div>
+            <div style="color: #5e564c; font-size: 0.86rem; line-height: 1.55; margin-top: 0.4rem;">{{this.reasoning}}</div>
             {{#if this.suggestedChecks.length}}
-            <div style="font-size: 0.8rem; color: #646464;">
-              <span style="color: #646464;" title="The reviewer hasn't read these sources — it's guessing based on topic. Treat them as starting points, not verified citations. Your own knowledge of where to look is often better.">Suggested sources to check (AI-guessed, not verified):</span>
-              {{#each this.suggestedChecks}}{{#unless @first}} · {{/unless}}{{#if this.url}}<a href="{{this.url}}" target="_blank" rel="noopener noreferrer" title="Opens in a new tab" style="color: #1f4068; text-decoration: underline;">{{this.text}}<span aria-hidden="true" style="font-size: 0.85em; opacity: 0.75; margin-left: 0.15em;">↗</span></a>{{else}}{{this.text}}{{/if}}{{/each}}
+            <div style="font-size: 0.78rem; color: #646464; margin-top: 0.55rem; padding-top: 0.45rem; border-top: 1px solid #efece4;">
+              <span>Sources to check:</span>
+              {{#each this.suggestedChecks}}{{#unless @first}}<span style="color: #c5c1b5;"> · </span>{{/unless}}{{#if this.url}}<a href="{{this.url}}" target="_blank" rel="noopener noreferrer" title="Opens in a new tab" style="color: #2c5288; text-decoration-color: rgba(31, 64, 104, 0.18); text-decoration-thickness: 1px; text-underline-offset: 3px;">{{this.text}}<span aria-hidden="true" style="font-size: 0.85em; opacity: 0.55; margin-left: 0.15em;">↗</span></a>{{else}}{{this.text}}{{/if}}{{/each}}
             </div>
             {{/if}}
           </li>
@@ -452,7 +512,7 @@
       </div>
       {{/if}}
 
-      {{#unless this.offensive}}{{#unless this.factualIssues.length}}{{#isequal this.overallVerdict "likely_correct" this}}<p style="font-size: 0.85rem; color: #2e7d4a; margin: 0 0 0.5rem 0;">No specific issues flagged by the reviewer.</p>{{/isequal}}{{/unless}}{{/unless}}
+      {{#unless this.offensive}}{{#unless this.factualIssues.length}}{{#isequal this.overallVerdict "likely_correct" this}}<p class="text-meta" style="color: #2e7d4a; margin: 0 0 0.5rem 0;">No specific issues flagged by the reviewer.</p>{{/isequal}}{{/unless}}{{/unless}}
 
       <form method="POST" action="/admin/ai/{{../record.PK}}/reviews/delete" style="margin-top: 0.75rem;" onsubmit="return confirm('Delete this review? This cannot be undone.');">
         <input type="hidden" name="sk" value="{{this.SK}}">
@@ -462,9 +522,9 @@
     {{/each}}
   {{else}}
     {{#if reviewConfig.canRun}}
-    <p style="font-size: 0.85rem; color: #646464; margin: 0;">No reviews yet for this record.</p>
+    <p class="text-meta" style="margin: 0;">No reviews yet for this record.</p>
     {{else}}
-    <p style="font-size: 0.85rem; color: #646464; margin: 0;">No biography content available to review.</p>
+    <p class="text-meta" style="margin: 0;">No biography content available to review.</p>
     {{/if}}
   {{/if}}
 </div>
@@ -472,7 +532,7 @@
 
 <div class="detail-section" id="flag">
   <h3>Flag a problem</h3>
-  <p style="color: #646464; font-size: 0.8rem; margin: 0 0 0.5rem 0;">
+  <p class="text-meta--sm" style="margin: 0 0 0.5rem 0;">
     Click an icon to raise a flag (also sets this record's status to <em>flagged</em>). Click it again (or Clear) to remove your flag — but note the record status stays flagged until you change it manually.
   </p>
 
@@ -508,7 +568,7 @@
   </style>
 
   {{#if otherFlags.length}}
-  <p style="font-size: 0.8rem; color: #646464; margin: 0 0 1rem 0;">
+  <p class="text-meta--sm" style="margin: 0 0 1rem 0;">
     Other flags on this record:
     {{#each otherFlags}}
       <span style="color: #646464;">{{this.staff}}</span>
@@ -530,7 +590,11 @@
   <form method="POST" action="/admin/ai/{{record.PK}}/notes" style="background: #fbf9f4; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
     <textarea name="text" rows="3" placeholder="Note (e.g. 'wrong that he founded the company, he co-founded it')" style="width: 100%; background: #fdfdfa; color: #2a2a2a; border: 1px solid #c5c1b5; border-radius: 4px; padding: 0.5rem; font-family: inherit;" required></textarea>
     <div style="margin-top: 0.5rem;">
-      <button type="submit" class="btn btn--primary">Add note</button>
+      {{!-- "Add note" is a trigger / supporting action, not a primary
+            "do the main thing" CTA — use secondary outlined so it
+            doesn't compete with the navy primary buttons elsewhere on
+            the page (regenerate, update status, run AI review). --}}
+      <button type="submit" class="btn btn--secondary">Add note</button>
     </div>
   </form>
 
@@ -566,7 +630,7 @@
       {{/each}}
     </ul>
   {{else}}
-    <p style="color: #646464; font-size: 0.9rem;">No notes yet.</p>
+    <p class="text-meta">No notes yet.</p>
   {{/if}}
 </div>
 
@@ -591,11 +655,27 @@
   {{#if snapshotCount}}
   <a href="/admin/ai/{{record.PK}}/compare" class="btn btn--secondary" title="Switch between saved versions, or try a specific prompt">Compare / A–B…</a>
   {{/if}}
-
-  <form method="POST" action="/admin/ai/{{record.PK}}/delete" onsubmit="return confirm('Delete this biography record? This cannot be undone.');">
-    <button type="submit" class="btn btn--danger">Delete</button>
-  </form>
 </div>
+
+{{!-- Danger zone — Delete sits behind a collapsed disclosure rather
+      than in the main action row. In normal use staff should mark
+      records as "hidden" instead of deleting them; deleted records
+      will be regenerated next time the page is hit. The disclosure
+      adds one click of friction so Delete can't be hit by muscle
+      memory next to Update Status / Regenerate. (When the auth
+      system grows roles, this is also the natural place to gate the
+      action behind an admin role.) --}}
+<details class="collapsible" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e4e0d4;">
+  <summary style="color: #b03030; font-size: 0.85rem;">Danger zone</summary>
+  <div style="margin-top: 0.6rem; display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+    <form method="POST" action="/admin/ai/{{record.PK}}/delete" onsubmit="return confirm('Delete this biography record? This cannot be undone — the record may be regenerated next time the page is hit. In most cases you want to set the status to Hidden instead.');">
+      <button type="submit" class="btn btn--danger">Delete record</button>
+    </form>
+    <span class="text-meta--sm" style="max-width: 36rem;">
+      Deleting a biography removes the row from DynamoDB. If the underlying catalogue record is still eligible, the next page view will regenerate it — so deletion is rarely what you want. To suppress a biography permanently, set the status to <strong>Hidden</strong> above.
+    </span>
+  </div>
+</details>
 
 <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e4e0d4;">
   <a href="/admin/ai">&larr; Back to list</a>

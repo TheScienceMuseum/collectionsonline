@@ -8,7 +8,7 @@
 </div>
 
 <h2>Compare versions — {{record.personName}}</h2>
-<p style="color: #646464; font-size: 0.9rem;">
+<p class="text-meta">
   Nothing generated here goes live until you explicitly click <em>Set as current</em>. The public biography stays unchanged while you try different prompts and models.
 </p>
 
@@ -40,7 +40,7 @@
       <button type="submit" class="btn btn--secondary">Generate new snapshot</button>
     </form>
   </div>
-  <div style="font-size: 0.75rem; color: #646464; margin-top: 0.5rem;">
+  <div class="text-meta--sm" style="margin-top: 0.5rem;">
     Creates a new snapshot below for review — the public biography is <strong>not</strong> updated until you click <em>Set as current</em> on the snapshot. Use this to try a more capable model on flagged or low-quality records.
   </div>
 </div>
@@ -51,10 +51,10 @@
     <strong>Experiment with a custom prompt</strong>
     <span style="color: #646464; font-weight: normal;"> (for workshop / exploratory use)</span>
   </summary>
-  <p style="font-size: 0.85rem; color: #646464; margin: 0.75rem 0 0;">
+  <p class="text-meta" style="margin: 0.75rem 0 0;">
     Produces a snapshot for review only; the public biography is not updated. Use <em>Set as current</em> on the resulting snapshot to promote it.
   </p>
-  <p style="font-size: 0.8rem; color: #c87a1e; margin: 0.5rem 0 0;">
+  <p class="text-warn text-meta--sm" style="margin: 0.5rem 0 0;">
     ⚠ Custom prompts are not saved. If you want to keep one, copy it to a document on your own machine before closing this page.
   </p>
   <form method="POST" action="/admin/ai/{{record.PK}}/regenerate" style="margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem;">
@@ -67,7 +67,7 @@
     <label style="font-size: 0.8rem; color: #646464;">User prompt (pre-filled with the data for this record — edit as needed):
       <textarea name="customUserPromptTemplate" rows="14" style="width: 100%; background: #fdfdfa; color: #2a2a2a; border: 1px solid #c5c1b5; border-radius: 4px; padding: 0.5rem; font-family: ui-monospace, monospace; font-size: 0.8rem; margin-top: 0.2rem;">{{customStarter.userPromptTemplate}}</textarea>
     </label>
-    <div style="font-size: 0.75rem; color: #646464;">
+    <div class="text-meta--sm">
       Tip: custom prompts are opaque — we don't interpolate any tokens. The user prompt above is already pre-rendered for this record; edit the text directly.
     </div>
     <div>
@@ -79,7 +79,7 @@
 {{/if}}
 
 {{#unless snapshots.length}}
-<p style="color: #646464; margin-top: 2rem;">No snapshots yet. Regenerate to start building history.</p>
+<p class="text-meta" style="margin-top: 2rem;">No snapshots yet. Regenerate to start building history.</p>
 {{/unless}}
 
 {{#if snapshots.length}}
@@ -88,10 +88,10 @@
   <article style="background: #fbf9f4; border-radius: 6px; padding: 1rem; border: 1px solid {{#if this.isCurrent}}#2e7d4a{{else}}#e4e0d4{{/if}};">
     <header style="margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e4e0d4;">
       <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-        <div style="font-size: 0.8rem; color: #646464;" title="{{this.generatedAt}}">{{formatDate this.generatedAt}}</div>
+        <div class="text-meta--sm" title="{{this.generatedAt}}">{{formatDate this.generatedAt}}</div>
         <div style="display: flex; gap: 0.3rem; align-items: center; flex-wrap: wrap;">
           {{#if this.isCurrent}}
-            <span style="font-size: 0.7rem; color: #2e7d4a; border: 1px solid #2e7d4a; padding: 0.1rem 0.4rem; border-radius: 3px;">★ current</span>
+            <span class="pill pill--positive">★ current</span>
           {{else}}
             <form method="POST" action="/admin/ai/{{../record.PK}}/promote" onsubmit="return confirm('Make this snapshot the current (public-facing) version?');" style="display: inline;">
               <input type="hidden" name="sk" value="{{this.SK}}">
@@ -105,36 +105,43 @@
         </div>
       </div>
       <div style="font-size: 0.85rem; margin-top: 0.25rem;">
-        <strong>Prompt:</strong> <code style="color: #c87a1e;">{{this.promptVersion}}</code>
+        <strong>Prompt:</strong> <code class="text-warn">{{this.promptVersion}}</code>
         {{#if this.customPromptLabel}}
-          <span style="font-size: 0.7rem; color: #c87a1e; border: 1px solid #c87a1e; padding: 0.05rem 0.3rem; border-radius: 3px; margin-left: 0.3rem;" title="Snapshot produced from a custom prompt">custom: {{this.customPromptLabel}}</span>
+          <span class="pill pill--attention" style="margin-left: 0.3rem;" title="Snapshot produced from a custom prompt">custom: {{this.customPromptLabel}}</span>
         {{/if}}
       </div>
-      <div style="font-size: 0.85rem; color: #646464;">
+      <div class="text-meta">
         Model: <code>{{this.model}}</code> · Tokens: {{this.inputTokens}} / {{this.outputTokens}}{{#if this.confidence}} · Confidence <span title="Model self-reported (0-10). Weak signal, shown for monitoring.">{{this.confidence}}/10</span>{{/if}}
       </div>
       {{#if this.cost}}
-      <div style="font-size: 0.8rem; color: #646464;" title="Cost for this one generation, and an extrapolation to 1,000 biographies of the same shape.">
-        Cost: <strong style="color: #646464;">{{this.cost.perBioFormatted}}</strong> · per 1k bios: <strong style="color: #646464;">{{this.cost.per1kBioFormatted}}</strong>
+      <div class="text-meta--sm" title="Cost for this one generation, and an extrapolation to 1,000 biographies of the same shape.">
+        Cost: <strong>{{this.cost.perBioFormatted}}</strong> · per 1k bios: <strong>{{this.cost.per1kBioFormatted}}</strong>
       </div>
       {{else}}
-      <div style="font-size: 0.8rem; color: #646464;" title="Model is not in the pricing registry (likely a retired model). Update lib/ai/models.js to restore pricing.">
+      <div class="text-meta--sm" title="Model is not in the pricing registry (likely a retired model). Update lib/ai/models.js to restore pricing.">
         Cost: — (model not priced)
       </div>
       {{/if}}
     </header>
 
+    {{!-- Snapshot bodies use .prose-body for the same serif treatment
+          as the main detail page. Compare cards sit two-up on wide
+          viewports so the ~68ch max-width inside .prose-body lets two
+          biographies render side-by-side without forcing extreme line
+          lengths. The label keeps the small uppercase meta style so
+          the Biography / Context section markers don't compete with
+          the prose itself. --}}
     {{#if this.biographyHtml}}
-    <div style="font-size: 0.9rem; line-height: 1.5;">
-      <strong style="font-size: 0.75rem; color: #646464; text-transform: uppercase;">Biography</strong>
-      <div style="margin-top: 0.25rem;">{{{this.biographyHtml}}}</div>
+    <div>
+      <strong class="text-meta--sm" style="text-transform: uppercase; letter-spacing: 0.04em;">Biography</strong>
+      <div class="prose-body" style="margin-top: 0.25rem;">{{{this.biographyHtml}}}</div>
     </div>
     {{/if}}
 
     {{#if this.contextHtml}}
-    <div style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.75rem;">
-      <strong style="font-size: 0.75rem; color: #646464; text-transform: uppercase;">Context</strong>
-      <div style="margin-top: 0.25rem;">{{{this.contextHtml}}}</div>
+    <div style="margin-top: 0.75rem;">
+      <strong class="text-meta--sm" style="text-transform: uppercase; letter-spacing: 0.04em;">Context</strong>
+      <div class="prose-body" style="margin-top: 0.25rem;">{{{this.contextHtml}}}</div>
     </div>
     {{/if}}
   </article>

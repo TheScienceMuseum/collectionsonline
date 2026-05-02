@@ -26,9 +26,9 @@
   </select>
   <input type="hidden" name="status" value="{{currentStatus}}">
   <button type="submit" class="btn btn--secondary">Apply</button>
-  {{#if search}}<a href="/admin/ai?status={{currentStatus}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}" style="color: #646464; font-size: 0.85rem;">Clear search</a>{{/if}}
-  {{#if promptVersionFilter}}<a href="/admin/ai?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}" style="color: #646464; font-size: 0.85rem;">Clear version filter</a>{{/if}}
-  {{#if modelFilter}}<a href="/admin/ai?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}" style="color: #646464; font-size: 0.85rem;">Clear model filter</a>{{/if}}
+  {{#if search}}<a class="text-meta" href="/admin/ai?status={{currentStatus}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}">Clear search</a>{{/if}}
+  {{#if promptVersionFilter}}<a class="text-meta" href="/admin/ai?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}">Clear version filter</a>{{/if}}
+  {{#if modelFilter}}<a class="text-meta" href="/admin/ai?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}">Clear model filter</a>{{/if}}
 </form>
 
 <div class="filter-tabs" style="justify-content: space-between;">
@@ -80,25 +80,25 @@
             <small title="{{this.publicReports.pendingFlags}} pending · {{this.publicReports.totalFlags}} lifetime" style="color: #c87a1e; font-weight: 600;">{{this.publicReports.pendingFlags}} new</small>
           {{/isequal}}
           {{#unless this.flagSeverity}}
-            <small title="{{this.publicReports.totalFlags}} lifetime, all addressed" style="color: #646464;">{{this.publicReports.totalFlags}} old</small>
+            <small class="text-meta--sm" title="{{this.publicReports.totalFlags}} lifetime, all addressed">{{this.publicReports.totalFlags}} old</small>
           {{/unless}}
         {{else}}
-          <small style="color: #a8a8a8;">—</small>
+          <small class="placeholder-em">—</small>
         {{/if}}
       </td>
       <td style="white-space: nowrap;">
-        {{#if this.staffSummary.flagCount}}<small title="Staff flag(s) on this record" style="display: inline-block; font-size: 0.7rem; padding: 0 0.35rem; border-radius: 3px; background: rgba(200, 122, 30, 0.12); color: #9c5a16; border: 1px solid rgba(200, 122, 30, 0.35);">flag</small>{{/if}}{{#if this.staffSummary.noteCount}}{{#if this.staffSummary.flagCount}} {{/if}}<small title="Staff note(s) on this record" style="display: inline-block; font-size: 0.7rem; padding: 0 0.35rem; border-radius: 3px; background: rgba(31, 64, 104, 0.06); color: #4d4d4d; border: 1px solid rgba(31, 64, 104, 0.18);">note</small>{{/if}}{{#unless this.staffSummary.flagCount}}{{#unless this.staffSummary.noteCount}}<small style="color: #a8a8a8;">—</small>{{/unless}}{{/unless}}
+        {{#if this.staffSummary.flagCount}}<small title="Staff flag(s) on this record" style="display: inline-block; font-size: 0.7rem; padding: 0 0.35rem; border-radius: 3px; background: rgba(200, 122, 30, 0.12); color: #9c5a16; border: 1px solid rgba(200, 122, 30, 0.35);">flag</small>{{/if}}{{#if this.staffSummary.noteCount}}{{#if this.staffSummary.flagCount}} {{/if}}<small title="Staff note(s) on this record" style="display: inline-block; font-size: 0.7rem; padding: 0 0.35rem; border-radius: 3px; background: rgba(31, 64, 104, 0.06); color: #4d4d4d; border: 1px solid rgba(31, 64, 104, 0.18);">note</small>{{/if}}{{#unless this.staffSummary.flagCount}}{{#unless this.staffSummary.noteCount}}<small class="placeholder-em">—</small>{{/unless}}{{/unless}}
       </td>
       <td>
         {{#if this.signalMaxScore}}
           <small title="Weighted signal score at generation time">{{this.signalScore}} / {{this.signalMaxScore}}</small>
         {{else}}
-          <small style="color: #a8a8a8;">—</small>
+          <small class="placeholder-em">—</small>
         {{/if}}
       </td>
-      <td><small>{{#if this.model}}{{this.model}}{{else}}<span style="color: #a8a8a8;">—</span>{{/if}}</small></td>
-      <td><small>{{#if this.promptVersion}}{{this.promptVersion}}{{else}}<span style="color: #a8a8a8;">—</span>{{/if}}</small></td>
-      <td><small>{{#if this.inputTokens}}{{this.inputTokens}} / {{this.outputTokens}}{{else}}<span style="color: #a8a8a8;">—</span>{{/if}}</small></td>
+      <td><small>{{#if this.model}}{{this.model}}{{else}}<span class="placeholder-em">—</span>{{/if}}</small></td>
+      <td><small>{{#if this.promptVersion}}{{this.promptVersion}}{{else}}<span class="placeholder-em">—</span>{{/if}}</small></td>
+      <td><small>{{#if this.inputTokens}}{{this.inputTokens}} / {{this.outputTokens}}{{else}}<span class="placeholder-em">—</span>{{/if}}</small></td>
       <td><small title="{{formatDate this.generatedAt}} · raw: {{this.generatedAt}}">{{formatDate this.generatedAt "auto"}}</small></td>
     </tr>
     {{/each}}
@@ -113,6 +113,6 @@
 
 {{else}}
 {{#unless dynamoUnavailable}}
-<p style="color: #646464; margin-top: 2rem;">No biography records found{{#isequal currentStatus "all" this}}{{else}} with status "{{currentStatus}}"{{/isequal}}.</p>
+<p class="text-meta" style="margin-top: 2rem;">No biography records found{{#isequal currentStatus "all" this}}{{else}} with status "{{currentStatus}}"{{/isequal}}.</p>
 {{/unless}}
 {{/if}}
