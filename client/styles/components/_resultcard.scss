@@ -216,6 +216,35 @@
     }
   }
 
+  // related and part-of grids stack single-column on mobile so the tile is twice
+  // as wide as the 2-up search-results grid — bump the figcaption to fill it.
+  // Above the small breakpoint the grid kicks in (3-6 cols / auto-fit min-16rem)
+  // and the tile shrinks below search-results size, so scale the figcaption down.
+  &--related,
+  &.mph-records__resultcard,
+  &--group {
+    .resultcard__figure figcaption {
+      font-size: clamp-between(2rem, 3rem);
+
+      @include media(">=small") {
+        font-size: clamp-between(0.875rem, 1.125rem);
+        letter-spacing: 0;
+      }
+    }
+  }
+
+  // Mobile-only: collapse imageless part-cards (MPH/group/SPH) to text-only.
+  // The gradient placeholder exists to keep multi-column grids aligned; on a
+  // single-column layout it just wastes space, so hide the figure entirely
+  // and let the title + creation date sit on their own.
+  @include media("<small") {
+    &.mph-records__resultcard:not(:has(img)) .resultcard__figure,
+    &--group:not(:has(img)) .resultcard__figure,
+    .sph-records__grid &:not(:has(img)) .resultcard__figure {
+      display: none;
+    }
+  }
+
   &--dark {
     @include reversed;
   }

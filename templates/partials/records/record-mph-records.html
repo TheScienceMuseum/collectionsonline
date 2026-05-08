@@ -13,6 +13,11 @@
           {{else}}
           <img src="{{firstImage images 0 'card' }}" class="" alt="{{title}}" />
           {{/if }}
+          {{else}}
+          <figcaption role="presentation">
+            {{> global/icon i="objects" }}
+            {{ figcaption }}
+          </figcaption>
           {{/if }}
 
         </figure>
