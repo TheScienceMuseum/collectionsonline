@@ -315,6 +315,58 @@
   .column {
     @include flexcards-item;
   }
+
+  // mobile-only compact list of imageless related items, rendered alongside
+  // the card grid in markup; CSS chooses which to show per breakpoint.
+  &__mobile-list {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: flex;
+      gap: 0.5rem;
+      align-items: baseline;
+      padding: 0.5rem 0;
+      border-top: 1px solid rgba(white, 0.15);
+
+      &:last-child {
+        border-bottom: 1px solid rgba(white, 0.15);
+      }
+    }
+
+    a {
+      color: white;
+      text-decoration: underline;
+    }
+
+    .icon {
+      flex-shrink: 0;
+      color: rgba(white, 0.5);
+      align-self: center;
+    }
+  }
+
+  @include media("<small") {
+    // hide imageless related cards (the "see more" tile uses an SVG icon
+    // not an <img>, so we exclude it explicitly)
+    .resultcard--related:not(.resultcard--seemore):not(:has(img)) {
+      display: none;
+    }
+
+    // and surface the text list in their place
+    &__mobile-list:not(:empty) {
+      display: block;
+      margin-top: 1rem;
+    }
+
+    // when every related item is imageless the card grid collapses to nothing
+    // visible — drop its top margin so the list isn't floating in space
+    .o-grid:not(:has(img)) {
+      display: none;
+    }
+  }
 }
 
 .see-more {
