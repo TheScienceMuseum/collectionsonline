@@ -438,6 +438,21 @@ $scan-error-bg: rgba($c-red, 0.08);
   }
 }
 
+// Debug badge — only rendered when ?debug=1 is in the URL. Shows raw
+// top-1 score, confidence tier, and search latency for threshold
+// calibration. Discreet — invisible to users not looking for it.
+.scan__debug-badge {
+  display: inline-block;
+  margin: 0 0 0.75rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: rem(11);
+  color: $scan-muted;
+  letter-spacing: 0.02em;
+}
+
 // Error banner --------------------------------------------------------------
 
 .scan__error {

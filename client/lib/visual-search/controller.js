@@ -25,6 +25,17 @@ const STATE_RESULTS = 'results';
 
 const SEARCH_ENDPOINT = '/api/scan/search';
 
+// Debug-mode toggle for threshold calibration: append ?debug=1 to the
+// URL to see the raw top-1 score, confidence tier, and search latency
+// on every results page. Off otherwise — public users never see it.
+const VS_DEBUG = (function () {
+  try {
+    return /(^|[?&])debug=1(&|$)/.test(window.location.search);
+  } catch (err) {
+    return false;
+  }
+})();
+
 function buzz () {
   if (typeof navigator.vibrate === 'function') {
     try { navigator.vibrate(50); } catch (err) { /* noop */ }
@@ -106,6 +117,18 @@ function createController (mountEl) {
       '</div>';
   }
 
+  function renderDebugBadge (data) {
+    if (!VS_DEBUG || !data) return '';
+    const score = data.topScore != null ? data.topScore.toFixed(4) : '?';
+    const tier = data.confidence || '?';
+    const ms = data.searchMs != null ? data.searchMs + ' ms' : '?';
+    return (
+      '<div class="scan__debug-badge" aria-hidden="true">' +
+        'score ' + score + ' · tier ' + tier + ' · ' + ms +
+      '</div>'
+    );
+  }
+
   function renderCapturedPhoto (capture) {
     // Captured-photo block shared by all three result tiers. Includes
     // the floating "↻ camera" overlay button (top-right) so users can
@@ -156,7 +179,8 @@ function createController (mountEl) {
     mountEl.innerHTML =
       '<div class="scan__results scan__results--high">' +
         renderCapturedPhoto(capture) +
-        '<h2 class="scan__results-heading">We think this is:</h2>' +
+        renderDebugBadge(data) +
+        '<h2 class="scan__results-heading">Looks like:</h2>' +
         '<div class="scan__results-hero">' +
           renderResultCard(top) +
         '</div>' +
@@ -172,6 +196,7 @@ function createController (mountEl) {
     mountEl.innerHTML =
       '<div class="scan__results scan__results--medium">' +
         renderCapturedPhoto(capture) +
+        renderDebugBadge(data) +
         '<h2 class="scan__results-heading">Closest matches in our collection</h2>' +
         '<div class="scan__results-grid">' +
           items.map(renderResultCard).join('') +
@@ -195,6 +220,7 @@ function createController (mountEl) {
     mountEl.innerHTML =
       '<div class="scan__results scan__results--low">' +
         renderCapturedPhoto(capture) +
+        renderDebugBadge(data) +
         '<h2 class="scan__results-heading">We could not find a confident match</h2>' +
         '<p class="scan__results-body">Try a different angle, a closer view, or better lighting. Plain backgrounds and well-lit objects work best.</p>' +
         longShots +

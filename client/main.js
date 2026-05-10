@@ -1,6 +1,16 @@
 require('./lib/polyfills.js')();
 const page = require('page');
 
+// Pick up the visual-search feature flag from the server's initial
+// render (gated meta tag in templates/layouts/default.html). Stashing
+// it on window early means SPA-rendered pages can read it via the
+// fixtures/data.js getter — without that, the camera entry-point in
+// the searchbox disappears the moment the user clicks any link.
+(function () {
+  const meta = document.querySelector('meta[name="visual-search-enabled"]');
+  window.__visualSearchEnabled = !!(meta && meta.getAttribute('content') === 'true');
+})();
+
 require('./middleware/initial-render')(page);
 
 // Client routes

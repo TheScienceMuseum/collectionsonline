@@ -58,6 +58,17 @@ async function getModel () {
   // Tell Transformers.js not to look for /models/ on our origin —
   // weights live on the HF CDN.
   if (transformers.env) transformers.env.allowLocalModels = false;
+  // Default int8-quantized ONNX (~30 MB download). We tested
+  // { quantized: false } (~150 MB) and confirmed it tightens
+  // *some* components vs the Python fp32 build — but a few
+  // components stay ~0.03 off, which can't be explained by
+  // quantization. Most likely cause: Xenova's ONNX export uses
+  // standard GELU while our Python side uses QuickGELU
+  // (ViT-B-32-quickgelu / openai). Same parity ceiling either
+  // way, so we keep the smaller download for a saner first-visit
+  // UX. Specific-match retrieval (e.g. exact watch in dense
+  // wristwatch cluster) will be capped by this until we resolve
+  // the activation mismatch — see followup notes.
   modelPromise = transformers.CLIPVisionModelWithProjection.from_pretrained(MODEL_ID);
   return modelPromise;
 }
@@ -105,5 +116,11 @@ async function embedFrame (dataUrl) {
   if (typeof window !== 'undefined') window.__vsLastEmbedding = vec;
   return vec;
 }
+
+// Expose for parity-testing from the DevTools console — paired with
+// window.__vsLastEmbedding, this lets you embed a chosen dataUrl
+// (e.g. the same JPEG you fed to round_trip_check.py) without going
+// through the camera, so the two sides see identical pixel bytes.
+if (typeof window !== 'undefined') window.__vsEmbedFrame = embedFrame;
 
 module.exports = { embedFrame, preload };
