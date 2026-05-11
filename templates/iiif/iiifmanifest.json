@@ -1,58 +1,58 @@
 {
     "@context": "http://iiif.io/api/presentation/2/context.json",
-    "@id": "{{self}}/manifest",
+    "@id": "{{jsonEscape self}}/manifest",
     "@type": "sc:Manifest",
-    "label": "{{data.attributes.summary.title}}",
-    "description": "{{data.attributes.description.0.value}}",
+    "label": "{{jsonEscape data.attributes.summary.title}}",
+    "description": "{{jsonEscape data.attributes.description.0.value}}",
     "attribution": "Science Museum Group",
     "logo": "http://collection.sciencemuseum.org.uk/assets/img/global/smg-logo.svg",
     "metadata": [
-        {"label": "Identifier", "value": "{{data.attributes.identifier.0.value}}"}
-        {{#each data.attributes.lifecycle.creation}}    
-            {{#if date}},{{/if}}   
+        {"label": "Identifier", "value": "{{jsonEscape data.attributes.identifier.0.value}}"}
+        {{#each data.attributes.lifecycle.creation}}
+            {{#if date}},{{/if}}
             {{#each date}}
-                {"label": "Date made", "value": "{{value}}"}
+                {"label": "Date made", "value": "{{jsonEscape value}}"}
                 {{#unless @last}},{{/unless}}
             {{/each}}
-            {{#if places}},{{/if}}   
+            {{#if places}},{{/if}}
             {{#each places}}
-                {"label": "Place made", "value": "{{summary_title}}"}
+                {"label": "Place made", "value": "{{jsonEscape summary_title}}"}
                 {{#unless @last}},{{/unless}}
             {{/each}}
             {{#unless @last}},{{/unless}}
-        {{/each}}   
+        {{/each}}
     ],
 
     "thumbnail": {
-        "@id": "{{media.0.large_thumbnail.location}}"
+        "@id": "{{jsonEscape media.0.large_thumbnail.location}}"
     },
 
     "sequences": [
         {
-            "@id": "{{data.links.self}}/sequence/normal",
+            "@id": "{{jsonEscape data.links.self}}/sequence/normal",
             "@type": "sc:Sequence",
 
             "canvases": [
                 {{#each media}}
                 {
-                    "@id": "{{../self}}/canvas/{{@index}}",
+                    "@id": "{{jsonEscape ../self}}/canvas/{{@index}}",
                     "@type": "sc:Canvas",
-                    "label": "{{data.attributes.summary.title}}",
+                    "label": "{{jsonEscape data.attributes.summary.title}}",
                     "height": {{large.measurements.dimensions.0.value}},
-                    "width": {{large.measurements.dimensions.1.value}},  
+                    "width": {{large.measurements.dimensions.1.value}},
                     "images": [
                         {
-                            "@id": "{{zoom.location}}",
+                            "@id": "{{jsonEscape zoom.location}}",
                             "@type": "oa:Annotation",
                             "motivation": "sc:painting",
-                            "on": "{{../self}}/canvas/{{@index}}",
+                            "on": "{{jsonEscape ../self}}/canvas/{{@index}}",
                             "resource":{
-                                "@id": "{{zoom.location}}/full/max/0/default.jpg",
+                                "@id": "{{jsonEscape zoom.location}}/full/max/0/default.jpg",
                                 "@type": "dctypes:Image",
                                 "format": "image/jpeg",
-                                "label": "{{source.title.0.value}}",
+                                "label": "{{jsonEscape source.title.0.value}}",
                                 "service": {
-                                    "@id": "{{zoom.location}}",
+                                    "@id": "{{jsonEscape zoom.location}}",
                                     "@context": "http://iiif.io/api/image/2/context.json",
                                     "profile": "http://iiif.io/api/image/2/level1.json"
                                 },

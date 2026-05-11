@@ -5,8 +5,12 @@ const Handlebars = require('handlebars');
 const fs = require('fs');
 const path = require('path');
 const cacheHeaders = require('./route-helpers/cache-control');
+const jsonEscape = require('../lib/helpers/json-escape');
 const { promisify } = require('util');
 const setTimeoutPromise = promisify(setTimeout);
+
+// Required so raw newlines/tabs in CIIM fields don't break JSON.parse on the manifest.
+Handlebars.registerHelper('jsonEscape', jsonEscape);
 
 // Pre-load the IIIF manifest template once at startup rather than on every request
 const iiifTemplate = Handlebars.compile(
