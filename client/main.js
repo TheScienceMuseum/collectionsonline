@@ -12,6 +12,7 @@ require('./routes/person')(page);
 require('./routes/group')(page);
 require('./routes/document')(page);
 require('./routes/museums')(page);
+require('./routes/api')(page);
 require('./routes/iiif')(page);
 require('./routes/embed')(page);
 
