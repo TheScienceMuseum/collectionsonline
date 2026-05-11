@@ -9,7 +9,6 @@ module.exports = [
   'description',
   'identifier',
   'name',
-  'note',
   'reference_links',
   'summary',
   'title',
