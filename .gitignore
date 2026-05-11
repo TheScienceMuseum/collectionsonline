@@ -93,3 +93,8 @@ public/scan.js
 public/scan.js.map
 public/scan-*.js
 public/scan-*.js.map
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
