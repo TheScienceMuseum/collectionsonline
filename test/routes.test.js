@@ -726,8 +726,8 @@ testWithServer(
   }
 );
 
-testWithServer('Specific api endpoint, html response', {}, async (t, ctx) => {
-  t.plan(2);
+testWithServer('Specific api endpoint always returns JSON', {}, async (t, ctx) => {
+  t.plan(3);
 
   const htmlRequest = {
     method: 'GET',
@@ -737,7 +737,9 @@ testWithServer('Specific api endpoint, html response', {}, async (t, ctx) => {
 
   const res = await ctx.server.inject(htmlRequest);
   t.ok(res.statusCode, 200, 'status is 200');
-  t.ok(res.headers['content-type'].indexOf('text/html') > -1, 'html response');
+  t.ok(res.headers['content-type'].indexOf('application/vnd.api+json') > -1, 'json response regardless of Accept');
+  const result = JSON.parse(res.payload);
+  t.ok(result.data, 'payload parses as JSON');
   await ctx.server.stop();
   t.end();
 });
