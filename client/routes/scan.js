@@ -25,12 +25,22 @@ module.exports = function (page) {
       boot();
     } else {
       // SPA navigation from another page: render the template ourselves.
+      // Pull in fixtures/data so the searchbox partial's visualSearchEnabled
+      // getter fires (which in turn reads window.__visualSearchEnabled set
+      // by client/main.js at boot from the layout meta tag). Without this,
+      // the camera entry-point in the searchbox disappears whenever the
+      // user navigates SPA-style.
       const pageEl = document.getElementById('main-page');
       if (pageEl) {
-        pageEl.innerHTML = Templates.scan({
-          ready: true,
-          titlePage: 'Visual search | Science Museum Group Collection'
-        });
+        const data = Object.assign({},
+          require('../../fixtures/data'),
+          {
+            navigation: require('../../fixtures/navigation'),
+            museums: require('../../fixtures/museums'),
+            ready: true,
+            titlePage: 'Visual search | Science Museum Group Collection'
+          });
+        pageEl.innerHTML = Templates.scan(data);
       }
       document.body.className = '';
       document.title = 'Visual search | Science Museum Group Collection';
