@@ -19,6 +19,9 @@
 {{/if}}
 {{ else }}
 <figure class="resultcard__figure">
-  <figcaption>{{title}}</figcaption>
+  <figcaption role="presentation">
+    {{> global/icon i="objects" }}
+    {{ figcaption }}
+  </figcaption>
 </figure>
 {{/if }}

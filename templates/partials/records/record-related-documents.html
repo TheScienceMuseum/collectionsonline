@@ -7,7 +7,14 @@
       <a href="{{link}}" aria-label="{{this.attributes.summary_title}}">
         <article class="resultcard resultcard--related {{#if type}}resultcard--{{ this.type }}{{/if}}">
           <figure class="resultcard__figure">
-            {{#if this.attributes.figure}}<img src="{{ this.attributes.figure }}" alt="" /> {{/if}}
+            {{#if this.attributes.figure}}
+            <img src="{{ this.attributes.figure }}" alt="" />
+            {{else}}
+            <figcaption role="presentation">
+              {{> global/icon i=this.type }}
+              {{ this.attributes.figcaption }}
+            </figcaption>
+            {{/if}}
           </figure>
           <div class="resultcard__info">
             <h3 class="resultcard__title">{{this.attributes.summary_title}}</h3>
@@ -30,5 +37,19 @@
 
       {{/seemore}}
     </div>
+
+    {{!-- mobile-only fallback: imageless items render as a compact text list --}}
+    <ul class="record-related__mobile-list">
+      {{#each related.documents}}
+      {{#formatrelated ../related.documents @index this}}
+      {{#unless this.attributes.figure}}
+      <li>
+        {{> global/icon i=this.type }}
+        <a href="{{link}}">{{this.attributes.summary_title}}</a>
+      </li>
+      {{/unless}}
+      {{/formatrelated}}
+      {{/each}}
+    </ul>
   </div>
 </section>

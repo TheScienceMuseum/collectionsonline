@@ -39,11 +39,45 @@ module.exports = (elastic, config) => ({
             const uid = obj?._id;
             slugValue = slugValue ? '/' + slugValue : '';
 
-            const path = '/objects/' + obj?._id + slugValue;
-
             const description = obj?._source?.description?.[0]?.value;
 
             const barcodeId = obj?._source?.barcode?.value;
+
+            // Object accession number — what staff in the stores will
+            // recognise on the labels (e.g. "1935-502 Pt1"). Identifier
+            // records are tagged with type/primary; prefer the primary
+            // accession number, fall back to the first identifier value.
+            const identifiers = obj?._source?.identifier;
+            const primaryAcc = Array.isArray(identifiers) &&
+              identifiers.find(function (i) {
+                return i && i.primary && i.type === 'accession number';
+              });
+            const objectId = (primaryAcc && primaryAcc.value) ||
+              (Array.isArray(identifiers) && identifiers[0] && identifiers[0].value) ||
+              null;
+
+            // Many barcoded records are *parts* of a larger object (e.g. an
+            // engine bay scanned individually as a child record of the car).
+            // Parts don't have their own public catalogue pages — visiting
+            // /objects/{partId} redirects to the parent. We surface this in
+            // the API so the client can:
+            //   1. show a "Part of …" line in the scan preview
+            //   2. link directly to the parent path, avoiding the redirect
+            const parentEntry = obj?._source?.parent?.[0];
+            const parentUid = parentEntry?.['@admin']?.uid;
+            const parentTitle = parentEntry?.summary?.title;
+            const isPart = !!parentUid;
+
+            // Default: the scanned record's own path. If it's a part, point
+            // the client at the parent path instead — that's where the user
+            // will end up anyway after the redirect.
+            let path;
+            if (isPart) {
+              const parentSlug = parentTitle ? '/' + slug(parentTitle).toLowerCase() : '';
+              path = '/objects/' + parentUid + parentSlug;
+            } else {
+              path = '/objects/' + obj?._id + slugValue;
+            }
 
             return h.response({
               path,
@@ -51,7 +85,11 @@ module.exports = (elastic, config) => ({
               image,
               uid,
               description,
-              barcodeId
+              barcodeId,
+              objectId,
+              isPart,
+              parentTitle: isPart ? parentTitle : null,
+              parentUid: isPart ? parentUid : null
             });
           } else {
             return h

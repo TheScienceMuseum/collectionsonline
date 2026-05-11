@@ -1,14 +1,6 @@
 require('./lib/polyfills.js')();
 const page = require('page');
 
-// Warm up the AWS WAF token cookie before any AJAX fires. The SDK's
-// challenge.js is loaded deferred from the default layout; calling getToken()
-// here asks it to issue/refresh the token immediately so fast first-AJAX
-// interactions (e.g. search-box autocomplete) don't race the SDK init.
-if (typeof window !== 'undefined' && window.AwsWafIntegration && typeof window.AwsWafIntegration.getToken === 'function') {
-  window.AwsWafIntegration.getToken().catch(() => {});
-}
-
 require('./middleware/initial-render')(page);
 
 // Client routes

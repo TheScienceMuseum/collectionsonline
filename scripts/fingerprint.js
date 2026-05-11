@@ -13,7 +13,7 @@ function hashFile (filePath) {
 
 const manifest = {};
 
-for (const name of ['bundle.js', 'bundle.css']) {
+for (const name of ['bundle.js', 'bundle.css', 'barcode.js']) {
   const src = path.join(PUBLIC, name);
   if (!fs.existsSync(src)) {
     console.warn(`[fingerprint] ${name} not found, skipping`);

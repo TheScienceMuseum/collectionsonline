@@ -53,6 +53,10 @@ public/bundle-*.js
 public/bundle-*.js.map
 public/bundle-*.css
 public/bundle-*.css.map
+public/barcode.js
+public/barcode.js.map
+public/barcode-*.js
+public/barcode-*.js.map
 public/asset-manifest.json
 public/assets/icons/*
 !public/assets/icons/.gitkeep
