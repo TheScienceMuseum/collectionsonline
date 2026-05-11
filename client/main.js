@@ -2,13 +2,27 @@ require('./lib/polyfills.js')();
 const page = require('page');
 
 // Pick up the visual-search feature flag from the server's initial
-// render (gated meta tag in templates/layouts/default.html). Stashing
-// it on window early means SPA-rendered pages can read it via the
-// fixtures/data.js getter — without that, the camera entry-point in
-// the searchbox disappears the moment the user clicks any link.
+// render (gated meta tag in templates/layouts/default.html), stash on
+// window for any direct consumers, AND replace the fixtures/data.js
+// getter with a plain boolean so SPA-rendered Handlebars partials see
+// it reliably. The getter form worked for top-level property access
+// but didn't survive partial-context handling consistently across
+// templates (camera entry-point in the searchbox kept disappearing on
+// SPA navigation). A plain value cuts the indirection.
 (function () {
   const meta = document.querySelector('meta[name="visual-search-enabled"]');
-  window.__visualSearchEnabled = !!(meta && meta.getAttribute('content') === 'true');
+  const enabled = !!(meta && meta.getAttribute('content') === 'true');
+  window.__visualSearchEnabled = enabled;
+  try {
+    Object.defineProperty(require('../fixtures/data'), 'visualSearchEnabled', {
+      value: enabled,
+      writable: true,
+      configurable: true,
+      enumerable: true
+    });
+  } catch (err) {
+    console.warn('[visual-search] failed to install visualSearchEnabled on fixtures/data', err);
+  }
 })();
 
 require('./middleware/initial-render')(page);
