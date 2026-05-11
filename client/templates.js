@@ -589,9 +589,6 @@ module.exports = {
   'search-main': Handlebars.compile(
     Fs.readFileSync('./templates/partials/global/search-main.html', 'utf8')
   ),
-  api: Handlebars.compile(
-    Fs.readFileSync('./templates/pages/api.html', 'utf8')
-  ),
   articles: Handlebars.compile(
     Fs.readFileSync(
       './templates/partials/records/record-related-articles.html',
