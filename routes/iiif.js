@@ -5,6 +5,7 @@ const Handlebars = require('handlebars');
 const fs = require('fs');
 const path = require('path');
 const cacheHeaders = require('./route-helpers/cache-control');
+const addCacheValidators = require('./route-helpers/cache-validators.js');
 const jsonEscape = require('../lib/helpers/json-escape');
 const { promisify } = require('util');
 const setTimeoutPromise = promisify(setTimeout);
@@ -60,7 +61,10 @@ module.exports = (elastic, config) => ({
           });
         }
 
-        return h.response(iiifTemplate(iiifData)).header('content-type', 'application/json');
+        const manifest = iiifTemplate(iiifData);
+        const lastModified = result.body._source['@admin'] && result.body._source['@admin'].processed;
+        const response = h.response(manifest).header('content-type', 'application/json');
+        return addCacheValidators(response, { variant: 'iiif', payload: manifest, lastModified });
       } catch (err) {
         request.log({
           tags: ['iiif', 'error'],

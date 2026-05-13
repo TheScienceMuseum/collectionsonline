@@ -4,18 +4,15 @@ const TypeMapping = require('../lib/type-mapping');
 const beautify = require('json-beautify');
 const contentType = require('./route-helpers/content-type.js');
 const cacheHeaders = require('./route-helpers/cache-control');
+const addCacheValidators = require('./route-helpers/cache-validators.js');
 const getChildRecords = require('../lib/get-child-records.js');
 
-// NOTE: This route negotiates response shape via the Accept header
-// (HTML wrapper for browsers — which fires GTM pageview tracking — vs
-// JSON for `Accept: application/vnd.api+json` clients). This relies on
-// CloudFront's `/api/*` behaviour forwarding the Accept header to
-// origin (origin request policy: Managed-AllViewer or equivalent).
-// Without that, CloudFront strips Accept, every request looks like a
-// browser hit, and the client SPA route's JSON fetch receives HTML —
-// causing `JSON.parse('<...')` to throw `SyntaxError: Unrecognized
-// token '<'` on the "Download catalogue entry as JSON" link.
-// See PRs #2151 / #2153 / #2154 for history.
+// Negotiates response shape via the Accept header (HTML wrapper for browsers
+// — which fires GTM pageview tracking — vs JSON for `Accept:
+// application/vnd.api+json` clients). The `/api/*` CloudFront behaviour uses
+// the `OriginControlled-QueryStrings-Accept-CO` cache policy and
+// `Managed-AllViewer` origin request policy, so Accept is both forwarded to
+// origin AND included in the cache key.
 module.exports = (elastic, config) => ({
   method: 'GET',
   path: '/api/{type}/{id}/{slug?}',
@@ -43,22 +40,24 @@ module.exports = (elastic, config) => ({
           console.warn(`[api/${request.params.id}] child records failed: ${err}`);
         }
 
-        const apiData = beautify(
-          buildJSONResponse(
-            result.body,
-            config,
-            null,
-            null,
-            childRecords
-          ), null, 2, 80
+        const jsonData = buildJSONResponse(
+          result.body,
+          config,
+          null,
+          null,
+          childRecords
         );
+        const apiData = beautify(jsonData, null, 2, 80);
+        const lastModified = jsonData.meta && jsonData.meta.lastModified;
 
         if (responseType === 'json') {
-          return h
+          const response = h
             .response(apiData)
             .header('content-type', 'application/vnd.api+json');
+          return addCacheValidators(response, { variant: 'api-json', payload: apiData, lastModified });
         } else {
-          return h.view('api', { api: apiData });
+          const view = h.view('api', { api: apiData });
+          return addCacheValidators(view, { variant: 'api-html', payload: apiData, lastModified });
         }
       } catch (err) {
         if (err.statusCode === 404) {

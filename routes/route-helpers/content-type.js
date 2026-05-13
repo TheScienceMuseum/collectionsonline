@@ -5,6 +5,16 @@ module.exports = function (request) {
   const jsonAcceptHeaders = ['application/vnd.api+json', 'application/json'];
   const htmlAcceptHeaders = ['text/html', '*/*'];
 
+  // The client SPA appends `?ajax=true` to every resource fetch. Treat it as
+  // an explicit JSON signal so we don't depend on CloudFront forwarding the
+  // Accept header to origin — without that, `/group/*`, `/objects/*` etc.
+  // cache the HTML response and serve it to SPA JSON fetches, causing
+  // `JSON.parse('<...')` to throw "Unrecognized token '<'". The query string
+  // also gives CloudFront a distinct cache key from the bare URL.
+  if (request.query && request.query.ajax === 'true') {
+    return 'json';
+  }
+
   if (request.headers.accept) {
     const accept = request.headers.accept;
     const jsonContent = typesInHeaders(accept, jsonAcceptHeaders);
