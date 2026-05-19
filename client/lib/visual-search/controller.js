@@ -36,6 +36,21 @@ const VS_DEBUG = (function () {
   }
 })();
 
+function appendQuery (url, key, value) {
+  if (!url) return url;
+  const sep = url.indexOf('?') === -1 ? '?' : '&';
+  return url + sep + encodeURIComponent(key) + '=' + encodeURIComponent(value);
+}
+
+function pushAnalytics (payload) {
+  if (typeof window === 'undefined' || !window.dataLayer) return;
+  try {
+    window.dataLayer.push(payload);
+  } catch (err) {
+    // Never let analytics break the app.
+  }
+}
+
 function buzz () {
   if (typeof navigator.vibrate === 'function') {
     try { navigator.vibrate(50); } catch (err) { /* noop */ }
@@ -156,8 +171,13 @@ function createController (mountEl) {
     const figure = r.figure
       ? '<img src="' + escapeHtml(r.figure) + '" alt="">'
       : '<div class="scan__result-figure-placeholder" aria-hidden="true"></div>';
+    // Tag the destination URL so traffic that originated from a
+    // visual-search result is identifiable in GA (filter pages by
+    // page_location contains 'from=visual-search'). Internal nav, so
+    // we don't use UTM — those get treated as external sources.
+    const link = appendQuery(r.link, 'from', 'visual-search');
     return (
-      '<a class="scan__result-card" href="' + escapeHtml(r.link || '#') + '">' +
+      '<a class="scan__result-card" href="' + escapeHtml(link || '#') + '">' +
         '<div class="scan__result-figure">' + figure + '</div>' +
         '<div class="scan__result-info">' +
           '<h3 class="scan__result-title">' + safeTitle + '</h3>' +
@@ -373,6 +393,15 @@ function createController (mountEl) {
       modelWarm = true;
     } catch (err) {
       console.error('[visual-search] embed failed:', err);
+      pushAnalytics({
+        event: 'VisualSearch',
+        ga_event: {
+          category: 'visual-search',
+          action: 'search-error',
+          label: 'embed-failed',
+          'non-interaction': 'true'
+        }
+      });
       state = STATE_IDLE;
       renderIdle({ error: 'Visual search setup failed: ' + (err && err.message ? err.message : 'unknown error') });
       return;
@@ -390,10 +419,46 @@ function createController (mountEl) {
       data = await postEmbedding(vec);
     } catch (err) {
       console.error('[visual-search] search request failed:', err);
+      pushAnalytics({
+        event: 'VisualSearch',
+        ga_event: {
+          category: 'visual-search',
+          action: 'search-error',
+          label: 'request-failed',
+          'non-interaction': 'true'
+        }
+      });
       state = STATE_IDLE;
       renderIdle({ error: 'We could not reach the search service. Please try again.' });
       return;
     }
+
+    // Successful search: push a rich event to GTM so we can see what
+    // kinds of objects people are scanning, the confidence distribution,
+    // and the score distribution. No PII — only the top result's public
+    // catalogue metadata + scoring info; never the photo or embedding.
+    const top = (data && Array.isArray(data.results) && data.results[0]) || {};
+    pushAnalytics({
+      event: 'VisualSearch',
+      ga_event: {
+        category: 'visual-search',
+        action: 'search-complete',
+        label: data.confidence || 'unknown',
+        value: Math.round(((data && data.topScore) || 0) * 1000),
+        'non-interaction': 'true'
+      },
+      visual_search: {
+        confidence: data.confidence,
+        top_score: data.topScore,
+        top_object_id: top.objectId,
+        top_title: top.title,
+        top_category: top.category,
+        top_object_type: top.objectType,
+        top_maker: top.maker,
+        results_count: (data && data.results) ? data.results.length : 0,
+        search_ms: data.searchMs
+      }
+    });
 
     state = STATE_RESULTS;
     renderResults(cap, data);

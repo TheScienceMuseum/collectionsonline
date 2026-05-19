@@ -44,6 +44,16 @@ module.exports = function (page) {
       }
       document.body.className = '';
       document.title = 'Visual search | Science Museum Group Collection';
+      // Mirror the server-side dataLayer push for /scan so SPA visits
+      // show up the same as direct loads in GA. GTM doesn't auto-fire
+      // page views on page.js navigation.
+      if (window.dataLayer) {
+        window.dataLayer.push({
+          pagetype: 'scan',
+          pagename: 'Visual search',
+          event: 'scanEvent'
+        });
+      }
       searchListener();
       requestAnimationFrame(function () {
         initComp();

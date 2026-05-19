@@ -60,6 +60,21 @@ function getMaker (source) {
   return '';
 }
 
+function getObjectType (source) {
+  // Object-type signal for analytics: "what kind of physical thing is
+  // this?" — e.g. 'wristwatch', 'television receiver', 'locomotive'.
+  // Distinct from category (broad museum classification). Prefer the
+  // canonical 'catalogue name'; fall back to the first name entry with
+  // a value if absent. Records often have multiple name variants;
+  // we take the first for broad analytics signal — fine-grained
+  // disambiguation isn't the point.
+  if (!Array.isArray(source.name)) return '';
+  const cat = source.name.find(n => n && n.type === 'catalogue name');
+  if (cat && cat.value) return cat.value;
+  const first = source.name.find(n => n && n.value);
+  return (first && first.value) || '';
+}
+
 function buildResult (id, score, source, config) {
   const title =
     (source.summary && source.summary.title) ||
@@ -81,6 +96,7 @@ function buildResult (id, score, source, config) {
     maker: getMaker(source),
     date: getDate(source),
     category: getCategory(source),
+    objectType: getObjectType(source),
     score
   };
 }
@@ -103,7 +119,17 @@ exports.page = (elastic, config) => ({
         navigation: require('../fixtures/navigation'),
         museums: require('../fixtures/museums'),
         titlePage: 'Visual search | Science Museum Group Collection',
-        ready: visualSearch.isReady()
+        ready: visualSearch.isReady(),
+        // GTM dataLayer payload — fires on initial render via the
+        // dataLayer.push({{{ layer }}}) in templates/layouts/default.html.
+        // SPA navigation pushes an equivalent object from
+        // client/routes/scan.js. Naming pattern matches existing
+        // serpEvent / recordEvent conventions in the codebase.
+        layer: JSON.stringify({
+          pagetype: 'scan',
+          pagename: 'Visual search',
+          event: 'scanEvent'
+        })
       }));
     }
   }
