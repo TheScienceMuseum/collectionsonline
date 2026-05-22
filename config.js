@@ -17,7 +17,17 @@ module.exports = require('rc')('co', {
   cacheClearToken: process.env.CACHE_CLEAR_TOKEN,
   // Visual search (image-to-image catalogue retrieval at /scan).
   // Disabled by default so an absent index doesn't surface a broken page.
+  // Controls whether the /scan, /api/scan/search, /api/scan/health routes
+  // are registered AND whether the feature is functional at all.
   visualSearchEnabled: process.env.VISUAL_SEARCH_ENABLED === 'true',
+  // Separate toggle for the camera icon entry-point in the global
+  // searchbox. Defaults to ON when the feature is enabled; set
+  // VISUAL_SEARCH_ICON_ENABLED=false for a soft-launch (the /scan route
+  // works for people with the URL, but isn't advertised anywhere on the
+  // rest of the site). When VISUAL_SEARCH_ENABLED is false this is
+  // forced false regardless — no point showing an icon to a dead route.
+  visualSearchIconEnabled: process.env.VISUAL_SEARCH_ENABLED === 'true' &&
+    process.env.VISUAL_SEARCH_ICON_ENABLED !== 'false',
   // Where to fetch embeddings.bin + manifest.json. Either an https URL
   // (e.g. https://coimages.../models) or a local filesystem path for dev.
   visualSearchModelsBaseUrl: process.env.VISUAL_SEARCH_MODELS_BASE_URL || '',
