@@ -109,139 +109,147 @@ function confidenceTier (topScore, config) {
   return 'low';
 }
 
-exports.page = (elastic, config) => ({
-  method: 'GET',
-  path: '/scan',
-  config: {
-    handler: function (request, h) {
-      const data = require('../fixtures/data');
-      return h.view('scan', Object.assign({}, data, {
-        navigation: require('../fixtures/navigation'),
-        museums: require('../fixtures/museums'),
-        titlePage: 'Snap It | Science Museum Group Collection',
-        ready: visualSearch.isReady(),
-        // GTM dataLayer payload — fires on initial render via the
-        // dataLayer.push({{{ layer }}}) in templates/layouts/default.html.
-        // SPA navigation pushes an equivalent object from
-        // client/routes/scan.js. Naming pattern matches existing
-        // serpEvent / recordEvent conventions in the codebase.
-        layer: JSON.stringify({
-          pagetype: 'scan',
-          pagename: 'Snap It',
-          event: 'scanEvent'
-        })
-      }));
+// Page handler (shared by both /snap and the /scan alias). Doesn't
+// depend on elastic or config — reads from the visualSearch singleton
+// and renders the same view at either URL.
+function pageHandler (request, h) {
+  const data = require('../fixtures/data');
+  return h.view('scan', Object.assign({}, data, {
+    navigation: require('../fixtures/navigation'),
+    museums: require('../fixtures/museums'),
+    titlePage: 'Snap It | Science Museum Group Collection',
+    ready: visualSearch.isReady(),
+    // GTM dataLayer payload — fires on initial render via the
+    // dataLayer.push({{{ layer }}}) in templates/layouts/default.html.
+    // SPA navigation pushes an equivalent object from
+    // client/routes/scan.js.
+    layer: JSON.stringify({
+      pagetype: 'snap',
+      pagename: 'Snap It',
+      event: 'snapEvent'
+    })
+  }));
+}
+
+// /snap is the canonical URL; /scan is kept as an alias for the
+// earlier-deployed URL so any bookmarks / inbound links keep working.
+// Both serve the same page directly (no redirect — simpler caching,
+// no extra hop, no behavioural difference between the two URLs).
+exports.page = () => [
+  { method: 'GET', path: '/snap', config: { handler: pageHandler } },
+  { method: 'GET', path: '/scan', config: { handler: pageHandler } }
+];
+
+exports.search = (elastic, config) => {
+  const payload = {
+    allow: 'application/octet-stream',
+    maxBytes: MAX_QUERY_BYTES,
+    output: 'data',
+    parse: false
+  };
+  const handler = async function (request, h) {
+    if (!visualSearch.isReady()) {
+      return Boom.serverUnavailable('visual search index not loaded');
     }
-  }
-});
+    const idx = visualSearch.getIndex();
+    const expectedBytes = idx.dim * 4;
 
-exports.search = (elastic, config) => ({
-  method: 'POST',
-  path: '/api/scan/search',
-  config: {
-    payload: {
-      allow: 'application/octet-stream',
-      maxBytes: MAX_QUERY_BYTES,
-      output: 'data',
-      parse: false
-    },
-    handler: async function (request, h) {
-      if (!visualSearch.isReady()) {
-        return Boom.serverUnavailable('visual search index not loaded');
-      }
-      const idx = visualSearch.getIndex();
-      const expectedBytes = idx.dim * 4;
-
-      const buf = request.payload;
-      if (!Buffer.isBuffer(buf)) {
-        return Boom.badRequest('expected application/octet-stream body');
-      }
-      if (buf.length !== expectedBytes) {
-        return Boom.badRequest(
-          `query length ${buf.length} bytes, expected ${expectedBytes} (dim=${idx.dim} × 4)`
-        );
-      }
-      // Build a Float32Array view over the request buffer (zero-copy).
-      // Buffer's underlying ArrayBuffer may be larger than the slice we
-      // care about, hence byteOffset + dim args.
-      let queryVec;
-      try {
-        queryVec = new Float32Array(buf.buffer, buf.byteOffset, idx.dim);
-      } catch (err) {
-        return Boom.badRequest(`could not interpret payload as Float32: ${err.message}`);
-      }
-      // Finiteness + (loose) normalisation check. The browser is supposed
-      // to L2-normalise before POSTing; if not, scores will be off.
-      let sumSq = 0;
-      for (let i = 0; i < idx.dim; i++) {
-        const v = queryVec[i];
-        if (!Number.isFinite(v)) return Boom.badRequest(`non-finite value at dim ${i}`);
-        sumSq += v * v;
-      }
-      const norm = Math.sqrt(sumSq);
-      if (norm < 0.5 || norm > 1.5) {
-        return Boom.badRequest(`query not L2-normalised (||q||=${norm.toFixed(3)})`);
-      }
-
-      const t0 = Date.now();
-      const hits = search.topK(queryVec, idx.embeddings, idx.count, idx.dim, DEFAULT_TOP_K);
-      const searchMs = Date.now() - t0;
-
-      if (hits.length === 0) {
-        return { results: [], confidence: 'low', searchMs };
-      }
-
-      const ids = hits.map(h => idx.ids[h.index]);
-      let mgetBody;
-      try {
-        const res = await elastic.mget({
-          index: config.elasticIndex,
-          body: { ids }
-        });
-        mgetBody = res.body;
-      } catch (err) {
-        request.log(['error', 'visual-search'], `mget failed: ${err.message}`);
-        return Boom.serverUnavailable('catalogue lookup failed');
-      }
-
-      // mget preserves order. Some IDs may have been deleted from ES
-      // since the index was built — those come back with `found: false`
-      // and are dropped from the results.
-      const docsById = {};
-      for (let i = 0; i < mgetBody.docs.length; i++) {
-        const d = mgetBody.docs[i];
-        if (d && d.found && d._source) docsById[d._id] = d._source;
-      }
-
-      const results = [];
-      for (let i = 0; i < hits.length; i++) {
-        const id = ids[i];
-        const source = docsById[id];
-        if (!source) continue;
-        results.push(buildResult(id, hits[i].score, source, config));
-      }
-
-      const topScore = results.length > 0 ? results[0].score : 0;
-      const tier = confidenceTier(topScore, config);
-
-      return {
-        results,
-        confidence: tier,
-        topScore,
-        searchMs,
-        builtAt: idx.builtAt
-      };
+    const buf = request.payload;
+    if (!Buffer.isBuffer(buf)) {
+      return Boom.badRequest('expected application/octet-stream body');
     }
-  }
-});
-
-exports.health = (elastic, config) => ({
-  method: 'GET',
-  path: '/api/scan/health',
-  config: {
-    handler: function (request, h) {
-      const status = visualSearch.status();
-      return h.response(status).code(status.ready ? 200 : 503);
+    if (buf.length !== expectedBytes) {
+      return Boom.badRequest(
+        `query length ${buf.length} bytes, expected ${expectedBytes} (dim=${idx.dim} × 4)`
+      );
     }
-  }
-});
+    // Build a Float32Array view over the request buffer (zero-copy).
+    // Buffer's underlying ArrayBuffer may be larger than the slice we
+    // care about, hence byteOffset + dim args.
+    let queryVec;
+    try {
+      queryVec = new Float32Array(buf.buffer, buf.byteOffset, idx.dim);
+    } catch (err) {
+      return Boom.badRequest(`could not interpret payload as Float32: ${err.message}`);
+    }
+    // Finiteness + (loose) normalisation check. The browser is supposed
+    // to L2-normalise before POSTing; if not, scores will be off.
+    let sumSq = 0;
+    for (let i = 0; i < idx.dim; i++) {
+      const v = queryVec[i];
+      if (!Number.isFinite(v)) return Boom.badRequest(`non-finite value at dim ${i}`);
+      sumSq += v * v;
+    }
+    const norm = Math.sqrt(sumSq);
+    if (norm < 0.5 || norm > 1.5) {
+      return Boom.badRequest(`query not L2-normalised (||q||=${norm.toFixed(3)})`);
+    }
+
+    const t0 = Date.now();
+    const hits = search.topK(queryVec, idx.embeddings, idx.count, idx.dim, DEFAULT_TOP_K);
+    const searchMs = Date.now() - t0;
+
+    if (hits.length === 0) {
+      return { results: [], confidence: 'low', searchMs };
+    }
+
+    const ids = hits.map(h => idx.ids[h.index]);
+    let mgetBody;
+    try {
+      const res = await elastic.mget({
+        index: config.elasticIndex,
+        body: { ids }
+      });
+      mgetBody = res.body;
+    } catch (err) {
+      request.log(['error', 'visual-search'], `mget failed: ${err.message}`);
+      return Boom.serverUnavailable('catalogue lookup failed');
+    }
+
+    // mget preserves order. Some IDs may have been deleted from ES
+    // since the index was built — those come back with `found: false`
+    // and are dropped from the results.
+    const docsById = {};
+    for (let i = 0; i < mgetBody.docs.length; i++) {
+      const d = mgetBody.docs[i];
+      if (d && d.found && d._source) docsById[d._id] = d._source;
+    }
+
+    const results = [];
+    for (let i = 0; i < hits.length; i++) {
+      const id = ids[i];
+      const source = docsById[id];
+      if (!source) continue;
+      results.push(buildResult(id, hits[i].score, source, config));
+    }
+
+    const topScore = results.length > 0 ? results[0].score : 0;
+    const tier = confidenceTier(topScore, config);
+
+    return {
+      results,
+      confidence: tier,
+      topScore,
+      searchMs,
+      builtAt: idx.builtAt
+    };
+  };
+  // Same handler at both URLs. The canonical client calls /api/snap/...;
+  // /api/scan/... stays alive for cached client bundles from the earlier
+  // soft-launch.
+  return [
+    { method: 'POST', path: '/api/snap/search', config: { payload, handler } },
+    { method: 'POST', path: '/api/scan/search', config: { payload, handler } }
+  ];
+};
+
+exports.health = () => {
+  const handler = function (request, h) {
+    const status = visualSearch.status();
+    return h.response(status).code(status.ready ? 200 : 503);
+  };
+  return [
+    { method: 'GET', path: '/api/snap/health', config: { handler } },
+    { method: 'GET', path: '/api/scan/health', config: { handler } }
+  ];
+};

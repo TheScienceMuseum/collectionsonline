@@ -23,7 +23,7 @@ const STATE_LOADING_MODEL = 'loading-model';
 const STATE_SEARCHING = 'searching';
 const STATE_RESULTS = 'results';
 
-const SEARCH_ENDPOINT = '/api/scan/search';
+const SEARCH_ENDPOINT = '/api/snap/search';
 
 // Debug-mode toggle for threshold calibration: append ?debug=1 to the
 // URL to see the raw top-1 score, confidence tier, and search latency
