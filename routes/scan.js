@@ -118,7 +118,7 @@ exports.page = (elastic, config) => ({
       return h.view('scan', Object.assign({}, data, {
         navigation: require('../fixtures/navigation'),
         museums: require('../fixtures/museums'),
-        titlePage: 'Visual search | Science Museum Group Collection',
+        titlePage: 'Snap It | Science Museum Group Collection',
         ready: visualSearch.isReady(),
         // GTM dataLayer payload — fires on initial render via the
         // dataLayer.push({{{ layer }}}) in templates/layouts/default.html.
@@ -127,7 +127,7 @@ exports.page = (elastic, config) => ({
         // serpEvent / recordEvent conventions in the codebase.
         layer: JSON.stringify({
           pagetype: 'scan',
-          pagename: 'Visual search',
+          pagename: 'Snap It',
           event: 'scanEvent'
         })
       }));

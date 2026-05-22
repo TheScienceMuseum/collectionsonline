@@ -38,19 +38,19 @@ module.exports = function (page) {
             navigation: require('../../fixtures/navigation'),
             museums: require('../../fixtures/museums'),
             ready: true,
-            titlePage: 'Visual search | Science Museum Group Collection'
+            titlePage: 'Snap It | Science Museum Group Collection'
           });
         pageEl.innerHTML = Templates.scan(data);
       }
       document.body.className = '';
-      document.title = 'Visual search | Science Museum Group Collection';
+      document.title = 'Snap It | Science Museum Group Collection';
       // Mirror the server-side dataLayer push for /scan so SPA visits
       // show up the same as direct loads in GA. GTM doesn't auto-fire
       // page views on page.js navigation.
       if (window.dataLayer) {
         window.dataLayer.push({
           pagetype: 'scan',
-          pagename: 'Visual search',
+          pagename: 'Snap It',
           event: 'scanEvent'
         });
       }

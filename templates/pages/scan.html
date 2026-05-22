@@ -5,9 +5,9 @@
   <main id="main-content">
     <div class="o-container scan">
       <header class="scan__intro">
-        <h1>Visual search</h1>
+        <h1>Snap It</h1>
         <p>
-          Use your camera to find objects in our collection. Works for things in our museums, photos in a magazine, or anything you’re curious to look up.
+          Take a photo of something around you and we’ll show you what our collection has that looks similar. Try it on a watch on your wrist, a kettle, or a vintage poster. You might be surprised by what’s in our collection.
         </p>
       </header>
 
@@ -26,12 +26,12 @@
               class="c-btn c-btn--primary scan__start-btn"
               data-scan-action="start"
               {{#unless ready}}disabled{{/unless}}>
-              {{#if ready}}Use your camera{{else}}Visual search loading…{{/if}}
+              {{#if ready}}Take a photo{{else}}Setting up…{{/if}}
             </button>
           </div>
         </div>
         <noscript>
-          <p>Visual search needs JavaScript and a camera to work.</p>
+          <p>This feature needs JavaScript and a camera to work.</p>
         </noscript>
       </section>
 

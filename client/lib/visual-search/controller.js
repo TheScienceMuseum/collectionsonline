@@ -98,7 +98,7 @@ function createController (mountEl) {
         '<p class="scan__hint">Works best with a clear photo of a single object, well-lit, against a plain background. Setup the first time takes around 30 seconds.</p>' +
         '<div class="scan__actions">' +
           '<button type="button" class="c-btn c-btn--primary scan__start-btn" data-scan-action="start">' +
-            'Use your camera' +
+            'Take a photo' +
           '</button>' +
         '</div>' +
       '</div>';
@@ -200,7 +200,7 @@ function createController (mountEl) {
       '<div class="scan__results scan__results--high">' +
         renderCapturedPhoto(capture) +
         renderDebugBadge(data) +
-        '<h2 class="scan__results-heading">Looks like:</h2>' +
+        '<h2 class="scan__results-heading">Looks like this from our collection</h2>' +
         '<div class="scan__results-hero">' +
           renderResultCard(top) +
         '</div>' +
@@ -217,7 +217,7 @@ function createController (mountEl) {
       '<div class="scan__results scan__results--medium">' +
         renderCapturedPhoto(capture) +
         renderDebugBadge(data) +
-        '<h2 class="scan__results-heading">Closest matches in our collection</h2>' +
+        '<h2 class="scan__results-heading">Things that look similar</h2>' +
         '<div class="scan__results-grid">' +
           items.map(renderResultCard).join('') +
         '</div>' +
@@ -241,7 +241,7 @@ function createController (mountEl) {
       '<div class="scan__results scan__results--low">' +
         renderCapturedPhoto(capture) +
         renderDebugBadge(data) +
-        '<h2 class="scan__results-heading">We could not find a confident match</h2>' +
+        '<h2 class="scan__results-heading">Nothing close in our collection</h2>' +
         '<p class="scan__results-body">Try a different angle, a closer view, or better lighting. Plain backgrounds and well-lit objects work best.</p>' +
         longShots +
         '<div class="scan__actions">' +
@@ -403,7 +403,7 @@ function createController (mountEl) {
         }
       });
       state = STATE_IDLE;
-      renderIdle({ error: 'Visual search setup failed: ' + (err && err.message ? err.message : 'unknown error') });
+      renderIdle({ error: 'Setup failed: ' + (err && err.message ? err.message : 'unknown error') });
       return;
     }
 
