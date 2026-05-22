@@ -607,5 +607,8 @@ module.exports = {
   ),
   explore: Handlebars.compile(
     Fs.readFileSync('./templates/pages/explore.html', 'utf8')
+  ),
+  scan: Handlebars.compile(
+    Fs.readFileSync('./templates/pages/scan.html', 'utf8')
   )
 };

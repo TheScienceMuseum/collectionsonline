@@ -43,5 +43,31 @@ module.exports = async (elastic, config, cb) => {
     helpersPath: './templates/helpers'
   });
 
+  // Inject visualSearchEnabled into every view-typed response just
+  // before render, so partials (e.g. the searchbox) can gate UI on
+  // the feature flag without each route having to thread it through.
+  // Implemented as an onPreResponse extension rather than
+  // @hapi/vision's `context` option because the latter wasn't
+  // reliably reaching the layout / partial render context in our
+  // Hapi 21 / Vision 7 setup — symptoms: meta tag missing from
+  // <head>, searchbox class not applied, even with the global
+  // context block in place.
+  //
+  // Note: the template variable `visualSearchEnabled` is sourced from
+  // config.visualSearchIconEnabled, NOT config.visualSearchEnabled.
+  // From a template's POV the flag means "should the icon show?",
+  // which lets us soft-launch the feature (route on, icon off) by
+  // setting VISUAL_SEARCH_ICON_ENABLED=false. The route registration
+  // in routes/index.js still uses config.visualSearchEnabled.
+  server.ext('onPreResponse', (request, h) => {
+    const res = request.response;
+    if (res && res.variety === 'view') {
+      res.source.context = Object.assign({}, res.source.context, {
+        visualSearchEnabled: !!config.visualSearchIconEnabled
+      });
+    }
+    return h.continue;
+  });
+
   cb(null, { server, elastic });
 };

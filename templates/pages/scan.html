@@ -1,0 +1,45 @@
+<div id="main-page">
+  {{> global/global-header}}
+  {{> global/search-main reduced="reduced"}}
+
+  <main id="main-content">
+    <div class="o-container scan">
+      <header class="scan__intro">
+        <h1>Snap It</h1>
+        <p>
+          Take a photo of something around you and we’ll show you what our collection has that looks similar. Try it on a watch on your wrist, a kettle, or a vintage poster. You might be surprised by what’s in our collection.
+        </p>
+      </header>
+
+      <section
+        id="scan-app"
+        class="scan__app"
+        data-ready="{{ready}}"
+        aria-live="polite">
+        <div class="scan__idle">
+          <p class="scan__hint">
+            Works best with a clear photo of a single object, well-lit, against a plain background. Setup the first time takes around 30 seconds.
+          </p>
+          <div class="scan__actions">
+            <button
+              type="button"
+              class="c-btn c-btn--primary scan__start-btn"
+              data-scan-action="start"
+              {{#unless ready}}disabled{{/unless}}>
+              {{#if ready}}Take a photo{{else}}Setting up…{{/if}}
+            </button>
+          </div>
+        </div>
+        <noscript>
+          <p>This feature needs JavaScript and a camera to work.</p>
+        </noscript>
+      </section>
+
+      <p class="scan__privacy-note">
+        The photo is processed in your browser. We only send an anonymised representation of the image to our servers to find matches.
+      </p>
+    </div>
+  </main>
+
+  {{> global/global-footer}}
+</div>

@@ -6,6 +6,7 @@ const config = require('../config');
 const createServer = require('../server');
 const cache = require('./cache');
 const warmFeeds = require('../lib/feeds');
+const visualSearch = require('../lib/visual-search/state');
 
 const elastic = new Client(config.elasticsearch);
 
@@ -44,4 +45,9 @@ createServer(elastic, config, async (err, ctx) => {
   warmFeeds().catch((err) => {
     console.warn('Feed warm-up failed:', err.message);
   });
+
+  // Load the visual-search index in the background. /api/scan/health and
+  // /api/scan/search return 503 until init completes. init() never throws —
+  // a failure leaves the routes disabled with a logged error.
+  visualSearch.init(config);
 });

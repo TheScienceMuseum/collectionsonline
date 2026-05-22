@@ -1,4 +1,14 @@
 module.exports = {
+  // Defined as a getter so SPA-rendered pages pick up the visual-search
+  // feature flag set on `window.__visualSearchEnabled` by client/main.js
+  // at boot. Server-rendered pages get the same value via the global
+  // view context in server.js — both paths converge on the same source
+  // of truth (the meta tag in templates/layouts/default.html), so the
+  // camera entry-point in the searchbox is consistent across direct
+  // hits and client-side navigation.
+  get visualSearchEnabled () {
+    return typeof window !== 'undefined' && window.__visualSearchEnabled === true;
+  },
   title: 'Science Museum Group Collection',
   titlePage: 'Science Museum Group Collection',
   metaDescription: 'Explore over 500,000 objects and archives from the Science Museum, Science and Industry Museum, National Science and Media Museum, National Railway Museum and Locomotion.',

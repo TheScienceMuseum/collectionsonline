@@ -78,3 +78,23 @@ test/fixtures/elastic-responses/example-*
 # zips
 builds/*
 !builds/.gitkeep
+
+# Visual search build artefacts (large; uploaded manually to /models/ on the CDN)
+scripts/visual-search-out/
+scripts/visual-search-build/out/
+scripts/visual-search-build/out-*/
+scripts/visual-search-build/image-cache/
+scripts/visual-search-build/.venv/
+scripts/visual-search-build/__pycache__/
+scripts/visual-search-build/**/__pycache__/
+scripts/visual-search-build/*.checkpoint
+scripts/visual-search-build/build*.log
+public/scan.js
+public/scan.js.map
+public/scan-*.js
+public/scan-*.js.map
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
