@@ -191,7 +191,7 @@ function createController (mountEl) {
     const top = data.results[0];
     const rest = data.results.slice(1, 7);
     const restMarkup = rest.length
-      ? '<h2 class="scan__results-subheading">Other possibilities</h2>' +
+      ? '<h2 class="scan__results-subheading">Things that look similar</h2>' +
         '<div class="scan__results-grid">' +
           rest.map(renderResultCard).join('') +
         '</div>'
@@ -200,7 +200,7 @@ function createController (mountEl) {
       '<div class="scan__results scan__results--high">' +
         renderCapturedPhoto(capture) +
         renderDebugBadge(data) +
-        '<h2 class="scan__results-heading">Looks like this from our collection</h2>' +
+        '<h2 class="scan__results-heading">Looks like this</h2>' +
         '<div class="scan__results-hero">' +
           renderResultCard(top) +
         '</div>' +
