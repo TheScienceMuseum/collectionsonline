@@ -50,7 +50,7 @@ module.exports = function (page) {
       if (window.dataLayer) {
         window.dataLayer.push({
           pagetype: 'scan',
-          pagename: 'Snap It',
+          pagename: 'scan',
           event: 'scanEvent'
         });
       }

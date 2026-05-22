@@ -125,9 +125,13 @@ exports.page = (elastic, config) => ({
         // SPA navigation pushes an equivalent object from
         // client/routes/scan.js. Naming pattern matches existing
         // serpEvent / recordEvent conventions in the codebase.
+        //
+        // pagename matches the URL path (not the brand "Snap It") so
+        // any GA reports / custom dimensions keyed on this variable
+        // stay stable across future rebrands.
         layer: JSON.stringify({
           pagetype: 'scan',
-          pagename: 'Snap It',
+          pagename: 'scan',
           event: 'scanEvent'
         })
       }));
