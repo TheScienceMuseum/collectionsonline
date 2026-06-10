@@ -38,12 +38,13 @@ module.exports = {
   snap () {
     // Vanity URL for sharing (press releases, emails) — /snap reads
     // better than /scan. Temporary redirect so the pointer can change
-    // without browsers caching it forever.
+    // without browsers caching it forever. Query strings carry over so
+    // UTM campaign parameters survive the redirect for GA attribution.
     return {
       method: 'GET',
       path: '/snap',
       handler: function (request, h) {
-        return h.redirect('/scan');
+        return h.redirect('/scan' + (request.url.search || ''));
       }
     };
   }
