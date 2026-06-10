@@ -34,5 +34,17 @@ module.exports = {
         return h.redirect(config.rootUrl + '/search/collection/daily-herald-archive').permanent();
       }
     };
+  },
+  snap () {
+    // Vanity URL for sharing (press releases, emails) — /snap reads
+    // better than /scan. Temporary redirect so the pointer can change
+    // without browsers caching it forever.
+    return {
+      method: 'GET',
+      path: '/snap',
+      handler: function (request, h) {
+        return h.redirect('/scan');
+      }
+    };
   }
 };

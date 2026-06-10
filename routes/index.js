@@ -35,6 +35,7 @@ module.exports = (elastic, config) => [
   require('./wiki')(elastic, config),
   ...(config.visualSearchEnabled
     ? [
+        require('./redirects').snap(),
         require('./scan').page(elastic, config),
         require('./scan').search(elastic, config),
         require('./scan').health(elastic, config)
