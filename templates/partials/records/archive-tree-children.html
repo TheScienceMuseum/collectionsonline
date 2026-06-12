@@ -5,7 +5,7 @@
     <button
       type="button"
       aria-controls="children-{{id}}"
-      aria-expanded="{{#if current}}true{{else}}false{{/if}}"
+      aria-expanded="{{#if (current this)}}true{{else}}false{{/if}}"
       aria-label="Show child records"></button>
     {{else}}
     <span class="archive-tree__leafnode"></span>
@@ -14,7 +14,7 @@
   </div>
   {{#if children}}
   <ul class="children" data-current="{{current this}}" id="children-{{id}}"
-    {{#if current}}{{else}}hidden{{/if}}>
+    {{#if (current this)}}{{else}}hidden{{/if}}>
     {{> records/archive-tree-children}}
   </ul>
   {{/if}}
