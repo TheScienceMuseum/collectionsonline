@@ -48,7 +48,7 @@
     "wikijs": "^6.4.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.5",
+    "@babel/core": "^7.29.6",
     "@babel/plugin-transform-object-assign": "^7.23.3",
     "@babel/preset-env": "^7.23.5",
     "async": "^3.2.5",
