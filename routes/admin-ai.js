@@ -20,6 +20,10 @@ const dashboardStats = require('../lib/ai/dashboard-stats');
 const exportCsv = require('../lib/ai/export-csv');
 const reviewBiography = require('../lib/ai/review-biography');
 const linkifySources = require('../lib/ai/linkify-sources');
+const curatorDecisionsStore = require('../lib/ai/curator-decisions-store');
+const reviewStore = require('../lib/ai/review-store');
+const renderBiography = require('../lib/ai/render-biography');
+const verifyExternal = require('../lib/ai/verify-external');
 const zlib = require('zlib');
 
 // Public-visibility hint for list rows. Currently two-valued ('full' or
@@ -90,6 +94,48 @@ function requireAuth (request, h, config) {
     return redirectToLogin(h);
   }
   return null;
+}
+
+// Count curator decisions that would fold into the NEXT regeneration.
+// Approvals are instant-render (no writer-prompt injection) so they're
+// excluded. Rejections + clarifications ARE injected into the writer
+// prompt as subject-specific constraints — those are the ones the regen
+// banner exists to nudge the curator to apply. A decision is "pending"
+// when its timestamp is newer than the current biography's generatedAt
+// (i.e. added since the last generation).
+function computePendingChanges (decisions, generatedAt) {
+  if (!decisions) return 0;
+  const gen = generatedAt ? new Date(generatedAt).getTime() : 0;
+  const isNewer = function (iso) {
+    if (!iso) return false;
+    const t = new Date(iso).getTime();
+    return Number.isFinite(t) && t > gen;
+  };
+  let n = 0;
+  (decisions.rejections || []).forEach(function (r) { if (isNewer(r.rejectedAt)) n += 1; });
+  (decisions.clarifications || []).forEach(function (c) { if (isNewer(c.addedAt)) n += 1; });
+  return n;
+}
+
+// Order pending findings so the highest-severity items surface first —
+// mirrors the render-biography severity map. Both arrays feed the same
+// template, so keeping the ordering in one place avoids inconsistent
+// display between the biography's per-sentence pills and the findings
+// panel's list.
+const FINDING_PRIORITY = {
+  'error:high': 5,
+  'error:medium': 4,
+  'error:low': 3,
+  'info:high': 2,
+  'info:medium': 1,
+  'info:low': 0
+};
+function sortOpenFindings (findings) {
+  return (findings || []).slice().sort(function (a, b) {
+    const ka = (a.kind || 'error') + ':' + (a.confidence || 'low');
+    const kb = (b.kind || 'error') + ':' + (b.confidence || 'low');
+    return (FINDING_PRIORITY[kb] || 0) - (FINDING_PRIORITY[ka] || 0);
+  });
 }
 
 module.exports = function (elastic, config) {
@@ -460,14 +506,20 @@ module.exports = function (elastic, config) {
             // select the appropriate plain-English explanatory block.
             record.skipCategory = classifySkipReason(record.skipReason);
 
-            // Fetch staff notes, flags, snapshots, public flags, and AI
-            // reviews in parallel
-            const [rawNotes, snapshots, staffFlags, rawPublicFlags, rawReviews] = await Promise.all([
+            // Fetch staff notes, flags, snapshots, public flags, AI
+            // reviews, curator decisions, and per-generation review
+            // findings in parallel. curatorDecisions + openFindings are
+            // v2-only; they'll come back null / empty for records
+            // produced by the pre-v2 pipeline, which the render layer
+            // + template both tolerate.
+            const [rawNotes, snapshots, staffFlags, rawPublicFlags, rawReviews, curatorDecisions, rawOpenFindings] = await Promise.all([
               biographyStore.listStaffNotes(id).catch(function () { return []; }),
               biographyStore.listHistory(id).catch(function () { return []; }),
               biographyStore.listStaffFlags(id).catch(function () { return []; }),
               flagStore.getFlags(id).catch(function () { return null; }),
-              biographyStore.listReviews(id).catch(function () { return []; })
+              biographyStore.listReviews(id).catch(function () { return []; }),
+              curatorDecisionsStore.get(id).catch(function () { return null; }),
+              reviewStore.openFindings(id).catch(function () { return []; })
             ]);
             const publicReports = flagStore.buildView(rawPublicFlags);
 
@@ -642,17 +694,52 @@ module.exports = function (elastic, config) {
             );
             const reviewConfig = {
               enabled: !!config.aiBiographyReviewEnabled,
-              canRun: !!(config.aiBiographyReviewEnabled && record.biographyHtml),
+              canRun: !!(config.aiBiographyReviewEnabled && (record.biographyHtml || (record.sentences && record.sentences.length))),
               model: reviewModel,
               modelLabel: (reviewModelInfo && reviewModelInfo.label) || reviewModel,
-              estimatedCost: reviewEstimate ? reviewEstimate.perBioFormatted : null
+              estimatedCost: reviewEstimate ? reviewEstimate.perBioFormatted : null,
+              // Task 52 will define this config key; falsy default keeps the
+              // "Verify externally" buttons hidden until curators + staff
+              // decide they want the extra tools available.
+              externalValidationEnabled: !!config.aiBiographyExternalValidationEnabled
             };
+
+            // v2 template data: sentence-level render state, open review
+            // findings sorted by severity, and the regen-banner counter.
+            // Only computed for records produced by the v2 writer
+            // (identified by having a sentences[] array on the record);
+            // legacy records with only biographyHtml render via the
+            // template's `{{else}}` fallback branch.
+            const openFindings = sortOpenFindings(rawOpenFindings || []);
+            const hasSentences = Array.isArray(record.sentences) && record.sentences.length > 0;
+            const renderedBiography = hasSentences
+              ? (function () {
+                  const rendered = renderBiography(record, {
+                    decisions: curatorDecisions,
+                    openFindings,
+                    publishingLevel: config.aiBiographyPublishingLevel
+                  });
+                  // The template calls out totalCount separately from
+                  // sentences.length for clarity; expose it here so
+                  // Handlebars doesn't have to compute it.
+                  return Object.assign({}, rendered, { totalCount: rendered.sentences.length });
+                })()
+              : null;
+
+            const pendingChangeCount = computePendingChanges(curatorDecisions, record.generatedAt);
+            const regenRecommended = pendingChangeCount > 0;
+            const pendingChangeSingular = pendingChangeCount === 1;
 
             return h.view('admin-ai-detail', {
               record,
               notes,
               reviews,
               reviewConfig,
+              renderedBiography,
+              openFindings,
+              regenRecommended,
+              pendingChangeCount,
+              pendingChangeSingular,
               myCurrentFlag,
               otherFlags,
               snapshotCount: snapshots.length,
@@ -1192,6 +1279,287 @@ module.exports = function (elastic, config) {
           } catch (err) {
             console.error('Admin AI review-delete error:', err.message);
             return h.redirect('/admin/ai/' + id + '?error=review_delete_failed');
+          }
+        }
+      }
+    },
+
+    // -------------------------------------------------------------------
+    // v2 sentence-level curator actions
+    //
+    // The five routes below back the per-sentence action forms rendered
+    // by the sentence-level view in templates/pages/admin-ai-detail.html
+    // (approve / reject / clarify / verify) plus one route for review-
+    // finding resolution. All follow the same POST-then-redirect pattern
+    // used by /status, /flag, /notes above — post-redirect-get keeps
+    // browser back-button behaviour sane and lets the redirect target
+    // (the detail page) re-fetch fresh state.
+    //
+    // Curator identity is captured via the existing staffOf(request)
+    // helper — same field already used for note authorship and review
+    // triggers, so no new plumbing.
+    // -------------------------------------------------------------------
+
+    {
+      method: 'POST',
+      path: '/admin/ai/{id}/sentences/approve',
+      config: {
+        auth: false,
+        handler: async function (request, h) {
+          const authRedirect = requireAuth(request, h, config);
+          if (authRedirect) return authRedirect;
+          const id = request.params.id;
+          const payload = request.payload || {};
+          const claimSignature = (payload.claimSignature || '').toString().trim();
+          const claimText = (payload.claimText || '').toString().trim() || null;
+          const note = (payload.note || '').toString().trim() || null;
+          if (!claimSignature) {
+            return h.redirect('/admin/ai/' + id + '?error=missing_claim_signature');
+          }
+          try {
+            await curatorDecisionsStore.addApproval(id, {
+              claimSignature, claimText, note, approvedBy: staffOf(request)
+            });
+            // Approval is instant-render (source-tag filter override) —
+            // no regen needed, jump back to the biography anchor.
+            return h.redirect('/admin/ai/' + id + '#biography');
+          } catch (err) {
+            console.error('Admin AI sentence-approve error:', err.message);
+            return h.redirect('/admin/ai/' + id + '?error=approve_failed');
+          }
+        }
+      }
+    },
+
+    {
+      method: 'POST',
+      path: '/admin/ai/{id}/sentences/reject',
+      config: {
+        auth: false,
+        handler: async function (request, h) {
+          const authRedirect = requireAuth(request, h, config);
+          if (authRedirect) return authRedirect;
+          const id = request.params.id;
+          const payload = request.payload || {};
+          const claimSignature = (payload.claimSignature || '').toString().trim();
+          const claimText = (payload.claimText || '').toString().trim() || null;
+          const rationale = (payload.rationale || '').toString().trim() || null;
+          if (!claimSignature) {
+            return h.redirect('/admin/ai/' + id + '?error=missing_claim_signature');
+          }
+          try {
+            await curatorDecisionsStore.addRejection(id, {
+              claimSignature, claimText, rationale, rejectedBy: staffOf(request)
+            });
+            // Rejection changes writer constraints, so the regen banner
+            // will fire on next render. No auto-regen (per the plan).
+            return h.redirect('/admin/ai/' + id + '#biography');
+          } catch (err) {
+            console.error('Admin AI sentence-reject error:', err.message);
+            return h.redirect('/admin/ai/' + id + '?error=reject_failed');
+          }
+        }
+      }
+    },
+
+    {
+      method: 'POST',
+      path: '/admin/ai/{id}/sentences/clarify',
+      config: {
+        auth: false,
+        handler: async function (request, h) {
+          const authRedirect = requireAuth(request, h, config);
+          if (authRedirect) return authRedirect;
+          const id = request.params.id;
+          const payload = request.payload || {};
+          const claimSignature = (payload.claimSignature || '').toString().trim();
+          const claimText = (payload.claimText || '').toString().trim() || null;
+          const clarification = (payload.clarification || '').toString().trim();
+          if (!claimSignature) {
+            return h.redirect('/admin/ai/' + id + '?error=missing_claim_signature');
+          }
+          if (!clarification) {
+            return h.redirect('/admin/ai/' + id + '?error=missing_clarification');
+          }
+          try {
+            await curatorDecisionsStore.addClarification(id, {
+              claimSignature, claimText, clarification, addedBy: staffOf(request)
+            });
+            // Clarification changes writer prompt, so the regen banner
+            // will fire on next render. No auto-regen.
+            return h.redirect('/admin/ai/' + id + '#biography');
+          } catch (err) {
+            console.error('Admin AI sentence-clarify error:', err.message);
+            return h.redirect('/admin/ai/' + id + '?error=clarify_failed');
+          }
+        }
+      }
+    },
+
+    // Verify a claim (either a sentence body OR a review-finding concern)
+    // against configured external sources. Same code path either way —
+    // verifyExternal is agnostic about who's asking. Behaviour split by
+    // `context`:
+    //   - 'sentence' (default): if verdict=supported, promote the
+    //     sentence's source tag to llm:validated:<toolName> so it
+    //     publishes at Level 4. If verdict!=supported, no biography
+    //     mutation — the query-string flash surfaces the verdict text
+    //     so the curator sees why nothing changed.
+    //   - 'finding': attach the verdict to the finding on the parent
+    //     REVIEW# item so the template's finding__verification block
+    //     renders it inline. Curator uses that evidence to decide
+    //     accept vs dismiss on the finding.
+    // Both paths require aiBiographyExternalValidationEnabled — if
+    // disabled, the route redirects with an error and never bills.
+    {
+      method: 'POST',
+      path: '/admin/ai/{id}/sentences/verify',
+      config: {
+        auth: false,
+        handler: async function (request, h) {
+          const authRedirect = requireAuth(request, h, config);
+          if (authRedirect) return authRedirect;
+          const id = request.params.id;
+          const payload = request.payload || {};
+          const claimSignature = (payload.claimSignature || '').toString().trim();
+          const claimText = (payload.claimText || '').toString().trim();
+          const context = (payload.context || 'sentence').toString().trim();
+          const reviewSK = (payload.reviewSK || '').toString().trim() || null;
+
+          if (!config.aiBiographyExternalValidationEnabled) {
+            return h.redirect('/admin/ai/' + id + '?error=external_validation_disabled');
+          }
+          if (!claimSignature || !claimText) {
+            return h.redirect('/admin/ai/' + id + '?error=missing_claim_signature');
+          }
+
+          try {
+            const record = await biographyStore.fetchBiography(id);
+            if (!record) return h.redirect('/admin/ai/' + id + '?error=record_missing');
+
+            // Assemble subject context for the tools. Q-code lives on the
+            // wikidata block if it was captured at generation time; name
+            // is on the record. If Q-code is absent, Wikipedia can still
+            // work (name-based article lookup) but wikidata-deep will
+            // skip.
+            const subject = {
+              id,
+              name: record.personName || record.name || null,
+              wikidataQCode: (record.wikidata && record.wikidata.qcode) || record.wikidataQCode || null
+            };
+
+            const verdict = await verifyExternal(claimText, subject, {
+              apiKey: config.anthropicApiKey,
+              // Task 52 will surface a config toggle for individual tool
+              // enable/disable; MVP uses the full REGISTRY (wikipedia +
+              // wikidataDeep).
+              toolNames: null
+            });
+
+            if (context === 'finding' && reviewSK) {
+              // Fold the verdict into the finding on the REVIEW# item so
+              // the template's finding__verification block renders it.
+              // We read the review, find the finding by claimSignature,
+              // attach verificationResult, and write back — the
+              // review-store's canonical mutate pattern.
+              try {
+                const review = await reviewStore.getReview(id, reviewSK);
+                if (review && Array.isArray(review.findings)) {
+                  review.findings.forEach(function (f) {
+                    if (f.claimSignature === claimSignature) {
+                      f.verificationResult = {
+                        verdict: verdict.verdict,
+                        confidence: verdict.confidence,
+                        reasoning: verdict.reasoning,
+                        sourceUrl: verdict.sourceUrl,
+                        ranAt: new Date().toISOString(),
+                        ranBy: staffOf(request)
+                      };
+                    }
+                  });
+                  await dynamo.put(review);
+                }
+              } catch (err) {
+                console.warn('Admin AI verify: could not attach verdict to finding', err.message);
+              }
+            } else if (context === 'sentence' && verdict.verdict === 'supported') {
+              // Promote the sentence's source tag so it publishes at
+              // Level 4. Mutate in place; other sentence fields
+              // untouched. If the sentence isn't found (rare — stale
+              // signature after a regen), skip silently — nothing to
+              // promote.
+              const toolName = (verdict.evidence && verdict.evidence[0] && verdict.evidence[0].toolName) || 'external';
+              const promoted = (record.sentences || []).map(function (s) {
+                if (s.claimSignature === claimSignature) {
+                  return Object.assign({}, s, { source: 'llm:validated:' + toolName });
+                }
+                return s;
+              });
+              await biographyStore.saveBiography(id, Object.assign({}, record, {
+                sentences: promoted
+              }));
+            }
+
+            const flash = 'verified=' + encodeURIComponent(verdict.verdict) +
+              '&confidence=' + encodeURIComponent(verdict.confidence);
+            return h.redirect('/admin/ai/' + id + '?' + flash + '#biography');
+          } catch (err) {
+            console.error('Admin AI sentence-verify error:', err.message);
+            return h.redirect('/admin/ai/' + id + '?error=verify_failed');
+          }
+        }
+      }
+    },
+
+    // Resolve a review finding — Accept applies as a curator rejection
+    // on the affected sentence (regen-triggering); Dismiss marks
+    // resolved with no biography change; Clarified is the manual
+    // "curator has attached a clarification and considers the finding
+    // addressed" path (typically reached via the sentence-level
+    // Clarify action followed by explicit Resolve).
+    {
+      method: 'POST',
+      path: '/admin/ai/{id}/findings/resolve',
+      config: {
+        auth: false,
+        handler: async function (request, h) {
+          const authRedirect = requireAuth(request, h, config);
+          if (authRedirect) return authRedirect;
+          const id = request.params.id;
+          const payload = request.payload || {};
+          const reviewSK = (payload.reviewSK || '').toString().trim();
+          const claimSignature = (payload.claimSignature || '').toString().trim();
+          const claimText = (payload.claimText || '').toString().trim() || null;
+          const resolution = (payload.resolution || '').toString().trim();
+          if (!reviewSK || !claimSignature) {
+            return h.redirect('/admin/ai/' + id + '?error=missing_finding_ids');
+          }
+          if (['accepted', 'dismissed', 'clarified'].indexOf(resolution) === -1) {
+            return h.redirect('/admin/ai/' + id + '?error=invalid_resolution');
+          }
+          try {
+            await reviewStore.updateFindingResolution(id, reviewSK, claimSignature, {
+              resolution, resolvedBy: staffOf(request)
+            });
+            // If curator Accepted the finding, cascade to a curator
+            // rejection on the sentence with the reviewer's concern as
+            // the rationale. That way the accepted verdict actually
+            // affects rendering (hides the sentence) AND regen (excludes
+            // it from next writer prompt) — otherwise a lone finding-
+            // resolution has no visible effect until the next review
+            // runs.
+            if (resolution === 'accepted') {
+              await curatorDecisionsStore.addRejection(id, {
+                claimSignature,
+                claimText,
+                rationale: 'Accepted from reviewer finding',
+                rejectedBy: staffOf(request)
+              });
+            }
+            return h.redirect('/admin/ai/' + id + '#findings');
+          } catch (err) {
+            console.error('Admin AI finding-resolve error:', err.message);
+            return h.redirect('/admin/ai/' + id + '?error=resolve_failed');
           }
         }
       }
