@@ -352,10 +352,17 @@ async function generate (elastic, config, id) {
       return null;
     }
 
-    // Generate biography
+    // Generate biography — pass an out-param diagnostics object so we can
+    // persist what went wrong on a null return. Populated by
+    // generateBiography only on failure (see lib/ai/generate-biography.js);
+    // untouched on success. First few KB of the raw Claude response go on
+    // the record so a curator viewing the failed record can see WHAT
+    // Claude returned instead of guessing from log lines that may have
+    // rotated away.
+    const diagnostics = {};
     let result;
     try {
-      result = await generateBiography(personData, allItems, wikidataContext, config.anthropicApiKey, config.aiBiographyModel);
+      result = await generateBiography(personData, allItems, wikidataContext, config.anthropicApiKey, config.aiBiographyModel, undefined, undefined, diagnostics);
     } catch (err) {
       if (err.isConfigError) {
         // Configuration error (bad model name, bad API key, malformed request).
@@ -389,12 +396,23 @@ async function generate (elastic, config, id) {
       // generateBiography, handled above): those never reached Claude and
       // therefore weren't billed, so auto-retry on next page load is safe
       // and that path does NOT persist.
+      //
+      // Diagnostics fields (failureMode / rawResponse / model /
+      // promptVersion / systemPrompt / prompt / parsedKeys / parseError)
+      // are persisted so the admin detail view can show what actually
+      // ran and what Claude produced. rawResponse is truncated to 4000
+      // chars to avoid ballooning DynamoDB item size when a model
+      // occasionally goes long. First 4KB is more than enough to
+      // diagnose (schema mismatch, refusal, truncation all show in the
+      // first paragraph or two).
       console.warn('AI Biography: Claude returned unusable content for', id,
-        '— persisting as insufficient_data to prevent auto-retry burning tokens. Check preceding log line for root cause; staff can Regenerate from admin if the failure was transient.');
+        '— persisting as insufficient_data to prevent auto-retry burning tokens.',
+        '· failureMode:', diagnostics.failureMode || 'unknown',
+        '· promptVersion:', diagnostics.promptVersion || 'unknown');
       if (dynamo.isReady()) {
         await biographyStore.saveBiography(id, {
           status: 'insufficient_data',
-          skipReason: 'Generation failed: Claude returned unusable content (see server logs)',
+          skipReason: 'Generation failed: Claude returned unusable content (see admin diagnostics for details)',
           personName: personData.name,
           pageUrl: '/people/' + id,
           existingDescriptionChars: personData.descriptionChars,
@@ -403,7 +421,18 @@ async function generate (elastic, config, id) {
           signalCount: assessment.signalCount,
           signalsPresent: assessment.present,
           signalsMissing: assessment.missing,
-          subjectStatus: subjStatus
+          subjectStatus: subjStatus,
+          // Failure diagnostics — mirrors success-path metadata (model,
+          // promptVersion, systemPrompt, prompt) so the admin UI's
+          // existing collapsibles work on failed records too.
+          failureMode: diagnostics.failureMode || null,
+          model: diagnostics.model || null,
+          promptVersion: diagnostics.promptVersion || null,
+          systemPrompt: diagnostics.systemPrompt || null,
+          prompt: diagnostics.prompt || null,
+          rawResponse: diagnostics.rawResponse ? String(diagnostics.rawResponse).slice(0, 4000) : null,
+          parsedKeys: diagnostics.parsedKeys || null,
+          parseError: diagnostics.parseError || null
         });
       }
       return null;

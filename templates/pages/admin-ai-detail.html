@@ -257,8 +257,49 @@
         routes/ai-biography.js and admin-ai.js). --}}
   {{#isequal record.skipCategory "failed" this}}
   <p class="text-meta text-warn" style="margin-top: 0.4rem;">
-    Claude was called and billed but returned content we couldn't use (empty / truncated / unparseable). We persist the skip to avoid burning tokens on repeated page loads — but the underlying record may be fine. Click <strong>Regenerate</strong> to try again; if it keeps failing, check the server logs around <span title="{{record.generatedAt}}">{{formatDate record.generatedAt "auto"}}</span> for the underlying Claude error.
+    Claude was called and billed but returned content we couldn't use (empty / truncated / unparseable). We persist the skip to avoid burning tokens on repeated page loads — but the underlying record may be fine. Click <strong>Regenerate</strong> to try again; if it keeps failing, check the diagnostics block below (or server logs around <span title="{{record.generatedAt}}">{{formatDate record.generatedAt "auto"}}</span>) for the underlying Claude error.
   </p>
+
+  {{!-- Failure diagnostics — populated by the public route on the
+        billed-but-unusable path in routes/ai-biography.js. Every field is
+        optional (older failed records generated before this feature
+        landed won't have them, and the block just quietly skips) — so
+        the block only surfaces the fields that were actually captured. --}}
+  {{#if record.failureMode}}
+  <div class="failure-diagnostics" style="margin-top: 0.75rem; padding: 0.75rem 1rem; background: #fbf9f4; border: 1px solid #e4e0d4; border-left: 3px solid #c87a1e; border-radius: 3px;">
+    <h4 style="margin: 0 0 0.4rem 0; font-size: 0.9rem; color: #2a2a2a;">Diagnostics</h4>
+    <dl style="margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 0.2rem 0.75rem; font-size: 0.85rem;">
+      <dt style="color: #646464;">Failure mode</dt>
+      <dd style="margin: 0;">
+        <code style="background: rgba(200, 122, 30, 0.08); padding: 0 0.3rem; border-radius: 2px;">{{record.failureMode}}</code>
+        {{#isequal record.failureMode "missing_biography_field" this}}<span class="text-meta--sm" style="margin-left: 0.4rem;">— Claude returned valid JSON but not in the shape the writer expected. Common causes: prompt/writer version mismatch, model responded with a different top-level key.</span>{{/isequal}}
+        {{#isequal record.failureMode "json_parse_failed" this}}<span class="text-meta--sm" style="margin-left: 0.4rem;">— Claude's response wasn't valid JSON. Most common cause: response truncated mid-string (hit max_tokens).</span>{{/isequal}}
+        {{#isequal record.failureMode "empty_response" this}}<span class="text-meta--sm" style="margin-left: 0.4rem;">— Claude returned no content. Rare; usually a transient upstream issue.</span>{{/isequal}}
+        {{#isequal record.failureMode "text_missing" this}}<span class="text-meta--sm" style="margin-left: 0.4rem;">— Response had no text block at all. Likely an SDK / model mismatch.</span>{{/isequal}}
+      </dd>
+      {{#if record.parsedKeys}}
+      <dt style="color: #646464;">Keys returned</dt>
+      <dd style="margin: 0;">
+        <code style="background: rgba(0,0,0,0.03); padding: 0 0.3rem; border-radius: 2px; font-size: 0.8rem;">{{record.parsedKeys}}</code>
+        <span class="text-meta--sm" style="margin-left: 0.4rem;">— the top-level fields Claude actually produced. If this includes <code>sentences</code>, the writer probably picked up the v7 source-tagged prompt against a v1 writer.</span>
+      </dd>
+      {{/if}}
+      {{#if record.parseError}}
+      <dt style="color: #646464;">Parse error</dt>
+      <dd style="margin: 0;"><code style="background: rgba(176, 48, 48, 0.06); padding: 0 0.3rem; border-radius: 2px; font-size: 0.8rem;">{{record.parseError}}</code></dd>
+      {{/if}}
+    </dl>
+    {{#if record.rawResponse}}
+    {{!-- Raw Claude response — collapsed by default because it can be
+          long. Truncated to 4KB at persist time in routes/ai-biography.js
+          (well beyond what you need to eyeball the shape of the failure). --}}
+    <details style="margin-top: 0.6rem;">
+      <summary style="cursor: pointer; font-size: 0.85rem; color: #646464;">Raw Claude response ({{record.rawResponse.length}} chars, truncated at 4000)</summary>
+      <pre style="white-space: pre-wrap; font-size: 0.75rem; color: #2a2a2a; background: #fdfdfa; border: 1px solid #e4e0d4; border-radius: 3px; padding: 0.6rem; max-height: 24rem; overflow-y: auto; margin: 0.4rem 0 0 0;">{{record.rawResponse}}</pre>
+    </details>
+    {{/if}}
+  </div>
+  {{/if}}
   {{/isequal}}
   {{#isequal record.skipCategory "living" this}}
   <p class="text-meta" style="margin-top: 0.4rem;">

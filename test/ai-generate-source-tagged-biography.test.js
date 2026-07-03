@@ -208,3 +208,83 @@ test('generate: passes model into Anthropic call', async function (t) {
   t.equal(fake.calls[0].model, 'custom-model-x');
   t.end();
 });
+
+// --- opts.diagnostics -------------------------------------------------
+
+test('diagnostics: no_api_key when key + client both missing', async function (t) {
+  const diagnostics = {};
+  const out = await generate(personData(), [], {}, { diagnostics });
+  t.equal(out, null);
+  t.equal(diagnostics.failureMode, 'no_api_key');
+  t.end();
+});
+
+test('diagnostics: api_call_failed when Anthropic client throws', async function (t) {
+  const diagnostics = {};
+  const client = {
+    messages: {
+      create: function () { return Promise.reject(new Error('overloaded_error')); }
+    }
+  };
+  const out = await generate(personData(), [], {}, { apiKey: 'sk-test', client, diagnostics });
+  t.equal(out, null);
+  t.equal(diagnostics.failureMode, 'api_call_failed');
+  t.equal(diagnostics.apiError, 'overloaded_error');
+  t.ok(diagnostics.model, 'model captured');
+  t.ok(diagnostics.promptVersion, 'promptVersion captured');
+  t.ok(diagnostics.systemPrompt, 'systemPrompt captured');
+  t.ok(diagnostics.prompt, 'user prompt captured');
+  t.end();
+});
+
+test('diagnostics: parse_failed on malformed JSON response', async function (t) {
+  const diagnostics = {};
+  const fake = makeFakeClient('this is not JSON at all');
+  const out = await generate(personData(), [], {}, {
+    apiKey: 'sk-test', client: fake.client, diagnostics
+  });
+  t.equal(out, null);
+  t.equal(diagnostics.failureMode, 'parse_failed');
+  t.ok(diagnostics.parseError, 'parseError string set');
+  t.equal(diagnostics.rawResponse, 'this is not JSON at all');
+  t.ok(diagnostics.model);
+  t.ok(diagnostics.promptVersion);
+  t.end();
+});
+
+test('diagnostics: empty_response when Claude returned nothing', async function (t) {
+  const diagnostics = {};
+  const fake = makeFakeClient('');
+  const out = await generate(personData(), [], {}, {
+    apiKey: 'sk-test', client: fake.client, diagnostics
+  });
+  t.equal(out, null);
+  t.equal(diagnostics.failureMode, 'empty_response');
+  t.equal(diagnostics.rawResponse, '');
+  t.end();
+});
+
+test('diagnostics: not populated on success', async function (t) {
+  const diagnostics = {};
+  const fake = makeFakeClient(validResponse());
+  const out = await generate(personData(), [], {}, {
+    apiKey: 'sk-test', client: fake.client, diagnostics
+  });
+  t.ok(out, 'success payload returned');
+  t.notOk(diagnostics.failureMode, 'diagnostics untouched on success');
+  t.end();
+});
+
+test('diagnostics: omitting diagnostics arg does not throw on failure', async function (t) {
+  // Backwards-compat guard: existing callers not passing opts.diagnostics
+  // must still work — the populateDiagnostics helper is a no-op when the
+  // out-param is undefined.
+  const fake = makeFakeClient('not JSON');
+  const out = await generate(personData(), [], {}, {
+    apiKey: 'sk-test', client: fake.client
+    // no diagnostics
+  });
+  t.equal(out, null, 'still returns null');
+  t.pass('no throw');
+  t.end();
+});
