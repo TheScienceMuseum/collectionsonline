@@ -226,10 +226,24 @@
   <div>
     <dt>Confidence</dt>
     <dd title="The model's self-reported confidence in its own output (0 = no data, 10 = rich, well-grounded). LLM self-reporting is a weak signal — we track it to observe calibration over time. The Signal score (data in) is a stronger quality proxy.">
-      {{#if record.confidence}}{{record.confidence}} / 10{{else}}—{{/if}}
+      {{#if record.confidence}}{{record.confidence}} / 10{{else}}{{#if record.writerConfidence}}{{record.writerConfidence}} / 10{{else}}—{{/if}}{{/if}}
       <span class="text-meta--sm">· self-reported</span>
     </dd>
   </div>
+  {{#if renderedBiography.sentences.length}}
+  {{!-- Publishing-level indicator — only populated for v2 (source-tagged)
+        records. Legacy records skip this field because they don't have
+        per-sentence source tags to filter by. --}}
+  <div class="detail-meta__field--secondary">
+    <dt>Publishing level</dt>
+    <dd title="Collection-wide filter for which source tags publish. Level 3 (default) publishes museum + wikidata + llm:inferred + llm:contextualising. Curators override per-sentence via approve.">
+      <strong>{{renderedBiography.publishingLevel}}</strong>
+      <span class="text-meta">·
+        {{renderedBiography.visibleCount}} shown / {{renderedBiography.hiddenCount}} hidden
+      </span>
+    </dd>
+  </div>
+  {{/if}}
 </div>
 
 {{#if record.skipReason}}
@@ -264,20 +278,266 @@
 </div>
 {{/if}}
 
-{{!-- Biography + Collection Context use .prose-body for long-form
-      reading typography (serif, 1.65 leading, ~68ch max-width). The
-      previous nested-card pattern (a #fbf9f4 box inside the parent
-      #fbf9f4 .detail-section) doubled the padding and added no
-      visual benefit, so the inner wrapper has been dropped — the
-      biographyHtml renders directly into the section with prose
-      typography applied via the wrapper class. --}}
-{{#if record.biographyHtml}}
+{{!-- v2 sentence-level biography — replaces the v1 prose block for
+      records produced by the source-tagged writer. Falls back to the
+      legacy prose block (a raw biographyHtml render) for records still
+      carrying the v1 shape (no sentences[] on the item). Three panels
+      sit above the biography itself:
+
+        (1) regen banner — only shown when curator actions have
+            accumulated since the last generation (rejections /
+            clarifications / accepted findings). Prompts the curator to
+            batch-apply them via one Regenerate call.
+        (2) open findings panel — reviewer-emitted concerns from the
+            per-generation review that the curator hasn't resolved yet,
+            grouped by severity so likely-error items surface first.
+        (3) sentence list — each sentence rendered with its source pill,
+            curator-decision indicators, and per-sentence action forms
+            (approve / reject / clarify / verify externally). Paragraph
+            breaks are visualised with a slim divider between list items.
+
+      Publishing filter level and visible/hidden counts sit in the
+      detail-meta block above. --}}
+
+{{#if regenRecommended}}
+<div class="regen-banner">
+  {{!-- Amber banner: consistent styling with the "outdated review prompt"
+        marker + skip-category caution paragraphs. Small enough not to
+        dominate the page but distinctive enough that a curator scanning
+        the page knows there's pending work. --}}
+  <div class="regen-banner__body">
+    <strong>{{pendingChangeCount}} pending change{{#unless pendingChangeSingular}}s{{/unless}}</strong>
+    — rejections and clarifications you've added since the last generation.
+    Regenerate to fold them into the biography prose.
+  </div>
+  <form method="POST" action="/admin/ai/{{record.PK}}/regenerate" class="regen-banner__action">
+    <button type="submit" class="btn btn--primary">Regenerate to apply</button>
+  </form>
+</div>
+{{/if}}
+
+{{#if openFindings.length}}
+<details class="detail-section findings-panel" id="findings" open>
+  <summary class="findings-panel__summary">
+    <span class="findings-panel__title">Open review findings ({{openFindings.length}})</span>
+    <span class="text-meta findings-panel__hint">— reviewer concerns awaiting curator decision. Highest severity first.</span>
+  </summary>
+  <p class="text-meta" style="margin: 0.5rem 0 0.75rem 0;">
+    Findings are the per-generation reviewer's suspicions about specific sentences. Accept to hide the sentence,
+    dismiss to leave it in place, or verify against external sources to make an informed call.
+    High-confidence error findings hide their sentence by default until you resolve them.
+  </p>
+  <ul class="findings-list">
+    {{#each openFindings}}
+    <li class="finding finding--{{this.kind}}-{{this.confidence}}" data-signature="{{this.claimSignature}}">
+      <div class="finding__header">
+        {{#isequal this.kind "error" this}}
+          {{#isequal this.confidence "high" this}}<span class="pill pill--danger" title="Reviewer flagged this as likely wrong (error · high)">likely error</span>{{/isequal}}
+          {{#isequal this.confidence "medium" this}}<span class="pill pill--attention" title="Reviewer flagged this as possibly wrong (error · medium)">possible issue</span>{{/isequal}}
+          {{#isequal this.confidence "low" this}}<span class="pill pill--attention" title="Reviewer flagged this as a hunch (error · low)">hunch</span>{{/isequal}}
+        {{else}}
+          <span class="pill" title="Reviewer left contextual information without asserting wrongness (info)">info · {{this.confidence}}</span>
+        {{/isequal}}
+        <span class="finding__concern">{{this.concern}}</span>
+      </div>
+      {{#if this.claimText}}
+      <div class="finding__claim">&ldquo;{{this.claimText}}&rdquo;</div>
+      {{/if}}
+      <div class="finding__actions">
+        {{!-- Accept applies as a curator rejection (regen-triggering).
+              Dismiss marks resolved with no biography change. Verify
+              routes to the same on-demand external-verification code
+              path as the sentence-level Verify button. --}}
+        <form method="POST" action="/admin/ai/{{../record.PK}}/findings/resolve" class="finding__form">
+          <input type="hidden" name="reviewSK" value="{{this.reviewSK}}">
+          <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+          <input type="hidden" name="claimText" value="{{this.claimText}}">
+          <input type="hidden" name="resolution" value="accepted">
+          <button type="submit" class="btn btn--secondary" title="Accept the finding — sentence is hidden and regen constrained to exclude it">Accept</button>
+        </form>
+        <form method="POST" action="/admin/ai/{{../record.PK}}/findings/resolve" class="finding__form">
+          <input type="hidden" name="reviewSK" value="{{this.reviewSK}}">
+          <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+          <input type="hidden" name="resolution" value="dismissed">
+          <button type="submit" class="btn btn--secondary" title="Reviewer's concern is not valid — mark resolved with no biography change">Dismiss</button>
+        </form>
+        {{#if ../reviewConfig.externalValidationEnabled}}
+        <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/verify" class="finding__form">
+          <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+          <input type="hidden" name="claimText" value="{{this.claimText}}">
+          <input type="hidden" name="context" value="finding">
+          <input type="hidden" name="reviewSK" value="{{this.reviewSK}}">
+          <button type="submit" class="btn btn--secondary" title="Run external verification (Wikipedia / Wikidata etc.) against this claim">Verify against sources</button>
+        </form>
+        {{/if}}
+      </div>
+      {{#if this.verificationResult}}
+        {{!-- If a curator has previously run verification against this
+              finding, show the verdict + evidence inline so they don't
+              need to re-run it. Result is short-form; the "toolResults"
+              detail is available on the verification history page. --}}
+        <div class="finding__verification finding__verification--{{this.verificationResult.verdict}}">
+          <strong>{{this.verificationResult.verdict}}</strong>
+          ({{this.verificationResult.confidence}})
+          — {{this.verificationResult.reasoning}}
+          {{#if this.verificationResult.sourceUrl}}
+            · <a href="{{this.verificationResult.sourceUrl}}" target="_blank" rel="noopener">source ↗</a>
+          {{/if}}
+        </div>
+      {{/if}}
+    </li>
+    {{/each}}
+  </ul>
+</details>
+{{/if}}
+
+{{#if renderedBiography.sentences.length}}
 <div class="detail-section" id="biography">
   <h3>Biography</h3>
+  <div class="biography-summary">
+    <span title="Publishing level filters sentences by their source tag. Level 3 (default) publishes museum + wikidata + llm:inferred + llm:contextualising sentences; llm:general_knowledge sentences are hidden until verified.">
+      Publishing level <strong>{{renderedBiography.publishingLevel}}</strong> —
+      showing <strong>{{renderedBiography.visibleCount}}</strong>
+      of <strong>{{renderedBiography.totalCount}}</strong> sentences
+      ({{renderedBiography.hiddenCount}} hidden)
+    </span>
+  </div>
+
+  {{!-- Legend + colour swatches for the source pills. Colours match the
+        [data-source="..."] selectors below so a curator can eyeball
+        each sentence's provenance without hovering. --}}
+  <div class="sentence-source-legend">
+    <span class="sentence-source-legend__label">Sources:</span>
+    <span class="pill sentence__source-pill" data-source="museum">museum</span>
+    <span class="pill sentence__source-pill" data-source="wikidata">wikidata</span>
+    <span class="pill sentence__source-pill" data-source="llm:inferred">llm:inferred</span>
+    <span class="pill sentence__source-pill" data-source="llm:contextualising">llm:contextualising</span>
+    <span class="pill sentence__source-pill" data-source="llm:general_knowledge">llm:general_knowledge</span>
+  </div>
+
+  <ol class="sentence-list">
+    {{#each renderedBiography.sentences}}
+    <li class="sentence{{#unless this.visible}} sentence--hidden{{/unless}}{{#isequal this.curatorDecision "approved" this}} sentence--approved{{/isequal}}{{#isequal this.curatorDecision "rejected" this}} sentence--rejected{{/isequal}}" data-source="{{this.source}}" data-signature="{{this.claimSignature}}">
+      <div class="sentence__text">{{this.text}}</div>
+      <div class="sentence__meta">
+        <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{#if this.sourceDetail}}Source: {{this.sourceDetail}}{{else}}Source tag: {{this.source}}{{/if}}">
+          {{this.source}}{{#if this.sourceDetail}} · {{this.sourceDetail}}{{/if}}
+        </span>
+        {{#isequal this.curatorDecision "approved" this}}
+          <span class="pill pill--positive" title="Approved by curator — publishes regardless of source-tag filter">✓ approved</span>
+        {{/isequal}}
+        {{#isequal this.curatorDecision "rejected" this}}
+          <span class="pill pill--danger" title="Rejected by curator — hidden here and excluded from next regen">✗ rejected</span>
+        {{/isequal}}
+        {{#if this.clarification}}
+          <span class="pill pill--attention" title="{{this.clarification}}">📝 clarification</span>
+        {{/if}}
+        {{#if this.reviewFinding}}
+          {{#isequal this.reviewFinding.kind "error" this}}
+            {{#isequal this.reviewFinding.confidence "high" this}}<span class="pill pill--danger" title="{{this.reviewFinding.concern}}">⚠ likely error</span>{{/isequal}}
+            {{#isequal this.reviewFinding.confidence "medium" this}}<span class="pill pill--attention" title="{{this.reviewFinding.concern}}">⚠ possible issue</span>{{/isequal}}
+            {{#isequal this.reviewFinding.confidence "low" this}}<span class="pill pill--attention" title="{{this.reviewFinding.concern}}">⚠ hunch</span>{{/isequal}}
+          {{else}}
+            <span class="pill" title="{{this.reviewFinding.concern}}">ⓘ info</span>
+          {{/isequal}}
+        {{/if}}
+        {{#unless this.visible}}
+          {{#isequal this.hiddenReason "below_publishing_level" this}}<span class="pill pill--muted" title="Source tag {{this.source}} is below the current publishing level ({{../renderedBiography.publishingLevel}}). Approve to publish anyway.">hidden · below level</span>{{/isequal}}
+          {{#isequal this.hiddenReason "reviewer_error_high" this}}<span class="pill pill--muted" title="Hidden because a high-confidence error finding is open on this sentence. Resolve the finding or approve to publish.">hidden · pending finding</span>{{/isequal}}
+        {{/unless}}
+      </div>
+
+      <details class="sentence__actions">
+        <summary>curator actions</summary>
+        <div class="sentence__actions-body">
+          <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/approve" class="sentence__action-form">
+            <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+            <input type="hidden" name="claimText" value="{{this.text}}">
+            <button type="submit" class="btn btn--secondary" title="Approve this sentence — publishes regardless of source tag; no regen">Approve</button>
+          </form>
+          <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/reject" class="sentence__action-form">
+            <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+            <input type="hidden" name="claimText" value="{{this.text}}">
+            <input type="text" name="rationale" placeholder="Optional rationale for regen" class="sentence__action-input">
+            <button type="submit" class="btn btn--secondary" title="Reject — hidden here and excluded from next regen">Reject</button>
+          </form>
+          <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/clarify" class="sentence__action-form">
+            <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+            <input type="hidden" name="claimText" value="{{this.text}}">
+            <input type="text" name="clarification" placeholder="Guidance for next regen (e.g. 'use ForMemRS not Fellow')" class="sentence__action-input" required>
+            <button type="submit" class="btn btn--secondary" title="Add curator guidance for the next regeneration">Add clarification</button>
+          </form>
+          {{#isequal this.source "llm:general_knowledge" this}}
+          {{#if ../reviewConfig.externalValidationEnabled}}
+          <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/verify" class="sentence__action-form">
+            <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+            <input type="hidden" name="claimText" value="{{this.text}}">
+            <input type="hidden" name="context" value="sentence">
+            <button type="submit" class="btn btn--secondary" title="Verify externally — Wikipedia / Wikidata / etc. If supported, promotes to llm:validated and publishes.">Verify externally</button>
+          </form>
+          {{/if}}
+          {{/isequal}}
+        </div>
+      </details>
+
+      {{#if this.paragraphBreak}}<hr class="sentence__paragraph-break" aria-hidden="true">{{/if}}
+    </li>
+    {{/each}}
+  </ol>
+
+  <details class="collapsible" style="margin-top: 0.75rem;">
+    <summary>Rendered public HTML <span class="text-meta" style="font-weight: normal;">— what visitors see, after filter + curator overrides</span></summary>
+    <div class="detail-section">
+      <div class="prose-body">{{{renderedBiography.html}}}</div>
+    </div>
+  </details>
+</div>
+
+{{#if record.writerNotes}}
+<details class="collapsible" style="margin-top: 0.75rem;">
+  <summary>Writer notes <span class="text-meta" style="font-weight: normal;">— the model's own editorial reasoning for this generation</span></summary>
+  <div class="detail-section">
+    <p style="white-space: pre-wrap; margin: 0;">{{record.writerNotes}}</p>
+  </div>
+</details>
+{{/if}}
+
+{{#if record.verificationCandidates}}
+<details class="collapsible" style="margin-top: 0.75rem;">
+  <summary>Verification candidates <span class="text-meta" style="font-weight: normal;">— sentences that could be promoted with external validation</span></summary>
+  <div class="detail-section">
+    <p class="text-meta" style="margin: 0 0 0.5rem 0;">
+      Counters instrumented for future Mode B batch validation. Not billed unless you run per-sentence verification manually.
+    </p>
+    <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 0.75rem; flex-wrap: wrap; font-size: 0.85rem;">
+      <li><strong>{{record.verificationCandidates.generalKnowledgeCount}}</strong> general knowledge</li>
+      <li><strong>{{record.verificationCandidates.contextualisingCount}}</strong> contextualising</li>
+      <li><strong>{{record.verificationCandidates.lowConfidenceInferredCount}}</strong> low-confidence inferred</li>
+      {{#if record.verificationCandidates.estimatedCoVeCost}}
+      <li title="What Mode B batch validation on all candidates would cost">est. Mode B cost: <strong>{{record.verificationCandidates.estimatedCoVeCost}}</strong></li>
+      {{/if}}
+    </ul>
+  </div>
+</details>
+{{/if}}
+
+{{else}}
+{{!-- Legacy fallback: records generated by the pre-v2 pipeline that
+      only carry biographyHtml and don't have a sentences array to
+      render sentence-level. Shows the raw prose so curators can still
+      view / delete / regenerate; no sentence-level tooling available
+      until the record is regenerated with the source-tagged writer. --}}
+{{#if record.biographyHtml}}
+<div class="detail-section" id="biography">
+  <h3>Biography <span class="text-meta" style="font-size: 0.75rem; font-weight: normal;">— legacy prose (pre-source-tagging)</span></h3>
+  <p class="text-meta" style="margin: 0 0 0.5rem 0;">
+    This record was produced by the pre-v2 pipeline and doesn't have per-sentence source tags. Regenerate to unlock sentence-level review + curator actions.
+  </p>
   <div class="prose-body">
     {{{record.biographyHtml}}}
   </div>
 </div>
+{{/if}}
 {{/if}}
 
 {{#if record.contextHtml}}
@@ -288,6 +548,66 @@
   </div>
 </div>
 {{/if}}
+
+{{!-- Scoped styling for the sentence-level view. Kept inline (not in
+      the shared Sass bundle) because this whole file is only ever
+      served from /admin/ai/{id} and iterating on the layout here is
+      quicker than a Sass rebuild. Follows the same pattern as
+      .rating-btn below (staff-only admin UI, transient styling). --}}
+<style>
+  .regen-banner { background: #f5efdd; border: 1px solid #c87a1e; border-left-width: 4px; border-radius: 4px; padding: 0.75rem 1rem; margin: 0 0 1.25rem 0; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .regen-banner__body { flex: 1 1 auto; font-size: 0.9rem; color: #2a2a2a; min-width: 0; }
+  .regen-banner__action { flex: 0 0 auto; }
+
+  .findings-panel { background: #fbf9f4; border: 1px solid #e4e0d4; border-radius: 6px; padding: 0.75rem 1rem; margin: 0 0 1.25rem 0; }
+  .findings-panel__summary { cursor: pointer; display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
+  .findings-panel__title { font-weight: 600; color: #2a2a2a; font-size: 1rem; }
+  .findings-panel__hint { font-weight: normal; }
+  .findings-list { list-style: none; padding: 0; margin: 0.5rem 0 0 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .finding { background: #fdfdfa; border: 1px solid #e4e0d4; border-radius: 3px; padding: 0.6rem 0.8rem; }
+  .finding--error-high { border-left: 3px solid #b03030; }
+  .finding--error-medium, .finding--error-low, .finding--info-medium, .finding--info-high { border-left: 3px solid #c87a1e; }
+  .finding--info-low { border-left: 3px solid #c5c1b5; }
+  .finding__header { display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
+  .finding__concern { color: #2a2a2a; font-size: 0.9rem; }
+  .finding__claim { color: #5e564c; font-size: 0.86rem; margin: 0.35rem 0; font-style: italic; }
+  .finding__actions { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.4rem; }
+  .finding__form { display: inline; }
+  .finding__verification { margin-top: 0.5rem; padding: 0.5rem 0.75rem; border-radius: 3px; font-size: 0.85rem; }
+  .finding__verification--supported { background: rgba(46, 125, 74, 0.08); color: #2e5a3d; }
+  .finding__verification--unsupported { background: rgba(176, 48, 48, 0.08); color: #7a2020; }
+  .finding__verification--unclear { background: rgba(200, 122, 30, 0.08); color: #7a4a10; }
+
+  .biography-summary { margin-bottom: 0.5rem; font-size: 0.9rem; color: #5e564c; }
+
+  .sentence-source-legend { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin: 0 0 1rem 0; font-size: 0.75rem; }
+  .sentence-source-legend__label { color: #646464; margin-right: 0.2rem; }
+
+  .sentence-list { list-style: none; padding: 0; margin: 0; }
+  .sentence { padding: 0.6rem 0.8rem; margin: 0.35rem 0; background: #fdfdfa; border: 1px solid #efece4; border-radius: 3px; }
+  .sentence--hidden { background: #f5f3ec; color: #646464; }
+  .sentence--hidden .sentence__text { color: #7a726a; }
+  .sentence--approved { border-left: 3px solid #2e7d4a; }
+  .sentence--rejected { background: #f7ecec; border-left: 3px solid #b03030; color: #7a2020; }
+  .sentence__text { font-family: Georgia, serif; font-size: 1rem; line-height: 1.55; }
+  .sentence__meta { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.35rem; }
+  .sentence__source-pill { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.72rem; }
+  .sentence__source-pill[data-source="museum"] { background: #e6efe4; border: 1px solid #a9c3a4; color: #2e5a3d; }
+  .sentence__source-pill[data-source="wikidata"] { background: #e2ecef; border: 1px solid #97b5c4; color: #204a5a; }
+  .sentence__source-pill[data-source="llm:inferred"] { background: #f0eae2; border: 1px solid #c5b6a2; color: #5a4a30; }
+  .sentence__source-pill[data-source="llm:contextualising"] { background: #f2eeda; border: 1px solid #c9be8a; color: #5a5020; }
+  .sentence__source-pill[data-source="llm:general_knowledge"] { background: #f5e2e2; border: 1px solid #b0797a; color: #7a2020; }
+  .sentence__source-pill[data-source^="llm:validated"] { background: #d9e8dc; border: 1px solid #6da97e; color: #2e5a3d; }
+
+  .sentence__actions { margin-top: 0.4rem; font-size: 0.8rem; }
+  .sentence__actions > summary { color: #646464; cursor: pointer; }
+  .sentence__actions-body { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.4rem; padding: 0.5rem; background: #fbf9f4; border-radius: 3px; }
+  .sentence__action-form { display: flex; gap: 0.3rem; align-items: center; }
+  .sentence__action-input { border: 1px solid #c5c1b5; border-radius: 3px; padding: 0.25rem 0.5rem; font-size: 0.8rem; font-family: inherit; min-width: 14rem; }
+  .sentence__paragraph-break { border: 0; border-top: 1px dashed #c5c1b5; margin: 0.75rem 0 0.35rem 0; }
+
+  .pill--muted { background: #efece4; border: 1px solid #c5c1b5; color: #646464; }
+</style>
 
 {{!-- Existing brief / full biography: same prose treatment as the
       AI biography + context above. white-space:pre-wrap retained so
