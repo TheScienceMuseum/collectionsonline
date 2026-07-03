@@ -41,5 +41,11 @@
   "adminToken": "",
   "___bio_thresholds_comment": "Skip generation if existing description > maxExistingChars; suppress original if < suppressExistingChars.",
   "aiBiographyMaxExistingChars": 500,
-  "aiBiographySuppressExistingChars": 50
+  "aiBiographySuppressExistingChars": 50,
+
+  "___v2_pipeline_comment": "v2 source-tagged pipeline (see lib/ai/generate-source-tagged-biography.js). Publishing level 0-5 filters which source tags publish; 3 is the safe default (museum + wikidata + inferred + contextualising). Per-generation review defaults on (Sonnet, ~£0.001-0.002/record). External validation off by default — enables the on-demand 'Verify externally' button.",
+  "aiBiographyPublishingLevel": 3,
+  "aiBiographyPerGenerationReviewEnabled": true,
+  "aiBiographyExternalValidationEnabled": false,
+  "aiBiographyExternalValidationMaxSources": 3
 }

@@ -522,16 +522,20 @@ async function generate (elastic, config, id) {
     }
 
     // Per-generation reviewer — runs after every successful writer call.
-    // Feature-flagged: config.aiBiographyReviewEnabled defaults to true, so
-    // reviewers run by default; a curator can flip it off if the reviewer's
-    // findings become noisy in production. Failure to review is non-fatal
-    // (best-effort audit trail) — the biography still saves and serves.
+    // Feature-flagged on config.aiBiographyPerGenerationReviewEnabled
+    // (distinct from aiBiographyReviewEnabled, which gates the Opus
+    // manual escalation button — different reviewer, different model,
+    // different cost profile). Defaults to true; curator can flip it off
+    // if the reviewer's findings become noisy in production. Uses the
+    // writer's model as fallback — the per-generation reviewer wants
+    // Sonnet-tier cost, NOT Opus. Failure to review is non-fatal —
+    // biography still saves and serves.
     let reviewResult = null;
-    if (config.aiBiographyReviewEnabled !== false) {
+    if (config.aiBiographyPerGenerationReviewEnabled !== false) {
       try {
         reviewResult = await reviewBiographyTagged(result, {
           apiKey: config.anthropicApiKey,
-          model: config.aiBiographyReviewModel || config.aiBiographyModel,
+          model: config.aiBiographyModel,
           personData,
           gbpPerUsd: config.aiBiographyGbpPerUsd
         });

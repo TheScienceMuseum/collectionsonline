@@ -1723,17 +1723,17 @@ async function runRegenerate (elastic, config, id, promptVersion, opts) {
     ? 'insufficient_data'
     : 'live';
 
-  // Per-generation reviewer — same policy as the public route. Failure
-  // to review is non-fatal; the biography still saves. Uses the v2
-  // source-tagged reviewer (reviewBiographyTagged), not the legacy Opus
-  // review module (`reviewBiography`) which remains bound to the
-  // manual "Run AI review" button on the admin detail page.
+  // Per-generation reviewer — same policy as the public route. Gated
+  // on aiBiographyPerGenerationReviewEnabled (NOT aiBiographyReviewEnabled
+  // — that's the Opus manual escalation button, different reviewer +
+  // model). Uses the writer's model (Sonnet-tier) for cost parity with
+  // the public route.
   let reviewResult = null;
-  if (config.aiBiographyReviewEnabled !== false) {
+  if (config.aiBiographyPerGenerationReviewEnabled !== false) {
     try {
       reviewResult = await reviewBiographyTagged(result, {
         apiKey: config.anthropicApiKey,
-        model: config.aiBiographyReviewModel || config.aiBiographyModel,
+        model: config.aiBiographyModel,
         personData,
         gbpPerUsd: config.aiBiographyGbpPerUsd
       });

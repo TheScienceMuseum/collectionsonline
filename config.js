@@ -87,6 +87,58 @@ module.exports = require('rc')('co', {
   // fact-check / sanity-check biographies when reports come in. Uses the
   // premium model by default (deliberately expensive — "pay for quality
   // when you click the button"). Kill switch for launch / emergencies.
+  //
+  // Note: the plan document originally proposed reusing the
+  // aiBiographyReviewEnabled key for BOTH the manual Opus escalation and
+  // the new v2 per-generation review, but the two have opposite defaults
+  // (Opus off by default; per-generation on by default) and opposite
+  // cost profiles (Opus expensive; per-generation cheap). Keeping them
+  // as two separate keys avoids a single env var meaning different
+  // things at different price points.
   aiBiographyReviewEnabled: process.env.AI_BIOGRAPHY_REVIEW_ENABLED === 'true',
-  aiBiographyReviewModel: process.env.AI_BIOGRAPHY_REVIEW_MODEL || 'claude-opus-4-7'
+  aiBiographyReviewModel: process.env.AI_BIOGRAPHY_REVIEW_MODEL || 'claude-opus-4-7',
+
+  // ---------------------------------------------------------------------
+  // v2 source-tagged pipeline config
+  // ---------------------------------------------------------------------
+
+  // Publishing level (collection-wide filter for which source tags
+  // publish). Integer 0-5:
+  //   0 = museum only
+  //   1 = + wikidata
+  //   2 = + llm:inferred                    (writer synthesis of inputs)
+  //   3 = + llm:contextualising              (safe default — ship here)
+  //   4 = + llm:validated:*                  (external-source verified)
+  //   5 = + llm:general_knowledge            (full LLM freedom; NOT recommended)
+  // See lib/ai/render-biography.js PUBLISHING_LEVELS + the plan for the
+  // full policy rationale. Curators can override per-sentence via
+  // "Approve" on the admin detail page regardless of this level.
+  aiBiographyPublishingLevel: (function () {
+    const raw = parseInt(process.env.AI_BIOGRAPHY_PUBLISHING_LEVEL, 10);
+    if (!Number.isFinite(raw)) return 3;
+    return Math.max(0, Math.min(5, raw));
+  })(),
+
+  // Per-generation reviewer (Sonnet by default — cheap, ~£0.001-0.002
+  // per record). Runs after every successful writer call in the public
+  // + admin regenerate flows. Findings surface in the admin detail's
+  // open-findings panel. Kill switch for the case where the reviewer's
+  // signal-to-noise ratio drops in production. DEFAULTS TO TRUE — the
+  // whole v2 defensive-by-default design assumes this pass is running.
+  aiBiographyPerGenerationReviewEnabled: process.env.AI_BIOGRAPHY_PER_GENERATION_REVIEW_ENABLED !== 'false',
+
+  // External validation (Mode A on-demand CoVe against Wikipedia +
+  // Wikidata deep + Phase-2 authorities as they ship). Gates the
+  // "Verify externally" button on sentences + review findings in the
+  // admin UI. Off by default — costs money per verification and needs
+  // curator + operator agreement before enabling. When true, the button
+  // appears wherever it's relevant; verify-external.js still runs its
+  // per-tool availability checks.
+  aiBiographyExternalValidationEnabled: process.env.AI_BIOGRAPHY_EXTERNAL_VALIDATION_ENABLED === 'true',
+
+  // Maximum external sources verify-external.js will query per claim.
+  // Bounds cost + latency on a single verification call — with 2 tools
+  // shipped in Phase 1 (wikipedia + wikidataDeep) this is currently
+  // no-op, but the ceiling matters once Phase 2 authorities land.
+  aiBiographyExternalValidationMaxSources: parseInt(process.env.AI_BIOGRAPHY_EXTERNAL_VALIDATION_MAX_SOURCES, 10) || 3
 });
