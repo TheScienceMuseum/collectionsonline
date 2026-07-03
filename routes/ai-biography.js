@@ -4,7 +4,11 @@ const TypeMapping = require('../lib/type-mapping');
 const getRelatedItems = require('../lib/get-related-items');
 const sortRelated = require('../lib/sort-related-items');
 const extractPersonData = require('../lib/ai/extract-person-data');
-const generateBiography = require('../lib/ai/generate-biography');
+const generateSourceTaggedBiography = require('../lib/ai/generate-source-tagged-biography');
+const reviewBiographyTagged = require('../lib/ai/review-biography-tagged');
+const curatorDecisionsStore = require('../lib/ai/curator-decisions-store');
+const reviewStore = require('../lib/ai/review-store');
+const renderBiography = require('../lib/ai/render-biography');
 const biographyStore = require('../lib/ai/biography-store');
 const dynamo = require('../lib/ai/dynamo');
 const normaliseWikidata = require('../lib/helpers/normalise-wikidata');
@@ -36,6 +40,57 @@ const DESCRIPTION_MAX_CHARS = 500;
 
 function truncateDescription (text) {
   return truncateDescriptionAtSentence(text, DESCRIPTION_MAX_CHARS);
+}
+
+// v2 writer emits source tags inline on each sentence (`sourceDetail:
+// 'relatedItem:coXXXXX'` when a sentence cites a collection item).
+// Downstream templates still expect a top-level `references` list of
+// { id, title, link, type } objects — same shape v1 emitted — so the
+// person page's "referenced by" block continues to work unchanged.
+// Derive it from sentences that cite a specific related item, then
+// look up each ID in the flattened related-items list to pick up the
+// human-readable title + link. Deduplicated on ID; order preserved.
+function deriveReferencesFromSentences (sentences, relatedItems) {
+  if (!Array.isArray(sentences) || sentences.length === 0) return [];
+  const byId = {};
+  (relatedItems || []).forEach(function (item) {
+    if (item && item.id) byId[item.id] = item;
+  });
+  const out = [];
+  const seen = new Set();
+  sentences.forEach(function (s) {
+    if (!s || !s.sourceDetail || typeof s.sourceDetail !== 'string') return;
+    if (s.sourceDetail.indexOf('relatedItem:') !== 0) return;
+    const refId = s.sourceDetail.slice('relatedItem:'.length);
+    if (seen.has(refId)) return;
+    seen.add(refId);
+    const item = byId[refId];
+    if (!item) return;
+    out.push({
+      id: item.id,
+      title: item.title || '',
+      link: item.link || null,
+      type: item.type || null
+    });
+  });
+  return out;
+}
+
+// Top-level `sources` list — v1 emitted ['collection'] or
+// ['collection', 'wikidata']; v2 derives the same list from the
+// source tags actually used across sentences. Same shape, same
+// downstream consumers.
+function deriveSourcesFromSentences (sentences) {
+  const set = new Set();
+  (sentences || []).forEach(function (s) {
+    if (!s || typeof s.source !== 'string') return;
+    if (s.source === 'museum') set.add('collection');
+    else if (s.source === 'wikidata') set.add('wikidata');
+    else if (s.source.indexOf('llm:validated:') === 0) {
+      set.add(s.source.slice('llm:validated:'.length));
+    }
+  });
+  return Array.from(set);
 }
 
 function flattenRelated (sortedRelated, personId) {
@@ -352,50 +407,45 @@ async function generate (elastic, config, id) {
       return null;
     }
 
-    // Generate biography — pass an out-param diagnostics object so we can
-    // persist what went wrong on a null return. Populated by
-    // generateBiography only on failure (see lib/ai/generate-biography.js);
-    // untouched on success. First few KB of the raw Claude response go on
-    // the record so a curator viewing the failed record can see WHAT
-    // Claude returned instead of guessing from log lines that may have
-    // rotated away.
+    // v2 source-tagged writer. Curator decisions (rejections + clarifications)
+    // are fetched best-effort and injected into the writer prompt as
+    // subject-specific constraints — for a fresh subject that's typically null,
+    // for a subject the curator has already worked on it feeds prior decisions
+    // back into the next generation. Diagnostics is an out-param object;
+    // populated on failure and persisted to the record so a curator viewing
+    // the failed record sees what actually ran instead of grepping logs.
+    const curatorDecisions = await curatorDecisionsStore.get(id).catch(function () { return null; });
     const diagnostics = {};
     let result;
     try {
-      result = await generateBiography(personData, allItems, wikidataContext, config.anthropicApiKey, config.aiBiographyModel, undefined, undefined, diagnostics);
+      result = await generateSourceTaggedBiography(personData, allItems, wikidataContext, {
+        apiKey: config.anthropicApiKey,
+        model: config.aiBiographyModel,
+        curatorDecisions,
+        diagnostics
+      });
     } catch (err) {
-      if (err.isConfigError) {
-        // Configuration error (bad model name, bad API key, malformed request).
-        // Surface loudly — retries will never succeed until config is fixed.
-        console.error('AI Biography: Configuration error for', id, '- status', err.statusCode, '-', err.message);
-        console.error('AI Biography: Check config.aiBiographyModel and config.anthropicApiKey. Generation disabled until resolved.');
-        return null;
-      }
-      if (err.isApiError) {
-        // Transient API error (overload, timeout, network) — don't persist, allow retry next page load
-        console.warn('AI Biography: Transient API error for', id, '-', err.message);
-        return null;
-      }
-      throw err;
+      // v2 writer catches its own API errors internally and returns null with
+      // a populated diagnostics object; anything that surfaces via `catch`
+      // is unexpected. Log + swallow so a page hit doesn't 500.
+      console.error('AI Biography: Unexpected error from v2 writer for', id, '-', err.message);
+      return null;
     }
 
     if (!result) {
-      // A null return from generateBiography means the API call SUCCEEDED
-      // (so we were billed) but the response content was unusable — empty
-      // body, truncation, unparseable JSON, or missing the `biography` field.
-      // Persist the record as insufficient_data with a specific skipReason
-      // so subsequent page loads of this URL don't each trigger another
-      // billed Claude call (a popular record's URL could otherwise burn a
-      // meaningful amount of tokens repeating the same failure).
+      // A null return from the v2 writer means either the API call failed
+      // (network / API error surfaced via diagnostics.failureMode =
+      // 'api_call_failed' — we WERE NOT billed there; the SDK caught the
+      // error before sending), OR the API call succeeded but the response
+      // content was unusable (empty body, unparseable JSON, wrong shape —
+      // we WERE billed). Both are persisted here so the admin detail
+      // page can distinguish them via the failure diagnostics block
+      // shipped in Task 55, and either way subsequent page loads don't
+      // re-issue the call.
       //
       // Staff can retry manually from the admin detail page via Regenerate
       // — they're paying attention, one retry is fine, and the manual click
       // gives them the feedback loop if the failure persists.
-      //
-      // Contrast with NETWORK errors (caught + thrown as isApiError inside
-      // generateBiography, handled above): those never reached Claude and
-      // therefore weren't billed, so auto-retry on next page load is safe
-      // and that path does NOT persist.
       //
       // Diagnostics fields (failureMode / rawResponse / model /
       // promptVersion / systemPrompt / prompt / parsedKeys / parseError)
@@ -438,9 +488,12 @@ async function generate (elastic, config, id) {
       return null;
     }
 
-    // Check confidence — LLM's self-reported 0-10 score. Values at or below
-    // the threshold map to insufficient_data.
-    if (result.confidence <= generateBiography.CONFIDENCE_INSUFFICIENT_AT_OR_BELOW) {
+    // v2 writer's confidence gate. Same 0–10 self-reported score; anything
+    // at-or-below the threshold maps to insufficient_data. Threshold pinned
+    // locally rather than imported from the v1 module — same semantics,
+    // avoids a stale cross-module reference once the v1 writer is deleted.
+    const V2_CONFIDENCE_INSUFFICIENT_AT_OR_BELOW = 2;
+    if (result.confidence <= V2_CONFIDENCE_INSUFFICIENT_AT_OR_BELOW) {
       if (dynamo.isReady()) {
         await biographyStore.saveBiography(id, {
           status: 'insufficient_data',
@@ -448,17 +501,15 @@ async function generate (elastic, config, id) {
           personName: personData.name,
           pageUrl: '/people/' + id,
           existingDescriptionChars: personData.descriptionChars,
-          biographyHtml: result.biographyHtml,
-          contextHtml: result.contextHtml,
+          sentences: result.sentences,
+          paragraphBreaks: result.paragraphBreaks,
+          writerConfidence: result.confidence,
+          writerNotes: result.notes,
+          verificationCandidates: result.verificationCandidates,
           model: result.model,
           promptVersion: result.promptVersion,
-          confidence: result.confidence,
           inputTokens: result.inputTokens,
           outputTokens: result.outputTokens,
-          prompt: result.prompt,
-          systemPrompt: result.systemPrompt,
-          references: result.references,
-          sources: result.sources,
           signalScore: assessment.score,
           signalMaxScore: assessment.maxScore,
           signalCount: assessment.signalCount,
@@ -470,24 +521,45 @@ async function generate (elastic, config, id) {
       return null;
     }
 
-    // Save to DynamoDB
+    // Per-generation reviewer — runs after every successful writer call.
+    // Feature-flagged: config.aiBiographyReviewEnabled defaults to true, so
+    // reviewers run by default; a curator can flip it off if the reviewer's
+    // findings become noisy in production. Failure to review is non-fatal
+    // (best-effort audit trail) — the biography still saves and serves.
+    let reviewResult = null;
+    if (config.aiBiographyReviewEnabled !== false) {
+      try {
+        reviewResult = await reviewBiographyTagged(result, {
+          apiKey: config.anthropicApiKey,
+          model: config.aiBiographyReviewModel || config.aiBiographyModel,
+          personData,
+          gbpPerUsd: config.aiBiographyGbpPerUsd
+        });
+      } catch (err) {
+        console.warn('AI Biography: per-generation review failed for', id, '-', err && err.message);
+      }
+    }
+
+    // Save canonical v2 record. `biographyHtml` is intentionally NOT stored
+    // — HTML is derived at render time from sentences + curator decisions
+    // + open findings, so a subsequent curator action (approve / reject /
+    // clarify) or filter-level tweak takes effect on the next page load
+    // without a regen.
     if (dynamo.isReady()) {
       await biographyStore.saveBiography(id, {
         status: 'live',
         personName: personData.name,
         pageUrl: '/people/' + id,
         existingDescriptionChars: personData.descriptionChars,
-        biographyHtml: result.biographyHtml,
-        contextHtml: result.contextHtml,
+        sentences: result.sentences,
+        paragraphBreaks: result.paragraphBreaks,
+        writerConfidence: result.confidence,
+        writerNotes: result.notes,
+        verificationCandidates: result.verificationCandidates,
         model: result.model,
         promptVersion: result.promptVersion,
-        confidence: result.confidence,
         inputTokens: result.inputTokens,
         outputTokens: result.outputTokens,
-        prompt: result.prompt,
-        systemPrompt: result.systemPrompt,
-        references: result.references,
-        sources: result.sources,
         signalScore: assessment.score,
         signalMaxScore: assessment.maxScore,
         signalCount: assessment.signalCount,
@@ -495,6 +567,24 @@ async function generate (elastic, config, id) {
         signalsMissing: assessment.missing,
         subjectStatus: subjStatus
       });
+
+      // Persist the review as a REVIEW# item alongside the canonical, so
+      // it appears immediately on the admin detail page's open-findings
+      // panel + reviews section without an extra round trip.
+      if (reviewResult && Array.isArray(reviewResult.findings)) {
+        try {
+          await reviewStore.saveReview(id, {
+            reviewedAt: new Date().toISOString(),
+            reviewerModel: reviewResult.model,
+            spend: reviewResult.spend,
+            inputTokens: reviewResult.inputTokens,
+            outputTokens: reviewResult.outputTokens,
+            findings: reviewResult.findings
+          });
+        } catch (err) {
+          console.warn('AI Biography: review-store save failed for', id, '-', err && err.message);
+        }
+      }
     }
 
     // Render-time suppression — applied to the freshly-generated result too,
@@ -507,13 +597,33 @@ async function generate (elastic, config, id) {
       return null;
     }
 
+    // Render the sentence-tagged biography to public HTML. The findings we
+    // just saved feed straight into the render layer — error:high findings
+    // hide their sentence by default (defensive-by-default). Curator
+    // decisions are the ones we just fetched at the top of this block.
+    const openFindings = (reviewResult && reviewResult.findings) || [];
+    const rendered = renderBiography({
+      sentences: result.sentences,
+      paragraphBreaks: result.paragraphBreaks
+    }, {
+      decisions: curatorDecisions,
+      openFindings,
+      publishingLevel: config.aiBiographyPublishingLevel
+    });
+
     return {
-      biography: result.biographyHtml,
-      context: result.contextHtml,
+      biography: rendered.html,
+      // v2 sentences carry their source references inline via sourceDetail
+      // ("relatedItem:coXXXXX") rather than a separate "context" section.
+      // Downstream templates keep the same shape — context just resolves to
+      // empty prose. references[] derived from sentences with a
+      // relatedItem: sourceDetail — same structure the v1 writer surfaced,
+      // so the person page's "referenced by" block continues to work.
+      context: '',
       personName: personData.name,
-      references: result.references,
-      sources: result.sources,
-      generatedAt: result.generatedAt,
+      references: deriveReferencesFromSentences(result.sentences, allItems),
+      sources: deriveSourcesFromSentences(result.sentences),
+      generatedAt: new Date().toISOString(),
       model: result.model,
       status: 'live',
       suppressExisting: personData.descriptionChars < config.aiBiographySuppressExistingChars,

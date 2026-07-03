@@ -4,7 +4,6 @@ const adminAuth = require('../lib/ai/admin-auth');
 const biographyStore = require('../lib/ai/biography-store');
 const dynamo = require('../lib/ai/dynamo');
 const extractPersonData = require('../lib/ai/extract-person-data');
-const generateBiography = require('../lib/ai/generate-biography');
 const getRelatedItems = require('../lib/get-related-items');
 const sortRelated = require('../lib/sort-related-items');
 const TypeMapping = require('../lib/type-mapping');
@@ -24,6 +23,8 @@ const curatorDecisionsStore = require('../lib/ai/curator-decisions-store');
 const reviewStore = require('../lib/ai/review-store');
 const renderBiography = require('../lib/ai/render-biography');
 const verifyExternal = require('../lib/ai/verify-external');
+const generateSourceTaggedBiography = require('../lib/ai/generate-source-tagged-biography');
+const reviewBiographyTagged = require('../lib/ai/review-biography-tagged');
 const zlib = require('zlib');
 
 // Public-visibility hint for list rows. Currently two-valued ('full' or
@@ -1669,52 +1670,127 @@ async function runRegenerate (elastic, config, id, promptVersion, opts) {
   }
 
   const useModel = modelOverride || config.aiBiographyModel;
-  const result = await generateBiography(
-    personData, allItems, wikidataContext,
-    config.anthropicApiKey, useModel, promptVersion, customPrompt
-  );
+
+  // Compare-view workshop (customPrompt + promptVersion selection) hasn't
+  // been ported to the v2 source-tagged writer yet — those params go
+  // through the v1 code path which now returns "missing biography field"
+  // for source-tagged prompts. Log clearly so a staff member using
+  // compare knows the workshop path is temporarily degraded; the primary
+  // "Regenerate" from detail page (no overrides) works fine on v2.
+  if (customPrompt || promptVersion) {
+    console.warn('Admin regenerate: customPrompt / promptVersion overrides are not yet wired to the v2 source-tagged writer (task 51 MVP scope). Ignoring overrides and using the default v2 pipeline for id', id);
+  }
+
+  // Curator decisions from prior review sessions — folds
+  // rejections + clarifications back into the writer prompt as
+  // subject-specific constraints so the regen doesn't reintroduce
+  // previously-rejected claims.
+  const curatorDecisions = await curatorDecisionsStore.get(id).catch(function () { return null; });
+
+  const diagnostics = {};
+  let result;
+  try {
+    result = await generateSourceTaggedBiography(personData, allItems, wikidataContext, {
+      apiKey: config.anthropicApiKey,
+      model: useModel,
+      curatorDecisions,
+      diagnostics
+    });
+  } catch (err) {
+    console.error('Admin regenerate: unexpected error from v2 writer for', id, '-', err.message);
+    throw new Error('Generation failed: ' + err.message);
+  }
 
   if (!result) {
-    // Transient Claude failure (empty response / JSON parse error /
-    // missing biography field in the response — all logged by
-    // generateBiography itself). Do NOT persist as insufficient_data:
-    // that would silently mark an otherwise-healthy record dormant, and
-    // the sufficiency pre-check above has already gated on genuine data
-    // thinness. The canonical record stays in whatever state it was
-    // already in; staff sees an error redirect and can retry.
-    console.warn('Admin regenerate: generation returned null for', id,
-      '— treating as transient, canonical record unchanged. Check the preceding log line for root cause.');
+    // v2 writer returned null: either the API call failed (network / SDK
+    // caught the error — no bill) OR the response was unusable (billed).
+    // Same policy as the pre-v2 runRegenerate: do NOT persist as
+    // insufficient_data — that would silently clobber a healthy live
+    // record on a transient blip. Staff sees the error redirect and
+    // can retry; if it keeps failing they'll see the reason in the
+    // preceding log line + (via the public route's persistence) on the
+    // admin detail page's diagnostics block on next page hit.
+    console.warn('Admin regenerate: v2 writer returned null for', id,
+      '— canonical record unchanged.',
+      '· failureMode:', diagnostics.failureMode || 'unknown',
+      '· promptVersion:', diagnostics.promptVersion || 'unknown');
     throw new Error('Generation returned null (transient); check logs and retry');
   }
 
-  const status = result.confidence <= generateBiography.CONFIDENCE_INSUFFICIENT_AT_OR_BELOW ? 'insufficient_data' : 'live';
+  // v2 threshold constant — same 0-10 self-reported confidence gate as v1.
+  const V2_CONFIDENCE_INSUFFICIENT_AT_OR_BELOW = 2;
+  const status = result.confidence <= V2_CONFIDENCE_INSUFFICIENT_AT_OR_BELOW
+    ? 'insufficient_data'
+    : 'live';
+
+  // Per-generation reviewer — same policy as the public route. Failure
+  // to review is non-fatal; the biography still saves. Uses the v2
+  // source-tagged reviewer (reviewBiographyTagged), not the legacy Opus
+  // review module (`reviewBiography`) which remains bound to the
+  // manual "Run AI review" button on the admin detail page.
+  let reviewResult = null;
+  if (config.aiBiographyReviewEnabled !== false) {
+    try {
+      reviewResult = await reviewBiographyTagged(result, {
+        apiKey: config.anthropicApiKey,
+        model: config.aiBiographyReviewModel || config.aiBiographyModel,
+        personData,
+        gbpPerUsd: config.aiBiographyGbpPerUsd
+      });
+    } catch (err) {
+      console.warn('Admin regenerate: per-generation review failed for', id, '-', err && err.message);
+    }
+  }
+
   await biographyStore.saveBiography(id, {
     status,
     personName: personData.name,
     pageUrl: '/people/' + id,
     existingDescriptionChars: personData.descriptionChars,
-    biographyHtml: result.biographyHtml,
-    contextHtml: result.contextHtml,
+    sentences: result.sentences,
+    paragraphBreaks: result.paragraphBreaks,
+    writerConfidence: result.confidence,
+    writerNotes: result.notes,
+    verificationCandidates: result.verificationCandidates,
     model: result.model,
     promptVersion: result.promptVersion,
-    confidence: result.confidence,
     inputTokens: result.inputTokens,
     outputTokens: result.outputTokens,
-    prompt: result.prompt,
-    systemPrompt: result.systemPrompt,
-    references: result.references,
-    sources: result.sources,
     signalScore: assessment.score,
     signalMaxScore: assessment.maxScore,
     signalCount: assessment.signalCount,
     signalsPresent: assessment.present,
     signalsMissing: assessment.missing,
     subjectStatus: subjStatus,
-    // Badge for workshop / A/B experiments — 'custom' snapshots are
-    // distinguishable from named-version ones in the compare view.
-    customPromptLabel: customPrompt ? (customPrompt.label || 'custom') : null,
-    skipReason: result.confidence <= generateBiography.CONFIDENCE_INSUFFICIENT_AT_OR_BELOW ? 'Low confidence (model self-reported ' + result.confidence + '/10) on regeneration' : undefined
+    // Legacy customPromptLabel field kept for compare-view snapshot
+    // distinguishability; currently always null on v2 (workshop path
+    // not yet wired).
+    customPromptLabel: null,
+    skipReason: result.confidence <= V2_CONFIDENCE_INSUFFICIENT_AT_OR_BELOW
+      ? 'Low confidence (writer self-reported ' + result.confidence + '/10) on regeneration'
+      : undefined
   }, { snapshotOnly });
+
+  // Save the review as a REVIEW# item — mirrors the public route's
+  // ordering (biography first, then review). Snapshot-only regens
+  // still emit a review (the snapshot doesn't have per-review-run
+  // metadata otherwise); on the canonical path this feeds directly
+  // into the admin detail's openFindings panel.
+  if (reviewResult && Array.isArray(reviewResult.findings) && !snapshotOnly) {
+    try {
+      await reviewStore.saveReview(id, {
+        reviewedAt: new Date().toISOString(),
+        reviewerModel: reviewResult.model,
+        spend: reviewResult.spend,
+        inputTokens: reviewResult.inputTokens,
+        outputTokens: reviewResult.outputTokens,
+        findings: reviewResult.findings
+      });
+    } catch (err) {
+      console.warn('Admin regenerate: review-store save failed for', id, '-', err && err.message);
+    }
+  }
+
   return { id, status, snapshotOnly };
 }
 

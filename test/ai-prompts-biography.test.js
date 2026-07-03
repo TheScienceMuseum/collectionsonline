@@ -1,13 +1,34 @@
 'use strict';
 
 const test = require('tape');
-const prompts = require('../lib/ai/prompts/biography');
+const promptLoader = require('../lib/ai/prompts/biography');
+
+// The active default prompt is now v7 (source-tagged, response
+// schema is sentences[]). v7 has its own test coverage via
+// test/ai-generate-source-tagged-biography.test.js +
+// test/ai-parse-source-tagged-response.test.js. The assertions in
+// this file were authored against v6's prose-shape prompt and check
+// v6-specific wording ("ONLY use facts", "COMPANY:" label, etc.),
+// so we resolve v6 explicitly here rather than the auto-selected
+// active default. Keeps v6 loadable + parseable for the compare
+// view without pinning the active version to it. Delete this file
+// entirely once v6 is retired (see the plan's Phase 1 cutover +
+// the user's earlier "ask before removing old prompts" note).
+const V6_VERSION = '2026-04-v6-numeric-confidence';
+const prompts = promptLoader.getVersion(V6_VERSION) || promptLoader;
 
 const PERSON_SUBJECT = { noun: 'person', pronoun: 'they', possessive: 'their' };
 
 test('prompts/biography: exports version string', function (t) {
   t.equal(typeof prompts.version, 'string', 'version is string');
   t.ok(prompts.version.length > 0, 'version not empty');
+  t.end();
+});
+
+test('prompts/biography: v6 remains loadable via prompt-loader registry (compare-view A/B)', function (t) {
+  // Regression guard for the compare view: if v6 is ever renamed or
+  // moved without a compare-view rewrite, this test catches it.
+  t.ok(promptLoader.getVersion(V6_VERSION), 'v6 is registered');
   t.end();
 });
 
