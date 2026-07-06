@@ -26,7 +26,6 @@ const verifyExternal = require('../lib/ai/verify-external');
 const generateSourceTaggedBiography = require('../lib/ai/generate-source-tagged-biography');
 const reviewBiographyTagged = require('../lib/ai/review-biography-tagged');
 const findingFilters = require('../lib/ai/finding-filters');
-const wikidataPropertyLabels = require('../lib/ai/wikidata-property-labels');
 const zlib = require('zlib');
 
 // Public-visibility hint for list rows. Currently two-valued ('full' or
@@ -175,6 +174,81 @@ function sortOpenFindings (findings) {
     const kb = (b.kind || 'error') + ':' + (b.confidence || 'low');
     return (FINDING_PRIORITY[kb] || 0) - (FINDING_PRIORITY[ka] || 0);
   });
+}
+
+// Task 60: for a curator action on a sentence, we need TWO things:
+//   1. The sentence's `precedingState` at the moment of action —
+//      { visible, decidedBy, concern } — persisted on the curator
+//      decision so audit queries can answer "was there a pending
+//      finding when curator X rejected this?" (the moment the
+//      decision was taken.)
+//   2. Any pending findings on the same claimSignature — those get
+//      auto-resolved by the curator's action. The mapping to
+//      resolution:
+//        approve  → findings marked 'dismissed' (curator disagreed)
+//        reject   → findings marked 'accepted'  (curator agreed)
+//        clarify  → findings marked 'clarified'
+//      resolvedBy captures the curator identity so the audit shows
+//      the action cascaded from a sentence action rather than an
+//      explicit finding resolution.
+async function loadPrecedingStateAndPendingFindings (id, claimSignature, config) {
+  const [record, decisions, reviews] = await Promise.all([
+    biographyStore.fetchBiography(id),
+    curatorDecisionsStore.get(id).catch(function () { return null; }),
+    reviewStore.listReviews(id).catch(function () { return []; })
+  ]);
+  if (!record || !Array.isArray(record.sentences)) {
+    return { precedingState: null, pendingFindingsByReviewSK: [] };
+  }
+  // All findings across all reviews — render's finding gate uses
+  // kind + confidence, not resolution, so we need the full set.
+  const allFindings = [];
+  const pendingFindingsByReviewSK = [];
+  reviews.forEach(function (rv) {
+    (rv.findings || []).forEach(function (f) {
+      allFindings.push(f);
+      if (f.resolution === 'pending' && f.claimSignature === claimSignature) {
+        pendingFindingsByReviewSK.push({ reviewSK: rv.SK });
+      }
+    });
+  });
+  // De-dupe the pending list by reviewSK — one finding-per-signature
+  // per REVIEW# item is the store's invariant, but be defensive.
+  const seenReviewSK = new Set();
+  const dedupedPending = pendingFindingsByReviewSK.filter(function (e) {
+    if (seenReviewSK.has(e.reviewSK)) return false;
+    seenReviewSK.add(e.reviewSK);
+    return true;
+  });
+  const rendered = renderBiography(record, {
+    decisions,
+    openFindings: allFindings,
+    publishingLevel: (config && config.aiBiographyPublishingLevel),
+    references: record.references || []
+  });
+  const sentence = (rendered.sentences || []).find(function (s) {
+    return s.claimSignature === claimSignature;
+  });
+  return {
+    precedingState: sentence ? sentence.state : null,
+    pendingFindingsByReviewSK: dedupedPending
+  };
+}
+
+// Fire-and-await a batch of finding auto-resolutions. Errors on
+// individual resolutions are logged but non-fatal — the curator's
+// primary action (approve/reject/clarify) already committed.
+async function autoResolvePendingFindings (id, claimSignature, resolution, resolvedBy, pendingFindingsByReviewSK) {
+  for (const entry of (pendingFindingsByReviewSK || [])) {
+    try {
+      await reviewStore.updateFindingResolution(id, entry.reviewSK, claimSignature, {
+        resolution,
+        resolvedBy
+      });
+    } catch (err) {
+      console.warn('Admin AI: auto-resolve of finding failed for', id, entry.reviewSK, claimSignature, '-', err.message);
+    }
+  }
 }
 
 // Compute the affected sentence's current publishing state for a
@@ -859,36 +933,25 @@ module.exports = function (elastic, config) {
             const hasSentences = Array.isArray(record.sentences) && record.sentences.length > 0;
             const renderedBiography = hasSentences
               ? (function () {
+                  // Task 60: pass BOTH pending and resolved findings to
+                  // render. Fixes the "dismiss on error:high accidentally
+                  // publishes" bug — the finding gate uses kind +
+                  // confidence, not resolution status, so a resolved
+                  // finding still hides the sentence unless the curator
+                  // explicitly approved it. Ordering doesn't matter to
+                  // render; it takes the highest-severity finding per
+                  // signature regardless of resolution.
+                  const allFindingsForRender = [].concat(openFindingsFiltered, allResolvedFindings);
                   const rendered = renderBiography(record, {
                     decisions: curatorDecisions,
-                    openFindings,
+                    openFindings: allFindingsForRender,
                     publishingLevel: config.aiBiographyPublishingLevel,
-                    // `references` was added to the persisted record in
-                    // Task 56 — passing it into render enables per-
-                    // sentence "→ view object" chips + fuels the split
-                    // between the Biography and In-the-collection HTML
-                    // blocks. Legacy records without it lose the chips
-                    // silently (safe degradation).
                     references: record.references || []
                   });
-                  // Human-readable Wikidata property labels: swap
-                  // `wikidata:p106` in sourceDetail for
-                  // `wikidata:P106 (occupation)` so curators aren't
-                  // decoding property IDs from memory. Unknown
-                  // properties render as the raw P-code (no label
-                  // parenthetical), preserving auditability.
-                  const decoratedSentences = rendered.sentences.map(function (s) {
-                    return Object.assign({}, s, {
-                      sourceDetailFormatted: wikidataPropertyLabels.formatSourceDetail(s.sourceDetail)
-                    });
-                  });
-                  // The template calls out totalCount separately from
-                  // sentences.length for clarity; expose it here so
-                  // Handlebars doesn't have to compute it.
-                  return Object.assign({}, rendered, {
-                    sentences: decoratedSentences,
-                    totalCount: decoratedSentences.length
-                  });
+                  // sourceDetailFormatted now decorated inside
+                  // render-biography.js (Task 60); no separate map
+                  // needed here.
+                  return Object.assign({}, rendered, { totalCount: rendered.sentences.length });
                 })()
               : null;
 
@@ -1487,9 +1550,18 @@ module.exports = function (elastic, config) {
             return h.redirect('/admin/ai/' + id + '?error=missing_claim_signature');
           }
           try {
+            // Task 60: capture the sentence's precedingState + auto-resolve
+            // any attached pending findings. Approval → attached findings
+            // resolve as 'dismissed' (curator disagreed with reviewer). Load
+            // BEFORE writing so the state we capture is genuinely the
+            // "before" state.
+            const staff = staffOf(request);
+            const { precedingState, pendingFindingsByReviewSK } =
+              await loadPrecedingStateAndPendingFindings(id, claimSignature, config);
             await curatorDecisionsStore.addApproval(id, {
-              claimSignature, claimText, note, approvedBy: staffOf(request)
+              claimSignature, claimText, note, approvedBy: staff, precedingState
             });
+            await autoResolvePendingFindings(id, claimSignature, 'dismissed', staff, pendingFindingsByReviewSK);
             // Approval is instant-render (source-tag filter override) —
             // no regen needed, jump back to the biography anchor.
             return h.redirect('/admin/ai/' + id + '#biography');
@@ -1518,9 +1590,16 @@ module.exports = function (elastic, config) {
             return h.redirect('/admin/ai/' + id + '?error=missing_claim_signature');
           }
           try {
+            // Task 60: capture precedingState + auto-resolve pending
+            // findings. Rejection → findings resolve as 'accepted'
+            // (curator agreed with reviewer's concern).
+            const staff = staffOf(request);
+            const { precedingState, pendingFindingsByReviewSK } =
+              await loadPrecedingStateAndPendingFindings(id, claimSignature, config);
             await curatorDecisionsStore.addRejection(id, {
-              claimSignature, claimText, rationale, rejectedBy: staffOf(request)
+              claimSignature, claimText, rationale, rejectedBy: staff, precedingState
             });
+            await autoResolvePendingFindings(id, claimSignature, 'accepted', staff, pendingFindingsByReviewSK);
             // Rejection changes writer constraints, so the regen banner
             // will fire on next render. No auto-regen (per the plan).
             return h.redirect('/admin/ai/' + id + '#biography');
@@ -1552,9 +1631,16 @@ module.exports = function (elastic, config) {
             return h.redirect('/admin/ai/' + id + '?error=missing_clarification');
           }
           try {
+            // Task 60: capture precedingState + auto-resolve pending
+            // findings. Clarify → findings resolve as 'clarified'
+            // (curator addressed the concern via regen guidance).
+            const staff = staffOf(request);
+            const { precedingState, pendingFindingsByReviewSK } =
+              await loadPrecedingStateAndPendingFindings(id, claimSignature, config);
             await curatorDecisionsStore.addClarification(id, {
-              claimSignature, claimText, clarification, addedBy: staffOf(request)
+              claimSignature, claimText, clarification, addedBy: staff, precedingState
             });
+            await autoResolvePendingFindings(id, claimSignature, 'clarified', staff, pendingFindingsByReviewSK);
             // Clarification changes writer prompt, so the regen banner
             // will fire on next render. No auto-regen.
             return h.redirect('/admin/ai/' + id + '#biography');

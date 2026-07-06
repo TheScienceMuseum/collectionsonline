@@ -52,6 +52,55 @@ test('addApproval: repeated signature replaces previous (dedup)', async function
   t.end();
 });
 
+// --- Task 60: precedingState captured on every entry ---------------
+
+test('addApproval: persists precedingState when supplied', async function (t) {
+  reset();
+  const state = { visible: true, decidedBy: 'auto', concern: 'info' };
+  const out = await store.addApproval('cp1', {
+    claimSignature: 'sig-with-state',
+    approvedBy: 'jamie',
+    precedingState: state
+  });
+  t.deepEqual(out.approvals[0].precedingState, state, 'round-trips verbatim');
+  t.end();
+});
+
+test('addApproval: precedingState defaults to null when omitted', async function (t) {
+  reset();
+  const out = await store.addApproval('cp1', {
+    claimSignature: 'sig-no-state',
+    approvedBy: 'jamie'
+  });
+  t.equal(out.approvals[0].precedingState, null, 'null distinguishes "not captured"');
+  t.end();
+});
+
+test('addRejection: persists precedingState when supplied', async function (t) {
+  reset();
+  const state = { visible: false, decidedBy: 'auto', concern: 'block' };
+  const out = await store.addRejection('cp1', {
+    claimSignature: 'sig-rej',
+    rejectedBy: 'jamie',
+    precedingState: state
+  });
+  t.deepEqual(out.rejections[0].precedingState, state);
+  t.end();
+});
+
+test('addClarification: persists precedingState when supplied', async function (t) {
+  reset();
+  const state = { visible: true, decidedBy: 'auto', concern: 'warning' };
+  const out = await store.addClarification('cp1', {
+    claimSignature: 'sig-clar',
+    clarification: 'use historic name',
+    addedBy: 'jamie',
+    precedingState: state
+  });
+  t.deepEqual(out.clarifications[0].precedingState, state);
+  t.end();
+});
+
 test('addApproval: missing claimSignature throws', async function (t) {
   reset();
   try {
