@@ -955,6 +955,10 @@ module.exports = function (elastic, config) {
               if (aBlocking !== bBlocking) return bBlocking - aBlocking; // hidden first
               return 0; // preserve severity order within group
             });
+            const openFindingsHidingCount = openFindings.filter(function (f) {
+              return f.affectedPublishingState && f.affectedPublishingState.variant === 'hidden';
+            }).length;
+            const openFindingsAnnotatingCount = openFindings.length - openFindingsHidingCount;
 
             // Resolved findings — cap at RESOLVED_INLINE_CAP most recent
             // for the merged panel (grey rows below Pending). Overflow
@@ -978,6 +982,8 @@ module.exports = function (elastic, config) {
               reviewConfig,
               renderedBiography,
               openFindings,
+              openFindingsHidingCount,
+              openFindingsAnnotatingCount,
               staleFindingsCount,
               resolvedFindings,
               resolvedOverflow,

@@ -413,8 +413,8 @@
 {{#if openFindings.length}}
 <details class="detail-section findings-panel" id="findings" open>
   <summary class="findings-panel__summary">
-    <span class="findings-panel__title">Review findings ({{openFindings.length}} pending{{#if resolvedFindings.length}}, {{resolvedFindings.length}} recently resolved{{/if}})</span>
-    <span class="text-meta findings-panel__hint">— AI-review concerns on specific sentences; likely-error findings first.
+    <span class="findings-panel__title">Review findings ({{openFindingsHidingCount}} hiding a claim, {{openFindingsAnnotatingCount}} annotating{{#if resolvedFindings.length}} · {{resolvedFindings.length}} recently resolved{{/if}})</span>
+    <span class="text-meta findings-panel__hint">— AI-review concerns on specific sentences; hides first, annotations after.
       {{#if staleFindingsCount}}
         <span title="Findings from a previous generation whose sentences have since been rewritten. Kept in the review record — will automatically resurface if a future regen re-emits the same claim.">
           · <strong>{{staleFindingsCount}}</strong> stale filtered
@@ -423,11 +423,15 @@
     </span>
   </summary>
   <p class="text-meta" style="margin: 0.5rem 0 0.75rem 0;">
-    Findings are the AI review's concerns about specific claims — informational cards, not action buttons.
-    Likely-error findings auto-hide their sentence until a curator explicitly approves it; other findings
-    publish automatically. The green/amber/red chip on each card shows the current effect on the public site.
-    To act on a finding, click <strong>Go to claim ↓</strong> to jump to the affected sentence and use its
-    Reject / Approve / Clarify actions — which auto-resolve the pending finding in the audit trail.
+    Each finding is a concern the AI review raised about a specific claim.
+    <strong>Likely-error</strong> findings hide the affected claim by default unless a curator explicitly overrides the hide.
+    <strong>Possible-issue</strong> and <strong>info</strong> findings publish their claim as normal and just annotate it.
+    Each card carries a status chip showing the claim's current effect on the public site —
+    <span style="color: #1e4a2f;">●&nbsp;green</span> for publishing,
+    <span style="color: #6c1c1c;">○&nbsp;red</span> for hidden by this finding or by a curator,
+    <span style="color: #646464;">○&nbsp;grey</span> for hidden by the current publishing-level filter (finding unrelated).
+    To act on a finding, click <strong>Go to claim ↓</strong> and use the sentence's Reject / Approve / Clarify actions —
+    which auto-resolve the finding in the audit trail.
   </p>
   <ul class="findings-list">
     {{!-- Task 61: findings are now READ-ONLY informational cards. No
