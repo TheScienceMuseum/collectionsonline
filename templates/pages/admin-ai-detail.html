@@ -1305,6 +1305,23 @@
           var vis = metaClone.querySelectorAll('.state-pill');
           for (var i = 0; i < vis.length; i++) vis[i].remove();
         }
+        // Task 67: rebind smooth-scroll on the cloned concern pill.
+        // The original in Claims list is bound at wireInteractions()
+        // time — this clone is fresh DOM without that binding, so it
+        // would fall back to the browser's default anchor jump (no
+        // flash). Rebind here for consistency.
+        var railConcerns = metaClone.querySelectorAll('.concern-pill--link[href^="#finding-"]');
+        for (var ci = 0; ci < railConcerns.length; ci += 1) {
+          (function (concernEl) {
+            concernEl.addEventListener('click', function (e) {
+              var href = concernEl.getAttribute('href');
+              var target = href && document.querySelector(href);
+              if (!target) return;
+              e.preventDefault();
+              scrollAndFlash(target);
+            });
+          })(railConcerns[ci]);
+        }
         railPopulated.appendChild(metaClone);
       }
 
@@ -1367,6 +1384,19 @@
               lockedSig = sig;
               setSelected(sig);
               updateRail(sig, origin);
+              // Task 67: when the click came from a CLAIM row (which
+              // sits far below the biography section), also scroll UP
+              // to the prose sentence. The B.4 hover-glitch is
+              // avoided because the rail is now locked at the
+              // clicked signature — hover events during the scroll
+              // won't repaint it. Prose→claim direction stays
+              // manual via the "Jump to full claim ↓" button in the
+              // rail (the rail is right next to the prose, no need
+              // to auto-scroll).
+              if (origin === 'claim') {
+                var proseEl = document.querySelector('.ai-rendered-prose [data-signature="' + sig + '"]');
+                if (proseEl) scrollAndFlash(proseEl);
+              }
             }
           });
         })(nodes[i]);
