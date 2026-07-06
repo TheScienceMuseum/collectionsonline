@@ -1581,6 +1581,13 @@ module.exports = function (elastic, config) {
             const staff = staffOf(request);
             const { precedingState, pendingFindingsByReviewSK } =
               await loadPrecedingStateAndPendingFindings(id, claimSignature, config);
+            // Remove any prior rejection for the same signature — approving
+            // IS taking back a rejection, and the render precedence in
+            // render-biography.js unconditionally hides rejected sentences.
+            // Leaving a stale rejection in the DB makes Un-reject a silent
+            // no-op. This keeps at most one curator "final answer" per
+            // signature and unblocks oscillation.
+            await curatorDecisionsStore.removeEntry(id, 'rejection', claimSignature);
             await curatorDecisionsStore.addApproval(id, {
               claimSignature, claimText, note, approvedBy: staff, precedingState
             });
@@ -1619,6 +1626,12 @@ module.exports = function (elastic, config) {
             const staff = staffOf(request);
             const { precedingState, pendingFindingsByReviewSK } =
               await loadPrecedingStateAndPendingFindings(id, claimSignature, config);
+            // Remove any prior approval for the same signature — rejecting
+            // IS taking back an approval. Symmetric with the /approve
+            // handler's removeEntry('rejection') call. Keeps the DB at
+            // most one curator "final answer" per signature so curators
+            // can oscillate without stale entries piling up.
+            await curatorDecisionsStore.removeEntry(id, 'approval', claimSignature);
             await curatorDecisionsStore.addRejection(id, {
               claimSignature, claimText, rationale, rejectedBy: staff, precedingState
             });

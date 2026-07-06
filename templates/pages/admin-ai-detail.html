@@ -852,13 +852,16 @@
                   override rationale OR a clarification of what the
                   AI got wrong — both persist as the approval note. --}}
             {{#isequal this.state.decidedBy "curator" this}}
-              {{!-- Curator-rejected: restore via Un-reject. Kept as a
-                    dedicated action because the semantic is "reverse
-                    my own prior rejection" rather than "override AI". --}}
+              {{!-- Curator-rejected: restore via Un-reject. Under the
+                    hood, /sentences/approve removes the rejection
+                    entry AND adds an approval — otherwise the render
+                    logic keeps the sentence hidden (see the render-
+                    biography.js precedence: rejection is unconditional). --}}
               <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/approve" class="sentence__action-form">
                 <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
                 <input type="hidden" name="claimText" value="{{this.text}}">
-                <button type="submit" class="btn btn--secondary" title="Re-approve — publishes despite the earlier rejection">Un-reject (publish)</button>
+                <input type="text" name="note" placeholder="Optional reason for un-rejecting (why change your mind)" class="sentence__action-input">
+                <button type="submit" class="btn btn--secondary" title="Un-reject — removes the prior rejection AND approves. Publishes despite the earlier hide and any AI-review concern. Optional reason is stored on the approval.">Un-reject — publish anyway</button>
               </form>
             {{else}}
               <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/approve" class="sentence__action-form">
