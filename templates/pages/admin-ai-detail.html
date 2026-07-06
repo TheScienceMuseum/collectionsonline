@@ -1118,17 +1118,43 @@
      size — read as natural inline links, not distinct chips. Green
      underline hints at the museum-object anchor treatment without
      fighting the reading typography. */
-  .ai-rendered-prose .ai-object-chip {
-    font-family: inherit;
-    font-size: inherit;
-    color: #2e5a3d;
-    text-decoration: underline;
-    text-decoration-color: rgba(46, 90, 61, 0.35);
-    text-underline-offset: 2px;
+  /* Object-catalogue chips now live inside a labelled .collection-refs
+     block after each paragraph — pills rather than inline underlined
+     text, so they read as tags not prose. */
+  .ai-rendered-prose .collection-refs {
+    margin: 0.5rem 0 1rem 0;
+    padding: 0.5rem 0.75rem;
+    background: #f5f1e8;
+    border-left: 3px solid #a9c3a4;
+    border-radius: 3px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
   }
-  .ai-rendered-prose .ai-object-chip:hover {
-    text-decoration-color: #2e5a3d;
-    background: rgba(46, 90, 61, 0.06);
+  .ai-rendered-prose .collection-refs__label {
+    color: #5e564c;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: 0.72rem;
+    margin-right: 0.15rem;
+  }
+  .ai-rendered-prose .collection-refs .ai-object-chip {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    background: #eef2ed;
+    border: 1px solid #a9c3a4;
+    border-radius: 3px;
+    color: #2e5a3d;
+    text-decoration: none;
+    font-size: 0.8rem;
+  }
+  .ai-rendered-prose .collection-refs .ai-object-chip:hover {
+    background: #dae7dd;
+    border-color: #6da97e;
   }
 
   /* Tertiary button — used for de-emphasised secondary actions
