@@ -213,3 +213,41 @@ test('sourceDetailFormatted: non-wikidata citations untouched', function (t) {
   t.equal(r.sentences[0].sourceDetailFormatted, 'relatedItem:co12345');
   t.end();
 });
+
+// --- Task 61: sourceDetailShort strips redundant source prefix ------
+
+test('sourceDetailShort: strips redundant wikidata: prefix on wikidata sentence', function (t) {
+  const bio = { sentences: [s('Fact.', 'wikidata', 'wikidata:p106')], paragraphBreaks: [] };
+  const r = render(bio, { publishingLevel: 3 });
+  t.equal(r.sentences[0].sourceDetailShort, 'P106 (occupation)');
+  t.equal(r.sentences[0].sourceDetailFormatted, 'wikidata:P106 (occupation)', 'formatted variant unchanged');
+  t.end();
+});
+
+test('sourceDetailShort: strips prefix from every wikidata piece in compound', function (t) {
+  const bio = { sentences: [s('Fact.', 'wikidata', 'wikidata:p106, wikidata:p108')], paragraphBreaks: [] };
+  const r = render(bio, { publishingLevel: 3 });
+  t.equal(r.sentences[0].sourceDetailShort, 'P106 (occupation), P108 (employer)');
+  t.end();
+});
+
+test('sourceDetailShort: mixed sources keeps non-matching pieces intact', function (t) {
+  const bio = { sentences: [s('Fact.', 'wikidata', 'wikidata:p106, existingbiography')], paragraphBreaks: [] };
+  const r = render(bio, { publishingLevel: 3 });
+  t.equal(r.sentences[0].sourceDetailShort, 'P106 (occupation), existingbiography');
+  t.end();
+});
+
+test('sourceDetailShort: leaves museum sourceDetail untouched (no redundancy to strip)', function (t) {
+  const bio = { sentences: [s('Fact.', 'museum', 'relatedItem:co12345')], paragraphBreaks: [] };
+  const r = render(bio, { publishingLevel: 3 });
+  t.equal(r.sentences[0].sourceDetailShort, 'relatedItem:co12345');
+  t.end();
+});
+
+test('sourceDetailShort: case-insensitive on the prefix match', function (t) {
+  const bio = { sentences: [s('Fact.', 'wikidata', 'Wikidata:P106')], paragraphBreaks: [] };
+  const r = render(bio, { publishingLevel: 3 });
+  t.equal(r.sentences[0].sourceDetailShort, 'P106 (occupation)');
+  t.end();
+});

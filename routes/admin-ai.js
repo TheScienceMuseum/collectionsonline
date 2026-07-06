@@ -251,29 +251,27 @@ async function autoResolvePendingFindings (id, claimSignature, resolution, resol
   }
 }
 
-// Compute the affected sentence's current publishing state for a
-// finding. Similar to render-biography's classifyPublishingState but
-// doesn't recompute the sentence's decision/finding state — reuses the
-// already-computed `publishingState` when we have it, and inlines a
-// small mapping to the label the template's status chip renders.
-// The `label`/`variant` pair drives which coloured chip appears on
-// each finding card.
+// Task 61: compute the finding-card's status chip from the sentence's
+// 3-axis state triple. Was reading the legacy publishingState enum
+// (removed in Bundle B); now composes label + variant + tone directly
+// from { visible, decidedBy, concern }. Same shape as before so the
+// template chip renders identically.
 function computeSentenceStateForFinding (sentence, finding) {
-  const s = sentence.publishingState;
-  if (s === 'curator_approved') return { label: 'publishing (curator approved)', variant: 'publishing', tone: 'positive' };
-  if (s === 'curator_rejected') return { label: 'hidden (curator rejected)', variant: 'hidden', tone: 'danger' };
-  if (s === 'hidden_finding') return { label: 'hidden (blocking finding)', variant: 'hidden', tone: 'danger' };
-  if (s === 'hidden_below_level') return { label: 'hidden (below publishing level)', variant: 'hidden', tone: 'muted' };
-  if (s === 'auto_publishing_clean') return { label: 'publishing (auto)', variant: 'publishing', tone: 'positive' };
-  if (s === 'auto_publishing_info') {
-    return { label: 'publishing (info-tier does not block)', variant: 'publishing', tone: 'positive' };
+  const st = sentence && sentence.state;
+  if (!st) return { label: 'unknown', variant: 'hidden', tone: 'neutral' };
+  const vis = st.visible;
+  const curator = st.decidedBy === 'curator';
+  const concern = st.concern;
+
+  if (vis) {
+    if (curator) return { label: 'publishing (curator approved)', variant: 'publishing', tone: 'positive' };
+    if (concern === 'warning') return { label: 'publishing (severity does not block)', variant: 'publishing', tone: 'caution' };
+    if (concern === 'info') return { label: 'publishing (info-tier does not block)', variant: 'publishing', tone: 'positive' };
+    return { label: 'publishing (auto)', variant: 'publishing', tone: 'positive' };
   }
-  if (s === 'auto_publishing_error') {
-    // For an error at low/medium severity: publishing but with a
-    // caution tone so a curator knows the reviewer flagged it.
-    return { label: 'publishing (severity does not block)', variant: 'publishing', tone: 'caution' };
-  }
-  return { label: sentence.visible ? 'publishing' : 'hidden', variant: sentence.visible ? 'publishing' : 'hidden', tone: 'neutral' };
+  if (curator) return { label: 'hidden (curator rejected)', variant: 'hidden', tone: 'danger' };
+  if (concern === 'block') return { label: 'hidden (blocking finding)', variant: 'hidden', tone: 'danger' };
+  return { label: 'hidden (below publishing level)', variant: 'hidden', tone: 'muted' };
 }
 
 // Flatten resolved findings across every REVIEW# item into one array

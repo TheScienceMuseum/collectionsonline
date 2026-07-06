@@ -438,8 +438,18 @@
     pass through automatically — the green/amber/red chip on each card shows the current effect on the public site.
   </p>
   <ul class="findings-list">
+    {{!-- Task 61: findings are now READ-ONLY informational cards. No
+          Accept / Dismiss buttons — the sentence action strip in
+          Claims is the only place to act, and any curator action on a
+          sentence auto-resolves attached pending findings (approve →
+          dismissed, reject → accepted, clarify → clarified — see
+          Bundle A). Verify externally still lives here because it's a
+          per-claim network operation, not a per-sentence decision.
+
+          The `id="finding-<signature>"` anchor is the target of the
+          concern jump-link on each sentence in the Claims list. --}}
     {{#each openFindings}}
-    <li class="finding finding--{{this.kind}}-{{this.confidence}}" data-signature="{{this.claimSignature}}" data-affected-index="{{this.affectedSentenceIndex}}">
+    <li class="finding finding--{{this.kind}}-{{this.confidence}}" id="finding-{{this.claimSignature}}" data-signature="{{this.claimSignature}}" data-affected-index="{{this.affectedSentenceIndex}}">
       <div class="finding__header">
         {{!-- Publishing status chip — prominent, coloured by tone.
               Sits FIRST so it dominates the row. --}}
@@ -462,19 +472,6 @@
       {{/if}}
       <div class="finding__concern-body">{{this.concern}}</div>
       <div class="finding__actions">
-        <form method="POST" action="/admin/ai/{{../record.PK}}/findings/resolve" class="finding__form">
-          <input type="hidden" name="reviewSK" value="{{this.reviewSK}}">
-          <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
-          <input type="hidden" name="claimText" value="{{this.claimText}}">
-          <input type="hidden" name="resolution" value="accepted">
-          <button type="submit" class="btn btn--secondary" title="Accept the finding — sentence is hidden and regen constrained to exclude it">Accept</button>
-        </form>
-        <form method="POST" action="/admin/ai/{{../record.PK}}/findings/resolve" class="finding__form">
-          <input type="hidden" name="reviewSK" value="{{this.reviewSK}}">
-          <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
-          <input type="hidden" name="resolution" value="dismissed">
-          <button type="submit" class="btn btn--secondary" title="Reviewer's concern is not valid — mark resolved with no biography change">Dismiss</button>
-        </form>
         {{#if ../reviewConfig.externalValidationEnabled}}
         <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/verify" class="finding__form">
           <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
@@ -483,6 +480,9 @@
           <input type="hidden" name="reviewSK" value="{{this.reviewSK}}">
           <button type="submit" class="btn btn--secondary" title="Run external verification (Wikipedia / Wikidata etc.) against this claim">Verify against sources</button>
         </form>
+        {{/if}}
+        {{#if this.affectedSentenceIndex}}
+        <a class="btn btn--tertiary finding__jump-to-claim" href="#claims" data-affected-signature="{{this.claimSignature}}" title="Jump down to the affected sentence in the Claims list to act on it">Go to claim ↓</a>
         {{/if}}
       </div>
       {{#if this.verificationResult}}
@@ -637,15 +637,23 @@
           <span class="pill sentence__source-pill" data-source="llm:contextualising">llm:contextualising</span>
           <span class="pill sentence__source-pill" data-source="llm:general_knowledge">llm:general_knowledge</span>
         </div>
+        {{!-- Task 61: legend restructured on the 3-axis state model.
+              Visibility is ● / ○ (filled = publishing, hollow = hidden),
+              orthogonal to concern (reviewer flag), orthogonal to
+              decidedBy (curator override). Each row of the legend
+              covers one axis — curators eyeball which axis matters. --}}
         <div class="claims-legend__row">
-          <span class="claims-legend__label">Publishing state:</span>
-          <span class="pill state-pill" data-publishing-state="auto_publishing_clean" title="Publishing because its source tag is allowed at the current level. No reviewer concern.">publishing</span>
-          <span class="pill state-pill" data-publishing-state="auto_publishing_info" title="Publishing. Reviewer left contextual info; not blocking.">publishing · info</span>
-          <span class="pill state-pill" data-publishing-state="auto_publishing_error" title="Publishing. Reviewer flagged a possible / low-confidence error; not blocking at this severity.">publishing · possible</span>
-          <span class="pill state-pill" data-publishing-state="curator_approved" title="Curator-approved. Publishes regardless of source-tag filter.">✓ curator approved</span>
-          <span class="pill state-pill" data-publishing-state="hidden_below_level" title="Source tag is below the current publishing level. Approve on the sentence to publish anyway.">hidden · below level</span>
-          <span class="pill state-pill" data-publishing-state="hidden_finding" title="Hidden by a high-confidence error finding. Resolve or approve to publish.">hidden · pending finding</span>
-          <span class="pill state-pill" data-publishing-state="curator_rejected" title="Curator-rejected. Hidden and excluded from next regen.">✗ curator rejected</span>
+          <span class="claims-legend__label">Visibility:</span>
+          <span class="pill state-pill" data-vis="publishing" data-decided="auto" title="Auto-publishing. System rule based on source-tag filter + no blocking concern.">● publishing</span>
+          <span class="pill state-pill" data-vis="publishing" data-decided="curator" title="Publishing because a curator explicitly approved this claim, overriding filter or reviewer concern.">● curator override</span>
+          <span class="pill state-pill" data-vis="hidden" data-decided="auto" title="Auto-hidden. Either the source tag is below the current publishing level, or the reviewer flagged a blocking concern.">○ hidden</span>
+          <span class="pill state-pill" data-vis="hidden" data-decided="curator" title="Curator explicitly rejected this claim. Excluded from next regeneration.">○ curator rejected</span>
+        </div>
+        <div class="claims-legend__row">
+          <span class="claims-legend__label">Reviewer concern:</span>
+          <span class="pill concern-pill" data-concern="info" title="Contextual note from the reviewer. Publishes without gating.">ⓘ info</span>
+          <span class="pill concern-pill" data-concern="warning" title="Reviewer suspects a possible issue at medium confidence. Publishes without gating.">⚠ warning</span>
+          <span class="pill concern-pill" data-concern="block" title="Reviewer's high-confidence error. Auto-hides the sentence unless a curator explicitly approves.">⛔ block</span>
         </div>
       </div>
     </details>
@@ -663,40 +671,38 @@
             + border via [data-publishing-state="..."] selectors in
             the <style> block. data-signature is the anchor used by
             the sentence↔prose hover-link script. --}}
-      <li class="sentence" data-source="{{this.source}}" data-signature="{{this.claimSignature}}" data-publishing-state="{{this.publishingState}}">
+      {{!-- Task 61: data attributes drive the row's coloured state
+            via [data-vis] / [data-decided] / [data-concern]
+            selectors. The state triple is the source of truth for
+            display; publishingState enum is not consulted. --}}
+      <li class="sentence" data-source="{{this.source}}" data-signature="{{this.claimSignature}}" data-vis="publishing" data-decided="{{this.state.decidedBy}}"{{#if this.state.concern}} data-concern="{{this.state.concern}}"{{/if}}>
         <div class="sentence__text">{{this.text}}</div>
         <div class="sentence__meta">
           <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{#if this.sourceDetailFormatted}}Source: {{this.sourceDetailFormatted}}{{else}}Source tag: {{this.source}}{{/if}}">
-            {{this.source}}{{#if this.sourceDetailFormatted}} · {{this.sourceDetailFormatted}}{{/if}}
+            {{this.source}}{{#if this.sourceDetailShort}} · {{this.sourceDetailShort}}{{/if}}
           </span>
 
-          {{!-- Explicit publishing-state pill — always present so a
-                curator scanning the list never has to infer state
-                from the absence of a pill. --}}
-          {{#isequal this.publishingState "curator_approved" this}}
-            <span class="pill pill--positive" title="Curator explicitly approved — publishes regardless of source-tag filter">✓ curator approved</span>
-          {{/isequal}}
-          {{#isequal this.publishingState "auto_publishing_clean" this}}
-            <span class="pill state-pill" data-publishing-state="auto_publishing_clean" title="Auto-publishing. No reviewer concern.">publishing</span>
-          {{/isequal}}
-          {{#isequal this.publishingState "auto_publishing_info" this}}
-            <span class="pill state-pill" data-publishing-state="auto_publishing_info" title="Auto-publishing. Reviewer left contextual info.">publishing · info</span>
-          {{/isequal}}
-          {{#isequal this.publishingState "auto_publishing_error" this}}
-            <span class="pill state-pill" data-publishing-state="auto_publishing_error" title="Auto-publishing. Reviewer flagged a possible or low-confidence error, but not blocking at this severity.">publishing · possible</span>
-          {{/isequal}}
+          {{!-- Task 61: visibility pill composed from the state triple.
+                Filled dot = publishing, hollow = hidden. Decidedby
+                sub-label distinguishes curator override from auto. --}}
+          <span class="pill state-pill" data-vis="publishing" data-decided="{{this.state.decidedBy}}" title="{{#isequal this.state.decidedBy "curator" this}}Publishing because a curator explicitly approved this claim, overriding the source-tag filter and any reviewer concern.{{else}}Auto-publishing per the source-tag filter with no blocking concern.{{/isequal}}">
+            {{#isequal this.state.decidedBy "curator" this}}● curator override{{else}}● publishing{{/isequal}}
+          </span>
+
+          {{!-- Task 61: concern pill is a JUMP LINK to the
+                corresponding finding card. When clicked, the small
+                interaction script at the bottom smooth-scrolls to
+                #finding-<claimSignature> and flashes it. --}}
+          {{#if this.state.concern}}
+          <a class="pill concern-pill concern-pill--link" data-concern="{{this.state.concern}}" href="#finding-{{this.claimSignature}}" title="{{this.reviewFinding.concern}} · click to jump to the reviewer's full note">
+            {{#isequal this.state.concern "info" this}}ⓘ info{{/isequal}}
+            {{#isequal this.state.concern "warning" this}}⚠ warning{{/isequal}}
+            {{#isequal this.state.concern "block" this}}⛔ block{{/isequal}}
+          </a>
+          {{/if}}
 
           {{#if this.clarification}}
             <span class="pill pill--attention" title="{{this.clarification}}">📝 clarification</span>
-          {{/if}}
-
-          {{#if this.reviewFinding}}
-            {{#isequal this.reviewFinding.kind "error" this}}
-              {{#isequal this.reviewFinding.confidence "medium" this}}<span class="pill pill--attention" title="{{this.reviewFinding.concern}}">⚠ possible issue</span>{{/isequal}}
-              {{#isequal this.reviewFinding.confidence "low" this}}<span class="pill pill--attention" title="{{this.reviewFinding.concern}}">⚠ hunch</span>{{/isequal}}
-            {{else}}
-              <span class="pill" title="{{this.reviewFinding.concern}}">ⓘ info</span>
-            {{/isequal}}
           {{/if}}
 
           {{!-- Trailing collection-object chips — one per cited
@@ -710,10 +716,11 @@
         <details class="sentence__actions">
           <summary>curator actions</summary>
           <div class="sentence__actions-body">
-            {{!-- Visible sentence: primary is "Reject (hide)" —
-                  Approve is redundant since it's already publishing,
-                  but kept as a de-emphasised "Mark as reviewed" so
-                  a curator can seal something they've eyeballed. --}}
+            {{!-- Task 61: visible sentence actions. Primary = Reject
+                  (hide). Add clarification is always available.
+                  Approve (Mark as reviewed) is only offered when not
+                  already curator-approved — it's a de-emphasised
+                  "curator has vetted this" seal. --}}
             <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/reject" class="sentence__action-form">
               <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
               <input type="hidden" name="claimText" value="{{this.text}}">
@@ -726,13 +733,11 @@
               <input type="text" name="clarification" placeholder="Guidance for next regen (e.g. 'use ForMemRS not Fellow')" class="sentence__action-input" required>
               <button type="submit" class="btn btn--secondary" title="Add curator guidance for the next regeneration">Add clarification</button>
             </form>
-            {{#isequal this.publishingState "curator_approved" this}}
-              {{!-- Already approved — nothing else useful to add for a visible sentence --}}
-            {{else}}
+            {{#isequal this.state.decidedBy "curator" this}}{{else}}
             <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/approve" class="sentence__action-form">
               <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
               <input type="hidden" name="claimText" value="{{this.text}}">
-              <button type="submit" class="btn btn--tertiary" title="Mark as curator-reviewed — no immediate effect but seals your review of this claim">Mark as reviewed</button>
+              <button type="submit" class="btn btn--tertiary" title="Mark as curator-reviewed — seals your review of this claim">Mark as reviewed</button>
             </form>
             {{/isequal}}
           </div>
@@ -750,31 +755,31 @@
     <ol class="sentence-list">
       {{#each renderedBiography.sentences}}
       {{#unless this.visible}}
-      <li class="sentence sentence--hidden" data-source="{{this.source}}" data-signature="{{this.claimSignature}}" data-publishing-state="{{this.publishingState}}">
+      <li class="sentence sentence--hidden" data-source="{{this.source}}" data-signature="{{this.claimSignature}}" data-vis="hidden" data-decided="{{this.state.decidedBy}}"{{#if this.state.concern}} data-concern="{{this.state.concern}}"{{/if}}>
         <div class="sentence__text">{{this.text}}</div>
         <div class="sentence__meta">
           <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{#if this.sourceDetailFormatted}}Source: {{this.sourceDetailFormatted}}{{else}}Source tag: {{this.source}}{{/if}}">
-            {{this.source}}{{#if this.sourceDetailFormatted}} · {{this.sourceDetailFormatted}}{{/if}}
+            {{this.source}}{{#if this.sourceDetailShort}} · {{this.sourceDetailShort}}{{/if}}
           </span>
 
-          {{#isequal this.publishingState "curator_rejected" this}}
-            <span class="pill pill--danger" title="Rejected by curator — excluded from next regen">✗ curator rejected</span>
-          {{/isequal}}
-          {{#isequal this.publishingState "hidden_below_level" this}}
-            <span class="pill state-pill" data-publishing-state="hidden_below_level" title="Source tag {{this.source}} is below the current publishing level ({{../renderedBiography.publishingLevel}}). Approve to publish anyway.">hidden · below level</span>
-          {{/isequal}}
-          {{#isequal this.publishingState "hidden_finding" this}}
-            <span class="pill state-pill" data-publishing-state="hidden_finding" title="Hidden because a high-confidence error finding is open on this sentence. Resolve the finding or approve to publish.">hidden · pending finding</span>
-          {{/isequal}}
+          {{!-- Task 61: visibility pill composed from the state triple.
+                Hollow dot = hidden. Reason follows the axes: curator
+                rejection > reviewer block > publishing level filter. --}}
+          <span class="pill state-pill" data-vis="hidden" data-decided="{{this.state.decidedBy}}" title="{{#isequal this.state.decidedBy "curator" this}}Curator explicitly rejected this claim. Excluded from the next regeneration.{{else}}{{#isequal this.state.concern "block" this}}Auto-hidden because the reviewer flagged this as a blocking concern. Approve to publish anyway.{{else}}Auto-hidden because the source tag ({{this.source}}) is below the current publishing level ({{../renderedBiography.publishingLevel}}). Approve to publish anyway.{{/isequal}}{{/isequal}}">
+            {{#isequal this.state.decidedBy "curator" this}}○ curator rejected{{else}}{{#isequal this.state.concern "block" this}}○ hidden · reviewer block{{else}}○ hidden · below level{{/isequal}}{{/isequal}}
+          </span>
+
+          {{!-- Concern jump-link (same as publishing group). --}}
+          {{#if this.state.concern}}
+          <a class="pill concern-pill concern-pill--link" data-concern="{{this.state.concern}}" href="#finding-{{this.claimSignature}}" title="{{this.reviewFinding.concern}} · click to jump to the reviewer's full note">
+            {{#isequal this.state.concern "info" this}}ⓘ info{{/isequal}}
+            {{#isequal this.state.concern "warning" this}}⚠ warning{{/isequal}}
+            {{#isequal this.state.concern "block" this}}⛔ block{{/isequal}}
+          </a>
+          {{/if}}
 
           {{#if this.clarification}}
             <span class="pill pill--attention" title="{{this.clarification}}">📝 clarification</span>
-          {{/if}}
-
-          {{#if this.reviewFinding}}
-            {{#isequal this.reviewFinding.kind "error" this}}
-              {{#isequal this.reviewFinding.confidence "high" this}}<span class="pill pill--danger" title="{{this.reviewFinding.concern}}">⚠ likely error</span>{{/isequal}}
-            {{/isequal}}
           {{/if}}
 
           {{#each this.chips}}
@@ -785,9 +790,11 @@
         <details class="sentence__actions">
           <summary>curator actions</summary>
           <div class="sentence__actions-body">
-            {{!-- Hidden sentence: primary is "Approve to publish". --}}
-            {{#isequal this.publishingState "curator_rejected" this}}
-              {{!-- Already rejected: only useful action is to re-approve. --}}
+            {{!-- Task 61: hidden sentence actions. Split by whether
+                  the hide was a curator rejection (needs Un-reject
+                  to restore) or an auto-hide (offer Approve +
+                  Confirm hidden + optional Verify). --}}
+            {{#isequal this.state.decidedBy "curator" this}}
               <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/approve" class="sentence__action-form">
                 <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
                 <input type="hidden" name="claimText" value="{{this.text}}">
@@ -797,7 +804,7 @@
               <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/approve" class="sentence__action-form">
                 <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
                 <input type="hidden" name="claimText" value="{{this.text}}">
-                <button type="submit" class="btn btn--secondary" title="Approve — publishes despite the filter / finding">Approve to publish</button>
+                <button type="submit" class="btn btn--secondary" title="Approve — publishes despite the filter or reviewer's block-tier concern">Approve to publish</button>
               </form>
               <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/reject" class="sentence__action-form">
                 <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
@@ -947,28 +954,55 @@
 
   .pill--muted { background: #efece4; border: 1px solid #c5c1b5; color: #646464; }
 
-  /* Task 56: publishing-state legend + per-sentence state pill +
-     background tints. Colours pair with the pill so a curator can
-     spot state by row-background alone at a glance. */
+  /* Task 61: state pill + row tints driven by the 3-axis triple —
+     [data-vis], [data-decided], [data-concern]. Two axes: visibility
+     (● publishing / ○ hidden) and who decided (auto/curator). Concern
+     lives on its own pill (see concern-pill below). */
   .publishing-state-legend { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; margin: 0 0 1rem 0; font-size: 0.75rem; }
-  .state-pill { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.7rem; }
-  .state-pill[data-publishing-state="auto_publishing_clean"]   { background: #eef2ed; border: 1px solid #a9c3a4; color: #2e5a3d; }
-  .state-pill[data-publishing-state="auto_publishing_info"]    { background: #e6ecf1; border: 1px solid #97b5c4; color: #204a5a; }
-  .state-pill[data-publishing-state="auto_publishing_error"]   { background: #f5edd8; border: 1px solid #c9b478; color: #6c5820; }
-  .state-pill[data-publishing-state="hidden_below_level"]      { background: #eeeae0; border: 1px solid #c5b98a; color: #6c5c30; }
-  .state-pill[data-publishing-state="hidden_finding"]          { background: #f5e2e2; border: 1px solid #b0797a; color: #7a2020; }
-  .state-pill[data-publishing-state="curator_approved"]        { background: #dae7dd; border: 1px solid #6da97e; color: #2e5a3d; }
-  .state-pill[data-publishing-state="curator_rejected"]        { background: #f5e2e2; border: 1px solid #b0797a; color: #7a2020; }
+  .state-pill { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.7rem; padding: 0.15rem 0.55rem; border-radius: 3px; }
+  .state-pill[data-vis="publishing"][data-decided="auto"]     { background: #eef2ed; border: 1px solid #a9c3a4; color: #2e5a3d; }
+  .state-pill[data-vis="publishing"][data-decided="curator"]  { background: #dae7dd; border: 1px solid #6da97e; color: #1e4a2f; font-weight: 600; }
+  .state-pill[data-vis="hidden"][data-decided="auto"]         { background: #eeeae0; border: 1px solid #c5b98a; color: #6c5c30; }
+  .state-pill[data-vis="hidden"][data-decided="curator"]      { background: #f5e2e2; border: 1px solid #b0797a; color: #7a2020; font-weight: 600; }
 
-  /* Sentence row background tint by publishing state — subtle, does not fight the
-     source-tag pill colouring. Selected state (via hover-highlight below) overrides. */
-  .sentence[data-publishing-state="curator_approved"]      { border-left: 3px solid #6da97e; }
-  .sentence[data-publishing-state="curator_rejected"]      { border-left: 3px solid #b0797a; background: #faf1f1; }
-  .sentence[data-publishing-state="auto_publishing_clean"] { border-left: 3px solid #d5d0c1; }
-  .sentence[data-publishing-state="auto_publishing_info"]  { border-left: 3px solid #97b5c4; }
-  .sentence[data-publishing-state="auto_publishing_error"] { border-left: 3px solid #c9b478; background: #fbf7ec; }
-  .sentence[data-publishing-state="hidden_below_level"]    { border-left: 3px solid #c5b98a; }
-  .sentence[data-publishing-state="hidden_finding"]        { border-left: 3px solid #b0797a; background: #faf1f1; }
+  /* Concern pill — orthogonal to visibility. Clickable variant scrolls
+     to the corresponding finding card. */
+  .concern-pill { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.7rem; padding: 0.15rem 0.55rem; border-radius: 3px; }
+  .concern-pill[data-concern="info"]    { background: #e6ecf1; border: 1px solid #97b5c4; color: #204a5a; }
+  .concern-pill[data-concern="warning"] { background: #f5edd8; border: 1px solid #c9b478; color: #6c5820; }
+  .concern-pill[data-concern="block"]   { background: #f5cccc; border: 1px solid #b0797a; color: #6c1c1c; font-weight: 600; }
+  .concern-pill--link { text-decoration: none; }
+  .concern-pill--link:hover { filter: brightness(0.95); }
+
+  /* Row-level tint driven by the SAME axes so the row background
+     reads at a glance without decoding the pill. */
+  .sentence[data-vis="publishing"][data-decided="auto"]    { border-left: 3px solid #d5d0c1; }
+  .sentence[data-vis="publishing"][data-decided="curator"] { border-left: 3px solid #6da97e; background: #eff5f0; }
+  .sentence[data-vis="hidden"]                             { border-left: 3px solid #c5b98a; }
+  .sentence[data-vis="hidden"][data-decided="curator"]     { border-left: 3px solid #b0797a; background: #faf1f1; }
+  /* Concern axis nudges the tint further — a warning-tier concern
+     on an auto-publishing row gets a subtle amber wash. */
+  .sentence[data-vis="publishing"][data-decided="auto"][data-concern="warning"] { background: #fbf7ec; border-left-color: #c9b478; }
+  .sentence[data-vis="publishing"][data-decided="auto"][data-concern="info"]    { border-left-color: #97b5c4; }
+
+  /* Task 61: hidden rows get a diagonal hatched background — makes the
+     "not on public site" state visually distinct at a glance without
+     yelling. Repeating-linear-gradient is cheap + widely supported. */
+  .sentence[data-vis="hidden"] {
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent 0,
+      transparent 6px,
+      rgba(0, 0, 0, 0.035) 6px,
+      rgba(0, 0, 0, 0.035) 8px
+    );
+  }
+  .sentence[data-vis="hidden"] .sentence__text { color: #7a726a; }
+
+  /* Rail pill wrapping — the hover rail is narrow; long pills like
+     `wikidata:P1056 (product or material produced)` overflow without
+     word-break. */
+  .biography-with-rail__rail .pill { white-space: normal; word-break: break-word; max-width: 100%; }
 
   /* Publishing / Hidden group titles */
   .claims-group { margin-top: 1rem; }
@@ -1168,7 +1202,13 @@
     // rail can go straight to the full claim action UI. Does NOT
     // clear on mouseleave — the rail persists at the last-hovered
     // claim so curators can move the mouse to read.
-    function updateRail (sig) {
+    //
+    // Task 61: when hover came from a PROSE sentence (which is always
+    // publishing by definition — hidden ones don't appear in the
+    // rendered prose), the visibility pill in the rail is redundant.
+    // Strip it. When hover came from a Claim row, keep the pill —
+    // the row might be hidden and that state matters.
+    function updateRail (sig, hoverOrigin) {
       if (!rail || !sig) return;
       var claim = document.querySelector('.sentence[data-signature="' + sig + '"]');
       if (!claim) return;
@@ -1176,7 +1216,17 @@
       var metaNode = claim.querySelector('.sentence__meta');
       railPopulated.innerHTML = '';
       if (textNode) railPopulated.appendChild(textNode.cloneNode(true));
-      if (metaNode) railPopulated.appendChild(metaNode.cloneNode(true));
+      if (metaNode) {
+        var metaClone = metaNode.cloneNode(true);
+        if (hoverOrigin === 'prose') {
+          // Prose sentences are always publishing → drop the redundant
+          // visibility pill so the rail focuses on the useful axes
+          // (source + concern + curator badge + chips).
+          var vis = metaClone.querySelectorAll('.state-pill');
+          for (var i = 0; i < vis.length; i++) vis[i].remove();
+        }
+        railPopulated.appendChild(metaClone);
+      }
       var jump = document.createElement('a');
       jump.href = '#';
       jump.className = 'rail-jump';
@@ -1190,18 +1240,55 @@
       railPopulated.hidden = false;
     }
 
-    function bindHover (nodes) {
+    function bindHover (nodes, origin) {
       for (var i = 0; i < nodes.length; i++) {
         (function (el) {
           el.addEventListener('mouseenter', function () {
             var sig = el.getAttribute('data-signature');
             highlight(sig, true);
-            updateRail(sig);
+            updateRail(sig, origin);
           });
           el.addEventListener('mouseleave', function () {
             highlight(el.getAttribute('data-signature'), false);
           });
         })(nodes[i]);
+      }
+    }
+
+    // Task 61: concern-pill jump link on each Claims row → smooth-scroll
+    // to the corresponding finding card. Same flash animation as the
+    // existing prose↔claim jumps.
+    function bindConcernJump () {
+      var pills = document.querySelectorAll('.concern-pill--link[href^="#finding-"]');
+      for (var i = 0; i < pills.length; i++) {
+        (function (el) {
+          el.addEventListener('click', function (e) {
+            var href = el.getAttribute('href');
+            if (!href) return;
+            var target = document.querySelector(href);
+            if (!target) return;
+            e.preventDefault();
+            scrollAndFlash(target);
+          });
+        })(pills[i]);
+      }
+    }
+
+    // Task 61: finding "Go to claim ↓" link → smooth-scroll to the
+    // corresponding claim row in the Claims list. Same flash.
+    function bindFindingJump () {
+      var links = document.querySelectorAll('.finding__jump-to-claim');
+      for (var i = 0; i < links.length; i++) {
+        (function (el) {
+          el.addEventListener('click', function (e) {
+            var sig = el.getAttribute('data-affected-signature');
+            if (!sig) return;
+            var target = document.querySelector('.sentence[data-signature="' + sig + '"]');
+            if (!target) return;
+            e.preventDefault();
+            scrollAndFlash(target);
+          });
+        })(links[i]);
       }
     }
     function bindProseClick (nodes) {
@@ -1233,10 +1320,12 @@
       }
     }
 
-    bindHover(claims);
-    bindHover(prose);
+    bindHover(claims, 'claim');
+    bindHover(prose, 'prose');
     bindProseClick(prose);
     bindClaimClick(claims);
+    bindConcernJump();
+    bindFindingJump();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', wireInteractions);
