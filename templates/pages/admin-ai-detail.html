@@ -276,7 +276,7 @@
 
   <aside class="biography-with-rail__rail" id="claim-detail-rail" aria-live="polite">
     <div class="rail-empty text-meta">
-      <em>Hover a sentence for a preview. Click to lock the panel + reveal jump links.</em>
+      <em>Hover a sentence to preview its provenance. Click to keep it in view.</em>
     </div>
     <div class="rail-populated" hidden>
     </div>
@@ -1083,6 +1083,16 @@
     outline: 1px solid rgba(200, 122, 30, 0.35);
     outline-offset: 2px;
   }
+  /* Task 66: persistent .is-selected — visually identical to
+     .is-highlighted but survives mouseleave. Keeps the selected
+     sentence anchored in the prose + Claims list so a curator
+     always knows which claim the rail panel is showing. */
+  .ai-rendered-prose [data-signature].is-selected,
+  .sentence.is-selected {
+    background: rgba(200, 122, 30, 0.16) !important;
+    outline: 1px solid rgba(200, 122, 30, 0.55);
+    outline-offset: 2px;
+  }
 
   /* Resolved findings — dimmed by default so the eye lands on pending first. */
   .finding--resolved { opacity: 0.75; }
@@ -1182,19 +1192,9 @@
   }
   .biography-with-rail__rail .rail-jump:hover { text-decoration-color: #2c5288; }
 
-  /* Task 65: rail lock indicator + jump-links row. Small + subtle
-     — doesn't scream, but clear enough that a curator knows the
-     panel is now sticky and click-to-unlock. */
-  .biography-with-rail__rail .rail-lock-indicator {
-    margin-top: 0.75rem;
-    padding: 0.4rem 0.6rem;
-    background: rgba(200, 122, 30, 0.08);
-    border: 1px solid rgba(200, 122, 30, 0.25);
-    border-radius: 3px;
-    color: #6c5820;
-    font-size: 0.75rem;
-    line-height: 1.35;
-  }
+  /* Task 65 / 66: jump-links row in the rail — both directions
+     side by side. No lock indicator (Task 66 removed it — the
+     .is-selected highlight on the sentence is signal enough). */
   .biography-with-rail__rail .rail-jumps {
     display: flex;
     flex-wrap: wrap;
@@ -1271,6 +1271,19 @@
       }
     }
 
+    // Task 66: persistent `.is-selected` marker — applied to every
+    // element (prose span + Claims row) matching the currently-
+    // selected sig. Survives mouseleave so the curator can see
+    // which sentence's info is in the panel even after moving the
+    // mouse away.
+    function setSelected (sig) {
+      var prev = document.querySelectorAll('.is-selected');
+      for (var i = 0; i < prev.length; i++) prev[i].classList.remove('is-selected');
+      if (!sig) return;
+      var nodes = document.querySelectorAll('[data-signature="' + sig + '"]');
+      for (var j = 0; j < nodes.length; j++) nodes[j].classList.add('is-selected');
+    }
+
     // Rail update: clone the sentence text + meta from the matching
     // Claims row, and append BOTH jump links so a curator can go
     // to the prose sentence OR the full Claims row without another
@@ -1294,14 +1307,6 @@
           for (var i = 0; i < vis.length; i++) vis[i].remove();
         }
         railPopulated.appendChild(metaClone);
-      }
-
-      // Lock indicator — only present when the rail is locked.
-      if (lockedSig === sig) {
-        var lockNote = document.createElement('div');
-        lockNote.className = 'rail-lock-indicator';
-        lockNote.innerHTML = '🔒 Locked — click the same sentence again to unlock';
-        railPopulated.appendChild(lockNote);
       }
 
       // Both jump directions — always present.
@@ -1349,9 +1354,11 @@
       }
     }
 
-    // Task 65: click LOCKS the rail at the target claim (or
-    // toggles unlock if clicking the currently-locked target).
-    // Applies to both prose and claim origins — same behaviour.
+    // Click SELECTS the sentence — panel stays put + the sentence
+    // stays highlighted in the prose + Claims list until another
+    // sentence is clicked (or the same one is re-clicked to
+    // deselect). Applies to both prose and claim origins — same
+    // behaviour, same signature-driven selection.
     function bindClickLock (nodes, origin) {
       for (var i = 0; i < nodes.length; i++) {
         (function (el) {
@@ -1360,10 +1367,14 @@
             var sig = el.getAttribute('data-signature');
             if (!sig) return;
             if (lockedSig === sig) {
+              // Deselect
               lockedSig = null;
-              updateRail(sig, origin); // repaint without lock indicator
+              setSelected(null);
+              updateRail(sig, origin);
             } else {
+              // Select this one
               lockedSig = sig;
+              setSelected(sig);
               updateRail(sig, origin);
             }
           });
@@ -1414,10 +1425,13 @@
     bindConcernJump();
     bindFindingJump();
 
-    // Task 65: if there's an existing lock, repaint the rail on
-    // re-wire so the lock indicator + both jump links appear on
-    // freshly-created sentence elements (Claims view toggle).
-    if (lockedSig) updateRail(lockedSig, null);
+    // Task 65 / 66: if a sentence is already selected, repaint
+    // the rail + reapply .is-selected on the fresh sentence
+    // elements (Claims view toggle rebuilds the DOM).
+    if (lockedSig) {
+      setSelected(lockedSig);
+      updateRail(lockedSig, null);
+    }
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', wireInteractions);
