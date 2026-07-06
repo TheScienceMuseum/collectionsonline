@@ -129,26 +129,32 @@
       {{/if}}
     </dd>
   </div>
-  {{#if signalView}}
-  <div class="detail-meta__field--secondary">
-    <dt>Signal score</dt>
+  {{!-- Score cell — merges the two independent quality signals into one
+        cell to reclaim grid space. They measure different things (inputs
+        vs the model's self-report on its output) so both stay, labelled. --}}
+  <div>
+    <dt>Score</dt>
     <dd>
-      <span title="Weighted score of source-data signals. Strong anchors (existing description, related collection items) count 3 each; Wikidata 2 each; supporting fields 1 each. Records below the minimum are skipped as insufficient_data.">
-        {{signalView.score}} / {{signalView.maxScore}}
-        <span class="text-meta">· min {{signalView.minScore}} to generate</span>
-      </span>
+      {{#if signalView}}
+      <div title="Weighted score of source-data signals — the strongest quality proxy. Strong anchors (existing description, related collection items) count 3 each; Wikidata 2 each; supporting fields 1 each. Records below the minimum are skipped as insufficient_data.">
+        <span class="text-meta--sm">signal</span> {{signalView.score}} / {{signalView.maxScore}}
+        <span class="text-meta">· min {{signalView.minScore}}</span>
+      </div>
+      {{/if}}
+      <div title="The model's self-reported confidence in its own output (0 = no data, 10 = rich, well-grounded). LLM self-reporting is a weak signal — we track it to observe calibration over time.">
+        <span class="text-meta--sm">confidence</span>
+        {{#if record.confidence}}{{record.confidence}} / 10{{else}}{{#if record.writerConfidence}}{{record.writerConfidence}} / 10{{else}}—{{/if}}{{/if}}
+        <span class="text-meta">· self-reported</span>
+      </div>
     </dd>
   </div>
-  {{/if}}
   <div>
     <dt>Generated</dt>
-    <dd title="Biography text last produced at {{record.generatedAt}} · record last touched (any field) at {{record.updatedAt}}">{{formatDate record.generatedAt "auto"}}</dd>
-  </div>
-  <div class="detail-meta__field--secondary">
-    <dt>Snapshots</dt>
-    <dd>
-      {{snapshotCount}}
-      {{#if snapshotCount}} · <a href="/admin/ai/{{record.PK}}/compare">compare versions</a>{{/if}}
+    <dd title="Biography text last produced at {{record.generatedAt}} · record last touched (any field) at {{record.updatedAt}}">
+      {{formatDate record.generatedAt "auto"}}
+      {{#if snapshotCount}}
+        <span class="text-meta">· {{snapshotCount}} snapshot{{#isequal snapshotCount 1 this}}{{else}}s{{/isequal}} · <a href="/admin/ai/{{record.PK}}/compare">compare</a></span>
+      {{/if}}
     </dd>
   </div>
   <div class="detail-meta__field--secondary">
@@ -228,22 +234,15 @@
     </dd>
   </div>
   {{/if}}
-  <div>
-    <dt>Confidence</dt>
-    <dd title="The model's self-reported confidence in its own output (0 = no data, 10 = rich, well-grounded). LLM self-reporting is a weak signal — we track it to observe calibration over time. The Signal score (data in) is a stronger quality proxy.">
-      {{#if record.confidence}}{{record.confidence}} / 10{{else}}{{#if record.writerConfidence}}{{record.writerConfidence}} / 10{{else}}—{{/if}}{{/if}}
-      <span class="text-meta--sm">· self-reported</span>
-    </dd>
-  </div>
   {{#if renderedBiography.sentences.length}}
   {{!-- Publishing-level indicator — only populated for v2 (source-tagged)
         records. Legacy records skip this field because they don't have
         per-sentence source tags to filter by. --}}
-  <div class="detail-meta__field--secondary">
+  <div>
     <dt>Publishing level</dt>
-    <dd title="Collection-wide filter for which source tags publish. Level 3 (default) publishes museum + wikidata + llm:inferred + llm:contextualising. Curators override per-sentence via approve.">
-      <strong>{{renderedBiography.publishingLevel}}</strong>
-      <span class="text-meta">·
+    <dd>
+      <strong title="Collection-wide filter for which source tags publish. 0 = museum only · 1 = + wikidata · 2 = + llm:inferred · 3 = + llm:contextualising (default) · 4 = + llm:validated (external CoVe) · 5 = + llm:general_knowledge. Curators can override per-sentence via Approve.">{{renderedBiography.publishingLevel}}</strong>
+      <span class="text-meta" title="Sentence counts after filter + curator overrides + likely-error hides applied. Hidden includes: source below the current level, hidden by a likely-error finding, and hidden by curator rejection.">·
         {{renderedBiography.visibleCount}} shown / {{renderedBiography.hiddenCount}} hidden
       </span>
     </dd>
