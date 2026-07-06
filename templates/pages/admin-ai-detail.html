@@ -1031,27 +1031,31 @@
      text-variation-selected warning glyph renders as a proper
      symbol rather than getting shoved into a monospace cell. */
   .concern-pill__icon { display: inline-block; font-family: -apple-system, "Segoe UI Symbol", "Helvetica Neue", sans-serif; font-size: 0.95rem; line-height: 1; vertical-align: -0.15em; margin-right: 0.1rem; }
-  /* Anchor-pseudo overrides — the default a:link (specificity 0,1,1)
-     beats the plain .concern-pill--link (0,1,0) rule, so text was
-     rendering as underlined blue links even when the pill styles set
-     a matching text/border colour. Repeat the colour + no-underline
-     across :link / :visited / :hover / :active with attribute-scoped
-     selectors to lift specificity above the browser default. */
-  .concern-pill--link,
-  .concern-pill--link:link,
-  .concern-pill--link:visited,
-  .concern-pill--link:hover,
-  .concern-pill--link:active { text-decoration: none; }
-  .concern-pill--link[data-concern="info"],
-  .concern-pill--link[data-concern="info"]:link,
-  .concern-pill--link[data-concern="info"]:visited    { color: #204a5a; }
-  .concern-pill--link[data-concern="warning"],
-  .concern-pill--link[data-concern="warning"]:link,
-  .concern-pill--link[data-concern="warning"]:visited { color: #6c5820; }
-  .concern-pill--link[data-concern="block"],
-  .concern-pill--link[data-concern="block"]:link,
-  .concern-pill--link[data-concern="block"]:visited   { color: #6c1c1c; }
-  .concern-pill--link:hover { filter: brightness(0.95); }
+  /* Anchor-pseudo overrides — must beat the admin layout rule
+        .detail-section a:not(.btn):not(.headline-card) {
+          color: #2c5288; text-decoration: underline;
+        }
+     at specificity (0,3,1). Plain .concern-pill--link (0,1,0) and
+     even .concern-pill--link:link (0,2,0) lose to it, so pills
+     rendered as underlined blue text inside the Claims section.
+     Prefix every rule with `.detail-section a.concern-pill--link`
+     to match the culprit's (0,3,1) and rely on later cascade order
+     to win the tie. */
+  .detail-section a.concern-pill--link,
+  .detail-section a.concern-pill--link:link,
+  .detail-section a.concern-pill--link:visited,
+  .detail-section a.concern-pill--link:hover,
+  .detail-section a.concern-pill--link:active { text-decoration: none; }
+  .detail-section a.concern-pill--link[data-concern="info"],
+  .detail-section a.concern-pill--link[data-concern="info"]:link,
+  .detail-section a.concern-pill--link[data-concern="info"]:visited    { color: #204a5a; }
+  .detail-section a.concern-pill--link[data-concern="warning"],
+  .detail-section a.concern-pill--link[data-concern="warning"]:link,
+  .detail-section a.concern-pill--link[data-concern="warning"]:visited { color: #6c5820; }
+  .detail-section a.concern-pill--link[data-concern="block"],
+  .detail-section a.concern-pill--link[data-concern="block"]:link,
+  .detail-section a.concern-pill--link[data-concern="block"]:visited   { color: #6c1c1c; }
+  .detail-section a.concern-pill--link:hover { filter: brightness(0.95); }
 
   /* Row-level tint driven by the SAME axes so the row background
      reads at a glance without decoding the pill. */
