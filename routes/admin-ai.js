@@ -265,12 +265,12 @@ function computeSentenceStateForFinding (sentence, finding) {
 
   if (vis) {
     if (curator) return { label: 'publishing (curator approved)', variant: 'publishing', tone: 'positive' };
-    if (concern === 'warning') return { label: 'publishing (severity does not block)', variant: 'publishing', tone: 'caution' };
-    if (concern === 'info') return { label: 'publishing (info-tier does not block)', variant: 'publishing', tone: 'positive' };
+    if (concern === 'warning') return { label: 'publishing (severity does not suppress)', variant: 'publishing', tone: 'caution' };
+    if (concern === 'info') return { label: 'publishing (info-tier does not suppress)', variant: 'publishing', tone: 'positive' };
     return { label: 'publishing (auto)', variant: 'publishing', tone: 'positive' };
   }
   if (curator) return { label: 'hidden (curator rejected)', variant: 'hidden', tone: 'danger' };
-  if (concern === 'block') return { label: 'hidden (blocking finding)', variant: 'hidden', tone: 'danger' };
+  if (concern === 'block') return { label: 'hidden (suppressing finding)', variant: 'hidden', tone: 'danger' };
   return { label: 'hidden (below publishing level)', variant: 'hidden', tone: 'muted' };
 }
 
