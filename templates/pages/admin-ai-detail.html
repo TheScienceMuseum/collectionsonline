@@ -369,6 +369,10 @@
     High-confidence error findings hide their sentence by default until you resolve them.
   </p>
   <ul class="findings-list">
+    {{!-- Sentence quote comes FIRST so a curator scanning the panel
+          sees WHAT is being flagged before wading through WHY. Task 56
+          UX feedback: the previous "reasoning first, quote second"
+          order buried the point of interest under a wall of prose. --}}
     {{#each openFindings}}
     <li class="finding finding--{{this.kind}}-{{this.confidence}}" data-signature="{{this.claimSignature}}">
       <div class="finding__header">
@@ -379,11 +383,11 @@
         {{else}}
           <span class="pill" title="Reviewer left contextual information without asserting wrongness (info)">info · {{this.confidence}}</span>
         {{/isequal}}
-        <span class="finding__concern">{{this.concern}}</span>
       </div>
       {{#if this.claimText}}
       <div class="finding__claim">&ldquo;{{this.claimText}}&rdquo;</div>
       {{/if}}
+      <div class="finding__concern-body">{{this.concern}}</div>
       <div class="finding__actions">
         {{!-- Accept applies as a curator rejection (regen-triggering).
               Dismiss marks resolved with no biography change. Verify
@@ -432,21 +436,102 @@
 </details>
 {{/if}}
 
+{{!-- Resolved findings audit collapsible — Task 56. Curators asked
+      for this so past accept / dismiss / clarified findings are
+      auditable without opening the underlying REVIEW# items directly.
+      Deliberately collapsed by default; the user's primary focus is
+      Open findings, this is for later drill-down. Also gives us a
+      natural home for a future "Reactivate" button if we ever add
+      one — for now it's read-only. --}}
+{{#if resolvedFindings.length}}
+<details class="detail-section findings-panel" id="resolved-findings">
+  <summary class="findings-panel__summary">
+    <span class="findings-panel__title">Resolved findings ({{resolvedFindings.length}})</span>
+    <span class="text-meta findings-panel__hint">— curator-resolved concerns, most-recent first. Audit history.</span>
+  </summary>
+  <ul class="findings-list">
+    {{#each resolvedFindings}}
+    <li class="finding finding--resolved finding--{{this.kind}}-{{this.confidence}}" data-signature="{{this.claimSignature}}">
+      <div class="finding__header">
+        {{#isequal this.resolution "accepted" this}}
+          <span class="pill pill--muted" title="Accepted — a curator rejection was created on the sentence and it was excluded from the next regen.">✓ accepted</span>
+        {{/isequal}}
+        {{#isequal this.resolution "dismissed" this}}
+          <span class="pill pill--muted" title="Dismissed — reviewer's concern was not valid; no biography change.">✗ dismissed</span>
+        {{/isequal}}
+        {{#isequal this.resolution "clarified" this}}
+          <span class="pill pill--muted" title="Clarified — curator attached a clarification to the sentence and considers the concern addressed.">📝 clarified</span>
+        {{/isequal}}
+        {{#isequal this.kind "error" this}}
+          {{#isequal this.confidence "high" this}}<span class="pill pill--muted">was: likely error</span>{{/isequal}}
+          {{#isequal this.confidence "medium" this}}<span class="pill pill--muted">was: possible issue</span>{{/isequal}}
+          {{#isequal this.confidence "low" this}}<span class="pill pill--muted">was: hunch</span>{{/isequal}}
+        {{else}}
+          <span class="pill pill--muted">was: info · {{this.confidence}}</span>
+        {{/isequal}}
+      </div>
+      {{#if this.claimText}}
+      <div class="finding__claim">&ldquo;{{this.claimText}}&rdquo;</div>
+      {{/if}}
+      <div class="finding__concern-body">{{this.concern}}</div>
+      <div class="text-meta--sm" style="margin-top: 0.4rem;">
+        Resolved by <strong>{{this.resolvedBy}}</strong>
+        {{#if this.resolvedAt}} at <span title="{{this.resolvedAt}}">{{formatDate this.resolvedAt "auto"}}</span>{{/if}}
+      </div>
+    </li>
+    {{/each}}
+  </ul>
+</details>
+{{/if}}
+
 {{#if renderedBiography.sentences.length}}
+{{!-- Rendered public prose — split into two blocks. The main
+      Biography block is the "who / what / when" narrative; the
+      In-the-collection block is the "here's what the museum holds"
+      section, restoring the v1 Biography + Collection Context
+      separation the Task 56 UX review flagged as missing.
+
+      Collection-object references inside the prose carry a small
+      trailing "→ view object" hyperlink chip generated at render
+      time in lib/ai/render-biography.js — restores the v1 object
+      hyperlinking behaviour that was lost when we moved to
+      sentence-tagged JSON. `data-signature` on each paragraph is a
+      hook for the sentence↔claim hover-highlight interaction wired
+      by the small script at the bottom of the page. --}}
 <div class="detail-section" id="biography">
   <h3>Biography</h3>
+  <div class="prose-body ai-rendered-prose" data-block="biography">
+    {{{renderedBiography.biographyHtml}}}
+  </div>
+</div>
+
+{{#if renderedBiography.contextHtml}}
+<div class="detail-section" id="in-the-collection">
+  <h3>In the collection</h3>
+  <div class="prose-body ai-rendered-prose" data-block="context">
+    {{{renderedBiography.contextHtml}}}
+  </div>
+</div>
+{{/if}}
+
+<div class="detail-section" id="claims">
+  <h3>Claims <span class="text-meta" style="font-weight: normal; font-size: 0.8rem;">— per-sentence provenance + curator actions for the biography above</span></h3>
+
   <div class="biography-summary">
     <span title="Publishing level filters sentences by their source tag. Level 3 (default) publishes museum + wikidata + llm:inferred + llm:contextualising sentences; llm:general_knowledge sentences are hidden until verified.">
       Publishing level <strong>{{renderedBiography.publishingLevel}}</strong> —
-      showing <strong>{{renderedBiography.visibleCount}}</strong>
-      of <strong>{{renderedBiography.totalCount}}</strong> sentences
-      ({{renderedBiography.hiddenCount}} hidden)
+      <strong>{{renderedBiography.visibleCount}}</strong> publishing,
+      <strong>{{renderedBiography.hiddenCount}}</strong> hidden
+      (of {{renderedBiography.totalCount}} total)
     </span>
   </div>
 
-  {{!-- Legend + colour swatches for the source pills. Colours match the
-        [data-source="..."] selectors below so a curator can eyeball
-        each sentence's provenance without hovering. --}}
+  {{!-- Two-row legend: source tag colours (top row) + publishing
+        state (bottom row). Task 56 review flagged that curators
+        couldn't distinguish "auto-published" from "explicitly
+        approved" from "hidden by filter" at a glance — this legend
+        + the matching data-attribute-driven backgrounds on each
+        sentence give an at-a-glance key. --}}
   <div class="sentence-source-legend">
     <span class="sentence-source-legend__label">Sources:</span>
     <span class="pill sentence__source-pill" data-source="museum">museum</span>
@@ -456,82 +541,196 @@
     <span class="pill sentence__source-pill" data-source="llm:general_knowledge">llm:general_knowledge</span>
   </div>
 
-  <ol class="sentence-list">
-    {{#each renderedBiography.sentences}}
-    <li class="sentence{{#unless this.visible}} sentence--hidden{{/unless}}{{#isequal this.curatorDecision "approved" this}} sentence--approved{{/isequal}}{{#isequal this.curatorDecision "rejected" this}} sentence--rejected{{/isequal}}" data-source="{{this.source}}" data-signature="{{this.claimSignature}}">
-      <div class="sentence__text">{{this.text}}</div>
-      <div class="sentence__meta">
-        <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{#if this.sourceDetail}}Source: {{this.sourceDetail}}{{else}}Source tag: {{this.source}}{{/if}}">
-          {{this.source}}{{#if this.sourceDetail}} · {{this.sourceDetail}}{{/if}}
-        </span>
-        {{#isequal this.curatorDecision "approved" this}}
-          <span class="pill pill--positive" title="Approved by curator — publishes regardless of source-tag filter">✓ approved</span>
-        {{/isequal}}
-        {{#isequal this.curatorDecision "rejected" this}}
-          <span class="pill pill--danger" title="Rejected by curator — hidden here and excluded from next regen">✗ rejected</span>
-        {{/isequal}}
-        {{#if this.clarification}}
-          <span class="pill pill--attention" title="{{this.clarification}}">📝 clarification</span>
-        {{/if}}
-        {{#if this.reviewFinding}}
-          {{#isequal this.reviewFinding.kind "error" this}}
-            {{#isequal this.reviewFinding.confidence "high" this}}<span class="pill pill--danger" title="{{this.reviewFinding.concern}}">⚠ likely error</span>{{/isequal}}
-            {{#isequal this.reviewFinding.confidence "medium" this}}<span class="pill pill--attention" title="{{this.reviewFinding.concern}}">⚠ possible issue</span>{{/isequal}}
-            {{#isequal this.reviewFinding.confidence "low" this}}<span class="pill pill--attention" title="{{this.reviewFinding.concern}}">⚠ hunch</span>{{/isequal}}
-          {{else}}
-            <span class="pill" title="{{this.reviewFinding.concern}}">ⓘ info</span>
-          {{/isequal}}
-        {{/if}}
-        {{#unless this.visible}}
-          {{#isequal this.hiddenReason "below_publishing_level" this}}<span class="pill pill--muted" title="Source tag {{this.source}} is below the current publishing level ({{../renderedBiography.publishingLevel}}). Approve to publish anyway.">hidden · below level</span>{{/isequal}}
-          {{#isequal this.hiddenReason "reviewer_error_high" this}}<span class="pill pill--muted" title="Hidden because a high-confidence error finding is open on this sentence. Resolve the finding or approve to publish.">hidden · pending finding</span>{{/isequal}}
-        {{/unless}}
-      </div>
+  <div class="publishing-state-legend">
+    <span class="sentence-source-legend__label">Publishing state:</span>
+    <span class="pill state-pill" data-publishing-state="auto_publishing_clean" title="Publishing because its source tag is allowed at the current level. No reviewer concern.">publishing</span>
+    <span class="pill state-pill" data-publishing-state="auto_publishing_info" title="Publishing. Reviewer left contextual info; not blocking.">publishing · info</span>
+    <span class="pill state-pill" data-publishing-state="auto_publishing_error" title="Publishing. Reviewer flagged a possible / low-confidence error; not blocking at this severity.">publishing · possible</span>
+    <span class="pill state-pill" data-publishing-state="curator_approved" title="Curator-approved. Publishes regardless of source-tag filter.">✓ curator approved</span>
+    <span class="pill state-pill" data-publishing-state="hidden_below_level" title="Source tag is below the current publishing level. Approve on the sentence to publish anyway.">hidden · below level</span>
+    <span class="pill state-pill" data-publishing-state="hidden_finding" title="Hidden by a high-confidence error finding. Resolve or approve to publish.">hidden · pending finding</span>
+    <span class="pill state-pill" data-publishing-state="curator_rejected" title="Curator-rejected. Hidden and excluded from next regen.">✗ curator rejected</span>
+  </div>
 
-      <details class="sentence__actions">
-        <summary>curator actions</summary>
-        <div class="sentence__actions-body">
-          <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/approve" class="sentence__action-form">
-            <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
-            <input type="hidden" name="claimText" value="{{this.text}}">
-            <button type="submit" class="btn btn--secondary" title="Approve this sentence — publishes regardless of source tag; no regen">Approve</button>
-          </form>
-          <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/reject" class="sentence__action-form">
-            <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
-            <input type="hidden" name="claimText" value="{{this.text}}">
-            <input type="text" name="rationale" placeholder="Optional rationale for regen" class="sentence__action-input">
-            <button type="submit" class="btn btn--secondary" title="Reject — hidden here and excluded from next regen">Reject</button>
-          </form>
-          <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/clarify" class="sentence__action-form">
-            <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
-            <input type="hidden" name="claimText" value="{{this.text}}">
-            <input type="text" name="clarification" placeholder="Guidance for next regen (e.g. 'use ForMemRS not Fellow')" class="sentence__action-input" required>
-            <button type="submit" class="btn btn--secondary" title="Add curator guidance for the next regeneration">Add clarification</button>
-          </form>
-          {{#isequal this.source "llm:general_knowledge" this}}
-          {{#if ../reviewConfig.externalValidationEnabled}}
-          <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/verify" class="sentence__action-form">
-            <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
-            <input type="hidden" name="claimText" value="{{this.text}}">
-            <input type="hidden" name="context" value="sentence">
-            <button type="submit" class="btn btn--secondary" title="Verify externally — Wikipedia / Wikidata / etc. If supported, promotes to llm:validated and publishes.">Verify externally</button>
-          </form>
+  {{!-- Publishing group. Iterated over the full sentences[] array
+        and filtered to visible ones — the narrative order is
+        preserved (unlike sorting by state). --}}
+  <div class="claims-group claims-group--publishing" id="claims-publishing">
+    <h4 class="claims-group__title">Publishing <span class="text-meta">({{renderedBiography.visibleCount}})</span></h4>
+    <ol class="sentence-list">
+      {{#each renderedBiography.sentences}}
+      {{#if this.visible}}
+      {{!-- data-publishing-state drives the row's background tint
+            + border via [data-publishing-state="..."] selectors in
+            the <style> block. data-signature is the anchor used by
+            the sentence↔prose hover-link script. --}}
+      <li class="sentence" data-source="{{this.source}}" data-signature="{{this.claimSignature}}" data-publishing-state="{{this.publishingState}}">
+        <div class="sentence__text">{{this.text}}</div>
+        <div class="sentence__meta">
+          <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{#if this.sourceDetail}}Source: {{this.sourceDetail}}{{else}}Source tag: {{this.source}}{{/if}}">
+            {{this.source}}{{#if this.sourceDetail}} · {{this.sourceDetail}}{{/if}}
+          </span>
+
+          {{!-- Explicit publishing-state pill — always present so a
+                curator scanning the list never has to infer state
+                from the absence of a pill. --}}
+          {{#isequal this.publishingState "curator_approved" this}}
+            <span class="pill pill--positive" title="Curator explicitly approved — publishes regardless of source-tag filter">✓ curator approved</span>
+          {{/isequal}}
+          {{#isequal this.publishingState "auto_publishing_clean" this}}
+            <span class="pill state-pill" data-publishing-state="auto_publishing_clean" title="Auto-publishing. No reviewer concern.">publishing</span>
+          {{/isequal}}
+          {{#isequal this.publishingState "auto_publishing_info" this}}
+            <span class="pill state-pill" data-publishing-state="auto_publishing_info" title="Auto-publishing. Reviewer left contextual info.">publishing · info</span>
+          {{/isequal}}
+          {{#isequal this.publishingState "auto_publishing_error" this}}
+            <span class="pill state-pill" data-publishing-state="auto_publishing_error" title="Auto-publishing. Reviewer flagged a possible or low-confidence error, but not blocking at this severity.">publishing · possible</span>
+          {{/isequal}}
+
+          {{#if this.clarification}}
+            <span class="pill pill--attention" title="{{this.clarification}}">📝 clarification</span>
           {{/if}}
-          {{/isequal}}
+
+          {{#if this.reviewFinding}}
+            {{#isequal this.reviewFinding.kind "error" this}}
+              {{#isequal this.reviewFinding.confidence "medium" this}}<span class="pill pill--attention" title="{{this.reviewFinding.concern}}">⚠ possible issue</span>{{/isequal}}
+              {{#isequal this.reviewFinding.confidence "low" this}}<span class="pill pill--attention" title="{{this.reviewFinding.concern}}">⚠ hunch</span>{{/isequal}}
+            {{else}}
+              <span class="pill" title="{{this.reviewFinding.concern}}">ⓘ info</span>
+            {{/isequal}}
+          {{/if}}
+
+          {{!-- Trailing collection-object chips — one per cited
+                relatedItem: sourceDetail. Restores v1's object
+                hyperlink discoverability from the claims view. --}}
+          {{#each this.chips}}
+          <a class="pill sentence__object-chip" href="{{this.href}}" title="View this object in the collection" target="_blank" rel="noopener">→ {{this.title}}</a>
+          {{/each}}
         </div>
-      </details>
 
-      {{#if this.paragraphBreak}}<hr class="sentence__paragraph-break" aria-hidden="true">{{/if}}
-    </li>
-    {{/each}}
-  </ol>
+        <details class="sentence__actions">
+          <summary>curator actions</summary>
+          <div class="sentence__actions-body">
+            {{!-- Visible sentence: primary is "Reject (hide)" —
+                  Approve is redundant since it's already publishing,
+                  but kept as a de-emphasised "Mark as reviewed" so
+                  a curator can seal something they've eyeballed. --}}
+            <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/reject" class="sentence__action-form">
+              <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+              <input type="hidden" name="claimText" value="{{this.text}}">
+              <input type="text" name="rationale" placeholder="Optional rationale (drives next regen)" class="sentence__action-input">
+              <button type="submit" class="btn btn--secondary" title="Reject — hides this sentence AND excludes it from the next regeneration">Reject (hide)</button>
+            </form>
+            <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/clarify" class="sentence__action-form">
+              <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+              <input type="hidden" name="claimText" value="{{this.text}}">
+              <input type="text" name="clarification" placeholder="Guidance for next regen (e.g. 'use ForMemRS not Fellow')" class="sentence__action-input" required>
+              <button type="submit" class="btn btn--secondary" title="Add curator guidance for the next regeneration">Add clarification</button>
+            </form>
+            {{#isequal this.publishingState "curator_approved" this}}
+              {{!-- Already approved — nothing else useful to add for a visible sentence --}}
+            {{else}}
+            <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/approve" class="sentence__action-form">
+              <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+              <input type="hidden" name="claimText" value="{{this.text}}">
+              <button type="submit" class="btn btn--tertiary" title="Mark as curator-reviewed — no immediate effect but seals your review of this claim">Mark as reviewed</button>
+            </form>
+            {{/isequal}}
+          </div>
+        </details>
+      </li>
+      {{/if}}
+      {{/each}}
+    </ol>
+  </div>
 
-  <details class="collapsible" style="margin-top: 0.75rem;">
-    <summary>Rendered public HTML <span class="text-meta" style="font-weight: normal;">— what visitors see, after filter + curator overrides</span></summary>
-    <div class="detail-section">
-      <div class="prose-body">{{{renderedBiography.html}}}</div>
-    </div>
-  </details>
+  {{!-- Hidden group — same iteration, opposite filter. --}}
+  {{#if renderedBiography.hiddenCount}}
+  <div class="claims-group claims-group--hidden" id="claims-hidden">
+    <h4 class="claims-group__title">Hidden <span class="text-meta">({{renderedBiography.hiddenCount}})</span></h4>
+    <ol class="sentence-list">
+      {{#each renderedBiography.sentences}}
+      {{#unless this.visible}}
+      <li class="sentence sentence--hidden" data-source="{{this.source}}" data-signature="{{this.claimSignature}}" data-publishing-state="{{this.publishingState}}">
+        <div class="sentence__text">{{this.text}}</div>
+        <div class="sentence__meta">
+          <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{#if this.sourceDetail}}Source: {{this.sourceDetail}}{{else}}Source tag: {{this.source}}{{/if}}">
+            {{this.source}}{{#if this.sourceDetail}} · {{this.sourceDetail}}{{/if}}
+          </span>
+
+          {{#isequal this.publishingState "curator_rejected" this}}
+            <span class="pill pill--danger" title="Rejected by curator — excluded from next regen">✗ curator rejected</span>
+          {{/isequal}}
+          {{#isequal this.publishingState "hidden_below_level" this}}
+            <span class="pill state-pill" data-publishing-state="hidden_below_level" title="Source tag {{this.source}} is below the current publishing level ({{../renderedBiography.publishingLevel}}). Approve to publish anyway.">hidden · below level</span>
+          {{/isequal}}
+          {{#isequal this.publishingState "hidden_finding" this}}
+            <span class="pill state-pill" data-publishing-state="hidden_finding" title="Hidden because a high-confidence error finding is open on this sentence. Resolve the finding or approve to publish.">hidden · pending finding</span>
+          {{/isequal}}
+
+          {{#if this.clarification}}
+            <span class="pill pill--attention" title="{{this.clarification}}">📝 clarification</span>
+          {{/if}}
+
+          {{#if this.reviewFinding}}
+            {{#isequal this.reviewFinding.kind "error" this}}
+              {{#isequal this.reviewFinding.confidence "high" this}}<span class="pill pill--danger" title="{{this.reviewFinding.concern}}">⚠ likely error</span>{{/isequal}}
+            {{/isequal}}
+          {{/if}}
+
+          {{#each this.chips}}
+          <a class="pill sentence__object-chip" href="{{this.href}}" title="View this object in the collection" target="_blank" rel="noopener">→ {{this.title}}</a>
+          {{/each}}
+        </div>
+
+        <details class="sentence__actions">
+          <summary>curator actions</summary>
+          <div class="sentence__actions-body">
+            {{!-- Hidden sentence: primary is "Approve to publish". --}}
+            {{#isequal this.publishingState "curator_rejected" this}}
+              {{!-- Already rejected: only useful action is to re-approve. --}}
+              <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/approve" class="sentence__action-form">
+                <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+                <input type="hidden" name="claimText" value="{{this.text}}">
+                <button type="submit" class="btn btn--secondary" title="Re-approve — publishes despite the earlier rejection">Un-reject (publish)</button>
+              </form>
+            {{else}}
+              <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/approve" class="sentence__action-form">
+                <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+                <input type="hidden" name="claimText" value="{{this.text}}">
+                <button type="submit" class="btn btn--secondary" title="Approve — publishes despite the filter / finding">Approve to publish</button>
+              </form>
+              <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/reject" class="sentence__action-form">
+                <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+                <input type="hidden" name="claimText" value="{{this.text}}">
+                <input type="text" name="rationale" placeholder="Optional rationale (drives next regen)" class="sentence__action-input">
+                <button type="submit" class="btn btn--tertiary" title="Confirm this sentence should stay hidden AND exclude it from the next regeneration">Confirm hidden</button>
+              </form>
+            {{/isequal}}
+            <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/clarify" class="sentence__action-form">
+              <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+              <input type="hidden" name="claimText" value="{{this.text}}">
+              <input type="text" name="clarification" placeholder="Guidance for next regen" class="sentence__action-input" required>
+              <button type="submit" class="btn btn--secondary" title="Add curator guidance for the next regeneration">Add clarification</button>
+            </form>
+            {{#isequal this.source "llm:general_knowledge" this}}
+            {{#if ../reviewConfig.externalValidationEnabled}}
+            <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/verify" class="sentence__action-form">
+              <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+              <input type="hidden" name="claimText" value="{{this.text}}">
+              <input type="hidden" name="context" value="sentence">
+              <button type="submit" class="btn btn--secondary" title="Verify externally — Wikipedia / Wikidata / etc. If supported, promotes to llm:validated and publishes.">Verify externally</button>
+            </form>
+            {{/if}}
+            {{/isequal}}
+          </div>
+        </details>
+      </li>
+      {{/unless}}
+      {{/each}}
+    </ol>
+  </div>
+  {{/if}}
 </div>
 
 {{#if record.writerNotes}}
@@ -648,7 +847,99 @@
   .sentence__paragraph-break { border: 0; border-top: 1px dashed #c5c1b5; margin: 0.75rem 0 0.35rem 0; }
 
   .pill--muted { background: #efece4; border: 1px solid #c5c1b5; color: #646464; }
+
+  /* Task 56: publishing-state legend + per-sentence state pill +
+     background tints. Colours pair with the pill so a curator can
+     spot state by row-background alone at a glance. */
+  .publishing-state-legend { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; margin: 0 0 1rem 0; font-size: 0.75rem; }
+  .state-pill { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.7rem; }
+  .state-pill[data-publishing-state="auto_publishing_clean"]   { background: #eef2ed; border: 1px solid #a9c3a4; color: #2e5a3d; }
+  .state-pill[data-publishing-state="auto_publishing_info"]    { background: #e6ecf1; border: 1px solid #97b5c4; color: #204a5a; }
+  .state-pill[data-publishing-state="auto_publishing_error"]   { background: #f5edd8; border: 1px solid #c9b478; color: #6c5820; }
+  .state-pill[data-publishing-state="hidden_below_level"]      { background: #eeeae0; border: 1px solid #c5b98a; color: #6c5c30; }
+  .state-pill[data-publishing-state="hidden_finding"]          { background: #f5e2e2; border: 1px solid #b0797a; color: #7a2020; }
+  .state-pill[data-publishing-state="curator_approved"]        { background: #dae7dd; border: 1px solid #6da97e; color: #2e5a3d; }
+  .state-pill[data-publishing-state="curator_rejected"]        { background: #f5e2e2; border: 1px solid #b0797a; color: #7a2020; }
+
+  /* Sentence row background tint by publishing state — subtle, does not fight the
+     source-tag pill colouring. Selected state (via hover-highlight below) overrides. */
+  .sentence[data-publishing-state="curator_approved"]      { border-left: 3px solid #6da97e; }
+  .sentence[data-publishing-state="curator_rejected"]      { border-left: 3px solid #b0797a; background: #faf1f1; }
+  .sentence[data-publishing-state="auto_publishing_clean"] { border-left: 3px solid #d5d0c1; }
+  .sentence[data-publishing-state="auto_publishing_info"]  { border-left: 3px solid #97b5c4; }
+  .sentence[data-publishing-state="auto_publishing_error"] { border-left: 3px solid #c9b478; background: #fbf7ec; }
+  .sentence[data-publishing-state="hidden_below_level"]    { border-left: 3px solid #c5b98a; }
+  .sentence[data-publishing-state="hidden_finding"]        { border-left: 3px solid #b0797a; background: #faf1f1; }
+
+  /* Publishing / Hidden group titles */
+  .claims-group { margin-top: 1rem; }
+  .claims-group__title { font-size: 0.85rem; font-weight: 600; color: #5e564c; margin: 0 0 0.4rem 0; text-transform: uppercase; letter-spacing: 0.03em; }
+
+  /* Object hyperlink chips — trailing per sentence + inline in rendered prose. */
+  .sentence__object-chip { text-decoration: none; background: #eef2ed; border: 1px solid #a9c3a4; color: #2e5a3d; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.72rem; padding: 0.05rem 0.4rem; border-radius: 3px; }
+  .sentence__object-chip:hover { background: #dae7dd; }
+  .ai-rendered-prose .ai-object-chip { font-size: 0.75em; margin-left: 0.15em; color: #2e5a3d; text-decoration: none; border-bottom: 1px dotted rgba(46, 90, 61, 0.4); }
+  .ai-rendered-prose .ai-object-chip:hover { border-bottom-style: solid; background: rgba(46, 90, 61, 0.08); }
+
+  /* Tertiary button — used for de-emphasised secondary actions
+     ("Mark as reviewed" on an already-publishing sentence, etc.). */
+  .btn--tertiary { background: transparent; border: 1px solid #c5c1b5; color: #5e564c; padding: 0.35rem 0.75rem; border-radius: 3px; font-size: 0.8rem; cursor: pointer; }
+  .btn--tertiary:hover { border-color: #646464; color: #2a2a2a; }
+
+  /* Sentence↔prose hover-highlight — a curator hovering a claim in
+     the Claims list sees the corresponding sentence lit up in the
+     rendered prose block above, and vice versa. Uses a
+     .is-highlighted class applied by the small script at the bottom
+     of the file, hooked on data-signature. */
+  .ai-rendered-prose [data-signature].is-highlighted,
+  .sentence.is-highlighted {
+    background: rgba(200, 122, 30, 0.12) !important;
+    outline: 1px solid rgba(200, 122, 30, 0.35);
+    outline-offset: 2px;
+  }
+
+  /* Resolved findings — dimmed by default so the eye lands on Open first. */
+  .finding--resolved { opacity: 0.75; }
+  .finding__concern-body { color: #2a2a2a; font-size: 0.9rem; line-height: 1.5; margin-top: 0.35rem; }
 </style>
+
+{{!-- Sentence↔prose hover-highlight. Small vanilla JS — no framework,
+      no dependencies. Wires two-way highlight between rendered prose
+      paragraphs and their corresponding Claims list rows via
+      data-signature. Registered once on DOMContentLoaded; safe to
+      call multiple times (re-registration is idempotent). --}}
+<script>
+(function () {
+  'use strict';
+  function wireHighlight () {
+    var claims = document.querySelectorAll('.sentence[data-signature]');
+    var prose = document.querySelectorAll('.ai-rendered-prose [data-signature]');
+    function highlight (sig, on) {
+      if (!sig) return;
+      var sel = '[data-signature="' + sig + '"]';
+      var nodes = document.querySelectorAll(sel);
+      for (var i = 0; i < nodes.length; i++) {
+        nodes[i].classList.toggle('is-highlighted', !!on);
+      }
+    }
+    function bind (nodes) {
+      for (var i = 0; i < nodes.length; i++) {
+        (function (el) {
+          el.addEventListener('mouseenter', function () { highlight(el.getAttribute('data-signature'), true); });
+          el.addEventListener('mouseleave', function () { highlight(el.getAttribute('data-signature'), false); });
+        })(nodes[i]);
+      }
+    }
+    bind(claims);
+    bind(prose);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', wireHighlight);
+  } else {
+    wireHighlight();
+  }
+})();
+</script>
 
 {{!-- Existing brief / full biography: same prose treatment as the
       AI biography + context above. white-space:pre-wrap retained so

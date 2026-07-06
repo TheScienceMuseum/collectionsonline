@@ -12,6 +12,15 @@ function s (text, source, sourceDetail) {
   return { text, source, sourceDetail: sourceDetail || null, claimSignature: signature(text) };
 }
 
+// Strip the `<span data-signature="…">` wrappers that Task 56 added
+// around each rendered sentence so tests can assert on the visible
+// text content without re-computing every signature hash. The span is
+// a hook for the admin detail's hover-highlight interaction — its
+// presence is exercised by the "wraps sentences in span" test below.
+function stripSpans (html) {
+  return html.replace(/<span data-signature="[^"]*">/g, '').replace(/<\/span>/g, '');
+}
+
 // --- Publishing level filter ----------------------------------------
 
 test('render: level 0 publishes museum only', function (t) {
@@ -25,7 +34,7 @@ test('render: level 0 publishes museum only', function (t) {
   };
   const r = render(bio, { publishingLevel: 0 });
   t.equal(r.visibleCount, 1);
-  t.equal(r.html, '<p>Museum fact.</p>');
+  t.equal(stripSpans(r.html), '<p>Museum fact.</p>');
   t.end();
 });
 
@@ -251,7 +260,7 @@ test('paragraphBreaks: split into <p> blocks', function (t) {
     paragraphBreaks: [1, 3]
   };
   const r = render(bio, { publishingLevel: 3 });
-  t.equal(r.html, '<p>First. Second.</p><p>Third. Fourth.</p>');
+  t.equal(stripSpans(r.html), '<p>First. Second.</p><p>Third. Fourth.</p>');
   t.end();
 });
 
@@ -265,7 +274,7 @@ test('paragraphBreaks: empty paragraphs (all hidden) dropped', function (t) {
     paragraphBreaks: [0, 1]
   };
   const r = render(bio, { publishingLevel: 3 });
-  t.equal(r.html, '<p>First.</p><p>Second.</p>', 'empty paragraph collapsed');
+  t.equal(stripSpans(r.html), '<p>First.</p><p>Second.</p>', 'empty paragraph collapsed');
   t.end();
 });
 
@@ -278,7 +287,7 @@ test('paragraphBreaks: no breaks → single paragraph', function (t) {
     paragraphBreaks: []
   };
   const r = render(bio, { publishingLevel: 3 });
-  t.equal(r.html, '<p>First. Second.</p>');
+  t.equal(stripSpans(r.html), '<p>First. Second.</p>');
   t.end();
 });
 

@@ -97,6 +97,42 @@ function requireAuth (request, h, config) {
   return null;
 }
 
+// Derive the { id, title, link } references list saved on the
+// BIOGRAPHY item. Same behaviour as the identically-named helper in
+// routes/ai-biography.js — parses sourceDetail for `relatedItem:*`
+// citations, looks each up in the flattened related-items list, and
+// dedupes on ID. Kept local rather than shared because it's short and
+// the two routes don't otherwise cross-import. Different name so the
+// linter can't miss the duplication if/when it ever matters.
+function deriveAdminReferencesFromSentences (sentences, relatedItems) {
+  if (!Array.isArray(sentences) || sentences.length === 0) return [];
+  const byId = {};
+  (relatedItems || []).forEach(function (item) {
+    if (item && item.id) byId[item.id] = item;
+  });
+  const out = [];
+  const seen = new Set();
+  sentences.forEach(function (s) {
+    if (!s || !s.sourceDetail || typeof s.sourceDetail !== 'string') return;
+    s.sourceDetail.split(/[,;]/).forEach(function (piece) {
+      const trimmed = piece.trim().toLowerCase();
+      if (trimmed.indexOf('relateditem:') !== 0) return;
+      const refId = trimmed.slice('relateditem:'.length);
+      if (seen.has(refId)) return;
+      seen.add(refId);
+      const item = byId[refId];
+      if (!item) return;
+      out.push({
+        id: item.id,
+        title: item.title || '',
+        link: item.link || null,
+        type: item.type || null
+      });
+    });
+  });
+  return out;
+}
+
 // Count curator decisions that would fold into the NEXT regeneration.
 // Approvals are instant-render (no writer-prompt injection) so they're
 // excluded. Rejections + clarifications ARE injected into the writer
@@ -136,6 +172,27 @@ function sortOpenFindings (findings) {
     const ka = (a.kind || 'error') + ':' + (a.confidence || 'low');
     const kb = (b.kind || 'error') + ':' + (b.confidence || 'low');
     return (FINDING_PRIORITY[kb] || 0) - (FINDING_PRIORITY[ka] || 0);
+  });
+}
+
+// Flatten resolved findings across every REVIEW# item into one array
+// for the admin detail's "Resolved findings" audit collapsible. Same
+// shape as openFindings + a `resolvedAt` / `resolvedBy` / `resolution`
+// so the template can render a distinct pill per outcome (accepted /
+// dismissed / clarified). Sorted most-recent-resolution first — that's
+// the useful ordering for an audit view.
+function collectResolvedFindings (rawReviews) {
+  const out = [];
+  (rawReviews || []).forEach(function (rv) {
+    (rv.findings || []).forEach(function (f) {
+      if (!f || f.resolution === 'pending' || !f.resolution) return;
+      out.push(Object.assign({}, f, { reviewSK: rv.SK, reviewedAt: rv.reviewedAt }));
+    });
+  });
+  return out.sort(function (a, b) {
+    const ta = a.resolvedAt ? new Date(a.resolvedAt).getTime() : 0;
+    const tb = b.resolvedAt ? new Date(b.resolvedAt).getTime() : 0;
+    return tb - ta;
   });
 }
 
@@ -712,13 +769,21 @@ module.exports = function (elastic, config) {
             // legacy records with only biographyHtml render via the
             // template's `{{else}}` fallback branch.
             const openFindings = sortOpenFindings(rawOpenFindings || []);
+            const resolvedFindings = collectResolvedFindings(rawReviews);
             const hasSentences = Array.isArray(record.sentences) && record.sentences.length > 0;
             const renderedBiography = hasSentences
               ? (function () {
                   const rendered = renderBiography(record, {
                     decisions: curatorDecisions,
                     openFindings,
-                    publishingLevel: config.aiBiographyPublishingLevel
+                    publishingLevel: config.aiBiographyPublishingLevel,
+                    // `references` was added to the persisted record in
+                    // Task 56 — passing it into render enables per-
+                    // sentence "→ view object" chips + fuels the split
+                    // between the Biography and In-the-collection HTML
+                    // blocks. Legacy records without it lose the chips
+                    // silently (safe degradation).
+                    references: record.references || []
                   });
                   // The template calls out totalCount separately from
                   // sentences.length for clarity; expose it here so
@@ -738,6 +803,7 @@ module.exports = function (elastic, config) {
               reviewConfig,
               renderedBiography,
               openFindings,
+              resolvedFindings,
               regenRecommended,
               pendingChangeCount,
               pendingChangeSingular,
@@ -1742,6 +1808,12 @@ async function runRegenerate (elastic, config, id, promptVersion, opts) {
     }
   }
 
+  // See routes/ai-biography.js for why references + systemPrompt +
+  // prompt + rawResponse land on the record. Same treatment in both
+  // places so admin-triggered regenerations get the same audit trail
+  // as page-hit generations.
+  const references = deriveAdminReferencesFromSentences(result.sentences, allItems);
+
   await biographyStore.saveBiography(id, {
     status,
     personName: personData.name,
@@ -1752,10 +1824,14 @@ async function runRegenerate (elastic, config, id, promptVersion, opts) {
     writerConfidence: result.confidence,
     writerNotes: result.notes,
     verificationCandidates: result.verificationCandidates,
+    references,
     model: result.model,
     promptVersion: result.promptVersion,
     inputTokens: result.inputTokens,
     outputTokens: result.outputTokens,
+    systemPrompt: result.systemPrompt || null,
+    prompt: result.prompt || null,
+    rawResponse: result.rawResponse || null,
     signalScore: assessment.score,
     signalMaxScore: assessment.maxScore,
     signalCount: assessment.signalCount,

@@ -78,6 +78,52 @@
     {{/if}}
   </section>
 
+  {{!-- v2 source-tagged pipeline panel (Task 56). Shipped alongside
+        the Task 53 aggregate — reads stats.v2.sourceTagDistribution +
+        the verificationCandidates block + the curator/finding
+        counters. Only surfaces once at least one biography has been
+        produced by the v2 writer; the empty-state note keeps the
+        panel from looking broken on a fresh install. --}}
+  <section class="dashboard-panel">
+    <h3>Source-tag distribution
+      <span class="text-meta" style="font-weight: normal; font-size: 0.8rem;">— across all v2 records</span>
+    </h3>
+    {{#if stats.v2.recordsWithSentences}}
+    <p class="dashboard-panel__note">
+      <strong>{{stats.v2.recordsWithSentences}}</strong> of {{stats.totals.biographies}} biographies use the v2 source-tagged writer,
+      producing <strong>{{stats.v2.sourceTagTotal}}</strong> sentences.
+    </p>
+    {{#if stats.v2.sourceTagDistribution.length}}
+    <table class="dashboard-bars">
+      {{#each stats.v2.sourceTagDistribution}}
+      <tr data-source="{{this.tag}}">
+        <th title="Sentences tagged {{this.tag}} across every v2 biography">{{this.tag}}</th>
+        <td><span class="dashboard-bar dashboard-bar--neutral" style="width: {{percentOf this.count ../stats.v2.sourceTagTotal}}%;"></span></td>
+        <td class="dashboard-bars__count">{{this.count}}</td>
+      </tr>
+      {{/each}}
+    </table>
+    {{/if}}
+    <p class="dashboard-panel__note" style="margin-top: 0.6rem;">
+      <strong>{{stats.v2.verificationCandidates.total}}</strong> verification candidates across the collection —
+      <span class="text-meta">
+        {{stats.v2.verificationCandidates.generalKnowledge}} general,
+        {{stats.v2.verificationCandidates.contextualising}} contextualising,
+        {{stats.v2.verificationCandidates.lowConfidenceInferred}} low-confidence inferred
+      </span>
+      {{#if stats.v2.verificationCandidates.estimatedCoVeCost}}
+      · est. Mode B cost: <strong>{{stats.v2.verificationCandidates.estimatedCoVeCostFormatted}}</strong>
+      {{/if}}
+    </p>
+    <p class="dashboard-panel__note">
+      <strong>{{stats.v2.recordsWithOpenFindings}}</strong> record{{#isequal stats.v2.recordsWithOpenFindings 1 this}}{{else}}s{{/isequal}} with open review findings ·
+      <strong>{{stats.v2.recordsWithCuratorDecisions}}</strong> with curator actions applied
+    </p>
+    {{else}}
+    <p class="dashboard-panel__note">No v2 (source-tagged) biographies yet. Regenerate any record to produce the first.</p>
+    {{/if}}
+  </section>
+
   {{!-- Costs — combined totals + per-kind + per-model breakdowns.
         "This month / Last 30 days / Lifetime" sum biography generation
         AND AI review spend (each kind shown separately below).

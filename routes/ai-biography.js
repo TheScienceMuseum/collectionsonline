@@ -544,11 +544,21 @@ async function generate (elastic, config, id) {
       }
     }
 
+    // Derive `references` — { id, title, link } for every related item
+    // any sentence cites via `sourceDetail: 'relatedItem:*'`. Stored on
+    // the canonical BIOGRAPHY item so the render layer can build "→
+    // view object" chips + the admin per-sentence Claims list can show
+    // links, without a second Dynamo/ES round-trip.
+    const references = deriveReferencesFromSentences(result.sentences, allItems);
+
     // Save canonical v2 record. `biographyHtml` is intentionally NOT stored
     // — HTML is derived at render time from sentences + curator decisions
     // + open findings, so a subsequent curator action (approve / reject /
     // clarify) or filter-level tweak takes effect on the next page load
-    // without a regen.
+    // without a regen. `systemPrompt` / `prompt` / `rawResponse` DO land
+    // on the record so the admin detail's collapsibles + the failure-
+    // diagnostics audit trail have the actual prompts + raw Claude reply
+    // available (regression from v1 flagged in Task 56 review).
     if (dynamo.isReady()) {
       await biographyStore.saveBiography(id, {
         status: 'live',
@@ -560,10 +570,14 @@ async function generate (elastic, config, id) {
         writerConfidence: result.confidence,
         writerNotes: result.notes,
         verificationCandidates: result.verificationCandidates,
+        references,
         model: result.model,
         promptVersion: result.promptVersion,
         inputTokens: result.inputTokens,
         outputTokens: result.outputTokens,
+        systemPrompt: result.systemPrompt || null,
+        prompt: result.prompt || null,
+        rawResponse: result.rawResponse || null,
         signalScore: assessment.score,
         signalMaxScore: assessment.maxScore,
         signalCount: assessment.signalCount,
@@ -605,6 +619,9 @@ async function generate (elastic, config, id) {
     // just saved feed straight into the render layer — error:high findings
     // hide their sentence by default (defensive-by-default). Curator
     // decisions are the ones we just fetched at the top of this block.
+    // References plumbed through so the render layer can append clickable
+    // "In the collection" chips per cited object — restores v1's inline
+    // object hyperlinking behaviour.
     const openFindings = (reviewResult && reviewResult.findings) || [];
     const rendered = renderBiography({
       sentences: result.sentences,
@@ -612,20 +629,23 @@ async function generate (elastic, config, id) {
     }, {
       decisions: curatorDecisions,
       openFindings,
-      publishingLevel: config.aiBiographyPublishingLevel
+      publishingLevel: config.aiBiographyPublishingLevel,
+      references
     });
 
     return {
-      biography: rendered.html,
-      // v2 sentences carry their source references inline via sourceDetail
-      // ("relatedItem:coXXXXX") rather than a separate "context" section.
-      // Downstream templates keep the same shape — context just resolves to
-      // empty prose. references[] derived from sentences with a
-      // relatedItem: sourceDetail — same structure the v1 writer surfaced,
-      // so the person page's "referenced by" block continues to work.
-      context: '',
+      // v2 splits main prose vs collection-object prose at render time
+      // (Task 56). biographyHtml = "who / what / when" narrative;
+      // contextHtml = "In the collection: bronze bust... solar eclipse
+      // instruments...". Downstream templates render both blocks with
+      // their own headings. `biography` kept as a synonym for
+      // biographyHtml so any consumer that hasn't migrated stays happy.
+      biography: rendered.biographyHtml,
+      biographyHtml: rendered.biographyHtml,
+      context: rendered.contextHtml,
+      contextHtml: rendered.contextHtml,
       personName: personData.name,
-      references: deriveReferencesFromSentences(result.sentences, allItems),
+      references,
       sources: deriveSourcesFromSentences(result.sentences),
       generatedAt: new Date().toISOString(),
       model: result.model,
