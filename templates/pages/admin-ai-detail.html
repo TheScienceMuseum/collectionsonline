@@ -414,7 +414,7 @@
 <details class="detail-section findings-panel" id="findings" open>
   <summary class="findings-panel__summary">
     <span class="findings-panel__title">Review findings ({{openFindings.length}} pending{{#if resolvedFindings.length}}, {{resolvedFindings.length}} recently resolved{{/if}})</span>
-    <span class="text-meta findings-panel__hint">— reviewer concerns; pending awaiting curator decision, highest severity first.
+    <span class="text-meta findings-panel__hint">— AI-review concerns on specific sentences; likely-error findings first.
       {{#if staleFindingsCount}}
         <span title="Findings from a previous generation whose sentences have since been rewritten. Kept in the review record — will automatically resurface if a future regen re-emits the same claim.">
           · <strong>{{staleFindingsCount}}</strong> stale filtered
@@ -423,10 +423,11 @@
     </span>
   </summary>
   <p class="text-meta" style="margin: 0.5rem 0 0.75rem 0;">
-    Findings are the per-generation reviewer's suspicions about specific sentences. Accept to hide the sentence,
-    dismiss to leave it in place, or verify against external sources to make an informed call.
-    High-confidence error findings hide their sentence by default until you resolve them; other findings
-    pass through automatically — the green/amber/red chip on each card shows the current effect on the public site.
+    Findings are the AI review's concerns about specific claims — informational cards, not action buttons.
+    Likely-error findings auto-hide their sentence until a curator explicitly approves it; other findings
+    publish automatically. The green/amber/red chip on each card shows the current effect on the public site.
+    To act on a finding, click <strong>Go to claim ↓</strong> to jump to the affected sentence and use its
+    Reject / Approve / Clarify actions — which auto-resolve the pending finding in the audit trail.
   </p>
   <ul class="findings-list">
     {{!-- Task 61: findings are now READ-ONLY informational cards. No
