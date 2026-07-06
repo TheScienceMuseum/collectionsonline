@@ -86,25 +86,49 @@
 
 {{!-- Task 58: Biography + In-the-collection rendered prose moved to
       TOP of the page, above the record metadata block. Content first
-      (what the public sees) — tooling and metadata after. Only shown
-      for v2 records; legacy records fall through to the old prose
-      block further down the page. --}}
+      (what the public sees) — tooling and metadata after.
+      Task 59: wrapped in a 2-column grid — prose on the left,
+      hover-populated claim-details rail on the right. Curator hovers
+      a sentence → source/state/finding lands in the rail without a
+      click. On narrow viewports the rail stacks below the prose.
+      Only shown for v2 records; legacy records fall through to the
+      old prose block further down the page. --}}
 {{#if renderedBiography.sentences.length}}
-<div class="detail-section" id="biography">
-  <h3>Biography</h3>
-  <div class="prose-body ai-rendered-prose" data-block="biography">
-    {{{renderedBiography.biographyHtml}}}
-  </div>
-</div>
+<div class="biography-with-rail">
+  <div class="biography-with-rail__main">
+    <div class="detail-section" id="biography">
+      <h3>Biography</h3>
+      <div class="prose-body ai-rendered-prose" data-block="biography">
+        {{{renderedBiography.biographyHtml}}}
+      </div>
+    </div>
 
-{{#if renderedBiography.contextHtml}}
-<div class="detail-section" id="in-the-collection">
-  <h3>In the collection</h3>
-  <div class="prose-body ai-rendered-prose" data-block="context">
-    {{{renderedBiography.contextHtml}}}
+    {{#if renderedBiography.contextHtml}}
+    <div class="detail-section" id="in-the-collection">
+      <h3>In the collection</h3>
+      <div class="prose-body ai-rendered-prose" data-block="context">
+        {{{renderedBiography.contextHtml}}}
+      </div>
+    </div>
+    {{/if}}
   </div>
+
+  {{!-- Sticky rail — populated by JS on prose (or claim) hover. Empty
+        state prompt appears on first load and stays until the first
+        hover; subsequent hovers replace whatever's currently shown so
+        the rail is always at the last-hovered claim (not reverted on
+        mouseleave — curators need to be able to move the mouse to
+        read the details). --}}
+  <aside class="biography-with-rail__rail" id="claim-detail-rail" aria-live="polite">
+    <div class="rail-empty text-meta">
+      <em>Hover a sentence to see its provenance, publishing state, and any reviewer note.</em>
+    </div>
+    <div class="rail-populated" hidden>
+      {{!-- JS clones .sentence__meta from the matching Claims row into
+            here, and appends a "Jump to full claim ↓" link. --}}
+    </div>
+  </aside>
 </div>
-{{/if}}
 {{/if}}
 
 <div class="detail-meta">
@@ -953,8 +977,22 @@
   /* Object hyperlink chips — trailing per sentence + inline in rendered prose. */
   .sentence__object-chip { text-decoration: none; background: #eef2ed; border: 1px solid #a9c3a4; color: #2e5a3d; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.72rem; padding: 0.05rem 0.4rem; border-radius: 3px; }
   .sentence__object-chip:hover { background: #dae7dd; }
-  .ai-rendered-prose .ai-object-chip { font-size: 0.75em; margin-left: 0.15em; color: #2e5a3d; text-decoration: none; border-bottom: 1px dotted rgba(46, 90, 61, 0.4); }
-  .ai-rendered-prose .ai-object-chip:hover { border-bottom-style: solid; background: rgba(46, 90, 61, 0.08); }
+  /* Task 59: inline collection-object links match the prose font +
+     size — read as natural inline links, not distinct chips. Green
+     underline hints at the museum-object anchor treatment without
+     fighting the reading typography. */
+  .ai-rendered-prose .ai-object-chip {
+    font-family: inherit;
+    font-size: inherit;
+    color: #2e5a3d;
+    text-decoration: underline;
+    text-decoration-color: rgba(46, 90, 61, 0.35);
+    text-underline-offset: 2px;
+  }
+  .ai-rendered-prose .ai-object-chip:hover {
+    text-decoration-color: #2e5a3d;
+    background: rgba(46, 90, 61, 0.06);
+  }
 
   /* Tertiary button — used for de-emphasised secondary actions
      ("Mark as reviewed" on an already-publishing sentence, etc.). */
@@ -1005,30 +1043,117 @@
   .ai-rendered-prose [data-signature] { cursor: pointer; border-radius: 2px; padding: 0 2px; margin: 0 -2px; transition: background 120ms; }
   .ai-rendered-prose [data-signature]:hover { background: rgba(200, 122, 30, 0.09); }
 
-  /* Brief flash when scrolled into view from a prose click. */
+  /* Brief flash when scrolled into view — used for both directions:
+     prose-click → claim (Task 58) and claim-click → prose (Task 59).
+     Same animation, applied via a class the JS toggles on. */
   @keyframes claim-flash {
     0%   { background: rgba(200, 122, 30, 0.25); }
     100% { background: transparent; }
   }
-  .sentence.is-scroll-target { animation: claim-flash 1.4s ease-out; }
+  .sentence.is-scroll-target,
+  .ai-rendered-prose [data-signature].is-scroll-target {
+    animation: claim-flash 1.4s ease-out;
+  }
+
+  /* Sentence rows are clickable to jump to the corresponding prose
+     sentence — cursor-pointer hints at the interaction. Interactive
+     children (forms, buttons, details) keep their own cursor. */
+  .sentence { cursor: pointer; }
+  .sentence form, .sentence button, .sentence details, .sentence summary,
+  .sentence input, .sentence a { cursor: auto; }
+  .sentence button, .sentence summary, .sentence a { cursor: pointer; }
+
+  /* Task 59: 2-column layout for the biography section — prose on
+     the left (2fr), hover-populated claim-details rail on the right
+     (1fr). Rail is sticky within the section so it stays in view
+     while reading the prose. On narrow viewports (mobile) the rail
+     stacks below the prose instead of squeezing next to it. */
+  .biography-with-rail {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .biography-with-rail__main > .detail-section { margin-bottom: 1rem; }
+  .biography-with-rail__rail {
+    position: sticky;
+    top: 1rem;
+    align-self: start;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    background: #fbf9f4;
+    border: 1px solid #e4e0d4;
+    border-radius: 4px;
+    padding: 0.9rem 1rem;
+    font-size: 0.85rem;
+  }
+  .biography-with-rail__rail .rail-empty { font-size: 0.85rem; line-height: 1.5; }
+  .biography-with-rail__rail .rail-populated .sentence__text {
+    font-family: Georgia, serif;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #2a2a2a;
+    margin-bottom: 0.55rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px dashed #e4e0d4;
+  }
+  .biography-with-rail__rail .rail-populated .sentence__meta { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+  .biography-with-rail__rail .rail-jump {
+    display: inline-block;
+    margin-top: 0.7rem;
+    font-size: 0.8rem;
+    color: #2c5288;
+    text-decoration: underline;
+    text-decoration-color: rgba(44, 82, 136, 0.35);
+    text-underline-offset: 2px;
+  }
+  .biography-with-rail__rail .rail-jump:hover { text-decoration-color: #2c5288; }
+
+  @media (max-width: 900px) {
+    .biography-with-rail { grid-template-columns: 1fr; }
+    .biography-with-rail__rail {
+      position: relative;
+      top: 0;
+      max-height: none;
+    }
+  }
 </style>
 
-{{!-- Interaction script — TWO behaviours on data-signature:
-      1. Hover a claim row OR a prose sentence → both highlight (as
-         before).
+{{!-- Interaction script — FOUR behaviours on data-signature:
+      1. Hover a claim row OR a prose sentence → both highlight
+         (Task 56).
       2. Click a prose sentence → smooth-scroll to the corresponding
-         Claims row and flash it. Task 58 UX review — the hover-
-         highlight was silent + not discoverable; click gives it a
-         verb.
+         Claims row and flash it (Task 58).
+      3. Click a claim row → smooth-scroll UP to the corresponding
+         prose sentence and flash it (Task 59, symmetric).
+      4. Hover a claim row OR a prose sentence → populate the
+         hover rail on the right with source / state / finding info
+         cloned from the Claims row (Task 59).
 
       Registered once on DOMContentLoaded; safe to call multiple
       times (re-registration is idempotent). --}}
 <script>
 (function () {
   'use strict';
+  function scrollAndFlash (target) {
+    if (!target) return;
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    target.classList.remove('is-scroll-target');
+    // Force a reflow so the animation restarts on repeat clicks.
+    void target.offsetWidth;
+    target.classList.add('is-scroll-target');
+  }
+
+  function isInteractive (el) {
+    return !!(el && el.closest && el.closest('button, form, input, textarea, select, details, summary, a'));
+  }
+
   function wireInteractions () {
     var claims = document.querySelectorAll('.sentence[data-signature]');
     var prose = document.querySelectorAll('.ai-rendered-prose [data-signature]');
+    var rail = document.getElementById('claim-detail-rail');
+    var railEmpty = rail ? rail.querySelector('.rail-empty') : null;
+    var railPopulated = rail ? rail.querySelector('.rail-populated') : null;
 
     function highlight (sig, on) {
       if (!sig) return;
@@ -1037,27 +1162,72 @@
         nodes[i].classList.toggle('is-highlighted', !!on);
       }
     }
+
+    // Rail update: clone the sentence text + meta from the matching
+    // Claims row, and append a jump link so a curator reading the
+    // rail can go straight to the full claim action UI. Does NOT
+    // clear on mouseleave — the rail persists at the last-hovered
+    // claim so curators can move the mouse to read.
+    function updateRail (sig) {
+      if (!rail || !sig) return;
+      var claim = document.querySelector('.sentence[data-signature="' + sig + '"]');
+      if (!claim) return;
+      var textNode = claim.querySelector('.sentence__text');
+      var metaNode = claim.querySelector('.sentence__meta');
+      railPopulated.innerHTML = '';
+      if (textNode) railPopulated.appendChild(textNode.cloneNode(true));
+      if (metaNode) railPopulated.appendChild(metaNode.cloneNode(true));
+      var jump = document.createElement('a');
+      jump.href = '#';
+      jump.className = 'rail-jump';
+      jump.textContent = 'Jump to full claim ↓';
+      jump.addEventListener('click', function (e) {
+        e.preventDefault();
+        scrollAndFlash(claim);
+      });
+      railPopulated.appendChild(jump);
+      if (railEmpty) railEmpty.hidden = true;
+      railPopulated.hidden = false;
+    }
+
     function bindHover (nodes) {
       for (var i = 0; i < nodes.length; i++) {
         (function (el) {
-          el.addEventListener('mouseenter', function () { highlight(el.getAttribute('data-signature'), true); });
-          el.addEventListener('mouseleave', function () { highlight(el.getAttribute('data-signature'), false); });
+          el.addEventListener('mouseenter', function () {
+            var sig = el.getAttribute('data-signature');
+            highlight(sig, true);
+            updateRail(sig);
+          });
+          el.addEventListener('mouseleave', function () {
+            highlight(el.getAttribute('data-signature'), false);
+          });
         })(nodes[i]);
       }
     }
     function bindProseClick (nodes) {
       for (var i = 0; i < nodes.length; i++) {
         (function (el) {
-          el.addEventListener('click', function () {
+          el.addEventListener('click', function (e) {
+            if (isInteractive(e.target) && e.target !== el) return;
             var sig = el.getAttribute('data-signature');
             if (!sig) return;
             var target = document.querySelector('.sentence[data-signature="' + sig + '"]');
-            if (!target) return;
-            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            target.classList.remove('is-scroll-target');
-            // Restart the animation on repeat clicks.
-            void target.offsetWidth;
-            target.classList.add('is-scroll-target');
+            scrollAndFlash(target);
+          });
+        })(nodes[i]);
+      }
+    }
+    function bindClaimClick (nodes) {
+      for (var i = 0; i < nodes.length; i++) {
+        (function (el) {
+          el.addEventListener('click', function (e) {
+            // Ignore clicks on forms, buttons, links, details/summary
+            // inside the row — those have their own semantics.
+            if (isInteractive(e.target)) return;
+            var sig = el.getAttribute('data-signature');
+            if (!sig) return;
+            var target = document.querySelector('.ai-rendered-prose [data-signature="' + sig + '"]');
+            scrollAndFlash(target);
           });
         })(nodes[i]);
       }
@@ -1066,6 +1236,7 @@
     bindHover(claims);
     bindHover(prose);
     bindProseClick(prose);
+    bindClaimClick(claims);
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', wireInteractions);
