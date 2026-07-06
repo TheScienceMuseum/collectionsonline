@@ -263,15 +263,18 @@ function computeSentenceStateForFinding (sentence, finding) {
   const curator = st.decidedBy === 'curator';
   const concern = st.concern;
 
+  // 5-chip design (Bundle B.6): status names either state alone or
+  // state + cause via "by X". Concern severity is NOT repeated — it
+  // sits on the kind pill next to this chip. The intro paragraph
+  // at the top of the panel explains the general policy
+  // ("Likely-error findings auto-hide, others publish automatically").
   if (vis) {
-    if (curator) return { label: 'publishing (curator approved)', variant: 'publishing', tone: 'positive' };
-    if (concern === 'warning') return { label: 'publishing (severity does not suppress)', variant: 'publishing', tone: 'caution' };
-    if (concern === 'info') return { label: 'publishing (info-tier does not suppress)', variant: 'publishing', tone: 'positive' };
-    return { label: 'publishing (auto)', variant: 'publishing', tone: 'positive' };
+    if (curator) return { label: 'publishing (curator override)', variant: 'publishing', tone: 'positive' };
+    return { label: 'publishing', variant: 'publishing', tone: 'positive' };
   }
-  if (curator) return { label: 'hidden (curator rejected)', variant: 'hidden', tone: 'danger' };
-  if (concern === 'block') return { label: 'hidden (suppressing finding)', variant: 'hidden', tone: 'danger' };
-  return { label: 'hidden (below publishing level)', variant: 'hidden', tone: 'muted' };
+  if (curator) return { label: 'hidden by curator', variant: 'hidden', tone: 'danger' };
+  if (concern === 'block') return { label: 'hidden by this finding', variant: 'hidden', tone: 'danger' };
+  return { label: 'hidden by filter', variant: 'hidden', tone: 'muted' };
 }
 
 // Flatten resolved findings across every REVIEW# item into one array
