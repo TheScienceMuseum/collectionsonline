@@ -536,9 +536,9 @@
     {{#each resolvedFindings}}
     <li class="finding finding--resolved finding--{{this.kind}}-{{this.confidence}}" data-signature="{{this.claimSignature}}" data-affected-index="{{this.affectedSentenceIndex}}">
       <div class="finding__header">
-        {{#isequal this.resolution "accepted" this}}<span class="pill pill--muted" title="Accepted — sentence was hidden and excluded from the next regen">✓ accepted</span>{{/isequal}}
-        {{#isequal this.resolution "dismissed" this}}<span class="pill pill--muted" title="Dismissed — the AI review's concern was not valid; no biography change">✗ dismissed</span>{{/isequal}}
-        {{#isequal this.resolution "clarified" this}}<span class="pill pill--muted" title="Clarified — curator attached a clarification and considers the concern addressed">📝 clarified</span>{{/isequal}}
+        {{#isequal this.resolution "accepted" this}}<span class="pill pill--muted" title="Curator agreed with the AI review — the sentence is hidden and excluded from the next regen.">✓ curator agreed (hide)</span>{{/isequal}}
+        {{#isequal this.resolution "dismissed" this}}<span class="pill pill--muted" title="Curator overrode the AI review — the sentence publishes despite the reviewer's concern.">↷ curator overrode (publish)</span>{{/isequal}}
+        {{#isequal this.resolution "clarified" this}}<span class="pill pill--muted" title="Curator attached a clarification and considers the concern addressed.">📝 curator clarified</span>{{/isequal}}
         {{#isequal this.kind "error" this}}
           {{#isequal this.confidence "high" this}}<span class="pill pill--muted">was: likely error</span>{{/isequal}}
           {{#isequal this.confidence "medium" this}}<span class="pill pill--muted">was: possible issue</span>{{/isequal}}
@@ -566,9 +566,9 @@
       {{#each resolvedOverflow}}
       <li class="finding finding--resolved finding--{{this.kind}}-{{this.confidence}}" data-signature="{{this.claimSignature}}" data-affected-index="{{this.affectedSentenceIndex}}">
         <div class="finding__header">
-          {{#isequal this.resolution "accepted" this}}<span class="pill pill--muted">✓ accepted</span>{{/isequal}}
-          {{#isequal this.resolution "dismissed" this}}<span class="pill pill--muted">✗ dismissed</span>{{/isequal}}
-          {{#isequal this.resolution "clarified" this}}<span class="pill pill--muted">📝 clarified</span>{{/isequal}}
+          {{#isequal this.resolution "accepted" this}}<span class="pill pill--muted" title="Curator agreed with the AI review — sentence hidden.">✓ curator agreed (hide)</span>{{/isequal}}
+          {{#isequal this.resolution "dismissed" this}}<span class="pill pill--muted" title="Curator overrode the AI review — sentence publishes.">↷ curator overrode (publish)</span>{{/isequal}}
+          {{#isequal this.resolution "clarified" this}}<span class="pill pill--muted" title="Curator attached a clarification.">📝 curator clarified</span>{{/isequal}}
           {{#isequal this.kind "error" this}}
             {{#isequal this.confidence "high" this}}<span class="pill pill--muted">was: likely error</span>{{/isequal}}
             {{#isequal this.confidence "medium" this}}<span class="pill pill--muted">was: possible issue</span>{{/isequal}}
@@ -608,9 +608,9 @@
     {{#each resolvedFindings}}
     <li class="finding finding--resolved" data-signature="{{this.claimSignature}}">
       <div class="finding__header">
-        {{#isequal this.resolution "accepted" this}}<span class="pill pill--muted">✓ accepted</span>{{/isequal}}
-        {{#isequal this.resolution "dismissed" this}}<span class="pill pill--muted">✗ dismissed</span>{{/isequal}}
-        {{#isequal this.resolution "clarified" this}}<span class="pill pill--muted">📝 clarified</span>{{/isequal}}
+        {{#isequal this.resolution "accepted" this}}<span class="pill pill--muted" title="Curator agreed with the AI review — sentence hidden.">✓ curator agreed (hide)</span>{{/isequal}}
+        {{#isequal this.resolution "dismissed" this}}<span class="pill pill--muted" title="Curator overrode the AI review — sentence publishes.">↷ curator overrode (publish)</span>{{/isequal}}
+        {{#isequal this.resolution "clarified" this}}<span class="pill pill--muted" title="Curator attached a clarification.">📝 curator clarified</span>{{/isequal}}
       </div>
       {{#if this.claimText}}<div class="finding__claim">&ldquo;{{this.claimText}}&rdquo;</div>{{/if}}
       <div class="finding__concern-body">{{this.concern}}</div>
@@ -817,19 +817,19 @@
           </span>
           {{/isequal}}
 
-          {{!-- Task 63: on hidden sentences we drop the ⛔ likely error pill —
-                it's redundant when the sentence is already in the
-                Hidden group with a hatched background + red border.
-                Info/warning concerns still surface (they're
-                additional context: e.g. a curator-rejected sentence
-                that ALSO had an AI-review info note). --}}
+          {{!-- Concern pill on hidden claims carries information the
+                dimmed row alone doesn't: WHICH finding caused the hide,
+                and a jump-link to the AI review's full explanation.
+                Task 63 originally dropped the ⊗ likely-error pill here
+                as "redundant" — but that lost the navigation. Restored
+                so all three concern tiers (info / warning / block) show
+                on both publishing AND hidden claims. --}}
           {{#if this.state.concern}}
-          {{#isequal this.state.concern "block" this}}{{else}}
           <a class="pill concern-pill concern-pill--link" data-concern="{{this.state.concern}}" href="#finding-{{this.claimSignature}}" title="{{this.reviewFinding.concern}} · click to jump to the AI review's full note">
             {{#isequal this.state.concern "info" this}}<span class="concern-pill__icon">ⓘ</span> info{{/isequal}}
             {{#isequal this.state.concern "warning" this}}<span class="concern-pill__icon">⚠︎</span> possible issue{{/isequal}}
+            {{#isequal this.state.concern "block" this}}<span class="concern-pill__icon">⊗</span> likely error{{/isequal}}
           </a>
-          {{/isequal}}
           {{/if}}
 
           {{#if this.clarification}}
@@ -1031,7 +1031,26 @@
      text-variation-selected warning glyph renders as a proper
      symbol rather than getting shoved into a monospace cell. */
   .concern-pill__icon { display: inline-block; font-family: -apple-system, "Segoe UI Symbol", "Helvetica Neue", sans-serif; font-size: 0.95rem; line-height: 1; vertical-align: -0.15em; margin-right: 0.1rem; }
-  .concern-pill--link { text-decoration: none; }
+  /* Anchor-pseudo overrides — the default a:link (specificity 0,1,1)
+     beats the plain .concern-pill--link (0,1,0) rule, so text was
+     rendering as underlined blue links even when the pill styles set
+     a matching text/border colour. Repeat the colour + no-underline
+     across :link / :visited / :hover / :active with attribute-scoped
+     selectors to lift specificity above the browser default. */
+  .concern-pill--link,
+  .concern-pill--link:link,
+  .concern-pill--link:visited,
+  .concern-pill--link:hover,
+  .concern-pill--link:active { text-decoration: none; }
+  .concern-pill--link[data-concern="info"],
+  .concern-pill--link[data-concern="info"]:link,
+  .concern-pill--link[data-concern="info"]:visited    { color: #204a5a; }
+  .concern-pill--link[data-concern="warning"],
+  .concern-pill--link[data-concern="warning"]:link,
+  .concern-pill--link[data-concern="warning"]:visited { color: #6c5820; }
+  .concern-pill--link[data-concern="block"],
+  .concern-pill--link[data-concern="block"]:link,
+  .concern-pill--link[data-concern="block"]:visited   { color: #6c1c1c; }
   .concern-pill--link:hover { filter: brightness(0.95); }
 
   /* Row-level tint driven by the SAME axes so the row background
