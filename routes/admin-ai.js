@@ -25,6 +25,7 @@ const renderBiography = require('../lib/ai/render-biography');
 const verifyExternal = require('../lib/ai/verify-external');
 const generateSourceTaggedBiography = require('../lib/ai/generate-source-tagged-biography');
 const reviewBiographyTagged = require('../lib/ai/review-biography-tagged');
+const findingFilters = require('../lib/ai/finding-filters');
 const zlib = require('zlib');
 
 // Public-visibility hint for list rows. Currently two-valued ('full' or
@@ -768,7 +769,23 @@ module.exports = function (elastic, config) {
             // (identified by having a sentences[] array on the record);
             // legacy records with only biographyHtml render via the
             // template's `{{else}}` fallback branch.
-            const openFindings = sortOpenFindings(rawOpenFindings || []);
+            //
+            // Open findings are filtered to only those whose
+            // claimSignature matches a current sentence — stale ones
+            // (from a previous generation where the writer produced a
+            // now-rewritten sentence) sit in their REVIEW# items
+            // unresolved and automatically resurface if a future regen
+            // brings the same signature back. staleFindingsCount is
+            // surfaced on the panel header so a curator knows N were
+            // trimmed rather than assuming the panel just cleared.
+            // Resolved findings are NOT filtered — the audit
+            // collapsible below Open Findings shows the historical
+            // picture regardless of whether the underlying sentence
+            // still exists.
+            const sortedOpenFindings = sortOpenFindings(rawOpenFindings || []);
+            const currentSentences = (record && record.sentences) || [];
+            const openFindings = findingFilters.filterToCurrentSentences(sortedOpenFindings, currentSentences);
+            const staleFindingsCount = findingFilters.countStale(sortedOpenFindings, currentSentences);
             const resolvedFindings = collectResolvedFindings(rawReviews);
             const hasSentences = Array.isArray(record.sentences) && record.sentences.length > 0;
             const renderedBiography = hasSentences
@@ -803,6 +820,7 @@ module.exports = function (elastic, config) {
               reviewConfig,
               renderedBiography,
               openFindings,
+              staleFindingsCount,
               resolvedFindings,
               regenRecommended,
               pendingChangeCount,

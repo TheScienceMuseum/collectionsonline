@@ -361,7 +361,13 @@
 <details class="detail-section findings-panel" id="findings" open>
   <summary class="findings-panel__summary">
     <span class="findings-panel__title">Open review findings ({{openFindings.length}})</span>
-    <span class="text-meta findings-panel__hint">— reviewer concerns awaiting curator decision. Highest severity first.</span>
+    <span class="text-meta findings-panel__hint">— reviewer concerns awaiting curator decision. Highest severity first.
+      {{#if staleFindingsCount}}
+        <span title="Findings from a previous generation whose sentences have since been rewritten. Kept in the review record — will automatically resurface if a future regen re-emits the same claim.">
+          · <strong>{{staleFindingsCount}}</strong> stale filtered
+        </span>
+      {{/if}}
+    </span>
   </summary>
   <p class="text-meta" style="margin: 0.5rem 0 0.75rem 0;">
     Findings are the per-generation reviewer's suspicions about specific sentences. Accept to hide the sentence,
