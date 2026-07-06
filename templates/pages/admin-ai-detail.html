@@ -243,7 +243,7 @@
   <div>
     <dt>Publishing level</dt>
     <dd>
-      <strong title="Collection-wide filter for which source tags publish. 0 = museum only · 1 = + wikidata · 2 = + llm:inferred · 3 = + llm:contextualising (default) · 4 = + llm:validated (external CoVe) · 5 = + llm:general_knowledge. Curators can override per-sentence via Approve.">{{renderedBiography.publishingLevel}}</strong>
+      <strong title="Currently publishing sentences tagged: {{publishingLevelDescription}}. All levels: 0 = museum only · 1 = + wikidata · 2 = + llm:inferred · 3 = + llm:contextualising (default) · 4 = + llm:validated (external CoVe) · 5 = + llm:general_knowledge. Curators can override per-sentence via Approve.">{{renderedBiography.publishingLevel}}</strong>
       <span class="text-meta" title="Sentence counts after filter + curator overrides + likely-error hides applied. Hidden includes: source below the current level, hidden by a likely-error finding, and hidden by curator rejection.">·
         {{renderedBiography.visibleCount}} shown / {{renderedBiography.hiddenCount}} hidden
       </span>
@@ -629,19 +629,18 @@
       metadata block. `data-signature` on each row hooks into the
       hover + click-to-scroll interaction wired by the script at
       the bottom of the page. --}}
-<details class="detail-section" id="claims" open>
-  <summary class="claims-panel__summary" style="cursor: pointer; list-style: revert;">
-    <h3 style="display: inline; margin: 0; font-size: 1.15rem;">Claims</h3>
-    <span class="text-meta" style="font-weight: normal; font-size: 0.85rem;">— per-sentence provenance + curator actions for the biography above</span>
+<details class="detail-section findings-panel" id="claims" open>
+  <summary class="findings-panel__summary">
+    <span class="findings-panel__title">Claims</span>
+    <span class="text-meta findings-panel__hint">— per-sentence provenance + curator actions for the biography above</span>
   </summary>
 
   <div class="biography-summary" style="margin-top: 0.5rem;">
-    <span title="Publishing level filters sentences by their source tag. Level 3 (default) publishes museum + wikidata + llm:inferred + llm:contextualising sentences; llm:general_knowledge sentences are hidden until verified.">
-      Publishing level <strong>{{renderedBiography.publishingLevel}}</strong> —
-      <strong>{{renderedBiography.visibleCount}}</strong> publishing,
-      <strong>{{renderedBiography.hiddenCount}}</strong> hidden
-      (of {{renderedBiography.totalCount}} total)
-    </span>
+    Publishing level
+    <strong title="Currently publishing sentences tagged: {{publishingLevelDescription}}. Change via the aiBiographyPublishingLevel config key. Level 0 = museum only · 1 = + wikidata · 2 = + llm:inferred · 3 = + llm:contextualising (default) · 4 = + llm:validated (external CoVe) · 5 = + llm:general_knowledge.">{{renderedBiography.publishingLevel}}</strong> —
+    <strong>{{renderedBiography.visibleCount}}</strong> publishing,
+    <strong title="Includes: source below the current publishing level, hidden by a likely-error finding, and hidden by curator rejection.">{{renderedBiography.hiddenCount}}</strong> hidden
+    (of {{renderedBiography.totalCount}} total)
   </div>
 
   {{!-- Two-row legend: source tag colours (top row) + publishing
@@ -845,11 +844,17 @@
         <details class="sentence__actions">
           <summary>curator actions</summary>
           <div class="sentence__actions-body">
-            {{!-- Task 61: hidden sentence actions. Split by whether
-                  the hide was a curator rejection (needs Un-reject
-                  to restore) or an auto-hide (offer Approve +
-                  Confirm hidden + optional Verify). --}}
+            {{!-- Hidden-sentence action strip is intentionally minimal:
+                  the default state IS "stay hidden" (the AI already
+                  decided that), so the only meaningful action is
+                  Override. Curators who agree with the hide take no
+                  action. The reason textbox captures either the
+                  override rationale OR a clarification of what the
+                  AI got wrong — both persist as the approval note. --}}
             {{#isequal this.state.decidedBy "curator" this}}
+              {{!-- Curator-rejected: restore via Un-reject. Kept as a
+                    dedicated action because the semantic is "reverse
+                    my own prior rejection" rather than "override AI". --}}
               <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/approve" class="sentence__action-form">
                 <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
                 <input type="hidden" name="claimText" value="{{this.text}}">
@@ -859,21 +864,10 @@
               <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/approve" class="sentence__action-form">
                 <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
                 <input type="hidden" name="claimText" value="{{this.text}}">
-                <button type="submit" class="btn btn--secondary" title="Approve — publishes despite the filter or AI review's block-tier concern">Approve to publish</button>
-              </form>
-              <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/reject" class="sentence__action-form">
-                <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
-                <input type="hidden" name="claimText" value="{{this.text}}">
-                <input type="text" name="rationale" placeholder="Optional rationale (drives next regen)" class="sentence__action-input">
-                <button type="submit" class="btn btn--tertiary" title="Confirm this sentence should stay hidden AND exclude it from the next regeneration">Confirm hidden</button>
+                <input type="text" name="note" placeholder="Optional reason or clarification (why override, or what the AI got wrong)" class="sentence__action-input">
+                <button type="submit" class="btn btn--secondary" title="Override — publishes this claim despite the filter or AI-review concern. Optional reason is stored on the approval and shown alongside the sentence.">Override — publish anyway</button>
               </form>
             {{/isequal}}
-            <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/clarify" class="sentence__action-form">
-              <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
-              <input type="hidden" name="claimText" value="{{this.text}}">
-              <input type="text" name="clarification" placeholder="Guidance for next regen" class="sentence__action-input" required>
-              <button type="submit" class="btn btn--secondary" title="Add curator guidance for the next regeneration">Add clarification</button>
-            </form>
             {{#isequal this.source "llm:general_knowledge" this}}
             {{#if ../reviewConfig.externalValidationEnabled}}
             <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/verify" class="sentence__action-form">
@@ -1165,8 +1159,6 @@
   .findings-list--stale .finding__claim { margin-top: 0.35rem; }
   .findings-list--stale .finding__concern { margin-top: 0.25rem; }
   .findings-stale__note { color: #8a827a; font-style: italic; }
-  /* Claims panel summary — match the findings panel visually. */
-  .claims-panel__summary { display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
   .findings-overflow { margin-top: 0.5rem; font-size: 0.85rem; }
   .findings-overflow > summary { cursor: pointer; color: #5e564c; padding: 0.4rem 0; }
 

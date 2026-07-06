@@ -987,6 +987,9 @@ module.exports = function (elastic, config) {
               openFindingsAnnotatingCount,
               staleFindingsCount,
               staleOpenFindings,
+              publishingLevelDescription: (renderedBiography && Number.isInteger(renderedBiography.publishingLevel))
+                ? renderBiography.describeLevel(renderedBiography.publishingLevel)
+                : null,
               resolvedFindings,
               resolvedOverflow,
               resolvedOverflowCount,
