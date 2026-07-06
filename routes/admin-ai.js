@@ -891,7 +891,8 @@ module.exports = function (elastic, config) {
             const sortedOpenFindings = sortOpenFindings(rawOpenFindings || []);
             const currentSentences = (record && record.sentences) || [];
             const openFindingsFiltered = findingFilters.filterToCurrentSentences(sortedOpenFindings, currentSentences);
-            const staleFindingsCount = findingFilters.countStale(sortedOpenFindings, currentSentences);
+            const staleOpenFindings = findingFilters.collectStale(sortedOpenFindings, currentSentences);
+            const staleFindingsCount = staleOpenFindings.length;
             const allResolvedFindings = collectResolvedFindings(rawReviews);
 
             const hasSentences = Array.isArray(record.sentences) && record.sentences.length > 0;
@@ -985,6 +986,7 @@ module.exports = function (elastic, config) {
               openFindingsHidingCount,
               openFindingsAnnotatingCount,
               staleFindingsCount,
+              staleOpenFindings,
               resolvedFindings,
               resolvedOverflow,
               resolvedOverflowCount,

@@ -415,13 +415,7 @@
 <details class="detail-section findings-panel" id="findings" open>
   <summary class="findings-panel__summary">
     <span class="findings-panel__title">Review findings ({{openFindingsHidingCount}} hiding a claim, {{openFindingsAnnotatingCount}} annotating{{#if resolvedFindings.length}} · {{resolvedFindings.length}} recently resolved{{/if}})</span>
-    <span class="text-meta findings-panel__hint">— AI-review concerns on specific sentences; hides first, annotations after.
-      {{#if staleFindingsCount}}
-        <span title="Findings from a previous generation whose sentences have since been rewritten. Kept in the review record — will automatically resurface if a future regen re-emits the same claim.">
-          · <strong>{{staleFindingsCount}}</strong> stale filtered
-        </span>
-      {{/if}}
-    </span>
+    <span class="text-meta findings-panel__hint">— AI-review concerns on specific sentences; hides first, annotations after.{{#if staleFindingsCount}} · {{staleFindingsCount}} stale filtered (details below){{/if}}</span>
   </summary>
   <p class="text-meta" style="margin: 0.5rem 0 0.75rem 0;">
     Each finding is a concern the AI review raised about a specific claim.
@@ -495,6 +489,40 @@
     </li>
     {{/each}}
   </ul>
+
+  {{!-- Stale findings — pending findings whose claim signature no
+        longer appears in the current biography (the writer paraphrased
+        or dropped the claim). Not actionable here because there's no
+        current sentence to attach them to, but curators can inspect
+        what the reviewer was concerned about. If a future regen
+        re-emits a matching signature the finding automatically
+        rejoins the main Open list — nothing is lost. --}}
+  {{#if staleOpenFindings.length}}
+  <details class="findings-stale">
+    <summary class="findings-stale__summary">
+      <strong>{{staleOpenFindings.length}}</strong> stale filtered
+      <span class="text-meta">— pending findings whose claim doesn't appear in the current biography (writer paraphrased or dropped it). Click to inspect.</span>
+    </summary>
+    <ul class="findings-list findings-list--stale">
+      {{#each staleOpenFindings}}
+      <li class="finding finding--stale finding--{{this.kind}}-{{this.confidence}}" data-signature="{{this.claimSignature}}">
+        <div class="finding__header">
+          {{#isequal this.kind "error" this}}
+            {{#isequal this.confidence "high" this}}<span class="pill pill--muted">was: likely error</span>{{/isequal}}
+            {{#isequal this.confidence "medium" this}}<span class="pill pill--muted">was: possible issue</span>{{/isequal}}
+            {{#isequal this.confidence "low" this}}<span class="pill pill--muted">was: hunch</span>{{/isequal}}
+          {{else}}
+            <span class="pill pill--muted">was: info · {{this.confidence}}</span>
+          {{/isequal}}
+          <span class="text-meta findings-stale__note" title="This finding's claim signature no longer matches any sentence in the current biography. Kept in the audit trail — will automatically re-surface if a future regen produces a matching claim.">not in current biography</span>
+        </div>
+        {{#if this.claimText}}<div class="finding__claim text-meta"><em>&ldquo;{{this.claimText}}&rdquo;</em></div>{{/if}}
+        {{#if this.concern}}<div class="finding__concern text-meta">{{this.concern}}</div>{{/if}}
+      </li>
+      {{/each}}
+    </ul>
+  </details>
+  {{/if}}
 
   {{!-- Resolved section, greyed, in the same panel. Task 58 UX
         review asked for greyed-and-moved-to-bottom rather than
@@ -601,10 +629,13 @@
       metadata block. `data-signature` on each row hooks into the
       hover + click-to-scroll interaction wired by the script at
       the bottom of the page. --}}
-<div class="detail-section" id="claims">
-  <h3>Claims <span class="text-meta" style="font-weight: normal; font-size: 0.8rem;">— per-sentence provenance + curator actions for the biography above</span></h3>
+<details class="detail-section" id="claims" open>
+  <summary class="claims-panel__summary" style="cursor: pointer; list-style: revert;">
+    <h3 style="display: inline; margin: 0; font-size: 1.15rem;">Claims</h3>
+    <span class="text-meta" style="font-weight: normal; font-size: 0.85rem;">— per-sentence provenance + curator actions for the biography above</span>
+  </summary>
 
-  <div class="biography-summary">
+  <div class="biography-summary" style="margin-top: 0.5rem;">
     <span title="Publishing level filters sentences by their source tag. Level 3 (default) publishes museum + wikidata + llm:inferred + llm:contextualising sentences; llm:general_knowledge sentences are hidden until verified.">
       Publishing level <strong>{{renderedBiography.publishingLevel}}</strong> —
       <strong>{{renderedBiography.visibleCount}}</strong> publishing,
@@ -620,19 +651,19 @@
         + the matching data-attribute-driven backgrounds on each
         sentence give an at-a-glance key. --}}
   <div class="sentence-source-legend">
-    {{!-- Task 58: legend collapsed into a details toggle. Twelve
-          pills across two rows was noisy on first-view. Curators
-          expand when they need it; the resting state stays clean. --}}
-    <details class="claims-legend">
-      <summary>Legend</summary>
+    {{!-- Legend is always visible — it's the key to the coloured
+          pills below and curators shouldn't have to click to remember
+          what they mean. Three rows: source tag, visibility state,
+          reviewer concern. Every pill carries a title tooltip. --}}
+    <div class="claims-legend claims-legend--flat">
       <div class="claims-legend__body">
         <div class="claims-legend__row">
           <span class="claims-legend__label">Sources:</span>
-          <span class="pill sentence__source-pill" data-source="museum">museum</span>
-          <span class="pill sentence__source-pill" data-source="wikidata">wikidata</span>
-          <span class="pill sentence__source-pill" data-source="llm:inferred">llm:inferred</span>
-          <span class="pill sentence__source-pill" data-source="llm:contextualising">llm:contextualising</span>
-          <span class="pill sentence__source-pill" data-source="llm:general_knowledge">llm:general_knowledge</span>
+          <span class="pill sentence__source-pill" data-source="museum" title="Fact directly present in the museum catalogue inputs — personData fields, briefBiography, existingBiography, related-item titles / descriptions. Authoritative.">museum</span>
+          <span class="pill sentence__source-pill" data-source="wikidata" title="Fact directly present in the Wikidata context (a specific claim or property). Trusted structured data; curator may spot-check.">wikidata</span>
+          <span class="pill sentence__source-pill" data-source="llm:inferred" title="Synthesis DERIVED from museum + wikidata inputs — combining or paraphrasing multiple structured facts into new prose. Traceable to inputs, safe by construction.">llm:inferred</span>
+          <span class="pill sentence__source-pill" data-source="llm:contextualising" title="Background / era colour without specific claims about the subject (e.g. 'Artificial eye making in early eighteenth-century London was a specialist trade'). Publishes at level 3+.">llm:contextualising</span>
+          <span class="pill sentence__source-pill" data-source="llm:general_knowledge" title="Fact from the LLM's training data, NOT present in museum or wikidata inputs. Hidden until curator approves or external validation promotes to llm:validated.">llm:general_knowledge</span>
         </div>
         {{!-- Task 61: legend restructured on the 3-axis state model.
               Visibility is ● / ○ (filled = publishing, hollow = hidden),
@@ -648,12 +679,12 @@
         </div>
         <div class="claims-legend__row">
           <span class="claims-legend__label">Reviewer concern:</span>
-          <span class="pill concern-pill" data-concern="info" title="Contextual note from the AI review. Publishes without gating.">ⓘ info</span>
-          <span class="pill concern-pill" data-concern="warning" title="AI review suspects a possible issue at medium confidence. Publishes without gating.">⚠ possible issue</span>
-          <span class="pill concern-pill" data-concern="block" title="AI review's high-confidence error. Auto-hides the sentence unless a curator explicitly approves.">⛔ likely error</span>
+          <span class="pill concern-pill" data-concern="info" title="Contextual note from the AI review — the reviewer thinks the curator might find this useful. Publishes without gating."><span class="concern-pill__icon">ⓘ</span> info</span>
+          <span class="pill concern-pill" data-concern="warning" title="AI review suspects a possible issue at medium confidence — worth a look but not blocking. Publishes and annotates the claim."><span class="concern-pill__icon">⚠︎</span> possible issue</span>
+          <span class="pill concern-pill" data-concern="block" title="AI review's high-confidence error — the reviewer thinks this claim is wrong. Auto-hides the sentence unless a curator explicitly overrides."><span class="concern-pill__icon">⊗</span> likely error</span>
         </div>
       </div>
-    </details>
+    </div>
   </div>
 
   {{!-- Task 64: view toggle. Default renders claims grouped by
@@ -708,9 +739,9 @@
                 to avoid ambiguity with human curators. --}}
           {{#if this.state.concern}}
           <a class="pill concern-pill concern-pill--link" data-concern="{{this.state.concern}}" href="#finding-{{this.claimSignature}}" title="{{this.reviewFinding.concern}} · click to jump to the AI review's full note">
-            {{#isequal this.state.concern "info" this}}ⓘ info{{/isequal}}
-            {{#isequal this.state.concern "warning" this}}⚠ possible issue{{/isequal}}
-            {{#isequal this.state.concern "block" this}}⛔ likely error{{/isequal}}
+            {{#isequal this.state.concern "info" this}}<span class="concern-pill__icon">ⓘ</span> info{{/isequal}}
+            {{#isequal this.state.concern "warning" this}}<span class="concern-pill__icon">⚠︎</span> possible issue{{/isequal}}
+            {{#isequal this.state.concern "block" this}}<span class="concern-pill__icon">⊗</span> likely error{{/isequal}}
           </a>
           {{/if}}
 
@@ -796,8 +827,8 @@
           {{#if this.state.concern}}
           {{#isequal this.state.concern "block" this}}{{else}}
           <a class="pill concern-pill concern-pill--link" data-concern="{{this.state.concern}}" href="#finding-{{this.claimSignature}}" title="{{this.reviewFinding.concern}} · click to jump to the AI review's full note">
-            {{#isequal this.state.concern "info" this}}ⓘ info{{/isequal}}
-            {{#isequal this.state.concern "warning" this}}⚠ possible issue{{/isequal}}
+            {{#isequal this.state.concern "info" this}}<span class="concern-pill__icon">ⓘ</span> info{{/isequal}}
+            {{#isequal this.state.concern "warning" this}}<span class="concern-pill__icon">⚠︎</span> possible issue{{/isequal}}
           </a>
           {{/isequal}}
           {{/if}}
@@ -862,7 +893,7 @@
   </div>
   {{/if}}
   </div>{{!-- /claims-groups (Task 64) --}}
-</div>
+</details>
 
 {{#if record.writerNotes}}
 <details class="collapsible" style="margin-top: 0.75rem;">
@@ -996,6 +1027,13 @@
   .concern-pill[data-concern="info"]    { background: #e6ecf1; border: 1px solid #97b5c4; color: #204a5a; }
   .concern-pill[data-concern="warning"] { background: #f5edd8; border: 1px solid #c9b478; color: #6c5820; }
   .concern-pill[data-concern="block"]   { background: #f5cccc; border: 1px solid #b0797a; color: #6c1c1c; font-weight: 600; }
+  /* Normalise concern-pill icon glyphs — ⓘ ⚠︎ ⊗ render at different
+     intrinsic sizes across the base font, especially the warning
+     triangle which draws smaller than the surrounding text.
+     font-family: sans-serif escapes the monospace pill body so the
+     text-variation-selected warning glyph renders as a proper
+     symbol rather than getting shoved into a monospace cell. */
+  .concern-pill__icon { display: inline-block; font-family: -apple-system, "Segoe UI Symbol", "Helvetica Neue", sans-serif; font-size: 0.95rem; line-height: 1; vertical-align: -0.15em; margin-right: 0.1rem; }
   .concern-pill--link { text-decoration: none; }
   .concern-pill--link:hover { filter: brightness(0.95); }
 
@@ -1006,7 +1044,7 @@
   .sentence[data-vis="hidden"]                             { border-left: 3px solid #c5b98a; }
   /* Task 63: hide-reason differentiation via border colour so curators
      can distinguish AI-review-block from publishing-level-filter at a
-     glance without needing the ⛔ pill. Red border = AI-review block,
+     glance without needing the ⊗ pill. Red border = AI-review block,
      mustard = below level, darker red + tint = curator rejection. */
   .sentence[data-vis="hidden"][data-decided="auto"][data-concern="block"] { border-left: 3px solid #b0797a; }
   .sentence[data-vis="hidden"][data-decided="curator"]     { border-left: 3px solid #b0797a; background: #faf1f1; }
@@ -1117,6 +1155,18 @@
   /* Divider between pending and resolved in the merged findings panel. */
   .findings-resolved-divider { margin: 1rem 0 0.5rem 0; padding-top: 0.75rem; border-top: 1px dashed #d5d0c1; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: #7a726a; }
   .findings-list--resolved .finding { background: #f5f3ec; }
+  /* Stale findings disclosure — sits between Open and Resolved.
+     De-emphasised (grey text, no coloured left border) because
+     these findings can't be acted on directly. */
+  .findings-stale { margin: 1rem 0 0.25rem 0; padding: 0.5rem 0.75rem; background: #f8f7f2; border: 1px dashed #d5d0c1; border-radius: 3px; }
+  .findings-stale__summary { cursor: pointer; font-size: 0.85rem; color: #5e564c; }
+  .findings-list--stale { margin-top: 0.5rem; }
+  .findings-list--stale .finding { background: #efece4; opacity: 0.85; }
+  .findings-list--stale .finding__claim { margin-top: 0.35rem; }
+  .findings-list--stale .finding__concern { margin-top: 0.25rem; }
+  .findings-stale__note { color: #8a827a; font-style: italic; }
+  /* Claims panel summary — match the findings panel visually. */
+  .claims-panel__summary { display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
   .findings-overflow { margin-top: 0.5rem; font-size: 0.85rem; }
   .findings-overflow > summary { cursor: pointer; color: #5e564c; padding: 0.4rem 0; }
 

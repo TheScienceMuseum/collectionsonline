@@ -5,7 +5,7 @@
 // sentence. Filters are pure functions; no fixtures needed.
 
 const test = require('tape');
-const { filterToCurrentSentences, countStale } = require('../lib/ai/finding-filters');
+const { filterToCurrentSentences, countStale, collectStale } = require('../lib/ai/finding-filters');
 
 const sig = function (s) { return s; }; // signatures are opaque strings in these tests
 
@@ -93,6 +93,48 @@ test('countStale: all-fresh → 0', function (t) {
   t.end();
 });
 
+// --- collectStale ---------------------------------------------------
+
+test('collectStale: returns findings whose signature is not in sentences', function (t) {
+  const sentences = [{ claimSignature: 'a' }];
+  const findings = [
+    { claimSignature: 'a', concern: 'fresh' },
+    { claimSignature: 'b', concern: 'gone' },
+    { claimSignature: 'c', concern: 'also gone' }
+  ];
+  const out = collectStale(findings, sentences);
+  t.equal(out.length, 2);
+  t.equal(out[0].concern, 'gone');
+  t.equal(out[1].concern, 'also gone');
+  t.end();
+});
+
+test('collectStale: findings without a signature are included as stale', function (t) {
+  const sentences = [{ claimSignature: 'a' }];
+  const findings = [
+    { claimSignature: 'a', concern: 'fresh' },
+    { concern: 'orphan' }
+  ];
+  const out = collectStale(findings, sentences);
+  t.equal(out.length, 1);
+  t.equal(out[0].concern, 'orphan');
+  t.end();
+});
+
+test('collectStale: all-fresh → empty array', function (t) {
+  const sentences = [{ claimSignature: 'a' }, { claimSignature: 'b' }];
+  const findings = [{ claimSignature: 'a' }, { claimSignature: 'b' }];
+  t.deepEqual(collectStale(findings, sentences), []);
+  t.end();
+});
+
+test('collectStale: length matches countStale (paired helpers)', function (t) {
+  const sentences = [{ claimSignature: 'a' }];
+  const findings = [{ claimSignature: 'a' }, { claimSignature: 'b' }, { concern: 'orphan' }];
+  t.equal(collectStale(findings, sentences).length, countStale(findings, sentences));
+  t.end();
+});
+
 // --- Behavioural / regression -------------------------------------
 
 test('filter is display-time: does not mutate inputs', function (t) {
@@ -102,6 +144,7 @@ test('filter is display-time: does not mutate inputs', function (t) {
   const beforeFindings = JSON.stringify(findings);
   filterToCurrentSentences(findings, sentences);
   countStale(findings, sentences);
+  collectStale(findings, sentences);
   t.equal(JSON.stringify(sentences), beforeSentences, 'sentences unchanged');
   t.equal(JSON.stringify(findings), beforeFindings, 'findings unchanged');
   t.end();
