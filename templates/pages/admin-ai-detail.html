@@ -659,8 +659,8 @@
   <div class="claims-view-toggle">
     <label for="claims-group-select" class="text-meta">Group by:</label>
     <select id="claims-group-select" class="claims-view-toggle__select">
-      <option value="visibility" selected>Visibility (Publishing / Hidden)</option>
-      <option value="source">Source type</option>
+      <option value="visibility">Visibility (Publishing / Hidden)</option>
+      <option value="source" selected>Source type</option>
     </select>
   </div>
 
@@ -1530,6 +1530,9 @@
       var v = e.target.value;
       if (v === 'source') toSource(); else toVisibility();
     });
+
+    // Apply initial view for the pre-selected option (source by default).
+    if (select.value === 'source') toSource();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', bindClaimsViewToggle);
