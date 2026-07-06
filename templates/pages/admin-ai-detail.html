@@ -84,6 +84,29 @@
 </div>
 {{/if}}
 
+{{!-- Task 58: Biography + In-the-collection rendered prose moved to
+      TOP of the page, above the record metadata block. Content first
+      (what the public sees) — tooling and metadata after. Only shown
+      for v2 records; legacy records fall through to the old prose
+      block further down the page. --}}
+{{#if renderedBiography.sentences.length}}
+<div class="detail-section" id="biography">
+  <h3>Biography</h3>
+  <div class="prose-body ai-rendered-prose" data-block="biography">
+    {{{renderedBiography.biographyHtml}}}
+  </div>
+</div>
+
+{{#if renderedBiography.contextHtml}}
+<div class="detail-section" id="in-the-collection">
+  <h3>In the collection</h3>
+  <div class="prose-body ai-rendered-prose" data-block="context">
+    {{{renderedBiography.contextHtml}}}
+  </div>
+</div>
+{{/if}}
+{{/if}}
+
 <div class="detail-meta">
   <div>
     <dt>Record ID</dt>
@@ -357,11 +380,26 @@
 </div>
 {{/if}}
 
+{{!-- Task 58: Open + Resolved findings merged into ONE panel.
+      Pending at top, then a divider, then resolved (greyed at
+      bottom, still visible in situ rather than tucked behind a
+      separate collapsible). Overflow beyond RESOLVED_INLINE_CAP
+      (5) is exposed via a "…N older" details toggle so the audit
+      history stays reachable without crowding the panel.
+
+      Every finding card carries an "affected sentence"
+      publishing-status chip at the TOP — the crucial-to-eyeball
+      signal Task 58 UX review flagged as missing. Colour tone
+      matches the state:
+        positive → green (publishing normally)
+        caution  → amber (publishing but flagged)
+        danger   → red (hidden)
+        muted    → grey (below-level / unknown / stale) --}}
 {{#if openFindings.length}}
 <details class="detail-section findings-panel" id="findings" open>
   <summary class="findings-panel__summary">
-    <span class="findings-panel__title">Open review findings ({{openFindings.length}})</span>
-    <span class="text-meta findings-panel__hint">— reviewer concerns awaiting curator decision. Highest severity first.
+    <span class="findings-panel__title">Review findings ({{openFindings.length}} pending{{#if resolvedFindings.length}}, {{resolvedFindings.length}} recently resolved{{/if}})</span>
+    <span class="text-meta findings-panel__hint">— reviewer concerns; pending awaiting curator decision, highest severity first.
       {{#if staleFindingsCount}}
         <span title="Findings from a previous generation whose sentences have since been rewritten. Kept in the review record — will automatically resurface if a future regen re-emits the same claim.">
           · <strong>{{staleFindingsCount}}</strong> stale filtered
@@ -372,16 +410,21 @@
   <p class="text-meta" style="margin: 0.5rem 0 0.75rem 0;">
     Findings are the per-generation reviewer's suspicions about specific sentences. Accept to hide the sentence,
     dismiss to leave it in place, or verify against external sources to make an informed call.
-    High-confidence error findings hide their sentence by default until you resolve them.
+    High-confidence error findings hide their sentence by default until you resolve them; other findings
+    pass through automatically — the green/amber/red chip on each card shows the current effect on the public site.
   </p>
   <ul class="findings-list">
-    {{!-- Sentence quote comes FIRST so a curator scanning the panel
-          sees WHAT is being flagged before wading through WHY. Task 56
-          UX feedback: the previous "reasoning first, quote second"
-          order buried the point of interest under a wall of prose. --}}
     {{#each openFindings}}
-    <li class="finding finding--{{this.kind}}-{{this.confidence}}" data-signature="{{this.claimSignature}}">
+    <li class="finding finding--{{this.kind}}-{{this.confidence}}" data-signature="{{this.claimSignature}}" data-affected-index="{{this.affectedSentenceIndex}}">
       <div class="finding__header">
+        {{!-- Publishing status chip — prominent, coloured by tone.
+              Sits FIRST so it dominates the row. --}}
+        {{#if this.affectedPublishingState}}
+        <span class="pill finding__status finding__status--{{this.affectedPublishingState.variant}} finding__status--{{this.affectedPublishingState.tone}}" title="Current effect of this finding on the public site">
+          {{#isequal this.affectedPublishingState.variant "publishing" this}}● {{this.affectedPublishingState.label}}{{/isequal}}
+          {{#isequal this.affectedPublishingState.variant "hidden" this}}○ {{this.affectedPublishingState.label}}{{/isequal}}
+        </span>
+        {{/if}}
         {{#isequal this.kind "error" this}}
           {{#isequal this.confidence "high" this}}<span class="pill pill--danger" title="Reviewer flagged this as likely wrong (error · high)">likely error</span>{{/isequal}}
           {{#isequal this.confidence "medium" this}}<span class="pill pill--attention" title="Reviewer flagged this as possibly wrong (error · medium)">possible issue</span>{{/isequal}}
@@ -395,10 +438,6 @@
       {{/if}}
       <div class="finding__concern-body">{{this.concern}}</div>
       <div class="finding__actions">
-        {{!-- Accept applies as a curator rejection (regen-triggering).
-              Dismiss marks resolved with no biography change. Verify
-              routes to the same on-demand external-verification code
-              path as the sentence-level Verify button. --}}
         <form method="POST" action="/admin/ai/{{../record.PK}}/findings/resolve" class="finding__form">
           <input type="hidden" name="reviewSK" value="{{this.reviewSK}}">
           <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
@@ -423,10 +462,6 @@
         {{/if}}
       </div>
       {{#if this.verificationResult}}
-        {{!-- If a curator has previously run verification against this
-              finding, show the verdict + evidence inline so they don't
-              need to re-run it. Result is short-form; the "toolResults"
-              detail is available on the verification history page. --}}
         <div class="finding__verification finding__verification--{{this.verificationResult.verdict}}">
           <strong>{{this.verificationResult.verdict}}</strong>
           ({{this.verificationResult.confidence}})
@@ -439,35 +474,22 @@
     </li>
     {{/each}}
   </ul>
-</details>
-{{/if}}
 
-{{!-- Resolved findings audit collapsible — Task 56. Curators asked
-      for this so past accept / dismiss / clarified findings are
-      auditable without opening the underlying REVIEW# items directly.
-      Deliberately collapsed by default; the user's primary focus is
-      Open findings, this is for later drill-down. Also gives us a
-      natural home for a future "Reactivate" button if we ever add
-      one — for now it's read-only. --}}
-{{#if resolvedFindings.length}}
-<details class="detail-section findings-panel" id="resolved-findings">
-  <summary class="findings-panel__summary">
-    <span class="findings-panel__title">Resolved findings ({{resolvedFindings.length}})</span>
-    <span class="text-meta findings-panel__hint">— curator-resolved concerns, most-recent first. Audit history.</span>
-  </summary>
-  <ul class="findings-list">
+  {{!-- Resolved section, greyed, in the same panel. Task 58 UX
+        review asked for greyed-and-moved-to-bottom rather than
+        hidden behind a separate collapsible. Capped at 5 inline;
+        overflow behind a "…N older" toggle. --}}
+  {{#if resolvedFindings.length}}
+  <div class="findings-resolved-divider">
+    <span>Recently resolved</span>
+  </div>
+  <ul class="findings-list findings-list--resolved">
     {{#each resolvedFindings}}
-    <li class="finding finding--resolved finding--{{this.kind}}-{{this.confidence}}" data-signature="{{this.claimSignature}}">
+    <li class="finding finding--resolved finding--{{this.kind}}-{{this.confidence}}" data-signature="{{this.claimSignature}}" data-affected-index="{{this.affectedSentenceIndex}}">
       <div class="finding__header">
-        {{#isequal this.resolution "accepted" this}}
-          <span class="pill pill--muted" title="Accepted — a curator rejection was created on the sentence and it was excluded from the next regen.">✓ accepted</span>
-        {{/isequal}}
-        {{#isequal this.resolution "dismissed" this}}
-          <span class="pill pill--muted" title="Dismissed — reviewer's concern was not valid; no biography change.">✗ dismissed</span>
-        {{/isequal}}
-        {{#isequal this.resolution "clarified" this}}
-          <span class="pill pill--muted" title="Clarified — curator attached a clarification to the sentence and considers the concern addressed.">📝 clarified</span>
-        {{/isequal}}
+        {{#isequal this.resolution "accepted" this}}<span class="pill pill--muted" title="Accepted — sentence was hidden and excluded from the next regen">✓ accepted</span>{{/isequal}}
+        {{#isequal this.resolution "dismissed" this}}<span class="pill pill--muted" title="Dismissed — reviewer's concern was not valid; no biography change">✗ dismissed</span>{{/isequal}}
+        {{#isequal this.resolution "clarified" this}}<span class="pill pill--muted" title="Clarified — curator attached a clarification and considers the concern addressed">📝 clarified</span>{{/isequal}}
         {{#isequal this.kind "error" this}}
           {{#isequal this.confidence "high" this}}<span class="pill pill--muted">was: likely error</span>{{/isequal}}
           {{#isequal this.confidence "medium" this}}<span class="pill pill--muted">was: possible issue</span>{{/isequal}}
@@ -487,39 +509,77 @@
     </li>
     {{/each}}
   </ul>
+
+  {{#if resolvedOverflowCount}}
+  <details class="findings-overflow">
+    <summary>…and {{resolvedOverflowCount}} older resolved · show history</summary>
+    <ul class="findings-list findings-list--resolved">
+      {{#each resolvedOverflow}}
+      <li class="finding finding--resolved finding--{{this.kind}}-{{this.confidence}}" data-signature="{{this.claimSignature}}" data-affected-index="{{this.affectedSentenceIndex}}">
+        <div class="finding__header">
+          {{#isequal this.resolution "accepted" this}}<span class="pill pill--muted">✓ accepted</span>{{/isequal}}
+          {{#isequal this.resolution "dismissed" this}}<span class="pill pill--muted">✗ dismissed</span>{{/isequal}}
+          {{#isequal this.resolution "clarified" this}}<span class="pill pill--muted">📝 clarified</span>{{/isequal}}
+          {{#isequal this.kind "error" this}}
+            {{#isequal this.confidence "high" this}}<span class="pill pill--muted">was: likely error</span>{{/isequal}}
+            {{#isequal this.confidence "medium" this}}<span class="pill pill--muted">was: possible issue</span>{{/isequal}}
+            {{#isequal this.confidence "low" this}}<span class="pill pill--muted">was: hunch</span>{{/isequal}}
+          {{else}}
+            <span class="pill pill--muted">was: info · {{this.confidence}}</span>
+          {{/isequal}}
+        </div>
+        {{#if this.claimText}}
+        <div class="finding__claim">&ldquo;{{this.claimText}}&rdquo;</div>
+        {{/if}}
+        <div class="finding__concern-body">{{this.concern}}</div>
+        <div class="text-meta--sm" style="margin-top: 0.4rem;">
+          Resolved by <strong>{{this.resolvedBy}}</strong>
+          {{#if this.resolvedAt}} at <span title="{{this.resolvedAt}}">{{formatDate this.resolvedAt "auto"}}</span>{{/if}}
+        </div>
+      </li>
+      {{/each}}
+    </ul>
+  </details>
+  {{/if}}
+  {{/if}}
 </details>
 {{/if}}
 
-{{#if renderedBiography.sentences.length}}
-{{!-- Rendered public prose — split into two blocks. The main
-      Biography block is the "who / what / when" narrative; the
-      In-the-collection block is the "here's what the museum holds"
-      section, restoring the v1 Biography + Collection Context
-      separation the Task 56 UX review flagged as missing.
-
-      Collection-object references inside the prose carry a small
-      trailing "→ view object" hyperlink chip generated at render
-      time in lib/ai/render-biography.js — restores the v1 object
-      hyperlinking behaviour that was lost when we moved to
-      sentence-tagged JSON. `data-signature` on each paragraph is a
-      hook for the sentence↔claim hover-highlight interaction wired
-      by the small script at the bottom of the page. --}}
-<div class="detail-section" id="biography">
-  <h3>Biography</h3>
-  <div class="prose-body ai-rendered-prose" data-block="biography">
-    {{{renderedBiography.biographyHtml}}}
-  </div>
-</div>
-
-{{#if renderedBiography.contextHtml}}
-<div class="detail-section" id="in-the-collection">
-  <h3>In the collection</h3>
-  <div class="prose-body ai-rendered-prose" data-block="context">
-    {{{renderedBiography.contextHtml}}}
-  </div>
-</div>
+{{!-- Edge case: no pending findings but resolved history exists —
+      still show the resolved list on its own so the audit signal
+      isn't hidden. --}}
+{{#if resolvedFindings.length}}
+{{#unless openFindings.length}}
+<details class="detail-section findings-panel" id="resolved-only">
+  <summary class="findings-panel__summary">
+    <span class="findings-panel__title">Resolved findings ({{resolvedFindings.length}})</span>
+    <span class="text-meta findings-panel__hint">— all reviewer concerns on this record have been resolved.</span>
+  </summary>
+  <ul class="findings-list findings-list--resolved">
+    {{#each resolvedFindings}}
+    <li class="finding finding--resolved" data-signature="{{this.claimSignature}}">
+      <div class="finding__header">
+        {{#isequal this.resolution "accepted" this}}<span class="pill pill--muted">✓ accepted</span>{{/isequal}}
+        {{#isequal this.resolution "dismissed" this}}<span class="pill pill--muted">✗ dismissed</span>{{/isequal}}
+        {{#isequal this.resolution "clarified" this}}<span class="pill pill--muted">📝 clarified</span>{{/isequal}}
+      </div>
+      {{#if this.claimText}}<div class="finding__claim">&ldquo;{{this.claimText}}&rdquo;</div>{{/if}}
+      <div class="finding__concern-body">{{this.concern}}</div>
+    </li>
+    {{/each}}
+  </ul>
+</details>
+{{/unless}}
 {{/if}}
 
+{{#if renderedBiography.sentences.length}}
+{{!-- Claims section — per-sentence provenance + curator actions.
+      The rendered Biography + In-the-collection prose blocks now
+      live at the TOP of the page (Task 58); this section is the
+      per-claim inspector / action panel that sits below the
+      metadata block. `data-signature` on each row hooks into the
+      hover + click-to-scroll interaction wired by the script at
+      the bottom of the page. --}}
 <div class="detail-section" id="claims">
   <h3>Claims <span class="text-meta" style="font-weight: normal; font-size: 0.8rem;">— per-sentence provenance + curator actions for the biography above</span></h3>
 
@@ -539,23 +599,32 @@
         + the matching data-attribute-driven backgrounds on each
         sentence give an at-a-glance key. --}}
   <div class="sentence-source-legend">
-    <span class="sentence-source-legend__label">Sources:</span>
-    <span class="pill sentence__source-pill" data-source="museum">museum</span>
-    <span class="pill sentence__source-pill" data-source="wikidata">wikidata</span>
-    <span class="pill sentence__source-pill" data-source="llm:inferred">llm:inferred</span>
-    <span class="pill sentence__source-pill" data-source="llm:contextualising">llm:contextualising</span>
-    <span class="pill sentence__source-pill" data-source="llm:general_knowledge">llm:general_knowledge</span>
-  </div>
-
-  <div class="publishing-state-legend">
-    <span class="sentence-source-legend__label">Publishing state:</span>
-    <span class="pill state-pill" data-publishing-state="auto_publishing_clean" title="Publishing because its source tag is allowed at the current level. No reviewer concern.">publishing</span>
-    <span class="pill state-pill" data-publishing-state="auto_publishing_info" title="Publishing. Reviewer left contextual info; not blocking.">publishing · info</span>
-    <span class="pill state-pill" data-publishing-state="auto_publishing_error" title="Publishing. Reviewer flagged a possible / low-confidence error; not blocking at this severity.">publishing · possible</span>
-    <span class="pill state-pill" data-publishing-state="curator_approved" title="Curator-approved. Publishes regardless of source-tag filter.">✓ curator approved</span>
-    <span class="pill state-pill" data-publishing-state="hidden_below_level" title="Source tag is below the current publishing level. Approve on the sentence to publish anyway.">hidden · below level</span>
-    <span class="pill state-pill" data-publishing-state="hidden_finding" title="Hidden by a high-confidence error finding. Resolve or approve to publish.">hidden · pending finding</span>
-    <span class="pill state-pill" data-publishing-state="curator_rejected" title="Curator-rejected. Hidden and excluded from next regen.">✗ curator rejected</span>
+    {{!-- Task 58: legend collapsed into a details toggle. Twelve
+          pills across two rows was noisy on first-view. Curators
+          expand when they need it; the resting state stays clean. --}}
+    <details class="claims-legend">
+      <summary>Legend</summary>
+      <div class="claims-legend__body">
+        <div class="claims-legend__row">
+          <span class="claims-legend__label">Sources:</span>
+          <span class="pill sentence__source-pill" data-source="museum">museum</span>
+          <span class="pill sentence__source-pill" data-source="wikidata">wikidata</span>
+          <span class="pill sentence__source-pill" data-source="llm:inferred">llm:inferred</span>
+          <span class="pill sentence__source-pill" data-source="llm:contextualising">llm:contextualising</span>
+          <span class="pill sentence__source-pill" data-source="llm:general_knowledge">llm:general_knowledge</span>
+        </div>
+        <div class="claims-legend__row">
+          <span class="claims-legend__label">Publishing state:</span>
+          <span class="pill state-pill" data-publishing-state="auto_publishing_clean" title="Publishing because its source tag is allowed at the current level. No reviewer concern.">publishing</span>
+          <span class="pill state-pill" data-publishing-state="auto_publishing_info" title="Publishing. Reviewer left contextual info; not blocking.">publishing · info</span>
+          <span class="pill state-pill" data-publishing-state="auto_publishing_error" title="Publishing. Reviewer flagged a possible / low-confidence error; not blocking at this severity.">publishing · possible</span>
+          <span class="pill state-pill" data-publishing-state="curator_approved" title="Curator-approved. Publishes regardless of source-tag filter.">✓ curator approved</span>
+          <span class="pill state-pill" data-publishing-state="hidden_below_level" title="Source tag is below the current publishing level. Approve on the sentence to publish anyway.">hidden · below level</span>
+          <span class="pill state-pill" data-publishing-state="hidden_finding" title="Hidden by a high-confidence error finding. Resolve or approve to publish.">hidden · pending finding</span>
+          <span class="pill state-pill" data-publishing-state="curator_rejected" title="Curator-rejected. Hidden and excluded from next regen.">✗ curator rejected</span>
+        </div>
+      </div>
+    </details>
   </div>
 
   {{!-- Publishing group. Iterated over the full sentences[] array
@@ -573,8 +642,8 @@
       <li class="sentence" data-source="{{this.source}}" data-signature="{{this.claimSignature}}" data-publishing-state="{{this.publishingState}}">
         <div class="sentence__text">{{this.text}}</div>
         <div class="sentence__meta">
-          <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{#if this.sourceDetail}}Source: {{this.sourceDetail}}{{else}}Source tag: {{this.source}}{{/if}}">
-            {{this.source}}{{#if this.sourceDetail}} · {{this.sourceDetail}}{{/if}}
+          <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{#if this.sourceDetailFormatted}}Source: {{this.sourceDetailFormatted}}{{else}}Source tag: {{this.source}}{{/if}}">
+            {{this.source}}{{#if this.sourceDetailFormatted}} · {{this.sourceDetailFormatted}}{{/if}}
           </span>
 
           {{!-- Explicit publishing-state pill — always present so a
@@ -660,8 +729,8 @@
       <li class="sentence sentence--hidden" data-source="{{this.source}}" data-signature="{{this.claimSignature}}" data-publishing-state="{{this.publishingState}}">
         <div class="sentence__text">{{this.text}}</div>
         <div class="sentence__meta">
-          <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{#if this.sourceDetail}}Source: {{this.sourceDetail}}{{else}}Source tag: {{this.source}}{{/if}}">
-            {{this.source}}{{#if this.sourceDetail}} · {{this.sourceDetail}}{{/if}}
+          <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{#if this.sourceDetailFormatted}}Source: {{this.sourceDetailFormatted}}{{else}}Source tag: {{this.source}}{{/if}}">
+            {{this.source}}{{#if this.sourceDetailFormatted}} · {{this.sourceDetailFormatted}}{{/if}}
           </span>
 
           {{#isequal this.publishingState "curator_rejected" this}}
@@ -904,31 +973,71 @@
     outline-offset: 2px;
   }
 
-  /* Resolved findings — dimmed by default so the eye lands on Open first. */
+  /* Resolved findings — dimmed by default so the eye lands on pending first. */
   .finding--resolved { opacity: 0.75; }
   .finding__concern-body { color: #2a2a2a; font-size: 0.9rem; line-height: 1.5; margin-top: 0.35rem; }
+
+  /* Task 58: prominent per-finding publishing-state chip. Rendered
+     first in the finding header so it dominates the row visually.
+     Solid backgrounds so the state reads at a glance without
+     depending on tone perception. */
+  .finding__status { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.75rem; padding: 0.15rem 0.55rem; border-radius: 3px; font-weight: 600; }
+  .finding__status--positive { background: #dae7dd; color: #1e4a2f; border: 1px solid #6da97e; }
+  .finding__status--caution  { background: #f5e4ba; color: #6c5820; border: 1px solid #c9b478; }
+  .finding__status--danger   { background: #f5cccc; color: #6c1c1c; border: 1px solid #b0797a; }
+  .finding__status--muted    { background: #efece4; color: #646464; border: 1px solid #c5c1b5; }
+
+  /* Divider between pending and resolved in the merged findings panel. */
+  .findings-resolved-divider { margin: 1rem 0 0.5rem 0; padding-top: 0.75rem; border-top: 1px dashed #d5d0c1; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: #7a726a; }
+  .findings-list--resolved .finding { background: #f5f3ec; }
+  .findings-overflow { margin-top: 0.5rem; font-size: 0.85rem; }
+  .findings-overflow > summary { cursor: pointer; color: #5e564c; padding: 0.4rem 0; }
+
+  /* Task 58: legend collapsed into a details toggle. */
+  .claims-legend { margin: 0 0 1rem 0; font-size: 0.8rem; }
+  .claims-legend > summary { cursor: pointer; color: #5e564c; padding: 0.2rem 0; display: inline-block; }
+  .claims-legend__body { padding-top: 0.5rem; }
+  .claims-legend__row { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.5rem; font-size: 0.75rem; }
+  .claims-legend__label { color: #646464; margin-right: 0.2rem; }
+
+  /* Prose sentences: cursor pointer + subtle hover so the click-to-scroll
+     interaction is discoverable. Task 58 UX review. */
+  .ai-rendered-prose [data-signature] { cursor: pointer; border-radius: 2px; padding: 0 2px; margin: 0 -2px; transition: background 120ms; }
+  .ai-rendered-prose [data-signature]:hover { background: rgba(200, 122, 30, 0.09); }
+
+  /* Brief flash when scrolled into view from a prose click. */
+  @keyframes claim-flash {
+    0%   { background: rgba(200, 122, 30, 0.25); }
+    100% { background: transparent; }
+  }
+  .sentence.is-scroll-target { animation: claim-flash 1.4s ease-out; }
 </style>
 
-{{!-- Sentence↔prose hover-highlight. Small vanilla JS — no framework,
-      no dependencies. Wires two-way highlight between rendered prose
-      paragraphs and their corresponding Claims list rows via
-      data-signature. Registered once on DOMContentLoaded; safe to
-      call multiple times (re-registration is idempotent). --}}
+{{!-- Interaction script — TWO behaviours on data-signature:
+      1. Hover a claim row OR a prose sentence → both highlight (as
+         before).
+      2. Click a prose sentence → smooth-scroll to the corresponding
+         Claims row and flash it. Task 58 UX review — the hover-
+         highlight was silent + not discoverable; click gives it a
+         verb.
+
+      Registered once on DOMContentLoaded; safe to call multiple
+      times (re-registration is idempotent). --}}
 <script>
 (function () {
   'use strict';
-  function wireHighlight () {
+  function wireInteractions () {
     var claims = document.querySelectorAll('.sentence[data-signature]');
     var prose = document.querySelectorAll('.ai-rendered-prose [data-signature]');
+
     function highlight (sig, on) {
       if (!sig) return;
-      var sel = '[data-signature="' + sig + '"]';
-      var nodes = document.querySelectorAll(sel);
+      var nodes = document.querySelectorAll('[data-signature="' + sig + '"]');
       for (var i = 0; i < nodes.length; i++) {
         nodes[i].classList.toggle('is-highlighted', !!on);
       }
     }
-    function bind (nodes) {
+    function bindHover (nodes) {
       for (var i = 0; i < nodes.length; i++) {
         (function (el) {
           el.addEventListener('mouseenter', function () { highlight(el.getAttribute('data-signature'), true); });
@@ -936,13 +1045,32 @@
         })(nodes[i]);
       }
     }
-    bind(claims);
-    bind(prose);
+    function bindProseClick (nodes) {
+      for (var i = 0; i < nodes.length; i++) {
+        (function (el) {
+          el.addEventListener('click', function () {
+            var sig = el.getAttribute('data-signature');
+            if (!sig) return;
+            var target = document.querySelector('.sentence[data-signature="' + sig + '"]');
+            if (!target) return;
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            target.classList.remove('is-scroll-target');
+            // Restart the animation on repeat clicks.
+            void target.offsetWidth;
+            target.classList.add('is-scroll-target');
+          });
+        })(nodes[i]);
+      }
+    }
+
+    bindHover(claims);
+    bindHover(prose);
+    bindProseClick(prose);
   }
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', wireHighlight);
+    document.addEventListener('DOMContentLoaded', wireInteractions);
   } else {
-    wireHighlight();
+    wireInteractions();
   }
 })();
 </script>

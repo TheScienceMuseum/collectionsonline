@@ -26,6 +26,7 @@ const verifyExternal = require('../lib/ai/verify-external');
 const generateSourceTaggedBiography = require('../lib/ai/generate-source-tagged-biography');
 const reviewBiographyTagged = require('../lib/ai/review-biography-tagged');
 const findingFilters = require('../lib/ai/finding-filters');
+const wikidataPropertyLabels = require('../lib/ai/wikidata-property-labels');
 const zlib = require('zlib');
 
 // Public-visibility hint for list rows. Currently two-valued ('full' or
@@ -174,6 +175,31 @@ function sortOpenFindings (findings) {
     const kb = (b.kind || 'error') + ':' + (b.confidence || 'low');
     return (FINDING_PRIORITY[kb] || 0) - (FINDING_PRIORITY[ka] || 0);
   });
+}
+
+// Compute the affected sentence's current publishing state for a
+// finding. Similar to render-biography's classifyPublishingState but
+// doesn't recompute the sentence's decision/finding state — reuses the
+// already-computed `publishingState` when we have it, and inlines a
+// small mapping to the label the template's status chip renders.
+// The `label`/`variant` pair drives which coloured chip appears on
+// each finding card.
+function computeSentenceStateForFinding (sentence, finding) {
+  const s = sentence.publishingState;
+  if (s === 'curator_approved') return { label: 'publishing (curator approved)', variant: 'publishing', tone: 'positive' };
+  if (s === 'curator_rejected') return { label: 'hidden (curator rejected)', variant: 'hidden', tone: 'danger' };
+  if (s === 'hidden_finding') return { label: 'hidden (blocking finding)', variant: 'hidden', tone: 'danger' };
+  if (s === 'hidden_below_level') return { label: 'hidden (below publishing level)', variant: 'hidden', tone: 'muted' };
+  if (s === 'auto_publishing_clean') return { label: 'publishing (auto)', variant: 'publishing', tone: 'positive' };
+  if (s === 'auto_publishing_info') {
+    return { label: 'publishing (info-tier does not block)', variant: 'publishing', tone: 'positive' };
+  }
+  if (s === 'auto_publishing_error') {
+    // For an error at low/medium severity: publishing but with a
+    // caution tone so a curator knows the reviewer flagged it.
+    return { label: 'publishing (severity does not block)', variant: 'publishing', tone: 'caution' };
+  }
+  return { label: sentence.visible ? 'publishing' : 'hidden', variant: sentence.visible ? 'publishing' : 'hidden', tone: 'neutral' };
 }
 
 // Flatten resolved findings across every REVIEW# item into one array
@@ -784,9 +810,52 @@ module.exports = function (elastic, config) {
             // still exists.
             const sortedOpenFindings = sortOpenFindings(rawOpenFindings || []);
             const currentSentences = (record && record.sentences) || [];
-            const openFindings = findingFilters.filterToCurrentSentences(sortedOpenFindings, currentSentences);
+            const openFindingsFiltered = findingFilters.filterToCurrentSentences(sortedOpenFindings, currentSentences);
             const staleFindingsCount = findingFilters.countStale(sortedOpenFindings, currentSentences);
-            const resolvedFindings = collectResolvedFindings(rawReviews);
+            const allResolvedFindings = collectResolvedFindings(rawReviews);
+
+            // Findings — pre-decorate here so the template stays declarative.
+            //
+            //   affectedSentence — the current sentence with matching
+            //     claimSignature (undefined when the finding is stale
+            //     against the current biography — captured elsewhere as
+            //     staleFindingsCount).
+            //   affectedPublishingState — the sentence's current
+            //     publishing state (curator_approved / auto_publishing_*
+            //     / hidden_*). Drives the prominent green/red/amber
+            //     status chip on each finding card so a curator
+            //     eyeballing the panel sees at a glance whether each
+            //     concern is affecting the public site right now.
+            //
+            // Inline the sentence's index too so a click on a finding
+            // card can smooth-scroll to the corresponding Claims row —
+            // wired by the small JS block at the bottom of the
+            // template.
+            const sentenceByCurrentSignature = new Map();
+            currentSentences.forEach(function (s, i) {
+              if (s && s.claimSignature) sentenceByCurrentSignature.set(s.claimSignature, { sentence: s, index: i });
+            });
+            const decorateFinding = function (f) {
+              const match = sentenceByCurrentSignature.get(f.claimSignature);
+              return Object.assign({}, f, {
+                affectedSentenceIndex: match ? match.index : null,
+                affectedPublishingState: match && match.sentence
+                  ? computeSentenceStateForFinding(match.sentence, f)
+                  : null
+              });
+            };
+            const openFindings = openFindingsFiltered.map(decorateFinding);
+
+            // Resolved findings — cap at RESOLVED_INLINE_CAP most recent
+            // for the merged panel (grey rows below Pending). Overflow
+            // exposed via resolvedOverflowCount so the template can
+            // render a "…and N older" link that expands the full audit
+            // list. collectResolvedFindings already sorts most-recent
+            // first.
+            const RESOLVED_INLINE_CAP = 5;
+            const resolvedFindings = allResolvedFindings.slice(0, RESOLVED_INLINE_CAP).map(decorateFinding);
+            const resolvedOverflowCount = Math.max(0, allResolvedFindings.length - RESOLVED_INLINE_CAP);
+            const resolvedOverflow = allResolvedFindings.slice(RESOLVED_INLINE_CAP).map(decorateFinding);
             const hasSentences = Array.isArray(record.sentences) && record.sentences.length > 0;
             const renderedBiography = hasSentences
               ? (function () {
@@ -802,10 +871,24 @@ module.exports = function (elastic, config) {
                     // silently (safe degradation).
                     references: record.references || []
                   });
+                  // Human-readable Wikidata property labels: swap
+                  // `wikidata:p106` in sourceDetail for
+                  // `wikidata:P106 (occupation)` so curators aren't
+                  // decoding property IDs from memory. Unknown
+                  // properties render as the raw P-code (no label
+                  // parenthetical), preserving auditability.
+                  const decoratedSentences = rendered.sentences.map(function (s) {
+                    return Object.assign({}, s, {
+                      sourceDetailFormatted: wikidataPropertyLabels.formatSourceDetail(s.sourceDetail)
+                    });
+                  });
                   // The template calls out totalCount separately from
                   // sentences.length for clarity; expose it here so
                   // Handlebars doesn't have to compute it.
-                  return Object.assign({}, rendered, { totalCount: rendered.sentences.length });
+                  return Object.assign({}, rendered, {
+                    sentences: decoratedSentences,
+                    totalCount: decoratedSentences.length
+                  });
                 })()
               : null;
 
@@ -822,6 +905,8 @@ module.exports = function (elastic, config) {
               openFindings,
               staleFindingsCount,
               resolvedFindings,
+              resolvedOverflow,
+              resolvedOverflowCount,
               regenRecommended,
               pendingChangeCount,
               pendingChangeSingular,
