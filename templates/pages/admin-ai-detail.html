@@ -643,13 +643,27 @@
         <div class="claims-legend__row">
           <span class="claims-legend__label">Reviewer concern:</span>
           <span class="pill concern-pill" data-concern="info" title="Contextual note from the AI review. Publishes without gating.">ⓘ info</span>
-          <span class="pill concern-pill" data-concern="warning" title="AI review suspects a possible issue at medium confidence. Publishes without gating.">⚠ warning</span>
-          <span class="pill concern-pill" data-concern="block" title="AI review's high-confidence error. Auto-hides the sentence unless a curator explicitly approves.">⛔ block</span>
+          <span class="pill concern-pill" data-concern="warning" title="AI review suspects a possible issue at medium confidence. Publishes without gating.">⚠ possible issue</span>
+          <span class="pill concern-pill" data-concern="block" title="AI review's high-confidence error. Auto-hides the sentence unless a curator explicitly approves.">⛔ likely error</span>
         </div>
       </div>
     </details>
   </div>
 
+  {{!-- Task 64: view toggle. Default renders claims grouped by
+        visibility (Publishing / Hidden); alt view groups by source
+        type (museum / wikidata / llm:*). The JS at the bottom moves
+        sentence elements between containers so hover-highlight
+        bindings survive the reorganisation. --}}
+  <div class="claims-view-toggle">
+    <label for="claims-group-select" class="text-meta">Group by:</label>
+    <select id="claims-group-select" class="claims-view-toggle__select">
+      <option value="visibility" selected>Visibility (Publishing / Hidden)</option>
+      <option value="source">Source type</option>
+    </select>
+  </div>
+
+  <div class="claims-groups" data-view="visibility" id="claims-groups">
   {{!-- Publishing group. Iterated over the full sentences[] array
         and filtered to visible ones — the narrative order is
         preserved (unlike sorting by state). --}}
@@ -689,8 +703,8 @@
           {{#if this.state.concern}}
           <a class="pill concern-pill concern-pill--link" data-concern="{{this.state.concern}}" href="#finding-{{this.claimSignature}}" title="{{this.reviewFinding.concern}} · click to jump to the AI review's full note">
             {{#isequal this.state.concern "info" this}}ⓘ info{{/isequal}}
-            {{#isequal this.state.concern "warning" this}}⚠ warning{{/isequal}}
-            {{#isequal this.state.concern "block" this}}⛔ block{{/isequal}}
+            {{#isequal this.state.concern "warning" this}}⚠ possible issue{{/isequal}}
+            {{#isequal this.state.concern "block" this}}⛔ likely error{{/isequal}}
           </a>
           {{/if}}
 
@@ -767,7 +781,7 @@
           </span>
           {{/isequal}}
 
-          {{!-- Task 63: on hidden sentences we drop the ⛔ block pill —
+          {{!-- Task 63: on hidden sentences we drop the ⛔ likely error pill —
                 it's redundant when the sentence is already in the
                 Hidden group with a hatched background + red border.
                 Info/warning concerns still surface (they're
@@ -777,7 +791,7 @@
           {{#isequal this.state.concern "block" this}}{{else}}
           <a class="pill concern-pill concern-pill--link" data-concern="{{this.state.concern}}" href="#finding-{{this.claimSignature}}" title="{{this.reviewFinding.concern}} · click to jump to the AI review's full note">
             {{#isequal this.state.concern "info" this}}ⓘ info{{/isequal}}
-            {{#isequal this.state.concern "warning" this}}⚠ warning{{/isequal}}
+            {{#isequal this.state.concern "warning" this}}⚠ possible issue{{/isequal}}
           </a>
           {{/isequal}}
           {{/if}}
@@ -841,6 +855,7 @@
     </ol>
   </div>
   {{/if}}
+  </div>{{!-- /claims-groups (Task 64) --}}
 </div>
 
 {{#if record.writerNotes}}
@@ -1016,6 +1031,21 @@
   /* Publishing / Hidden group titles */
   .claims-group { margin-top: 1rem; }
   .claims-group__title { font-size: 0.85rem; font-weight: 600; color: #5e564c; margin: 0 0 0.4rem 0; text-transform: uppercase; letter-spacing: 0.03em; }
+
+  /* Task 64: view toggle at top of Claims section. Compact,
+     unobtrusive — a small "Group by" select. */
+  .claims-view-toggle { display: flex; align-items: center; gap: 0.5rem; margin: 0 0 0.75rem 0; font-size: 0.85rem; }
+  .claims-view-toggle__select { padding: 0.2rem 0.4rem; font-size: 0.85rem; font-family: inherit; border: 1px solid #c5c1b5; border-radius: 3px; background: #fdfdfa; }
+
+  /* Source-view group container — uses the source-pill colour of the
+     header to hint at which source-tag colour maps to the group. */
+  .claims-group--source { border-left: 3px solid #c5c1b5; padding-left: 0.6rem; }
+  .claims-group--source[data-source="museum"]              { border-left-color: #a9c3a4; }
+  .claims-group--source[data-source="wikidata"]            { border-left-color: #97b5c4; }
+  .claims-group--source[data-source="llm:inferred"]        { border-left-color: #c5b6a2; }
+  .claims-group--source[data-source="llm:contextualising"] { border-left-color: #c9be8a; }
+  .claims-group--source[data-source="llm:general_knowledge"] { border-left-color: #b0797a; }
+  .claims-group--source[data-source="llm:validated"]       { border-left-color: #6da97e; }
 
   /* Object hyperlink chips — trailing per sentence + inline in rendered prose. */
   .sentence__object-chip { text-decoration: none; background: #eef2ed; border: 1px solid #a9c3a4; color: #2e5a3d; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.72rem; padding: 0.05rem 0.4rem; border-radius: 3px; }
@@ -1340,6 +1370,82 @@
     document.addEventListener('DOMContentLoaded', wireInteractions);
   } else {
     wireInteractions();
+  }
+
+  // Task 64: Claims view toggle (Visibility ⇄ Source). Reorganises
+  // sentence elements between group containers on toggle. Elements
+  // are MOVED, not cloned — hover-highlight + click bindings survive.
+  //
+  // Source view is built lazily on the first switch: we snapshot the
+  // original Visibility DOM, then extract sentences and re-group them
+  // by data-source into fresh containers. Switching back restores the
+  // snapshot exactly.
+  function bindClaimsViewToggle () {
+    var select = document.getElementById('claims-group-select');
+    var groups = document.getElementById('claims-groups');
+    if (!select || !groups) return;
+
+    var SOURCE_ORDER = ['museum', 'wikidata', 'llm:inferred', 'llm:contextualising', 'llm:validated', 'llm:general_knowledge'];
+    var VISIBILITY_SNAPSHOT = null;
+
+    function currentSentences () {
+      return Array.prototype.slice.call(groups.querySelectorAll('.sentence'));
+    }
+
+    function toSource () {
+      if (!VISIBILITY_SNAPSHOT) VISIBILITY_SNAPSHOT = groups.innerHTML;
+      var sentences = currentSentences();
+      var bySource = {};
+      sentences.forEach(function (s) {
+        var src = s.getAttribute('data-source') || 'unknown';
+        // Collapse llm:validated:<tool> variants under one group
+        if (src.indexOf('llm:validated:') === 0) src = 'llm:validated';
+        (bySource[src] = bySource[src] || []).push(s);
+      });
+      // Rebuild container with source groups in a stable order
+      groups.innerHTML = '';
+      SOURCE_ORDER.forEach(function (src) { if (bySource[src]) createSourceGroup(src, bySource[src]); });
+      // Any unknown / extra sources appended after the ordered set
+      Object.keys(bySource).forEach(function (src) {
+        if (SOURCE_ORDER.indexOf(src) === -1) createSourceGroup(src, bySource[src]);
+      });
+      groups.setAttribute('data-view', 'source');
+    }
+
+    function createSourceGroup (source, sentences) {
+      var group = document.createElement('div');
+      group.className = 'claims-group claims-group--source';
+      group.setAttribute('data-source', source);
+      var h4 = document.createElement('h4');
+      h4.className = 'claims-group__title';
+      h4.innerHTML = source + ' <span class="text-meta">(' + sentences.length + ')</span>';
+      group.appendChild(h4);
+      var ol = document.createElement('ol');
+      ol.className = 'sentence-list';
+      sentences.forEach(function (s) { ol.appendChild(s); });
+      group.appendChild(ol);
+      groups.appendChild(group);
+    }
+
+    function toVisibility () {
+      if (!VISIBILITY_SNAPSHOT) return;
+      groups.innerHTML = VISIBILITY_SNAPSHOT;
+      groups.setAttribute('data-view', 'visibility');
+      // Re-bind interactions on the restored sentence elements.
+      // The originally-attached listeners were on the removed nodes;
+      // the restored HTML has fresh element instances.
+      wireInteractions();
+    }
+
+    select.addEventListener('change', function (e) {
+      var v = e.target.value;
+      if (v === 'source') toSource(); else toVisibility();
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindClaimsViewToggle);
+  } else {
+    bindClaimsViewToggle();
   }
 })();
 </script>
