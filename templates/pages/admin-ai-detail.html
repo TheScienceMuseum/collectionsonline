@@ -512,7 +512,7 @@
     <li class="finding finding--resolved finding--{{this.kind}}-{{this.confidence}}" data-signature="{{this.claimSignature}}" data-affected-index="{{this.affectedSentenceIndex}}">
       <div class="finding__header">
         {{#isequal this.resolution "accepted" this}}<span class="pill pill--muted" title="Accepted — sentence was hidden and excluded from the next regen">✓ accepted</span>{{/isequal}}
-        {{#isequal this.resolution "dismissed" this}}<span class="pill pill--muted" title="Dismissed — reviewer's concern was not valid; no biography change">✗ dismissed</span>{{/isequal}}
+        {{#isequal this.resolution "dismissed" this}}<span class="pill pill--muted" title="Dismissed — the AI review's concern was not valid; no biography change">✗ dismissed</span>{{/isequal}}
         {{#isequal this.resolution "clarified" this}}<span class="pill pill--muted" title="Clarified — curator attached a clarification and considers the concern addressed">📝 clarified</span>{{/isequal}}
         {{#isequal this.kind "error" this}}
           {{#isequal this.confidence "high" this}}<span class="pill pill--muted">was: likely error</span>{{/isequal}}
@@ -645,15 +645,15 @@
         <div class="claims-legend__row">
           <span class="claims-legend__label">Visibility:</span>
           <span class="pill state-pill" data-vis="publishing" data-decided="auto" title="Auto-publishing. System rule based on source-tag filter + no blocking concern.">● publishing</span>
-          <span class="pill state-pill" data-vis="publishing" data-decided="curator" title="Publishing because a curator explicitly approved this claim, overriding filter or reviewer concern.">● curator override</span>
-          <span class="pill state-pill" data-vis="hidden" data-decided="auto" title="Auto-hidden. Either the source tag is below the current publishing level, or the reviewer flagged a blocking concern.">○ hidden</span>
+          <span class="pill state-pill" data-vis="publishing" data-decided="curator" title="Publishing because a curator explicitly approved this claim, overriding filter or AI-review concern.">● curator override</span>
+          <span class="pill state-pill" data-vis="hidden" data-decided="auto" title="Auto-hidden. Either the source tag is below the current publishing level, or the AI review flagged a blocking concern.">○ hidden</span>
           <span class="pill state-pill" data-vis="hidden" data-decided="curator" title="Curator explicitly rejected this claim. Excluded from next regeneration.">○ curator rejected</span>
         </div>
         <div class="claims-legend__row">
           <span class="claims-legend__label">Reviewer concern:</span>
-          <span class="pill concern-pill" data-concern="info" title="Contextual note from the reviewer. Publishes without gating.">ⓘ info</span>
-          <span class="pill concern-pill" data-concern="warning" title="Reviewer suspects a possible issue at medium confidence. Publishes without gating.">⚠ warning</span>
-          <span class="pill concern-pill" data-concern="block" title="Reviewer's high-confidence error. Auto-hides the sentence unless a curator explicitly approves.">⛔ block</span>
+          <span class="pill concern-pill" data-concern="info" title="Contextual note from the AI review. Publishes without gating.">ⓘ info</span>
+          <span class="pill concern-pill" data-concern="warning" title="AI review suspects a possible issue at medium confidence. Publishes without gating.">⚠ warning</span>
+          <span class="pill concern-pill" data-concern="block" title="AI review's high-confidence error. Auto-hides the sentence unless a curator explicitly approves.">⛔ block</span>
         </div>
       </div>
     </details>
@@ -682,19 +682,21 @@
             {{this.source}}{{#if this.sourceDetailShort}} · {{this.sourceDetailShort}}{{/if}}
           </span>
 
-          {{!-- Task 61: visibility pill composed from the state triple.
-                Filled dot = publishing, hollow = hidden. Decidedby
-                sub-label distinguishes curator override from auto. --}}
-          <span class="pill state-pill" data-vis="publishing" data-decided="{{this.state.decidedBy}}" title="{{#isequal this.state.decidedBy "curator" this}}Publishing because a curator explicitly approved this claim, overriding the source-tag filter and any reviewer concern.{{else}}Auto-publishing per the source-tag filter with no blocking concern.{{/isequal}}">
-            {{#isequal this.state.decidedBy "curator" this}}● curator override{{else}}● publishing{{/isequal}}
+          {{!-- Task 62: state pill only surfaces the SIGNAL — curator
+                override. The default auto-publishing state is implied
+                by being in the Publishing group; showing "● publishing"
+                on every row was visual noise. --}}
+          {{#isequal this.state.decidedBy "curator" this}}
+          <span class="pill state-pill" data-vis="publishing" data-decided="curator" title="Publishing because a curator explicitly approved this claim, overriding the source-tag filter and any AI-review concern.">
+            ● curator override
           </span>
+          {{/isequal}}
 
-          {{!-- Task 61: concern pill is a JUMP LINK to the
-                corresponding finding card. When clicked, the small
-                interaction script at the bottom smooth-scrolls to
-                #finding-<claimSignature> and flashes it. --}}
+          {{!-- Concern pill = jump link to the corresponding finding
+                card. Tooltip names the AI reviewer explicitly (Task 62)
+                to avoid ambiguity with human curators. --}}
           {{#if this.state.concern}}
-          <a class="pill concern-pill concern-pill--link" data-concern="{{this.state.concern}}" href="#finding-{{this.claimSignature}}" title="{{this.reviewFinding.concern}} · click to jump to the reviewer's full note">
+          <a class="pill concern-pill concern-pill--link" data-concern="{{this.state.concern}}" href="#finding-{{this.claimSignature}}" title="{{this.reviewFinding.concern}} · click to jump to the AI review's full note">
             {{#isequal this.state.concern "info" this}}ⓘ info{{/isequal}}
             {{#isequal this.state.concern "warning" this}}⚠ warning{{/isequal}}
             {{#isequal this.state.concern "block" this}}⛔ block{{/isequal}}
@@ -762,16 +764,22 @@
             {{this.source}}{{#if this.sourceDetailShort}} · {{this.sourceDetailShort}}{{/if}}
           </span>
 
-          {{!-- Task 61: visibility pill composed from the state triple.
-                Hollow dot = hidden. Reason follows the axes: curator
-                rejection > reviewer block > publishing level filter. --}}
-          <span class="pill state-pill" data-vis="hidden" data-decided="{{this.state.decidedBy}}" title="{{#isequal this.state.decidedBy "curator" this}}Curator explicitly rejected this claim. Excluded from the next regeneration.{{else}}{{#isequal this.state.concern "block" this}}Auto-hidden because the reviewer flagged this as a blocking concern. Approve to publish anyway.{{else}}Auto-hidden because the source tag ({{this.source}}) is below the current publishing level ({{../renderedBiography.publishingLevel}}). Approve to publish anyway.{{/isequal}}{{/isequal}}">
-            {{#isequal this.state.decidedBy "curator" this}}○ curator rejected{{else}}{{#isequal this.state.concern "block" this}}○ hidden · reviewer block{{else}}○ hidden · below level{{/isequal}}{{/isequal}}
+          {{!-- Task 62: same simplification as the Publishing group —
+                state pill only surfaces curator override (rejection).
+                The default auto-hide (below level OR AI-review block)
+                is implied by being in the Hidden group; the concern
+                pill below already names the reviewer's block-tier
+                flag when relevant. --}}
+          {{#isequal this.state.decidedBy "curator" this}}
+          <span class="pill state-pill" data-vis="hidden" data-decided="curator" title="Curator explicitly rejected this claim. Excluded from the next regeneration.">
+            ○ curator rejected
           </span>
+          {{/isequal}}
 
-          {{!-- Concern jump-link (same as publishing group). --}}
+          {{!-- Concern jump-link — same as publishing group. AI review
+                explicit in tooltip. --}}
           {{#if this.state.concern}}
-          <a class="pill concern-pill concern-pill--link" data-concern="{{this.state.concern}}" href="#finding-{{this.claimSignature}}" title="{{this.reviewFinding.concern}} · click to jump to the reviewer's full note">
+          <a class="pill concern-pill concern-pill--link" data-concern="{{this.state.concern}}" href="#finding-{{this.claimSignature}}" title="{{this.reviewFinding.concern}} · click to jump to the AI review's full note">
             {{#isequal this.state.concern "info" this}}ⓘ info{{/isequal}}
             {{#isequal this.state.concern "warning" this}}⚠ warning{{/isequal}}
             {{#isequal this.state.concern "block" this}}⛔ block{{/isequal}}
@@ -804,7 +812,7 @@
               <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/approve" class="sentence__action-form">
                 <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
                 <input type="hidden" name="claimText" value="{{this.text}}">
-                <button type="submit" class="btn btn--secondary" title="Approve — publishes despite the filter or reviewer's block-tier concern">Approve to publish</button>
+                <button type="submit" class="btn btn--secondary" title="Approve — publishes despite the filter or AI review's block-tier concern">Approve to publish</button>
               </form>
               <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/reject" class="sentence__action-form">
                 <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">

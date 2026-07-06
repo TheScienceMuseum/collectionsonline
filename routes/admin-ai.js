@@ -880,54 +880,17 @@ module.exports = function (elastic, config) {
             // collapsible below Open Findings shows the historical
             // picture regardless of whether the underlying sentence
             // still exists.
+            // Task 62: RENDER FIRST, then decorate findings against the
+            // rendered sentences (which carry the 3-axis state triple).
+            // The previous order — decorate first, using raw record
+            // sentences that lacked `state` — made every finding card's
+            // status chip fall through to the "unknown" label.
             const sortedOpenFindings = sortOpenFindings(rawOpenFindings || []);
             const currentSentences = (record && record.sentences) || [];
             const openFindingsFiltered = findingFilters.filterToCurrentSentences(sortedOpenFindings, currentSentences);
             const staleFindingsCount = findingFilters.countStale(sortedOpenFindings, currentSentences);
             const allResolvedFindings = collectResolvedFindings(rawReviews);
 
-            // Findings — pre-decorate here so the template stays declarative.
-            //
-            //   affectedSentence — the current sentence with matching
-            //     claimSignature (undefined when the finding is stale
-            //     against the current biography — captured elsewhere as
-            //     staleFindingsCount).
-            //   affectedPublishingState — the sentence's current
-            //     publishing state (curator_approved / auto_publishing_*
-            //     / hidden_*). Drives the prominent green/red/amber
-            //     status chip on each finding card so a curator
-            //     eyeballing the panel sees at a glance whether each
-            //     concern is affecting the public site right now.
-            //
-            // Inline the sentence's index too so a click on a finding
-            // card can smooth-scroll to the corresponding Claims row —
-            // wired by the small JS block at the bottom of the
-            // template.
-            const sentenceByCurrentSignature = new Map();
-            currentSentences.forEach(function (s, i) {
-              if (s && s.claimSignature) sentenceByCurrentSignature.set(s.claimSignature, { sentence: s, index: i });
-            });
-            const decorateFinding = function (f) {
-              const match = sentenceByCurrentSignature.get(f.claimSignature);
-              return Object.assign({}, f, {
-                affectedSentenceIndex: match ? match.index : null,
-                affectedPublishingState: match && match.sentence
-                  ? computeSentenceStateForFinding(match.sentence, f)
-                  : null
-              });
-            };
-            const openFindings = openFindingsFiltered.map(decorateFinding);
-
-            // Resolved findings — cap at RESOLVED_INLINE_CAP most recent
-            // for the merged panel (grey rows below Pending). Overflow
-            // exposed via resolvedOverflowCount so the template can
-            // render a "…and N older" link that expands the full audit
-            // list. collectResolvedFindings already sorts most-recent
-            // first.
-            const RESOLVED_INLINE_CAP = 5;
-            const resolvedFindings = allResolvedFindings.slice(0, RESOLVED_INLINE_CAP).map(decorateFinding);
-            const resolvedOverflowCount = Math.max(0, allResolvedFindings.length - RESOLVED_INLINE_CAP);
-            const resolvedOverflow = allResolvedFindings.slice(RESOLVED_INLINE_CAP).map(decorateFinding);
             const hasSentences = Array.isArray(record.sentences) && record.sentences.length > 0;
             const renderedBiography = hasSentences
               ? (function () {
@@ -946,12 +909,60 @@ module.exports = function (elastic, config) {
                     publishingLevel: config.aiBiographyPublishingLevel,
                     references: record.references || []
                   });
-                  // sourceDetailFormatted now decorated inside
-                  // render-biography.js (Task 60); no separate map
-                  // needed here.
                   return Object.assign({}, rendered, { totalCount: rendered.sentences.length });
                 })()
               : null;
+
+            // Findings — pre-decorate here so the template stays declarative.
+            //
+            //   affectedSentenceIndex — index of the current sentence with
+            //     matching claimSignature (null when the finding is stale
+            //     against the current biography).
+            //   affectedPublishingState — the sentence's current publishing
+            //     state triple, mapped to a status chip via
+            //     computeSentenceStateForFinding. Drives the prominent
+            //     green/red/amber chip on each finding card.
+            //
+            // Task 62 fix: the lookup map is now built from
+            // renderedBiography.sentences (which carry the `state`
+            // triple) rather than the raw record.sentences (which don't).
+            const decoratorSentences = renderedBiography ? renderedBiography.sentences : [];
+            const sentenceByCurrentSignature = new Map();
+            decoratorSentences.forEach(function (s, i) {
+              if (s && s.claimSignature) sentenceByCurrentSignature.set(s.claimSignature, { sentence: s, index: i });
+            });
+            const decorateFinding = function (f) {
+              const match = sentenceByCurrentSignature.get(f.claimSignature);
+              return Object.assign({}, f, {
+                affectedSentenceIndex: match ? match.index : null,
+                affectedPublishingState: match && match.sentence
+                  ? computeSentenceStateForFinding(match.sentence, f)
+                  : null
+              });
+            };
+
+            // Task 62: sort blocking-effect findings first (findings
+            // whose sentence is currently hidden by them), then keep the
+            // existing severity ordering within each group. Curator's
+            // eye lands on the actively-hiding concerns first.
+            const decoratedOpen = openFindingsFiltered.map(decorateFinding);
+            const openFindings = decoratedOpen.slice().sort(function (a, b) {
+              const aBlocking = a.affectedPublishingState && a.affectedPublishingState.variant === 'hidden' ? 1 : 0;
+              const bBlocking = b.affectedPublishingState && b.affectedPublishingState.variant === 'hidden' ? 1 : 0;
+              if (aBlocking !== bBlocking) return bBlocking - aBlocking; // hidden first
+              return 0; // preserve severity order within group
+            });
+
+            // Resolved findings — cap at RESOLVED_INLINE_CAP most recent
+            // for the merged panel (grey rows below Pending). Overflow
+            // exposed via resolvedOverflowCount so the template can
+            // render a "…and N older" link that expands the full audit
+            // list. collectResolvedFindings already sorts most-recent
+            // first.
+            const RESOLVED_INLINE_CAP = 5;
+            const resolvedFindings = allResolvedFindings.slice(0, RESOLVED_INLINE_CAP).map(decorateFinding);
+            const resolvedOverflowCount = Math.max(0, allResolvedFindings.length - RESOLVED_INLINE_CAP);
+            const resolvedOverflow = allResolvedFindings.slice(RESOLVED_INLINE_CAP).map(decorateFinding);
 
             const pendingChangeCount = computePendingChanges(curatorDecisions, record.generatedAt);
             const regenRecommended = pendingChangeCount > 0;

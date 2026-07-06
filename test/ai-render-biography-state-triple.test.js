@@ -238,10 +238,27 @@ test('sourceDetailShort: mixed sources keeps non-matching pieces intact', functi
   t.end();
 });
 
-test('sourceDetailShort: leaves museum sourceDetail untouched (no redundancy to strip)', function (t) {
+test('sourceDetailShort: strips relatedItem citations entirely (Task 62)', function (t) {
+  // Object chips below the pill already carry item title + link;
+  // repeating `relatedItem:coXXX` in the pill is redundant.
   const bio = { sentences: [s('Fact.', 'museum', 'relatedItem:co12345')], paragraphBreaks: [] };
   const r = render(bio, { publishingLevel: 3 });
-  t.equal(r.sentences[0].sourceDetailShort, 'relatedItem:co12345');
+  t.equal(r.sentences[0].sourceDetailShort, '', 'all pieces stripped → empty string');
+  t.equal(r.sentences[0].sourceDetailFormatted, 'relatedItem:co12345', 'full formatted variant unchanged');
+  t.end();
+});
+
+test('sourceDetailShort: mixed museum sources — keeps non-relatedItem pieces', function (t) {
+  const bio = { sentences: [s('Fact.', 'museum', 'personData.birthDate, relatedItem:co12345')], paragraphBreaks: [] };
+  const r = render(bio, { publishingLevel: 3 });
+  t.equal(r.sentences[0].sourceDetailShort, 'personData.birthDate', 'relatedItem stripped, personData kept');
+  t.end();
+});
+
+test('sourceDetailShort: multiple relatedItems + one personData → just personData', function (t) {
+  const bio = { sentences: [s('Fact.', 'museum', 'relatedItem:co1, relatedItem:co2, personData.name')], paragraphBreaks: [] };
+  const r = render(bio, { publishingLevel: 3 });
+  t.equal(r.sentences[0].sourceDetailShort, 'personData.name');
   t.end();
 });
 
