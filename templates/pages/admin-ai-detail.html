@@ -459,7 +459,7 @@
         {{/isequal}}
       </div>
       {{#if this.claimText}}
-      <div class="finding__claim">&ldquo;{{this.claimText}}&rdquo;</div>
+      <div class="finding__claim">&ldquo;{{{linkifyObjectMarkers this.claimText}}}&rdquo;</div>
       {{/if}}
       <div class="finding__concern-body">{{this.concern}}</div>
       <div class="finding__actions">
@@ -516,7 +516,7 @@
           {{/isequal}}
           <span class="text-meta findings-stale__note" title="This finding's claim signature no longer matches any sentence in the current biography. Kept in the audit trail — will automatically re-surface if a future regen produces a matching claim.">not in current biography</span>
         </div>
-        {{#if this.claimText}}<div class="finding__claim text-meta"><em>&ldquo;{{this.claimText}}&rdquo;</em></div>{{/if}}
+        {{#if this.claimText}}<div class="finding__claim text-meta"><em>&ldquo;{{{linkifyObjectMarkers this.claimText}}}&rdquo;</em></div>{{/if}}
         {{#if this.concern}}<div class="finding__concern text-meta">{{this.concern}}</div>{{/if}}
       </li>
       {{/each}}
@@ -548,7 +548,7 @@
         {{/isequal}}
       </div>
       {{#if this.claimText}}
-      <div class="finding__claim">&ldquo;{{this.claimText}}&rdquo;</div>
+      <div class="finding__claim">&ldquo;{{{linkifyObjectMarkers this.claimText}}}&rdquo;</div>
       {{/if}}
       <div class="finding__concern-body">{{this.concern}}</div>
       <div class="text-meta--sm" style="margin-top: 0.4rem;">
@@ -578,7 +578,7 @@
           {{/isequal}}
         </div>
         {{#if this.claimText}}
-        <div class="finding__claim">&ldquo;{{this.claimText}}&rdquo;</div>
+        <div class="finding__claim">&ldquo;{{{linkifyObjectMarkers this.claimText}}}&rdquo;</div>
         {{/if}}
         <div class="finding__concern-body">{{this.concern}}</div>
         <div class="text-meta--sm" style="margin-top: 0.4rem;">
@@ -612,7 +612,7 @@
         {{#isequal this.resolution "dismissed" this}}<span class="pill pill--muted" title="Curator overrode the AI review — sentence publishes.">↷ curator overrode (publish)</span>{{/isequal}}
         {{#isequal this.resolution "clarified" this}}<span class="pill pill--muted" title="Curator attached a clarification.">📝 curator clarified</span>{{/isequal}}
       </div>
-      {{#if this.claimText}}<div class="finding__claim">&ldquo;{{this.claimText}}&rdquo;</div>{{/if}}
+      {{#if this.claimText}}<div class="finding__claim">&ldquo;{{{linkifyObjectMarkers this.claimText}}}&rdquo;</div>{{/if}}
       <div class="finding__concern-body">{{this.concern}}</div>
     </li>
     {{/each}}
@@ -717,7 +717,7 @@
             selectors. The state triple is the source of truth for
             display; publishingState enum is not consulted. --}}
       <li class="sentence" data-source="{{this.source}}" data-signature="{{this.claimSignature}}" data-vis="publishing" data-decided="{{this.state.decidedBy}}"{{#if this.state.concern}} data-concern="{{this.state.concern}}"{{/if}}>
-        <div class="sentence__text">{{this.text}}</div>
+        <div class="sentence__text">{{{this.textHtml}}}</div>
         <div class="sentence__meta">
           <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{#if this.sourceDetailFormatted}}Source: {{this.sourceDetailFormatted}}{{else}}Source tag: {{this.source}}{{/if}}">
             {{this.source}}{{#if this.sourceDetailShort}} · {{this.sourceDetailShort}}{{/if}}
@@ -799,7 +799,7 @@
       {{#each renderedBiography.sentences}}
       {{#unless this.visible}}
       <li class="sentence sentence--hidden" data-source="{{this.source}}" data-signature="{{this.claimSignature}}" data-vis="hidden" data-decided="{{this.state.decidedBy}}"{{#if this.state.concern}} data-concern="{{this.state.concern}}"{{/if}}>
-        <div class="sentence__text">{{this.text}}</div>
+        <div class="sentence__text">{{{this.textHtml}}}</div>
         <div class="sentence__meta">
           <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{#if this.sourceDetailFormatted}}Source: {{this.sourceDetailFormatted}}{{else}}Source tag: {{this.source}}{{/if}}">
             {{this.source}}{{#if this.sourceDetailShort}} · {{this.sourceDetailShort}}{{/if}}
@@ -1118,6 +1118,25 @@
      size — read as natural inline links, not distinct chips. Green
      underline hints at the museum-object anchor treatment without
      fighting the reading typography. */
+  /* Inline object links (writer's {coXXXX|Title} markers) — styled as
+     understated hyperlinks so they read as prose, not as pills. Pill
+     styling lives ONLY on the .collection-refs strip below. */
+  .ai-rendered-prose .ai-object-chip--inline {
+    color: #2e5a3d;
+    text-decoration: underline;
+    text-decoration-color: rgba(46, 90, 61, 0.35);
+    text-underline-offset: 2px;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+  }
+  .ai-rendered-prose .ai-object-chip--inline:hover {
+    text-decoration-color: #2e5a3d;
+    background: rgba(46, 90, 61, 0.06);
+  }
+
   /* Object-catalogue chips now live inside a labelled .collection-refs
      block after each paragraph — pills rather than inline underlined
      text, so they read as tags not prose. */

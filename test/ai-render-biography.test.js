@@ -326,3 +326,54 @@ test('render: returns rich per-sentence array with paragraphBreak flags', functi
   t.ok(r.sentences[0].claimSignature, 'signature preserved on render output');
   t.end();
 });
+
+// --- linkifyObjectMarkers -------------------------------------------
+
+test('linkifyObjectMarkers: converts {coXXXX|Title} to a safe anchor', function (t) {
+  const out = render.linkifyObjectMarkers('is captured in {co66081|Einstein in Norfolk}, a photograph');
+  t.equal(
+    out,
+    'is captured in <a class="ai-object-chip ai-object-chip--inline" href="/objects/co66081" title="View this object in the collection">Einstein in Norfolk</a>, a photograph'
+  );
+  t.end();
+});
+
+test('linkifyObjectMarkers: multiple markers in one string all substitute', function (t) {
+  const out = render.linkifyObjectMarkers('The {co1|First} and the {co2|Second}.');
+  t.ok(out.indexOf('href="/objects/co1"') !== -1);
+  t.ok(out.indexOf('href="/objects/co2"') !== -1);
+  t.equal(out.match(/<a /g).length, 2);
+  t.end();
+});
+
+test('linkifyObjectMarkers: href is constrained to /objects/co<digits>', function (t) {
+  // Bogus id that doesn't match the co\d+ pattern is left as literal text.
+  const out = render.linkifyObjectMarkers('Try to inject {javascript:alert(1)|X}.');
+  t.equal(out.indexOf('href=') === -1, true, 'no anchor href leaks through');
+  t.ok(out.indexOf('{javascript:alert(1)|X}') !== -1, 'marker stays literal');
+  t.end();
+});
+
+test('linkifyObjectMarkers: no marker → unchanged', function (t) {
+  const s = 'A plain sentence with no markers.';
+  t.equal(render.linkifyObjectMarkers(s), s);
+  t.end();
+});
+
+test('render: sentence text with markers produces textHtml with anchor + preserves raw text', function (t) {
+  const bio = {
+    sentences: [{
+      text: 'is captured in {co66081|Einstein in Norfolk}, a photograph.',
+      source: 'museum',
+      sourceDetail: 'relatedItem:co66081',
+      claimSignature: signature('is captured in {co66081|Einstein in Norfolk}, a photograph.')
+    }],
+    paragraphBreaks: []
+  };
+  const r = render(bio, { publishingLevel: 3 });
+  t.equal(r.sentences[0].text, 'is captured in {co66081|Einstein in Norfolk}, a photograph.', 'raw text unchanged');
+  t.ok(r.sentences[0].textHtml.indexOf('href="/objects/co66081"') !== -1, 'textHtml has anchor');
+  t.ok(r.sentences[0].textHtml.indexOf('Einstein in Norfolk') !== -1, 'title preserved');
+  t.equal(r.sentences[0].textHtml.indexOf('{co66081'), -1, 'marker syntax gone from textHtml');
+  t.end();
+});

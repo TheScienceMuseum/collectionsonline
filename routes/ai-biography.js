@@ -60,17 +60,25 @@ function deriveReferencesFromSentences (sentences, relatedItems) {
   const seen = new Set();
   sentences.forEach(function (s) {
     if (!s || !s.sourceDetail || typeof s.sourceDetail !== 'string') return;
-    if (s.sourceDetail.indexOf('relatedItem:') !== 0) return;
-    const refId = s.sourceDetail.slice('relatedItem:'.length);
-    if (seen.has(refId)) return;
-    seen.add(refId);
-    const item = byId[refId];
-    if (!item) return;
-    out.push({
-      id: item.id,
-      title: item.title || '',
-      link: item.link || null,
-      type: item.type || null
+    // sourceDetail can list multiple citations, comma- or semicolon-separated:
+    //   "relatedItem:co66081, relatedItem:co66082"
+    //   "relatedItem:co12345; personData.deathDate"
+    // Extract every relatedItem:coXXXX piece; single-item ("relatedItem:coXYZ")
+    // still works as a degenerate case of the split.
+    s.sourceDetail.split(/[,;]/).forEach(function (piece) {
+      const trimmed = piece.trim().toLowerCase();
+      if (trimmed.indexOf('relateditem:') !== 0) return;
+      const refId = trimmed.slice('relateditem:'.length);
+      if (!refId || seen.has(refId)) return;
+      seen.add(refId);
+      const item = byId[refId];
+      if (!item) return;
+      out.push({
+        id: item.id,
+        title: item.title || '',
+        link: item.link || null,
+        type: item.type || null
+      });
     });
   });
   return out;
