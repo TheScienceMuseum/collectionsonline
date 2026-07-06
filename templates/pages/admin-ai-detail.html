@@ -150,11 +150,13 @@
   </div>
   <div>
     <dt>Generated</dt>
-    <dd title="Biography text last produced at {{record.generatedAt}} · record last touched (any field) at {{record.updatedAt}}">
-      {{formatDate record.generatedAt "auto"}}
-      {{#if snapshotCount}}
-        <span class="text-meta">· {{snapshotCount}} snapshot{{#isequal snapshotCount 1 this}}{{else}}s{{/isequal}} · <a href="/admin/ai/{{record.PK}}/compare">compare</a></span>
-      {{/if}}
+    <dd title="Biography text last produced at {{record.generatedAt}} · record last touched (any field) at {{record.updatedAt}}">{{formatDate record.generatedAt "auto"}}</dd>
+  </div>
+  <div class="detail-meta__field--secondary">
+    <dt>Snapshots</dt>
+    <dd>
+      {{snapshotCount}}
+      {{#if snapshotCount}} · <a href="/admin/ai/{{record.PK}}/compare">compare versions</a>{{/if}}
     </dd>
   </div>
   <div class="detail-meta__field--secondary">
