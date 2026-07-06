@@ -191,34 +191,33 @@ function sortOpenFindings (findings) {
 //      resolvedBy captures the curator identity so the audit shows
 //      the action cascaded from a sentence action rather than an
 //      explicit finding resolution.
-async function loadPrecedingStateAndPendingFindings (id, claimSignature, config) {
+async function loadPrecedingStateAndFindings (id, claimSignature, config) {
   const [record, decisions, reviews] = await Promise.all([
     biographyStore.fetchBiography(id),
     curatorDecisionsStore.get(id).catch(function () { return null; }),
     reviewStore.listReviews(id).catch(function () { return []; })
   ]);
   if (!record || !Array.isArray(record.sentences)) {
-    return { precedingState: null, pendingFindingsByReviewSK: [] };
+    return { precedingState: null, findingsByReviewSK: [] };
   }
   // All findings across all reviews — render's finding gate uses
   // kind + confidence, not resolution, so we need the full set.
+  //
+  // findingsByReviewSK collects every review that has ANY finding for
+  // this signature — not just pending ones. Curator reversals (approve
+  // → reject and vice versa) need to overwrite the prior finding
+  // resolution too. Restricting to pending here left "dismissed"
+  // traces orphaned on the audit trail whenever a curator flipped
+  // their decision.
   const allFindings = [];
-  const pendingFindingsByReviewSK = [];
+  const findingsByReviewSK = [];
   reviews.forEach(function (rv) {
+    let matched = false;
     (rv.findings || []).forEach(function (f) {
       allFindings.push(f);
-      if (f.resolution === 'pending' && f.claimSignature === claimSignature) {
-        pendingFindingsByReviewSK.push({ reviewSK: rv.SK });
-      }
+      if (f.claimSignature === claimSignature) matched = true;
     });
-  });
-  // De-dupe the pending list by reviewSK — one finding-per-signature
-  // per REVIEW# item is the store's invariant, but be defensive.
-  const seenReviewSK = new Set();
-  const dedupedPending = pendingFindingsByReviewSK.filter(function (e) {
-    if (seenReviewSK.has(e.reviewSK)) return false;
-    seenReviewSK.add(e.reviewSK);
-    return true;
+    if (matched) findingsByReviewSK.push({ reviewSK: rv.SK });
   });
   const rendered = renderBiography(record, {
     decisions,
@@ -231,15 +230,15 @@ async function loadPrecedingStateAndPendingFindings (id, claimSignature, config)
   });
   return {
     precedingState: sentence ? sentence.state : null,
-    pendingFindingsByReviewSK: dedupedPending
+    findingsByReviewSK
   };
 }
 
 // Fire-and-await a batch of finding auto-resolutions. Errors on
 // individual resolutions are logged but non-fatal — the curator's
 // primary action (approve/reject/clarify) already committed.
-async function autoResolvePendingFindings (id, claimSignature, resolution, resolvedBy, pendingFindingsByReviewSK) {
-  for (const entry of (pendingFindingsByReviewSK || [])) {
+async function autoResolveFindings (id, claimSignature, resolution, resolvedBy, findingsByReviewSK) {
+  for (const entry of (findingsByReviewSK || [])) {
     try {
       await reviewStore.updateFindingResolution(id, entry.reviewSK, claimSignature, {
         resolution,
@@ -1579,8 +1578,8 @@ module.exports = function (elastic, config) {
             // BEFORE writing so the state we capture is genuinely the
             // "before" state.
             const staff = staffOf(request);
-            const { precedingState, pendingFindingsByReviewSK } =
-              await loadPrecedingStateAndPendingFindings(id, claimSignature, config);
+            const { precedingState, findingsByReviewSK } =
+              await loadPrecedingStateAndFindings(id, claimSignature, config);
             // Remove any prior rejection for the same signature — approving
             // IS taking back a rejection, and the render precedence in
             // render-biography.js unconditionally hides rejected sentences.
@@ -1591,7 +1590,7 @@ module.exports = function (elastic, config) {
             await curatorDecisionsStore.addApproval(id, {
               claimSignature, claimText, note, approvedBy: staff, precedingState
             });
-            await autoResolvePendingFindings(id, claimSignature, 'dismissed', staff, pendingFindingsByReviewSK);
+            await autoResolveFindings(id, claimSignature, 'dismissed', staff, findingsByReviewSK);
             // Approval is instant-render (source-tag filter override) —
             // no regen needed, jump back to the biography anchor.
             return h.redirect('/admin/ai/' + id + '#biography');
@@ -1624,8 +1623,8 @@ module.exports = function (elastic, config) {
             // findings. Rejection → findings resolve as 'accepted'
             // (curator agreed with reviewer's concern).
             const staff = staffOf(request);
-            const { precedingState, pendingFindingsByReviewSK } =
-              await loadPrecedingStateAndPendingFindings(id, claimSignature, config);
+            const { precedingState, findingsByReviewSK } =
+              await loadPrecedingStateAndFindings(id, claimSignature, config);
             // Remove any prior approval for the same signature — rejecting
             // IS taking back an approval. Symmetric with the /approve
             // handler's removeEntry('rejection') call. Keeps the DB at
@@ -1635,7 +1634,7 @@ module.exports = function (elastic, config) {
             await curatorDecisionsStore.addRejection(id, {
               claimSignature, claimText, rationale, rejectedBy: staff, precedingState
             });
-            await autoResolvePendingFindings(id, claimSignature, 'accepted', staff, pendingFindingsByReviewSK);
+            await autoResolveFindings(id, claimSignature, 'accepted', staff, findingsByReviewSK);
             // Rejection changes writer constraints, so the regen banner
             // will fire on next render. No auto-regen (per the plan).
             return h.redirect('/admin/ai/' + id + '#biography');
@@ -1671,12 +1670,12 @@ module.exports = function (elastic, config) {
             // findings. Clarify → findings resolve as 'clarified'
             // (curator addressed the concern via regen guidance).
             const staff = staffOf(request);
-            const { precedingState, pendingFindingsByReviewSK } =
-              await loadPrecedingStateAndPendingFindings(id, claimSignature, config);
+            const { precedingState, findingsByReviewSK } =
+              await loadPrecedingStateAndFindings(id, claimSignature, config);
             await curatorDecisionsStore.addClarification(id, {
               claimSignature, claimText, clarification, addedBy: staff, precedingState
             });
-            await autoResolvePendingFindings(id, claimSignature, 'clarified', staff, pendingFindingsByReviewSK);
+            await autoResolveFindings(id, claimSignature, 'clarified', staff, findingsByReviewSK);
             // Clarification changes writer prompt, so the regen banner
             // will fire on next render. No auto-regen.
             return h.redirect('/admin/ai/' + id + '#biography');
