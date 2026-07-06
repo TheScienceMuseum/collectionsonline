@@ -84,53 +84,11 @@
 </div>
 {{/if}}
 
-{{!-- Task 58: Biography + In-the-collection rendered prose moved to
-      TOP of the page, above the record metadata block. Content first
-      (what the public sees) — tooling and metadata after.
-      Task 59: wrapped in a 2-column grid — prose on the left,
-      hover-populated claim-details rail on the right. Curator hovers
-      a sentence → source/state/finding lands in the rail without a
-      click. On narrow viewports the rail stacks below the prose.
-      Only shown for v2 records; legacy records fall through to the
-      old prose block further down the page. --}}
-{{#if renderedBiography.sentences.length}}
-<div class="biography-with-rail">
-  <div class="biography-with-rail__main">
-    <div class="detail-section" id="biography">
-      <h3>Biography</h3>
-      <div class="prose-body ai-rendered-prose" data-block="biography">
-        {{{renderedBiography.biographyHtml}}}
-      </div>
-    </div>
-
-    {{#if renderedBiography.contextHtml}}
-    <div class="detail-section" id="in-the-collection">
-      <h3>In the collection</h3>
-      <div class="prose-body ai-rendered-prose" data-block="context">
-        {{{renderedBiography.contextHtml}}}
-      </div>
-    </div>
-    {{/if}}
-  </div>
-
-  {{!-- Sticky rail — populated by JS on prose (or claim) hover. Empty
-        state prompt appears on first load and stays until the first
-        hover; subsequent hovers replace whatever's currently shown so
-        the rail is always at the last-hovered claim (not reverted on
-        mouseleave — curators need to be able to move the mouse to
-        read the details). --}}
-  <aside class="biography-with-rail__rail" id="claim-detail-rail" aria-live="polite">
-    <div class="rail-empty text-meta">
-      <em>Hover a sentence to see its provenance, publishing state, and any reviewer note.</em>
-    </div>
-    <div class="rail-populated" hidden>
-      {{!-- JS clones .sentence__meta from the matching Claims row into
-            here, and appends a "Jump to full claim ↓" link. --}}
-    </div>
-  </aside>
-</div>
-{{/if}}
-
+{{!-- Task 63: detail-meta moved BACK to the top of the page (above
+      Biography). Curator preference — record metadata reads as a
+      page header, biography content follows. Biography + In-the-
+      collection blocks remain at their unchanged position further
+      down; they retain the same 2-column grid + hover rail (Task 59). --}}
 <div class="detail-meta">
   <div>
     <dt>Record ID</dt>
@@ -292,6 +250,39 @@
   </div>
   {{/if}}
 </div>
+
+{{!-- Task 63: Biography + In-the-collection rendered prose, moved
+      here (below detail-meta) so the record header sits at the top.
+      Same 2-column grid + hover rail as Task 59. --}}
+{{#if renderedBiography.sentences.length}}
+<div class="biography-with-rail">
+  <div class="biography-with-rail__main">
+    <div class="detail-section" id="biography">
+      <h3>Biography</h3>
+      <div class="prose-body ai-rendered-prose" data-block="biography">
+        {{{renderedBiography.biographyHtml}}}
+      </div>
+    </div>
+
+    {{#if renderedBiography.contextHtml}}
+    <div class="detail-section" id="in-the-collection">
+      <h3>In the collection</h3>
+      <div class="prose-body ai-rendered-prose" data-block="context">
+        {{{renderedBiography.contextHtml}}}
+      </div>
+    </div>
+    {{/if}}
+  </div>
+
+  <aside class="biography-with-rail__rail" id="claim-detail-rail" aria-live="polite">
+    <div class="rail-empty text-meta">
+      <em>Hover a sentence to see its provenance, publishing state, and any reviewer note.</em>
+    </div>
+    <div class="rail-populated" hidden>
+    </div>
+  </aside>
+</div>
+{{/if}}
 
 {{#if record.skipReason}}
 <div class="detail-section">
@@ -776,14 +767,19 @@
           </span>
           {{/isequal}}
 
-          {{!-- Concern jump-link — same as publishing group. AI review
-                explicit in tooltip. --}}
+          {{!-- Task 63: on hidden sentences we drop the ⛔ block pill —
+                it's redundant when the sentence is already in the
+                Hidden group with a hatched background + red border.
+                Info/warning concerns still surface (they're
+                additional context: e.g. a curator-rejected sentence
+                that ALSO had an AI-review info note). --}}
           {{#if this.state.concern}}
+          {{#isequal this.state.concern "block" this}}{{else}}
           <a class="pill concern-pill concern-pill--link" data-concern="{{this.state.concern}}" href="#finding-{{this.claimSignature}}" title="{{this.reviewFinding.concern}} · click to jump to the AI review's full note">
             {{#isequal this.state.concern "info" this}}ⓘ info{{/isequal}}
             {{#isequal this.state.concern "warning" this}}⚠ warning{{/isequal}}
-            {{#isequal this.state.concern "block" this}}⛔ block{{/isequal}}
           </a>
+          {{/isequal}}
           {{/if}}
 
           {{#if this.clarification}}
@@ -987,6 +983,11 @@
   .sentence[data-vis="publishing"][data-decided="auto"]    { border-left: 3px solid #d5d0c1; }
   .sentence[data-vis="publishing"][data-decided="curator"] { border-left: 3px solid #6da97e; background: #eff5f0; }
   .sentence[data-vis="hidden"]                             { border-left: 3px solid #c5b98a; }
+  /* Task 63: hide-reason differentiation via border colour so curators
+     can distinguish AI-review-block from publishing-level-filter at a
+     glance without needing the ⛔ pill. Red border = AI-review block,
+     mustard = below level, darker red + tint = curator rejection. */
+  .sentence[data-vis="hidden"][data-decided="auto"][data-concern="block"] { border-left: 3px solid #b0797a; }
   .sentence[data-vis="hidden"][data-decided="curator"]     { border-left: 3px solid #b0797a; background: #faf1f1; }
   /* Concern axis nudges the tint further — a warning-tier concern
      on an auto-publishing row gets a subtle amber wash. */
