@@ -54,16 +54,29 @@ wrong and often helps the reader.
 
 ## Study vs employment / doctorate vs undergraduate
 
-- Do not conflate "studied at X" with "worked at X" or "received
-  a doctorate from X". These are distinct relationships.
-- A doctoral submission at institution X does not necessarily
-  mean the subject was enrolled as a student there in the
-  everyday sense — many pre-1960 doctorates were awarded on the
-  strength of a submitted thesis without formal enrolment.
-- The reviewer should flag phrases like "studied at ETH Zurich
-  and the University of Zurich" if the subject's actual
-  relationships were substantively different (e.g. undergraduate
-  at one, doctorate at the other).
+- "Studied at X", "worked at X", and "received a doctorate from X"
+  are distinct relationships. Writer should reach for the specific
+  verb where the record supports it.
+- A doctoral submission at institution X does not necessarily mean
+  the subject was enrolled as a student there in the everyday
+  sense — many pre-1960 doctorates were awarded on the strength of
+  a submitted thesis without formal enrolment.
+
+Reviewer behaviour:
+- Do NOT flag a sentence just because it lists multiple institutions
+  after "studied at". Read the WHOLE sentence — if the writer has
+  disambiguated further along (e.g. "studying at ETH Zurich… and he
+  later received his doctorate from the University of Zurich"), the
+  claim is correctly specific and does not need flagging.
+- Only flag when the sentence GENUINELY conflates — when a single
+  undifferentiated verb ("studied at", "worked at", "was at") is
+  applied to two institutions whose relationships to the subject
+  were substantively different, AND the writer offers no
+  disambiguation elsewhere in the sentence or paragraph.
+- Prefer `info` severity (nudge toward clearer verbs) over `error`
+  (hide the sentence). Even a genuine conflation rarely warrants a
+  block-tier hide — the sentence still conveys "the subject had a
+  relationship with these institutions", which is true.
 
 ## Multi-author expeditions / collaborations / discoveries
 
