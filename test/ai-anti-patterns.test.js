@@ -48,7 +48,8 @@ test('real file: anti-patterns.md loads with expected content', function (t) {
   antiPatterns._resetForTests(); // no override → real file load
   const out = antiPatterns.getAntiPatternsText();
   t.ok(out.length > 100, 'anti-patterns.md loaded with substantive content');
-  t.ok(out.indexOf('Swiss patent office') !== -1, 'Swiss Patent Office rule present');
+  t.ok(out.indexOf('Historical vs modern') !== -1, 'historical-names rule present');
+  t.ok(out.indexOf('bridging phrase') !== -1, 'bridging-phrase guidance present');
   t.ok(out.indexOf('Multi-author expeditions') !== -1, 'expedition rule present');
   antiPatterns._resetForTests();
   t.end();

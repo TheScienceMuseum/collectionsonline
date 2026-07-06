@@ -161,6 +161,69 @@ test('openFindings: resolved findings excluded', async function (t) {
   t.end();
 });
 
+test('openFindings: dedup same claimSignature across reviews — highest severity wins', async function (t) {
+  reset();
+  await store.saveReview('cp1', {
+    reviewedAt: '2026-07-02T10:00:00Z',
+    findings: [
+      { claimSignature: 'sig1', kind: 'error', confidence: 'medium', concern: 'first take' }
+    ]
+  });
+  await store.saveReview('cp1', {
+    reviewedAt: '2026-07-02T11:00:00Z',
+    findings: [
+      { claimSignature: 'sig1', kind: 'error', confidence: 'high', concern: 'second take, harsher' }
+    ]
+  });
+  const open = await store.openFindings('cp1');
+  t.equal(open.length, 1, 'one card per signature');
+  t.equal(open[0].confidence, 'high', 'harsher one wins');
+  t.equal(open[0].concern, 'second take, harsher');
+  t.end();
+});
+
+test('openFindings: dedup — same severity, most recent wins', async function (t) {
+  reset();
+  await store.saveReview('cp1', {
+    reviewedAt: '2026-07-02T10:00:00Z',
+    findings: [
+      { claimSignature: 'sig1', kind: 'error', confidence: 'high', concern: 'older' }
+    ]
+  });
+  await store.saveReview('cp1', {
+    reviewedAt: '2026-07-02T11:00:00Z',
+    findings: [
+      { claimSignature: 'sig1', kind: 'error', confidence: 'high', concern: 'newer' }
+    ]
+  });
+  const open = await store.openFindings('cp1');
+  t.equal(open.length, 1);
+  t.equal(open[0].concern, 'newer');
+  t.end();
+});
+
+test('openFindings: dedup — findings on OTHER signatures still all surface', async function (t) {
+  reset();
+  await store.saveReview('cp1', {
+    reviewedAt: '2026-07-02T10:00:00Z',
+    findings: [
+      { claimSignature: 'sig1', kind: 'error', confidence: 'high' },
+      { claimSignature: 'sig2', kind: 'info', confidence: 'low' }
+    ]
+  });
+  await store.saveReview('cp1', {
+    reviewedAt: '2026-07-02T11:00:00Z',
+    findings: [
+      { claimSignature: 'sig1', kind: 'error', confidence: 'medium' },
+      { claimSignature: 'sig3', kind: 'error', confidence: 'medium' }
+    ]
+  });
+  const open = await store.openFindings('cp1');
+  const sigs = open.map(function (f) { return f.claimSignature; }).sort();
+  t.deepEqual(sigs, ['sig1', 'sig2', 'sig3'], 'one card per unique signature');
+  t.end();
+});
+
 // --- updateFindingResolution ---------------------------------------
 
 test('updateFindingResolution: marks finding resolved with timestamp + user', async function (t) {

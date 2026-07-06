@@ -20,29 +20,37 @@ edit, restart the server (or wait for nodemon).
 
 ## Historical vs modern institution / place / country names
 
-- Prefer the era-appropriate name of the institution during the
-  subject's active period.
+Both the era-appropriate historical name and the modern name are
+ACCEPTABLE. Preference order:
 
-- **Swiss patent office (Einstein 1902-1909)** — during his tenure,
-  the office was called the "Eidgenössisches Amt für geistiges
-  Eigentum". In English this is rendered as either:
-    * "Federal Office for Intellectual Property" (accurate literal
-      translation — ACCEPTABLE, do not flag)
-    * "Swiss Patent Office" (informal / colloquial English — also
-      ACCEPTABLE, do not flag)
-  The 1998+ reorganised name "Swiss Federal Institute of
-  Intellectual Property" IS anachronistic for the 1902-1909 period.
-  Only flag when the modern institute name is used without a
-  bridging phrase ("known today as…").
-- Same principle for countries whose borders / names have changed
-  (Prussia vs Germany vs West Germany; Bombay vs Mumbai; Peking
-  vs Beijing). Use the name that would have been current at the
-  time of the event.
-- If the modern name is used and the biography does NOT
-  acknowledge the historic name, the reviewer should flag it.
-- If the biography includes a bridging phrase ("known today as
-  X", "then called Y"), the reviewer should NOT flag it as an
-  anachronism.
+1. **Best** — historical name + a bridging phrase to the modern form:
+   "the Federal Office for Intellectual Property (today the Swiss
+   Federal Institute of Intellectual Property)", "Königsberg (now
+   Kaliningrad)", "Peking (later Beijing)". Anachronism-safe AND
+   helpful to a modern reader.
+2. **Good** — the era-appropriate historical name alone, when it's
+   unambiguous or the modern name is unlikely to be searched for.
+3. **Acceptable** — the modern name alone. Reader can look it up.
+
+Reviewer behaviour:
+- Do NOT flag the historic name for being unfamiliar to a modern
+  reader — this is the preferred variant.
+- Do NOT flag the modern name simply because an older name existed;
+  clarity for a present-day reader is legitimate. Flag only if it
+  is likely to mislead — e.g. the modern name post-dates the events
+  by many decades AND the rename was substantive (an
+  organisational restructure, a border shift), AND no bridging
+  phrase is present. Even then, prefer `info` severity (nudge
+  toward a bridge) over `error` (block).
+- For politically or historically contentious place names (borders
+  disputed between eras / nations, exonyms with troubled history —
+  e.g. Constantinople/Istanbul, Bombay/Mumbai, Danzig/Gdańsk),
+  take a neutral stance: era-appropriate name is fine, era-
+  appropriate name + bridging phrase is better, and do NOT flag
+  either variant so long as the writer isn't picking sides.
+
+Writer: when in doubt, add a short bridging phrase. It's rarely
+wrong and often helps the reader.
 
 ## Study vs employment / doctorate vs undergraduate
 
