@@ -276,7 +276,7 @@
 
   <aside class="biography-with-rail__rail" id="claim-detail-rail" aria-live="polite">
     <div class="rail-empty text-meta">
-      <em>Hover a sentence to see its provenance, publishing state, and any reviewer note.</em>
+      <em>Hover a sentence for a preview. Click to lock the panel + reveal jump links.</em>
     </div>
     <div class="rail-populated" hidden>
     </div>
@@ -1182,6 +1182,27 @@
   }
   .biography-with-rail__rail .rail-jump:hover { text-decoration-color: #2c5288; }
 
+  /* Task 65: rail lock indicator + jump-links row. Small + subtle
+     — doesn't scream, but clear enough that a curator knows the
+     panel is now sticky and click-to-unlock. */
+  .biography-with-rail__rail .rail-lock-indicator {
+    margin-top: 0.75rem;
+    padding: 0.4rem 0.6rem;
+    background: rgba(200, 122, 30, 0.08);
+    border: 1px solid rgba(200, 122, 30, 0.25);
+    border-radius: 3px;
+    color: #6c5820;
+    font-size: 0.75rem;
+    line-height: 1.35;
+  }
+  .biography-with-rail__rail .rail-jumps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.7rem;
+  }
+  .biography-with-rail__rail .rail-jumps .rail-jump { margin-top: 0; }
+
   @media (max-width: 900px) {
     .biography-with-rail { grid-template-columns: 1fr; }
     .biography-with-rail__rail {
@@ -1192,16 +1213,25 @@
   }
 </style>
 
-{{!-- Interaction script — FOUR behaviours on data-signature:
-      1. Hover a claim row OR a prose sentence → both highlight
-         (Task 56).
-      2. Click a prose sentence → smooth-scroll to the corresponding
-         Claims row and flash it (Task 58).
-      3. Click a claim row → smooth-scroll UP to the corresponding
-         prose sentence and flash it (Task 59, symmetric).
-      4. Hover a claim row OR a prose sentence → populate the
-         hover rail on the right with source / state / finding info
-         cloned from the Claims row (Task 59).
+{{!-- Interaction script.
+      Task 65 rework — hover previews, click LOCKS:
+
+        1. HOVER a claim row OR prose sentence → highlight both
+           sides + populate the hover rail with source / state /
+           chips / finding for that claim (unless the rail is
+           locked, in which case hover only highlights).
+        2. CLICK a claim row OR prose sentence → LOCK the rail at
+           that claim. Subsequent hovers don't change the rail
+           until the same target is clicked again (unlock).
+        3. Rail carries BOTH jump directions ("Jump to prose ↑"
+           and "Jump to claim ↓") so curators navigate deliberately
+           from the panel rather than accidentally-on-hover.
+
+      Removed in this rework: click-on-prose auto-scrolls to
+      claim, click-on-claim auto-scrolls to prose. The
+      hover-preview + auto-jump combination was glitchy — mouse
+      movement during scroll fired other hover events, changing
+      the rail before the scroll completed.
 
       Registered once on DOMContentLoaded; safe to call multiple
       times (re-registration is idempotent). --}}
@@ -1221,6 +1251,11 @@
     return !!(el && el.closest && el.closest('button, form, input, textarea, select, details, summary, a'));
   }
 
+  // Rail lock state — module-scoped so it survives across
+  // re-invocations of wireInteractions() (which happen when the
+  // Claims view toggle rebuilds the DOM).
+  var lockedSig = null;
+
   function wireInteractions () {
     var claims = document.querySelectorAll('.sentence[data-signature]');
     var prose = document.querySelectorAll('.ai-rendered-prose [data-signature]');
@@ -1237,44 +1272,63 @@
     }
 
     // Rail update: clone the sentence text + meta from the matching
-    // Claims row, and append a jump link so a curator reading the
-    // rail can go straight to the full claim action UI. Does NOT
-    // clear on mouseleave — the rail persists at the last-hovered
-    // claim so curators can move the mouse to read.
+    // Claims row, and append BOTH jump links so a curator can go
+    // to the prose sentence OR the full Claims row without another
+    // hover changing the rail. Does NOT clear on mouseleave.
     //
-    // Task 61: when hover came from a PROSE sentence (which is always
-    // publishing by definition — hidden ones don't appear in the
-    // rendered prose), the visibility pill in the rail is redundant.
-    // Strip it. When hover came from a Claim row, keep the pill —
-    // the row might be hidden and that state matters.
-    function updateRail (sig, hoverOrigin) {
+    // origin='prose' → drop the redundant visibility pill (prose
+    // sentences are always publishing by definition).
+    function updateRail (sig, origin) {
       if (!rail || !sig) return;
       var claim = document.querySelector('.sentence[data-signature="' + sig + '"]');
       if (!claim) return;
+      var proseEl = document.querySelector('.ai-rendered-prose [data-signature="' + sig + '"]');
       var textNode = claim.querySelector('.sentence__text');
       var metaNode = claim.querySelector('.sentence__meta');
       railPopulated.innerHTML = '';
       if (textNode) railPopulated.appendChild(textNode.cloneNode(true));
       if (metaNode) {
         var metaClone = metaNode.cloneNode(true);
-        if (hoverOrigin === 'prose') {
-          // Prose sentences are always publishing → drop the redundant
-          // visibility pill so the rail focuses on the useful axes
-          // (source + concern + curator badge + chips).
+        if (origin === 'prose') {
           var vis = metaClone.querySelectorAll('.state-pill');
           for (var i = 0; i < vis.length; i++) vis[i].remove();
         }
         railPopulated.appendChild(metaClone);
       }
-      var jump = document.createElement('a');
-      jump.href = '#';
-      jump.className = 'rail-jump';
-      jump.textContent = 'Jump to full claim ↓';
-      jump.addEventListener('click', function (e) {
+
+      // Lock indicator — only present when the rail is locked.
+      if (lockedSig === sig) {
+        var lockNote = document.createElement('div');
+        lockNote.className = 'rail-lock-indicator';
+        lockNote.innerHTML = '🔒 Locked — click the same sentence again to unlock';
+        railPopulated.appendChild(lockNote);
+      }
+
+      // Both jump directions — always present.
+      var jumps = document.createElement('div');
+      jumps.className = 'rail-jumps';
+      if (proseEl) {
+        var jumpProse = document.createElement('a');
+        jumpProse.href = '#';
+        jumpProse.className = 'rail-jump';
+        jumpProse.textContent = 'Jump to prose ↑';
+        jumpProse.addEventListener('click', function (e) {
+          e.preventDefault();
+          scrollAndFlash(proseEl);
+        });
+        jumps.appendChild(jumpProse);
+      }
+      var jumpClaim = document.createElement('a');
+      jumpClaim.href = '#';
+      jumpClaim.className = 'rail-jump';
+      jumpClaim.textContent = 'Jump to full claim ↓';
+      jumpClaim.addEventListener('click', function (e) {
         e.preventDefault();
         scrollAndFlash(claim);
       });
-      railPopulated.appendChild(jump);
+      jumps.appendChild(jumpClaim);
+      railPopulated.appendChild(jumps);
+
       if (railEmpty) railEmpty.hidden = true;
       railPopulated.hidden = false;
     }
@@ -1285,10 +1339,33 @@
           el.addEventListener('mouseenter', function () {
             var sig = el.getAttribute('data-signature');
             highlight(sig, true);
-            updateRail(sig, origin);
+            // Task 65: only update rail on hover when NOT locked.
+            if (!lockedSig) updateRail(sig, origin);
           });
           el.addEventListener('mouseleave', function () {
             highlight(el.getAttribute('data-signature'), false);
+          });
+        })(nodes[i]);
+      }
+    }
+
+    // Task 65: click LOCKS the rail at the target claim (or
+    // toggles unlock if clicking the currently-locked target).
+    // Applies to both prose and claim origins — same behaviour.
+    function bindClickLock (nodes, origin) {
+      for (var i = 0; i < nodes.length; i++) {
+        (function (el) {
+          el.addEventListener('click', function (e) {
+            if (isInteractive(e.target) && e.target !== el) return;
+            var sig = el.getAttribute('data-signature');
+            if (!sig) return;
+            if (lockedSig === sig) {
+              lockedSig = null;
+              updateRail(sig, origin); // repaint without lock indicator
+            } else {
+              lockedSig = sig;
+              updateRail(sig, origin);
+            }
           });
         })(nodes[i]);
       }
@@ -1330,41 +1407,17 @@
         })(links[i]);
       }
     }
-    function bindProseClick (nodes) {
-      for (var i = 0; i < nodes.length; i++) {
-        (function (el) {
-          el.addEventListener('click', function (e) {
-            if (isInteractive(e.target) && e.target !== el) return;
-            var sig = el.getAttribute('data-signature');
-            if (!sig) return;
-            var target = document.querySelector('.sentence[data-signature="' + sig + '"]');
-            scrollAndFlash(target);
-          });
-        })(nodes[i]);
-      }
-    }
-    function bindClaimClick (nodes) {
-      for (var i = 0; i < nodes.length; i++) {
-        (function (el) {
-          el.addEventListener('click', function (e) {
-            // Ignore clicks on forms, buttons, links, details/summary
-            // inside the row — those have their own semantics.
-            if (isInteractive(e.target)) return;
-            var sig = el.getAttribute('data-signature');
-            if (!sig) return;
-            var target = document.querySelector('.ai-rendered-prose [data-signature="' + sig + '"]');
-            scrollAndFlash(target);
-          });
-        })(nodes[i]);
-      }
-    }
-
     bindHover(claims, 'claim');
     bindHover(prose, 'prose');
-    bindProseClick(prose);
-    bindClaimClick(claims);
+    bindClickLock(prose, 'prose');
+    bindClickLock(claims, 'claim');
     bindConcernJump();
     bindFindingJump();
+
+    // Task 65: if there's an existing lock, repaint the rail on
+    // re-wire so the lock indicator + both jump links appear on
+    // freshly-created sentence elements (Claims view toggle).
+    if (lockedSig) updateRail(lockedSig, null);
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', wireInteractions);
