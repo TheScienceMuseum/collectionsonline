@@ -1420,6 +1420,18 @@
       railPopulated.hidden = false;
     }
 
+    // Empty the rail back to its "hover a sentence" resting state.
+    // Called on deselect so the info panel doesn't linger on the
+    // just-deselected sentence.
+    function clearRail () {
+      if (!rail) return;
+      if (railPopulated) {
+        railPopulated.innerHTML = '';
+        railPopulated.hidden = true;
+      }
+      if (railEmpty) railEmpty.hidden = false;
+    }
+
     function bindHover (nodes, origin) {
       for (var i = 0; i < nodes.length; i++) {
         (function (el) {
@@ -1449,10 +1461,21 @@
             var sig = el.getAttribute('data-signature');
             if (!sig) return;
             if (lockedSig === sig) {
-              // Deselect
+              // Deselect — clear ALL references to this sentence:
+              //   .is-selected → removed via setSelected(null) below
+              //   .is-highlighted → force off; the mouse is still on
+              //     the clicked sentence at this point (no mouseleave
+              //     has fired yet), so both the prose sentence AND
+              //     the matching claim would otherwise stay lit up
+              //     via the highlight() sig-fanout.
+              //   rail info panel → clearRail() empties it back to
+              //     the "hover a sentence" resting state. updateRail
+              //     with sig would repaint it; updateRail(null) just
+              //     early-returns without clearing.
               lockedSig = null;
               setSelected(null);
-              updateRail(sig, origin);
+              highlight(sig, false);
+              clearRail();
             } else {
               // Select this one
               lockedSig = sig;
