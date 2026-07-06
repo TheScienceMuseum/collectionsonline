@@ -1295,7 +1295,6 @@
       if (!rail || !sig) return;
       var claim = document.querySelector('.sentence[data-signature="' + sig + '"]');
       if (!claim) return;
-      var proseEl = document.querySelector('.ai-rendered-prose [data-signature="' + sig + '"]');
       var textNode = claim.querySelector('.sentence__text');
       var metaNode = claim.querySelector('.sentence__meta');
       railPopulated.innerHTML = '';
@@ -1309,20 +1308,12 @@
         railPopulated.appendChild(metaClone);
       }
 
-      // Both jump directions — always present.
+      // Task 66 fix: only jump-to-claim is offered. The prose
+      // sentence sits immediately to the left of the rail and stays
+      // highlighted via .is-selected — a "jump to prose" button
+      // would just point at what the curator is already looking at.
       var jumps = document.createElement('div');
       jumps.className = 'rail-jumps';
-      if (proseEl) {
-        var jumpProse = document.createElement('a');
-        jumpProse.href = '#';
-        jumpProse.className = 'rail-jump';
-        jumpProse.textContent = 'Jump to prose ↑';
-        jumpProse.addEventListener('click', function (e) {
-          e.preventDefault();
-          scrollAndFlash(proseEl);
-        });
-        jumps.appendChild(jumpProse);
-      }
       var jumpClaim = document.createElement('a');
       jumpClaim.href = '#';
       jumpClaim.className = 'rail-jump';
