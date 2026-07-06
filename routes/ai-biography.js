@@ -190,6 +190,41 @@ function publicBiographyRoute (elastic, config) {
                   flagEnabled: !!config.aiBiographyPublicFlagEnabled
                 }).type('application/json').header('Cache-Control', CACHE_CONTROL);
               }
+              // v2 records store `sentences[]` on the item and intentionally
+              // do NOT persist a rendered `biographyHtml` — the render layer
+              // composes HTML at read time so subsequent curator actions
+              // (approve / reject / clarify) or filter-level tweaks apply
+              // on the next page load without a regen. Prior to this branch
+              // the route only handled the legacy pre-rendered field and
+              // fell through to a fresh Claude regen (~40s wall-clock)
+              // every time a v2 record was loaded publicly. Render inline
+              // from the stored sentences instead — the same shape the
+              // admin detail already builds.
+              if (Array.isArray(existing.sentences) && existing.sentences.length > 0) {
+                const curatorDecisions = await curatorDecisionsStore.get(id).catch(function () { return null; });
+                const openFindings = await reviewStore.openFindings(id).catch(function () { return []; });
+                const rendered = renderBiography({
+                  sentences: existing.sentences,
+                  paragraphBreaks: existing.paragraphBreaks || []
+                }, {
+                  decisions: curatorDecisions,
+                  openFindings,
+                  publishingLevel: config.aiBiographyPublishingLevel,
+                  references: existing.references || []
+                });
+                return h.response({
+                  biography: rendered.biographyHtml,
+                  context: rendered.contextHtml,
+                  personName: existing.personName,
+                  references: existing.references,
+                  sources: existing.sources,
+                  generatedAt: existing.generatedAt,
+                  model: existing.model,
+                  status: existing.status,
+                  suppressExisting: existing.existingDescriptionChars < config.aiBiographySuppressExistingChars,
+                  flagEnabled: !!config.aiBiographyPublicFlagEnabled
+                }).type('application/json').header('Cache-Control', CACHE_CONTROL);
+              }
             }
           } catch (err) {
             // Log full error — AWS SDK errors don't always populate .message,
