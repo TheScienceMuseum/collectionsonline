@@ -1,6 +1,7 @@
 'use strict';
 
 const adminAuth = require('../lib/ai/admin-auth');
+const antiPatterns = require('../lib/ai/anti-patterns');
 const biographyStore = require('../lib/ai/biography-store');
 const dynamo = require('../lib/ai/dynamo');
 const extractPersonData = require('../lib/ai/extract-person-data');
@@ -1076,10 +1077,12 @@ module.exports = function (elastic, config) {
               personName: personData.name,
               systemPromptDefault: prompts.systemPrompt,
               userPromptDefault: prompts.buildUserPrompt(personData, allItems, wikidataContext, subject),
+              antiPatternsDefault: antiPatterns.getAntiPatternsText(),
               activeVersion: prompts.activeVersion,
               modelDefault: config.aiBiographyModel,
               systemPromptValue: null,
               userPromptValue: null,
+              antiPatternsValue: null,
               modelValue: null,
               result: null,
               error: null
@@ -1106,13 +1109,24 @@ module.exports = function (elastic, config) {
           const payload = request.payload || {};
           const systemPromptValue = (payload.systemPrompt || '').toString();
           const userPromptValue = (payload.userPrompt || '').toString();
+          const antiPatternsValue = (payload.antiPatterns || '').toString();
           const modelValue = (payload.model || '').toString().trim() || config.aiBiographyModel;
 
           let inputs, result, error;
           try {
             inputs = await gatherPlaygroundInputs(elastic, config, id);
+            // Pre-append the user's anti-patterns text to their system
+            // prompt using the same header/separator the auto-append uses,
+            // then tell the generator to skip its own file-based append so
+            // the rules don't render twice. Empty anti-patterns text skips
+            // the append entirely — playground users can iterate with
+            // fewer rules by clearing the textarea.
+            const trimmedAP = antiPatternsValue.trim();
+            const composedSystemPrompt = trimmedAP
+              ? systemPromptValue + '\n\n---\n\n## Class-wide rules (from anti-patterns.md)\n\n' + trimmedAP
+              : systemPromptValue;
             const customPromptModule = {
-              systemPrompt: systemPromptValue,
+              systemPrompt: composedSystemPrompt,
               buildUserPrompt: function () { return userPromptValue; },
               version: 'playground'
             };
@@ -1120,7 +1134,8 @@ module.exports = function (elastic, config) {
               inputs.personData, inputs.allItems, inputs.wikidataContext, {
                 apiKey: config.anthropicApiKey,
                 model: modelValue,
-                promptModule: customPromptModule
+                promptModule: customPromptModule,
+                skipAntiPatterns: true
               }
             );
             if (!result) {
@@ -1142,10 +1157,12 @@ module.exports = function (elastic, config) {
             personName,
             systemPromptDefault: prompts.systemPrompt,
             userPromptDefault: (inputs && prompts.buildUserPrompt(inputs.personData, inputs.allItems, inputs.wikidataContext, inputs.subject)) || '',
+            antiPatternsDefault: antiPatterns.getAntiPatternsText(),
             activeVersion: prompts.activeVersion,
             modelDefault: config.aiBiographyModel,
             systemPromptValue,
             userPromptValue,
+            antiPatternsValue,
             modelValue,
             result: result
               ? {
