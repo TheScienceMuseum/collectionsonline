@@ -41,6 +41,7 @@
     "page": "^1.11.6",
     "plyr": "^3.7.8",
     "promise": "^8.3.0",
+    "punycode": "^2.3.1",
     "rc": "^1.2.8",
     "slugg": "^1.2.1",
     "smg-web-design-system": "github:TheScienceMuseum/web-design-system#0.11.8",
