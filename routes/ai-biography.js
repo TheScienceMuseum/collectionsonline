@@ -177,11 +177,18 @@ function publicBiographyRoute (elastic, config) {
                 return h.response({}).code(204);
               }
               if (existing.biographyHtml) {
+                // `references` is deliberately NOT surfaced on the public
+                // JSON payload — the public /people/{id} page already
+                // exposes the agent's related objects via ES elsewhere on
+                // the page, and every catalogue item cited by the AI
+                // prose is reachable through inline anchors in the HTML.
+                // Kept internal-only on the biography item so the admin
+                // Claims list can render per-sentence "→ Title" chips
+                // without an ES lookup at render time.
                 return h.response({
                   biography: existing.biographyHtml,
                   context: existing.contextHtml,
                   personName: existing.personName,
-                  references: existing.references,
                   sources: existing.sources,
                   generatedAt: existing.generatedAt,
                   model: existing.model,
@@ -203,20 +210,27 @@ function publicBiographyRoute (elastic, config) {
               if (Array.isArray(existing.sentences) && existing.sentences.length > 0) {
                 const curatorDecisions = await curatorDecisionsStore.get(id).catch(function () { return null; });
                 const openFindings = await reviewStore.openFindings(id).catch(function () { return []; });
+                // `opts.references` is intentionally omitted here — the
+                // renderer uses it only to build per-sentence chip data
+                // consumed by the admin Claims list. The public path
+                // returns just biographyHtml + contextHtml (both of
+                // which are complete on their own, inline anchors and
+                // all). Passing an empty references list produces
+                // empty chip arrays that are then dropped on the floor.
                 const rendered = renderBiography({
                   sentences: existing.sentences,
                   paragraphBreaks: existing.paragraphBreaks || []
                 }, {
                   decisions: curatorDecisions,
                   openFindings,
-                  publishingLevel: config.aiBiographyPublishingLevel,
-                  references: existing.references || []
+                  publishingLevel: config.aiBiographyPublishingLevel
                 });
+                // References field deliberately not on the public payload
+                // — see comment on the legacy branch above for rationale.
                 return h.response({
                   biography: rendered.biographyHtml,
                   context: rendered.contextHtml,
                   personName: existing.personName,
-                  references: existing.references,
                   sources: existing.sources,
                   generatedAt: existing.generatedAt,
                   model: existing.model,
@@ -683,12 +697,18 @@ async function generate (elastic, config, id) {
       // instruments...". Downstream templates render both blocks with
       // their own headings. `biography` kept as a synonym for
       // biographyHtml so any consumer that hasn't migrated stays happy.
+      //
+      // `references` deliberately NOT surfaced on the public payload —
+      // the public /people/{id} page already lists related objects via
+      // ES elsewhere, and every catalogue item cited in the AI prose
+      // is reachable through inline anchors. The field lives on the DB
+      // item so the admin Claims list can render per-sentence chips
+      // without an ES lookup, but public API consumers don't need it.
       biography: rendered.biographyHtml,
       biographyHtml: rendered.biographyHtml,
       context: rendered.contextHtml,
       contextHtml: rendered.contextHtml,
       personName: personData.name,
-      references,
       sources: deriveSourcesFromSentences(result.sentences),
       generatedAt: new Date().toISOString(),
       model: result.model,
