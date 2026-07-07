@@ -2,6 +2,13 @@
 .claude
 CLAUDE.md
 
+# Internal-only docs (not for publication in the public repo).
+# Drop briefing docs, architecture write-ups, curator training
+# material, prompt-tuning notes, etc. here — nothing under this
+# directory is tracked. The `docs/` folder remains for public-safe
+# technical documentation.
+internal-docs/
+
 # OSX
 .DS_Store
 
