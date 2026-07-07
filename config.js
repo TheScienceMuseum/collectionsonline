@@ -85,19 +85,6 @@ module.exports = require('rc')('co', {
   aiBiographyGbpPerUsd: parseFloat(process.env.AI_BIOGRAPHY_GBP_PER_USD) || 0.80,
   // AI Review (triage tool) — manually triggered per-record by staff to
   // fact-check / sanity-check biographies when reports come in. Uses the
-  // premium model by default (deliberately expensive — "pay for quality
-  // when you click the button"). Kill switch for launch / emergencies.
-  //
-  // Note: the plan document originally proposed reusing the
-  // aiBiographyReviewEnabled key for BOTH the manual Opus escalation and
-  // the new v2 per-generation review, but the two have opposite defaults
-  // (Opus off by default; per-generation on by default) and opposite
-  // cost profiles (Opus expensive; per-generation cheap). Keeping them
-  // as two separate keys avoids a single env var meaning different
-  // things at different price points.
-  aiBiographyReviewEnabled: process.env.AI_BIOGRAPHY_REVIEW_ENABLED === 'true',
-  aiBiographyReviewModel: process.env.AI_BIOGRAPHY_REVIEW_MODEL || 'claude-opus-4-7',
-
   // ---------------------------------------------------------------------
   // v2 source-tagged pipeline config
   // ---------------------------------------------------------------------

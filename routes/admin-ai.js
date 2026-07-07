@@ -17,8 +17,6 @@ const subjectStatus = require('../lib/ai/subject-status');
 const flagStore = require('../lib/ai/flag-store');
 const dashboardStats = require('../lib/ai/dashboard-stats');
 const exportCsv = require('../lib/ai/export-csv');
-const reviewBiography = require('../lib/ai/review-biography');
-const linkifySources = require('../lib/ai/linkify-sources');
 const curatorDecisionsStore = require('../lib/ai/curator-decisions-store');
 const reviewStore = require('../lib/ai/review-store');
 const renderBiography = require('../lib/ai/render-biography');
@@ -665,18 +663,19 @@ module.exports = function (elastic, config) {
             // select the appropriate plain-English explanatory block.
             record.skipCategory = classifySkipReason(record.skipReason);
 
-            // Fetch staff notes, flags, snapshots, public flags, AI
-            // reviews, curator decisions, and per-generation review
-            // findings in parallel. curatorDecisions + openFindings are
-            // v2-only; they'll come back null / empty for records
-            // produced by the pre-v2 pipeline, which the render layer
-            // + template both tolerate.
+            // Fetch staff notes, snapshots, staff flags, public flags,
+            // all review runs (for the Recently Resolved audit trail),
+            // curator decisions, and open findings in parallel.
+            // curatorDecisions + openFindings + rawReviews are v2-shape;
+            // they'll come back null / empty for records produced by
+            // the pre-v2 pipeline, which the render layer + template
+            // both tolerate.
             const [rawNotes, snapshots, staffFlags, rawPublicFlags, rawReviews, curatorDecisions, rawOpenFindings] = await Promise.all([
               biographyStore.listStaffNotes(id).catch(function () { return []; }),
               biographyStore.listHistory(id).catch(function () { return []; }),
               biographyStore.listStaffFlags(id).catch(function () { return []; }),
               flagStore.getFlags(id).catch(function () { return null; }),
-              biographyStore.listReviews(id).catch(function () { return []; }),
+              reviewStore.listReviews(id).catch(function () { return []; }),
               curatorDecisionsStore.get(id).catch(function () { return null; }),
               reviewStore.openFindings(id).catch(function () { return []; })
             ]);
@@ -720,56 +719,6 @@ module.exports = function (elastic, config) {
             // cost of each review (computed from stored input/output tokens
             // and the review model) so the template can render "£0.12" next
             // to the timestamp without doing arithmetic in Handlebars.
-            // Also transform each factual-issue's `suggestedChecks` from
-            // plain strings into { text, url } objects — lets the template
-            // link out to Wikipedia (the only source we can safely infer a
-            // URL for) while other sources stay as plain text.
-            const reviews = rawReviews.map(function (r) {
-              // Two distinct staleness signals — each triggered by a different
-              // change since the review was produced:
-              //
-              //   stale (biography regenerated): the underlying biography has
-              //     been re-generated since this review ran, so the review's
-              //     findings refer to a superseded snapshot.
-              //
-              //   reviewPromptStale (outdated review prompt): the review was
-              //     produced under an older version of the review prompt
-              //     (lib/ai/review-biography.js::PROMPT_VERSION). Findings
-              //     may not reflect current reviewer behaviour — e.g. older
-              //     versions had a field-name bug that starved Opus of the
-              //     catalogue biography text, producing "no dates / addresses
-              //     to anchor" complaints even when the data was present.
-              //     Treated as a soft signal: the OLD findings are not
-              //     necessarily wrong, but worth re-running to confirm.
-              const stale = !!(
-                r.biographyPromptVersion &&
-                record.promptVersion &&
-                (
-                  r.biographyPromptVersion !== record.promptVersion ||
-                  (r.biographyGeneratedAt && record.generatedAt && r.biographyGeneratedAt !== record.generatedAt)
-                )
-              );
-              const reviewPromptStale = !!(
-                r.reviewPromptVersion &&
-                r.reviewPromptVersion !== reviewBiography.PROMPT_VERSION
-              );
-              const costObj = modelsRegistry.calculateCost(
-                r.reviewModel, r.inputTokens, r.outputTokens, config.aiBiographyGbpPerUsd
-              );
-              const factualIssues = (r.factualIssues || []).map(function (fi) {
-                return Object.assign({}, fi, {
-                  suggestedChecks: (fi.suggestedChecks || []).map(linkifySources.linkify)
-                });
-              });
-              return Object.assign({}, r, {
-                stale,
-                reviewPromptStale,
-                currentReviewPromptVersion: reviewBiography.PROMPT_VERSION,
-                costFormatted: costObj ? costObj.perBioFormatted : null,
-                factualIssues
-              });
-            });
-
             const availableVersions = prompts.listVersions();
             const versionOptions = availableVersions.map(function (v) {
               return { id: v, isActive: v === prompts.activeVersion, isCurrent: v === record.promptVersion };
@@ -839,27 +788,11 @@ module.exports = function (elastic, config) {
               };
             }
 
-            // Pre-compute the AI review section's context so the template
-            // can render it without per-hit work. Button visibility / cost
-            // estimate live here; individual review findings (reviews
-            // array above) carry staleness and actual cost.
-            const reviewModel = config.aiBiographyReviewModel;
-            const reviewModelInfo = modelsRegistry.getModel(reviewModel);
-            // Estimate: typical input / output for a review. Only used for
-            // the "~£X" label on the run button — actual cost stored per
-            // review once Opus has completed.
-            const reviewEstimate = modelsRegistry.calculateCost(
-              reviewModel, 2500, 1000, config.aiBiographyGbpPerUsd
-            );
+            // reviewConfig used to expose the manual Opus reviewer button.
+            // With the Opus manual reviewer retired, only the external-
+            // validation-enabled flag remains — which drives per-sentence
+            // "Verify externally" buttons in the Claims list.
             const reviewConfig = {
-              enabled: !!config.aiBiographyReviewEnabled,
-              canRun: !!(config.aiBiographyReviewEnabled && (record.biographyHtml || (record.sentences && record.sentences.length))),
-              model: reviewModel,
-              modelLabel: (reviewModelInfo && reviewModelInfo.label) || reviewModel,
-              estimatedCost: reviewEstimate ? reviewEstimate.perBioFormatted : null,
-              // Task 52 will define this config key; falsy default keeps the
-              // "Verify externally" buttons hidden until curators + staff
-              // decide they want the extra tools available.
               externalValidationEnabled: !!config.aiBiographyExternalValidationEnabled
             };
 
@@ -978,7 +911,6 @@ module.exports = function (elastic, config) {
             return h.view('admin-ai-detail', {
               record,
               notes,
-              reviews,
               reviewConfig,
               renderedBiography,
               openFindings,
@@ -1408,132 +1340,6 @@ module.exports = function (elastic, config) {
           } catch (err) {
             console.error('Admin AI delete error:', err.message);
             return h.redirect('/admin/ai?error=delete_failed');
-          }
-        }
-      }
-    },
-
-    // AI review — run the triage reviewer on the current biography content.
-    // Synchronous: staff waits the 10-30s on the server while Opus processes.
-    // Matches the existing Regenerate button UX (form-POST, redirect back).
-    // Kill switch: config.aiBiographyReviewEnabled must be true, otherwise
-    // the route short-circuits to 404 so a stray button click (e.g. from
-    // a cached page) can't incur cost.
-    {
-      method: 'POST',
-      path: '/admin/ai/{id}/review',
-      config: {
-        auth: false,
-        handler: async function (request, h) {
-          const authRedirect = requireAuth(request, h, config);
-          if (authRedirect) return authRedirect;
-          if (!config.aiBiographyReviewEnabled) {
-            return h.response({ error: 'Review feature not enabled' }).code(404);
-          }
-          const id = request.params.id;
-          try {
-            const record = await biographyStore.fetchBiography(id);
-            if (!record || !record.biographyHtml) {
-              return h.redirect('/admin/ai/' + id + '?error=nothing_to_review');
-            }
-
-            // Pull the live wikidata context and public-flag aggregate so
-            // the reviewer has all the signal the public visitor's report
-            // was based on. wikidata is best-effort — a miss degrades the
-            // review but doesn't fail it.
-            let wikidataContext = null;
-            const qCode = normaliseWikidata.getQCode(record.wikidata);
-            if (qCode) {
-              try { wikidataContext = await fetchWikidataLive(qCode); } catch (err) {
-                console.warn('Admin review: wikidata fetch failed for', qCode, '-', err.message);
-              }
-            }
-            const rawPublicFlags = await flagStore.getFlags(id).catch(function () { return null; });
-            const reportCounts = {};
-            if (rawPublicFlags) {
-              Object.keys(rawPublicFlags).forEach(function (k) {
-                if (k.indexOf('count_') === 0 && k.indexOf('count_pending_') !== 0) {
-                  reportCounts[k.slice('count_'.length)] = rawPublicFlags[k];
-                }
-              });
-            }
-
-            // Reconstruct the subject data from the canonical record —
-            // prefer what was stored at generation time (so the review
-            // matches what was actually reviewed), fall back to live ES.
-            let personData = record.personData;
-            if (!personData) {
-              try {
-                const esResult = await elastic.get({
-                  index: config.elasticIndex || 'ciim',
-                  id: TypeMapping.toInternal(id)
-                });
-                personData = extractPersonData(esResult.body._source);
-              } catch (err) {
-                console.warn('Admin review: ES fetch failed for', id, '-', err.message);
-                personData = { name: record.personName };
-              }
-            }
-
-            const result = await reviewBiography.reviewBiography({
-              biographyHtml: record.biographyHtml,
-              contextHtml: record.contextHtml,
-              personData,
-              wikidataContext,
-              reportCounts,
-              apiKey: config.anthropicApiKey,
-              model: config.aiBiographyReviewModel
-            });
-
-            await biographyStore.addReview(id, {
-              reviewModel: result.model,
-              reviewPromptVersion: result.promptVersion,
-              inputTokens: result.inputTokens,
-              outputTokens: result.outputTokens,
-              createdBy: staffOf(request),
-              // Anchor to the biography version being reviewed so we can
-              // mark this review as stale if the biography is regenerated.
-              biographyPromptVersion: record.promptVersion || null,
-              biographyGeneratedAt: record.generatedAt || null,
-              biographyModel: record.model || null,
-              // Findings payload (structured JSON from Opus, validated)
-              overallVerdict: result.findings.overallVerdict,
-              verdictReasoning: result.findings.verdictReasoning,
-              offensive: result.findings.offensive,
-              factualIssues: result.findings.factualIssues,
-              identityConfidence: result.findings.identityConfidence
-            });
-
-            return h.redirect('/admin/ai/' + id + '#reviews');
-          } catch (err) {
-            console.error('Admin AI review error for', id, '-', err.message);
-            return h.redirect('/admin/ai/' + id + '?error=review_failed');
-          }
-        }
-      }
-    },
-
-    // AI review — delete a specific review by its SK. Used for pruning
-    // stale or superseded reviews from the detail page.
-    {
-      method: 'POST',
-      path: '/admin/ai/{id}/reviews/delete',
-      config: {
-        auth: false,
-        handler: async function (request, h) {
-          const authRedirect = requireAuth(request, h, config);
-          if (authRedirect) return authRedirect;
-          const id = request.params.id;
-          const sk = request.payload && request.payload.sk;
-          if (!sk || sk.indexOf('REVIEW#') !== 0) {
-            return h.redirect('/admin/ai/' + id + '?error=invalid_review');
-          }
-          try {
-            await biographyStore.deleteReview(id, sk);
-            return h.redirect('/admin/ai/' + id + '#reviews');
-          } catch (err) {
-            console.error('Admin AI review-delete error:', err.message);
-            return h.redirect('/admin/ai/' + id + '?error=review_delete_failed');
           }
         }
       }
