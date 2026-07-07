@@ -1,0 +1,65 @@
+<div class="detail-header">
+  <a href="/admin/ai/{{id}}" class="text-meta">← Back to record</a>
+  <h1 style="margin: 0.3rem 0 0.15rem 0;">Prompt playground <span class="text-meta" style="font-size: 0.85rem; font-weight: normal;">— {{personName}} ({{id}})</span></h1>
+  <p class="text-meta" style="margin: 0.15rem 0 0.5rem 0;">
+    One-off generation with a custom prompt. Does <strong>not</strong> save to the DB or affect the public page. Useful for workshops, demos, and iterative prompt development. Anti-patterns are still appended automatically.
+  </p>
+</div>
+
+{{#if error}}
+<div class="detail-section" style="background: #f5cccc; border-left: 3px solid #b0797a; padding: 0.6rem 0.9rem; border-radius: 3px; margin-bottom: 1rem;">
+  <strong style="color: #6c1c1c;">Error:</strong> <span style="color: #6c1c1c;">{{error}}</span>
+</div>
+{{/if}}
+
+<form method="POST" action="/admin/ai/{{id}}/playground/run" class="detail-section" style="margin-bottom: 1rem;">
+  <div style="margin-bottom: 0.75rem;">
+    <label for="playground-model" class="text-meta">Model</label>
+    <input type="text" name="model" id="playground-model" value="{{#if modelValue}}{{modelValue}}{{else}}{{modelDefault}}{{/if}}" style="width: 100%; padding: 0.3rem 0.5rem; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.9rem; border: 1px solid #c5c1b5; border-radius: 3px;">
+  </div>
+
+  <div style="margin-bottom: 0.75rem;">
+    <label for="playground-system" class="text-meta">System prompt (default: <code>{{activeVersion}}</code>)</label>
+    <textarea name="systemPrompt" id="playground-system" rows="18" style="width: 100%; padding: 0.5rem; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.8rem; border: 1px solid #c5c1b5; border-radius: 3px; line-height: 1.45;">{{#if systemPromptValue}}{{systemPromptValue}}{{else}}{{systemPromptDefault}}{{/if}}</textarea>
+  </div>
+
+  <div style="margin-bottom: 0.75rem;">
+    <label for="playground-user" class="text-meta">User prompt (pre-filled from the record's data)</label>
+    <textarea name="userPrompt" id="playground-user" rows="16" style="width: 100%; padding: 0.5rem; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.8rem; border: 1px solid #c5c1b5; border-radius: 3px; line-height: 1.45;">{{#if userPromptValue}}{{userPromptValue}}{{else}}{{userPromptDefault}}{{/if}}</textarea>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 0.75rem;">
+    <button type="submit" class="btn btn--primary">Run generation</button>
+    <span class="text-meta" style="font-size: 0.8rem;">≈ 7–15 seconds. This makes one Claude call (approx £0.02 per run).</span>
+  </div>
+</form>
+
+{{#if result}}
+<div class="detail-section" style="margin-bottom: 1rem;">
+  <h3>Result</h3>
+  <div class="text-meta--sm" style="margin: 0 0 0.75rem 0;">
+    Model <code>{{result.model}}</code>
+    · confidence <strong>{{result.confidence}} / 10</strong>
+    · <strong>{{result.inputTokens}}</strong> in / <strong>{{result.outputTokens}}</strong> out
+    {{#if result.costFormatted}}· cost <strong>{{result.costFormatted}}</strong>{{/if}}
+  </div>
+
+  {{#if result.notes}}
+  <details style="background: #fbf9f4; padding: 0.5rem 0.75rem; border-radius: 3px; margin-bottom: 0.75rem;">
+    <summary class="text-meta">Writer notes</summary>
+    <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">{{result.notes}}</p>
+  </details>
+  {{/if}}
+
+  <ol style="padding-left: 1.25rem; margin: 0.5rem 0 0 0; font-family: Georgia, serif; font-size: 1rem; line-height: 1.6;">
+    {{#each result.sentences}}
+    <li style="margin-bottom: 0.4rem;">
+      <span>{{this.text}}</span>
+      <div class="text-meta--sm" style="margin-top: 0.15rem; font-family: ui-monospace, SFMono-Regular, monospace;">
+        <span class="pill" style="font-size: 0.7rem;">{{this.source}}</span>{{#if this.sourceDetail}} <span class="text-meta--sm">· {{this.sourceDetail}}</span>{{/if}}
+      </div>
+    </li>
+    {{/each}}
+  </ol>
+</div>
+{{/if}}

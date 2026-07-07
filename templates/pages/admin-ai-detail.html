@@ -153,13 +153,6 @@
     <dd title="Biography text last produced at {{record.generatedAt}} · record last touched (any field) at {{record.updatedAt}}">{{formatDate record.generatedAt "auto"}}</dd>
   </div>
   <div class="detail-meta__field--secondary">
-    <dt>Snapshots</dt>
-    <dd>
-      {{snapshotCount}}
-      {{#if snapshotCount}} · <a href="/admin/ai/{{record.PK}}/compare">compare versions</a>{{/if}}
-    </dd>
-  </div>
-  <div class="detail-meta__field--secondary">
     <dt>Existing Description</dt>
     <dd>
       {{record.existingDescriptionChars}} chars
@@ -1835,9 +1828,7 @@
     <button type="submit" class="btn btn--secondary">Regenerate (update live)</button>
   </form>
 
-  {{#if snapshotCount}}
-  <a href="/admin/ai/{{record.PK}}/compare" class="btn btn--secondary" title="Switch between saved versions, or try a specific prompt">Compare / A–B…</a>
-  {{/if}}
+  <a href="/admin/ai/{{record.PK}}/playground" class="btn btn--secondary" title="Try a custom prompt on this subject without touching the live record.">Prompt playground…</a>
 </div>
 
 {{!-- Danger zone — Delete sits behind a collapsed disclosure rather

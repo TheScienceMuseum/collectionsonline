@@ -96,47 +96,25 @@ test('saveBiography: source-tagged fields survive round-trip', async function (t
   t.end();
 });
 
-// --- saveBiography: snapshot triggered by sentences ----------------
+// --- saveBiography: canonical + flag-mark-stale --------------------
 
-test('saveBiography: snapshot written when sentences present (v2 canonical)', async function (t) {
+test('saveBiography: canonical is always written', async function (t) {
   reset();
   await store.saveBiography('cp1', {
     sentences: [{ text: 'X', source: 'museum', claimSignature: 'sig' }],
     paragraphBreaks: [],
     status: 'live'
   });
+  const canonical = await store.fetchBiography('cp1');
+  t.ok(canonical, 'canonical BIOGRAPHY item written');
+  t.equal(canonical.PK, 'cp1');
+  t.equal(canonical.SK, 'BIOGRAPHY');
   const snapshots = Array.from(fakeItems.keys()).filter(function (k) { return k.indexOf('HISTORY#') !== -1; });
-  t.equal(snapshots.length, 1, 'history snapshot written');
+  t.equal(snapshots.length, 0, 'no HISTORY# snapshot (feature retired)');
   t.end();
 });
 
-test('saveBiography: snapshot written when only biographyHtml present (legacy v1 shape)', async function (t) {
-  reset();
-  await store.saveBiography('cp1', { biographyHtml: '<p>Legacy HTML.</p>', status: 'live' });
-  const snapshots = Array.from(fakeItems.keys()).filter(function (k) { return k.indexOf('HISTORY#') !== -1; });
-  t.equal(snapshots.length, 1);
-  t.end();
-});
-
-test('saveBiography: no snapshot when neither sentences nor biographyHtml present', async function (t) {
-  reset();
-  await store.saveBiography('cp1', { status: 'insufficient_data', skipReason: 'no data' });
-  const snapshots = Array.from(fakeItems.keys()).filter(function (k) { return k.indexOf('HISTORY#') !== -1; });
-  t.equal(snapshots.length, 0);
-  t.end();
-});
-
-test('saveBiography: empty sentences array does NOT trigger snapshot', async function (t) {
-  reset();
-  await store.saveBiography('cp1', { sentences: [], status: 'insufficient_data' });
-  const snapshots = Array.from(fakeItems.keys()).filter(function (k) { return k.indexOf('HISTORY#') !== -1; });
-  t.equal(snapshots.length, 0);
-  t.end();
-});
-
-// --- saveBiography: flag-mark-stale triggered on content -----------
-
-test('saveBiography: flag-mark-stale runs when sentences trigger snapshot', async function (t) {
+test('saveBiography: flag-mark-stale runs when biography has content', async function (t) {
   reset();
   await store.saveBiography('cp1', {
     sentences: [{ text: 'X', source: 'museum', claimSignature: 'sig' }],
@@ -147,17 +125,17 @@ test('saveBiography: flag-mark-stale runs when sentences trigger snapshot', asyn
   t.end();
 });
 
-test('saveBiography: snapshotOnly opt skips canonical + flag-mark-stale', async function (t) {
+test('saveBiography: flag-mark-stale skipped when no biography content', async function (t) {
   reset();
-  await store.saveBiography('cp1', {
-    sentences: [{ text: 'X', source: 'museum', claimSignature: 'sig' }],
-    status: 'live'
-  }, { snapshotOnly: true });
-  const canonical = await store.fetchBiography('cp1');
-  t.equal(canonical, undefined, 'no canonical write');
-  t.equal(flagStoreCalls.markPendingStale.length, 0, 'no flag-mark-stale');
-  const snapshots = Array.from(fakeItems.keys()).filter(function (k) { return k.indexOf('HISTORY#') !== -1; });
-  t.equal(snapshots.length, 1, 'snapshot still written');
+  await store.saveBiography('cp1', { status: 'insufficient_data', skipReason: 'no data' });
+  t.equal(flagStoreCalls.markPendingStale.length, 0);
+  t.end();
+});
+
+test('saveBiography: empty sentences array does NOT trigger flag-mark-stale', async function (t) {
+  reset();
+  await store.saveBiography('cp1', { sentences: [], status: 'insufficient_data' });
+  t.equal(flagStoreCalls.markPendingStale.length, 0);
   t.end();
 });
 
@@ -199,7 +177,7 @@ test('deleteBiography: no CURATOR_DECISIONS for the subject → still succeeds',
   t.end();
 });
 
-test('deleteBiography: also cascades REVIEW# items and history snapshots', async function (t) {
+test('deleteBiography: also cascades REVIEW# items', async function (t) {
   reset();
   await store.saveBiography('cp1', {
     sentences: [{ text: 'X', source: 'museum', claimSignature: 'sig' }],

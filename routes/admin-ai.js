@@ -663,16 +663,14 @@ module.exports = function (elastic, config) {
             // select the appropriate plain-English explanatory block.
             record.skipCategory = classifySkipReason(record.skipReason);
 
-            // Fetch staff notes, snapshots, staff flags, public flags,
-            // all review runs (for the Recently Resolved audit trail),
-            // curator decisions, and open findings in parallel.
-            // curatorDecisions + openFindings + rawReviews are v2-shape;
-            // they'll come back null / empty for records produced by
-            // the pre-v2 pipeline, which the render layer + template
-            // both tolerate.
-            const [rawNotes, snapshots, staffFlags, rawPublicFlags, rawReviews, curatorDecisions, rawOpenFindings] = await Promise.all([
+            // Fetch staff notes, staff flags, public flags, all review
+            // runs (for the Recently Resolved audit trail), curator
+            // decisions, and open findings in parallel. curatorDecisions
+            // + openFindings + rawReviews are v2-shape; they'll come back
+            // null / empty for records produced by the pre-v2 pipeline,
+            // which the render layer + template both tolerate.
+            const [rawNotes, staffFlags, rawPublicFlags, rawReviews, curatorDecisions, rawOpenFindings] = await Promise.all([
               biographyStore.listStaffNotes(id).catch(function () { return []; }),
-              biographyStore.listHistory(id).catch(function () { return []; }),
               biographyStore.listStaffFlags(id).catch(function () { return []; }),
               flagStore.getFlags(id).catch(function () { return null; }),
               reviewStore.listReviews(id).catch(function () { return []; }),
@@ -929,7 +927,6 @@ module.exports = function (elastic, config) {
               pendingChangeSingular,
               myCurrentFlag,
               otherFlags,
-              snapshotCount: snapshots.length,
               notFound: false,
               versionOptions,
               activeVersion: prompts.activeVersion,
@@ -995,186 +992,14 @@ module.exports = function (elastic, config) {
           if (authRedirect) return authRedirect;
 
           const id = request.params.id;
-          const payload = request.payload || {};
-          const promptVersion = payload.promptVersion || null;
-          const model = payload.model || null;
-          const customSystem = (payload.customSystemPrompt || '').toString().trim();
-          const customUser = (payload.customUserPromptTemplate || '').toString().trim();
-          const customLabel = (payload.customLabel || '').toString().trim().slice(0, 80);
-
-          // A one-off custom prompt needs BOTH a system and a user template.
-          // If only one is supplied we ignore the custom path and fall back to
-          // the selected promptVersion (or active default).
-          const customPrompt = (customSystem && customUser)
-            ? { systemPrompt: customSystem, userPromptTemplate: customUser, label: customLabel || 'custom' }
-            : null;
-
-          // If ANY override field was submitted (version, model, or custom
-          // prompt), the request came from the compare-page experimentation
-          // forms. In that case:
-          //   - redirect back to compare (so the staff member sees the new snapshot
-          //     alongside existing ones)
-          //   - snapshotOnly=true: never overwrite the canonical public record.
-          //     The staff member must explicitly click "Set as current" to promote.
-          // The plain detail-page "Regenerate" button submits no override
-          // fields, so canonical updates as before — that's the "refresh with
-          // current defaults" path used for live content maintenance.
-          const inExperimentMode = !!(promptVersion || model || customPrompt);
-          const redirectTo = inExperimentMode
-            ? '/admin/ai/' + id + '/compare'
-            : '/admin/ai/' + id;
+          const redirectTo = '/admin/ai/' + id;
 
           try {
-            await runRegenerate(elastic, config, id, promptVersion, {
-              model,
-              customPrompt,
-              snapshotOnly: inExperimentMode
-            });
+            await runRegenerate(elastic, config, id);
             return h.redirect(redirectTo);
           } catch (err) {
             console.error('Admin AI regenerate error:', err.message);
             return h.redirect(redirectTo + '?error=regenerate_failed');
-          }
-        }
-      }
-    },
-
-    // Delete a single history snapshot
-    {
-      method: 'POST',
-      path: '/admin/ai/{id}/snapshots/delete',
-      config: {
-        auth: false,
-        handler: async function (request, h) {
-          const authRedirect = requireAuth(request, h, config);
-          if (authRedirect) return authRedirect;
-
-          const id = request.params.id;
-          const snapshotSk = request.payload && request.payload.sk;
-          if (!snapshotSk || snapshotSk.indexOf('HISTORY#') !== 0) {
-            return h.redirect('/admin/ai/' + id + '/compare?error=invalid_snapshot');
-          }
-          try {
-            await biographyStore.deleteSnapshot(id, snapshotSk);
-            return h.redirect('/admin/ai/' + id + '/compare');
-          } catch (err) {
-            console.error('Admin AI delete-snapshot error:', err.message);
-            return h.redirect('/admin/ai/' + id + '/compare?error=snapshot_delete_failed');
-          }
-        }
-      }
-    },
-
-    // Promote a snapshot to canonical (switch back/forth without regenerating)
-    {
-      method: 'POST',
-      path: '/admin/ai/{id}/promote',
-      config: {
-        auth: false,
-        handler: async function (request, h) {
-          const authRedirect = requireAuth(request, h, config);
-          if (authRedirect) return authRedirect;
-
-          const id = request.params.id;
-          const snapshotSk = request.payload && request.payload.sk;
-          if (!snapshotSk || snapshotSk.indexOf('HISTORY#') !== 0) {
-            return h.redirect('/admin/ai/' + id + '/compare?error=invalid_snapshot');
-          }
-          try {
-            await biographyStore.promoteSnapshot(id, snapshotSk);
-            return h.redirect('/admin/ai/' + id);
-          } catch (err) {
-            console.error('Admin AI promote error:', err.message);
-            return h.redirect('/admin/ai/' + id + '/compare?error=promote_failed');
-          }
-        }
-      }
-    },
-
-    // Compare view — shows all historical snapshots side by side
-    {
-      method: 'GET',
-      path: '/admin/ai/{id}/compare',
-      config: {
-        auth: false,
-        handler: async function (request, h) {
-          const authRedirect = requireAuth(request, h, config);
-          if (authRedirect) return authRedirect;
-
-          const id = request.params.id;
-          try {
-            const record = await biographyStore.fetchBiography(id);
-            const snapshots = await biographyStore.listHistory(id);
-            // Tag the snapshot that currently matches the canonical record so
-            // the UI can show a "current" badge instead of a "Set as current" button.
-            // Also compute a per-snapshot cost (null for legacy snapshots
-            // whose model has since been retired from the registry).
-            // Converted to GBP via config.aiBiographyGbpPerUsd.
-            const annotated = snapshots.map(function (s) {
-              const isCurrent = !!(record &&
-                s.generatedAt === record.generatedAt &&
-                s.promptVersion === record.promptVersion &&
-                s.biographyHtml === record.biographyHtml);
-              const cost = modelsRegistry.calculateCost(s.model, s.inputTokens, s.outputTokens, config.aiBiographyGbpPerUsd);
-              return Object.assign({}, s, { isCurrent, cost });
-            });
-            const availableVersions = prompts.listVersions();
-            const versionOptions = availableVersions.map(function (v) {
-              return { id: v, isActive: v === prompts.activeVersion };
-            });
-            // Starter text for the custom-prompt editor — the active version,
-            // pre-rendered for the current record so staff can tweak and
-            // regenerate without starting from scratch.
-            let customStarter = null;
-            if (record) {
-              try {
-                const personData = extractPersonData(
-                  (await elastic.get({
-                    index: config.elasticIndex || 'ciim',
-                    id: TypeMapping.toInternal(id)
-                  })).body._source
-                );
-                const sorted = sortRelated(await getRelatedItems(elastic, id), id);
-                const items = flattenRelated(sorted);
-                const classify = require('../lib/ai/classify-subject');
-                const subject = classify(personData, null);
-                customStarter = {
-                  systemPrompt: prompts.systemPrompt,
-                  userPromptTemplate: prompts.buildUserPrompt(personData, items, null, subject)
-                };
-              } catch (err) {
-                console.warn('Compare: could not build custom-prompt starter —', err.message);
-              }
-            }
-            // Decorate each model in the dropdown with a per-1k-bio cost
-            // based on the current record's actual token shape (if we have a
-            // canonical record). Falls back to a reasonable default shape
-            // (1,400 in / 600 out) for brand-new records with no history.
-            const baselineIn = (record && record.inputTokens) || 1400;
-            const baselineOut = (record && record.outputTokens) || 600;
-            const availableModels = modelsRegistry.listModels().map(function (m) {
-              const est = modelsRegistry.calculateCost(m.id, baselineIn, baselineOut, config.aiBiographyGbpPerUsd);
-              return Object.assign({}, m, {
-                estPer1kBio: est ? est.per1kBioFormatted : null,
-                estPerBio: est ? est.perBioFormatted : null
-              });
-            });
-
-            return h.view('admin-ai-compare', {
-              record,
-              snapshots: annotated,
-              notFound: !record && snapshots.length === 0,
-              versionOptions,
-              activeVersion: prompts.activeVersion,
-              availableModels,
-              currentModel: record && record.model,
-              defaultModel: config.aiBiographyModel,
-              customStarter,
-              error: request.query.error || null
-            }, { layout: 'admin' });
-          } catch (err) {
-            console.error('Admin AI compare error:', err.message);
-            return h.response('Error loading compare view').code(500);
           }
         }
       }
@@ -1214,6 +1039,127 @@ module.exports = function (elastic, config) {
             console.error('Admin AI add-note error:', err.message);
             return h.redirect('/admin/ai/' + id + '?error=note_failed');
           }
+        }
+      }
+    },
+
+    // -------------------------------------------------------------------
+    // Prompt playground — workshop-style custom-prompt exploration on a
+    // real record. Does NOT touch the DB — pure one-off generation for
+    // demos, iterative prompt development, and staff training.
+    //
+    // Two routes:
+    //   GET  /admin/ai/{id}/playground     — form pre-populated with the
+    //                                        active prompt module's system
+    //                                        + user prompt for {id}
+    //   POST /admin/ai/{id}/playground/run — accepts edited prompts,
+    //                                        runs a one-off Claude call,
+    //                                        renders the same page with
+    //                                        the result underneath
+    // -------------------------------------------------------------------
+
+    {
+      method: 'GET',
+      path: '/admin/ai/{id}/playground',
+      config: {
+        auth: false,
+        handler: async function (request, h) {
+          const authRedirect = requireAuth(request, h, config);
+          if (authRedirect) return authRedirect;
+
+          const id = request.params.id;
+          try {
+            const { personData, allItems, subject, wikidataContext } =
+              await gatherPlaygroundInputs(elastic, config, id);
+            return h.view('admin-ai-playground', {
+              id,
+              personName: personData.name,
+              systemPromptDefault: prompts.systemPrompt,
+              userPromptDefault: prompts.buildUserPrompt(personData, allItems, wikidataContext, subject),
+              activeVersion: prompts.activeVersion,
+              modelDefault: config.aiBiographyModel,
+              systemPromptValue: null,
+              userPromptValue: null,
+              modelValue: null,
+              result: null,
+              error: null
+            }, { layout: 'admin' });
+          } catch (err) {
+            console.error('Admin AI playground GET error:', err.message);
+            return h.response('Error loading playground: ' + err.message).code(500);
+          }
+        }
+      }
+    },
+
+    {
+      method: 'POST',
+      path: '/admin/ai/{id}/playground/run',
+      config: {
+        auth: false,
+        payload: { maxBytes: 512 * 1024 },
+        handler: async function (request, h) {
+          const authRedirect = requireAuth(request, h, config);
+          if (authRedirect) return authRedirect;
+
+          const id = request.params.id;
+          const payload = request.payload || {};
+          const systemPromptValue = (payload.systemPrompt || '').toString();
+          const userPromptValue = (payload.userPrompt || '').toString();
+          const modelValue = (payload.model || '').toString().trim() || config.aiBiographyModel;
+
+          let inputs, result, error;
+          try {
+            inputs = await gatherPlaygroundInputs(elastic, config, id);
+            const customPromptModule = {
+              systemPrompt: systemPromptValue,
+              buildUserPrompt: function () { return userPromptValue; },
+              version: 'playground'
+            };
+            result = await generateSourceTaggedBiography(
+              inputs.personData, inputs.allItems, inputs.wikidataContext, {
+                apiKey: config.anthropicApiKey,
+                model: modelValue,
+                promptModule: customPromptModule
+              }
+            );
+            if (!result) {
+              error = 'Generation returned null — check the writer prompt for schema errors.';
+            }
+          } catch (err) {
+            console.error('Admin AI playground run error:', err.message);
+            error = err.message;
+            inputs = inputs || await gatherPlaygroundInputs(elastic, config, id).catch(function () { return null; });
+          }
+
+          const personName = (inputs && inputs.personData && inputs.personData.name) || id;
+          const cost = result
+            ? modelsRegistry.calculateCost(result.model, result.inputTokens, result.outputTokens, config.aiBiographyGbpPerUsd)
+            : null;
+
+          return h.view('admin-ai-playground', {
+            id,
+            personName,
+            systemPromptDefault: prompts.systemPrompt,
+            userPromptDefault: (inputs && prompts.buildUserPrompt(inputs.personData, inputs.allItems, inputs.wikidataContext, inputs.subject)) || '',
+            activeVersion: prompts.activeVersion,
+            modelDefault: config.aiBiographyModel,
+            systemPromptValue,
+            userPromptValue,
+            modelValue,
+            result: result
+              ? {
+                  sentences: result.sentences,
+                  confidence: result.confidence,
+                  notes: result.notes,
+                  inputTokens: result.inputTokens,
+                  outputTokens: result.outputTokens,
+                  costFormatted: cost ? cost.perBioFormatted : null,
+                  model: result.model
+                }
+              : null,
+            error
+          }, { layout: 'admin' });
         }
       }
     },
@@ -1675,22 +1621,13 @@ function truncateDescription (text) {
 
 /**
  * Full regenerate pipeline — fetch ES source, extract person data, fetch related
- * items and Wikidata, call Claude, save to DynamoDB. Reused by both the "regenerate
- * with active prompt" and "regenerate with specific prompt version" paths.
+ * items and Wikidata, call Claude, save to DynamoDB. Single canonical write
+ * path — the compare-page A/B / snapshot machinery (and its opts.model /
+ * customPrompt / snapshotOnly overrides) was retired alongside the compare
+ * feature. Workshop-style custom-prompt exploration lives on the separate
+ * playground route (which doesn't persist to the DB).
  */
-async function runRegenerate (elastic, config, id, promptVersion, opts) {
-  opts = opts || {};
-  // Optional overrides (used by the compare-page A/B + workshop tooling):
-  //   opts.model         — one-off model override, ignored if unknown
-  //   opts.customPrompt  — { systemPrompt, userPromptTemplate, label } to use an
-  //                        ad-hoc prompt instead of a registered version
-  const modelOverride = (opts.model && modelsRegistry.isKnown(opts.model)) ? opts.model : null;
-  const customPrompt = opts.customPrompt || null;
-
-  // snapshotOnly: caller decides. All compare-page regenerations are
-  // snapshot-only; the plain detail-page "Regenerate" is not. Required —
-  // the route always passes it explicitly.
-  const snapshotOnly = !!opts.snapshotOnly;
+async function runRegenerate (elastic, config, id) {
   const esResult = await elastic.get({
     index: config.elasticIndex || 'ciim',
     id: TypeMapping.toInternal(id)
@@ -1748,34 +1685,22 @@ async function runRegenerate (elastic, config, id, promptVersion, opts) {
     console.log('Admin regenerate: insufficient data for', id,
       '—', assessment.signalCount, '/', assessment.totalSignals,
       'signals, minimum score', assessment.minScore, 'required.');
-    if (!snapshotOnly) {
-      await biographyStore.saveBiography(id, {
-        status: 'insufficient_data',
-        skipReason: assessSufficiency.skipReason(assessment),
-        personName: personData.name,
-        pageUrl: '/people/' + id,
-        existingDescriptionChars: personData.descriptionChars,
-        signalScore: assessment.score,
-        signalMaxScore: assessment.maxScore,
-        signalCount: assessment.signalCount,
-        signalsPresent: assessment.present,
-        signalsMissing: assessment.missing
-      });
-    }
+    await biographyStore.saveBiography(id, {
+      status: 'insufficient_data',
+      skipReason: assessSufficiency.skipReason(assessment),
+      personName: personData.name,
+      pageUrl: '/people/' + id,
+      existingDescriptionChars: personData.descriptionChars,
+      signalScore: assessment.score,
+      signalMaxScore: assessment.maxScore,
+      signalCount: assessment.signalCount,
+      signalsPresent: assessment.present,
+      signalsMissing: assessment.missing
+    });
     return { id, status: 'insufficient_data' };
   }
 
-  const useModel = modelOverride || config.aiBiographyModel;
-
-  // Compare-view workshop (customPrompt + promptVersion selection) hasn't
-  // been ported to the v2 source-tagged writer yet — those params go
-  // through the v1 code path which now returns "missing biography field"
-  // for source-tagged prompts. Log clearly so a staff member using
-  // compare knows the workshop path is temporarily degraded; the primary
-  // "Regenerate" from detail page (no overrides) works fine on v2.
-  if (customPrompt || promptVersion) {
-    console.warn('Admin regenerate: customPrompt / promptVersion overrides are not yet wired to the v2 source-tagged writer (task 51 MVP scope). Ignoring overrides and using the default v2 pipeline for id', id);
-  }
+  const useModel = config.aiBiographyModel;
 
   // Curator decisions from prior review sessions — folds
   // rejections + clarifications back into the writer prompt as
@@ -1868,21 +1793,15 @@ async function runRegenerate (elastic, config, id, promptVersion, opts) {
     signalsPresent: assessment.present,
     signalsMissing: assessment.missing,
     subjectStatus: subjStatus,
-    // Legacy customPromptLabel field kept for compare-view snapshot
-    // distinguishability; currently always null on v2 (workshop path
-    // not yet wired).
-    customPromptLabel: null,
     skipReason: result.confidence <= V2_CONFIDENCE_INSUFFICIENT_AT_OR_BELOW
       ? 'Low confidence (writer self-reported ' + result.confidence + '/10) on regeneration'
       : undefined
-  }, { snapshotOnly });
+  });
 
   // Save the review as a REVIEW# item — mirrors the public route's
-  // ordering (biography first, then review). Snapshot-only regens
-  // still emit a review (the snapshot doesn't have per-review-run
-  // metadata otherwise); on the canonical path this feeds directly
-  // into the admin detail's openFindings panel.
-  if (reviewResult && Array.isArray(reviewResult.findings) && !snapshotOnly) {
+  // ordering (biography first, then review). Feeds the admin detail's
+  // openFindings panel on next page load.
+  if (reviewResult && Array.isArray(reviewResult.findings)) {
     try {
       await reviewStore.saveReview(id, {
         reviewedAt: new Date().toISOString(),
@@ -1897,7 +1816,34 @@ async function runRegenerate (elastic, config, id, promptVersion, opts) {
     }
   }
 
-  return { id, status, snapshotOnly };
+  return { id, status };
+}
+
+// Assemble the ES + Wikidata inputs the writer prompt needs, for the
+// prompt playground page. Same shape the generation pipeline uses.
+async function gatherPlaygroundInputs (elastic, config, id) {
+  const esResult = await elastic.get({
+    index: config.elasticIndex || 'ciim',
+    id: TypeMapping.toInternal(id)
+  });
+  const personData = extractPersonData(esResult.body._source);
+  let sortedRelated = { relatedObjects: [], relatedDocuments: [] };
+  try {
+    const relatedItems = await getRelatedItems(elastic, id);
+    sortedRelated = sortRelated(relatedItems, id);
+  } catch (err) {
+    console.debug('Admin playground: Could not fetch related items:', err.message);
+  }
+  const allItems = flattenRelated(sortedRelated);
+  let wikidataContext = null;
+  const qCode = normaliseWikidata.getQCode(personData.wikidata);
+  if (qCode) {
+    try { wikidataContext = await fetchWikidataLive(qCode); } catch (err) {
+      console.warn('Admin playground: Wikidata fetch failed for', qCode, '-', err.message);
+    }
+  }
+  const subject = classifySubject(personData, wikidataContext);
+  return { personData, allItems, wikidataContext, subject };
 }
 
 function flattenRelated (sortedRelated) {
