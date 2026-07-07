@@ -28,11 +28,11 @@
     <textarea name="userPrompt" id="playground-user" rows="16" style="width: 100%; padding: 0.5rem; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.8rem; border: 1px solid #c5c1b5; border-radius: 3px; line-height: 1.45;">{{#if userPromptValue}}{{userPromptValue}}{{else}}{{userPromptDefault}}{{/if}}</textarea>
   </div>
 
-  <details style="margin-bottom: 0.75rem;">
-    <summary class="text-meta" style="cursor: pointer;">Anti-patterns (class-wide rules appended to the system prompt) — <em>edit to test rule changes; clear to run without them</em></summary>
-    <textarea name="antiPatterns" id="playground-antipatterns" rows="18" style="width: 100%; padding: 0.5rem; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.8rem; border: 1px solid #c5c1b5; border-radius: 3px; line-height: 1.45; margin-top: 0.4rem;">{{#if antiPatternsValue}}{{antiPatternsValue}}{{else}}{{antiPatternsDefault}}{{/if}}</textarea>
+  <div style="margin-bottom: 0.75rem;">
+    <label for="playground-antipatterns" class="text-meta">Anti-patterns (class-wide rules appended to the system prompt) — <em>edit to test rule changes; clear to run without them</em></label>
+    <textarea name="antiPatterns" id="playground-antipatterns" rows="18" style="width: 100%; padding: 0.5rem; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.8rem; border: 1px solid #c5c1b5; border-radius: 3px; line-height: 1.45;">{{#if antiPatternsValue}}{{antiPatternsValue}}{{else}}{{antiPatternsDefault}}{{/if}}</textarea>
     <p class="text-meta--sm" style="margin: 0.25rem 0 0 0;">Content comes from <code>prompts/biographies/anti-patterns.md</code>. Edits here apply to <strong>this playground run only</strong> — the checked-in file is untouched.</p>
-  </details>
+  </div>
 
   <div style="display: flex; align-items: center; gap: 0.75rem;">
     <button type="submit" class="btn btn--primary">Run generation</button>
