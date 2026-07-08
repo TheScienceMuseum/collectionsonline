@@ -227,7 +227,15 @@
         <span class="pill pill--attention" title="{{record.subjectStatus.organisationStatusReasoning}}">unknown</span>
       {{/isequal}}
       {{#isequal record.subjectStatus.status "historical" this}}
-        <span class="pill pill--inactive" title="{{record.subjectStatus.organisationStatusReasoning}}">historical</span>
+        {{#isequal record.subjectStatus.subjectType "person" this}}
+          {{!-- Mythological / fictional subject — the "historical" pill on
+                a person means the mythological detector fired in
+                subject-status.js. Show which text marker matched so the
+                curator can verify the classification. --}}
+          <span class="pill pill--inactive" title="Mythological / fictional subject — {{record.subjectStatus.mythologicalReason}}">historical</span>
+        {{else}}
+          <span class="pill pill--inactive" title="{{record.subjectStatus.organisationStatusReasoning}}">historical</span>
+        {{/isequal}}
       {{/isequal}}
       {{#if record.subjectStatus.deathDate}}
         <span class="text-meta" style="white-space: nowrap;" title="Source: {{record.subjectStatus.deathDateSource}} · raw: {{record.subjectStatus.deathDate}}">· {{formatDate record.subjectStatus.deathDate "date"}}{{#isequal record.subjectStatus.deathDateSource "wikidata" this}}<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 16 16" aria-hidden="true" class="text-warn" style="vertical-align: -1px; margin-left: 0.3rem;"><title>Sourced from Wikidata — not in our collection record</title><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.1"/></svg>{{/isequal}}</span>

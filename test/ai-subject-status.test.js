@@ -396,3 +396,171 @@ test('isSuppressedOnPublicSite: org with status=dissolved served', function (t) 
     { isLiving: false, subjectType: 'organisation', status: 'dissolved' }, {}), false);
   t.end();
 });
+
+// --- Mythological / fictional subject detection ----------------------
+
+test('mythological: Hygeia-style occupation "Greek goddess" → historical, not living', function (t) {
+  const personData = {
+    name: 'Hygeia',
+    occupation: 'Greek goddess of health',
+    birthDate: '',
+    deathDate: ''
+  };
+  const r = subjectStatus.inspect(personData, null, 'person');
+  t.equal(r.status, 'historical', 'flipped from active');
+  t.equal(r.isLiving, false, 'not treated as living');
+  t.ok(r.mythologicalReason, 'reason recorded');
+  t.ok(r.mythologicalReason.indexOf('occupation') !== -1, 'reason names the field');
+  t.ok(r.mythologicalReason.indexOf('goddess') !== -1, 'reason names the marker');
+  t.end();
+});
+
+test('mythological: briefBiography mentions "Greek mythology" → historical', function (t) {
+  const personData = {
+    name: 'Machaon',
+    briefBiography: 'A hero in Greek mythology, son of Asclepius.'
+  };
+  const r = subjectStatus.inspect(personData, null, 'person');
+  t.equal(r.status, 'historical');
+  t.equal(r.isLiving, false);
+  t.ok(r.mythologicalReason.indexOf('briefBiography') !== -1);
+  t.end();
+});
+
+test('mythological: "god of X" pattern in occupation → historical', function (t) {
+  const personData = {
+    name: 'Asclepius',
+    occupation: 'ancient Greek god of medicine'
+  };
+  const r = subjectStatus.inspect(personData, null, 'person');
+  t.equal(r.status, 'historical');
+  t.equal(r.isLiving, false);
+  t.end();
+});
+
+test('mythological: "personification of X" in biography → historical', function (t) {
+  const personData = {
+    name: 'Nike',
+    biography: 'Nike was the personification of victory in ancient Greek religion.'
+  };
+  const r = subjectStatus.inspect(personData, null, 'person');
+  t.equal(r.status, 'historical');
+  t.equal(r.isLiving, false);
+  t.end();
+});
+
+test('mythological: wikidata `instance of` "Greek deity" → historical', function (t) {
+  const personData = { name: 'Hygeia' };
+  const wd = { 'instance of': { value: 'Greek deity' } };
+  const r = subjectStatus.inspect(personData, wd, 'person');
+  t.equal(r.status, 'historical');
+  t.equal(r.isLiving, false);
+  t.ok(r.mythologicalReason.indexOf('wikidata') !== -1);
+  t.end();
+});
+
+test('mythological: wikidata `instance of` array form (multiple labels) → historical if any match', function (t) {
+  const personData = { name: 'X' };
+  const wd = { 'instance of': [{ label: 'human' }, { label: 'mythological figure' }] };
+  const r = subjectStatus.inspect(personData, wd, 'person');
+  t.equal(r.status, 'historical');
+  t.end();
+});
+
+test('mythological: "fictional character" wikidata → historical', function (t) {
+  const personData = { name: 'Doctor Who' };
+  const wd = { 'instance of': 'fictional character' };
+  const r = subjectStatus.inspect(personData, wd, 'person');
+  t.equal(r.status, 'historical');
+  t.equal(r.isLiving, false);
+  t.end();
+});
+
+test('mythological: normal person (no markers) still classified as active', function (t) {
+  const personData = {
+    name: 'Marie Curie',
+    occupation: 'physicist, chemist',
+    briefBiography: 'Polish-French physicist, discovered radium.'
+  };
+  // No death date, no mythological markers — should still default to
+  // "living" (the pre-fix behaviour for genuine unknowns).
+  const r = subjectStatus.inspect(personData, null, 'person');
+  t.equal(r.status, 'active');
+  t.equal(r.isLiving, true);
+  t.equal(r.mythologicalReason, null);
+  t.end();
+});
+
+test('mythological: word boundary — "godfather" does NOT match', function (t) {
+  const personData = {
+    name: 'A Person',
+    occupation: 'author of The Godfather'
+  };
+  const r = subjectStatus.inspect(personData, null, 'person');
+  t.equal(r.status, 'active', 'godfather does not trigger god-of match');
+  t.equal(r.isLiving, true);
+  t.end();
+});
+
+test('mythological: word boundary — "Godalming" (place name) does NOT match', function (t) {
+  const personData = {
+    name: 'A Person',
+    briefBiography: 'Born in Godalming, Surrey.'
+  };
+  const r = subjectStatus.inspect(personData, null, 'person');
+  t.equal(r.status, 'active');
+  t.equal(r.isLiving, true);
+  t.end();
+});
+
+test('mythological: real death date wins over mythological markers (deceased not historical)', function (t) {
+  // Weird edge case — a real historical person whose brief biography
+  // happens to mention Greek mythology (e.g. a classicist). If they
+  // have a real death date, that takes precedence — status='deceased',
+  // not 'historical'. The mythological check only fires on the
+  // "no death date anywhere" branch.
+  const personData = {
+    name: 'A Classicist',
+    deathDate: '1955-04-18',
+    briefBiography: 'A scholar of Greek mythology and Homer.'
+  };
+  const r = subjectStatus.inspect(personData, null, 'person');
+  t.equal(r.status, 'deceased');
+  t.equal(r.mythologicalReason, null, 'mythological check bypassed when death known');
+  t.end();
+});
+
+test('mythological: check does not run on organisations', function (t) {
+  // "Museum of Greek Mythology" — organisation, not a person. The
+  // mythological branch is gated on isPerson, so this stays with the
+  // org classification path.
+  const personData = {
+    name: 'Museum of Greek Mythology',
+    briefBiography: 'A museum devoted to Greek mythology, active 2010-present.'
+  };
+  const r = subjectStatus.inspect(personData, null, 'organisation');
+  t.notEqual(r.status, 'historical', 'still classified as org');
+  t.equal(r.mythologicalReason, null);
+  t.end();
+});
+
+test('mythological: "mythical" one-word marker → historical', function (t) {
+  const personData = {
+    name: 'Prometheus',
+    briefBiography: 'A mythical Titan who gave fire to humanity.'
+  };
+  const r = subjectStatus.inspect(personData, null, 'person');
+  t.equal(r.status, 'historical');
+  t.equal(r.isLiving, false);
+  t.end();
+});
+
+test('isSuppressedOnPublicSite: mythological person no longer suppressed (isLiving:false)', function (t) {
+  // Verifies the downstream effect — the public-site suppression only
+  // fires on isLiving:true persons, so flipping mythological subjects
+  // to isLiving:false unsuppresses them without any other config
+  // change.
+  t.equal(subjectStatus.isSuppressedOnPublicSite(
+    { isLiving: false, subjectType: 'person', status: 'historical' }, {}), false);
+  t.end();
+});
