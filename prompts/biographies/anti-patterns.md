@@ -116,6 +116,49 @@ Reviewer behaviour:
   input data, that's fine; if it's the LLM's characterisation,
   do not include it.
 
+## Sweeping narrative claims (any source tag)
+
+- Avoid grand narrative summaries — phrases like "enduring presence",
+  "lasting legacy", "cultural significance", "material culture",
+  "across centuries", "across millennia", "throughout history",
+  "illustrates the subject's continued relevance".
+- These read as authoritative but almost never have specific evidence
+  in the input data. State what the sources say happened in specific
+  dated terms. If a claim can only be phrased in sweeping terms, it
+  probably shouldn't be in the biography.
+- Applies REGARDLESS of source tag. In particular this is NOT a
+  loophole for `llm:contextualising` — see the section below.
+- BAD example: "The museum's collection illustrates Hygeia's enduring
+  presence in material culture across more than two millennia, from
+  ancient originals to later reproductions and commemorative objects."
+- GOOD example: "The museum holds N objects depicting Hygeia,
+  ranging in date from A to B and including [specific examples]."
+- The reviewer should flag any sentence making a sweeping narrative
+  claim without dated, source-anchored specifics as `error:medium`.
+
+## llm:contextualising boundaries — real era colour vs covert subject-claims
+
+- The `llm:contextualising` tag is for GENUINE background / era colour
+  where the sentence is NOT a specific claim about the subject.
+  Legitimate example: "Artificial eye making in early eighteenth-
+  century London was a specialist trade centred in Clerkenwell."
+  That sentence would be true whether or not the subject existed —
+  it's context about the world the subject inhabited.
+- `llm:contextualising` is NOT a loophole for making unsupported
+  claims about the SUBJECT. If the sentence talks about the subject's
+  importance, endurance, cultural significance, legacy, iconography,
+  or "presence" across time, it is a subject-claim regardless of how
+  it's phrased.
+- Trigger words that suggest a supposedly "contextualising" sentence
+  has crossed into subject-claim territory: "enduring", "legacy",
+  "material culture", "illustrates the subject's", "across centuries /
+  millennia", "reflects the subject's", "continues to inspire",
+  "remains central to". If any of these appear, the sentence is not
+  contextualising — either OMIT it or tag it `llm:general_knowledge`
+  (which will be hidden by default at publishing level 3).
+- The reviewer should flag `llm:contextualising` sentences that make
+  claims specifically about the subject as `error:medium`.
+
 ## Brand vs subsidiary vs sibling brand (conflation risk)
 
 - When a company has multiple sibling brands under the same parent,

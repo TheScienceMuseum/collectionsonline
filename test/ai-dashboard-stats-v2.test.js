@@ -168,7 +168,7 @@ test('v2: verificationCandidates sums across all records', async function (t) {
       verificationCandidates: {
         generalKnowledgeCount: 2,
         contextualisingCount: 3,
-        lowConfidenceInferredCount: 1,
+        inferredCount: 1,
         estimatedExternalValidationCost: 0.05
       }
     }),
@@ -178,7 +178,7 @@ test('v2: verificationCandidates sums across all records', async function (t) {
       verificationCandidates: {
         generalKnowledgeCount: 1,
         contextualisingCount: 0,
-        lowConfidenceInferredCount: 4,
+        inferredCount: 4,
         estimatedExternalValidationCost: 0.02
       }
     }),
@@ -187,7 +187,7 @@ test('v2: verificationCandidates sums across all records', async function (t) {
   const stats = await dashboardStats.getStats(dynamo, CONFIG);
   t.equal(stats.v2.verificationCandidates.generalKnowledge, 3);
   t.equal(stats.v2.verificationCandidates.contextualising, 3);
-  t.equal(stats.v2.verificationCandidates.lowConfidenceInferred, 5);
+  t.equal(stats.v2.verificationCandidates.inferred, 5);
   t.equal(stats.v2.verificationCandidates.total, 11);
   t.ok(Math.abs(stats.v2.verificationCandidates.estimatedExternalValidationCost - 0.07) < 1e-9);
   t.equal(typeof stats.v2.verificationCandidates.estimatedExternalValidationCostFormatted, 'string');
