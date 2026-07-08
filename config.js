@@ -54,6 +54,15 @@ module.exports = require('rc')('co', {
   // returns 404. Default false — enable in .corc / env only when the
   // feature is intentionally live.
   aiBiographyPublicFlagEnabled: process.env.AI_BIOGRAPHY_PUBLIC_FLAG_ENABLED === 'true',
+  // Public-page on-demand generation. When true (dev / staging), a hit on
+  // /people/{id} for a record with no stored biography fires a Claude call
+  // and caches the result. When false (prod default), the public route
+  // returns 204 for uncached records — biographies come exclusively from
+  // batch pre-generation + the admin "generate for URL" affordance. Keeping
+  // this off in prod bounds the cost profile: no long-tail public traffic
+  // can trigger a Claude call. Admin-initiated regens are always allowed
+  // regardless of this flag.
+  aiBiographyOnDemandEnabled: process.env.AI_BIOGRAPHY_ON_DEMAND_ENABLED === 'true',
   // Named admin users — an object of { username: token } pairs. When
   // set, these take precedence over the shared adminToken for login.
   // Attributed usernames flow through to staff notes / flags / reviews
@@ -114,8 +123,11 @@ module.exports = require('rc')('co', {
   // whole v2 defensive-by-default design assumes this pass is running.
   aiBiographyPerGenerationReviewEnabled: process.env.AI_BIOGRAPHY_PER_GENERATION_REVIEW_ENABLED !== 'false',
 
-  // External validation (Mode A on-demand CoVe against Wikipedia +
-  // Wikidata deep + Phase-2 authorities as they ship). Gates the
+  // On-demand external claim verification against Wikipedia + Wikidata
+  // deep + Phase-2 authorities as they ship. NOT Meta's Chain-of-
+  // Verification (CoVe) — that's a distinct intrinsic self-verification
+  // technique tracked as separate roadmap work; this feature retrieves
+  // authoritative external evidence for a specific claim. Gates the
   // "Verify externally" button on sentences + review findings in the
   // admin UI. Off by default — costs money per verification and needs
   // curator + operator agreement before enabling. When true, the button

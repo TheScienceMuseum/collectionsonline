@@ -10,6 +10,21 @@
 {{> admin-headline-strip stats=headlineStats}}
 {{/if}}
 
+{{!-- Generate biography for a record — accepts a bare ID (cp37054) or a
+     public URL (/people/cp37054/albert-einstein). POSTs to /admin/ai/generate,
+     which resolves the input, fires the writer + reviewer in the background,
+     and redirects to the detail page in "?generating=1" mode. --}}
+<div style="margin-bottom: 1rem; padding: 0.75rem 1rem; background: #fbf9f4; border: 1px solid #e0dcc9; border-radius: 4px;">
+  <form method="POST" action="/admin/ai/generate" style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin: 0;">
+    <label for="generate-input" style="font-weight: 600; font-size: 0.9rem;">Generate for record:</label>
+    <input id="generate-input" type="text" name="input" placeholder="cp37054 or /people/cp37054/albert-einstein" style="padding: 0.4rem 0.6rem; border: 1px solid #c5c1b5; border-radius: 4px; background: #fdfdfa; color: #2a2a2a; flex: 1; min-width: 260px; max-width: 480px;">
+    <button type="submit" class="btn btn--primary">Generate</button>
+    {{#if generateError}}
+    <span class="text-meta" style="color: #b03030;">Couldn't extract an ID from that input &mdash; try a bare ID or a <code>/people/&lt;id&gt;</code> URL.</span>
+    {{/if}}
+  </form>
+</div>
+
 <form method="GET" action="/admin/ai" style="margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
   <input type="text" name="search" value="{{search}}" placeholder="Search by ID, name, or URL" title="Examples: cp37054 · Isaac Newton · /people/cp37054" style="padding: 0.4rem 0.6rem; border: 1px solid #c5c1b5; border-radius: 4px; background: #fdfdfa; color: #2a2a2a; flex: 1; min-width: 200px; max-width: 300px;">
   <select name="promptVersion" style="padding: 0.4rem 0.6rem; border: 1px solid #c5c1b5; border-radius: 4px; background: #fdfdfa; color: #2a2a2a;">

@@ -288,3 +288,54 @@ test('diagnostics: omitting diagnostics arg does not throw on failure', async fu
   t.pass('no throw');
   t.end();
 });
+
+// --- Prompt caching (opt-in) -----------------------------------------
+
+test('caching: default (no useCache) → system sent as plain string', async function (t) {
+  const fake = makeFakeClient(validResponse());
+  await generate(personData(), [], {}, { apiKey: 'sk-test', client: fake.client });
+  t.equal(typeof fake.calls[0].system, 'string',
+    'system is a plain string when useCache is not set');
+  t.end();
+});
+
+test('caching: useCache:true → system sent as ephemeral cache block', async function (t) {
+  const fake = makeFakeClient(validResponse());
+  await generate(personData(), [], {}, {
+    apiKey: 'sk-test', client: fake.client, useCache: true
+  });
+  const system = fake.calls[0].system;
+  t.ok(Array.isArray(system), 'system is an array of content blocks');
+  t.equal(system.length, 1);
+  t.equal(system[0].type, 'text');
+  t.deepEqual(system[0].cache_control, { type: 'ephemeral' },
+    'cache_control marks the block as ephemeral');
+  t.ok(system[0].text.indexOf('Class-wide rules') !== -1,
+    'system text still carries the full assembled prompt');
+  t.end();
+});
+
+test('caching: cache token counts surface on the returned payload', async function (t) {
+  const fake = makeFakeClient(validResponse(), {
+    input_tokens: 300,
+    output_tokens: 500,
+    cache_creation_input_tokens: 1200,
+    cache_read_input_tokens: 0
+  });
+  const out = await generate(personData(), [], {}, {
+    apiKey: 'sk-test', client: fake.client, useCache: true
+  });
+  t.equal(out.cacheCreationTokens, 1200, 'cache write tokens surface');
+  t.equal(out.cacheReadTokens, 0, 'cache read tokens surface');
+  t.end();
+});
+
+test('caching: absent usage cache fields default to 0', async function (t) {
+  const fake = makeFakeClient(validResponse()); // usage lacks cache_* fields
+  const out = await generate(personData(), [], {}, {
+    apiKey: 'sk-test', client: fake.client
+  });
+  t.equal(out.cacheCreationTokens, 0);
+  t.equal(out.cacheReadTokens, 0);
+  t.end();
+});

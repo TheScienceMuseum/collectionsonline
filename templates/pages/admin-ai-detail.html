@@ -1,6 +1,31 @@
 {{#if notFound}}
-<div class="admin-banner">Record not found.</div>
-<a href="/admin/ai" class="btn btn--secondary">Back to list</a>
+{{#if generating}}
+{{!-- Redirected here from POST /admin/ai/generate — runRegenerate is running
+     in the background. Meta-refresh polls every 5s; when the BIOGRAPHY item
+     lands in DynamoDB, the reload falls through to the normal detail view. --}}
+<meta http-equiv="refresh" content="5">
+<div style="margin-bottom: 1rem;">
+  <a href="/admin/ai" class="text-meta">&larr; Back to list</a>
+</div>
+<h2 style="margin-bottom: 0.5rem;">Generating biography for {{candidateId}}…</h2>
+<div class="detail-section" style="background: #fbf9f4; border-left: 3px solid #c87a1e; padding: 0.9rem 1.1rem; border-radius: 3px;">
+  <p style="margin: 0 0 0.5rem 0;"><strong>Please wait.</strong> Writer + reviewer usually take 7&ndash;15 seconds. This page refreshes every 5s until the biography lands.</p>
+  <p class="text-meta" style="margin: 0;">You can safely close this tab &mdash; generation continues in the background. Return to <code>/admin/ai/{{candidateId}}</code> to see the result.</p>
+</div>
+{{else}}
+<div style="margin-bottom: 1rem;">
+  <a href="/admin/ai" class="text-meta">&larr; Back to list</a>
+</div>
+<div class="admin-banner">No AI biography for <code>{{candidateId}}</code> yet.</div>
+<div class="detail-section" style="margin-top: 1rem;">
+  <p>This record hasn't been generated. If it's a valid <code>agent</code> record in Elasticsearch, you can seed one now &mdash; the writer + reviewer run in the background and the page refreshes when the result lands.</p>
+  <form method="POST" action="/admin/ai/generate" style="display: inline;">
+    <input type="hidden" name="input" value="{{candidateId}}">
+    <button type="submit" class="btn btn--primary">Generate biography</button>
+  </form>
+  <a href="/admin/ai" class="btn btn--secondary" style="margin-left: 0.5rem;">Back to list</a>
+</div>
+{{/if}}
 {{else}}
 
 <div style="margin-bottom: 1rem;">
@@ -236,7 +261,7 @@
   <div>
     <dt>Publishing level</dt>
     <dd>
-      <strong title="Currently publishing sentences tagged: {{publishingLevelDescription}}. All levels: 0 = museum only · 1 = + wikidata · 2 = + llm:inferred · 3 = + llm:contextualising (default) · 4 = + llm:validated (external CoVe) · 5 = + llm:general_knowledge. Curators can override per-sentence via Approve.">{{renderedBiography.publishingLevel}}</strong>
+      <strong title="Currently publishing sentences tagged: {{publishingLevelDescription}}. All levels: 0 = museum only · 1 = + wikidata · 2 = + llm:inferred · 3 = + llm:contextualising (default) · 4 = + llm:validated (external verification) · 5 = + llm:general_knowledge. Curators can override per-sentence via Approve.">{{renderedBiography.publishingLevel}}</strong>
       <span class="text-meta" title="Sentence counts after filter + curator overrides + likely-error hides applied. Hidden includes: source below the current level, hidden by a likely-error finding, and hidden by curator rejection.">·
         {{renderedBiography.visibleCount}} shown / {{renderedBiography.hiddenCount}} hidden
       </span>
@@ -246,7 +271,7 @@
   <div class="detail-meta__field--secondary">
     <dt>Prompt playground</dt>
     <dd>
-      <a href="/admin/ai/{{record.PK}}/playground" title="Try a custom prompt on this subject without touching the live record. Useful for workshops and iterative prompt development.">try a custom prompt ↗</a>
+      <a href="/admin/ai/{{record.PK}}/playground" title="Try a custom prompt on this subject without touching the live record. Useful for workshops and iterative prompt development." style="font-size: 0.85rem;">try a custom prompt ↗</a>
     </dd>
   </div>
 </div>
@@ -636,7 +661,7 @@
 
   <div class="biography-summary" style="margin-top: 0.5rem;">
     Publishing level
-    <strong title="Currently publishing sentences tagged: {{publishingLevelDescription}}. Change via the aiBiographyPublishingLevel config key. Level 0 = museum only · 1 = + wikidata · 2 = + llm:inferred · 3 = + llm:contextualising (default) · 4 = + llm:validated (external CoVe) · 5 = + llm:general_knowledge.">{{renderedBiography.publishingLevel}}</strong> —
+    <strong title="Currently publishing sentences tagged: {{publishingLevelDescription}}. Change via the aiBiographyPublishingLevel config key. Level 0 = museum only · 1 = + wikidata · 2 = + llm:inferred · 3 = + llm:contextualising (default) · 4 = + llm:validated (external verification) · 5 = + llm:general_knowledge.">{{renderedBiography.publishingLevel}}</strong> —
     <strong>{{renderedBiography.visibleCount}}</strong> publishing,
     <strong title="Includes: source below the current publishing level, hidden by a likely-error finding, and hidden by curator rejection.">{{renderedBiography.hiddenCount}}</strong> hidden
     (of {{renderedBiography.totalCount}} total)
@@ -905,14 +930,14 @@
   <summary>Verification candidates <span class="text-meta" style="font-weight: normal;">— sentences that could be promoted with external validation</span></summary>
   <div class="detail-section">
     <p class="text-meta" style="margin: 0 0 0.5rem 0;">
-      Counters instrumented for future Mode B batch validation. Not billed unless you run per-sentence verification manually.
+      Counters instrumented for future batch external verification. Not billed unless you run per-sentence verification manually.
     </p>
     <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 0.75rem; flex-wrap: wrap; font-size: 0.85rem;">
       <li><strong>{{record.verificationCandidates.generalKnowledgeCount}}</strong> general knowledge</li>
       <li><strong>{{record.verificationCandidates.contextualisingCount}}</strong> contextualising</li>
       <li><strong>{{record.verificationCandidates.lowConfidenceInferredCount}}</strong> low-confidence inferred</li>
-      {{#if record.verificationCandidates.estimatedCoVeCost}}
-      <li title="What Mode B batch validation on all candidates would cost">est. Mode B cost: <strong>{{record.verificationCandidates.estimatedCoVeCost}}</strong></li>
+      {{#if record.verificationCandidates.estimatedExternalValidationCost}}
+      <li title="What running batch external verification against every candidate on this record would cost">est. batch external verification cost: <strong>{{record.verificationCandidates.estimatedExternalValidationCost}}</strong></li>
       {{/if}}
     </ul>
   </div>
@@ -1034,13 +1059,14 @@
         .detail-section a:not(.btn):not(.headline-card) {
           color: #2c5288; text-decoration: underline;
         }
-     at specificity (0,3,1). Plain .concern-pill--link (0,1,0) and
-     even .concern-pill--link:link (0,2,0) lose to it, so pills
-     rendered as underlined blue text inside the Claims section.
-     Prefix every rule with `.detail-section a.concern-pill--link`
-     to match the culprit's (0,3,1) and rely on later cascade order
-     to win the tie. */
-  .detail-section a.concern-pill--link,
+     at specificity (0,3,1). Plain .detail-section a.concern-pill--link is
+     (0,2,1) and loses on the base state — that's why the underline was
+     surviving between the icon glyph and the pill text on info-tier
+     pills. The :link / :visited / :hover / :active variants each absorb
+     a pseudo-class (0,1,0), which lifts them to (0,3,1) tied with the
+     culprit and later cascade order wins the tie. Fix: bump the plain
+     form to (0,3,1) via :not(.btn) so it ties too. */
+  .detail-section a.concern-pill--link:not(.btn),
   .detail-section a.concern-pill--link:link,
   .detail-section a.concern-pill--link:visited,
   .detail-section a.concern-pill--link:hover,

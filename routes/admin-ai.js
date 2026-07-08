@@ -23,7 +23,8 @@ const reviewStore = require('../lib/ai/review-store');
 const renderBiography = require('../lib/ai/render-biography');
 const verifyExternal = require('../lib/ai/verify-external');
 const generateSourceTaggedBiography = require('../lib/ai/generate-source-tagged-biography');
-const reviewBiographyTagged = require('../lib/ai/review-biography-tagged');
+const regenerateBiography = require('../lib/ai/regenerate-biography');
+const flattenRelated = regenerateBiography.flattenRelated;
 const findingFilters = require('../lib/ai/finding-filters');
 const zlib = require('zlib');
 
@@ -95,42 +96,6 @@ function requireAuth (request, h, config) {
     return redirectToLogin(h);
   }
   return null;
-}
-
-// Derive the { id, title, link } references list saved on the
-// BIOGRAPHY item. Same behaviour as the identically-named helper in
-// routes/ai-biography.js — parses sourceDetail for `relatedItem:*`
-// citations, looks each up in the flattened related-items list, and
-// dedupes on ID. Kept local rather than shared because it's short and
-// the two routes don't otherwise cross-import. Different name so the
-// linter can't miss the duplication if/when it ever matters.
-function deriveAdminReferencesFromSentences (sentences, relatedItems) {
-  if (!Array.isArray(sentences) || sentences.length === 0) return [];
-  const byId = {};
-  (relatedItems || []).forEach(function (item) {
-    if (item && item.id) byId[item.id] = item;
-  });
-  const out = [];
-  const seen = new Set();
-  sentences.forEach(function (s) {
-    if (!s || !s.sourceDetail || typeof s.sourceDetail !== 'string') return;
-    s.sourceDetail.split(/[,;]/).forEach(function (piece) {
-      const trimmed = piece.trim().toLowerCase();
-      if (trimmed.indexOf('relateditem:') !== 0) return;
-      const refId = trimmed.slice('relateditem:'.length);
-      if (seen.has(refId)) return;
-      seen.add(refId);
-      const item = byId[refId];
-      if (!item) return;
-      out.push({
-        id: item.id,
-        title: item.title || '',
-        link: item.link || null,
-        type: item.type || null
-      });
-    });
-  });
-  return out;
 }
 
 // Count curator decisions that would fold into the NEXT regeneration.
@@ -367,6 +332,9 @@ module.exports = function (elastic, config) {
 
           const status = request.query.status || 'all';
           const search = (request.query.search || '').trim();
+          // Set by POST /admin/ai/generate when the input didn't parse into
+          // a valid ID; template renders an inline hint next to the form.
+          const generateError = request.query.error === 'generate_invalid_input';
           const promptVersionFilter = request.query.promptVersion || '';
           const modelFilter = request.query.model || '';
           const limit = parseInt(request.query.limit, 10) || 25;
@@ -386,7 +354,8 @@ module.exports = function (elastic, config) {
               modelFilter,
               availableVersions,
               availableModels,
-              nextKey: null
+              nextKey: null,
+              generateError
             }, { layout: 'admin' });
           }
 
@@ -480,7 +449,8 @@ module.exports = function (elastic, config) {
               availableVersions,
               availableModels,
               nextKey,
-              headlineStats
+              headlineStats,
+              generateError
             }, { layout: 'admin' });
           } catch (err) {
             console.error('Admin AI list error:', err.message);
@@ -494,6 +464,7 @@ module.exports = function (elastic, config) {
               availableVersions,
               availableModels,
               nextKey: null,
+              generateError,
               error: err.message
             }, { layout: 'admin' });
           }
@@ -650,9 +621,17 @@ module.exports = function (elastic, config) {
           try {
             const record = await biographyStore.fetchBiography(id);
             if (!record) {
+              // ?generating=1 arrives on the redirect from POST /admin/ai/generate
+              // — the record hasn't landed in DynamoDB yet because runRegenerate
+              // is running in the background. The template renders a
+              // "generation in progress" panel with meta-refresh polling; on
+              // the refresh that catches the finished item, this handler
+              // falls into the normal path below.
               return h.view('admin-ai-detail', {
                 record: null,
-                notFound: true
+                notFound: true,
+                generating: request.query.generating === '1',
+                candidateId: id
               }, { layout: 'admin' });
             }
             // Mirror the list-view public-visibility hint so the detail
@@ -982,6 +961,49 @@ module.exports = function (elastic, config) {
       }
     },
 
+    // Generate for a specific record — accepts either a public URL
+    // (e.g. /people/cp37054/albert-einstein) or a bare ID (cp37054). Used
+    // from the admin dashboard's "Generate for record" panel to seed
+    // biographies for records that don't have one yet. Fires
+    // runRegenerate() in the background (not awaited) and redirects
+    // straight to the detail page with ?generating=1 — the template
+    // renders a polling "in progress" panel that flips to the normal
+    // detail view once the write lands.
+    {
+      method: 'POST',
+      path: '/admin/ai/generate',
+      config: {
+        auth: false,
+        payload: {
+          output: 'data',
+          parse: true,
+          allow: ['application/x-www-form-urlencoded', 'application/json']
+        },
+        handler: async function (request, h) {
+          const authRedirect = requireAuth(request, h, config);
+          if (authRedirect) return authRedirect;
+
+          const raw = ((request.payload || {}).input || '').toString();
+          const parsed = parseSearch(raw);
+          if (!parsed || parsed.kind !== 'id') {
+            // Nothing resolved to an ID — send the curator back to the
+            // dashboard with an error param so the panel can show a hint.
+            return h.redirect('/admin/ai?error=generate_invalid_input');
+          }
+          const id = parsed.id;
+
+          // Fire-and-forget. Errors here are logged but don't reach the
+          // browser directly — the curator sees them via the failure
+          // diagnostics that runRegenerate persists on the BIOGRAPHY item.
+          regenerateBiography(elastic, config, id).catch(function (err) {
+            console.error('Admin AI generate (background) error for', id, '-', err && err.message);
+          });
+
+          return h.redirect('/admin/ai/' + id + '?generating=1');
+        }
+      }
+    },
+
     // Regenerate (uses active prompt by default; optional promptVersion payload for A/B)
     {
       method: 'POST',
@@ -996,7 +1018,7 @@ module.exports = function (elastic, config) {
           const redirectTo = '/admin/ai/' + id;
 
           try {
-            await runRegenerate(elastic, config, id);
+            await regenerateBiography(elastic, config, id);
             return h.redirect(redirectTo);
           } catch (err) {
             console.error('Admin AI regenerate error:', err.message);
@@ -1627,217 +1649,10 @@ module.exports = function (elastic, config) {
   ];
 };
 
-const DESCRIPTION_MAX_CHARS = 200;
-
-function truncateDescription (text) {
-  if (!text || typeof text !== 'string') return '';
-  const trimmed = text.trim();
-  if (trimmed.length <= DESCRIPTION_MAX_CHARS) return trimmed;
-  return trimmed.slice(0, DESCRIPTION_MAX_CHARS).replace(/\s+\S*$/, '') + '…';
-}
-
-/**
- * Full regenerate pipeline — fetch ES source, extract person data, fetch related
- * items and Wikidata, call Claude, save to DynamoDB. Single canonical write
- * path — the compare-page A/B / snapshot machinery (and its opts.model /
- * customPrompt / snapshotOnly overrides) was retired alongside the compare
- * feature. Workshop-style custom-prompt exploration lives on the separate
- * playground route (which doesn't persist to the DB).
- */
-async function runRegenerate (elastic, config, id) {
-  const esResult = await elastic.get({
-    index: config.elasticIndex || 'ciim',
-    id: TypeMapping.toInternal(id)
-  });
-  const source = esResult.body._source;
-  const personData = extractPersonData(source);
-
-  let sortedRelated = { relatedObjects: [], relatedDocuments: [] };
-  try {
-    const relatedItems = await getRelatedItems(elastic, id);
-    sortedRelated = sortRelated(relatedItems, id);
-  } catch (err) {
-    console.debug('Admin regenerate: Could not fetch related items:', err.message);
-  }
-
-  const allItems = flattenRelated(sortedRelated);
-
-  let wikidataContext = null;
-  const qCode = normaliseWikidata.getQCode(personData.wikidata);
-  if (qCode) {
-    try {
-      wikidataContext = await fetchWikidataLive(qCode);
-      if (!wikidataContext) {
-        console.warn('Admin regenerate: Wikidata fetch for', qCode, '(', id, ') returned no usable properties');
-      } else {
-        console.log('Admin regenerate: Wikidata fetch OK for', qCode, '(', id, ') - keys:', Object.keys(wikidataContext).join(', '));
-      }
-    } catch (err) {
-      console.warn('Admin regenerate: Wikidata fetch failed for', qCode, '(', id, ') -', err.message);
-    }
-  }
-
-  // Living-people policy. Only applies to subjects classified as 'person' —
-  // companies and organisations are always eligible regardless of whether
-  // we have a dissolution date, because:
-  //   - defamation / reputational risk is much lower for corporations
-  //   - dissolution dates are unreliably recorded; many "active" records
-  //     are actually defunct. Excluding them all would miss a lot of
-  //     legitimately historical subjects.
-  // Classify and capture subject status. Both travel with the canonical
-  // record — `subjectStatus.isLiving` is what the public route's living-person
-  // suppression reads when deciding whether to serve the content. Admin
-  // regeneration always generates regardless of living status; visibility
-  // is a render-time concern, not a generation-time one.
-  const subject = classifySubject(personData, wikidataContext);
-  const subjStatus = subjectStatus.inspect(personData, wikidataContext, subject.noun);
-
-  // Pre-flight data-sufficiency check. Skip the Claude API call entirely if
-  // the source data is too thin to support a meaningful biography — avoids
-  // cost, hallucination risk, and ambiguous-name confusion.
-  const assessment = assessSufficiency.assess(
-    personData, allItems, wikidataContext, config.aiBiographyMinSignals
-  );
-  if (!assessment.sufficient) {
-    console.log('Admin regenerate: insufficient data for', id,
-      '—', assessment.signalCount, '/', assessment.totalSignals,
-      'signals, minimum score', assessment.minScore, 'required.');
-    await biographyStore.saveBiography(id, {
-      status: 'insufficient_data',
-      skipReason: assessSufficiency.skipReason(assessment),
-      personName: personData.name,
-      pageUrl: '/people/' + id,
-      existingDescriptionChars: personData.descriptionChars,
-      signalScore: assessment.score,
-      signalMaxScore: assessment.maxScore,
-      signalCount: assessment.signalCount,
-      signalsPresent: assessment.present,
-      signalsMissing: assessment.missing
-    });
-    return { id, status: 'insufficient_data' };
-  }
-
-  const useModel = config.aiBiographyModel;
-
-  // Curator decisions from prior review sessions — folds
-  // rejections + clarifications back into the writer prompt as
-  // subject-specific constraints so the regen doesn't reintroduce
-  // previously-rejected claims.
-  const curatorDecisions = await curatorDecisionsStore.get(id).catch(function () { return null; });
-
-  const diagnostics = {};
-  let result;
-  try {
-    result = await generateSourceTaggedBiography(personData, allItems, wikidataContext, {
-      apiKey: config.anthropicApiKey,
-      model: useModel,
-      curatorDecisions,
-      diagnostics
-    });
-  } catch (err) {
-    console.error('Admin regenerate: unexpected error from v2 writer for', id, '-', err.message);
-    throw new Error('Generation failed: ' + err.message);
-  }
-
-  if (!result) {
-    // v2 writer returned null: either the API call failed (network / SDK
-    // caught the error — no bill) OR the response was unusable (billed).
-    // Same policy as the pre-v2 runRegenerate: do NOT persist as
-    // insufficient_data — that would silently clobber a healthy live
-    // record on a transient blip. Staff sees the error redirect and
-    // can retry; if it keeps failing they'll see the reason in the
-    // preceding log line + (via the public route's persistence) on the
-    // admin detail page's diagnostics block on next page hit.
-    console.warn('Admin regenerate: v2 writer returned null for', id,
-      '— canonical record unchanged.',
-      '· failureMode:', diagnostics.failureMode || 'unknown',
-      '· promptVersion:', diagnostics.promptVersion || 'unknown');
-    throw new Error('Generation returned null (transient); check logs and retry');
-  }
-
-  // v2 threshold constant — same 0-10 self-reported confidence gate as v1.
-  const V2_CONFIDENCE_INSUFFICIENT_AT_OR_BELOW = 2;
-  const status = result.confidence <= V2_CONFIDENCE_INSUFFICIENT_AT_OR_BELOW
-    ? 'insufficient_data'
-    : 'live';
-
-  // Per-generation reviewer — same policy as the public route. Gated
-  // on aiBiographyPerGenerationReviewEnabled (NOT aiBiographyReviewEnabled
-  // — that's the Opus manual escalation button, different reviewer +
-  // model). Uses the writer's model (Sonnet-tier) for cost parity with
-  // the public route.
-  let reviewResult = null;
-  if (config.aiBiographyPerGenerationReviewEnabled !== false) {
-    try {
-      reviewResult = await reviewBiographyTagged(result, {
-        apiKey: config.anthropicApiKey,
-        model: config.aiBiographyModel,
-        personData,
-        gbpPerUsd: config.aiBiographyGbpPerUsd
-      });
-    } catch (err) {
-      console.warn('Admin regenerate: per-generation review failed for', id, '-', err && err.message);
-    }
-  }
-
-  // See routes/ai-biography.js for why references + systemPrompt +
-  // prompt + rawResponse land on the record. Same treatment in both
-  // places so admin-triggered regenerations get the same audit trail
-  // as page-hit generations.
-  const references = deriveAdminReferencesFromSentences(result.sentences, allItems);
-
-  await biographyStore.saveBiography(id, {
-    status,
-    personName: personData.name,
-    pageUrl: '/people/' + id,
-    existingDescriptionChars: personData.descriptionChars,
-    sentences: result.sentences,
-    paragraphBreaks: result.paragraphBreaks,
-    writerConfidence: result.confidence,
-    writerNotes: result.notes,
-    verificationCandidates: result.verificationCandidates,
-    references,
-    model: result.model,
-    promptVersion: result.promptVersion,
-    inputTokens: result.inputTokens,
-    outputTokens: result.outputTokens,
-    systemPrompt: result.systemPrompt || null,
-    prompt: result.prompt || null,
-    rawResponse: result.rawResponse || null,
-    signalScore: assessment.score,
-    signalMaxScore: assessment.maxScore,
-    signalCount: assessment.signalCount,
-    signalsPresent: assessment.present,
-    signalsMissing: assessment.missing,
-    subjectStatus: subjStatus,
-    skipReason: result.confidence <= V2_CONFIDENCE_INSUFFICIENT_AT_OR_BELOW
-      ? 'Low confidence (writer self-reported ' + result.confidence + '/10) on regeneration'
-      : undefined
-  });
-
-  // Save the review as a REVIEW# item — mirrors the public route's
-  // ordering (biography first, then review). Feeds the admin detail's
-  // openFindings panel on next page load.
-  if (reviewResult && Array.isArray(reviewResult.findings)) {
-    try {
-      await reviewStore.saveReview(id, {
-        reviewedAt: new Date().toISOString(),
-        reviewerModel: reviewResult.model,
-        spend: reviewResult.spend,
-        inputTokens: reviewResult.inputTokens,
-        outputTokens: reviewResult.outputTokens,
-        findings: reviewResult.findings
-      });
-    } catch (err) {
-      console.warn('Admin regenerate: review-store save failed for', id, '-', err && err.message);
-    }
-  }
-
-  return { id, status };
-}
-
 // Assemble the ES + Wikidata inputs the writer prompt needs, for the
-// prompt playground page. Same shape the generation pipeline uses.
+// prompt playground page. Same shape the generation pipeline uses;
+// `flattenRelated` is re-exported from lib/ai/regenerate-biography.js
+// so the playground stays in sync with the writer's actual input shape.
 async function gatherPlaygroundInputs (elastic, config, id) {
   const esResult = await elastic.get({
     index: config.elasticIndex || 'ciim',
@@ -1861,29 +1676,4 @@ async function gatherPlaygroundInputs (elastic, config, id) {
   }
   const subject = classifySubject(personData, wikidataContext);
   return { personData, allItems, wikidataContext, subject };
-}
-
-function flattenRelated (sortedRelated) {
-  const items = [];
-  (sortedRelated.relatedObjects || []).forEach(function (item) {
-    items.push({
-      id: item.id,
-      title: (item.attributes && item.attributes.summary_title) || item.title || item.name || '',
-      description: truncateDescription(item.attributes && item.attributes.description),
-      link: item.links ? item.links.self : '/objects/' + item.id,
-      type: 'object',
-      role: item.role || ''
-    });
-  });
-  (sortedRelated.relatedDocuments || []).forEach(function (item) {
-    items.push({
-      id: item.id,
-      title: (item.attributes && item.attributes.summary_title) || item.title || item.name || '',
-      description: truncateDescription(item.attributes && item.attributes.description),
-      link: item.links ? item.links.self : '/documents/' + item.id,
-      type: 'document',
-      role: item.role || ''
-    });
-  });
-  return items;
 }

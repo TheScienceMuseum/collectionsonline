@@ -70,6 +70,7 @@ public/assets/icons/*
 
 # Project configuration
 .corc
+.corc.batch
 
 #database test
 test/fixtures/elastic-responses/database.json

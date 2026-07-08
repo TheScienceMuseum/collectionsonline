@@ -169,7 +169,7 @@ test('v2: verificationCandidates sums across all records', async function (t) {
         generalKnowledgeCount: 2,
         contextualisingCount: 3,
         lowConfidenceInferredCount: 1,
-        estimatedCoVeCost: 0.05
+        estimatedExternalValidationCost: 0.05
       }
     }),
     biographyItem({
@@ -179,7 +179,7 @@ test('v2: verificationCandidates sums across all records', async function (t) {
         generalKnowledgeCount: 1,
         contextualisingCount: 0,
         lowConfidenceInferredCount: 4,
-        estimatedCoVeCost: 0.02
+        estimatedExternalValidationCost: 0.02
       }
     }),
     biographyItem({ PK: 'cp3', biographyHtml: '<p>legacy, no candidates</p>' })
@@ -189,8 +189,8 @@ test('v2: verificationCandidates sums across all records', async function (t) {
   t.equal(stats.v2.verificationCandidates.contextualising, 3);
   t.equal(stats.v2.verificationCandidates.lowConfidenceInferred, 5);
   t.equal(stats.v2.verificationCandidates.total, 11);
-  t.ok(Math.abs(stats.v2.verificationCandidates.estimatedCoVeCost - 0.07) < 1e-9);
-  t.equal(typeof stats.v2.verificationCandidates.estimatedCoVeCostFormatted, 'string');
+  t.ok(Math.abs(stats.v2.verificationCandidates.estimatedExternalValidationCost - 0.07) < 1e-9);
+  t.equal(typeof stats.v2.verificationCandidates.estimatedExternalValidationCostFormatted, 'string');
   t.end();
 });
 
@@ -201,7 +201,7 @@ test('v2: verificationCandidates handles missing block gracefully', async functi
   ]);
   const stats = await dashboardStats.getStats(dynamo, CONFIG);
   t.equal(stats.v2.verificationCandidates.total, 0);
-  t.equal(stats.v2.verificationCandidates.estimatedCoVeCost, 0);
+  t.equal(stats.v2.verificationCandidates.estimatedExternalValidationCost, 0);
   t.end();
 });
 

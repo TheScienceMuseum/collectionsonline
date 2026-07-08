@@ -238,3 +238,59 @@ test('review: missing overallVerdict → defaults to possible_issues', async fun
   t.equal(out.overallVerdict, 'possible_issues');
   t.end();
 });
+
+// --- Prompt caching (opt-in) -----------------------------------------
+
+test('caching: default (no useCache) → system sent as plain string', async function (t) {
+  const fake = makeFakeClient(JSON.stringify({ factualIssues: [] }));
+  await review(biography(), { apiKey: 'sk-test', client: fake.client });
+  t.equal(typeof fake.calls[0].system, 'string',
+    'system is a plain string when useCache is not set');
+  t.end();
+});
+
+test('caching: useCache:true → system sent as ephemeral cache block', async function (t) {
+  const fake = makeFakeClient(JSON.stringify({ factualIssues: [] }));
+  await review(biography(), { apiKey: 'sk-test', client: fake.client, useCache: true });
+  const system = fake.calls[0].system;
+  t.ok(Array.isArray(system), 'system is an array of content blocks');
+  t.equal(system[0].type, 'text');
+  t.deepEqual(system[0].cache_control, { type: 'ephemeral' });
+  t.ok(system[0].text.indexOf('senior fact-checker') !== -1,
+    'system text still carries the reviewer instructions');
+  t.end();
+});
+
+test('caching: cache token counts surface on the returned payload', async function (t) {
+  const fake = makeFakeClient(JSON.stringify({ factualIssues: [] }), {
+    input_tokens: 200,
+    output_tokens: 100,
+    cache_creation_input_tokens: 0,
+    cache_read_input_tokens: 900
+  });
+  const out = await review(biography(), {
+    apiKey: 'sk-test', client: fake.client, useCache: true
+  });
+  t.equal(out.cacheCreationTokens, 0, 'cache write tokens surface');
+  t.equal(out.cacheReadTokens, 900, 'cache read tokens surface');
+  t.end();
+});
+
+test('caching: absent usage cache fields default to 0', async function (t) {
+  const fake = makeFakeClient(JSON.stringify({ factualIssues: [] }));
+  const out = await review(biography(), { apiKey: 'sk-test', client: fake.client });
+  t.equal(out.cacheCreationTokens, 0);
+  t.equal(out.cacheReadTokens, 0);
+  t.end();
+});
+
+test('caching: empty biography → empty result carries zeroed cache counts', async function (t) {
+  const fake = makeFakeClient(JSON.stringify({ factualIssues: [] }));
+  const out = await review({ sentences: [] }, {
+    apiKey: 'sk-test', client: fake.client, useCache: true
+  });
+  t.equal(out.cacheCreationTokens, 0);
+  t.equal(out.cacheReadTokens, 0);
+  t.equal(fake.calls.length, 0, 'no LLM call still holds');
+  t.end();
+});

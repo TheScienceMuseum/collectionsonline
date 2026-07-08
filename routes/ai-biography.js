@@ -253,6 +253,17 @@ function publicBiographyRoute (elastic, config) {
           return h.response({ error: 'Storage unavailable' }).code(503);
         }
 
+        // Public on-demand generation is gated by aiBiographyOnDemandEnabled.
+        // In production this is off — the public page has already looked up
+        // the cached record above, and if nothing came back we deliberately
+        // do NOT fire a Claude call for a walk-in visitor. Cost is capped by
+        // the pre-launch batch + admin-triggered regenerations. Dev / staging
+        // flips this on to keep the previous "first hit generates" workflow
+        // for prototyping.
+        if (!config.aiBiographyOnDemandEnabled) {
+          return h.response({}).code(204);
+        }
+
         // In-flight deduplication
         if (inFlight.has(id)) {
           try {
