@@ -7,8 +7,7 @@ here.
 
 > This README covers **how to run the pipeline** only. Internal decisions,
 > validation/recall numbers, and calibrated thresholds are deliberately kept
-> out of this public repo — they live in the private plan file referenced at
-> the bottom.
+> out of this public repo. Ask Jamie if you need that context.
 
 ## Pipeline at a glance
 
@@ -119,5 +118,4 @@ the app (or the affected instances) to pick up a new index.
 ## Internal notes
 
 Decisions, validation/recall results, threshold calibration, and infra notes
-are **not** in this repo (it's public). They live in the private plan file
-under `~/.claude/plans/` — ask Jamie if you need it.
+are **not** in this repo (it's public). Ask Jamie if you need that context.
