@@ -1,15 +1,16 @@
 // Walk the Elasticsearch catalogue and emit one JSONL line per object that
-// has at least one usable image. The output is the input to the Python
-// embedder in scripts/visual-search-build/.
+// has at least one usable image. This is step 1 of the build pipeline; the
+// output is the input to the Python embedder (build_index.py) in this same
+// folder. See README.md for the full pipeline.
 //
 // Each emitted line:
 //   { "object_id": "co154990", "title": "Thumbscrew, France, 1601-1850",
 //     "image_url": "https://coimages.../medium_a67686__0002_.jpg" }
 //
 // Usage:
-//   node scripts/visual-search-feed.mjs                 # full run
-//   node scripts/visual-search-feed.mjs --limit 5000    # cap for dev
-//   node scripts/visual-search-feed.mjs --out feed.jsonl
+//   node scripts/visual-search-build/visual-search-feed.mjs               # full run
+//   node scripts/visual-search-build/visual-search-feed.mjs --limit 5000  # cap for dev
+//   node scripts/visual-search-build/visual-search-feed.mjs --out feed.jsonl
 //
 // Reuses lib/helpers/jsonapi-response/sort-images.js for the canonical
 // first-image picker (position-then-upload-date sort) — do not reimplement.
@@ -21,9 +22,9 @@ import path from 'path';
 import fs from 'fs';
 
 const require = createRequire(import.meta.url);
-const config = require('../config');
-const sortImages = require('../lib/helpers/jsonapi-response/sort-images');
-const TypeMapping = require('../lib/type-mapping');
+const config = require('../../config');
+const sortImages = require('../../lib/helpers/jsonapi-response/sort-images');
+const TypeMapping = require('../../lib/type-mapping');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,12 +36,13 @@ function parseArgs (argv) {
     if (a === '--limit') out.limit = parseInt(argv[++i], 10);
     else if (a === '--out') out.outPath = argv[++i];
     else if (a === '--help' || a === '-h') {
-      console.log('Usage: node scripts/visual-search-feed.mjs [--limit N] [--out path]');
+      console.log('Usage: node scripts/visual-search-build/visual-search-feed.mjs [--limit N] [--out path]');
       process.exit(0);
     }
   }
   if (out.outPath == null) {
-    out.outPath = path.join(__dirname, 'visual-search-out', 'feed.jsonl');
+    // Default alongside the embedder's output, in the gitignored out/ dir.
+    out.outPath = path.join(__dirname, 'out', 'feed.jsonl');
   }
   return out;
 }
