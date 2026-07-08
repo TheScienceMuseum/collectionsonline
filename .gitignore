@@ -80,7 +80,6 @@ builds/*
 !builds/.gitkeep
 
 # Visual search build artefacts (large; uploaded manually to /models/ on the CDN)
-scripts/visual-search-out/
 scripts/visual-search-build/out/
 scripts/visual-search-build/out-*/
 scripts/visual-search-build/image-cache/

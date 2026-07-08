@@ -1,7 +1,7 @@
 """Build the visual-search embedding index from a JSONL feed.
 
 Inputs:
-  --input  feed.jsonl    JSONL produced by scripts/visual-search-feed.mjs
+  --input  feed.jsonl    JSONL produced by visual-search-feed.mjs (same folder)
                          each line: {"object_id", "title", "image_url"}
 
 Outputs (in --output-dir):
