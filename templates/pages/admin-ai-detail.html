@@ -780,6 +780,28 @@
           {{/each}}
         </div>
 
+        {{!-- Citations: per-sentence audit trail. Each entry names the
+              input the writer drew a fact from — either a structured
+              `value` (dates, wikidata claim labels, related-item ids)
+              or a verbatim `excerpt` (short substring of a freetext
+              input field). Every excerpt has been mechanically verified
+              at parse time via indexOf() — the writer cannot confabulate
+              a citation that survives to this display. Only sentences
+              with source ∈ {museum, wikidata, llm:validated:*} carry
+              citations; other sources have an empty array.
+              Admin-only — not on the public JSON payload. --}}
+        {{#if this.citations.length}}
+        <ul class="sentence__citations" title="Verified source anchors for the facts in this sentence. Every entry has been checked against the writer's input at parse time.">
+          {{#each this.citations}}
+          <li class="sentence__citation" data-field="{{this.field}}">
+            <code class="sentence__citation-field">{{this.field}}</code>
+            {{#if this.value}}<span class="sentence__citation-value">= {{this.value}}</span>{{/if}}
+            {{#if this.excerpt}}<span class="sentence__citation-excerpt">&rarr; &ldquo;{{this.excerpt}}&rdquo;</span>{{/if}}
+          </li>
+          {{/each}}
+        </ul>
+        {{/if}}
+
         <details class="sentence__actions">
           <summary>curator actions</summary>
           <div class="sentence__actions-body">
@@ -864,6 +886,22 @@
           <a class="pill sentence__object-chip" href="{{this.href}}" title="View this object in the collection" target="_blank" rel="noopener">→ {{this.title}}</a>
           {{/each}}
         </div>
+
+        {{!-- Same citations block as the Publishing group. Hidden
+              sentences still carry citations — a curator considering
+              an Override needs to see what the writer sourced the
+              claim from. --}}
+        {{#if this.citations.length}}
+        <ul class="sentence__citations" title="Verified source anchors for the facts in this sentence.">
+          {{#each this.citations}}
+          <li class="sentence__citation" data-field="{{this.field}}">
+            <code class="sentence__citation-field">{{this.field}}</code>
+            {{#if this.value}}<span class="sentence__citation-value">= {{this.value}}</span>{{/if}}
+            {{#if this.excerpt}}<span class="sentence__citation-excerpt">&rarr; &ldquo;{{this.excerpt}}&rdquo;</span>{{/if}}
+          </li>
+          {{/each}}
+        </ul>
+        {{/if}}
 
         <details class="sentence__actions">
           <summary>curator actions</summary>
@@ -1025,6 +1063,16 @@
   .sentence__actions { margin-top: 0.4rem; font-size: 0.8rem; }
   .sentence__actions > summary { color: #646464; cursor: pointer; }
   .sentence__actions-body { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.4rem; padding: 0.5rem; background: #fbf9f4; border-radius: 3px; }
+
+  /* Per-sentence citations block — always visible, one row per anchor.
+     Compact: monospace field name, structured value or verbatim excerpt
+     in italics. The whole list is small (0.72rem) to sit below the meta
+     row without competing with the sentence prose above. */
+  .sentence__citations { list-style: none; padding: 0; margin: 0.35rem 0 0 0; font-size: 0.72rem; color: #5a5a5a; }
+  .sentence__citation { padding: 0.05rem 0 0.05rem 0.6rem; border-left: 2px solid #d5d0c1; margin-bottom: 0.1rem; line-height: 1.5; }
+  .sentence__citation-field { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.72rem; color: #4a5568; }
+  .sentence__citation-value { margin-left: 0.35rem; color: #2a2a2a; }
+  .sentence__citation-excerpt { margin-left: 0.35rem; font-style: italic; color: #4a4a4a; }
   .sentence__action-form { display: flex; gap: 0.3rem; align-items: center; }
   .sentence__action-input { border: 1px solid #c5c1b5; border-radius: 3px; padding: 0.25rem 0.5rem; font-size: 0.8rem; font-family: inherit; min-width: 14rem; }
   .sentence__paragraph-break { border: 0; border-top: 1px dashed #c5c1b5; margin: 0.75rem 0 0.35rem 0; }

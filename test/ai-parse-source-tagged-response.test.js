@@ -237,3 +237,55 @@ test('VALID_SOURCES export is the 5-tier set', function (t) {
   t.ok(parse.VALID_SOURCES.has('llm:general_knowledge'));
   t.end();
 });
+
+// --- Citations passthrough --------------------------------------------
+
+test('citations array passes through the parser unchanged', function (t) {
+  const raw = JSON.stringify({
+    sentences: [{
+      text: 'Einstein was born in Ulm.',
+      source: 'museum',
+      sourceDetail: 'personData.birthDate, personData.briefBiography',
+      citations: [
+        { field: 'personData.birthDate', value: '1879-03-14' },
+        { field: 'personData.briefBiography', excerpt: 'was born in Ulm, Germany' }
+      ]
+    }],
+    confidence: 8
+  });
+  const result = parse(raw);
+  t.equal(result.sentences[0].citations.length, 2);
+  t.equal(result.sentences[0].citations[0].value, '1879-03-14');
+  t.equal(result.sentences[0].citations[1].excerpt, 'was born in Ulm, Germany');
+  t.end();
+});
+
+test('missing citations field → empty array on parsed sentence', function (t) {
+  const raw = JSON.stringify({
+    sentences: [{ text: 'text', source: 'museum', sourceDetail: 'x' }],
+    confidence: 5
+  });
+  const result = parse(raw);
+  t.deepEqual(result.sentences[0].citations, []);
+  t.end();
+});
+
+test('non-object citation entries dropped at parse time', function (t) {
+  const raw = JSON.stringify({
+    sentences: [{
+      text: 'text',
+      source: 'museum',
+      citations: [
+        { field: 'personData.birthDate', value: '1879' },
+        'nonsense', // dropped
+        null, // dropped
+        42, // dropped
+        { field: 'wikidata:P108', value: 'ETH Zurich' }
+      ]
+    }],
+    confidence: 5
+  });
+  const result = parse(raw);
+  t.equal(result.sentences[0].citations.length, 2, 'only the two objects survive');
+  t.end();
+});
