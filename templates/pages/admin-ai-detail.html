@@ -1,3 +1,23 @@
+{{!-- Entity-chip icon sprite. One inline SVG at the top of the page
+     defines <symbol> paths for each entity category; every citation /
+     related-object chip references them with <use xlink:href="#entity-…">.
+     Paths taken verbatim from public/assets/icons/{people,objects,
+     documents,external}.svg so the admin UI matches the main site's
+     iconography exactly. The personData ("museum field") icon is
+     bespoke — a minimal columned facade in the same 24×24 grid.
+     Sprite is aria-hidden and display:none — never rendered directly. --}}
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;" aria-hidden="true">
+  <symbol id="entity-icon-person" viewBox="0 0 24 24"><path fill="currentColor" d="M8.6,7.585 L8.6,9.415 C8.6,11.037 10.089,12.4 12,12.4 C13.904,12.4 15.4,11.029 15.4,9.415 L15.4,7.585 C15.4,5.963 13.911,4.6 12,4.6 C10.096,4.6 8.6,5.971 8.6,7.585 Z M7,7.585 C7,5.053 9.244,3 12,3 C14.761,3 17,5.043 17,7.585 L17,9.415 C17,11.947 14.756,14 12,14 C9.239,14 7,11.957 7,9.415 L7,7.585 Z M4.111,20 C4.745,17.162 8.036,15 12,15 C15.964,15 19.255,17.162 19.889,20 L18.226,20 C17.564,18.118 15.086,16.6 12,16.6 C8.914,16.6 6.436,18.118 5.774,20 L4.111,20 L4.111,20 Z"/></symbol>
+  <symbol id="entity-icon-object" viewBox="0 0 60 60"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M49.4855 18.75V41.25L30 52.5L10.5144 41.25V18.75L30 7.5L49.4855 18.75ZM43.6506 20L30 12.1188L16.3494 20L30 27.8812L43.6506 20ZM14.5144 23.5594V38.9406L28.014 46.7346V31.3533L14.5144 23.5594ZM32.014 46.7184L45.4855 38.9406V23.2815L32.014 31.0594V46.7184Z"/></symbol>
+  <symbol id="entity-icon-document" viewBox="0 0 24 24"><path fill="currentColor" d="M10.4 7.2v1.6H5.6v9.6h9.6v-4.8h1.6V20H4V7.2h6.4zm8-.469L10.566 14.566 9.434 13.434 17.269 5.6H12V4h8v8h-1.6V6.731z"/></symbol>
+  <symbol id="entity-icon-external" viewBox="0 0 24 24"><path fill="currentColor" d="M10.4 7.2v1.6H5.6v9.6h9.6v-4.8h1.6V20H4V7.2h6.4zm8-.469L10.566 14.566 9.434 13.434 17.269 5.6H12V4h8v8h-1.6V6.731z"/></symbol>
+  <symbol id="entity-icon-personData" viewBox="0 0 24 24"><path fill="currentColor" d="M3 20h18v1.5H3zM3 9.5h18V11H3zM5 12.5h1.5v6H5zm4 0h1.5v6H9zm4 0h1.5v6H13zm4 0h1.5v6H17zM12 3l9 5v1H3V8z"/></symbol>
+  {{!-- Loading spinner used on submit-in-flight buttons (Regenerate,
+       Generate for URL). CSS animation rotates the ring; the gap in
+       the arc gives the visual sense of motion. --}}
+  <symbol id="icon-spinner" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" d="M12 3a9 9 0 1 1-6.36 2.64"/></symbol>
+</svg>
+
 {{#if notFound}}
 {{#if generating}}
 {{!-- Redirected here from POST /admin/ai/generate — runRegenerate is running
@@ -453,8 +473,8 @@
     — rejections and clarifications you've added since the last generation.
     Regenerate to fold them into the biography prose.
   </div>
-  <form method="POST" action="/admin/ai/{{record.PK}}/regenerate" class="regen-banner__action">
-    <button type="submit" class="btn btn--primary">Regenerate to apply</button>
+  <form method="POST" action="/admin/ai/{{record.PK}}/regenerate" class="regen-banner__action regenerate-form">
+    <button type="submit" class="btn btn--primary regenerate-btn"><span class="regenerate-btn__label">Regenerate to apply</span></button>
   </form>
 </div>
 {{/if}}
@@ -477,8 +497,8 @@
 {{#if openFindings.length}}
 <details class="detail-section findings-panel" id="findings" open>
   <summary class="findings-panel__summary">
-    <span class="findings-panel__title">Review findings ({{openFindingsHidingCount}} hiding a claim, {{openFindingsAnnotatingCount}} annotating{{#if resolvedFindings.length}} · {{resolvedFindings.length}} recently resolved{{/if}})</span>
-    <span class="text-meta findings-panel__hint">— AI-review concerns on specific sentences; hides first, annotations after.{{#if staleFindingsCount}} · {{staleFindingsCount}} stale filtered (details below){{/if}}</span>
+    <span class="findings-panel__title">Review findings ({{openFindingsHidingCount}} hiding a claim, {{openFindingsAnnotatingCount}} info{{#if resolvedFindings.length}} · {{resolvedFindings.length}} recently resolved{{/if}})</span>
+    <span class="text-meta findings-panel__hint">— AI-review concerns on specific sentences; hides first, info after.{{#if staleFindingsCount}} · {{staleFindingsCount}} stale filtered (details below){{/if}}</span>
   </summary>
   <p class="text-meta" style="margin: 0.5rem 0 0.75rem 0;">
     Each finding is a concern the AI review raised about a specific claim.
@@ -513,12 +533,17 @@
           {{#isequal this.affectedPublishingState.variant "hidden" this}}○ {{this.affectedPublishingState.label}}{{/isequal}}
         </span>
         {{/if}}
+        {{!-- Concern-tier pill uses the SAME markup as the claims-list
+              concern pills — same colour, same icon, same label — so
+              curators eyeball the reviewer's severity identically in
+              both places. Kept as a span here (not a link) because the
+              finding row IS the target; jumping isn't relevant. --}}
         {{#isequal this.kind "error" this}}
-          {{#isequal this.confidence "high" this}}<span class="pill pill--danger" title="Reviewer flagged this as likely wrong (error · high)">likely error</span>{{/isequal}}
-          {{#isequal this.confidence "medium" this}}<span class="pill pill--attention" title="Reviewer flagged this as possibly wrong (error · medium)">possible issue</span>{{/isequal}}
-          {{#isequal this.confidence "low" this}}<span class="pill pill--attention" title="Reviewer flagged this as a hunch (error · low)">hunch</span>{{/isequal}}
+          {{#isequal this.confidence "high" this}}<span class="pill concern-pill" data-concern="block" title="Reviewer flagged this as likely wrong (error · high)"><span class="concern-pill__icon">⊗</span><span class="concern-pill__label">likely error</span></span>{{/isequal}}
+          {{#isequal this.confidence "medium" this}}<span class="pill concern-pill" data-concern="warning" title="Reviewer flagged this as possibly wrong (error · medium)"><span class="concern-pill__icon">⚠︎</span><span class="concern-pill__label">possible issue</span></span>{{/isequal}}
+          {{#isequal this.confidence "low" this}}<span class="pill concern-pill" data-concern="warning" title="Reviewer flagged this as a hunch (error · low)"><span class="concern-pill__icon">⚠︎</span><span class="concern-pill__label">hunch</span></span>{{/isequal}}
         {{else}}
-          <span class="pill" title="Reviewer left contextual information without asserting wrongness (info)">info · {{this.confidence}}</span>
+          <span class="pill concern-pill" data-concern="info" title="Reviewer left contextual information without asserting wrongness (info)"><span class="concern-pill__icon">ⓘ</span><span class="concern-pill__label">info</span></span>
         {{/isequal}}
       </div>
       {{#if this.claimText}}
@@ -694,7 +719,7 @@
       the bottom of the page. --}}
 <details class="detail-section findings-panel" id="claims" open>
   <summary class="findings-panel__summary">
-    <span class="findings-panel__title">Claims</span>
+    <span class="findings-panel__title">Claims ({{renderedBiography.visibleCount}} publishing, {{renderedBiography.hiddenCount}} hidden)</span>
     <span class="text-meta findings-panel__hint">— per-sentence provenance + curator actions for the biography above</span>
   </summary>
 
@@ -741,9 +766,9 @@
         </div>
         <div class="claims-legend__row">
           <span class="claims-legend__label">Reviewer concern:</span>
-          <span class="pill concern-pill" data-concern="info" title="Contextual note from the AI review — the reviewer thinks the curator might find this useful. Publishes without gating."><span class="concern-pill__icon">ⓘ</span> info</span>
-          <span class="pill concern-pill" data-concern="warning" title="AI review suspects a possible issue at medium confidence — worth a look but not blocking. Publishes and annotates the claim."><span class="concern-pill__icon">⚠︎</span> possible issue</span>
-          <span class="pill concern-pill" data-concern="block" title="AI review's high-confidence error — the reviewer thinks this claim is wrong. Auto-hides the sentence unless a curator explicitly overrides."><span class="concern-pill__icon">⊗</span> likely error</span>
+          <span class="pill concern-pill" data-concern="info" title="Contextual note from the AI review — the reviewer thinks the curator might find this useful. Publishes without gating."><span class="concern-pill__icon">ⓘ</span><span class="concern-pill__label">info</span></span>
+          <span class="pill concern-pill" data-concern="warning" title="AI review suspects a possible issue at medium confidence — worth a look but not blocking. Publishes and annotates the claim."><span class="concern-pill__icon">⚠︎</span><span class="concern-pill__label">possible issue</span></span>
+          <span class="pill concern-pill" data-concern="block" title="AI review's high-confidence error — the reviewer thinks this claim is wrong. Auto-hides the sentence unless a curator explicitly overrides."><span class="concern-pill__icon">⊗</span><span class="concern-pill__label">likely error</span></span>
         </div>
       </div>
     </div>
@@ -783,7 +808,7 @@
         <div class="sentence__text">{{{this.textHtml}}}</div>
         <div class="sentence__meta">
           <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{#if this.sourceDetailFormatted}}Source: {{this.sourceDetailFormatted}}{{else}}Source tag: {{this.source}}{{/if}}">
-            {{this.source}}{{#if this.sourceDetailShort}} · {{this.sourceDetailShort}}{{/if}}
+            {{this.source}}
           </span>
 
           {{!-- Task 62: state pill only surfaces the SIGNAL — curator
@@ -801,9 +826,9 @@
                 to avoid ambiguity with human curators. --}}
           {{#if this.state.concern}}
           <a class="pill concern-pill concern-pill--link" data-concern="{{this.state.concern}}" href="#finding-{{this.claimSignature}}" title="{{this.reviewFinding.concern}} · click to jump to the AI review's full note">
-            {{#isequal this.state.concern "info" this}}<span class="concern-pill__icon">ⓘ</span> info{{/isequal}}
-            {{#isequal this.state.concern "warning" this}}<span class="concern-pill__icon">⚠︎</span> possible issue{{/isequal}}
-            {{#isequal this.state.concern "block" this}}<span class="concern-pill__icon">⊗</span> likely error{{/isequal}}
+            {{#isequal this.state.concern "info" this}}<span class="concern-pill__icon">ⓘ</span><span class="concern-pill__label">info</span>{{/isequal}}
+            {{#isequal this.state.concern "warning" this}}<span class="concern-pill__icon">⚠︎</span><span class="concern-pill__label">possible issue</span>{{/isequal}}
+            {{#isequal this.state.concern "block" this}}<span class="concern-pill__icon">⊗</span><span class="concern-pill__label">likely error</span>{{/isequal}}
           </a>
           {{/if}}
 
@@ -811,12 +836,11 @@
             <span class="pill pill--attention" title="{{this.clarification}}">📝 clarification</span>
           {{/if}}
 
-          {{!-- Trailing collection-object chips — one per cited
-                relatedItem: sourceDetail. Restores v1's object
-                hyperlink discoverability from the claims view. --}}
-          {{#each this.chips}}
-          <a class="pill sentence__object-chip" href="{{this.href}}" title="View this object in the collection" target="_blank" rel="noopener">→ {{this.title}}</a>
-          {{/each}}
+          {{!-- Trailing collection-object chips removed — the Citations
+                block below now shows every cited object with its title
+                (not just its id) and links out, so the trailing chips
+                were pure duplication. Source pill above lost its
+                sourceDetail tail for the same reason. --}}
         </div>
 
         {{!-- Citations: per-sentence audit trail. Each entry names the
@@ -830,15 +854,36 @@
               citations; other sources have an empty array.
               Admin-only — not on the public JSON payload. --}}
         {{#if this.citations.length}}
-        <ul class="sentence__citations" title="Verified source anchors for the facts in this sentence. Every entry has been checked against the writer's input at parse time.">
+        <div class="citations" title="Citations grouped by field. Freetext excerpts are verbatim substrings of the input, mechanically verified at parse time — the writer cannot confabulate a quote that survives to display.">
+          <div class="citations__title">Citations</div>
           {{#each this.citations}}
-          <li class="sentence__citation" data-field="{{this.field}}">
-            <code class="sentence__citation-field">{{this.field}}</code>
-            {{#if this.value}}<span class="sentence__citation-value">= {{this.value}}</span>{{/if}}
-            {{#if this.excerpt}}<span class="sentence__citation-excerpt">&rarr; &ldquo;{{this.excerpt}}&rdquo;</span>{{/if}}
-          </li>
+          <div class="citations__group" data-chip-type="{{this.chipType}}" data-field="{{this.field}}">
+            {{!-- Header row: icon + label + optional role + optional
+                  single inline value. When the group has multiple
+                  anchors, or a single excerpt, they wrap to their own
+                  lines below (see .citations__anchors). --}}
+            <div class="citations__header">
+              <svg class="citations__icon" aria-hidden="true"><use xlink:href="#entity-icon-{{this.chipType}}"></use></svg>
+              {{#if this.href}}
+                <a class="citations__label" href="{{this.href}}" title="{{this.field}}" target="_blank" rel="noopener">{{this.chipLabel}}</a>
+              {{else}}
+                <span class="citations__label" title="{{this.field}}">{{this.chipLabel}}</span>
+              {{/if}}
+              {{#if this.role}}<span class="citations__role">({{this.role}})</span>{{/if}}
+              {{#if this.soleAnchor}}<span class="citations__inline-value">&rarr; {{this.soleAnchor.text}}</span>{{/if}}
+            </div>
+            {{#unless this.soleAnchor}}
+              {{#if this.anchors.length}}
+              <div class="citations__anchors">
+                {{#each this.anchors}}
+                <div class="citations__anchor" data-kind="{{this.kind}}">{{#isequal this.kind "excerpt" this}}&ldquo;{{this.text}}&rdquo;{{else}}&rarr; {{this.text}}{{/isequal}}</div>
+                {{/each}}
+              </div>
+              {{/if}}
+            {{/unless}}
+          </div>
           {{/each}}
-        </ul>
+        </div>
         {{/if}}
 
         <details class="sentence__actions">
@@ -887,7 +932,7 @@
         <div class="sentence__text">{{{this.textHtml}}}</div>
         <div class="sentence__meta">
           <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{#if this.sourceDetailFormatted}}Source: {{this.sourceDetailFormatted}}{{else}}Source tag: {{this.source}}{{/if}}">
-            {{this.source}}{{#if this.sourceDetailShort}} · {{this.sourceDetailShort}}{{/if}}
+            {{this.source}}
           </span>
 
           {{!-- Task 62: same simplification as the Publishing group —
@@ -911,9 +956,9 @@
                 on both publishing AND hidden claims. --}}
           {{#if this.state.concern}}
           <a class="pill concern-pill concern-pill--link" data-concern="{{this.state.concern}}" href="#finding-{{this.claimSignature}}" title="{{this.reviewFinding.concern}} · click to jump to the AI review's full note">
-            {{#isequal this.state.concern "info" this}}<span class="concern-pill__icon">ⓘ</span> info{{/isequal}}
-            {{#isequal this.state.concern "warning" this}}<span class="concern-pill__icon">⚠︎</span> possible issue{{/isequal}}
-            {{#isequal this.state.concern "block" this}}<span class="concern-pill__icon">⊗</span> likely error{{/isequal}}
+            {{#isequal this.state.concern "info" this}}<span class="concern-pill__icon">ⓘ</span><span class="concern-pill__label">info</span>{{/isequal}}
+            {{#isequal this.state.concern "warning" this}}<span class="concern-pill__icon">⚠︎</span><span class="concern-pill__label">possible issue</span>{{/isequal}}
+            {{#isequal this.state.concern "block" this}}<span class="concern-pill__icon">⊗</span><span class="concern-pill__label">likely error</span>{{/isequal}}
           </a>
           {{/if}}
 
@@ -921,9 +966,11 @@
             <span class="pill pill--attention" title="{{this.clarification}}">📝 clarification</span>
           {{/if}}
 
-          {{#each this.chips}}
-          <a class="pill sentence__object-chip" href="{{this.href}}" title="View this object in the collection" target="_blank" rel="noopener">→ {{this.title}}</a>
-          {{/each}}
+          {{!-- Trailing chips removed — the Citations block below now
+                shows every cited object with its title (not just its
+                id) and links out, so the chips were pure duplication.
+                Source pill above lost its sourceDetail tail for the
+                same reason. --}}
         </div>
 
         {{!-- Same citations block as the Publishing group. Hidden
@@ -931,15 +978,32 @@
               an Override needs to see what the writer sourced the
               claim from. --}}
         {{#if this.citations.length}}
-        <ul class="sentence__citations" title="Verified source anchors for the facts in this sentence.">
+        <div class="citations" title="Citations grouped by field. Freetext excerpts are verbatim substrings of the input, mechanically verified at parse time — the writer cannot confabulate a quote that survives to display.">
+          <div class="citations__title">Citations</div>
           {{#each this.citations}}
-          <li class="sentence__citation" data-field="{{this.field}}">
-            <code class="sentence__citation-field">{{this.field}}</code>
-            {{#if this.value}}<span class="sentence__citation-value">= {{this.value}}</span>{{/if}}
-            {{#if this.excerpt}}<span class="sentence__citation-excerpt">&rarr; &ldquo;{{this.excerpt}}&rdquo;</span>{{/if}}
-          </li>
+          <div class="citations__group" data-chip-type="{{this.chipType}}" data-field="{{this.field}}">
+            <div class="citations__header">
+              <svg class="citations__icon" aria-hidden="true"><use xlink:href="#entity-icon-{{this.chipType}}"></use></svg>
+              {{#if this.href}}
+                <a class="citations__label" href="{{this.href}}" title="{{this.field}}" target="_blank" rel="noopener">{{this.chipLabel}}</a>
+              {{else}}
+                <span class="citations__label" title="{{this.field}}">{{this.chipLabel}}</span>
+              {{/if}}
+              {{#if this.role}}<span class="citations__role">({{this.role}})</span>{{/if}}
+              {{#if this.soleAnchor}}<span class="citations__inline-value">&rarr; {{this.soleAnchor.text}}</span>{{/if}}
+            </div>
+            {{#unless this.soleAnchor}}
+              {{#if this.anchors.length}}
+              <div class="citations__anchors">
+                {{#each this.anchors}}
+                <div class="citations__anchor" data-kind="{{this.kind}}">{{#isequal this.kind "excerpt" this}}&ldquo;{{this.text}}&rdquo;{{else}}&rarr; {{this.text}}{{/isequal}}</div>
+                {{/each}}
+              </div>
+              {{/if}}
+            {{/unless}}
+          </div>
           {{/each}}
-        </ul>
+        </div>
         {{/if}}
 
         <details class="sentence__actions">
@@ -1075,6 +1139,19 @@
   .sentence__actions > summary { color: #646464; cursor: pointer; }
   .sentence__actions-body { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.4rem; padding: 0.5rem; background: #fbf9f4; border-radius: 3px; }
 
+  /* Regenerate-button spinner. When the form submits, JS (below)
+     swaps the button's label for a spinner + "Regenerating…" text and
+     disables the button so a double-submit can't fire. Spinner is an
+     inline SVG (references #icon-spinner in the sprite at the top of
+     the file) driven by the regen-spin keyframes — one revolution per
+     0.9s, quick enough to feel responsive without being distracting.
+     Applies to any form.regenerate-form on the page: the top banner
+     "Regenerate to apply" AND the action-row "Regenerate (update
+     live)" both hook in. */
+  @keyframes regen-spin { to { transform: rotate(360deg); } }
+  .regenerate-btn[disabled] { opacity: 0.85; cursor: progress; }
+  .regenerate-btn__spinner { display: inline-block; width: 0.9rem; height: 0.9rem; margin-right: 0.35rem; vertical-align: -0.15em; animation: regen-spin 0.9s linear infinite; }
+
   /* Grouped collapsibles container. Default variant (below Notes)
      has hairline top border — separates the audit fields from Notes
      above. Modifier --below-prose flips it: hairline moves to the
@@ -1092,11 +1169,53 @@
      in italics. Sized DOWN (0.68rem, muted colours) so it reads as
      supporting metadata under the meta row rather than a competing
      content block against the sentence prose. */
-  .sentence__citations { list-style: none; padding: 0; margin: 0.35rem 0 0 0; font-size: 0.68rem; color: #6a6a6a; line-height: 1.4; }
-  .sentence__citation { padding: 0.05rem 0 0.05rem 0.6rem; border-left: 2px solid #d5d0c1; margin-bottom: 0.05rem; }
-  .sentence__citation-field { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.68rem; color: #6a7280; }
-  .sentence__citation-value { margin-left: 0.35rem; font-size: 0.68rem; color: #4a4a4a; }
-  .sentence__citation-excerpt { margin-left: 0.35rem; font-size: 0.68rem; font-style: italic; color: #6a6a6a; }
+  /* Per-sentence Citations block. Grouped-by-field layout: one row per
+     unique source, with an optional set of anchor rows underneath. The
+     goal is a curator-friendly "how did this claim come about" list —
+     icons + entity names read like prose (word-spacing, no rigid table
+     columns) and long freetext excerpts stack cleanly below their
+     source rather than trying to fit on one line.
+
+     Structure (per group):
+       .citations__group
+         .citations__header    ← icon + label + role + optional inline value
+         .citations__anchors    ← 0..N stacked rows for multi-anchor cases
+           .citations__anchor
+  */
+  .citations { margin: 0.4rem 0 0 0; padding: 0.35rem 0 0 0; border-top: 1px solid #ede9dd; font-size: 0.75rem; color: #4a4a4a; line-height: 1.5; }
+  .citations__title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: #8a8580; margin-bottom: 0.2rem; }
+  .citations__group { margin-bottom: 0.15rem; }
+  .citations__group:last-child { margin-bottom: 0; }
+
+  /* Header row — flex-baseline so icon, label, role, and inline value
+     hug each other with normal word-spacing rather than sitting in
+     fixed columns with dead space. */
+  .citations__header { display: flex; align-items: baseline; gap: 0.35rem; flex-wrap: wrap; }
+  .citations__icon { width: 0.9rem; height: 0.9rem; flex: 0 0 auto; align-self: center; }
+  .citations__label { color: #2a2a2a; text-decoration: none; }
+  a.citations__label { color: #2c5288; }
+  a.citations__label:hover { text-decoration: underline; }
+  .citations__role { color: #6a6a6a; font-style: italic; }
+  .citations__inline-value { color: #4a4a4a; }
+
+  /* Anchor rows — indented under the header, one per line. Excerpts
+     get italic quote styling; structured values get monospace with a
+     right-arrow prefix (matched to the inline-value styling above so
+     multi-value groups read consistently). */
+  .citations__anchors { margin: 0.1rem 0 0.2rem 1.65rem; }
+  .citations__anchor { color: #5a5a5a; padding: 0.05rem 0; }
+  .citations__anchor[data-kind="excerpt"] { font-style: italic; color: #6a6a6a; }
+  .citations__anchor[data-kind="value"] { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.72rem; color: #4a4a4a; }
+
+  /* Per-type icon tints — match the main site's iconography palette.
+     `personData` and `wikidata` use a neutral museum-slate; person /
+     object / document / external use the main-site colours. */
+  .citations__group[data-chip-type="person"]     .citations__icon { color: #4a5568; }
+  .citations__group[data-chip-type="object"]     .citations__icon { color: #2e5a3d; }
+  .citations__group[data-chip-type="document"]   .citations__icon { color: #7a5a2a; }
+  .citations__group[data-chip-type="wikidata"]   .citations__icon { color: #5a4a7a; }
+  .citations__group[data-chip-type="personData"] .citations__icon { color: #6a5a4a; }
+  .citations__group[data-chip-type="unknown"]    .citations__icon { color: #7a7a7a; }
   .sentence__action-form { display: flex; gap: 0.3rem; align-items: center; }
   .sentence__action-input { border: 1px solid #c5c1b5; border-radius: 3px; padding: 0.25rem 0.5rem; font-size: 0.8rem; font-family: inherit; min-width: 14rem; }
   .sentence__paragraph-break { border: 0; border-top: 1px dashed #c5c1b5; margin: 0.75rem 0 0.35rem 0; }
@@ -1115,18 +1234,38 @@
   .state-pill[data-vis="hidden"][data-decided="curator"]      { background: #f5e2e2; border: 1px solid #b0797a; color: #7a2020; font-weight: 600; }
 
   /* Concern pill — orthogonal to visibility. Clickable variant scrolls
-     to the corresponding finding card. */
-  .concern-pill { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.7rem; padding: 0.15rem 0.55rem; border-radius: 3px; }
-  .concern-pill[data-concern="info"]    { background: #e6ecf1; border: 1px solid #97b5c4; color: #204a5a; }
+     to the corresponding finding card.
+     Info tier renders as neutral grey (not blue) — "info" is a
+     contextual FYI with no publishing consequence; blue tends to read
+     as either "click me" or "look at this", both of which overstate
+     it. Grey sits alongside the museum / source pills at the same
+     visual weight without shouting for attention.
+     Sized + laid out identically to .sentence__source-pill and
+     .state-pill so [museum], [● publishing], and [ⓘ info] read as one
+     family. inline-flex + gap collapses the historical whitespace-
+     plus-margin-right hack and lets the icon sit tight against the
+     label the same way the ●/○ dot pills do. */
+  .concern-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28em;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.72rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 3px;
+    line-height: 1.4;
+  }
+  .concern-pill[data-concern="info"]    { background: #efece4; border: 1px solid #c5c1b5; color: #5e564c; }
   .concern-pill[data-concern="warning"] { background: #f5edd8; border: 1px solid #c9b478; color: #6c5820; }
   .concern-pill[data-concern="block"]   { background: #f5cccc; border: 1px solid #b0797a; color: #6c1c1c; font-weight: 600; }
-  /* Normalise concern-pill icon glyphs — ⓘ ⚠︎ ⊗ render at different
-     intrinsic sizes across the base font, especially the warning
-     triangle which draws smaller than the surrounding text.
-     font-family: sans-serif escapes the monospace pill body so the
-     text-variation-selected warning glyph renders as a proper
-     symbol rather than getting shoved into a monospace cell. */
-  .concern-pill__icon { display: inline-block; font-family: -apple-system, "Segoe UI Symbol", "Helvetica Neue", sans-serif; font-size: 0.95rem; line-height: 1; vertical-align: -0.15em; margin-right: 0.1rem; }
+  /* Icon glyph inside a concern-pill. Sized in em so it tracks the pill's
+     font-size — a hair larger than the label so the circled/triangle
+     glyphs remain legible without inflating the overall pill height
+     (the earlier absolute 0.95rem sizing made [⊗ likely error] visibly
+     taller than the neighbouring [museum] pill). Sans-serif so the
+     variation-selected warning triangle renders as a proper symbol
+     rather than getting squeezed into a monospace cell. */
+  .concern-pill__icon { font-family: -apple-system, "Segoe UI Symbol", "Helvetica Neue", sans-serif; font-size: 1.05em; line-height: 1; }
   /* Anchor-pseudo overrides — must beat the admin layout rule
         .detail-section a:not(.btn):not(.headline-card) {
           color: #2c5288; text-decoration: underline;
@@ -1142,17 +1281,32 @@
   .detail-section a.concern-pill--link:link,
   .detail-section a.concern-pill--link:visited,
   .detail-section a.concern-pill--link:hover,
-  .detail-section a.concern-pill--link:active { text-decoration: none; }
+  .detail-section a.concern-pill--link:active,
+  .biography-with-rail__rail a.concern-pill--link,
+  .biography-with-rail__rail a.concern-pill--link:link,
+  .biography-with-rail__rail a.concern-pill--link:visited,
+  .biography-with-rail__rail a.concern-pill--link:hover,
+  .biography-with-rail__rail a.concern-pill--link:active { text-decoration: none; }
   .detail-section a.concern-pill--link[data-concern="info"],
   .detail-section a.concern-pill--link[data-concern="info"]:link,
-  .detail-section a.concern-pill--link[data-concern="info"]:visited    { color: #204a5a; }
+  .detail-section a.concern-pill--link[data-concern="info"]:visited,
+  .biography-with-rail__rail a.concern-pill--link[data-concern="info"],
+  .biography-with-rail__rail a.concern-pill--link[data-concern="info"]:link,
+  .biography-with-rail__rail a.concern-pill--link[data-concern="info"]:visited    { color: #204a5a; }
   .detail-section a.concern-pill--link[data-concern="warning"],
   .detail-section a.concern-pill--link[data-concern="warning"]:link,
-  .detail-section a.concern-pill--link[data-concern="warning"]:visited { color: #6c5820; }
+  .detail-section a.concern-pill--link[data-concern="warning"]:visited,
+  .biography-with-rail__rail a.concern-pill--link[data-concern="warning"],
+  .biography-with-rail__rail a.concern-pill--link[data-concern="warning"]:link,
+  .biography-with-rail__rail a.concern-pill--link[data-concern="warning"]:visited { color: #6c5820; }
   .detail-section a.concern-pill--link[data-concern="block"],
   .detail-section a.concern-pill--link[data-concern="block"]:link,
-  .detail-section a.concern-pill--link[data-concern="block"]:visited   { color: #6c1c1c; }
-  .detail-section a.concern-pill--link:hover { filter: brightness(0.95); }
+  .detail-section a.concern-pill--link[data-concern="block"]:visited,
+  .biography-with-rail__rail a.concern-pill--link[data-concern="block"],
+  .biography-with-rail__rail a.concern-pill--link[data-concern="block"]:link,
+  .biography-with-rail__rail a.concern-pill--link[data-concern="block"]:visited   { color: #6c1c1c; }
+  .detail-section a.concern-pill--link:hover,
+  .biography-with-rail__rail a.concern-pill--link:hover { filter: brightness(0.95); }
 
   /* Row-level tint driven by the SAME axes so the row background
      reads at a glance without decoding the pill. */
@@ -1209,8 +1363,8 @@
   .claims-group--source[data-source="llm:validated"]       { border-left-color: #6da97e; }
 
   /* Object hyperlink chips — trailing per sentence + inline in rendered prose. */
-  .sentence__object-chip { text-decoration: none; background: #eef2ed; border: 1px solid #a9c3a4; color: #2e5a3d; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.72rem; padding: 0.05rem 0.4rem; border-radius: 3px; }
-  .sentence__object-chip:hover { background: #dae7dd; }
+  /* .entity-chip--inline CSS removed with the trailing-chips markup —
+     citations block below the meta row now covers the same ground. */
   /* Task 59: inline collection-object links match the prose font +
      size — read as natural inline links, not distinct chips. Green
      underline hints at the museum-object anchor treatment without
@@ -1357,6 +1511,43 @@
     border-bottom: 1px dashed #e4e0d4;
   }
   .biography-with-rail__rail .rail-populated .sentence__meta { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+
+  /* Cloned links inside the rail — inline object markers in the sentence
+     text AND citation labels. Both use the SAME muted admin navy as the
+     biography + in-the-collection prose above (`.detail-section a` from
+     the layout: color #2c5288, faint underline). The rail sits outside
+     .detail-section so it wouldn't otherwise inherit that treatment;
+     scoping the same values here keeps the rail visually contiguous
+     with the prose the curator just hovered. */
+  .biography-with-rail__rail .rail-populated .ai-object-chip--inline,
+  .biography-with-rail__rail .rail-populated .citations__label,
+  .biography-with-rail__rail .rail-populated .citations a {
+    color: #2c5288;
+    text-decoration: underline;
+    text-decoration-color: rgba(31, 64, 104, 0.32);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2.5px;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+  }
+  .biography-with-rail__rail .rail-populated .ai-object-chip--inline:hover,
+  .biography-with-rail__rail .rail-populated .citations a:hover {
+    color: #1f4068;
+    text-decoration-color: #1f4068;
+    text-decoration-thickness: 1.5px;
+  }
+
+  /* Citations block cloned into the rail. Shrink the type a shade so it
+     reads as supporting detail below the sentence + meta. Drop the
+     `.citations` solid top border here — the sentence__text above
+     already carries a dashed separator, and a second hairline just
+     below the source pill reads as leftover chrome. Link colour is
+     handled by the shared rule above. */
+  .biography-with-rail__rail .rail-populated .citations { margin-top: 0.55rem; border-top: 0; padding-top: 0; }
+  .biography-with-rail__rail .rail-populated .citations__title { font-size: 0.65rem; }
   .biography-with-rail__rail .rail-jump {
     display: inline-block;
     margin-top: 0.7rem;
@@ -1423,8 +1614,18 @@
     target.classList.add('is-scroll-target');
   }
 
-  function isInteractive (el) {
-    return !!(el && el.closest && el.closest('button, form, input, textarea, select, details, summary, a'));
+  // Ignore-list for click-to-jump: we only want to bail if the click
+  // landed on an interactive descendant of the SAME sentence (a form
+  // button, a curator-action <details>, an inline object link, etc).
+  // The previous implementation used `closest(...)` without a scope,
+  // which walked up past the sentence and matched the surrounding
+  // `<details id="claims">` panel wrapper — so every click inside a
+  // claim card was mis-classified as interactive and swallowed the
+  // scroll-to-prose behaviour. Scoping to `container` restores it.
+  function isInteractiveWithin (target, container) {
+    if (!target || !target.closest || !container) return false;
+    var hit = target.closest('button, form, input, textarea, select, details, summary, a');
+    return !!(hit && container.contains(hit));
   }
 
   // Rail lock state — module-scoped so it survives across
@@ -1473,6 +1674,7 @@
       if (!claim) return;
       var textNode = claim.querySelector('.sentence__text');
       var metaNode = claim.querySelector('.sentence__meta');
+      var citationsNode = claim.querySelector('.citations');
       railPopulated.innerHTML = '';
       if (textNode) railPopulated.appendChild(textNode.cloneNode(true));
       if (metaNode) {
@@ -1500,6 +1702,12 @@
         }
         railPopulated.appendChild(metaClone);
       }
+      // Citations cloned into the rail — the strongest provenance signal
+      // for a claim; putting it in the sticky hover panel means the
+      // curator sees WHERE a fact came from without scrolling down to the
+      // full Claims row. Cloned intact so all the existing markup + CSS
+      // (icon, chip label, freetext excerpt) render identically.
+      if (citationsNode) railPopulated.appendChild(citationsNode.cloneNode(true));
 
       // Task 66 fix: only jump-to-claim is offered. The prose
       // sentence sits immediately to the left of the rail and stays
@@ -1559,7 +1767,7 @@
       for (var i = 0; i < nodes.length; i++) {
         (function (el) {
           el.addEventListener('click', function (e) {
-            if (isInteractive(e.target) && e.target !== el) return;
+            if (isInteractiveWithin(e.target, el) && e.target !== el) return;
             var sig = el.getAttribute('data-signature');
             if (!sig) return;
             if (lockedSig === sig) {
@@ -1737,6 +1945,40 @@
   } else {
     bindClaimsViewToggle();
   }
+
+  // Regenerate-button spinner. Any .regenerate-form on the page (top
+  // banner "Regenerate to apply" AND the action-row "Regenerate
+  // (update live)") shows a spinner + "Regenerating…" text and
+  // disables the button on submit. A regen takes 7–15s and the
+  // curator needs feedback that their click was received. The submit
+  // still fires normally — we just update the UI first. If the form
+  // submit fails (network drop, etc.), the button stays disabled
+  // until page reload — acceptable because a retry would fire
+  // another expensive generation.
+  function bindRegenerateSpinner () {
+    const forms = document.querySelectorAll('form.regenerate-form');
+    forms.forEach(function (form) {
+      form.addEventListener('submit', function () {
+        const btn = form.querySelector('.regenerate-btn');
+        if (!btn || btn.disabled) return;
+        const label = btn.querySelector('.regenerate-btn__label');
+        btn.disabled = true;
+        if (label) label.textContent = 'Regenerating…';
+        if (!btn.querySelector('.regenerate-btn__spinner')) {
+          const spinner = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          spinner.setAttribute('class', 'regenerate-btn__spinner');
+          spinner.setAttribute('aria-hidden', 'true');
+          spinner.innerHTML = '<use xlink:href="#icon-spinner"></use>';
+          btn.insertBefore(spinner, btn.firstChild);
+        }
+      });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindRegenerateSpinner);
+  } else {
+    bindRegenerateSpinner();
+  }
 })();
 </script>
 
@@ -1863,7 +2105,11 @@
 <details class="collapsible">
   <summary>Writer notes <span class="text-meta" style="font-weight: normal;">— the model's own editorial reasoning for this generation</span></summary>
   <div class="detail-section">
-    <p style="white-space: pre-wrap; margin: 0;">{{record.writerNotes}}</p>
+    {{!-- Matches the .prose-body treatment used by the Existing brief /
+          Existing biography blocks above so curators read the model's
+          reasoning in the same typographic register as the other
+          freetext they compare it against. --}}
+    <div class="prose-body" style="white-space: pre-wrap;">{{record.writerNotes}}</div>
   </div>
 </details>
 {{/if}}
@@ -1950,8 +2196,8 @@
     <button type="submit" class="btn btn--primary">Update Status</button>
   </form>
 
-  <form method="POST" action="/admin/ai/{{record.PK}}/regenerate" style="display: inline;" title="Refresh the live record using the current default prompt ({{activeVersion}}) and model. The public biography is updated immediately.">
-    <button type="submit" class="btn btn--secondary">Regenerate (update live)</button>
+  <form method="POST" action="/admin/ai/{{record.PK}}/regenerate" class="regenerate-form" style="display: inline;" title="Refresh the live record using the current default prompt ({{activeVersion}}) and model. The public biography is updated immediately.">
+    <button type="submit" class="btn btn--secondary regenerate-btn"><span class="regenerate-btn__label">Regenerate (update live)</span></button>
   </form>
 </div>
 
