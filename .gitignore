@@ -93,3 +93,7 @@ test/fixtures/elastic-responses/example-*
 # zips
 builds/*
 !builds/.gitkeep
+
+# Bulk-generate batch logs — one JSONL per run, written to repo root by
+# scripts/bulk-generate.js. Local audit artefact, not shared code.
+bulk-regen-batch-*.jsonl
