@@ -630,6 +630,8 @@ async function generate (elastic, config, id) {
           await reviewStore.saveReview(id, {
             reviewedAt: new Date().toISOString(),
             reviewerModel: reviewResult.model,
+            writerPromptVersion: result.promptVersion || null,
+            writerModel: result.model || null,
             spend: reviewResult.spend,
             inputTokens: reviewResult.inputTokens,
             outputTokens: reviewResult.outputTokens,

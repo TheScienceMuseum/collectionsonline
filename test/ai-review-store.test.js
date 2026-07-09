@@ -66,6 +66,29 @@ test('saveReview: unknown kind → error, unknown confidence → low', async fun
   t.end();
 });
 
+test('saveReview: stamps writerPromptVersion + writerModel from opts', async function (t) {
+  reset();
+  const out = await store.saveReview('cp1', {
+    reviewerModel: 'claude-sonnet-4-6',
+    writerPromptVersion: '2026-07-v8-collection-flow',
+    writerModel: 'claude-sonnet-4-6',
+    findings: [{ claimSignature: 'sig1', claimText: 'A.', kind: 'error', confidence: 'high', concern: 'x' }]
+  });
+  t.equal(out.writerPromptVersion, '2026-07-v8-collection-flow', 'writerPromptVersion persisted');
+  t.equal(out.writerModel, 'claude-sonnet-4-6', 'writerModel persisted');
+  t.end();
+});
+
+test('saveReview: writerPromptVersion + writerModel default to null when omitted', async function (t) {
+  reset();
+  const out = await store.saveReview('cp1', {
+    findings: [{ claimSignature: 'sig1', kind: 'error', confidence: 'high' }]
+  });
+  t.equal(out.writerPromptVersion, null);
+  t.equal(out.writerModel, null);
+  t.end();
+});
+
 test('saveReview: missing findings array throws', async function (t) {
   reset();
   try {
