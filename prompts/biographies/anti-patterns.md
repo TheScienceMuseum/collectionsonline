@@ -116,6 +116,48 @@ Reviewer behaviour:
   input data, that's fine; if it's the LLM's characterisation,
   do not include it.
 
+## Prose overreach — claiming more than the citations support
+
+Verbatim citation excerpts prevent quote confabulation but do NOT
+prevent claim inflation. A sentence can cite the source verbatim and
+still assert more than the source actually says. The reviewer must
+compare each sentence's prose against its cited excerpts and flag any
+sentence whose prose is materially stronger than the excerpts support.
+
+Common inflation patterns:
+
+- **Etymological → causal.** Source says "gave her name to X"; prose
+  says "gave rise to X" or "gave rise to the concept of X". Deriving
+  a WORD from a name is not causing a CONCEPT to exist.
+- **Occupation → founding.** Source says "worked as a physicist";
+  prose says "pioneered modern physics".
+- **Membership → prominence.** Source says "was a member of Y";
+  prose says "was a leading figure at Y".
+- **Fact + unsupported context.** Source says "was born in Ulm";
+  prose says "was shaped by the intellectual centre of Ulm".
+- **Added intensifiers.** Source says "the philosophy of hygiene";
+  prose says "the concept AND philosophy of hygiene". Adding "the
+  concept and", "the great", "the enduring", "the profound" adds
+  weight the source does not carry.
+
+BAD example (real Hygeia case, cp97864):
+- Source: `personData.biography` contains "She gave her name to the
+  philosophy of hygiene"
+- Prose: "Hygeia gave rise to the concept and philosophy of hygiene"
+- Both citations are verbatim substrings, so the citation validator
+  lets them through — but the prose has silently upgraded "gave her
+  NAME to the philosophy" (etymology) into "gave RISE to the CONCEPT
+  AND philosophy" (causation of a whole concept). That's a stronger
+  claim not present in the source.
+- Fix: "Hygeia gave her name to the philosophy of hygiene." (soften
+  back to what the source supports; drop "the concept and" and "gave
+  rise to")
+
+Reviewer should flag prose-overreach as `error:medium` when the
+sentence prose asserts materially more than the cited excerpts
+support. If the writer's inflation is minor / subjective, flag as
+`info` instead.
+
 ## Sweeping narrative claims (any source tag)
 
 - Avoid grand narrative summaries — phrases like "enduring presence",

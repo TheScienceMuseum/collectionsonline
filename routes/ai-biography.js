@@ -42,47 +42,15 @@ function truncateDescription (text) {
   return truncateDescriptionAtSentence(text, DESCRIPTION_MAX_CHARS);
 }
 
-// v2 writer emits source tags inline on each sentence (`sourceDetail:
-// 'relatedItem:coXXXXX'` when a sentence cites a collection item).
-// Downstream templates still expect a top-level `references` list of
-// { id, title, link, type } objects — same shape v1 emitted — so the
-// person page's "referenced by" block continues to work unchanged.
-// Derive it from sentences that cite a specific related item, then
-// look up each ID in the flattened related-items list to pick up the
-// human-readable title + link. Deduplicated on ID; order preserved.
-function deriveReferencesFromSentences (sentences, relatedItems) {
-  if (!Array.isArray(sentences) || sentences.length === 0) return [];
-  const byId = {};
-  (relatedItems || []).forEach(function (item) {
-    if (item && item.id) byId[item.id] = item;
-  });
-  const out = [];
-  const seen = new Set();
-  sentences.forEach(function (s) {
-    if (!s || !s.sourceDetail || typeof s.sourceDetail !== 'string') return;
-    // sourceDetail can list multiple citations, comma- or semicolon-separated:
-    //   "relatedItem:co66081, relatedItem:co66082"
-    //   "relatedItem:co12345; personData.deathDate"
-    // Extract every relatedItem:coXXXX piece; single-item ("relatedItem:coXYZ")
-    // still works as a degenerate case of the split.
-    s.sourceDetail.split(/[,;]/).forEach(function (piece) {
-      const trimmed = piece.trim().toLowerCase();
-      if (trimmed.indexOf('relateditem:') !== 0) return;
-      const refId = trimmed.slice('relateditem:'.length);
-      if (!refId || seen.has(refId)) return;
-      seen.add(refId);
-      const item = byId[refId];
-      if (!item) return;
-      out.push({
-        id: item.id,
-        title: item.title || '',
-        link: item.link || null,
-        type: item.type || null
-      });
-    });
-  });
-  return out;
-}
+// v2 writer emits references on each sentence via `sourceDetail`
+// (`relatedItem:coXXXXX`) and `citations[]`. The shared
+// `deriveReferencesFromSentences` in lib/ai/regenerate-biography.js
+// walks BOTH surfaces + extracts persons too, so the returned
+// `references[]` list on the BIOGRAPHY item is comprehensive. Imported
+// rather than duplicated so a fix to the derivation lands in one
+// place. Same shape v1 emitted — `{ id, title, link, type, role? }`
+// — plus the new `type: 'person'` variant for relatedPerson entries.
+const deriveReferencesFromSentences = require('../lib/ai/regenerate-biography').deriveReferencesFromSentences;
 
 // Top-level `sources` list — v1 emitted ['collection'] or
 // ['collection', 'wikidata']; v2 derives the same list from the
@@ -617,7 +585,7 @@ async function generate (elastic, config, id) {
     // the canonical BIOGRAPHY item so the render layer can build "→
     // view object" chips + the admin per-sentence Claims list can show
     // links, without a second Dynamo/ES round-trip.
-    const references = deriveReferencesFromSentences(result.sentences, allItems);
+    const references = deriveReferencesFromSentences(result.sentences, allItems, personData);
 
     // Save canonical v2 record. `biographyHtml` is intentionally NOT stored
     // — HTML is derived at render time from sentences + curator decisions

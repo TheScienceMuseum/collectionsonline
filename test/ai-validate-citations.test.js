@@ -18,7 +18,12 @@ function inputs () {
       birthDate: '1879-03-14',
       birthPlace: 'Ulm',
       occupation: 'physicist',
-      briefBiography: 'Albert Einstein (1879-1955) was born in Ulm, Germany. Nobel laureate; developed the special theory of relativity.'
+      briefBiography: 'Albert Einstein (1879-1955) was born in Ulm, Germany. Nobel laureate; developed the special theory of relativity.',
+      relatedPeople: [
+        { id: 'cp74631', name: 'Asklepios', role: 'father', link: '/people/cp74631' },
+        { id: 'cp82518', name: 'Epione', role: 'mother', link: '/people/cp82518' },
+        { id: 'cp00099', name: 'Institute for Advanced Study', role: '', link: '/people/cp00099' }
+      ]
     },
     wikidataContext: {
       P108: [
@@ -340,6 +345,138 @@ test('relatedItem: bad coId format → rejected', function (t) {
   );
   t.equal(out[0].citations.length, 0);
   t.equal(diagnostics[0].reason, 'bad_related_item_id');
+  t.end();
+});
+
+test('relatedItem: successful citation carries enrichment (title, href, itemType)', function (t) {
+  const out = validateCitations(
+    [sentence('museum', [{ field: 'relatedItem:co66082', value: 'co66082' }])],
+    inputs()
+  );
+  t.equal(out[0].citations.length, 1);
+  t.equal(out[0].citations[0].title, 'Bust of Albert Einstein (1879-1955)');
+  // The fixture has no `link` or `type`; enrichment coerces both to null.
+  t.equal(out[0].citations[0].href, null);
+  t.equal(out[0].citations[0].itemType, null);
+  t.end();
+});
+
+// --- Related person validation + enrichment -------------------------
+
+test('relatedPerson: value matches name → accepted with enrichment', function (t) {
+  const out = validateCitations(
+    [sentence('museum', [{ field: 'relatedPerson:cp74631', value: 'Asklepios' }])],
+    inputs()
+  );
+  t.equal(out[0].citations.length, 1);
+  t.equal(out[0].citations[0].name, 'Asklepios', 'name enriched');
+  t.equal(out[0].citations[0].role, 'father', 'role enriched');
+  t.equal(out[0].citations[0].href, '/people/cp74631', 'href enriched');
+  t.end();
+});
+
+test('relatedPerson: value matches id → accepted', function (t) {
+  const out = validateCitations(
+    [sentence('museum', [{ field: 'relatedPerson:cp82518', value: 'cp82518' }])],
+    inputs()
+  );
+  t.equal(out[0].citations.length, 1);
+  t.equal(out[0].citations[0].name, 'Epione');
+  t.equal(out[0].citations[0].role, 'mother');
+  t.end();
+});
+
+test('relatedPerson: excerpt matches name verbatim → accepted', function (t) {
+  const out = validateCitations(
+    [sentence('museum', [{ field: 'relatedPerson:cp82518', excerpt: 'Epione' }])],
+    inputs()
+  );
+  t.equal(out[0].citations.length, 1);
+  t.end();
+});
+
+test('relatedPerson: excerpt matches role verbatim → accepted', function (t) {
+  const out = validateCitations(
+    [sentence('museum', [{ field: 'relatedPerson:cp82518', excerpt: 'mother' }])],
+    inputs()
+  );
+  t.equal(out[0].citations.length, 1);
+  t.equal(out[0].citations[0].excerpt, 'mother');
+  t.equal(out[0].citations[0].name, 'Epione', 'name still enriched even when excerpt matches role');
+  t.end();
+});
+
+test('relatedPerson: excerpt not in name or role → rejected', function (t) {
+  const diagnostics = [];
+  const out = validateCitations(
+    [sentence('museum', [{ field: 'relatedPerson:cp74631', excerpt: 'made up role text' }])],
+    inputs(),
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'excerpt_not_verbatim');
+  t.end();
+});
+
+test('relatedPerson: value mismatch → rejected', function (t) {
+  const diagnostics = [];
+  const out = validateCitations(
+    [sentence('museum', [{ field: 'relatedPerson:cp74631', value: 'Not-Asklepios' }])],
+    inputs(),
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'value_mismatch');
+  t.end();
+});
+
+test('relatedPerson: unknown cpId → rejected', function (t) {
+  const diagnostics = [];
+  const out = validateCitations(
+    [sentence('museum', [{ field: 'relatedPerson:cp99999', value: 'Made-up Person' }])],
+    inputs(),
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'related_person_missing');
+  t.end();
+});
+
+test('relatedPerson: bad cpId format → rejected', function (t) {
+  const diagnostics = [];
+  const out = validateCitations(
+    [sentence('museum', [{ field: 'relatedPerson:not-a-real-id', value: 'x' }])],
+    inputs(),
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'bad_related_person_id');
+  t.end();
+});
+
+test('relatedPerson: personData.relatedPeople missing → rejected gracefully', function (t) {
+  const diagnostics = [];
+  const noPeople = inputs();
+  delete noPeople.personData.relatedPeople;
+  const out = validateCitations(
+    [sentence('museum', [{ field: 'relatedPerson:cp74631', value: 'Asklepios' }])],
+    noPeople,
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'related_person_missing');
+  t.end();
+});
+
+test('relatedPerson: organisation with no role still accepted (role is null on enrichment)', function (t) {
+  const out = validateCitations(
+    [sentence('museum', [{ field: 'relatedPerson:cp00099', value: 'Institute for Advanced Study' }])],
+    inputs()
+  );
+  t.equal(out[0].citations.length, 1);
+  t.equal(out[0].citations[0].name, 'Institute for Advanced Study');
+  // role was empty string in fixture; enrichment normalises to null via `person.role || null`
+  t.equal(out[0].citations[0].role, null);
   t.end();
 });
 
