@@ -225,3 +225,197 @@ support. If the writer's inflation is minor / subjective, flag as
   details are in the museum inputs or corroborated by Wikidata.
 - Mythological subjects have thin structured inputs; keep the
   biography short rather than filling with training-data narrative.
+
+## Attribution to the wrong entity in a related family (broader)
+
+The sibling-brand rule above is one shape of a broader class: a
+sentence names a product / action / output but attributes it to the
+wrong entity in a related family. The families that recur:
+
+- Parent company vs subsidiary (Unilever vs Gibbs)
+- Sibling brands under one parent (Lipton vs PG Tips)
+- Collaborators on a shared project (Eddington's Príncipe team vs
+  Crommelin's Sobral team on the 1919 solar eclipse)
+- Adjacent scientific expeditions or scholarly teams
+
+Rule: for every claim naming an entity's action, product, or output,
+the cited excerpt must contain BOTH the entity name AND the
+attribution together. If only one side is in the excerpt, do NOT
+infer the other. Tag the sentence `llm:inferred` or omit — do NOT
+tag `museum` with the missing side inferred.
+
+BAD example (real Einstein case, cp37054):
+- Museum has instruments used at Sobral, Brazil, in 1919
+- Museum lists Eddington as a related person
+- Biography wrote: "The 1919 total solar eclipse expedition at
+  Sobral, Brazil, organised by Sir Arthur Eddington…"
+- Problem: Eddington's team observed from Príncipe (west Africa);
+  the Sobral expedition was a separate team led by Andrew Crommelin
+  of the Royal Greenwich Observatory. Two entities in the input
+  (Sobral + Eddington) welded into a wrong attribution.
+- Fix: "The museum holds instruments from the 1919 total solar
+  eclipse expedition at Sobral, Brazil, which was one of two teams
+  observing the eclipse to test Einstein's Theory of Relativity."
+  (Sobral cited to museum; drops the wrong attribution to Eddington.)
+
+Reviewer should flag any attribution where the entity + action
+aren't co-located in a single citation as `error:high`.
+
+## Named-place substitution
+
+Do NOT substitute a well-known named location for the specific
+location the museum inputs record, even when the two are near each
+other. Named places carry historical baggage and famous names crowd
+out precise ones in the model's completions.
+
+BAD example (real Unilever case, cp42536):
+- Museum: "on marshes at Bromborough Pool on the Wirral Peninsula"
+- Biography wrote: "on marshland at Bromborough Pool on the Wirral,
+  known as Port Sunlight"
+- Problem: Port Sunlight is on the Wirral Peninsula but is a
+  distinct location (Bebington). Bromborough Pool is where the works
+  actually stood.
+- Fix: "on marshes at Bromborough Pool on the Wirral Peninsula, at
+  the site that later became known as Port Sunlight." (Preserves
+  the museum's precise place, adds the modern name as fact-supported
+  context ONLY if the source names both.)
+
+Rule: for any place mentioned, the cited excerpt must contain that
+exact place name OR a strictly more specific version of it.
+Substituting a broader / more famous nearby place is a Named-place
+substitution error. Flag as `error:medium` or `error:high` depending
+on how far apart the places are.
+
+## Temporal impossibility — cross-check death / dissolution dates
+
+For every claim naming a person's involvement in a dated event
+(founding, negotiation, publication, meeting, expedition), cross-
+check the event date against the person's known death or activity
+end. If the person died before the event, do NOT list them as a
+participant — they may have been an architect, precursor, or
+influence, but were not present.
+
+BAD example (real Unilever case, cp42536):
+- Wikidata: Antonius Johannes Jurgens died 1928
+- Museum: Unilever formed 1 January 1930
+- Biography wrote: "Unilever PLC was formed on 1 January 1930
+  through the amalgamation of Lever Brothers [and] Jurgens…"
+- Problem: Jurgens was central to the negotiations but died two
+  years before the formal amalgamation. Naming him as a participant
+  in the 1930 event is a temporal impossibility.
+- Fix: "The company was created on 1 January 1930 by the
+  amalgamation of Lever Brothers and Margarine Unie, negotiated by
+  Antonius Johannes Jurgens (d. 1928), Samuel van den Bergh, and
+  William Hulme Lever, 2nd Viscount Leverhulme." (Jurgens is named
+  in his correct role — negotiator predating the founding.)
+
+Rule: if a citation names a person, the sentence's assertion must
+be consistent with that person's death / dissolution date. Where
+the source is silent on death date, prefer past-tense construction
+("was central to the negotiations") over event-participation
+("was a founder of the 1930 amalgamation"). Reviewer flags as
+`error:high` when the biography places a person at an event after
+their known death.
+
+## Institutional sequencing inference
+
+When the museum inputs or Wikidata list multiple institutions
+associated with a subject (universities, employers, hospitals), do
+NOT infer a sequence or progression not present in the source. A
+list of institutions listed side by side does not mean "undergrad
+at one, doctorate at the other" or "moved from X to Y then Z"
+unless the source records that explicitly.
+
+BAD example (real Einstein case, cp37054):
+- Wikidata: educational institutions include Luitpold-Gymnasium,
+  ETH Zurich, University of Zurich (as a flat list)
+- Biography wrote: "educated at the Luitpold-Gymnasium, before
+  going on to study at ETH Zurich and the University of Zurich"
+- Problem: "before going on to" implies chronological sequence that
+  the source doesn't explicitly encode. ETH and University of Zurich
+  are distinct institutions with different roles in Einstein's
+  history (undergraduate at ETH; doctorate submitted to University
+  of Zurich) — the source records both without ordering.
+- Fix: "educated at institutions including the Luitpold-Gymnasium,
+  ETH Zurich, and the University of Zurich." (Preserves the source's
+  list without inferring order.)
+
+Rule: list institutions in the order the source records; do NOT add
+prepositions ("before moving to X"), connectives ("then studied at
+Y"), or role descriptions ("undergraduate at X, doctorate at Y")
+unless each is verbatim citable to the source. Reviewer flags as
+`error:medium`.
+
+Wikidata QUALIFIERS on educational / employment claims (when we
+extract them) DO carry start/end dates and role types. When
+qualifiers are present, the writer MAY use them to sequence
+correctly — but the qualifier data must be cited by property code
+in the citation. Without qualifier data, list order matches source
+order and no narrative inference is allowed.
+
+## Unsupported institutional affiliation
+
+Do NOT assert a subject's affiliation with any institution
+(university, hospital, learned society, employer, patron, order,
+academy) unless the exact affiliation is in a citation from the
+museum inputs or from a wikidata property present in the fetched
+context. Historically famous institutions are particularly high-
+risk because the LLM has strong training-data priors about which
+historical figures were "supposed to be" affiliated with them —
+Newton at Trinity, Einstein at ETH, Watson at Bolton, etc. Some
+priors are correct; the writer cannot rely on any of them.
+
+BAD example (real Alexander Monro case, cp90211):
+- Museum: silent on Monro's education
+- Biography wrote: "He studied at Leiden University, one of Europe's
+  foremost centres for medical education in the 18th century."
+- Problem: Leiden is nowhere in the museum inputs or in the fetched
+  Wikidata for this subject. LLM training-data prior only.
+- Fix: either omit the education claim entirely, OR tag as
+  `llm:general_knowledge` (which hides at publishing level 3).
+
+Rule: for every institution named in a biography, the citation
+must name that institution verbatim. If the LLM knows the subject
+was affiliated but the source is silent, either omit or tag
+`llm:general_knowledge`. Never launder a training-data affiliation
+under a `museum` or `wikidata` tag. Reviewer flags as `error:medium`
+when the affiliation is plausible; `error:high` when the specific
+institution isn't attested in inputs at all.
+
+## Mimsy catalogue "current (YYYY)" convention
+
+Mimsy briefBiography strings of the form `"FROM-current (YYYY)"`
+mean "still trading; last curator review in YYYY". The parenthesised
+year is a CATALOGUING METADATA annotation — it does NOT mean the
+entity ceased activity in that year. The Science Museum Group's
+catalogue is continuously updated; there is no publication cutoff
+that would justify treating the parenthesised year as an
+authoritative "as of" date.
+
+BAD examples (both wrong):
+- Museum: `"1890-current (2009)"`
+- Biography wrote: "Lipton Tea remained active up to at least 2009."
+  Wrong — implies uncertainty about post-2009 status the catalogue
+  doesn't have.
+- Biography wrote: "Lipton Tea was active from 1890 until 2009 as
+  of the museum's most recent record." Wrong — implies a knowledge
+  cutoff.
+
+GOOD examples:
+- If we have Wikidata dissolution date (P576) present → use it:
+  "Lipton Tea, active from 1890, was acquired by CVC Capital Partners
+  in 2022." (P576 citation)
+- If no P576 → simply say "active from 1890 to the present" or
+  drop the "to the present" phrase entirely: "Lipton Tea is a
+  British food and beverage brand founded in 1890."
+
+Rule: NEVER write the parenthesised year from a "current (YYYY)"
+string into the biography as if it were an "as of" year. When the
+brief-biography contains this pattern, treat the "current" flag as
+"still trading" and DISCARD the year annotation. If Wikidata has
+a dissolution date, use it. Otherwise, prefer present-continuous
+prose ("is active", "operates as") over dated-past-tense
+constructions.
+
+Reviewer should flag any biography quoting the catalogue's
+parenthesised year as an "as of" date as `error:high`.
