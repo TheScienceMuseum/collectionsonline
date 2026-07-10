@@ -289,3 +289,109 @@ test('non-object citation entries dropped at parse time', function (t) {
   t.equal(result.sentences[0].citations.length, 2, 'only the two objects survive');
   t.end();
 });
+
+// --- selfReview normalisation ---------------------------------------
+
+test('missing selfReview → parsed as null', function (t) {
+  const raw = JSON.stringify({
+    sentences: [{ text: 't', source: 'museum' }],
+    confidence: 5
+  });
+  const result = parse(raw);
+  t.equal(result.selfReview, null);
+  t.end();
+});
+
+test('full selfReview with checks + planningNotes + skipped parses cleanly', function (t) {
+  const raw = JSON.stringify({
+    selfReview: {
+      planningNotes: 'planning here',
+      checks: {
+        temporalConsistency: 'ok',
+        attributionAudit: 'no conflicts'
+      },
+      skipped: [
+        { desiredText: 'Einstein invented specific patents', reason: 'no_source_available' }
+      ]
+    },
+    sentences: [{ text: 't', source: 'museum' }],
+    confidence: 5
+  });
+  const result = parse(raw);
+  t.ok(result.selfReview, 'selfReview present');
+  t.equal(result.selfReview.planningNotes, 'planning here');
+  t.deepEqual(result.selfReview.checks, {
+    temporalConsistency: 'ok',
+    attributionAudit: 'no conflicts'
+  });
+  t.equal(result.selfReview.skipped.length, 1);
+  t.equal(result.selfReview.skipped[0].desiredText, 'Einstein invented specific patents');
+  t.equal(result.selfReview.skipped[0].reason, 'no_source_available');
+  t.end();
+});
+
+test('selfReview whitespace-only fields dropped', function (t) {
+  const raw = JSON.stringify({
+    selfReview: {
+      planningNotes: '   ',
+      checks: {
+        temporalConsistency: 'ok',
+        attributionAudit: ''
+      }
+    },
+    sentences: [{ text: 't', source: 'museum' }],
+    confidence: 5
+  });
+  const result = parse(raw);
+  t.ok(result.selfReview, 'selfReview kept');
+  t.equal(result.selfReview.planningNotes, undefined, 'whitespace-only planningNotes dropped');
+  t.deepEqual(result.selfReview.checks, { temporalConsistency: 'ok' }, 'only non-empty check kept');
+  t.end();
+});
+
+test('selfReview.skipped with unknown reason falls back to no_source_available', function (t) {
+  const raw = JSON.stringify({
+    selfReview: {
+      skipped: [
+        { desiredText: 'X', reason: 'bogus_reason' }
+      ]
+    },
+    sentences: [{ text: 't', source: 'museum' }],
+    confidence: 5
+  });
+  const result = parse(raw);
+  t.equal(result.selfReview.skipped[0].reason, 'no_source_available');
+  t.end();
+});
+
+test('selfReview.skipped with empty desiredText dropped', function (t) {
+  const raw = JSON.stringify({
+    selfReview: {
+      skipped: [
+        { desiredText: '', reason: 'no_source_available' },
+        { desiredText: 'X', reason: 'llm_prior_only' }
+      ]
+    },
+    sentences: [{ text: 't', source: 'museum' }],
+    confidence: 5
+  });
+  const result = parse(raw);
+  t.equal(result.selfReview.skipped.length, 1);
+  t.equal(result.selfReview.skipped[0].desiredText, 'X');
+  t.end();
+});
+
+test('selfReview with everything empty → null', function (t) {
+  const raw = JSON.stringify({
+    selfReview: {
+      planningNotes: '',
+      checks: {},
+      skipped: []
+    },
+    sentences: [{ text: 't', source: 'museum' }],
+    confidence: 5
+  });
+  const result = parse(raw);
+  t.equal(result.selfReview, null, 'nothing survives, returned as null');
+  t.end();
+});

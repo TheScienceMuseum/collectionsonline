@@ -139,5 +139,27 @@ module.exports = require('rc')('co', {
   // Bounds cost + latency on a single verification call — with 2 tools
   // shipped in Phase 1 (wikipedia + wikidataDeep) this is currently
   // no-op, but the ceiling matters once Phase 2 authorities land.
-  aiBiographyExternalValidationMaxSources: parseInt(process.env.AI_BIOGRAPHY_EXTERNAL_VALIDATION_MAX_SOURCES, 10) || 3
+  aiBiographyExternalValidationMaxSources: parseInt(process.env.AI_BIOGRAPHY_EXTERNAL_VALIDATION_MAX_SOURCES, 10) || 3,
+
+  // --- Writer self-review flags ---
+  //
+  // Both control whether the writer prompt INCLUDES a `selfReview`
+  // section in its response schema. Turning a flag off drops the
+  // corresponding instructions from the prompt AND stops the parser
+  // from expecting the sub-field.
+
+  // Structured abstention: writer emits `selfReview.skipped[]` for
+  // claims it wanted to make but could not source from the provided
+  // context. Converts "no source → fabricate" into "no source →
+  // record refusal + reason". Admin-only visibility; never on the
+  // public JSON API.
+  aiBiographyStructuredAbstentionEnabled: process.env.AI_BIOGRAPHY_STRUCTURED_ABSTENTION_ENABLED !== 'false',
+
+  // Writer self-checks: writer emits `selfReview.planningNotes` +
+  // `selfReview.checks` describing what it verified before writing
+  // (temporal consistency, attribution audit, currentness check,
+  // etc.). Ordered BEFORE the sentences in the response schema so the
+  // model plans before writing rather than rationalising after.
+  // Admin-only visibility.
+  aiBiographyWriterSelfChecksEnabled: process.env.AI_BIOGRAPHY_WRITER_SELF_CHECKS_ENABLED !== 'false'
 });

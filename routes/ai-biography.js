@@ -51,6 +51,7 @@ function truncateDescription (text) {
 // place. Same shape v1 emitted — `{ id, title, link, type, role? }`
 // — plus the new `type: 'person'` variant for relatedPerson entries.
 const deriveReferencesFromSentences = require('../lib/ai/regenerate-biography').deriveReferencesFromSentences;
+const filterSelfReview = require('../lib/ai/filter-self-review');
 
 // Top-level `sources` list — v1 emitted ['collection'] or
 // ['collection', 'wikidata']; v2 derives the same list from the
@@ -458,7 +459,11 @@ async function generate (elastic, config, id) {
         apiKey: config.anthropicApiKey,
         model: config.aiBiographyModel,
         curatorDecisions,
-        diagnostics
+        diagnostics,
+        // See regenerate-biography.js — flags gate the writer's
+        // selfReview output section AND the persisted shape below.
+        enableSelfChecks: config.aiBiographyWriterSelfChecksEnabled !== false,
+        enableAbstention: config.aiBiographyStructuredAbstentionEnabled !== false
       });
     } catch (err) {
       // v2 writer catches its own API errors internally and returns null with
@@ -606,6 +611,9 @@ async function generate (elastic, config, id) {
         writerConfidence: result.confidence,
         writerNotes: result.notes,
         verificationCandidates: result.verificationCandidates,
+        // Writer self-review filtered against the same flags that
+        // shaped the prompt — see filterSelfReview() below.
+        selfReview: filterSelfReview(result.selfReview, config),
         references,
         model: result.model,
         promptVersion: result.promptVersion,
