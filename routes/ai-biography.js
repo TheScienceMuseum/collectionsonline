@@ -13,6 +13,7 @@ const biographyStore = require('../lib/ai/biography-store');
 const dynamo = require('../lib/ai/dynamo');
 const normaliseWikidata = require('../lib/helpers/normalise-wikidata');
 const fetchWikidataLive = require('../lib/ai/fetch-wikidata-live');
+const fetchWikipediaSummary = require('../lib/ai/fetch-wikipedia-summary');
 const assessSufficiency = require('../lib/ai/assess-sufficiency');
 const classifySubject = require('../lib/ai/classify-subject');
 const subjectStatus = require('../lib/ai/subject-status');
@@ -410,6 +411,19 @@ async function generate (elastic, config, id) {
       console.log('AI Biography: No wikidata field present on', id);
     }
 
+    // Wikipedia summary — see regenerate-biography.js for rationale.
+    let wikipediaSummary = null;
+    if (config.aiBiographyWikipediaEnabled !== false) {
+      try {
+        wikipediaSummary = await fetchWikipediaSummary({
+          qCode,
+          subjectName: personData.name
+        });
+      } catch (err) {
+        console.warn('AI Biography: Wikipedia fetch failed for', id, '-', err && err.message);
+      }
+    }
+
     // Classify the subject and inspect their living/deceased status. Both
     // travel with the canonical record — `subjectStatus` is what the public
     // route's living-person suppression reads when deciding whether to
@@ -460,6 +474,7 @@ async function generate (elastic, config, id) {
         model: config.aiBiographyModel,
         curatorDecisions,
         diagnostics,
+        wikipediaSummary,
         // See regenerate-biography.js — flags gate the writer's
         // selfReview output section AND the persisted shape below.
         enableSelfChecks: config.aiBiographyWriterSelfChecksEnabled !== false,

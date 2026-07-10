@@ -86,15 +86,17 @@ const BASE_PROMPT_LINES = [
   '',
   '  "wikidata" — the fact is directly present in the WIKIDATA context below (a specific claim / property / statement). Trusted but structured; curator may spot-check.',
   '',
-  '  "llm:inferred" — the fact is a synthesis DERIVED from museum and/or Wikidata inputs, combining or paraphrasing multiple structured facts to produce a new prose statement. Safe by construction (traceable to inputs), curator may want to review.',
+  '  "wikipedia" — the fact comes from the WIKIPEDIA context below (article intro / summary). Community-edited prose — treated as less authoritative than museum or Wikidata but valuable for narrative context. Cite via `wikipedia:<article title>` with a VERBATIM excerpt (like personData excerpts, the excerpt must be a substring of the article — the validator drops anything that isn\'t).',
+  '',
+  '  "llm:inferred" — the fact is a synthesis DERIVED from museum, Wikidata, and/or Wikipedia inputs, combining or paraphrasing multiple structured facts to produce a new prose statement. Safe by construction (traceable to inputs), curator may want to review.',
   '',
   '  "llm:contextualising" — background / era colour NOT specifically about the subject. E.g. "Artificial eye making in early eighteenth-century London was a specialist trade". General context, not a specific claim about the subject.',
   '',
-  '  "llm:general_knowledge" — a specific fact about the subject that comes from your own training data and is NOT present in the museum or wikidata inputs. The riskiest tag. DEFAULTS TO HIDDEN. Use only when the fact is well-established, non-controversial, and genuinely improves the biography. If in doubt, OMIT rather than emit as general_knowledge.',
+  '  "llm:general_knowledge" — a specific fact about the subject that comes from your own training data and is NOT present in the museum, wikidata, or wikipedia inputs. The riskiest tag. DEFAULTS TO HIDDEN. Use only when the fact is well-established, non-controversial, and genuinely improves the biography. If in doubt, OMIT rather than emit as general_knowledge.',
   '',
   'PRIORITY ORDER when a fact is available from multiple sources:',
-  '  museum > wikidata > llm:inferred > llm:contextualising > llm:general_knowledge',
-  '  Always tag with the MOST authoritative source. If a fact is present in both museum and wikidata, tag it "museum".',
+  '  museum > wikidata > wikipedia > llm:inferred > llm:contextualising > llm:general_knowledge',
+  '  Always tag with the MOST authoritative source. If a fact is present in both museum and Wikipedia, tag it "museum".',
   '',
   'RULES for tagging',
   '',
@@ -118,11 +120,12 @@ const BASE_PROMPT_LINES = [
   '',
   'Never both keys on the same citation. Never neither.',
   '',
-  'Field identifiers use these four prefixes only:',
+  'Field identifiers use these five prefixes only:',
   '  "personData.<key>"     — <key> is one of: name, birthDate, birthPlace, deathDate, deathPlace, occupation, nationality, briefBiography, biography',
   '  "wikidata:<Pcode>"     — a specific Wikidata property (P19, P108, P106, etc.)',
   '  "relatedItem:<coId>"   — a specific catalogue item (co66082, ap12345, etc.)',
   '  "relatedPerson:<cpId>" — a related person or organisation from the MUSEUM RELATED PEOPLE & ORGANISATIONS section of the user prompt (cp74631, ap55555, etc.). Use this whenever you mention a name that comes from that list — parents, spouses, collaborators, sibling brands, manufacturers, etc. Do NOT hide these citations in sourceDetail alone; emit a proper citations[] entry so the admin UI can show the receipt with the person\'s name and role.',
+  '  "wikipedia:<title>"    — the intro of the subject\'s English Wikipedia article, when included in the WIKIPEDIA CONTEXT section of the user prompt. Cite via `wikipedia:<article title exactly as shown in the section header>` with an `excerpt` field containing a VERBATIM substring of the article intro — no paraphrase, exactly as it appears. The validator mechanically drops non-substring excerpts.',
   '',
   'VALUE vs EXCERPT — which one to use',
   '',
@@ -420,7 +423,8 @@ function buildSystemPrompt (opts) {
 // buildSystemPrompt({ enableSelfChecks, enableAbstention }).
 const systemPrompt = buildSystemPrompt({ enableSelfChecks: true, enableAbstention: true });
 
-function buildUserPrompt (personData, relatedItems, wikidataContext, subject) {
+function buildUserPrompt (personData, relatedItems, wikidataContext, subject, opts) {
+  opts = opts || {};
   const noun = subject.noun;
   const parts = [];
 
@@ -472,8 +476,19 @@ function buildUserPrompt (personData, relatedItems, wikidataContext, subject) {
     parts.push(formatWikidata(wikidataContext));
   }
 
+  // --- WIKIPEDIA summary (sentences drawn from this are tagged "wikipedia") ---
+  // Prose intro from the subject's Wikipedia article, when available.
+  // Cite via `wikipedia:<article title>` with a VERBATIM excerpt in
+  // the citations[] entry (the validator drops non-substrings, same
+  // as personData excerpts).
+  if (opts.wikipediaSummary && opts.wikipediaSummary.extract) {
+    parts.push('');
+    parts.push('--- WIKIPEDIA CONTEXT (article: "' + opts.wikipediaSummary.title + '") ---');
+    parts.push(opts.wikipediaSummary.extract);
+  }
+
   parts.push('');
-  parts.push('Return strict JSON matching the response schema in the system prompt. Every sentence must be tagged with exactly one source. If a fact appears in both museum and wikidata inputs, tag as museum (higher priority).');
+  parts.push('Return strict JSON matching the response schema in the system prompt. Every sentence must be tagged with exactly one source. Source priority when a fact appears in multiple inputs: museum > wikidata > wikipedia > llm:inferred.');
 
   return parts.join('\n');
 }

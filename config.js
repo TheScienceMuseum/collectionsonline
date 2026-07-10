@@ -161,5 +161,17 @@ module.exports = require('rc')('co', {
   // etc.). Ordered BEFORE the sentences in the response schema so the
   // model plans before writing rather than rationalising after.
   // Admin-only visibility.
-  aiBiographyWriterSelfChecksEnabled: process.env.AI_BIOGRAPHY_WRITER_SELF_CHECKS_ENABLED !== 'false'
+  aiBiographyWriterSelfChecksEnabled: process.env.AI_BIOGRAPHY_WRITER_SELF_CHECKS_ENABLED !== 'false',
+
+  // Wikipedia summary as an input-mode source. Fetches the first
+  // ~2000 chars of the subject's Wikipedia article intro (via the
+  // MediaWiki API, sitelink-resolved from the Wikidata Q code when
+  // available). Feeds into the writer prompt as narrative context —
+  // complements Wikidata's structured claims. Every fact the writer
+  // draws from Wikipedia must be tagged `wikipedia` and cited via
+  // `wikipedia:<article title>` in the sentence's citations[] array.
+  // Default true — off drops the fetch + prompt section entirely,
+  // saving ~500-1000 input tokens per subject. Treated as an
+  // emergency kill switch (like the writer self-review flags).
+  aiBiographyWikipediaEnabled: process.env.AI_BIOGRAPHY_WIKIPEDIA_ENABLED !== 'false'
 });

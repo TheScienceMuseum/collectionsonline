@@ -324,6 +324,76 @@ test('wikidata (upgraded shape): value that only appears in the joined summary s
   t.end();
 });
 
+// --- Wikipedia validation --------------------------------------------
+
+const wikipediaInputs = {
+  personData: { name: 'Einstein' },
+  wikidataContext: {},
+  relatedItems: [],
+  wikipediaSummary: {
+    title: 'Albert Einstein',
+    url: 'https://en.wikipedia.org/wiki/Albert_Einstein',
+    extract: 'Albert Einstein (14 March 1879 – 18 April 1955) was a German-born theoretical physicist, widely acknowledged to be one of the greatest and most influential physicists of all time.'
+  }
+};
+
+test('wikipedia: verbatim excerpt → accepted', function (t) {
+  const out = validateCitations(
+    [sentence('wikipedia', [{ field: 'wikipedia:Albert Einstein', excerpt: 'German-born theoretical physicist' }])],
+    wikipediaInputs
+  );
+  t.equal(out[0].citations.length, 1);
+  t.end();
+});
+
+test('wikipedia: non-verbatim (paraphrase) → rejected', function (t) {
+  const diagnostics = [];
+  const out = validateCitations(
+    [sentence('wikipedia', [{ field: 'wikipedia:Albert Einstein', excerpt: 'German theoretical physicist' }])],
+    wikipediaInputs,
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'excerpt_not_verbatim');
+  t.end();
+});
+
+test('wikipedia: title mismatch → rejected', function (t) {
+  const diagnostics = [];
+  const out = validateCitations(
+    [sentence('wikipedia', [{ field: 'wikipedia:Some Other Article', excerpt: 'German-born theoretical physicist' }])],
+    wikipediaInputs,
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'wikipedia_title_mismatch');
+  t.end();
+});
+
+test('wikipedia: no summary in inputs → rejected', function (t) {
+  const diagnostics = [];
+  const out = validateCitations(
+    [sentence('wikipedia', [{ field: 'wikipedia:X', excerpt: 'anything' }])],
+    { personData: {}, wikidataContext: {}, relatedItems: [], wikipediaSummary: null },
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'wikipedia_summary_missing');
+  t.end();
+});
+
+test('wikipedia: value instead of excerpt → rejected', function (t) {
+  const diagnostics = [];
+  const out = validateCitations(
+    [sentence('wikipedia', [{ field: 'wikipedia:Albert Einstein', value: 'physicist' }])],
+    wikipediaInputs,
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'wikipedia_needs_excerpt');
+  t.end();
+});
+
 test('wikidata: property missing from context → rejected', function (t) {
   const diagnostics = [];
   const out = validateCitations(
