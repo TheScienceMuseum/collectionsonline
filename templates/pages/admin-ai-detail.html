@@ -2114,6 +2114,74 @@
 </details>
 {{/if}}
 
+{{!-- Writer self-review — planning notes + self-checks + structured
+      abstentions. Ordered BEFORE the sentences in the JSON schema so
+      the model plans / catches its own overreach before writing.
+      Persisted only when the corresponding config flags are on; the
+      backend guarantees this record can't hold fields for a feature
+      that's off. Admin-only — never on the public JSON API. --}}
+{{#if record.selfReview}}
+<details class="collapsible">
+  <summary>Writer self-review <span class="text-meta" style="font-weight: normal;">— planning notes, self-checks, and abstentions the writer recorded before / while generating</span></summary>
+  <div class="detail-section">
+    {{#if record.selfReview.planningNotes}}
+    <div class="self-review__block">
+      <h4 class="self-review__heading">Planning notes</h4>
+      <div class="prose-body self-review__body">{{record.selfReview.planningNotes}}</div>
+    </div>
+    {{/if}}
+
+    {{#if record.selfReview.checks}}
+    <div class="self-review__block">
+      <h4 class="self-review__heading">Self-checks</h4>
+      <dl class="self-review__checks">
+        {{#each record.selfReview.checks}}
+        <dt class="self-review__check-key"><code>{{@key}}</code></dt>
+        <dd class="self-review__check-value">{{this}}</dd>
+        {{/each}}
+      </dl>
+    </div>
+    {{/if}}
+
+    {{#if record.selfReview.skipped.length}}
+    <div class="self-review__block">
+      <h4 class="self-review__heading">
+        Structured abstentions
+        <span class="text-meta" style="font-weight: normal; font-size: 0.85rem;">
+          — {{record.selfReview.skipped.length}} claim(s) the writer wanted to make but could not source
+        </span>
+      </h4>
+      <ul class="self-review__skipped">
+        {{#each record.selfReview.skipped}}
+        <li class="self-review__skipped-item">
+          <div class="self-review__skipped-text">&ldquo;{{this.desiredText}}&rdquo;</div>
+          <div class="self-review__skipped-reason">
+            <code>{{this.reason}}</code>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+    {{/if}}
+  </div>
+</details>
+
+<style>
+  .self-review__block { margin: 0 0 1.25rem 0; }
+  .self-review__block:last-child { margin-bottom: 0; }
+  .self-review__heading { font-size: 0.9rem; margin: 0 0 0.4rem 0; color: #333; text-transform: uppercase; letter-spacing: 0.02em; }
+  .self-review__body { white-space: pre-wrap; }
+  .self-review__checks { display: grid; grid-template-columns: minmax(180px, 1fr) minmax(320px, 3fr); gap: 0.5rem 1rem; margin: 0; font-size: 0.9rem; }
+  .self-review__check-key { margin: 0; }
+  .self-review__check-key code { background: #efece4; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.8rem; }
+  .self-review__check-value { margin: 0; line-height: 1.5; color: #2a2a2a; }
+  .self-review__skipped { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .self-review__skipped-item { padding: 0.5rem 0.75rem; background: #fbf7ec; border-left: 3px solid #d4b872; border-radius: 3px; }
+  .self-review__skipped-text { font-style: italic; color: #2a2a2a; margin-bottom: 0.25rem; }
+  .self-review__skipped-reason code { background: transparent; color: #6c5820; font-size: 0.8rem; }
+</style>
+{{/if}}
+
 {{#if record.verificationCandidates}}
 <details class="collapsible">
   <summary>Verification candidates <span class="text-meta" style="font-weight: normal;">— sentences that could be checked against external sources</span></summary>
