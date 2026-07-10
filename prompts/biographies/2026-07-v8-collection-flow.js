@@ -182,6 +182,19 @@ const BASE_PROMPT_LINES = [
   '      { "field": "wikidata:P108", "value": "Institute for Advanced Study" }',
   '    ]',
   '',
+  'WIKIDATA QUALIFIERS — use them to write TEMPORALLY-ACCURATE sentences',
+  '',
+  'The Wikidata block above may show qualifiers (start_time, end_time, position_held, academic_degree, etc.) indented under a claim, e.g.:',
+  '  - employer (wikidata:P108): Swiss Federal Institute of Intellectual Property, Institute for Advanced Study',
+  '      · Swiss Federal Institute of Intellectual Property — qualifiers: start_time=1902-06-23; end_time=1909-10-15',
+  '      · Institute for Advanced Study — qualifiers: start_time=1933-01-01; end_time=1955-04-18',
+  '',
+  'When qualifiers give you dated periods, USE THEM. Two implications:',
+  '  1. Era-appropriate names. "Swiss Federal Institute of Intellectual Property" is the modern (2000s) name of the same organisation Einstein worked at 1902-1909, when it was known as the Swiss Patent Office. If qualifiers pin the affiliation to that historical period, use the era-appropriate name — cite the wikidata property but explain the historical name choice in the "notes" field.',
+  '  2. Correct sequencing. Do NOT infer that ETH → University of Zurich means "undergraduate at ETH, doctorate at University of Zurich" unless qualifiers with position_held or academic_degree confirm it. If qualifiers are absent, list institutions in source order without a narrative bridge.',
+  '',
+  'When qualifiers are ABSENT for a claim, treat the values as an undated list — do not invent temporal sequencing.',
+  '',
   'EXAMPLE — a museum sentence citing related persons',
   '',
   '  Sentence text: "Hygeia was the daughter of Asklepios, god of medicine, and Epione."',
@@ -466,7 +479,7 @@ function buildUserPrompt (personData, relatedItems, wikidataContext, subject) {
 }
 
 function formatWikidata (wikidataCache) {
-  const parts = ['Wikidata claims:'];
+  const parts = ['Wikidata claims (properties cited via wikidata:P<code> in citations; QUALIFIERS on each claim disambiguate temporal periods — e.g. Einstein at Swiss Patent Office 1902-1909 vs Institute for Advanced Study 1933-1955):'];
   const skip = {
     P18: true,
     P154: true,
@@ -474,15 +487,52 @@ function formatWikidata (wikidataCache) {
     wikidataUrl: true,
     wikipediaUrl: true,
     alsoInCollection: true,
-    externalIdentifiers: true,
-    description: false // include description for tagging as wikidata source
+    externalIdentifiers: true
   };
+  // The fetcher dual-keys every claim under BOTH its P-code (P108) AND
+  // the human-readable label ("employer") — same object under each. To
+  // avoid rendering every claim twice, iterate the P-code keys only and
+  // skip the label aliases. Non-claim top-level fields (description,
+  // wikipediaUrl, colleagues) still render.
+  const rendered = new Set();
   Object.keys(wikidataCache).forEach(function (key) {
     if (skip[key]) return;
     const val = wikidataCache[key];
     if (typeof val === 'string') {
       parts.push('- ' + key + ': ' + val);
-    } else if (val && val.value) {
+      return;
+    }
+    if (!val || !val.value) return;
+    // Only render the P-code variant (skip the label alias that points
+    // at the same object). Aliases share object identity with the
+    // canonical P-code entry.
+    if (val.label && rendered.has(val.value + '|' + val.label)) return;
+    if (val.label && /^P\d+$/.test(key)) {
+      rendered.add(val.value + '|' + val.label);
+      parts.push('- ' + val.label + ' (wikidata:' + key + '): ' + val.value);
+      // Emit qualifier + reference detail when present. The prompt
+      // then knows which value carries which date range, which
+      // reference. Keeps the format tight — indented lines under the
+      // main claim, dropped when no detail exists.
+      (val.claims || []).forEach(function (c) {
+        const qs = c.qualifiers || {};
+        const qKeys = Object.keys(qs);
+        if (!qKeys.length && (!c.references || !c.references.length)) return;
+        const qualifierBits = qKeys.map(function (k) { return k + '=' + qs[k]; });
+        const refBits = (c.references || []).slice(0, 2).map(function (r) {
+          const bits = [];
+          if (r.stated_in) bits.push('in ' + r.stated_in);
+          if (r.url) bits.push(r.url);
+          return bits.join(', ');
+        }).filter(Boolean);
+        const detail = [];
+        if (qualifierBits.length) detail.push('qualifiers: ' + qualifierBits.join('; '));
+        if (refBits.length) detail.push('refs: ' + refBits.join(' | '));
+        parts.push('    · ' + c.value + ' — ' + detail.join(' — '));
+      });
+    } else if (!val.label) {
+      // Top-level scalar-ish entries (description) that carry a `value`
+      // string but no label / claims array.
       parts.push('- ' + key + ': ' + val.value);
     }
   });

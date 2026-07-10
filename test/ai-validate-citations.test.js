@@ -253,6 +253,77 @@ test('wikidata: bad Pcode format → rejected', function (t) {
   t.end();
 });
 
+// --- Wikidata post-fetcher-upgrade shape ---------------------------------
+// After 2026-07-10 the fetcher returns dual-keyed objects with a
+// claims[] array carrying per-claim qualifiers + references. Every
+// individual claim's value should be an eligible citation candidate.
+
+test('wikidata (upgraded shape): individual claim value matches → accepted', function (t) {
+  const richInputs = {
+    personData: { name: 'Einstein' },
+    wikidataContext: {
+      P108: {
+        label: 'employer',
+        value: 'ETH Zurich, Institute for Advanced Study',
+        claims: [
+          { value: 'ETH Zurich', qCode: 'Q11942', qualifiers: { start_time: '1912-01-01' }, references: [] },
+          { value: 'Institute for Advanced Study', qCode: 'Q11989', qualifiers: { start_time: '1933-01-01' }, references: [] }
+        ]
+      }
+    },
+    relatedItems: []
+  };
+  const out = validateCitations(
+    [sentence('wikidata', [{ field: 'wikidata:P108', value: 'ETH Zurich' }])],
+    richInputs
+  );
+  t.equal(out[0].citations.length, 1);
+  t.equal(out[0].citations[0].value, 'ETH Zurich');
+  t.end();
+});
+
+test('wikidata (upgraded shape): qCode also accepted as a citation value', function (t) {
+  const richInputs = {
+    personData: { name: 'Einstein' },
+    wikidataContext: {
+      P108: {
+        label: 'employer',
+        value: 'ETH Zurich',
+        claims: [
+          { value: 'ETH Zurich', qCode: 'Q11942', qualifiers: {}, references: [] }
+        ]
+      }
+    },
+    relatedItems: []
+  };
+  const out = validateCitations(
+    [sentence('wikidata', [{ field: 'wikidata:P108', value: 'Q11942' }])],
+    richInputs
+  );
+  t.equal(out[0].citations.length, 1);
+  t.equal(out[0].citations[0].value, 'Q11942');
+  t.end();
+});
+
+test('wikidata (upgraded shape): value that only appears in the joined summary still accepted', function (t) {
+  // Backwards compat — some upstream synthesizers still pass a bare
+  // { value: 'x' } without a claims[] array. The validator must fall
+  // back to the top-level value.
+  const legacyInputs = {
+    personData: { name: 'Einstein' },
+    wikidataContext: {
+      P108: { label: 'employer', value: 'ETH Zurich' }
+    },
+    relatedItems: []
+  };
+  const out = validateCitations(
+    [sentence('wikidata', [{ field: 'wikidata:P108', value: 'ETH Zurich' }])],
+    legacyInputs
+  );
+  t.equal(out[0].citations.length, 1);
+  t.end();
+});
+
 test('wikidata: property missing from context → rejected', function (t) {
   const diagnostics = [];
   const out = validateCitations(
