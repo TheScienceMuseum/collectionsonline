@@ -315,7 +315,7 @@ const SELF_CHECKS_SECTION = [
   '',
   'Before you emit any sentence, you MUST work through a self-check block. This is not decoration — it is your primary defence against the mistakes you would otherwise make in prose. The block appears FIRST in the JSON response so you plan before you write.',
   '',
-  'For each check, write a short prose note (1-2 sentences). Do not skip. If a check is trivially satisfied ("no persons named in the biography, so temporal consistency N/A"), say so briefly. If a check surfaces a concern, describe how you will handle it in the sentences below.',
+  'For each check, write ONE concise sentence — 20 words at most. Do not skip a check, but do not write paragraphs. If trivially satisfied, say so in a phrase ("no persons named — N/A"). If a concern surfaces, name the concern and your response in one sentence ("Sobral attributed to Eddington in museum record — will cite museum but flag in notes").',
   '',
   'checks.planningNotes — a paragraph summarising: what data you have, what you plan to write, and which pitfalls (from the class-wide anti-patterns) apply to THIS subject.',
   '',
@@ -510,25 +510,21 @@ function formatWikidata (wikidataCache) {
     if (val.label && /^P\d+$/.test(key)) {
       rendered.add(val.value + '|' + val.label);
       parts.push('- ' + val.label + ' (wikidata:' + key + '): ' + val.value);
-      // Emit qualifier + reference detail when present. The prompt
-      // then knows which value carries which date range, which
-      // reference. Keeps the format tight — indented lines under the
-      // main claim, dropped when no detail exists.
-      (val.claims || []).forEach(function (c) {
+      // Emit qualifier detail for the first 3 claims only. Rich
+      // subjects have up to 5 claims per property; showing all of
+      // them costs input tokens without materially changing the
+      // writer's output (the writer already has the values via the
+      // one-line summary above and only needs qualifiers on the
+      // most-cited claims). References are dropped entirely from the
+      // prompt — writer doesn't cite them and they're the biggest
+      // per-line contributor. Fetcher still returns them so a future
+      // contradiction-detection stage can use them.
+      (val.claims || []).slice(0, 3).forEach(function (c) {
         const qs = c.qualifiers || {};
         const qKeys = Object.keys(qs);
-        if (!qKeys.length && (!c.references || !c.references.length)) return;
+        if (!qKeys.length) return;
         const qualifierBits = qKeys.map(function (k) { return k + '=' + qs[k]; });
-        const refBits = (c.references || []).slice(0, 2).map(function (r) {
-          const bits = [];
-          if (r.stated_in) bits.push('in ' + r.stated_in);
-          if (r.url) bits.push(r.url);
-          return bits.join(', ');
-        }).filter(Boolean);
-        const detail = [];
-        if (qualifierBits.length) detail.push('qualifiers: ' + qualifierBits.join('; '));
-        if (refBits.length) detail.push('refs: ' + refBits.join(' | '));
-        parts.push('    · ' + c.value + ' — ' + detail.join(' — '));
+        parts.push('    · ' + c.value + ' — ' + qualifierBits.join('; '));
       });
     } else if (!val.label) {
       // Top-level scalar-ish entries (description) that carry a `value`
