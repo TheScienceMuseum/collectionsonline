@@ -394,6 +394,76 @@ test('wikipedia: value instead of excerpt → rejected', function (t) {
   t.end();
 });
 
+// --- ODNB validation --------------------------------------------
+
+const odnbInputs = {
+  personData: { name: 'Einstein' },
+  wikidataContext: {},
+  relatedItems: [],
+  odnbSummary: {
+    title: 'Einstein, Albert',
+    url: 'https://www.oxforddnb.com/view/article/999',
+    extract: 'Einstein, Albert (1879-1955), theoretical physicist, was born in Ulm, Germany, in March 1879. He is best remembered for his development of the theory of relativity and his contributions to quantum mechanics.'
+  }
+};
+
+test('odnb: verbatim excerpt → accepted', function (t) {
+  const out = validateCitations(
+    [sentence('oxfordDNB', [{ field: 'oxfordDNB:Einstein, Albert', excerpt: 'theoretical physicist, was born in Ulm' }])],
+    odnbInputs
+  );
+  t.equal(out[0].citations.length, 1);
+  t.end();
+});
+
+test('odnb: title mismatch → rejected', function (t) {
+  const diagnostics = [];
+  const out = validateCitations(
+    [sentence('oxfordDNB', [{ field: 'oxfordDNB:Someone Else', excerpt: 'theoretical physicist' }])],
+    odnbInputs,
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'odnb_title_mismatch');
+  t.end();
+});
+
+test('odnb: no summary in inputs → rejected', function (t) {
+  const diagnostics = [];
+  const out = validateCitations(
+    [sentence('oxfordDNB', [{ field: 'oxfordDNB:X', excerpt: 'anything' }])],
+    { personData: {}, wikidataContext: {}, relatedItems: [], odnbSummary: null },
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'odnb_summary_missing');
+  t.end();
+});
+
+test('odnb: value instead of excerpt → rejected', function (t) {
+  const diagnostics = [];
+  const out = validateCitations(
+    [sentence('oxfordDNB', [{ field: 'oxfordDNB:Einstein, Albert', value: 'physicist' }])],
+    odnbInputs,
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'odnb_needs_excerpt');
+  t.end();
+});
+
+test('odnb: paraphrased excerpt → rejected', function (t) {
+  const diagnostics = [];
+  const out = validateCitations(
+    [sentence('oxfordDNB', [{ field: 'oxfordDNB:Einstein, Albert', excerpt: 'theoretical physicist, born in Ulm' }])],
+    odnbInputs,
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'excerpt_not_verbatim');
+  t.end();
+});
+
 test('wikidata: property missing from context → rejected', function (t) {
   const diagnostics = [];
   const out = validateCitations(

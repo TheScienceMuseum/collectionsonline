@@ -173,5 +173,23 @@ module.exports = require('rc')('co', {
   // Default true — off drops the fetch + prompt section entirely,
   // saving ~500-1000 input tokens per subject. Treated as an
   // emergency kill switch (like the writer self-review flags).
-  aiBiographyWikipediaEnabled: process.env.AI_BIOGRAPHY_WIKIPEDIA_ENABLED !== 'false'
+  aiBiographyWikipediaEnabled: process.env.AI_BIOGRAPHY_WIKIPEDIA_ENABLED !== 'false',
+
+  // Oxford Dictionary of National Biography (ODNB) as an input-mode
+  // source — peer-reviewed British biographical scholarship, Tier A
+  // authority. Ships OFF by default (needs institutional API access).
+  // Three-key contract: master flag + endpoint URL + bearer token,
+  // all three must be set for the fetch to fire. The adapter is
+  // additionally gated on the subject having a Wikidata P1415
+  // (ODNB ID) property — no P1415 means the subject doesn't have an
+  // ODNB article, skip. See lib/ai/fetch-odnb-summary.js.
+  //
+  // The `oxfordDNB` source tag sits above `wikidata` in priority
+  // when both cover the same fact — ODNB is peer-reviewed prose
+  // whereas Wikidata is community-curated structured claims. When
+  // Grace's Guide lands next, its priority sits between wikidata
+  // and wikipedia.
+  aiBiographyOdnbEnabled: process.env.AI_BIOGRAPHY_ODNB_ENABLED === 'true',
+  aiBiographyOdnbApiUrl: process.env.AI_BIOGRAPHY_ODNB_API_URL || '',
+  aiBiographyOdnbApiToken: process.env.AI_BIOGRAPHY_ODNB_API_TOKEN || ''
 });

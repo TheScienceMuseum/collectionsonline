@@ -228,11 +228,12 @@ test('parse: counts general_knowledge + contextualising + inferred separately', 
 
 // --- VALID_SOURCES export ------------------------------------------
 
-test('VALID_SOURCES export is the 6-tier set', function (t) {
-  t.equal(parse.VALID_SOURCES.size, 6);
+test('VALID_SOURCES export is the 7-tier set', function (t) {
+  t.equal(parse.VALID_SOURCES.size, 7);
   t.ok(parse.VALID_SOURCES.has('museum'));
   t.ok(parse.VALID_SOURCES.has('wikidata'));
   t.ok(parse.VALID_SOURCES.has('wikipedia'));
+  t.ok(parse.VALID_SOURCES.has('oxfordDNB'));
   t.ok(parse.VALID_SOURCES.has('llm:inferred'));
   t.ok(parse.VALID_SOURCES.has('llm:contextualising'));
   t.ok(parse.VALID_SOURCES.has('llm:general_knowledge'));

@@ -84,18 +84,20 @@ const BASE_PROMPT_LINES = [
   '',
   '  "museum" — the fact is directly present in the MUSEUM inputs below (personData fields, briefBiography, existingBiography, or the titles/descriptions of related catalogue items). Authoritative.',
   '',
+  '  "oxfordDNB" — the fact comes from the ODNB CONTEXT below (Oxford Dictionary of National Biography entry — peer-reviewed British biographical scholarship). Tier A authority; sits above Wikidata and Wikipedia. Cite via `oxfordDNB:<entry title>` with a VERBATIM excerpt.',
+  '',
   '  "wikidata" — the fact is directly present in the WIKIDATA context below (a specific claim / property / statement). Trusted but structured; curator may spot-check.',
   '',
-  '  "wikipedia" — the fact comes from the WIKIPEDIA context below (article intro / summary). Community-edited prose — treated as less authoritative than museum or Wikidata but valuable for narrative context. Cite via `wikipedia:<article title>` with a VERBATIM excerpt (like personData excerpts, the excerpt must be a substring of the article — the validator drops anything that isn\'t).',
+  '  "wikipedia" — the fact comes from the WIKIPEDIA context below (article intro / summary). Community-edited prose — treated as less authoritative than museum, ODNB, or Wikidata but valuable for narrative context. Cite via `wikipedia:<article title>` with a VERBATIM excerpt (like personData excerpts, the excerpt must be a substring of the article — the validator drops anything that isn\'t).',
   '',
-  '  "llm:inferred" — the fact is a synthesis DERIVED from museum, Wikidata, and/or Wikipedia inputs, combining or paraphrasing multiple structured facts to produce a new prose statement. Safe by construction (traceable to inputs), curator may want to review.',
+  '  "llm:inferred" — the fact is a synthesis DERIVED from museum, ODNB, Wikidata, and/or Wikipedia inputs, combining or paraphrasing multiple structured facts to produce a new prose statement. Safe by construction (traceable to inputs), curator may want to review.',
   '',
   '  "llm:contextualising" — background / era colour NOT specifically about the subject. E.g. "Artificial eye making in early eighteenth-century London was a specialist trade". General context, not a specific claim about the subject.',
   '',
-  '  "llm:general_knowledge" — a specific fact about the subject that comes from your own training data and is NOT present in the museum, wikidata, or wikipedia inputs. The riskiest tag. DEFAULTS TO HIDDEN. Use only when the fact is well-established, non-controversial, and genuinely improves the biography. If in doubt, OMIT rather than emit as general_knowledge.',
+  '  "llm:general_knowledge" — a specific fact about the subject that comes from your own training data and is NOT present in the museum, ODNB, wikidata, or wikipedia inputs. The riskiest tag. DEFAULTS TO HIDDEN. Use only when the fact is well-established, non-controversial, and genuinely improves the biography. If in doubt, OMIT rather than emit as general_knowledge.',
   '',
   'PRIORITY ORDER when a fact is available from multiple sources:',
-  '  museum > wikidata > wikipedia > llm:inferred > llm:contextualising > llm:general_knowledge',
+  '  museum > oxfordDNB > wikidata > wikipedia > llm:inferred > llm:contextualising > llm:general_knowledge',
   '  Always tag with the MOST authoritative source. If a fact is present in both museum and Wikipedia, tag it "museum".',
   '',
   'RULES for tagging',
@@ -120,12 +122,13 @@ const BASE_PROMPT_LINES = [
   '',
   'Never both keys on the same citation. Never neither.',
   '',
-  'Field identifiers use these five prefixes only:',
+  'Field identifiers use these six prefixes only:',
   '  "personData.<key>"     — <key> is one of: name, birthDate, birthPlace, deathDate, deathPlace, occupation, nationality, briefBiography, biography',
   '  "wikidata:<Pcode>"     — a specific Wikidata property (P19, P108, P106, etc.)',
   '  "relatedItem:<coId>"   — a specific catalogue item (co66082, ap12345, etc.)',
   '  "relatedPerson:<cpId>" — a related person or organisation from the MUSEUM RELATED PEOPLE & ORGANISATIONS section of the user prompt (cp74631, ap55555, etc.). Use this whenever you mention a name that comes from that list — parents, spouses, collaborators, sibling brands, manufacturers, etc. Do NOT hide these citations in sourceDetail alone; emit a proper citations[] entry so the admin UI can show the receipt with the person\'s name and role.',
   '  "wikipedia:<title>"    — the intro of the subject\'s English Wikipedia article, when included in the WIKIPEDIA CONTEXT section of the user prompt. Cite via `wikipedia:<article title exactly as shown in the section header>` with an `excerpt` field containing a VERBATIM substring of the article intro — no paraphrase, exactly as it appears. The validator mechanically drops non-substring excerpts.',
+  '  "oxfordDNB:<title>"    — the Oxford DNB entry included in the ODNB CONTEXT section of the user prompt. Cite via `oxfordDNB:<entry title exactly as shown in the section header>` with an `excerpt` field containing a VERBATIM substring of the entry text. Same substring check as wikipedia excerpts.',
   '',
   'VALUE vs EXCERPT — which one to use',
   '',
@@ -487,8 +490,20 @@ function buildUserPrompt (personData, relatedItems, wikidataContext, subject, op
     parts.push(opts.wikipediaSummary.extract);
   }
 
+  // --- ODNB entry (sentences drawn from this are tagged "oxfordDNB") ---
+  // Peer-reviewed British biographical entry from the Oxford
+  // Dictionary of National Biography. Cite via `oxfordDNB:<title>`
+  // with a VERBATIM excerpt. ODNB sits ABOVE wikidata + wikipedia in
+  // authority — it's peer-reviewed scholarship, not community-edited
+  // or structured extraction.
+  if (opts.odnbSummary && opts.odnbSummary.extract) {
+    parts.push('');
+    parts.push('--- ODNB CONTEXT (entry: "' + (opts.odnbSummary.title || '(untitled)') + '") ---');
+    parts.push(opts.odnbSummary.extract);
+  }
+
   parts.push('');
-  parts.push('Return strict JSON matching the response schema in the system prompt. Every sentence must be tagged with exactly one source. Source priority when a fact appears in multiple inputs: museum > wikidata > wikipedia > llm:inferred.');
+  parts.push('Return strict JSON matching the response schema in the system prompt. Every sentence must be tagged with exactly one source. Source priority when a fact appears in multiple inputs: museum > oxfordDNB > wikidata > wikipedia > llm:inferred.');
 
   return parts.join('\n');
 }
