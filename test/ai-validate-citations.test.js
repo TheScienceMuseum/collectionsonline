@@ -464,6 +464,76 @@ test('odnb: paraphrased excerpt → rejected', function (t) {
   t.end();
 });
 
+// --- Grace's Guide validation --------------------------------------------
+
+const gracesGuideInputs = {
+  personData: { name: 'Great Northern Railway' },
+  wikidataContext: {},
+  relatedItems: [],
+  gracesGuideSummary: {
+    title: 'Great Northern Railway',
+    url: 'https://www.gracesguide.co.uk/Great_Northern_Railway',
+    extract: 'The Great Northern Railway (GNR) was a British railway company incorporated in 1846 with the object of building a line from London to York. The line was built to the standard gauge of 4 ft 8+1⁄2 in.'
+  }
+};
+
+test('gracesGuide: verbatim excerpt → accepted', function (t) {
+  const out = validateCitations(
+    [sentence('gracesGuide', [{ field: 'gracesGuide:Great Northern Railway', excerpt: 'incorporated in 1846 with the object of building a line from London to York' }])],
+    gracesGuideInputs
+  );
+  t.equal(out[0].citations.length, 1);
+  t.end();
+});
+
+test('gracesGuide: title mismatch → rejected', function (t) {
+  const diagnostics = [];
+  const out = validateCitations(
+    [sentence('gracesGuide', [{ field: 'gracesGuide:Other Railway', excerpt: 'British railway company' }])],
+    gracesGuideInputs,
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'graces_guide_title_mismatch');
+  t.end();
+});
+
+test('gracesGuide: no summary in inputs → rejected', function (t) {
+  const diagnostics = [];
+  const out = validateCitations(
+    [sentence('gracesGuide', [{ field: 'gracesGuide:X', excerpt: 'anything' }])],
+    { personData: {}, wikidataContext: {}, relatedItems: [], gracesGuideSummary: null },
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'graces_guide_summary_missing');
+  t.end();
+});
+
+test('gracesGuide: value instead of excerpt → rejected', function (t) {
+  const diagnostics = [];
+  const out = validateCitations(
+    [sentence('gracesGuide', [{ field: 'gracesGuide:Great Northern Railway', value: 'railway' }])],
+    gracesGuideInputs,
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'graces_guide_needs_excerpt');
+  t.end();
+});
+
+test('gracesGuide: paraphrased excerpt → rejected', function (t) {
+  const diagnostics = [];
+  const out = validateCitations(
+    [sentence('gracesGuide', [{ field: 'gracesGuide:Great Northern Railway', excerpt: 'incorporated in 1845 to build a line to York' }])],
+    gracesGuideInputs,
+    { diagnostics }
+  );
+  t.equal(out[0].citations.length, 0);
+  t.equal(diagnostics[0].reason, 'excerpt_not_verbatim');
+  t.end();
+});
+
 test('wikidata: property missing from context → rejected', function (t) {
   const diagnostics = [];
   const out = validateCitations(

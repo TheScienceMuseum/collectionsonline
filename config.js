@@ -191,5 +191,17 @@ module.exports = require('rc')('co', {
   // and wikipedia.
   aiBiographyOdnbEnabled: process.env.AI_BIOGRAPHY_ODNB_ENABLED === 'true',
   aiBiographyOdnbApiUrl: process.env.AI_BIOGRAPHY_ODNB_API_URL || '',
-  aiBiographyOdnbApiToken: process.env.AI_BIOGRAPHY_ODNB_API_TOKEN || ''
+  aiBiographyOdnbApiToken: process.env.AI_BIOGRAPHY_ODNB_API_TOKEN || '',
+
+  // Grace's Guide as an input-mode source. UK industrial history wiki
+  // (engineers, engineering firms, railways, manufacturers, ceramics,
+  // mines) — well-matched to the SMG collection's transport / Victorian-
+  // industry weight. Free public wiki (MediaWiki-backed), no API key
+  // needed. Adapter is gated on Wikidata property P3074 (Grace's Guide
+  // ID) — no P3074 means the subject doesn't have a Grace's Guide
+  // article; skip without fetching. See lib/ai/fetch-graces-guide-summary.js.
+  //
+  // Priority: below wikidata / above wikipedia — Grace's Guide is
+  // subject-expert prose but community-edited, not peer-reviewed.
+  aiBiographyGracesGuideEnabled: process.env.AI_BIOGRAPHY_GRACES_GUIDE_ENABLED !== 'false'
 });

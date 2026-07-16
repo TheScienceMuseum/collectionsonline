@@ -15,6 +15,7 @@ const normaliseWikidata = require('../lib/helpers/normalise-wikidata');
 const fetchWikidataLive = require('../lib/ai/fetch-wikidata-live');
 const fetchWikipediaSummary = require('../lib/ai/fetch-wikipedia-summary');
 const fetchOdnbSummary = require('../lib/ai/fetch-odnb-summary');
+const fetchGracesGuideSummary = require('../lib/ai/fetch-graces-guide-summary');
 const assessSufficiency = require('../lib/ai/assess-sufficiency');
 const classifySubject = require('../lib/ai/classify-subject');
 const subjectStatus = require('../lib/ai/subject-status');
@@ -439,6 +440,20 @@ async function generate (elastic, config, id) {
       console.warn('AI Biography: ODNB fetch failed for', id, '-', err && err.message);
     }
 
+    // Grace's Guide — UK industrial history wiki. Public, gated on
+    // Wikidata P3074.
+    let gracesGuideSummary = null;
+    if (config.aiBiographyGracesGuideEnabled !== false) {
+      try {
+        gracesGuideSummary = await fetchGracesGuideSummary({
+          config,
+          wikidataContext
+        });
+      } catch (err) {
+        console.warn('AI Biography: Grace\'s Guide fetch failed for', id, '-', err && err.message);
+      }
+    }
+
     // Classify the subject and inspect their living/deceased status. Both
     // travel with the canonical record — `subjectStatus` is what the public
     // route's living-person suppression reads when deciding whether to
@@ -491,6 +506,7 @@ async function generate (elastic, config, id) {
         diagnostics,
         wikipediaSummary,
         odnbSummary,
+        gracesGuideSummary,
         // See regenerate-biography.js — flags gate the writer's
         // selfReview output section AND the persisted shape below.
         enableSelfChecks: config.aiBiographyWriterSelfChecksEnabled !== false,
