@@ -16,6 +16,7 @@ const fetchWikidataLive = require('../lib/ai/fetch-wikidata-live');
 const fetchWikipediaSummary = require('../lib/ai/fetch-wikipedia-summary');
 const fetchOdnbSummary = require('../lib/ai/fetch-odnb-summary');
 const fetchGracesGuideSummary = require('../lib/ai/fetch-graces-guide-summary');
+const detectContradictions = require('../lib/ai/detect-contradictions');
 const assessSufficiency = require('../lib/ai/assess-sufficiency');
 const classifySubject = require('../lib/ai/classify-subject');
 const subjectStatus = require('../lib/ai/subject-status');
@@ -454,6 +455,26 @@ async function generate (elastic, config, id) {
       }
     }
 
+    // Cross-source contradiction detection (structured facts only —
+    // museum ↔ Wikidata). See lib/ai/regenerate-biography.js for the
+    // shared explanation. Kill-switch:
+    // aiBiographyContradictionDetectionEnabled=false.
+    let contradictions = [];
+    if (config.aiBiographyContradictionDetectionEnabled !== false) {
+      try {
+        contradictions = detectContradictions({
+          personData,
+          wikidataContext,
+          wikipediaSummary,
+          odnbSummary,
+          gracesGuideSummary
+        });
+      } catch (err) {
+        console.warn('AI Biography: contradiction detection failed for', id, '-', err && err.message);
+        contradictions = [];
+      }
+    }
+
     // Classify the subject and inspect their living/deceased status. Both
     // travel with the canonical record — `subjectStatus` is what the public
     // route's living-person suppression reads when deciding whether to
@@ -507,6 +528,7 @@ async function generate (elastic, config, id) {
         wikipediaSummary,
         odnbSummary,
         gracesGuideSummary,
+        contradictions,
         // See regenerate-biography.js — flags gate the writer's
         // selfReview output section AND the persisted shape below.
         enableSelfChecks: config.aiBiographyWriterSelfChecksEnabled !== false,
@@ -661,6 +683,9 @@ async function generate (elastic, config, id) {
         // Writer self-review filtered against the same flags that
         // shaped the prompt — see filterSelfReview() below.
         selfReview: filterSelfReview(result.selfReview, config),
+        // Cross-source contradictions surfaced pre-write. Empty array
+        // when no disagreements or detection was disabled.
+        contradictions,
         references,
         model: result.model,
         promptVersion: result.promptVersion,

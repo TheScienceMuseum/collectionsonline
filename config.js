@@ -203,5 +203,16 @@ module.exports = require('rc')('co', {
   //
   // Priority: below wikidata / above wikipedia — Grace's Guide is
   // subject-expert prose but community-edited, not peer-reviewed.
-  aiBiographyGracesGuideEnabled: process.env.AI_BIOGRAPHY_GRACES_GUIDE_ENABLED !== 'false'
+  aiBiographyGracesGuideEnabled: process.env.AI_BIOGRAPHY_GRACES_GUIDE_ENABLED !== 'false',
+
+  // Cross-source contradiction detection. Runs after all fetches, before
+  // the writer call — compares structured facts (birth/death date +
+  // place, occupation, nationality) between museum personData and
+  // Wikidata claims, and produces a list of disagreements with a
+  // priority-picked authoritative value. Feeds a CONTRADICTIONS section
+  // into the writer prompt so the model uses the winning value instead
+  // of writing "sources disagree" prose. Emergency kill switch — off
+  // drops the detection call, and the writer prompt just doesn't get
+  // the section. See lib/ai/detect-contradictions.js.
+  aiBiographyContradictionDetectionEnabled: process.env.AI_BIOGRAPHY_CONTRADICTION_DETECTION_ENABLED !== 'false'
 });

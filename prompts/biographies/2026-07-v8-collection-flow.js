@@ -482,6 +482,29 @@ function buildUserPrompt (personData, relatedItems, wikidataContext, subject, op
     parts.push(formatWikidata(wikidataContext));
   }
 
+  // --- CONTRADICTIONS across sources ---
+  // When two or more sources disagree on a structured fact (dates,
+  // places, occupation, nationality), we tell the writer the
+  // authoritative value + list the alternatives labelled by source.
+  // The writer must use the authoritative value and MUST NOT
+  // meta-narrate the disagreement ("sources differ", "records
+  // conflict") in the prose — those phrases are curator-facing, not
+  // reader-facing.
+  if (Array.isArray(opts.contradictions) && opts.contradictions.length) {
+    parts.push('');
+    parts.push('--- CONTRADICTIONS DETECTED ---');
+    parts.push('The following facts have conflicting values across sources. Use the AUTHORITATIVE value listed first (the highest-priority source per the museum > oxfordDNB > wikidata > gracesGuide > wikipedia ladder). Do NOT mention the disagreement in the prose. If the disagreement bears on curator judgement, note it in your writerNotes.');
+    parts.push('');
+    opts.contradictions.forEach(function (c) {
+      parts.push('- ' + c.factLabel + ':');
+      parts.push('  → AUTHORITATIVE: ' + c.winnerValue + ' (source: ' + c.winner + ')');
+      const others = c.values.filter(function (v) { return v.source !== c.winner; });
+      others.forEach(function (v) {
+        parts.push('  · ' + v.source + ' says: ' + v.value + ' (' + v.sourceDetail + ')');
+      });
+    });
+  }
+
   // --- WIKIPEDIA summary (sentences drawn from this are tagged "wikipedia") ---
   // Prose intro from the subject's Wikipedia article, when available.
   // Cite via `wikipedia:<article title>` with a VERBATIM excerpt in
