@@ -115,14 +115,6 @@ module.exports = require('rc')('co', {
     return Math.max(0, Math.min(5, raw));
   })(),
 
-  // Per-generation reviewer (Sonnet by default — cheap, ~£0.001-0.002
-  // per record). Runs after every successful writer call in the public
-  // + admin regenerate flows. Findings surface in the admin detail's
-  // open-findings panel. Kill switch for the case where the reviewer's
-  // signal-to-noise ratio drops in production. DEFAULTS TO TRUE — the
-  // whole v2 defensive-by-default design assumes this pass is running.
-  aiBiographyPerGenerationReviewEnabled: process.env.AI_BIOGRAPHY_PER_GENERATION_REVIEW_ENABLED !== 'false',
-
   // On-demand external claim verification against Wikipedia + Wikidata
   // deep + Phase-2 authorities as they ship. NOT Meta's Chain-of-
   // Verification (CoVe) — that's a distinct intrinsic self-verification
@@ -238,25 +230,9 @@ module.exports = require('rc')('co', {
   // the section. See lib/ai/detect-contradictions.js.
   aiBiographyContradictionDetectionEnabled: process.env.AI_BIOGRAPHY_CONTRADICTION_DETECTION_ENABLED !== 'false',
 
-  // Reasoning-mode pipeline (added 2026-07-17). When ON: swap the
-  // two-stage writer + reviewer pipeline for a single Claude call
-  // with extended thinking (Haiku 4.5 by default). Reasoning replaces
-  // the separate reviewer stage — the model checks its own work
-  // during the thinking phase. Same inputs, same DB shape, same
-  // admin UI (selfReview just becomes null since we don't request it).
-  //
-  // Defaults OFF. Flip to true once the 500-record pre-launch
-  // validation confirms quality holds. Kept as a flag through the
-  // safety window so we can roll back to the two-stage pipeline via
-  // a config change (no code redeploy needed). After launch stability
-  // is confirmed, MIG.6 removes both the flag and the old pipeline.
-  //
-  // Companion knobs:
-  //   aiBiographyReasoningModel      — model ID (default: Haiku 4.5)
-  //   aiBiographyReasoningBudgetTokens — thinking budget (default: 4000)
-  //   aiBiographyReasoningMaxTokens  — response cap (default: 16000)
-  aiBiographyReasoningModeEnabled: process.env.AI_BIOGRAPHY_REASONING_MODE_ENABLED === 'true',
-  aiBiographyReasoningModel: process.env.AI_BIOGRAPHY_REASONING_MODEL || 'claude-haiku-4-5-20251001',
-  aiBiographyReasoningBudgetTokens: parseInt(process.env.AI_BIOGRAPHY_REASONING_BUDGET_TOKENS || '4000', 10),
-  aiBiographyReasoningMaxTokens: parseInt(process.env.AI_BIOGRAPHY_REASONING_MAX_TOKENS || '16000', 10)
+  // Extended-thinking tuning knobs for the writer. Passed through to
+  // Anthropic's thinking config on every generation. maxOutputTokens
+  // must exceed thinkingBudgetTokens (SDK enforces this).
+  aiBiographyThinkingBudgetTokens: parseInt(process.env.AI_BIOGRAPHY_THINKING_BUDGET_TOKENS || '4000', 10),
+  aiBiographyMaxOutputTokens: parseInt(process.env.AI_BIOGRAPHY_MAX_OUTPUT_TOKENS || '16000', 10)
 });

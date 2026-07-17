@@ -4,9 +4,7 @@ const TypeMapping = require('../lib/type-mapping');
 const getRelatedItems = require('../lib/get-related-items');
 const sortRelated = require('../lib/sort-related-items');
 const extractPersonData = require('../lib/ai/extract-person-data');
-const generateSourceTaggedBiography = require('../lib/ai/generate-source-tagged-biography');
 const generateReasoningBiography = require('../lib/ai/generate-reasoning-biography');
-const reviewBiographyTagged = require('../lib/ai/review-biography-tagged');
 const curatorDecisionsStore = require('../lib/ai/curator-decisions-store');
 const reviewStore = require('../lib/ai/review-store');
 const renderBiography = require('../lib/ai/render-biography');
@@ -478,39 +476,21 @@ async function generate (elastic, config, id) {
     const curatorDecisions = await curatorDecisionsStore.get(id).catch(function () { return null; });
     const diagnostics = {};
     let result;
-    // Pipeline fork — see lib/ai/regenerate-biography.js for the same
-    // pattern in the admin/bulk-regen path.
-    const useReasoningMode = config.aiBiographyReasoningModeEnabled === true;
     try {
-      if (useReasoningMode) {
-        result = await generateReasoningBiography(personData, allItems, wikidataContext, {
-          apiKey: config.anthropicApiKey,
-          model: config.aiBiographyReasoningModel,
-          budgetTokens: config.aiBiographyReasoningBudgetTokens,
-          maxTokens: config.aiBiographyReasoningMaxTokens,
-          curatorDecisions,
-          diagnostics,
-          wikipediaSummary,
-          odnbSummary,
-          gracesGuideSummary,
-          contradictions
-        });
-      } else {
-        result = await generateSourceTaggedBiography(personData, allItems, wikidataContext, {
-          apiKey: config.anthropicApiKey,
-          model: config.aiBiographyModel,
-          curatorDecisions,
-          diagnostics,
-          wikipediaSummary,
-          odnbSummary,
-          gracesGuideSummary,
-          contradictions,
-          enableSelfChecks: config.aiBiographyWriterSelfChecksEnabled !== false,
-          enableAbstention: config.aiBiographyStructuredAbstentionEnabled !== false
-        });
-      }
+      result = await generateReasoningBiography(personData, allItems, wikidataContext, {
+        apiKey: config.anthropicApiKey,
+        model: config.aiBiographyModel,
+        budgetTokens: config.aiBiographyThinkingBudgetTokens,
+        maxTokens: config.aiBiographyMaxOutputTokens,
+        curatorDecisions,
+        diagnostics,
+        wikipediaSummary,
+        odnbSummary,
+        gracesGuideSummary,
+        contradictions
+      });
     } catch (err) {
-      // Writers catch their own API errors internally and return null
+      // Writer catches its own API errors internally and returns null
       // with a populated diagnostics object; anything that surfaces
       // via `catch` is unexpected. Log + swallow so a page hit doesn't 500.
       console.error('AI Biography: Unexpected error from writer for', id, '-', err.message);
@@ -606,32 +586,6 @@ async function generate (elastic, config, id) {
       return null;
     }
 
-    // Per-generation reviewer — runs after every successful writer call.
-    // Feature-flagged on config.aiBiographyPerGenerationReviewEnabled
-    // (distinct from aiBiographyReviewEnabled, which gates the Opus
-    // manual escalation button — different reviewer, different model,
-    // different cost profile). Defaults to true; curator can flip it off
-    // if the reviewer's findings become noisy in production. Uses the
-    // writer's model as fallback — the per-generation reviewer wants
-    // Sonnet-tier cost, NOT Opus. Failure to review is non-fatal —
-    // biography still saves and serves.
-    // Reviewer stage runs only under the two-stage pipeline. Reasoning-
-    // mode does its own "check your work" inside the writer's thinking
-    // phase, so a separate reviewer would be redundant + double the cost.
-    let reviewResult = null;
-    if (!useReasoningMode && config.aiBiographyPerGenerationReviewEnabled !== false) {
-      try {
-        reviewResult = await reviewBiographyTagged(result, {
-          apiKey: config.anthropicApiKey,
-          model: config.aiBiographyModel,
-          personData,
-          gbpPerUsd: config.aiBiographyGbpPerUsd
-        });
-      } catch (err) {
-        console.warn('AI Biography: per-generation review failed for', id, '-', err && err.message);
-      }
-    }
-
     // Derive `references` — { id, title, link } for every related item
     // any sentence cites via `sourceDetail: 'relatedItem:*'`. Stored on
     // the canonical BIOGRAPHY item so the render layer can build "→
@@ -679,26 +633,6 @@ async function generate (elastic, config, id) {
         signalsMissing: assessment.missing,
         subjectStatus: subjStatus
       });
-
-      // Persist the review as a REVIEW# item alongside the canonical, so
-      // it appears immediately on the admin detail page's open-findings
-      // panel + reviews section without an extra round trip.
-      if (reviewResult && Array.isArray(reviewResult.findings)) {
-        try {
-          await reviewStore.saveReview(id, {
-            reviewedAt: new Date().toISOString(),
-            reviewerModel: reviewResult.model,
-            writerPromptVersion: result.promptVersion || null,
-            writerModel: result.model || null,
-            spend: reviewResult.spend,
-            inputTokens: reviewResult.inputTokens,
-            outputTokens: reviewResult.outputTokens,
-            findings: reviewResult.findings
-          });
-        } catch (err) {
-          console.warn('AI Biography: review-store save failed for', id, '-', err && err.message);
-        }
-      }
     }
 
     // Render-time suppression — applied to the freshly-generated result too,
@@ -711,14 +645,14 @@ async function generate (elastic, config, id) {
       return null;
     }
 
-    // Render the sentence-tagged biography to public HTML. The findings we
-    // just saved feed straight into the render layer — error:high findings
-    // hide their sentence by default (defensive-by-default). Curator
-    // decisions are the ones we just fetched at the top of this block.
-    // References plumbed through so the render layer can append clickable
-    // "In the collection" chips per cited object — restores v1's inline
-    // object hyperlinking behaviour.
-    const openFindings = (reviewResult && reviewResult.findings) || [];
+    // Render the sentence-tagged biography to public HTML. Any stale
+    // findings persisted from before the reviewer was retired still hide
+    // their sentences by default (defensive-by-default); curators resolve
+    // them from the admin detail page. Curator decisions were fetched at
+    // the top of this block. References plumbed through so the render
+    // layer can append clickable "In the collection" chips per cited
+    // object — restores v1's inline object hyperlinking behaviour.
+    const openFindings = await reviewStore.openFindings(id).catch(function () { return []; });
     const rendered = renderBiography({
       sentences: result.sentences,
       paragraphBreaks: result.paragraphBreaks
