@@ -5,6 +5,7 @@ const getRelatedItems = require('../lib/get-related-items');
 const sortRelated = require('../lib/sort-related-items');
 const extractPersonData = require('../lib/ai/extract-person-data');
 const generateSourceTaggedBiography = require('../lib/ai/generate-source-tagged-biography');
+const generateReasoningBiography = require('../lib/ai/generate-reasoning-biography');
 const reviewBiographyTagged = require('../lib/ai/review-biography-tagged');
 const curatorDecisionsStore = require('../lib/ai/curator-decisions-store');
 const reviewStore = require('../lib/ai/review-store');
@@ -477,26 +478,42 @@ async function generate (elastic, config, id) {
     const curatorDecisions = await curatorDecisionsStore.get(id).catch(function () { return null; });
     const diagnostics = {};
     let result;
+    // Pipeline fork — see lib/ai/regenerate-biography.js for the same
+    // pattern in the admin/bulk-regen path.
+    const useReasoningMode = config.aiBiographyReasoningModeEnabled === true;
     try {
-      result = await generateSourceTaggedBiography(personData, allItems, wikidataContext, {
-        apiKey: config.anthropicApiKey,
-        model: config.aiBiographyModel,
-        curatorDecisions,
-        diagnostics,
-        wikipediaSummary,
-        odnbSummary,
-        gracesGuideSummary,
-        contradictions,
-        // See regenerate-biography.js — flags gate the writer's
-        // selfReview output section AND the persisted shape below.
-        enableSelfChecks: config.aiBiographyWriterSelfChecksEnabled !== false,
-        enableAbstention: config.aiBiographyStructuredAbstentionEnabled !== false
-      });
+      if (useReasoningMode) {
+        result = await generateReasoningBiography(personData, allItems, wikidataContext, {
+          apiKey: config.anthropicApiKey,
+          model: config.aiBiographyReasoningModel,
+          budgetTokens: config.aiBiographyReasoningBudgetTokens,
+          maxTokens: config.aiBiographyReasoningMaxTokens,
+          curatorDecisions,
+          diagnostics,
+          wikipediaSummary,
+          odnbSummary,
+          gracesGuideSummary,
+          contradictions
+        });
+      } else {
+        result = await generateSourceTaggedBiography(personData, allItems, wikidataContext, {
+          apiKey: config.anthropicApiKey,
+          model: config.aiBiographyModel,
+          curatorDecisions,
+          diagnostics,
+          wikipediaSummary,
+          odnbSummary,
+          gracesGuideSummary,
+          contradictions,
+          enableSelfChecks: config.aiBiographyWriterSelfChecksEnabled !== false,
+          enableAbstention: config.aiBiographyStructuredAbstentionEnabled !== false
+        });
+      }
     } catch (err) {
-      // v2 writer catches its own API errors internally and returns null with
-      // a populated diagnostics object; anything that surfaces via `catch`
-      // is unexpected. Log + swallow so a page hit doesn't 500.
-      console.error('AI Biography: Unexpected error from v2 writer for', id, '-', err.message);
+      // Writers catch their own API errors internally and return null
+      // with a populated diagnostics object; anything that surfaces
+      // via `catch` is unexpected. Log + swallow so a page hit doesn't 500.
+      console.error('AI Biography: Unexpected error from writer for', id, '-', err.message);
       return null;
     }
 
@@ -598,8 +615,11 @@ async function generate (elastic, config, id) {
     // writer's model as fallback — the per-generation reviewer wants
     // Sonnet-tier cost, NOT Opus. Failure to review is non-fatal —
     // biography still saves and serves.
+    // Reviewer stage runs only under the two-stage pipeline. Reasoning-
+    // mode does its own "check your work" inside the writer's thinking
+    // phase, so a separate reviewer would be redundant + double the cost.
     let reviewResult = null;
-    if (config.aiBiographyPerGenerationReviewEnabled !== false) {
+    if (!useReasoningMode && config.aiBiographyPerGenerationReviewEnabled !== false) {
       try {
         reviewResult = await reviewBiographyTagged(result, {
           apiKey: config.anthropicApiKey,

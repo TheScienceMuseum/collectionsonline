@@ -236,5 +236,27 @@ module.exports = require('rc')('co', {
   // of writing "sources disagree" prose. Emergency kill switch — off
   // drops the detection call, and the writer prompt just doesn't get
   // the section. See lib/ai/detect-contradictions.js.
-  aiBiographyContradictionDetectionEnabled: process.env.AI_BIOGRAPHY_CONTRADICTION_DETECTION_ENABLED !== 'false'
+  aiBiographyContradictionDetectionEnabled: process.env.AI_BIOGRAPHY_CONTRADICTION_DETECTION_ENABLED !== 'false',
+
+  // Reasoning-mode pipeline (added 2026-07-17). When ON: swap the
+  // two-stage writer + reviewer pipeline for a single Claude call
+  // with extended thinking (Haiku 4.5 by default). Reasoning replaces
+  // the separate reviewer stage — the model checks its own work
+  // during the thinking phase. Same inputs, same DB shape, same
+  // admin UI (selfReview just becomes null since we don't request it).
+  //
+  // Defaults OFF. Flip to true once the 500-record pre-launch
+  // validation confirms quality holds. Kept as a flag through the
+  // safety window so we can roll back to the two-stage pipeline via
+  // a config change (no code redeploy needed). After launch stability
+  // is confirmed, MIG.6 removes both the flag and the old pipeline.
+  //
+  // Companion knobs:
+  //   aiBiographyReasoningModel      — model ID (default: Haiku 4.5)
+  //   aiBiographyReasoningBudgetTokens — thinking budget (default: 4000)
+  //   aiBiographyReasoningMaxTokens  — response cap (default: 16000)
+  aiBiographyReasoningModeEnabled: process.env.AI_BIOGRAPHY_REASONING_MODE_ENABLED === 'true',
+  aiBiographyReasoningModel: process.env.AI_BIOGRAPHY_REASONING_MODEL || 'claude-haiku-4-5-20251001',
+  aiBiographyReasoningBudgetTokens: parseInt(process.env.AI_BIOGRAPHY_REASONING_BUDGET_TOKENS || '4000', 10),
+  aiBiographyReasoningMaxTokens: parseInt(process.env.AI_BIOGRAPHY_REASONING_MAX_TOKENS || '16000', 10)
 });
