@@ -643,6 +643,22 @@ module.exports = function (elastic, config) {
             // select the appropriate plain-English explanatory block.
             record.skipCategory = classifySkipReason(record.skipReason);
 
+            // Decorate each contradiction's values[] with an isWinner
+            // boolean. Keeps the template dumb — the "Other sources say"
+            // sub-list uses {{#unless this.isWinner}} rather than a
+            // subexpression call to the block-form isequal helper (which
+            // throws Cannot-read-fn when used as a value).
+            if (Array.isArray(record.contradictions)) {
+              record.contradictions = record.contradictions.map(function (c) {
+                if (!c || !Array.isArray(c.values)) return c;
+                return Object.assign({}, c, {
+                  values: c.values.map(function (v) {
+                    return Object.assign({}, v, { isWinner: v && v.source === c.winner });
+                  })
+                });
+              });
+            }
+
             // Fetch staff notes, staff flags, public flags, all review
             // runs (for the Recently Resolved audit trail), curator
             // decisions, and open findings in parallel. curatorDecisions

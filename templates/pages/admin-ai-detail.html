@@ -2137,7 +2137,7 @@
         </div>
         <ul class="contradiction-item__others">
           {{#each this.values}}
-          {{#unless (isequal this.source ../winner)}}
+          {{#unless this.isWinner}}
           <li>
             <span class="text-meta">{{this.source}} says:</span>
             <code>{{this.value}}</code>
