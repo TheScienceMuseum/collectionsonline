@@ -54,13 +54,11 @@ wrong and often helps the reader.
 
 ## Study vs employment / doctorate vs undergraduate
 
-- "Studied at X", "worked at X", and "received a doctorate from X"
-  are distinct relationships. Writer should reach for the specific
-  verb where the record supports it.
-- A doctoral submission at institution X does not necessarily mean
-  the subject was enrolled as a student there in the everyday
-  sense — many pre-1960 doctorates were awarded on the strength of
-  a submitted thesis without formal enrolment.
+"Studied at X", "worked at X", and "received a doctorate from X" are
+distinct relationships. Use the specific verb the source supports.
+Note that pre-1960 doctorates were often awarded on submitted thesis
+without formal enrolment — a doctoral submission at institution X
+doesn't necessarily mean the subject studied there.
 
 Reviewer behaviour:
 - Do NOT flag a sentence just because it lists multiple institutions
@@ -68,15 +66,10 @@ Reviewer behaviour:
   disambiguated further along (e.g. "studying at ETH Zurich… and he
   later received his doctorate from the University of Zurich"), the
   claim is correctly specific and does not need flagging.
-- Only flag when the sentence GENUINELY conflates — when a single
-  undifferentiated verb ("studied at", "worked at", "was at") is
-  applied to two institutions whose relationships to the subject
-  were substantively different, AND the writer offers no
-  disambiguation elsewhere in the sentence or paragraph.
-- Prefer `info` severity (nudge toward clearer verbs) over `error`
-  (hide the sentence). Even a genuine conflation rarely warrants a
-  block-tier hide — the sentence still conveys "the subject had a
-  relationship with these institutions", which is true.
+- Only flag when the sentence GENUINELY conflates — a single
+  undifferentiated verb applied to institutions whose relationships to
+  the subject were substantively different, with no disambiguation.
+- Prefer `info` severity (nudge toward clearer verbs) over `error`.
 
 ## Multi-author expeditions / collaborations / discoveries
 
@@ -99,22 +92,6 @@ Reviewer behaviour:
 - E=mc² was introduced in a *separate* September 1905 Annus
   Mirabilis paper, not within the special relativity paper. Do not
   conflate.
-
-## Personal opinions, beliefs, or private life claims
-
-- Do not attribute personal opinions, political views, religious
-  beliefs, or private habits to the subject unless they are
-  explicitly recorded in the input data.
-- The reviewer should flag any characterological / opinion claims
-  that cannot be traced to the museum catalogue, brief bio,
-  Wikidata, or another authoritative source.
-
-## Superlatives, firsts, records
-
-- Avoid unsupported superlatives ("first to X", "greatest Y",
-  "most important Z"). If a specific first / record IS in the
-  input data, that's fine; if it's the LLM's characterisation,
-  do not include it.
 
 ## Prose overreach — claiming more than the citations support
 
@@ -201,30 +178,18 @@ support. If the writer's inflation is minor / subjective, flag as
 - The reviewer should flag `llm:contextualising` sentences that make
   claims specifically about the subject as `error:medium`.
 
-## Brand vs subsidiary vs sibling brand (conflation risk)
-
-- When a company has multiple sibling brands under the same parent,
-  do not attribute one sibling brand's characteristics to another.
-- Example: Lipton and PG Tips have both been owned by Unilever at
-  various times, but they are distinct brands with different product
-  lines and marketing. A biography of Lipton must not claim PG Tips
-  attributes and vice versa.
-- Reviewer should flag any cross-brand attribution that isn't
-  explicitly recorded in the input data for the subject brand.
-
 ## Mythological / fictional / legendary subjects
 
-- For subjects that are figures of myth, legend, or fiction (Greek
-  mythology, folklore, literary characters), stick to what the
-  museum's catalogue records about the SUBJECT as an entity —
-  typically their role, associated iconography, and any museum
-  objects that depict or reference them.
-- Do NOT generate biographical narrative arcs from the LLM's
-  training data about the mythological tradition (e.g. Iliad
-  details, family trees, story episodes) unless those specific
-  details are in the museum inputs or corroborated by Wikidata.
-- Mythological subjects have thin structured inputs; keep the
-  biography short rather than filling with training-data narrative.
+For subjects that are figures of myth, legend, or fiction (Greek
+mythology, folklore, literary characters), stick to what the museum's
+catalogue records about the SUBJECT as an entity — role, associated
+iconography, and museum objects that depict or reference them.
+
+Do NOT invent biographical narrative arcs from the LLM's training data
+about the mythological tradition (Iliad details, family trees, story
+episodes) unless those specific details are in the museum inputs or
+Wikidata. Mythological subjects typically have thin structured inputs;
+keep the biography short rather than filling with training-data narrative.
 
 ## Attribution to the wrong entity in a related family (broader)
 
@@ -316,42 +281,6 @@ the source is silent on death date, prefer past-tense construction
 ("was a founder of the 1930 amalgamation"). Reviewer flags as
 `error:high` when the biography places a person at an event after
 their known death.
-
-## Institutional sequencing inference
-
-When the museum inputs or Wikidata list multiple institutions
-associated with a subject (universities, employers, hospitals), do
-NOT infer a sequence or progression not present in the source. A
-list of institutions listed side by side does not mean "undergrad
-at one, doctorate at the other" or "moved from X to Y then Z"
-unless the source records that explicitly.
-
-BAD example (real Einstein case, cp37054):
-- Wikidata: educational institutions include Luitpold-Gymnasium,
-  ETH Zurich, University of Zurich (as a flat list)
-- Biography wrote: "educated at the Luitpold-Gymnasium, before
-  going on to study at ETH Zurich and the University of Zurich"
-- Problem: "before going on to" implies chronological sequence that
-  the source doesn't explicitly encode. ETH and University of Zurich
-  are distinct institutions with different roles in Einstein's
-  history (undergraduate at ETH; doctorate submitted to University
-  of Zurich) — the source records both without ordering.
-- Fix: "educated at institutions including the Luitpold-Gymnasium,
-  ETH Zurich, and the University of Zurich." (Preserves the source's
-  list without inferring order.)
-
-Rule: list institutions in the order the source records; do NOT add
-prepositions ("before moving to X"), connectives ("then studied at
-Y"), or role descriptions ("undergraduate at X, doctorate at Y")
-unless each is verbatim citable to the source. Reviewer flags as
-`error:medium`.
-
-Wikidata QUALIFIERS on educational / employment claims (when we
-extract them) DO carry start/end dates and role types. When
-qualifiers are present, the writer MAY use them to sequence
-correctly — but the qualifier data must be cited by property code
-in the citation. Without qualifier data, list order matches source
-order and no narrative inference is allowed.
 
 ## Unsupported institutional affiliation
 
