@@ -804,12 +804,19 @@
             via [data-vis] / [data-decided] / [data-concern]
             selectors. The state triple is the source of truth for
             display; publishingState enum is not consulted. --}}
-      <li class="sentence" data-source="{{this.source}}" data-signature="{{this.claimSignature}}" data-vis="publishing" data-decided="{{this.state.decidedBy}}"{{#if this.state.concern}} data-concern="{{this.state.concern}}"{{/if}}>
+      <li class="sentence" data-source="{{this.bucketSource}}" data-signature="{{this.claimSignature}}" data-vis="publishing" data-decided="{{this.state.decidedBy}}"{{#if this.state.concern}} data-concern="{{this.state.concern}}"{{/if}}>
         <div class="sentence__text">{{{this.textHtml}}}</div>
         <div class="sentence__meta">
-          <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{#if this.sourceDetailFormatted}}Source: {{this.sourceDetailFormatted}}{{else}}Source tag: {{this.source}}{{/if}}">
-            {{this.source}}
+          {{!-- Chip stack: one pill per source in the sentence's
+                `sources` array. Single-source sentences render as one
+                pill (visually unchanged). The FIRST pill carries the
+                sourceDetail tooltip; subsequent pills just name their
+                source tag. --}}
+          {{#each this.sources}}
+          <span class="pill sentence__source-pill" data-source="{{this}}" title="{{#if @first}}{{#if ../sourceDetailFormatted}}Source: {{../sourceDetailFormatted}}{{else}}Source tag: {{this}}{{/if}}{{else}}Additional source tag: {{this}}{{/if}}">
+            {{this}}
           </span>
+          {{/each}}
 
           {{!-- Task 62: state pill only surfaces the SIGNAL — curator
                 override. The default auto-publishing state is implied
@@ -928,12 +935,16 @@
     <ol class="sentence-list">
       {{#each renderedBiography.sentences}}
       {{#unless this.visible}}
-      <li class="sentence sentence--hidden" data-source="{{this.source}}" data-signature="{{this.claimSignature}}" data-vis="hidden" data-decided="{{this.state.decidedBy}}"{{#if this.state.concern}} data-concern="{{this.state.concern}}"{{/if}}>
+      <li class="sentence sentence--hidden" data-source="{{this.bucketSource}}" data-signature="{{this.claimSignature}}" data-vis="hidden" data-decided="{{this.state.decidedBy}}"{{#if this.state.concern}} data-concern="{{this.state.concern}}"{{/if}}>
         <div class="sentence__text">{{{this.textHtml}}}</div>
         <div class="sentence__meta">
-          <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{#if this.sourceDetailFormatted}}Source: {{this.sourceDetailFormatted}}{{else}}Source tag: {{this.source}}{{/if}}">
-            {{this.source}}
+          {{!-- Chip stack — see the Publishing block above for the
+                same shape. Single-source sentences render as one pill. --}}
+          {{#each this.sources}}
+          <span class="pill sentence__source-pill" data-source="{{this}}" title="{{#if @first}}{{#if ../sourceDetailFormatted}}Source: {{../sourceDetailFormatted}}{{else}}Source tag: {{this}}{{/if}}{{else}}Additional source tag: {{this}}{{/if}}">
+            {{this}}
           </span>
+          {{/each}}
 
           {{!-- Task 62: same simplification as the Publishing group —
                 state pill only surfaces curator override (rejection).
@@ -1913,7 +1924,13 @@
       group.setAttribute('data-source', source);
       var h4 = document.createElement('h4');
       h4.className = 'claims-group__title';
-      h4.innerHTML = source + ' <span class="text-meta">(' + sentences.length + ')</span>';
+      // Multi-source sentences are bucketed by their WEAKEST (riskiest)
+      // source per the spec. Header labels reflect that: a group says
+      // "primarily wikidata" (i.e. this is the highest-risk source in
+      // these sentences), not "wikidata sentences" — because sentences
+      // with a wikidata + llm:inferred mix will sit in the llm:inferred
+      // group, not this one. Wording keeps the count honest.
+      h4.innerHTML = 'primarily <code>' + source + '</code> <span class="text-meta">(' + sentences.length + ')</span>';
       group.appendChild(h4);
       var ol = document.createElement('ol');
       ol.className = 'sentence-list';
