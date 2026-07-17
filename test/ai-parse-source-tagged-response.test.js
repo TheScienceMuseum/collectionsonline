@@ -398,3 +398,101 @@ test('selfReview with everything empty → null', function (t) {
   t.equal(result.selfReview, null, 'nothing survives, returned as null');
   t.end();
 });
+
+// --- Multi-source (spec: internal-docs/multi-source-sentence-tagging-spec.md)
+
+test('multi-source: legacy `source: string` normalises to sources: [source]', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{ text: 't', source: 'wikidata' }],
+    confidence: 5
+  }));
+  t.deepEqual(out.sentences[0].sources, ['wikidata'], 'wrapped in array');
+  t.equal(out.sentences[0].source, 'wikidata', 'source mirrors strongest for legacy readers');
+  t.end();
+});
+
+test('multi-source: `sources: [...]` preserved and sorted strongest-first', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{ text: 't', sources: ['llm:inferred', 'wikidata', 'museum'] }],
+    confidence: 5
+  }));
+  t.deepEqual(out.sentences[0].sources, ['museum', 'wikidata', 'llm:inferred'], 'sorted strongest → weakest');
+  t.equal(out.sentences[0].source, 'museum', 'source = strongest');
+  t.end();
+});
+
+test('multi-source: unknown tags in `sources` array are dropped, valid ones kept', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{ text: 't', sources: ['wikidata', 'garbage', 'llm:inferred'] }],
+    confidence: 5
+  }));
+  t.deepEqual(out.sentences[0].sources, ['wikidata', 'llm:inferred'], 'garbage dropped');
+  t.end();
+});
+
+test('multi-source: all-invalid → fallback to defensive single tag', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{ text: 't', sources: ['not-real', 'also-bogus'] }],
+    confidence: 5
+  }));
+  t.deepEqual(out.sentences[0].sources, ['llm:general_knowledge'], 'defensive fallback');
+  t.equal(out.sentences[0].source, 'llm:general_knowledge');
+  t.end();
+});
+
+test('multi-source: dedupes repeated tags in `sources` array', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{ text: 't', sources: ['wikidata', 'museum', 'wikidata'] }],
+    confidence: 5
+  }));
+  t.deepEqual(out.sentences[0].sources, ['museum', 'wikidata'], 'deduped');
+  t.end();
+});
+
+test('multi-source: `sources` wins over legacy `source` when both present', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{ text: 't', source: 'museum', sources: ['wikidata', 'llm:inferred'] }],
+    confidence: 5
+  }));
+  t.deepEqual(out.sentences[0].sources, ['wikidata', 'llm:inferred'], 'sources array is canonical');
+  t.equal(out.sentences[0].source, 'wikidata', 'legacy field takes strongest of new array');
+  t.end();
+});
+
+test('multi-source: verification-candidate counts include mixed sentences', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [
+      { text: 'a', sources: ['wikidata', 'llm:inferred'] },
+      { text: 'b', source: 'llm:contextualising' },
+      { text: 'c', sources: ['museum'] }
+    ],
+    confidence: 5
+  }));
+  t.equal(out.verificationCandidates.inferredCount, 1, 'mixed wikidata+llm:inferred counted as inferred');
+  t.equal(out.verificationCandidates.contextualisingCount, 1);
+  t.equal(out.verificationCandidates.generalKnowledgeCount, 0);
+  t.end();
+});
+
+test('getSources helper: returns sources array when present', function (t) {
+  t.deepEqual(parse.getSources({ sources: ['museum', 'wikidata'] }), ['museum', 'wikidata']);
+  t.end();
+});
+
+test('getSources helper: falls back to [source] for legacy shape', function (t) {
+  t.deepEqual(parse.getSources({ source: 'wikidata' }), ['wikidata']);
+  t.end();
+});
+
+test('getSources helper: neither → defensive fallback', function (t) {
+  t.deepEqual(parse.getSources({}), ['llm:general_knowledge']);
+  t.deepEqual(parse.getSources({ sources: [] }), ['llm:general_knowledge'], 'empty array falls through');
+  t.end();
+});
+
+test('SOURCE_STRENGTH_ORDER export is stable strongest-first list', function (t) {
+  t.equal(parse.SOURCE_STRENGTH_ORDER[0], 'museum', 'museum is strongest');
+  t.equal(parse.SOURCE_STRENGTH_ORDER[parse.SOURCE_STRENGTH_ORDER.length - 1], 'llm:general_knowledge', 'general_knowledge weakest');
+  t.equal(parse.SOURCE_STRENGTH_ORDER.length, 8, '8 tiers');
+  t.end();
+});
