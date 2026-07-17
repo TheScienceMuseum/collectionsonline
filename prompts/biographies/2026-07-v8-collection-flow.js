@@ -311,125 +311,43 @@ const BASE_PROMPT_LINES = [
   'The response schema includes a "notes" string. Use it to flag data quality observations for curators — ambiguities, source conflicts you resolved by priority order, catalogue typos, records that appear miscategorised, or interesting facts you decided to omit because you couldn\'t source them. Curators read this to understand your editorial choices. Not shown to the public.'
 ];
 
-// --- Self-review sections (flag-controlled) -------------------------
-//
-// SELF_CHECKS_SECTION and ABSTENTION_SECTION are prepended to the
-// response schema when the corresponding config flags are on. They
-// come BEFORE the sentences[] in the schema so the model plans /
-// self-critiques BEFORE writing rather than rationalising after — the
-// order in a JSON response matters because Anthropic decoding is
-// sequential.
-
-const SELF_CHECKS_SECTION = [
+// Response schema block. Under reasoning-mode the writer's thinking
+// phase replaces the structured selfReview + skipped[] scaffolding
+// the previous pipeline needed; that dead code lived here until the
+// pipeline consolidated (July 2026).
+const SCHEMA_BLOCK = [
+  'RESPONSE SCHEMA — return strictly valid JSON. No prose wrapping, no markdown fences.',
   '',
-  'SELF-CHECKS — YOU MUST FILL IN "selfReview.checks" BEFORE WRITING ANY SENTENCE',
-  '',
-  'Before you emit any sentence, you MUST work through a self-check block. This is not decoration — it is your primary defence against the mistakes you would otherwise make in prose. The block appears FIRST in the JSON response so you plan before you write.',
-  '',
-  'For each check, write ONE concise sentence — 20 words at most. Do not skip a check, but do not write paragraphs. If trivially satisfied, say so in a phrase ("no persons named — N/A"). If a concern surfaces, name the concern and your response in one sentence ("Sobral attributed to Eddington in museum record — will cite museum but flag in notes").',
-  '',
-  'checks.planningNotes — a paragraph summarising: what data you have, what you plan to write, and which pitfalls (from the class-wide anti-patterns) apply to THIS subject.',
-  '',
-  'checks.temporalConsistency — for every person or dated event mentioned in your planned sentences, check consistency against death / dissolution dates. Have you avoided placing anyone at an event after their known death? (Cross-check against BAD Unilever/Jurgens example in anti-patterns.md.)',
-  '',
-  'checks.attributionAudit — for every entity attribution (X made / owned / did Y), is X and Y co-located in the same citation? Have you avoided welding two related-but-distinct entities together? (Cross-check against BAD Sunsilk/Gibbs and BAD Eddington/Sobral examples.)',
-  '',
-  'checks.currentnessCheck — if the subject is an organisation with a Mimsy "current (YYYY)" brief biography, are you avoiding writing the parenthesised year as an "as of" date? (Cross-check against Rule 6 in anti-patterns.md.)',
-  '',
-  'checks.institutionalAffiliationAudit — for every institution / university / employer / society you plan to name, is it in a citation, or are you reaching for training-data prior? (Cross-check against BAD Monro/Leiden example.)',
-  '',
-  'checks.sourceGapAudit — what claims did you WANT to make but drop because you could not source them? (See ABSTENTION section below if enabled.)',
-  ''
-];
-
-const ABSTENTION_SECTION = [
-  '',
-  'STRUCTURED ABSTENTION — YOU MUST RECORD CLAIMS YOU WANTED TO MAKE BUT COULD NOT SOURCE',
-  '',
-  'When you want to include a claim but cannot cite it from museum inputs, wikidata context, or related items, you MUST NOT fabricate. Instead, record it in "selfReview.skipped" with the desired text and a reason enum. Curators use this to audit your discipline.',
-  '',
-  'Reason enum:',
-  '  "no_source_available"       — nothing in the provided context supports this claim',
-  '  "source_ambiguous"          — sources exist but contradict each other',
-  '  "llm_prior_only"            — you know the claim from training data but it is not in the provided context',
-  '  "source_partial"            — partial support that does not justify the full claim',
-  '',
-  'Every claim you would have fabricated from training-data must appear here instead. If you emit ZERO skipped entries on a data-thin subject, you have almost certainly fabricated something — audit yourself.',
-  ''
-];
-
-const SCHEMA_SUFFIX = [
+  '{',
+  '  "sentences": [',
+  '    {',
+  '      "text": "The exact sentence as it should appear in the biography.",',
+  '      "source": "museum" | "wikidata" | "llm:inferred" | "llm:contextualising" | "llm:general_knowledge",',
+  '      "sourceDetail": "specific field or property, optional",',
+  '      "citations": [',
+  '        { "field": "personData.<key> | wikidata:P<code> | relatedItem:co<id>",',
+  '          "value": "<structured value verbatim>"',
+  '        },',
+  '        { "field": "personData.briefBiography | relatedItem:coXXXX",',
+  '          "excerpt": "<verbatim substring of the input field>"',
+  '        }',
+  '      ]',
+  '    }',
+  '  ],',
+  '  "paragraphBreaks": [3, 7],',
+  '  "confidence": 0-10,',
+  '  "notes": "curator-useful editorial reasoning, optional"',
+  '}',
   '',
   '- paragraphBreaks: array of sentence indices where a paragraph should END (so sentence at that index is the LAST sentence of its paragraph). Use to group the sentences into 2-3 paragraphs.',
   '- confidence: integer 0-10. Below 3 = return a single short summary sentence.'
 ];
 
-// Build the RESPONSE SCHEMA block with optional selfReview fields.
-// selfReview goes FIRST so the model reasons before it writes.
-function buildSchemaBlock (enableSelfChecks, enableAbstention) {
-  const lines = [
-    'RESPONSE SCHEMA — return strictly valid JSON. No prose wrapping, no markdown fences.',
-    '',
-    '{'
-  ];
-  if (enableSelfChecks || enableAbstention) {
-    lines.push('  "selfReview": {');
-    if (enableSelfChecks) {
-      lines.push('    "planningNotes": "brief data audit BEFORE writing — what data is available, what pitfalls to watch for",');
-      lines.push('    "checks": {');
-      lines.push('      "temporalConsistency": "brief prose note — how you verified persons\' involvement dates against their death dates",');
-      lines.push('      "attributionAudit": "brief prose note — how you verified entity attributions co-locate with citations",');
-      lines.push('      "currentnessCheck": "brief prose note — how you handled Mimsy current (YYYY) markers, if any",');
-      lines.push('      "institutionalAffiliationAudit": "brief prose note — how you verified named institutions are cited, not from training prior",');
-      lines.push('      "sourceGapAudit": "brief prose note — what you wanted to say but could not source (details in skipped below)"');
-      lines.push('    }' + (enableAbstention ? ',' : ''));
-    }
-    if (enableAbstention) {
-      lines.push('    "skipped": [');
-      lines.push('      { "desiredText": "the claim you wanted to make", "reason": "no_source_available | source_ambiguous | llm_prior_only | source_partial" }');
-      lines.push('    ]');
-    }
-    lines.push('  },');
-  }
-  lines.push('  "sentences": [');
-  lines.push('    {');
-  lines.push('      "text": "The exact sentence as it should appear in the biography.",');
-  lines.push('      "source": "museum" | "wikidata" | "llm:inferred" | "llm:contextualising" | "llm:general_knowledge",');
-  lines.push('      "sourceDetail": "specific field or property, optional",');
-  lines.push('      "citations": [');
-  lines.push('        { "field": "personData.<key> | wikidata:P<code> | relatedItem:co<id>",');
-  lines.push('          "value": "<structured value verbatim>"');
-  lines.push('        },');
-  lines.push('        { "field": "personData.briefBiography | relatedItem:coXXXX",');
-  lines.push('          "excerpt": "<verbatim substring of the input field>"');
-  lines.push('        }');
-  lines.push('      ]');
-  lines.push('    }');
-  lines.push('  ],');
-  lines.push('  "paragraphBreaks": [3, 7],');
-  lines.push('  "confidence": 0-10,');
-  lines.push('  "notes": "curator-useful editorial reasoning, optional"');
-  lines.push('}');
-  return lines;
+function buildSystemPrompt () {
+  return BASE_PROMPT_LINES.concat(['']).concat(SCHEMA_BLOCK).join('\n');
 }
 
-function buildSystemPrompt (opts) {
-  opts = opts || {};
-  const enableSelfChecks = opts.enableSelfChecks !== false;
-  const enableAbstention = opts.enableAbstention !== false;
-  const lines = BASE_PROMPT_LINES.slice();
-  if (enableSelfChecks) lines.push.apply(lines, SELF_CHECKS_SECTION);
-  if (enableAbstention) lines.push.apply(lines, ABSTENTION_SECTION);
-  lines.push('');
-  lines.push.apply(lines, buildSchemaBlock(enableSelfChecks, enableAbstention));
-  lines.push.apply(lines, SCHEMA_SUFFIX);
-  return lines.join('\n');
-}
-
-// Backwards-compat: consumers using promptModule.systemPrompt get the
-// ALL-FLAGS-ON variant. Callers that need flag control use
-// buildSystemPrompt({ enableSelfChecks, enableAbstention }).
-const systemPrompt = buildSystemPrompt({ enableSelfChecks: true, enableAbstention: true });
+const systemPrompt = buildSystemPrompt();
 
 function buildUserPrompt (personData, relatedItems, wikidataContext, subject, opts) {
   opts = opts || {};
