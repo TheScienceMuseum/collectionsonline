@@ -415,8 +415,10 @@ async function generate (elastic, config, id) {
     }
 
     // Wikipedia summary — see regenerate-biography.js for rationale.
+    // Default OFF as of 2026-07-17; adaptive-fetch gate when enabled.
     let wikipediaSummary = null;
-    if (config.aiBiographyWikipediaEnabled !== false) {
+    const wikipediaGate = fetchWikipediaSummary.shouldFetchWikipedia(config, personData, wikidataContext);
+    if (wikipediaGate.fire) {
       try {
         wikipediaSummary = await fetchWikipediaSummary({
           qCode,
@@ -425,6 +427,8 @@ async function generate (elastic, config, id) {
       } catch (err) {
         console.warn('AI Biography: Wikipedia fetch failed for', id, '-', err && err.message);
       }
+    } else {
+      console.debug('AI Biography:', id, 'Wikipedia skipped (' + wikipediaGate.reason + ')');
     }
 
     // ODNB — see regenerate-biography.js for rationale. Adapter is

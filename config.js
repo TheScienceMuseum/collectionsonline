@@ -170,10 +170,32 @@ module.exports = require('rc')('co', {
   // complements Wikidata's structured claims. Every fact the writer
   // draws from Wikipedia must be tagged `wikipedia` and cited via
   // `wikipedia:<article title>` in the sentence's citations[] array.
-  // Default true — off drops the fetch + prompt section entirely,
-  // saving ~500-1000 input tokens per subject. Treated as an
-  // emergency kill switch (like the writer self-review flags).
-  aiBiographyWikipediaEnabled: process.env.AI_BIOGRAPHY_WIKIPEDIA_ENABLED !== 'false',
+  //
+  // **Default OFF as of 2026-07-17.** Curator preference is scholarly /
+  // curated sources (ODNB, DNB, Grove) over community-edited Wikipedia.
+  // When enabled, adaptive-fetch logic in fetch-wikipedia-summary.js
+  // fires Wikipedia only for subjects where the other sources are thin
+  // (see aiBiographyWikipediaAdaptiveMinWikidataClaims and
+  // aiBiographyWikipediaAdaptiveMinMuseumChars below). Set
+  // AI_BIOGRAPHY_WIKIPEDIA_ENABLED=true to turn on for a run.
+  aiBiographyWikipediaEnabled: process.env.AI_BIOGRAPHY_WIKIPEDIA_ENABLED === 'true',
+
+  // Adaptive-fetch gates for Wikipedia (only consulted when
+  // aiBiographyWikipediaEnabled is true). Wikipedia fires only when
+  // BOTH conditions are met: Wikidata claim count strictly below
+  // aiBiographyWikipediaAdaptiveMinWikidataClaims AND combined
+  // museum biography + briefBiography char count strictly below
+  // aiBiographyWikipediaAdaptiveMinMuseumChars. If either is at or
+  // above threshold, Wikipedia is skipped (the subject has enough
+  // sourcing without it).
+  //
+  // A curator can bypass the gates for a specific run by setting
+  // aiBiographyWikipediaAdaptiveDisabled=true — Wikipedia then fires
+  // for every subject regardless of thresholds (matches the pre-2026-
+  // 07-17 always-on behaviour).
+  aiBiographyWikipediaAdaptiveDisabled: process.env.AI_BIOGRAPHY_WIKIPEDIA_ADAPTIVE_DISABLED === 'true',
+  aiBiographyWikipediaAdaptiveMinWikidataClaims: parseInt(process.env.AI_BIOGRAPHY_WIKIPEDIA_ADAPTIVE_MIN_WIKIDATA_CLAIMS || '8', 10),
+  aiBiographyWikipediaAdaptiveMinMuseumChars: parseInt(process.env.AI_BIOGRAPHY_WIKIPEDIA_ADAPTIVE_MIN_MUSEUM_CHARS || '500', 10),
 
   // Oxford Dictionary of National Biography (ODNB) as an input-mode
   // source — peer-reviewed British biographical scholarship, Tier A
