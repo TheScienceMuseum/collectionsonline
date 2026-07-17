@@ -377,3 +377,54 @@ test('render: sentence text with markers produces textHtml with anchor + preserv
   t.equal(r.sentences[0].textHtml.indexOf('{co66081'), -1, 'marker syntax gone from textHtml');
   t.end();
 });
+
+// --- Multi-source publishing filter (spec: internal-docs/multi-source-sentence-tagging-spec.md)
+
+function sm (text, sources) {
+  return { text, sources, source: sources[0], sourceDetail: null, claimSignature: signature(text) };
+}
+
+test('multi-source: sentence publishes at level 3 when all sources clear (wikidata + llm:inferred)', function (t) {
+  const r = render({
+    sentences: [sm('Mixed at 3.', ['wikidata', 'llm:inferred'])],
+    paragraphBreaks: []
+  }, { publishingLevel: 3 });
+  t.equal(r.sentences[0].visible, true, 'level 3 admits both wikidata and llm:inferred');
+  t.end();
+});
+
+test('multi-source: sentence hides at level 1 because llm:inferred fails weakest-source check', function (t) {
+  const r = render({
+    sentences: [sm('Mixed at 1.', ['wikidata', 'llm:inferred'])],
+    paragraphBreaks: []
+  }, { publishingLevel: 1 });
+  t.equal(r.sentences[0].visible, false, 'level 1 only admits museum + wikidata; llm:inferred is the ceiling');
+  t.equal(r.sentences[0].hiddenReason, 'below_publishing_level');
+  t.end();
+});
+
+test('multi-source: sentence hides at level 3 when it contains llm:general_knowledge', function (t) {
+  const r = render({
+    sentences: [sm('Mixed with general.', ['museum', 'llm:general_knowledge'])],
+    paragraphBreaks: []
+  }, { publishingLevel: 3 });
+  t.equal(r.sentences[0].visible, false, 'general_knowledge caps the sentence at level 5');
+  t.end();
+});
+
+test('multi-source: legacy single `source` still publishes at appropriate level (backwards compat)', function (t) {
+  const legacy = { text: 'Legacy.', source: 'wikidata', sourceDetail: null, claimSignature: signature('Legacy.') };
+  const r = render({ sentences: [legacy], paragraphBreaks: [] }, { publishingLevel: 1 });
+  t.equal(r.sentences[0].visible, true, 'wikidata at level 1 → visible');
+  t.deepEqual(r.sentences[0].sources, ['wikidata'], 'sources array populated on legacy render output');
+  t.end();
+});
+
+test('multi-source: rendered sentence exposes canonical `sources` array', function (t) {
+  const r = render({
+    sentences: [sm('Rich.', ['museum', 'wikidata'])],
+    paragraphBreaks: []
+  }, { publishingLevel: 3 });
+  t.deepEqual(r.sentences[0].sources, ['museum', 'wikidata'], 'both sources exposed to admin UI');
+  t.end();
+});
