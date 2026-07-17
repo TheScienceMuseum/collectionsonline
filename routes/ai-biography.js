@@ -21,7 +21,7 @@ const assessSufficiency = require('../lib/ai/assess-sufficiency');
 const classifySubject = require('../lib/ai/classify-subject');
 const subjectStatus = require('../lib/ai/subject-status');
 const flagStore = require('../lib/ai/flag-store');
-const truncateDescriptionAtSentence = require('../lib/ai/truncate-description');
+const flattenRelated = require('../lib/ai/flatten-related');
 
 const inFlight = new Map();
 
@@ -29,31 +29,15 @@ const CACHE_CONTROL = process.env.NODE_ENV === 'production'
   ? 'public, max-age=3600, stale-while-revalidate=86400'
   : 'no-cache, no-store';
 
-// Per related-item description size in the prompt. Bumped from 200 to 500
-// alongside switching to sentence-boundary truncation
-// (see lib/ai/truncate-description.js). The previous 200-char cap routinely
-// cut descriptions mid-sentence, producing dangerous adjacency artefacts in
-// the prompt — cp37054 (Einstein) hit this when the Eddington description
-// was severed at "of the Royal…", leaving "Sobral, Brazil" and "Eddington"
-// adjacent with no disambiguating clause, and Sonnet bridged the gap by
-// inventing "Eddington's observations at Sobral". 500 lets most catalogue
-// descriptions complete in one or two sentences; sentence-boundary
-// truncation guarantees we never cut a clause that the model could finish
-// incorrectly.
-const DESCRIPTION_MAX_CHARS = 500;
-
-function truncateDescription (text) {
-  return truncateDescriptionAtSentence(text, DESCRIPTION_MAX_CHARS);
-}
+// flattenRelated + truncateDescription live in lib/ai/flatten-related now.
+// See that file's header for the Sobral-adjacency case-study that motivated
+// consolidating both routes onto the 500-char sentence-boundary version.
 
 // v2 writer emits references on each sentence via `sourceDetail`
 // (`relatedItem:coXXXXX`) and `citations[]`. The shared
 // `deriveReferencesFromSentences` in lib/ai/regenerate-biography.js
 // walks BOTH surfaces + extracts persons too, so the returned
-// `references[]` list on the BIOGRAPHY item is comprehensive. Imported
-// rather than duplicated so a fix to the derivation lands in one
-// place. Same shape v1 emitted — `{ id, title, link, type, role? }`
-// — plus the new `type: 'person'` variant for relatedPerson entries.
+// `references[]` list on the BIOGRAPHY item is comprehensive.
 const deriveReferencesFromSentences = require('../lib/ai/regenerate-biography').deriveReferencesFromSentences;
 const filterSelfReview = require('../lib/ai/filter-self-review');
 
@@ -72,36 +56,6 @@ function deriveSourcesFromSentences (sentences) {
     }
   });
   return Array.from(set);
-}
-
-function flattenRelated (sortedRelated, personId) {
-  const items = [];
-  const objects = sortedRelated.relatedObjects || [];
-  const documents = sortedRelated.relatedDocuments || [];
-
-  objects.forEach(function (item) {
-    items.push({
-      id: item.id,
-      title: (item.attributes && item.attributes.summary_title) || item.title || item.name || '',
-      description: truncateDescription(item.attributes && item.attributes.description),
-      link: item.links ? item.links.self : '/objects/' + item.id,
-      type: 'object',
-      role: item.role || ''
-    });
-  });
-
-  documents.forEach(function (item) {
-    items.push({
-      id: item.id,
-      title: (item.attributes && item.attributes.summary_title) || item.title || item.name || '',
-      description: truncateDescription(item.attributes && item.attributes.description),
-      link: item.links ? item.links.self : '/documents/' + item.id,
-      type: 'document',
-      role: item.role || ''
-    });
-  });
-
-  return items;
 }
 
 module.exports = function (elastic, config) {
