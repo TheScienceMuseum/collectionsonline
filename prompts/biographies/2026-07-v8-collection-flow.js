@@ -80,7 +80,7 @@ const BASE_PROMPT_LINES = [
   '',
   'This lets the museum audit every claim and defend against hallucination. Your discipline in source tagging is the primary defensive layer.',
   '',
-  'SOURCE TAGS — every sentence must have exactly one:',
+  'SOURCE TAGS — each sentence carries a `sources` array; single-source sentences use a one-element array. The available tags are:',
   '',
   '  "museum" — the fact is directly present in the MUSEUM inputs below (personData fields — including briefBiography and the long-form biography — or the titles/descriptions of related catalogue items). Authoritative.',
   '',
@@ -104,8 +104,8 @@ const BASE_PROMPT_LINES = [
   '',
   'RULES for tagging',
   '',
-  '1. Every sentence gets exactly one source tag.',
-  '2. Each sentence should be tag-coherent — draw the whole sentence from ONE source. If a fact from museum and a fact from wikidata need to appear together, split into two sentences.',
+  '1. Every sentence carries a `sources` array — one to three tags, ordered strongest → weakest per the priority ladder above. Single-source sentences still use an array (`"sources": ["museum"]`); mixed sentences list every contributing source.',
+  '2. Mixed provenance MUST be declared. If a sentence bridges a structured citation (museum / wikidata / oxfordDNB / gracesGuide / wikipedia) with any llm:inferred / llm:contextualising / llm:general_knowledge clause, list ALL contributing sources. Do NOT hide LLM content by tagging the whole sentence with a stronger source — curators must see the mix. If you cannot honestly split the sources for a sentence, omit the LLM clause instead of concealing it.',
   '3. Prefer LONGER, well-formed multi-clause sentences over choppy ones. A single wikidata-sourced sentence with subordinate clauses is better than three clipped facts.',
   '4. Include a "sourceDetail" naming the specific field / property when possible: "personData.birthDate", "wikidata:P108", "relatedItem:co66082", "briefBiography".',
   '5. Only use "llm:general_knowledge" for facts you are certain about; if there is any ambiguity, OMIT the fact.',
@@ -225,6 +225,20 @@ const BASE_PROMPT_LINES = [
   '      { "field": "relatedItem:co66081", "excerpt": "signed photograph taken with Commander Locker-Lampson MP" }',
   '    ]',
   '',
+  'EXAMPLE — a MIXED-SOURCE sentence (structured citation + inferred bridging clause)',
+  '',
+  '  Wikidata gives you: educated_at=University of Göttingen (P69), employer=Humboldt-Universität zu Berlin (P108). You want to write a flowing sentence that also mentions where his key research happened — but "where he conducted much of his pioneering research" is your synthesis across those two facts, not a claim from either citation on its own.',
+  '',
+  '  Sentence text: "He studied at the University of Göttingen and later held a position at the Humboldt-Universität zu Berlin, where he conducted much of his pioneering research."',
+  '  sources: ["wikidata", "llm:inferred"]  // wikidata for the two structured facts; llm:inferred for the bridging research-location clause',
+  '  Citations:',
+  '    [',
+  '      { "field": "wikidata:P69",  "value": "University of Göttingen" },',
+  '      { "field": "wikidata:P108", "value": "Humboldt-Universität zu Berlin" }',
+  '    ]',
+  '',
+  '  Notice: the sources array declares BOTH contributing tags. The alternative — tagging the whole sentence "wikidata" and pretending the research-location clause is also from wikidata — would hide the inferred content under a stronger source and defeat the audit trail. If you cannot honestly split the sources, omit the inferred clause instead.',
+  '',
   'FLOW — combine multiple facts into flowing sentences',
   '',
   'Look at the tone examples below. Notice how they chain related facts within a single sentence using subordinate clauses, participial phrases, appositives, and semi-colons. This is museum-quality biographical prose — it does NOT read as a bullet list.',
@@ -322,7 +336,7 @@ const SCHEMA_BLOCK = [
   '  "sentences": [',
   '    {',
   '      "text": "The exact sentence as it should appear in the biography.",',
-  '      "source": "museum" | "wikidata" | "llm:inferred" | "llm:contextualising" | "llm:general_knowledge",',
+  '      "sources": ["museum" | "oxfordDNB" | "wikidata" | "gracesGuide" | "wikipedia" | "llm:inferred" | "llm:contextualising" | "llm:general_knowledge"],  // 1-3 tags, strongest first',
   '      "sourceDetail": "specific field or property, optional",',
   '      "citations": [',
   '        { "field": "personData.<key> | wikidata:P<code> | relatedItem:co<id>",',
@@ -459,7 +473,7 @@ function buildUserPrompt (personData, relatedItems, wikidataContext, subject, op
   }
 
   parts.push('');
-  parts.push('Return strict JSON matching the response schema in the system prompt. Every sentence must be tagged with exactly one source. Source priority when a fact appears in multiple inputs: museum > oxfordDNB > wikidata > gracesGuide > wikipedia > llm:inferred.');
+  parts.push('Return strict JSON matching the response schema in the system prompt. Every sentence carries a `sources` array with 1-3 tags, strongest first. Mixed-provenance sentences must declare EVERY contributing source — do not hide llm:inferred / llm:contextualising / llm:general_knowledge content under a stronger tag. Source priority when a fact appears in multiple inputs: museum > oxfordDNB > wikidata > gracesGuide > wikipedia > llm:inferred.');
 
   return parts.join('\n');
 }
