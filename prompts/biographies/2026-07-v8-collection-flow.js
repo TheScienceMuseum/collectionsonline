@@ -376,7 +376,7 @@ function buildUserPrompt (personData, relatedItems, wikidataContext, subject, op
   if (relatedItems && relatedItems.length > 0) {
     relatedItems.slice(0, 20).forEach(function (item, i) {
       const role = item.role ? ' (Role: ' + item.role + ')' : '';
-      const desc = item.description ? '\n    Description: ' + String(item.description).slice(0, 200) : '';
+      const desc = item.description ? '\n    Description: ' + String(item.description).slice(0, 150) : '';
       const title = item.title || item.name || '(untitled)';
       parts.push((i + 1) + '. "' + title + '" (ID: ' + item.id + ', Type: ' + (item.type || 'object') + ')' + role + desc);
     });
@@ -465,7 +465,7 @@ function buildUserPrompt (personData, relatedItems, wikidataContext, subject, op
 }
 
 function formatWikidata (wikidataCache) {
-  const parts = ['Wikidata claims (properties cited via wikidata:P<code> in citations; QUALIFIERS on each claim disambiguate temporal periods — e.g. Einstein at Swiss Patent Office 1902-1909 vs Institute for Advanced Study 1933-1955):'];
+  const parts = ['Wikidata claims (cite as `wikidata:P<code>`; qualifiers on a claim pin its dated period):'];
   const skip = {
     P18: true,
     P154: true,
@@ -496,16 +496,13 @@ function formatWikidata (wikidataCache) {
     if (val.label && /^P\d+$/.test(key)) {
       rendered.add(val.value + '|' + val.label);
       parts.push('- ' + val.label + ' (wikidata:' + key + '): ' + val.value);
-      // Emit qualifier detail for the first 3 claims only. Rich
-      // subjects have up to 5 claims per property; showing all of
-      // them costs input tokens without materially changing the
-      // writer's output (the writer already has the values via the
-      // one-line summary above and only needs qualifiers on the
-      // most-cited claims). References are dropped entirely from the
-      // prompt — writer doesn't cite them and they're the biggest
-      // per-line contributor. Fetcher still returns them so a future
-      // contradiction-detection stage can use them.
-      (val.claims || []).slice(0, 3).forEach(function (c) {
+      // Emit qualifier detail for the first 2 claims only. Rich
+      // subjects have up to 5 claims per property; the writer already
+      // has the values via the one-line summary above and only needs
+      // qualifiers on the most-cited claims. References are dropped
+      // entirely — writer doesn't cite them. Fetcher still returns
+      // both, so contradiction-detection can use them.
+      (val.claims || []).slice(0, 2).forEach(function (c) {
         const qs = c.qualifiers || {};
         const qKeys = Object.keys(qs);
         if (!qKeys.length) return;
