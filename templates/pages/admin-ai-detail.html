@@ -161,6 +161,22 @@
       {{/if}}
     </dd>
   </div>
+  {{!-- External adapters enabled at generation time. Curator hint
+        for "if I turn on ODNB / GracesGuide, would this record
+        benefit from a regen?" — a green ● says the source was ON,
+        a grey ○ says it was OFF. Whether the source actually
+        matched is shown by the citation prefixes on the sentences
+        themselves (wikipedia:*, oxfordDNB:*, gracesGuide:*). --}}
+  {{#if record.externalSourcesQueried}}
+  <div class="detail-meta__field--secondary">
+    <dt>External sources</dt>
+    <dd class="external-sources-strip">
+      <span class="ext-src-badge ext-src-badge--{{#if record.externalSourcesQueried.wikipedia}}on{{else}}off{{/if}}" title="Wikipedia adapter {{#if record.externalSourcesQueried.wikipedia}}fired at generation{{else}}was disabled or gated off (adaptive-fetch skipped){{/if}}">wikipedia</span>
+      <span class="ext-src-badge ext-src-badge--{{#if record.externalSourcesQueried.odnb}}on{{else}}off{{/if}}" title="ODNB adapter {{#if record.externalSourcesQueried.odnb}}enabled at generation{{else}}was disabled (config off or no P1415){{/if}}">oxfordDNB</span>
+      <span class="ext-src-badge ext-src-badge--{{#if record.externalSourcesQueried.gracesGuide}}on{{else}}off{{/if}}" title="Grace's Guide adapter {{#if record.externalSourcesQueried.gracesGuide}}enabled at generation{{else}}was disabled{{/if}}">gracesGuide</span>
+    </dd>
+  </div>
+  {{/if}}
   <div class="detail-meta__field--secondary">
     <dt>Tokens (input / output)</dt>
     <dd>
@@ -896,11 +912,15 @@
         <details class="sentence__actions">
           <summary>curator actions</summary>
           <div class="sentence__actions-body">
-            {{!-- Task 61: visible sentence actions. Primary = Reject
-                  (hide). Add clarification is always available.
-                  Approve (Mark as reviewed) is only offered when not
-                  already curator-approved — it's a de-emphasised
-                  "curator has vetted this" seal. --}}
+            {{!-- Visible sentence actions. Reject (hide + drive next
+                  regen) and Add clarification (curator guidance for
+                  next regen) are the two concrete curator moves.
+                  "Mark as reviewed" was removed in July 2026 — it read
+                  as a rubber-stamp on publishing sentences with no
+                  downstream effect on the biography's shape, and the
+                  approve POST handler stays in the route in case we
+                  reintroduce a proper "Publish anyway" action for
+                  below-threshold sentences later. --}}
             <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/reject" class="sentence__action-form">
               <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
               <input type="hidden" name="claimText" value="{{this.text}}">
@@ -913,13 +933,6 @@
               <input type="text" name="clarification" placeholder="Guidance for next regen (e.g. 'use ForMemRS not Fellow')" class="sentence__action-input" required>
               <button type="submit" class="btn btn--secondary" title="Add curator guidance for the next regeneration">Add clarification</button>
             </form>
-            {{#isequal this.state.decidedBy "curator" this}}{{else}}
-            <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/approve" class="sentence__action-form">
-              <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
-              <input type="hidden" name="claimText" value="{{this.text}}">
-              <button type="submit" class="btn btn--tertiary" title="Mark as curator-reviewed — seals your review of this claim">Mark as reviewed</button>
-            </form>
-            {{/isequal}}
           </div>
         </details>
       </li>
@@ -1066,6 +1079,53 @@
   </div>
   {{/if}}
   </div>{{!-- /claims-groups (Task 64) --}}
+</details>
+
+{{!-- Writer notes + Source disagreements — moved up beside Claims
+      because both are high-signal for curators sweeping records:
+      the writer's own reasoning about what it chose and skipped,
+      and any cross-source disagreements that had to be resolved by
+      the priority ladder. Open by default. --}}
+{{#if record.writerNotes}}
+<details class="collapsible" open>
+  <summary>Writer notes <span class="text-meta" style="font-weight: normal;">— the model's own editorial reasoning for this generation</span></summary>
+  <div class="detail-section">
+    <div class="prose-body" style="white-space: pre-wrap;">{{record.writerNotes}}</div>
+  </div>
+</details>
+{{/if}}
+
+{{#if record.contradictions.length}}
+<details class="collapsible" open>
+  <summary>Source disagreements <span class="text-meta" style="font-weight: normal;">— {{record.contradictions.length}} fact(s) where two or more sources give different values</span></summary>
+  <div class="detail-section">
+    <p class="text-meta" style="margin: 0 0 0.75rem 0;">
+      The writer was told to use the AUTHORITATIVE value (highest-priority source per the museum &gt; oxfordDNB &gt; wikidata &gt; gracesGuide &gt; wikipedia ladder). Other sources' values are shown here for curator awareness — persistent disagreements may signal cataloguing errors on the museum side.
+    </p>
+    <ul class="contradictions-list">
+      {{#each record.contradictions}}
+      <li class="contradiction-item">
+        <div class="contradiction-item__fact">{{this.factLabel}}</div>
+        <div class="contradiction-item__winner">
+          <span class="contradiction-item__badge">authoritative</span>
+          <code>{{this.winnerValue}}</code>
+          <span class="text-meta">({{this.winner}})</span>
+        </div>
+        <ul class="contradiction-item__others">
+          {{#each this.values}}
+          {{#unless this.isWinner}}
+          <li>
+            <span class="text-meta">{{this.source}} says:</span>
+            <code>{{this.value}}</code>
+            <span class="text-meta"> — {{this.sourceDetail}}</span>
+          </li>
+          {{/unless}}
+          {{/each}}
+        </ul>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
 </details>
 
 {{else}}
@@ -1232,6 +1292,17 @@
   .sentence__paragraph-break { border: 0; border-top: 1px dashed #c5c1b5; margin: 0.75rem 0 0.35rem 0; }
 
   .pill--muted { background: #efece4; border: 1px solid #c5c1b5; color: #646464; }
+
+  /* External-sources strip: shows which adapters were enabled at
+     generation time. Green ● = ON, muted grey ○ = OFF. Consistent
+     with the .pill sizing so the row scans cleanly under Prompt
+     Version. */
+  .external-sources-strip { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+  .ext-src-badge { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.72rem; font-family: ui-monospace, SFMono-Regular, monospace; padding: 0.1rem 0.5rem; border-radius: 3px; border: 1px solid transparent; }
+  .ext-src-badge::before { content: '●'; font-size: 0.7em; }
+  .ext-src-badge--on  { background: #e6efe4; border-color: #a9c3a4; color: #2e5a3d; }
+  .ext-src-badge--off { background: #efece4; border-color: #c5c1b5; color: #8b8b8b; }
+  .ext-src-badge--off::before { content: '○'; }
 
   /* Task 61: state pill + row tints driven by the 3-axis triple —
      [data-vis], [data-decided], [data-concern]. Two axes: visibility
@@ -2110,64 +2181,11 @@
   {{/if}}
 </div>
 
-{{!-- Generation metadata — writer's own reasoning, verification-
-      candidate counters, signal breakdown, and the prompts sent to
-      the model. Placed here (below Notes, above the actions strip)
-      because these are diagnostic / audit fields rather than
-      first-look reading. The hairline top border on
-      .detail-inputs-group separates them from the Notes section
-      above. --}}
+{{!-- Generation metadata — verification-candidate counters, signal
+      breakdown, and the prompts sent to the model. Writer notes +
+      Source disagreements used to live here; they moved up beside
+      Claims (see above) so curators see them first. --}}
 <div class="detail-inputs-group">
-{{#if record.writerNotes}}
-<details class="collapsible">
-  <summary>Writer notes <span class="text-meta" style="font-weight: normal;">— the model's own editorial reasoning for this generation</span></summary>
-  <div class="detail-section">
-    {{!-- Matches the .prose-body treatment used by the Existing brief /
-          Existing biography blocks above so curators read the model's
-          reasoning in the same typographic register as the other
-          freetext they compare it against. --}}
-    <div class="prose-body" style="white-space: pre-wrap;">{{record.writerNotes}}</div>
-  </div>
-</details>
-{{/if}}
-
-{{!-- Cross-source contradictions surfaced before the writer call.
-      Structured comparison only (museum ↔ Wikidata for six fact keys) —
-      the winning value goes to the writer as authoritative + is
-      recorded here for curator awareness. Empty array or missing when
-      no disagreements found or detection is disabled. Admin-only. --}}
-{{#if record.contradictions.length}}
-<details class="collapsible">
-  <summary>Source disagreements <span class="text-meta" style="font-weight: normal;">— {{record.contradictions.length}} fact(s) where two or more sources give different values</span></summary>
-  <div class="detail-section">
-    <p class="text-meta" style="margin: 0 0 0.75rem 0;">
-      The writer was told to use the AUTHORITATIVE value (highest-priority source per the museum &gt; oxfordDNB &gt; wikidata &gt; gracesGuide &gt; wikipedia ladder). Other sources' values are shown here for curator awareness — persistent disagreements may signal cataloguing errors on the museum side.
-    </p>
-    <ul class="contradictions-list">
-      {{#each record.contradictions}}
-      <li class="contradiction-item">
-        <div class="contradiction-item__fact">{{this.factLabel}}</div>
-        <div class="contradiction-item__winner">
-          <span class="contradiction-item__badge">authoritative</span>
-          <code>{{this.winnerValue}}</code>
-          <span class="text-meta">({{this.winner}})</span>
-        </div>
-        <ul class="contradiction-item__others">
-          {{#each this.values}}
-          {{#unless this.isWinner}}
-          <li>
-            <span class="text-meta">{{this.source}} says:</span>
-            <code>{{this.value}}</code>
-            <span class="text-meta"> — {{this.sourceDetail}}</span>
-          </li>
-          {{/unless}}
-          {{/each}}
-        </ul>
-      </li>
-      {{/each}}
-    </ul>
-  </div>
-</details>
 
 <style>
   .contradictions-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
