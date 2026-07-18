@@ -348,3 +348,27 @@ constructions.
 
 Reviewer should flag any biography quoting the catalogue's
 parenthesised year as an "as of" date as `error:high`.
+
+## Punctuation — no em-dashes
+
+Do NOT use em-dashes (—, U+2014) anywhere in output prose. Em-dashes
+are a giveaway of LLM-generated text and out of house style. Use
+commas, colons, semi-colons, parentheses, or split into two shorter
+sentences instead. This applies to:
+
+- `sentences[].text`
+- `sentences[].parts[].text` (per-clause spans)
+
+It does NOT apply to `citations[].excerpt` or `citations[].value` —
+those are verbatim substrings of museum records / Wikipedia / etc.
+and MUST round-trip character-for-character. Museum descriptions
+legitimately contain em-dashes; the citation validator would reject
+a modified excerpt.
+
+En-dashes (–, U+2013) are fine (date ranges, page numbers). Only
+em-dashes are banned.
+
+The parser applies a safety-net scrub that replaces any em-dash
+that slips through with a comma. Do NOT rely on the scrub — the
+replacement is mechanical and sometimes reads awkwardly. Get the
+punctuation right in the first place.

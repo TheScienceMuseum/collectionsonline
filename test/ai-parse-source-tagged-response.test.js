@@ -567,6 +567,130 @@ test('parts: three-part sentence spanning three sources', function (t) {
   t.end();
 });
 
+// --- Em-dash scrub -------------------------------------------------
+//
+// House style bans em-dashes in output prose. Parser replaces them
+// with commas on sentence.text AND parts[].text so the concat
+// invariant still holds after the scrub. Citations excerpts / values
+// are NOT scrubbed (they're verbatim source substrings).
+
+test('em-dash scrub: sentence.text em-dash replaced with comma', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{
+      text: 'He was born in 1879 — the same year as X — in Ulm.',
+      sources: ['museum']
+    }],
+    confidence: 8
+  }));
+  t.equal(
+    out.sentences[0].text,
+    'He was born in 1879, the same year as X, in Ulm.',
+    'em-dashes swapped for commas, no double spaces'
+  );
+  t.end();
+});
+
+test('em-dash scrub: en-dash left alone', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{
+      text: 'The 1902–1909 tenure at the Swiss Patent Office.',
+      sources: ['museum']
+    }],
+    confidence: 8
+  }));
+  t.ok(out.sentences[0].text.indexOf('–') !== -1, 'en-dash kept for date range');
+  t.end();
+});
+
+test('em-dash scrub: parts dropped when em-dash spans a part boundary', function (t) {
+  // When the writer puts an em-dash right where two parts meet
+  // (' — ' between spans), the scrub collapses the whitespace on
+  // both sides in the sentence text but only one side in each part.
+  // Concat mismatches → parts drops to null. Sentence still renders;
+  // only hover-highlight is lost for that sentence. Acceptable —
+  // an em-dash means the writer violated the rule; losing per-clause
+  // highlight is minor collateral, and this branch should be rare
+  // once the prompt rule takes hold.
+  const out = parse(JSON.stringify({
+    sentences: [{
+      text: 'Museum fact — with inferred tail.',
+      sources: ['museum', 'llm:inferred'],
+      parts: [
+        { text: 'Museum fact —', source: 'museum' },
+        { text: ' with inferred tail.', source: 'llm:inferred' }
+      ]
+    }],
+    confidence: 8
+  }));
+  t.equal(out.sentences[0].text, 'Museum fact, with inferred tail.', 'sentence scrubbed cleanly');
+  t.equal(out.sentences[0].parts, null, 'parts dropped (concat asymmetry after scrub)');
+  t.end();
+});
+
+test('em-dash scrub: parts survive when em-dash sits mid-body of a single part', function (t) {
+  // Em-dash entirely inside one part (not at its boundary): same
+  // whitespace consumption fires on both sides in the sentence AND
+  // in that part. Concat still matches → parts survive.
+  const out = parse(JSON.stringify({
+    sentences: [{
+      text: 'A museum aside — with more museum, plus inferred tail.',
+      sources: ['museum', 'llm:inferred'],
+      parts: [
+        { text: 'A museum aside — with more museum,', source: 'museum' },
+        { text: ' plus inferred tail.', source: 'llm:inferred' }
+      ]
+    }],
+    confidence: 8
+  }));
+  t.equal(out.sentences[0].text, 'A museum aside, with more museum, plus inferred tail.');
+  t.ok(Array.isArray(out.sentences[0].parts), 'parts survived');
+  t.equal(out.sentences[0].parts[0].text, 'A museum aside, with more museum,');
+  t.equal(out.sentences[0].parts[1].text, ' plus inferred tail.');
+  t.end();
+});
+
+test('em-dash scrub: citations excerpt NOT scrubbed (verbatim source)', function (t) {
+  // Museum records legitimately contain em-dashes. The citation
+  // validator checks excerpts against the raw input — scrubbing
+  // would break the substring match.
+  const out = parse(JSON.stringify({
+    sentences: [{
+      text: 'Einstein was born in Ulm.',
+      sources: ['museum'],
+      citations: [
+        { field: 'personData.biography', excerpt: 'Born in Ulm — Kingdom of Württemberg — 1879.' }
+      ]
+    }],
+    confidence: 8
+  }));
+  t.equal(
+    out.sentences[0].citations[0].excerpt,
+    'Born in Ulm — Kingdom of Württemberg — 1879.',
+    'excerpt keeps its em-dashes verbatim'
+  );
+  t.end();
+});
+
+test('em-dash scrub: claim signature computed from scrubbed text', function (t) {
+  // Same underlying claim written with or without em-dashes should
+  // hash to the same signature after the scrub — so curator
+  // decisions persist across regens that swap the punctuation.
+  const withDash = parse(JSON.stringify({
+    sentences: [{ text: 'Born in 1879 — in Ulm.', sources: ['museum'] }],
+    confidence: 8
+  }));
+  const withComma = parse(JSON.stringify({
+    sentences: [{ text: 'Born in 1879, in Ulm.', sources: ['museum'] }],
+    confidence: 8
+  }));
+  t.equal(
+    withDash.sentences[0].claimSignature,
+    withComma.sentences[0].claimSignature,
+    'em-dash vs comma variant produces identical signature'
+  );
+  t.end();
+});
+
 test('parts: rebuilt text matches raw (untrimmed) — leading whitespace handled', function (t) {
   // Writer emits sentence.text with leading whitespace, then parts
   // that also carry it. Parser trims sentence.text for display but
