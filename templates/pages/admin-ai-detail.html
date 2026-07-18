@@ -590,9 +590,18 @@
                 sourceDetail tooltip; subsequent pills just name their
                 source tag. --}}
           {{#each this.pillData}}
-          <span class="pill sentence__source-pill{{#if this.uncovered}} sentence__source-pill--uncovered{{/if}}" data-source="{{this.source}}" title="{{#if this.uncovered}}⚠ Writer declared this source but didn't attribute any prose clause to it (probably a writer bug — the mix wasn't real). Hover a pill to see which spans came from where.{{else}}{{#if @first}}{{#if ../sourceDetailFormatted}}Source: {{../sourceDetailFormatted}}{{else}}Source tag: {{this.source}}{{/if}}{{else}}Additional source tag: {{this.source}}{{/if}}{{/if}}">
-            {{this.source}}{{#if this.uncovered}} <span class="sentence__source-pill__warn" aria-label="uncovered">⚠</span>{{/if}}
+          {{#if this.uncovered}}
+          {{!-- Uncovered pill: no native title= tooltip. The pink CSS
+                panel below (.sentence__meta::after) is the sole hint,
+                so hovering doesn't fire two competing overlays. --}}
+          <span class="pill sentence__source-pill sentence__source-pill--uncovered" data-source="{{this.source}}">
+            {{this.source}} <span class="sentence__source-pill__warn" aria-label="uncovered">⚠</span>
           </span>
+          {{else}}
+          <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{sourcePillTitle this.source}}">
+            {{this.source}}
+          </span>
+          {{/if}}
           {{/each}}
 
           {{!-- State pill only surfaces the SIGNAL — curator override.
@@ -700,9 +709,18 @@
           {{!-- Chip stack — see the Publishing block above for the
                 same shape. Single-source sentences render as one pill. --}}
           {{#each this.pillData}}
-          <span class="pill sentence__source-pill{{#if this.uncovered}} sentence__source-pill--uncovered{{/if}}" data-source="{{this.source}}" title="{{#if this.uncovered}}⚠ Writer declared this source but didn't attribute any prose clause to it (probably a writer bug — the mix wasn't real). Hover a pill to see which spans came from where.{{else}}{{#if @first}}{{#if ../sourceDetailFormatted}}Source: {{../sourceDetailFormatted}}{{else}}Source tag: {{this.source}}{{/if}}{{else}}Additional source tag: {{this.source}}{{/if}}{{/if}}">
-            {{this.source}}{{#if this.uncovered}} <span class="sentence__source-pill__warn" aria-label="uncovered">⚠</span>{{/if}}
+          {{#if this.uncovered}}
+          {{!-- Uncovered pill: no native title= tooltip. The pink CSS
+                panel below (.sentence__meta::after) is the sole hint,
+                so hovering doesn't fire two competing overlays. --}}
+          <span class="pill sentence__source-pill sentence__source-pill--uncovered" data-source="{{this.source}}">
+            {{this.source}} <span class="sentence__source-pill__warn" aria-label="uncovered">⚠</span>
           </span>
+          {{else}}
+          <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{sourcePillTitle this.source}}">
+            {{this.source}}
+          </span>
+          {{/if}}
           {{/each}}
 
           {{!-- State pill only surfaces curator override (rejection).
@@ -999,7 +1017,7 @@
     display: none;
   }
   .sentence:has(.sentence__source-pill--uncovered:hover) .sentence__meta::after {
-    content: "⚠ No prose span was labelled with this source. If you can guess where the inference lives, check for background phrasing (‘became one of the foremost…’) inside another span.";
+    content: "⚠ The writer tagged this sentence with this source but didn’t attach any prose clause to it. Likely a labelling glitch, not a factual concern — the content is probably folded silently inside another source’s span.";
     display: block;
     margin-top: 0.4rem;
     padding: 0.3rem 0.5rem;
