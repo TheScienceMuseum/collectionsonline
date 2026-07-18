@@ -71,7 +71,7 @@ test('returns matching shape to generateSourceTaggedBiography on happy path', as
   // Shape parity — every field the source-tagged writer returns
   const expectedFields = [
     'sentences', 'paragraphBreaks', 'confidence', 'notes',
-    'verificationCandidates', 'selfReview',
+    'verificationCandidates',
     'model', 'promptVersion',
     'inputTokens', 'outputTokens', 'cacheCreationTokens', 'cacheReadTokens',
     'systemPrompt', 'prompt', 'rawResponse', 'citationDrops'
@@ -81,15 +81,6 @@ test('returns matching shape to generateSourceTaggedBiography on happy path', as
   });
   // Plus reasoning-mode-specific: thinkingChars
   t.equal(typeof result.thinkingChars, 'number');
-  t.end();
-});
-
-test('selfReview is null (reasoning-mode replaces its function)', async function (t) {
-  const client = makeStubClient(validResponse(VALID_PARSED_JSON));
-  const result = await generateReasoningBiography(
-    { name: 'x' }, [], null, { client, apiKey: 'x' }
-  );
-  t.equal(result.selfReview, null, 'never populates selfReview');
   t.end();
 });
 
