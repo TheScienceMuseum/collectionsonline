@@ -390,7 +390,17 @@ function buildUserPrompt (personData, relatedItems, wikidataContext, subject, op
   if (relatedItems && relatedItems.length > 0) {
     relatedItems.slice(0, 20).forEach(function (item, i) {
       const role = item.role ? ' (Role: ' + item.role + ')' : '';
-      const desc = item.description ? '\n    Description: ' + String(item.description).slice(0, 150) : '';
+      // Description is already truncated at 500 chars on a sentence
+      // boundary by lib/ai/flatten-related.js (DESCRIPTION_MAX_CHARS
+      // there — the shared single cap for both admin/bulk and public
+      // paths). Passing the full flattened value through here — museum
+      // object descriptions are our richest single source of prose
+      // about a subject; the 500-char sentence-boundary cap is enough
+      // to survive pathological multi-paragraph outliers without
+      // chopping mid-thought on typical entries. If further trimming
+      // is ever needed, do it in flatten-related.js so both consumers
+      // stay consistent.
+      const desc = item.description ? '\n    Description: ' + item.description : '';
       const title = item.title || item.name || '(untitled)';
       parts.push((i + 1) + '. "' + title + '" (ID: ' + item.id + ', Type: ' + (item.type || 'object') + ')' + role + desc);
     });

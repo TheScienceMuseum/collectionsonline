@@ -47,8 +47,5 @@
   "aiBiographyPublishingLevel": 3,
   "aiBiographyPerGenerationReviewEnabled": true,
   "aiBiographyExternalValidationEnabled": false,
-  "aiBiographyExternalValidationMaxSources": 3,
-
-  "___on_demand_comment": "Public on-demand generation. false (prod default) → uncached public hits return 204; biographies come from batch pre-gen + admin 'generate for URL'. true (dev / staging) → first hit on a public page fires a Claude call and caches. Admin-initiated regens are always allowed.",
-  "aiBiographyOnDemandEnabled": false
+  "aiBiographyExternalValidationMaxSources": 3
 }

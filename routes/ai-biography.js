@@ -1,61 +1,16 @@
 'use strict';
 
-const TypeMapping = require('../lib/type-mapping');
-const getRelatedItems = require('../lib/get-related-items');
-const sortRelated = require('../lib/sort-related-items');
-const extractPersonData = require('../lib/ai/extract-person-data');
-const generateReasoningBiography = require('../lib/ai/generate-reasoning-biography');
 const curatorDecisionsStore = require('../lib/ai/curator-decisions-store');
 const reviewStore = require('../lib/ai/review-store');
 const renderBiography = require('../lib/ai/render-biography');
 const biographyStore = require('../lib/ai/biography-store');
 const dynamo = require('../lib/ai/dynamo');
-const normaliseWikidata = require('../lib/helpers/normalise-wikidata');
-const fetchWikidataLive = require('../lib/ai/fetch-wikidata-live');
-const fetchWikipediaSummary = require('../lib/ai/fetch-wikipedia-summary');
-const fetchOdnbSummary = require('../lib/ai/fetch-odnb-summary');
-const fetchGracesGuideSummary = require('../lib/ai/fetch-graces-guide-summary');
-const detectContradictions = require('../lib/ai/detect-contradictions');
-const assessSufficiency = require('../lib/ai/assess-sufficiency');
-const classifySubject = require('../lib/ai/classify-subject');
 const subjectStatus = require('../lib/ai/subject-status');
 const flagStore = require('../lib/ai/flag-store');
-const flattenRelated = require('../lib/ai/flatten-related');
-
-const inFlight = new Map();
 
 const CACHE_CONTROL = process.env.NODE_ENV === 'production'
   ? 'public, max-age=3600, stale-while-revalidate=86400'
   : 'no-cache, no-store';
-
-// flattenRelated + truncateDescription live in lib/ai/flatten-related now.
-// See that file's header for the Sobral-adjacency case-study that motivated
-// consolidating both routes onto the 500-char sentence-boundary version.
-
-// v2 writer emits references on each sentence via `sourceDetail`
-// (`relatedItem:coXXXXX`) and `citations[]`. The shared
-// `deriveReferencesFromSentences` in lib/ai/regenerate-biography.js
-// walks BOTH surfaces + extracts persons too, so the returned
-// `references[]` list on the BIOGRAPHY item is comprehensive.
-const deriveReferencesFromSentences = require('../lib/ai/regenerate-biography').deriveReferencesFromSentences;
-const filterSelfReview = require('../lib/ai/filter-self-review');
-
-// Top-level `sources` list — v1 emitted ['collection'] or
-// ['collection', 'wikidata']; v2 derives the same list from the
-// source tags actually used across sentences. Same shape, same
-// downstream consumers.
-function deriveSourcesFromSentences (sentences) {
-  const set = new Set();
-  (sentences || []).forEach(function (s) {
-    if (!s || typeof s.source !== 'string') return;
-    if (s.source === 'museum') set.add('collection');
-    else if (s.source === 'wikidata') set.add('wikidata');
-    else if (s.source.indexOf('llm:validated:') === 0) {
-      set.add(s.source.slice('llm:validated:'.length));
-    }
-  });
-  return Array.from(set);
-}
 
 module.exports = function (elastic, config) {
   return [publicBiographyRoute(elastic, config), publicFlagRoute(config)];
@@ -78,14 +33,16 @@ function publicBiographyRoute (elastic, config) {
           return h.response({ error: 'Invalid ID format' }).code(400);
         }
 
-        // Check DynamoDB for existing biography. We look up the canonical
-        // record regardless of status, then decide what to return:
+        // Look up the cached biography and decide what to return:
         //   - living person AND feature-flag off → 204 (policy suppression)
         //   - hidden / insufficient_data         → 204 (don't show publicly)
         //   - live / flagged                     → serve the cached content
         //                                          (flagged is just a triage
         //                                          marker; still public)
-        //   - no record at all                   → fall through to regenerate
+        //   - no record at all                   → 204 (nothing precomputed)
+        //
+        // This route ONLY serves what has already been generated. New
+        // biographies come from admin Regenerate or scripts/bulk-generate.
         //
         // Living-person policy is enforced HERE, at render time — not at
         // generation time. Biographies are generated for everyone; the
@@ -179,42 +136,14 @@ function publicBiographyRoute (elastic, config) {
           return h.response({ error: 'Storage unavailable' }).code(503);
         }
 
-        // Public on-demand generation is gated by aiBiographyOnDemandEnabled.
-        // In production this is off — the public page has already looked up
-        // the cached record above, and if nothing came back we deliberately
-        // do NOT fire a Claude call for a walk-in visitor. Cost is capped by
-        // the pre-launch batch + admin-triggered regenerations. Dev / staging
-        // flips this on to keep the previous "first hit generates" workflow
-        // for prototyping.
-        if (!config.aiBiographyOnDemandEnabled) {
-          return h.response({}).code(204);
-        }
-
-        // In-flight deduplication
-        if (inFlight.has(id)) {
-          try {
-            const infResult = await inFlight.get(id);
-            if (!infResult) return h.response({}).code(204);
-            return h.response(infResult).type('application/json').header('Cache-Control', CACHE_CONTROL);
-          } catch (err) {
-            return h.response({ error: 'Generation failed' }).code(503);
-          }
-        }
-
-        const promise = generate(elastic, config, id);
-        inFlight.set(id, promise);
-
-        try {
-          const result = await promise;
-          if (!result) return h.response({}).code(204);
-          return h.response(result).type('application/json').header('Cache-Control', CACHE_CONTROL);
-        } catch (err) {
-          console.error('AI Biography route error for', id,
-            '- name:', err && err.name,
-            '- message:', err && err.message,
-            '- stack:', err && err.stack);
-          return h.response({ error: 'Internal server error' }).code(500);
-        }
+        // No cached biography → 204. The public route ONLY serves what
+        // has already been generated. New biographies come from either
+        // the admin Regenerate button or scripts/bulk-generate.js — a
+        // walk-in visitor never triggers a Claude call. This bounds cost
+        // (no long-tail public traffic can spend tokens) and matches
+        // the launch model: batch-precompute what's worth publishing,
+        // serve from cache.
+        return h.response({}).code(204);
       }
     }
   };
@@ -310,386 +239,4 @@ function publicFlagRoute (config) {
       }
     }
   };
-}
-
-async function generate (elastic, config, id) {
-  try {
-    const esResult = await elastic.get({ index: config.elasticIndex || 'ciim', id: TypeMapping.toInternal(id) });
-    const source = esResult.body._source;
-
-    if (!source['@datatype'] || source['@datatype'].base !== 'agent') {
-      return null;
-    }
-
-    const personData = extractPersonData(source);
-
-    // Check existing description length threshold. The catalogue already
-    // has a good-enough biography, so we skip AI generation entirely to
-    // avoid polluting well-researched records with AI-written content.
-    // Logged so "why did no biography appear for X?" has an answer in
-    // the server logs without needing to reason through the check chain.
-    if (personData.descriptionChars >= config.aiBiographyMaxExistingChars) {
-      console.log('AI Biography: skipping', id,
-        '— existing catalogue description is', personData.descriptionChars,
-        'chars (threshold', config.aiBiographyMaxExistingChars + '). No AI needed.');
-      return null;
-    }
-
-    // Fetch related items
-    let sortedRelated = { relatedObjects: [], relatedDocuments: [] };
-    try {
-      const relatedItems = await getRelatedItems(elastic, id);
-      sortedRelated = sortRelated(relatedItems, id);
-    } catch (err) {
-      console.debug('AI Biography: Could not fetch related items:', err.message);
-    }
-
-    const allItems = flattenRelated(sortedRelated, id);
-    console.log('AI Biography: Related items for', id, '- objects:', (sortedRelated.relatedObjects || []).length, 'documents:', (sortedRelated.relatedDocuments || []).length, 'flattened:', allItems.length);
-
-    // Fetch Wikidata properties directly from the API (single lightweight call)
-    let wikidataContext = null;
-    const qCode = normaliseWikidata.getQCode(personData.wikidata);
-    if (qCode) {
-      try {
-        wikidataContext = await fetchWikidataLive(qCode);
-        if (!wikidataContext) {
-          console.warn('AI Biography: Wikidata fetch for', qCode, '(', id, ') returned no usable properties');
-        } else {
-          console.log('AI Biography: Wikidata fetch OK for', qCode, '(', id, ') - keys:', Object.keys(wikidataContext).join(', '));
-        }
-      } catch (err) {
-        console.warn('AI Biography: Wikidata fetch failed for', qCode, '(', id, ') -', err.message);
-      }
-    } else if (personData.wikidata) {
-      console.warn('AI Biography: Could not extract Q-code from wikidata value for', id, ':', JSON.stringify(personData.wikidata));
-    } else {
-      console.log('AI Biography: No wikidata field present on', id);
-    }
-
-    // Wikipedia summary — see regenerate-biography.js for rationale.
-    // Default OFF as of 2026-07-17; adaptive-fetch gate when enabled.
-    let wikipediaSummary = null;
-    const wikipediaGate = fetchWikipediaSummary.shouldFetchWikipedia(config, personData, wikidataContext);
-    if (wikipediaGate.fire) {
-      try {
-        wikipediaSummary = await fetchWikipediaSummary({
-          qCode,
-          subjectName: personData.name
-        });
-      } catch (err) {
-        console.warn('AI Biography: Wikipedia fetch failed for', id, '-', err && err.message);
-      }
-    } else {
-      console.debug('AI Biography:', id, 'Wikipedia skipped (' + wikipediaGate.reason + ')');
-    }
-
-    // ODNB — see regenerate-biography.js for rationale. Adapter is
-    // self-gating on config + Wikidata P1415, so this always returns
-    // null when we don't have credentials or the subject has no ODNB
-    // entry.
-    let odnbSummary = null;
-    try {
-      odnbSummary = await fetchOdnbSummary({
-        config,
-        wikidataContext
-      });
-    } catch (err) {
-      console.warn('AI Biography: ODNB fetch failed for', id, '-', err && err.message);
-    }
-
-    // Grace's Guide — UK industrial history wiki. Public, gated on
-    // Wikidata P3074.
-    let gracesGuideSummary = null;
-    if (config.aiBiographyGracesGuideEnabled !== false) {
-      try {
-        gracesGuideSummary = await fetchGracesGuideSummary({
-          config,
-          wikidataContext
-        });
-      } catch (err) {
-        console.warn('AI Biography: Grace\'s Guide fetch failed for', id, '-', err && err.message);
-      }
-    }
-
-    // Cross-source contradiction detection (structured facts only —
-    // museum ↔ Wikidata). See lib/ai/regenerate-biography.js for the
-    // shared explanation. Kill-switch:
-    // aiBiographyContradictionDetectionEnabled=false.
-    let contradictions = [];
-    if (config.aiBiographyContradictionDetectionEnabled !== false) {
-      try {
-        contradictions = detectContradictions({
-          personData,
-          wikidataContext,
-          wikipediaSummary,
-          odnbSummary,
-          gracesGuideSummary
-        });
-      } catch (err) {
-        console.warn('AI Biography: contradiction detection failed for', id, '-', err && err.message);
-        contradictions = [];
-      }
-    }
-
-    // Classify the subject and inspect their living/deceased status. Both
-    // travel with the canonical record — `subjectStatus` is what the public
-    // route's living-person suppression reads when deciding whether to
-    // serve the content.
-    const subject = classifySubject(personData, wikidataContext);
-    const subjStatus = subjectStatus.inspect(personData, wikidataContext, subject.noun);
-
-    // Pre-flight data-sufficiency check — skip Claude entirely for records
-    // with too little source data to produce a meaningful biography.
-    const assessment = assessSufficiency.assess(
-      personData, allItems, wikidataContext, config.aiBiographyMinSignals
-    );
-    if (!assessment.sufficient) {
-      console.log('AI Biography: insufficient data for', id,
-        '—', assessment.signalCount, '/', assessment.totalSignals,
-        'signals, minimum score', assessment.minScore, 'required.');
-      if (dynamo.isReady()) {
-        await biographyStore.saveBiography(id, {
-          status: 'insufficient_data',
-          skipReason: assessSufficiency.skipReason(assessment),
-          personName: personData.name,
-          pageUrl: '/people/' + id,
-          existingDescriptionChars: personData.descriptionChars,
-          signalScore: assessment.score,
-          signalMaxScore: assessment.maxScore,
-          signalCount: assessment.signalCount,
-          signalsPresent: assessment.present,
-          signalsMissing: assessment.missing,
-          subjectStatus: subjStatus
-        });
-      }
-      return null;
-    }
-
-    // v2 source-tagged writer. Curator decisions (rejections + clarifications)
-    // are fetched best-effort and injected into the writer prompt as
-    // subject-specific constraints — for a fresh subject that's typically null,
-    // for a subject the curator has already worked on it feeds prior decisions
-    // back into the next generation. Diagnostics is an out-param object;
-    // populated on failure and persisted to the record so a curator viewing
-    // the failed record sees what actually ran instead of grepping logs.
-    const curatorDecisions = await curatorDecisionsStore.get(id).catch(function () { return null; });
-    const diagnostics = {};
-    let result;
-    try {
-      result = await generateReasoningBiography(personData, allItems, wikidataContext, {
-        apiKey: config.anthropicApiKey,
-        model: config.aiBiographyModel,
-        budgetTokens: config.aiBiographyThinkingBudgetTokens,
-        maxTokens: config.aiBiographyMaxOutputTokens,
-        curatorDecisions,
-        diagnostics,
-        wikipediaSummary,
-        odnbSummary,
-        gracesGuideSummary,
-        contradictions
-      });
-    } catch (err) {
-      // Writer catches its own API errors internally and returns null
-      // with a populated diagnostics object; anything that surfaces
-      // via `catch` is unexpected. Log + swallow so a page hit doesn't 500.
-      console.error('AI Biography: Unexpected error from writer for', id, '-', err.message);
-      return null;
-    }
-
-    if (!result) {
-      // A null return from the v2 writer means either the API call failed
-      // (network / API error surfaced via diagnostics.failureMode =
-      // 'api_call_failed' — we WERE NOT billed there; the SDK caught the
-      // error before sending), OR the API call succeeded but the response
-      // content was unusable (empty body, unparseable JSON, wrong shape —
-      // we WERE billed). Both are persisted here so the admin detail
-      // page can distinguish them via the failure diagnostics block
-      // shipped in Task 55, and either way subsequent page loads don't
-      // re-issue the call.
-      //
-      // Staff can retry manually from the admin detail page via Regenerate
-      // — they're paying attention, one retry is fine, and the manual click
-      // gives them the feedback loop if the failure persists.
-      //
-      // Diagnostics fields (failureMode / rawResponse / model /
-      // promptVersion / systemPrompt / prompt / parsedKeys / parseError)
-      // are persisted so the admin detail view can show what actually
-      // ran and what Claude produced. rawResponse is truncated to 4000
-      // chars to avoid ballooning DynamoDB item size when a model
-      // occasionally goes long. First 4KB is more than enough to
-      // diagnose (schema mismatch, refusal, truncation all show in the
-      // first paragraph or two).
-      console.warn('AI Biography: Claude returned unusable content for', id,
-        '— persisting as insufficient_data to prevent auto-retry burning tokens.',
-        '· failureMode:', diagnostics.failureMode || 'unknown',
-        '· promptVersion:', diagnostics.promptVersion || 'unknown');
-      if (dynamo.isReady()) {
-        await biographyStore.saveBiography(id, {
-          status: 'insufficient_data',
-          skipReason: 'Generation failed: Claude returned unusable content (see admin diagnostics for details)',
-          personName: personData.name,
-          pageUrl: '/people/' + id,
-          existingDescriptionChars: personData.descriptionChars,
-          signalScore: assessment.score,
-          signalMaxScore: assessment.maxScore,
-          signalCount: assessment.signalCount,
-          signalsPresent: assessment.present,
-          signalsMissing: assessment.missing,
-          subjectStatus: subjStatus,
-          // Failure diagnostics — mirrors success-path metadata (model,
-          // promptVersion, systemPrompt, prompt) so the admin UI's
-          // existing collapsibles work on failed records too.
-          failureMode: diagnostics.failureMode || null,
-          model: diagnostics.model || null,
-          promptVersion: diagnostics.promptVersion || null,
-          systemPrompt: diagnostics.systemPrompt || null,
-          prompt: diagnostics.prompt || null,
-          rawResponse: diagnostics.rawResponse ? String(diagnostics.rawResponse).slice(0, 4000) : null,
-          parsedKeys: diagnostics.parsedKeys || null,
-          parseError: diagnostics.parseError || null
-        });
-      }
-      return null;
-    }
-
-    // v2 writer's confidence gate. Same 0–10 self-reported score; anything
-    // at-or-below the threshold maps to insufficient_data. Threshold pinned
-    // locally rather than imported from the v1 module — same semantics,
-    // avoids a stale cross-module reference once the v1 writer is deleted.
-    const V2_CONFIDENCE_INSUFFICIENT_AT_OR_BELOW = 2;
-    if (result.confidence <= V2_CONFIDENCE_INSUFFICIENT_AT_OR_BELOW) {
-      if (dynamo.isReady()) {
-        await biographyStore.saveBiography(id, {
-          status: 'insufficient_data',
-          skipReason: 'Low confidence — not enough data for meaningful biography',
-          personName: personData.name,
-          pageUrl: '/people/' + id,
-          existingDescriptionChars: personData.descriptionChars,
-          sentences: result.sentences,
-          paragraphBreaks: result.paragraphBreaks,
-          writerConfidence: result.confidence,
-          writerNotes: result.notes,
-          verificationCandidates: result.verificationCandidates,
-          model: result.model,
-          promptVersion: result.promptVersion,
-          inputTokens: result.inputTokens,
-          outputTokens: result.outputTokens,
-          signalScore: assessment.score,
-          signalMaxScore: assessment.maxScore,
-          signalCount: assessment.signalCount,
-          signalsPresent: assessment.present,
-          signalsMissing: assessment.missing,
-          subjectStatus: subjStatus
-        });
-      }
-      return null;
-    }
-
-    // Derive `references` — { id, title, link } for every related item
-    // any sentence cites via `sourceDetail: 'relatedItem:*'`. Stored on
-    // the canonical BIOGRAPHY item so the render layer can build "→
-    // view object" chips + the admin per-sentence Claims list can show
-    // links, without a second Dynamo/ES round-trip.
-    const references = deriveReferencesFromSentences(result.sentences, allItems, personData);
-
-    // Save canonical v2 record. `biographyHtml` is intentionally NOT stored
-    // — HTML is derived at render time from sentences + curator decisions
-    // + open findings, so a subsequent curator action (approve / reject /
-    // clarify) or filter-level tweak takes effect on the next page load
-    // without a regen. `systemPrompt` / `prompt` / `rawResponse` DO land
-    // on the record so the admin detail's collapsibles + the failure-
-    // diagnostics audit trail have the actual prompts + raw Claude reply
-    // available (regression from v1 flagged in Task 56 review).
-    if (dynamo.isReady()) {
-      await biographyStore.saveBiography(id, {
-        status: 'live',
-        personName: personData.name,
-        pageUrl: '/people/' + id,
-        existingDescriptionChars: personData.descriptionChars,
-        sentences: result.sentences,
-        paragraphBreaks: result.paragraphBreaks,
-        writerConfidence: result.confidence,
-        writerNotes: result.notes,
-        verificationCandidates: result.verificationCandidates,
-        // Writer self-review filtered against the same flags that
-        // shaped the prompt — see filterSelfReview() below.
-        selfReview: filterSelfReview(result.selfReview, config),
-        // Cross-source contradictions surfaced pre-write. Empty array
-        // when no disagreements or detection was disabled.
-        contradictions,
-        references,
-        model: result.model,
-        promptVersion: result.promptVersion,
-        inputTokens: result.inputTokens,
-        outputTokens: result.outputTokens,
-        systemPrompt: result.systemPrompt || null,
-        prompt: result.prompt || null,
-        rawResponse: result.rawResponse || null,
-        signalScore: assessment.score,
-        signalMaxScore: assessment.maxScore,
-        signalCount: assessment.signalCount,
-        signalsPresent: assessment.present,
-        signalsMissing: assessment.missing,
-        subjectStatus: subjStatus
-      });
-    }
-
-    // Render-time suppression — applied to the freshly-generated result too,
-    // not just the cached-retrieve path. If we skip this, the first visit
-    // after a record is generated serves the biography once, and subsequent
-    // visits hit the cached-record branch (which DOES suppress) and hide
-    // it. Keeping the check in both paths gives consistent public behaviour
-    // from the first load onwards.
-    if (subjectStatus.isSuppressedOnPublicSite(subjStatus, config)) {
-      return null;
-    }
-
-    // Render the sentence-tagged biography to public HTML. Any stale
-    // findings persisted from before the reviewer was retired still hide
-    // their sentences by default (defensive-by-default); curators resolve
-    // them from the admin detail page. Curator decisions were fetched at
-    // the top of this block. References plumbed through so the render
-    // layer can append clickable "In the collection" chips per cited
-    // object — restores v1's inline object hyperlinking behaviour.
-    const openFindings = await reviewStore.openFindings(id).catch(function () { return []; });
-    const rendered = renderBiography({
-      sentences: result.sentences,
-      paragraphBreaks: result.paragraphBreaks
-    }, {
-      decisions: curatorDecisions,
-      openFindings,
-      publishingLevel: config.aiBiographyPublishingLevel,
-      references
-    });
-
-    return {
-      // v2 splits main prose vs collection-object prose at render time
-      // (Task 56). biographyHtml = "who / what / when" narrative;
-      // contextHtml = "In the collection: bronze bust... solar eclipse
-      // instruments...". Downstream templates render both blocks with
-      // their own headings. `biography` kept as a synonym for
-      // biographyHtml so any consumer that hasn't migrated stays happy.
-      //
-      // `references` deliberately NOT surfaced on the public payload —
-      // the public /people/{id} page already lists related objects via
-      // ES elsewhere, and every catalogue item cited in the AI prose
-      // is reachable through inline anchors. The field lives on the DB
-      // item so the admin Claims list can render per-sentence chips
-      // without an ES lookup, but public API consumers don't need it.
-      biography: rendered.biographyHtml,
-      biographyHtml: rendered.biographyHtml,
-      context: rendered.contextHtml,
-      contextHtml: rendered.contextHtml,
-      personName: personData.name,
-      sources: deriveSourcesFromSentences(result.sentences),
-      generatedAt: new Date().toISOString(),
-      model: result.model,
-      status: 'live',
-      suppressExisting: personData.descriptionChars < config.aiBiographySuppressExistingChars,
-      flagEnabled: !!config.aiBiographyPublicFlagEnabled
-    };
-  } finally {
-    inFlight.delete(id);
-  }
 }

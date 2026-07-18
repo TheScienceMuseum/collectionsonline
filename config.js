@@ -54,15 +54,6 @@ module.exports = require('rc')('co', {
   // returns 404. Default false — enable in .corc / env only when the
   // feature is intentionally live.
   aiBiographyPublicFlagEnabled: process.env.AI_BIOGRAPHY_PUBLIC_FLAG_ENABLED === 'true',
-  // Public-page on-demand generation. When true (dev / staging), a hit on
-  // /people/{id} for a record with no stored biography fires a Claude call
-  // and caches the result. When false (prod default), the public route
-  // returns 204 for uncached records — biographies come exclusively from
-  // batch pre-generation + the admin "generate for URL" affordance. Keeping
-  // this off in prod bounds the cost profile: no long-tail public traffic
-  // can trigger a Claude call. Admin-initiated regens are always allowed
-  // regardless of this flag.
-  aiBiographyOnDemandEnabled: process.env.AI_BIOGRAPHY_ON_DEMAND_ENABLED === 'true',
   // Named admin users — an object of { username: token } pairs. When
   // set, these take precedence over the shared adminToken for login.
   // Attributed usernames flow through to staff notes / flags / reviews
