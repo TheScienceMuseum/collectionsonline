@@ -1,8 +1,7 @@
 'use strict';
 
 // Tests for render-biography — merges biography sentences with curator
-// decisions and open review findings, returns both the flat HTML and
-// per-sentence render state.
+// decisions, returns both the flat HTML and per-sentence render state.
 
 const test = require('tape');
 const render = require('../lib/ai/render-biography');
@@ -163,87 +162,6 @@ test('rejection dominates approval when both are present', function (t) {
   };
   const r = render(bio, { publishingLevel: 3, decisions });
   t.equal(r.visibleCount, 0);
-  t.end();
-});
-
-// --- Review findings ------------------------------------------------
-
-test('review error:high finding: hides sentence by default', function (t) {
-  const museumFact = s('Wrong-attribution fact.', 'museum');
-  const bio = { sentences: [museumFact], paragraphBreaks: [] };
-  const openFindings = [
-    { claimSignature: museumFact.claimSignature, kind: 'error', confidence: 'high', concern: 'attribution issue' }
-  ];
-  const r = render(bio, { publishingLevel: 3, openFindings });
-  t.equal(r.visibleCount, 0);
-  t.equal(r.sentences[0].hiddenReason, 'reviewer_error_high');
-  t.ok(r.sentences[0].reviewFinding, 'finding attached to sentence');
-  t.equal(r.sentences[0].reviewFinding.confidence, 'high');
-  t.end();
-});
-
-test('review error:medium finding: publishes but annotates', function (t) {
-  const museumFact = s('Possibly-wrong fact.', 'museum');
-  const bio = { sentences: [museumFact], paragraphBreaks: [] };
-  const openFindings = [
-    { claimSignature: museumFact.claimSignature, kind: 'error', confidence: 'medium', concern: 'possibly wrong' }
-  ];
-  const r = render(bio, { publishingLevel: 3, openFindings });
-  t.equal(r.visibleCount, 1, 'medium-confidence error does not hide');
-  t.ok(r.sentences[0].reviewFinding);
-  t.end();
-});
-
-test('review error:low finding: publishes, annotates quietly', function (t) {
-  const museumFact = s('Hunch-flagged fact.', 'museum');
-  const bio = { sentences: [museumFact], paragraphBreaks: [] };
-  const openFindings = [
-    { claimSignature: museumFact.claimSignature, kind: 'error', confidence: 'low', concern: 'weak hunch' }
-  ];
-  const r = render(bio, { publishingLevel: 3, openFindings });
-  t.equal(r.visibleCount, 1);
-  t.end();
-});
-
-test('review info finding: publishes, annotates as context', function (t) {
-  const museumFact = s('Nobel 1921 fact.', 'museum');
-  const bio = { sentences: [museumFact], paragraphBreaks: [] };
-  const openFindings = [
-    { claimSignature: museumFact.claimSignature, kind: 'info', confidence: 'medium', concern: 'received 1922 actually' }
-  ];
-  const r = render(bio, { publishingLevel: 3, openFindings });
-  t.equal(r.visibleCount, 1, 'info findings never hide');
-  t.ok(r.sentences[0].reviewFinding);
-  t.equal(r.sentences[0].reviewFinding.kind, 'info');
-  t.end();
-});
-
-test('curator approval trumps review error:high hide', function (t) {
-  const museumFact = s('Fact curator approved.', 'museum');
-  const bio = { sentences: [museumFact], paragraphBreaks: [] };
-  const decisions = {
-    approvals: [{ claimSignature: museumFact.claimSignature, claimText: museumFact.text, approvedBy: 'jamie' }]
-  };
-  const openFindings = [
-    { claimSignature: museumFact.claimSignature, kind: 'error', confidence: 'high', concern: 'reviewer disagrees' }
-  ];
-  const r = render(bio, { publishingLevel: 3, decisions, openFindings });
-  t.equal(r.visibleCount, 1, 'approval trumps reviewer error:high');
-  t.equal(r.sentences[0].curatorDecision, 'approved');
-  t.end();
-});
-
-test('multiple findings on same sentence: highest severity wins', function (t) {
-  const museumFact = s('Contested fact.', 'museum');
-  const bio = { sentences: [museumFact], paragraphBreaks: [] };
-  const openFindings = [
-    { claimSignature: museumFact.claimSignature, kind: 'info', confidence: 'low', concern: 'minor' },
-    { claimSignature: museumFact.claimSignature, kind: 'error', confidence: 'high', concern: 'major' },
-    { claimSignature: museumFact.claimSignature, kind: 'error', confidence: 'medium', concern: 'middle' }
-  ];
-  const r = render(bio, { publishingLevel: 3, openFindings });
-  t.equal(r.sentences[0].reviewFinding.confidence, 'high', 'highest-severity finding chosen');
-  t.equal(r.sentences[0].reviewFinding.concern, 'major');
   t.end();
 });
 

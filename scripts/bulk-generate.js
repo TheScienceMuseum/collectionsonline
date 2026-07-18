@@ -282,7 +282,6 @@ async function main () {
   const log = openLog(logPath);
   const regenerateBiography = require('../lib/ai/regenerate-biography');
   const biographyStore = require('../lib/ai/biography-store');
-  const reviewStore = require('../lib/ai/review-store');
   const ruleHitTally = require('../lib/ai/rule-hit-tally');
 
   // Per-subject rule-hit tallies accumulate here. Aggregated in the
@@ -370,21 +369,15 @@ async function main () {
         tokens.reviewerCacheRead += result.reviewer.cacheReadTokens || 0;
       }
       // Rule-hit instrumentation — read back the just-persisted BIOGRAPHY
-      // + latest REVIEW# and tally which anti-pattern rules were cited.
+      // and tally which anti-pattern rules were cited.
       // Best-effort: a DDB miss here doesn't fail the run.
       if (!result.skippedByAssessment) {
         try {
-          const [persisted, reviews] = await Promise.all([
-            biographyStore.fetchBiography(id),
-            reviewStore.listReviews(id).catch(function () { return null; })
-          ]);
-          const latestReview = Array.isArray(reviews) && reviews.length
-            ? reviews.sort(function (a, b) { return (b.reviewedAt || '').localeCompare(a.reviewedAt || ''); })[0]
-            : null;
+          const persisted = await biographyStore.fetchBiography(id);
           const tally = ruleHitTally.tallyRuleHits({
             notes: persisted && persisted.writerNotes,
             selfReview: persisted && persisted.selfReview,
-            findings: (latestReview && latestReview.findings) || []
+            findings: []
           });
           ruleHitPerSubject.push({ id, tally });
         } catch (err) {

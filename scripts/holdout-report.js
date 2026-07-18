@@ -24,7 +24,6 @@ const { Client } = require('@elastic/elasticsearch');
 const config = require('../config');
 const dynamo = require('../lib/ai/dynamo');
 const biographyStore = require('../lib/ai/biography-store');
-const reviewStore = require('../lib/ai/review-store');
 const regenerateBiography = require('../lib/ai/regenerate-biography');
 
 const HOLDOUT_SUBJECTS = [
@@ -53,19 +52,6 @@ function tallySources (sentences) {
   return dist;
 }
 
-async function latestReviewFindings (id) {
-  try {
-    const reviews = await reviewStore.listReviews(id);
-    if (!reviews || !reviews.length) return null;
-    const latest = reviews.sort(function (a, b) {
-      return (b.reviewedAt || '').localeCompare(a.reviewedAt || '');
-    })[0];
-    return latest.findings || [];
-  } catch (err) {
-    return null;
-  }
-}
-
 async function processSubject (elastic, subject, logPath) {
   const startedAt = Date.now();
   const line = { id: subject.id, label: subject.label, cohort: subject.cohort };
@@ -92,8 +78,6 @@ async function processSubject (elastic, subject, logPath) {
       line.hasGracesGuide = (rec.sentences || []).some(function (s) { return s.source === 'gracesGuide'; });
       line.hasOdnb = (rec.sentences || []).some(function (s) { return s.source === 'oxfordDNB'; });
     }
-    const findings = await latestReviewFindings(subject.id);
-    line.reviewFindings = findings ? findings.length : null;
 
     line.ok = true;
   } catch (err) {
@@ -123,7 +107,6 @@ function printSummary (results) {
     padRight('sec', 5),
     padRight('contra', 7),
     padRight('skip', 5),
-    padRight('review', 7),
     padRight('sources', 30)
   ].join(' '));
   console.log(rule);
@@ -148,7 +131,6 @@ function printSummary (results) {
       padRight(String(Math.round((r.elapsedMs || 0) / 1000)), 5),
       padRight(String(r.contradictionCount || 0), 7),
       padRight(String(r.skippedCount || 0), 5),
-      padRight(String(r.reviewFindings != null ? r.reviewFindings : ''), 7),
       padRight(sources, 30)
     ].join(' '));
   });

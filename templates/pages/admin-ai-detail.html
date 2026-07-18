@@ -307,7 +307,7 @@
     <dt>Publishing level</dt>
     <dd>
       <strong title="Currently publishing sentences tagged: {{publishingLevelDescription}}. All levels: 0 = museum only · 1 = + wikidata · 2 = + llm:inferred · 3 = + llm:contextualising (default) · 4 = + llm:validated (external verification) · 5 = + llm:general_knowledge. Curators can override per-sentence via Approve.">{{renderedBiography.publishingLevel}}</strong>
-      <span class="text-meta" title="Sentence counts after filter + curator overrides + likely-error hides applied. Hidden includes: source below the current level, hidden by a likely-error finding, and hidden by curator rejection.">·
+      <span class="text-meta" title="Sentence counts after the publishing-level filter + curator overrides. Hidden includes: source below the current level, and hidden by curator rejection.">·
         {{renderedBiography.visibleCount}} shown / {{renderedBiography.hiddenCount}} hidden
       </span>
     </dd>
@@ -358,7 +358,7 @@
       biography + in-the-collection blocks so a curator can quickly
       compare the AI output against the source prose it drew from.
       Uses the --below-prose modifier so the hairline sits BELOW the
-      pair (separating them from the Review findings that follow)
+      pair (separating them from the audit blocks that follow)
       rather than above (which would have visually detached them
       from the biography they belong with). Generation metadata
       (writer notes, verification counters, signal breakdown, view
@@ -458,23 +458,17 @@
 </div>
 {{/if}}
 
-{{!-- v2 sentence-level biography — replaces the v1 prose block for
-      records produced by the source-tagged writer. Falls back to the
-      legacy prose block (a raw biographyHtml render) for records still
-      carrying the v1 shape (no sentences[] on the item). Three panels
-      sit above the biography itself:
+{{!-- v2 sentence-level biography — the only supported record shape.
+      Two panels sit above the biography itself:
 
         (1) regen banner — only shown when curator actions have
             accumulated since the last generation (rejections /
-            clarifications / accepted findings). Prompts the curator to
-            batch-apply them via one Regenerate call.
-        (2) open findings panel — reviewer-emitted concerns from the
-            per-generation review that the curator hasn't resolved yet,
-            grouped by severity so likely-error items surface first.
-        (3) sentence list — each sentence rendered with its source pill,
+            clarifications). Prompts the curator to batch-apply them
+            via one Regenerate call.
+        (2) sentence list — each sentence rendered with its source pill,
             curator-decision indicators, and per-sentence action forms
-            (approve / reject / clarify / verify externally). Paragraph
-            breaks are visualised with a slim divider between list items.
+            (approve / reject / clarify). Paragraph breaks are visualised
+            with a slim divider between list items.
 
       Publishing filter level and visible/hidden counts sit in the
       detail-meta block above. --}}
@@ -496,235 +490,9 @@
 </div>
 {{/if}}
 
-{{!-- Task 58: Open + Resolved findings merged into ONE panel.
-      Pending at top, then a divider, then resolved (greyed at
-      bottom, still visible in situ rather than tucked behind a
-      separate collapsible). Overflow beyond RESOLVED_INLINE_CAP
-      (5) is exposed via a "…N older" details toggle so the audit
-      history stays reachable without crowding the panel.
-
-      Every finding card carries an "affected sentence"
-      publishing-status chip at the TOP — the crucial-to-eyeball
-      signal Task 58 UX review flagged as missing. Colour tone
-      matches the state:
-        positive → green (publishing normally)
-        caution  → amber (publishing but flagged)
-        danger   → red (hidden)
-        muted    → grey (below-level / unknown / stale) --}}
-{{#if openFindings.length}}
-<details class="detail-section findings-panel" id="findings" open>
-  <summary class="findings-panel__summary">
-    <span class="findings-panel__title">Review findings ({{openFindingsHidingCount}} hiding a claim, {{openFindingsAnnotatingCount}} info{{#if resolvedFindings.length}} · {{resolvedFindings.length}} recently resolved{{/if}})</span>
-    <span class="text-meta findings-panel__hint">— AI-review concerns on specific sentences; hides first, info after.{{#if staleFindingsCount}} · {{staleFindingsCount}} stale filtered (details below){{/if}}</span>
-  </summary>
-  <p class="text-meta" style="margin: 0.5rem 0 0.75rem 0;">
-    Each finding is a concern the AI review raised about a specific claim.
-    <strong>Likely-error</strong> findings hide the affected claim by default unless a curator explicitly overrides the hide.
-    <strong>Possible-issue</strong> and <strong>info</strong> findings publish their claim as normal and just annotate it.
-    Each card carries a status chip showing the claim's current effect on the public site —
-    <span style="color: #1e4a2f;">●&nbsp;green</span> for publishing,
-    <span style="color: #6c1c1c;">○&nbsp;red</span> for hidden by this finding or by a curator,
-    <span style="color: #646464;">○&nbsp;grey</span> for hidden by the current publishing-level filter (finding unrelated).
-    To act on a finding, click <strong>Go to claim ↓</strong> and use the sentence's Reject / Approve / Clarify actions —
-    which auto-resolve the finding in the audit trail.
-  </p>
-  <ul class="findings-list">
-    {{!-- Task 61: findings are now READ-ONLY informational cards. No
-          Accept / Dismiss buttons — the sentence action strip in
-          Claims is the only place to act, and any curator action on a
-          sentence auto-resolves attached pending findings (approve →
-          dismissed, reject → accepted, clarify → clarified — see
-          Bundle A). Verify externally still lives here because it's a
-          per-claim network operation, not a per-sentence decision.
-
-          The `id="finding-<signature>"` anchor is the target of the
-          concern jump-link on each sentence in the Claims list. --}}
-    {{#each openFindings}}
-    <li class="finding finding--{{this.kind}}-{{this.confidence}}" id="finding-{{this.claimSignature}}" data-signature="{{this.claimSignature}}" data-affected-index="{{this.affectedSentenceIndex}}">
-      <div class="finding__header">
-        {{!-- Publishing status chip — prominent, coloured by tone.
-              Sits FIRST so it dominates the row. --}}
-        {{#if this.affectedPublishingState}}
-        <span class="pill finding__status finding__status--{{this.affectedPublishingState.variant}} finding__status--{{this.affectedPublishingState.tone}}" title="Current effect of this finding on the public site">
-          {{#isequal this.affectedPublishingState.variant "publishing" this}}● {{this.affectedPublishingState.label}}{{/isequal}}
-          {{#isequal this.affectedPublishingState.variant "hidden" this}}○ {{this.affectedPublishingState.label}}{{/isequal}}
-        </span>
-        {{/if}}
-        {{!-- Concern-tier pill uses the SAME markup as the claims-list
-              concern pills — same colour, same icon, same label — so
-              curators eyeball the reviewer's severity identically in
-              both places. Kept as a span here (not a link) because the
-              finding row IS the target; jumping isn't relevant. --}}
-        {{#isequal this.kind "error" this}}
-          {{#isequal this.confidence "high" this}}<span class="pill concern-pill" data-concern="block" title="Reviewer flagged this as likely wrong (error · high)"><span class="concern-pill__icon">⊗</span><span class="concern-pill__label">likely error</span></span>{{/isequal}}
-          {{#isequal this.confidence "medium" this}}<span class="pill concern-pill" data-concern="warning" title="Reviewer flagged this as possibly wrong (error · medium)"><span class="concern-pill__icon">⚠︎</span><span class="concern-pill__label">possible issue</span></span>{{/isequal}}
-          {{#isequal this.confidence "low" this}}<span class="pill concern-pill" data-concern="warning" title="Reviewer flagged this as a hunch (error · low)"><span class="concern-pill__icon">⚠︎</span><span class="concern-pill__label">hunch</span></span>{{/isequal}}
-        {{else}}
-          <span class="pill concern-pill" data-concern="info" title="Reviewer left contextual information without asserting wrongness (info)"><span class="concern-pill__icon">ⓘ</span><span class="concern-pill__label">info</span></span>
-        {{/isequal}}
-      </div>
-      {{#if this.claimText}}
-      <div class="finding__claim">&ldquo;{{{linkifyObjectMarkers this.claimText}}}&rdquo;</div>
-      {{/if}}
-      <div class="finding__concern-body">{{this.concern}}</div>
-      <div class="finding__actions">
-        {{#if ../reviewConfig.externalValidationEnabled}}
-        <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/verify" class="finding__form">
-          <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
-          <input type="hidden" name="claimText" value="{{this.claimText}}">
-          <input type="hidden" name="context" value="finding">
-          <input type="hidden" name="reviewSK" value="{{this.reviewSK}}">
-          <button type="submit" class="btn btn--secondary" title="Run external verification (Wikipedia / Wikidata etc.) against this claim">Verify against sources</button>
-        </form>
-        {{/if}}
-        {{#if this.affectedSentenceIndex}}
-        <a class="btn btn--tertiary finding__jump-to-claim" href="#claims" data-affected-signature="{{this.claimSignature}}" title="Jump down to the affected sentence in the Claims list to act on it">Go to claim ↓</a>
-        {{/if}}
-      </div>
-      {{#if this.verificationResult}}
-        <div class="finding__verification finding__verification--{{this.verificationResult.verdict}}">
-          <strong>{{this.verificationResult.verdict}}</strong>
-          ({{this.verificationResult.confidence}})
-          — {{this.verificationResult.reasoning}}
-          {{#if this.verificationResult.sourceUrl}}
-            · <a href="{{this.verificationResult.sourceUrl}}" target="_blank" rel="noopener">source ↗</a>
-          {{/if}}
-        </div>
-      {{/if}}
-    </li>
-    {{/each}}
-  </ul>
-
-  {{!-- Stale findings — pending findings whose claim signature no
-        longer appears in the current biography (the writer paraphrased
-        or dropped the claim). Not actionable here because there's no
-        current sentence to attach them to, but curators can inspect
-        what the reviewer was concerned about. If a future regen
-        re-emits a matching signature the finding automatically
-        rejoins the main Open list — nothing is lost. --}}
-  {{#if staleOpenFindings.length}}
-  <details class="findings-stale">
-    <summary class="findings-stale__summary">
-      <strong>{{staleOpenFindings.length}}</strong> stale filtered
-      <span class="text-meta">— pending findings whose claim doesn't appear in the current biography (writer paraphrased or dropped it). Click to inspect.</span>
-    </summary>
-    <ul class="findings-list findings-list--stale">
-      {{#each staleOpenFindings}}
-      <li class="finding finding--stale finding--{{this.kind}}-{{this.confidence}}" data-signature="{{this.claimSignature}}">
-        <div class="finding__header">
-          {{#isequal this.kind "error" this}}
-            {{#isequal this.confidence "high" this}}<span class="pill pill--muted">was: likely error</span>{{/isequal}}
-            {{#isequal this.confidence "medium" this}}<span class="pill pill--muted">was: possible issue</span>{{/isequal}}
-            {{#isequal this.confidence "low" this}}<span class="pill pill--muted">was: hunch</span>{{/isequal}}
-          {{else}}
-            <span class="pill pill--muted">was: info · {{this.confidence}}</span>
-          {{/isequal}}
-          <span class="text-meta findings-stale__note" title="This finding's claim signature no longer matches any sentence in the current biography. Kept in the audit trail — will automatically re-surface if a future regen produces a matching claim.">not in current biography</span>
-        </div>
-        {{#if this.claimText}}<div class="finding__claim text-meta"><em>&ldquo;{{{linkifyObjectMarkers this.claimText}}}&rdquo;</em></div>{{/if}}
-        {{#if this.concern}}<div class="finding__concern text-meta">{{this.concern}}</div>{{/if}}
-      </li>
-      {{/each}}
-    </ul>
-  </details>
-  {{/if}}
-
-  {{!-- Resolved section, greyed, in the same panel. Task 58 UX
-        review asked for greyed-and-moved-to-bottom rather than
-        hidden behind a separate collapsible. Capped at 5 inline;
-        overflow behind a "…N older" toggle. --}}
-  {{#if resolvedFindings.length}}
-  <div class="findings-resolved-divider">
-    <span>Recently resolved</span>
-  </div>
-  <ul class="findings-list findings-list--resolved">
-    {{#each resolvedFindings}}
-    <li class="finding finding--resolved finding--{{this.kind}}-{{this.confidence}}" data-signature="{{this.claimSignature}}" data-affected-index="{{this.affectedSentenceIndex}}">
-      <div class="finding__header">
-        {{#isequal this.resolution "accepted" this}}<span class="pill pill--muted" title="Curator agreed with the AI review — the sentence is hidden and excluded from the next regen.">✓ curator agreed (hide)</span>{{/isequal}}
-        {{#isequal this.resolution "dismissed" this}}<span class="pill pill--muted" title="Curator overrode the AI review — the sentence publishes despite the reviewer's concern.">↷ curator overrode (publish)</span>{{/isequal}}
-        {{#isequal this.resolution "clarified" this}}<span class="pill pill--muted" title="Curator attached a clarification and considers the concern addressed.">📝 curator clarified</span>{{/isequal}}
-        {{#isequal this.kind "error" this}}
-          {{#isequal this.confidence "high" this}}<span class="pill pill--muted">was: likely error</span>{{/isequal}}
-          {{#isequal this.confidence "medium" this}}<span class="pill pill--muted">was: possible issue</span>{{/isequal}}
-          {{#isequal this.confidence "low" this}}<span class="pill pill--muted">was: hunch</span>{{/isequal}}
-        {{else}}
-          <span class="pill pill--muted">was: info · {{this.confidence}}</span>
-        {{/isequal}}
-      </div>
-      {{#if this.claimText}}
-      <div class="finding__claim">&ldquo;{{{linkifyObjectMarkers this.claimText}}}&rdquo;</div>
-      {{/if}}
-      <div class="finding__concern-body">{{this.concern}}</div>
-      <div class="text-meta--sm" style="margin-top: 0.4rem;">
-        Resolved by <strong>{{this.resolvedBy}}</strong>
-        {{#if this.resolvedAt}} at <span title="{{this.resolvedAt}}">{{formatDate this.resolvedAt "auto"}}</span>{{/if}}
-      </div>
-    </li>
-    {{/each}}
-  </ul>
-
-  {{#if resolvedOverflowCount}}
-  <details class="findings-overflow">
-    <summary>…and {{resolvedOverflowCount}} older resolved · show history</summary>
-    <ul class="findings-list findings-list--resolved">
-      {{#each resolvedOverflow}}
-      <li class="finding finding--resolved finding--{{this.kind}}-{{this.confidence}}" data-signature="{{this.claimSignature}}" data-affected-index="{{this.affectedSentenceIndex}}">
-        <div class="finding__header">
-          {{#isequal this.resolution "accepted" this}}<span class="pill pill--muted" title="Curator agreed with the AI review — sentence hidden.">✓ curator agreed (hide)</span>{{/isequal}}
-          {{#isequal this.resolution "dismissed" this}}<span class="pill pill--muted" title="Curator overrode the AI review — sentence publishes.">↷ curator overrode (publish)</span>{{/isequal}}
-          {{#isequal this.resolution "clarified" this}}<span class="pill pill--muted" title="Curator attached a clarification.">📝 curator clarified</span>{{/isequal}}
-          {{#isequal this.kind "error" this}}
-            {{#isequal this.confidence "high" this}}<span class="pill pill--muted">was: likely error</span>{{/isequal}}
-            {{#isequal this.confidence "medium" this}}<span class="pill pill--muted">was: possible issue</span>{{/isequal}}
-            {{#isequal this.confidence "low" this}}<span class="pill pill--muted">was: hunch</span>{{/isequal}}
-          {{else}}
-            <span class="pill pill--muted">was: info · {{this.confidence}}</span>
-          {{/isequal}}
-        </div>
-        {{#if this.claimText}}
-        <div class="finding__claim">&ldquo;{{{linkifyObjectMarkers this.claimText}}}&rdquo;</div>
-        {{/if}}
-        <div class="finding__concern-body">{{this.concern}}</div>
-        <div class="text-meta--sm" style="margin-top: 0.4rem;">
-          Resolved by <strong>{{this.resolvedBy}}</strong>
-          {{#if this.resolvedAt}} at <span title="{{this.resolvedAt}}">{{formatDate this.resolvedAt "auto"}}</span>{{/if}}
-        </div>
-      </li>
-      {{/each}}
-    </ul>
-  </details>
-  {{/if}}
-  {{/if}}
-</details>
-{{/if}}
-
-{{!-- Edge case: no pending findings but resolved history exists —
-      still show the resolved list on its own so the audit signal
-      isn't hidden. --}}
-{{#if resolvedFindings.length}}
-{{#unless openFindings.length}}
-<details class="detail-section findings-panel" id="resolved-only">
-  <summary class="findings-panel__summary">
-    <span class="findings-panel__title">Resolved findings ({{resolvedFindings.length}})</span>
-    <span class="text-meta findings-panel__hint">— all reviewer concerns on this record have been resolved.</span>
-  </summary>
-  <ul class="findings-list findings-list--resolved">
-    {{#each resolvedFindings}}
-    <li class="finding finding--resolved" data-signature="{{this.claimSignature}}">
-      <div class="finding__header">
-        {{#isequal this.resolution "accepted" this}}<span class="pill pill--muted" title="Curator agreed with the AI review — sentence hidden.">✓ curator agreed (hide)</span>{{/isequal}}
-        {{#isequal this.resolution "dismissed" this}}<span class="pill pill--muted" title="Curator overrode the AI review — sentence publishes.">↷ curator overrode (publish)</span>{{/isequal}}
-        {{#isequal this.resolution "clarified" this}}<span class="pill pill--muted" title="Curator attached a clarification.">📝 curator clarified</span>{{/isequal}}
-      </div>
-      {{#if this.claimText}}<div class="finding__claim">&ldquo;{{{linkifyObjectMarkers this.claimText}}}&rdquo;</div>{{/if}}
-      <div class="finding__concern-body">{{this.concern}}</div>
-    </li>
-    {{/each}}
-  </ul>
-</details>
-{{/unless}}
-{{/if}}
+{{!-- Findings panels retired — reviewer pipeline removed. Curator
+      actions on individual sentences (approve / reject / clarify)
+      remain in the sentence list below. --}}
 
 {{#if renderedBiography.sentences.length}}
 {{!-- Claims section — per-sentence provenance + curator actions.
@@ -744,7 +512,7 @@
     Publishing level
     <strong title="Currently publishing sentences tagged: {{publishingLevelDescription}}. Change via the aiBiographyPublishingLevel config key. Level 0 = museum only · 1 = + wikidata · 2 = + llm:inferred · 3 = + llm:contextualising (default) · 4 = + llm:validated (external verification) · 5 = + llm:general_knowledge.">{{renderedBiography.publishingLevel}}</strong> —
     <strong>{{renderedBiography.visibleCount}}</strong> publishing,
-    <strong title="Includes: source below the current publishing level, hidden by a likely-error finding, and hidden by curator rejection.">{{renderedBiography.hiddenCount}}</strong> hidden
+    <strong title="Includes: source below the current publishing level, and hidden by curator rejection.">{{renderedBiography.hiddenCount}}</strong> hidden
     (of {{renderedBiography.totalCount}} total)
   </div>
 
@@ -810,10 +578,10 @@
             the <style> block. data-signature is the anchor used by
             the sentence↔prose hover-link script. --}}
       {{!-- Task 61: data attributes drive the row's coloured state
-            via [data-vis] / [data-decided] / [data-concern]
+            via [data-vis] / [data-decided]
             selectors. The state triple is the source of truth for
             display; publishingState enum is not consulted. --}}
-      <li class="sentence" data-source="{{this.bucketSource}}" data-signature="{{this.claimSignature}}" data-vis="publishing" data-decided="{{this.state.decidedBy}}"{{#if this.state.concern}} data-concern="{{this.state.concern}}"{{/if}}>
+      <li class="sentence" data-source="{{this.bucketSource}}" data-signature="{{this.claimSignature}}" data-vis="publishing" data-decided="{{this.state.decidedBy}}">
         <div class="sentence__text">{{#if this.partsHtml}}{{#each this.partsHtml}}<span class="sentence-part" data-source="{{this.source}}">{{{this.textHtml}}}</span>{{/each}}{{else}}{{{this.textHtml}}}{{/if}}</div>
         <div class="sentence__meta">
           {{!-- Chip stack: one pill per source in the sentence's
@@ -827,26 +595,14 @@
           </span>
           {{/each}}
 
-          {{!-- Task 62: state pill only surfaces the SIGNAL — curator
-                override. The default auto-publishing state is implied
-                by being in the Publishing group; showing "● publishing"
-                on every row was visual noise. --}}
+          {{!-- State pill only surfaces the SIGNAL — curator override.
+                The default auto-publishing state is implied by being in
+                the Publishing group. --}}
           {{#isequal this.state.decidedBy "curator" this}}
-          <span class="pill state-pill" data-vis="publishing" data-decided="curator" title="Publishing because a curator explicitly approved this claim, overriding the source-tag filter and any AI-review concern.">
+          <span class="pill state-pill" data-vis="publishing" data-decided="curator" title="Publishing because a curator explicitly approved this claim, overriding the source-tag filter.">
             ● curator override
           </span>
           {{/isequal}}
-
-          {{!-- Concern pill = jump link to the corresponding finding
-                card. Tooltip names the AI reviewer explicitly (Task 62)
-                to avoid ambiguity with human curators. --}}
-          {{#if this.state.concern}}
-          <a class="pill concern-pill concern-pill--link" data-concern="{{this.state.concern}}" href="#finding-{{this.claimSignature}}" title="{{this.reviewFinding.concern}} · click to jump to the AI review's full note">
-            {{#isequal this.state.concern "info" this}}<span class="concern-pill__icon">ⓘ</span><span class="concern-pill__label">info</span>{{/isequal}}
-            {{#isequal this.state.concern "warning" this}}<span class="concern-pill__icon">⚠︎</span><span class="concern-pill__label">possible issue</span>{{/isequal}}
-            {{#isequal this.state.concern "block" this}}<span class="concern-pill__icon">⊗</span><span class="concern-pill__label">likely error</span>{{/isequal}}
-          </a>
-          {{/if}}
 
           {{#if this.clarification}}
             <span class="pill pill--attention" title="{{this.clarification}}">📝 clarification</span>
@@ -938,7 +694,7 @@
     <ol class="sentence-list">
       {{#each renderedBiography.sentences}}
       {{#unless this.visible}}
-      <li class="sentence sentence--hidden" data-source="{{this.bucketSource}}" data-signature="{{this.claimSignature}}" data-vis="hidden" data-decided="{{this.state.decidedBy}}"{{#if this.state.concern}} data-concern="{{this.state.concern}}"{{/if}}>
+      <li class="sentence sentence--hidden" data-source="{{this.bucketSource}}" data-signature="{{this.claimSignature}}" data-vis="hidden" data-decided="{{this.state.decidedBy}}">
         <div class="sentence__text">{{#if this.partsHtml}}{{#each this.partsHtml}}<span class="sentence-part" data-source="{{this.source}}">{{{this.textHtml}}}</span>{{/each}}{{else}}{{{this.textHtml}}}{{/if}}</div>
         <div class="sentence__meta">
           {{!-- Chip stack — see the Publishing block above for the
@@ -949,32 +705,14 @@
           </span>
           {{/each}}
 
-          {{!-- Task 62: same simplification as the Publishing group —
-                state pill only surfaces curator override (rejection).
-                The default auto-hide (below level OR AI-review block)
-                is implied by being in the Hidden group; the concern
-                pill below already names the reviewer's block-tier
-                flag when relevant. --}}
+          {{!-- State pill only surfaces curator override (rejection).
+                The default auto-hide (source below the current level)
+                is implied by being in the Hidden group. --}}
           {{#isequal this.state.decidedBy "curator" this}}
           <span class="pill state-pill" data-vis="hidden" data-decided="curator" title="Curator explicitly rejected this claim. Excluded from the next regeneration.">
             ○ curator rejected
           </span>
           {{/isequal}}
-
-          {{!-- Concern pill on hidden claims carries information the
-                dimmed row alone doesn't: WHICH finding caused the hide,
-                and a jump-link to the AI review's full explanation.
-                Task 63 originally dropped the ⊗ likely-error pill here
-                as "redundant" — but that lost the navigation. Restored
-                so all three concern tiers (info / warning / block) show
-                on both publishing AND hidden claims. --}}
-          {{#if this.state.concern}}
-          <a class="pill concern-pill concern-pill--link" data-concern="{{this.state.concern}}" href="#finding-{{this.claimSignature}}" title="{{this.reviewFinding.concern}} · click to jump to the AI review's full note">
-            {{#isequal this.state.concern "info" this}}<span class="concern-pill__icon">ⓘ</span><span class="concern-pill__label">info</span>{{/isequal}}
-            {{#isequal this.state.concern "warning" this}}<span class="concern-pill__icon">⚠︎</span><span class="concern-pill__label">possible issue</span>{{/isequal}}
-            {{#isequal this.state.concern "block" this}}<span class="concern-pill__icon">⊗</span><span class="concern-pill__label">likely error</span>{{/isequal}}
-          </a>
-          {{/if}}
 
           {{#if this.clarification}}
             <span class="pill pill--attention" title="{{this.clarification}}">📝 clarification</span>
@@ -1050,16 +788,6 @@
                 <button type="submit" class="btn btn--secondary" title="Override — publishes this claim despite the filter or AI-review concern. Optional reason is stored on the approval and shown alongside the sentence.">Override — publish anyway</button>
               </form>
             {{/isequal}}
-            {{#isequal this.source "llm:general_knowledge" this}}
-            {{#if ../reviewConfig.externalValidationEnabled}}
-            <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/verify" class="sentence__action-form">
-              <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
-              <input type="hidden" name="claimText" value="{{this.text}}">
-              <input type="hidden" name="context" value="sentence">
-              <button type="submit" class="btn btn--secondary" title="Verify externally — Wikipedia / Wikidata / etc. If supported, promotes to llm:validated and publishes.">Verify externally</button>
-            </form>
-            {{/if}}
-            {{/isequal}}
           </div>
         </details>
       </li>
@@ -1118,23 +846,6 @@
   </div>
 </details>
 
-{{else}}
-{{!-- Legacy fallback: records generated by the pre-v2 pipeline that
-      only carry biographyHtml and don't have a sentences array to
-      render sentence-level. Shows the raw prose so curators can still
-      view / delete / regenerate; no sentence-level tooling available
-      until the record is regenerated with the source-tagged writer. --}}
-{{#if record.biographyHtml}}
-<div class="detail-section" id="biography">
-  <h3>Biography <span class="text-meta" style="font-size: 0.75rem; font-weight: normal;">— legacy prose (pre-source-tagging)</span></h3>
-  <p class="text-meta" style="margin: 0 0 0.5rem 0;">
-    This record was produced by the pre-v2 pipeline and doesn't have per-sentence source tags. Regenerate to unlock sentence-level review + curator actions.
-  </p>
-  <div class="prose-body">
-    {{{record.biographyHtml}}}
-  </div>
-</div>
-{{/if}}
 {{/if}}
 
 {{#if record.contextHtml}}
@@ -1160,21 +871,6 @@
   .findings-panel__summary { cursor: pointer; display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
   .findings-panel__title { font-weight: 600; color: #2a2a2a; font-size: 1rem; }
   .findings-panel__hint { font-weight: normal; }
-  .findings-list { list-style: none; padding: 0; margin: 0.5rem 0 0 0; display: flex; flex-direction: column; gap: 0.5rem; }
-  .finding { background: #fdfdfa; border: 1px solid #e4e0d4; border-radius: 3px; padding: 0.6rem 0.8rem; }
-  .finding--error-high { border-left: 3px solid #b03030; }
-  .finding--error-medium, .finding--error-low, .finding--info-medium, .finding--info-high { border-left: 3px solid #c87a1e; }
-  .finding--info-low { border-left: 3px solid #c5c1b5; }
-  .finding__header { display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
-  .finding__concern { color: #2a2a2a; font-size: 0.9rem; }
-  .finding__claim { color: #5e564c; font-size: 0.86rem; margin: 0.35rem 0; font-style: italic; }
-  .finding__actions { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.4rem; }
-  .finding__form { display: inline; }
-  .finding__verification { margin-top: 0.5rem; padding: 0.5rem 0.75rem; border-radius: 3px; font-size: 0.85rem; }
-  .finding__verification--supported { background: rgba(46, 125, 74, 0.08); color: #2e5a3d; }
-  .finding__verification--unsupported { background: rgba(176, 48, 48, 0.08); color: #7a2020; }
-  .finding__verification--unclear { background: rgba(200, 122, 30, 0.08); color: #7a4a10; }
-
   .biography-summary { margin-bottom: 0.5rem; font-size: 0.9rem; color: #5e564c; }
 
   .sentence-source-legend { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin: 0 0 1rem 0; font-size: 0.75rem; }
@@ -1217,8 +913,8 @@
      has hairline top border — separates the audit fields from Notes
      above. Modifier --below-prose flips it: hairline moves to the
      BOTTOM so the group visually attaches to the biography above
-     while the border separates from the Review findings that
-     follow. Tight interior spacing in both variants keeps the
+     while the border separates from the audit blocks that follow.
+     Tight interior spacing in both variants keeps the
      collapsibles reading as one bounded group. */
   .detail-inputs-group { border-top: 1px solid #e4e0d4; margin-top: 1.25rem; padding-top: 1.25rem; }
   .detail-inputs-group > details.collapsible { margin-top: 0.25rem; }
@@ -1356,10 +1052,9 @@
   .ext-src-badge--off { background: #efece4; border-color: #c5c1b5; color: #8b8b8b; }
   .ext-src-badge--off::before { content: '○'; }
 
-  /* Task 61: state pill + row tints driven by the 3-axis triple —
-     [data-vis], [data-decided], [data-concern]. Two axes: visibility
-     (● publishing / ○ hidden) and who decided (auto/curator). Concern
-     lives on its own pill (see concern-pill below). */
+  /* State pill + row tints driven by the two-axis state —
+     [data-vis], [data-decided]. Visibility (● publishing / ○ hidden)
+     and who decided (auto/curator). */
   .publishing-state-legend { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; margin: 0 0 1rem 0; font-size: 0.75rem; }
   .state-pill { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.7rem; padding: 0.15rem 0.55rem; border-radius: 3px; }
   .state-pill[data-vis="publishing"][data-decided="auto"]     { background: #eef2ed; border: 1px solid #a9c3a4; color: #2e5a3d; }
@@ -1367,96 +1062,12 @@
   .state-pill[data-vis="hidden"][data-decided="auto"]         { background: #eeeae0; border: 1px solid #c5b98a; color: #6c5c30; }
   .state-pill[data-vis="hidden"][data-decided="curator"]      { background: #f5e2e2; border: 1px solid #b0797a; color: #7a2020; font-weight: 600; }
 
-  /* Concern pill — orthogonal to visibility. Clickable variant scrolls
-     to the corresponding finding card.
-     Info tier renders as neutral grey (not blue) — "info" is a
-     contextual FYI with no publishing consequence; blue tends to read
-     as either "click me" or "look at this", both of which overstate
-     it. Grey sits alongside the museum / source pills at the same
-     visual weight without shouting for attention.
-     Sized + laid out identically to .sentence__source-pill and
-     .state-pill so [museum], [● publishing], and [ⓘ info] read as one
-     family. inline-flex + gap collapses the historical whitespace-
-     plus-margin-right hack and lets the icon sit tight against the
-     label the same way the ●/○ dot pills do. */
-  .concern-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.28em;
-    font-family: ui-monospace, SFMono-Regular, monospace;
-    font-size: 0.72rem;
-    padding: 0.15rem 0.55rem;
-    border-radius: 3px;
-    line-height: 1.4;
-  }
-  .concern-pill[data-concern="info"]    { background: #efece4; border: 1px solid #c5c1b5; color: #5e564c; }
-  .concern-pill[data-concern="warning"] { background: #f5edd8; border: 1px solid #c9b478; color: #6c5820; }
-  .concern-pill[data-concern="block"]   { background: #f5cccc; border: 1px solid #b0797a; color: #6c1c1c; font-weight: 600; }
-  /* Icon glyph inside a concern-pill. Sized in em so it tracks the pill's
-     font-size — a hair larger than the label so the circled/triangle
-     glyphs remain legible without inflating the overall pill height
-     (the earlier absolute 0.95rem sizing made [⊗ likely error] visibly
-     taller than the neighbouring [museum] pill). Sans-serif so the
-     variation-selected warning triangle renders as a proper symbol
-     rather than getting squeezed into a monospace cell. */
-  .concern-pill__icon { font-family: -apple-system, "Segoe UI Symbol", "Helvetica Neue", sans-serif; font-size: 1.05em; line-height: 1; }
-  /* Anchor-pseudo overrides — must beat the admin layout rule
-        .detail-section a:not(.btn):not(.headline-card) {
-          color: #2c5288; text-decoration: underline;
-        }
-     at specificity (0,3,1). Plain .detail-section a.concern-pill--link is
-     (0,2,1) and loses on the base state — that's why the underline was
-     surviving between the icon glyph and the pill text on info-tier
-     pills. The :link / :visited / :hover / :active variants each absorb
-     a pseudo-class (0,1,0), which lifts them to (0,3,1) tied with the
-     culprit and later cascade order wins the tie. Fix: bump the plain
-     form to (0,3,1) via :not(.btn) so it ties too. */
-  .detail-section a.concern-pill--link:not(.btn),
-  .detail-section a.concern-pill--link:link,
-  .detail-section a.concern-pill--link:visited,
-  .detail-section a.concern-pill--link:hover,
-  .detail-section a.concern-pill--link:active,
-  .biography-with-rail__rail a.concern-pill--link,
-  .biography-with-rail__rail a.concern-pill--link:link,
-  .biography-with-rail__rail a.concern-pill--link:visited,
-  .biography-with-rail__rail a.concern-pill--link:hover,
-  .biography-with-rail__rail a.concern-pill--link:active { text-decoration: none; }
-  .detail-section a.concern-pill--link[data-concern="info"],
-  .detail-section a.concern-pill--link[data-concern="info"]:link,
-  .detail-section a.concern-pill--link[data-concern="info"]:visited,
-  .biography-with-rail__rail a.concern-pill--link[data-concern="info"],
-  .biography-with-rail__rail a.concern-pill--link[data-concern="info"]:link,
-  .biography-with-rail__rail a.concern-pill--link[data-concern="info"]:visited    { color: #204a5a; }
-  .detail-section a.concern-pill--link[data-concern="warning"],
-  .detail-section a.concern-pill--link[data-concern="warning"]:link,
-  .detail-section a.concern-pill--link[data-concern="warning"]:visited,
-  .biography-with-rail__rail a.concern-pill--link[data-concern="warning"],
-  .biography-with-rail__rail a.concern-pill--link[data-concern="warning"]:link,
-  .biography-with-rail__rail a.concern-pill--link[data-concern="warning"]:visited { color: #6c5820; }
-  .detail-section a.concern-pill--link[data-concern="block"],
-  .detail-section a.concern-pill--link[data-concern="block"]:link,
-  .detail-section a.concern-pill--link[data-concern="block"]:visited,
-  .biography-with-rail__rail a.concern-pill--link[data-concern="block"],
-  .biography-with-rail__rail a.concern-pill--link[data-concern="block"]:link,
-  .biography-with-rail__rail a.concern-pill--link[data-concern="block"]:visited   { color: #6c1c1c; }
-  .detail-section a.concern-pill--link:hover,
-  .biography-with-rail__rail a.concern-pill--link:hover { filter: brightness(0.95); }
-
   /* Row-level tint driven by the SAME axes so the row background
      reads at a glance without decoding the pill. */
   .sentence[data-vis="publishing"][data-decided="auto"]    { border-left: 3px solid #d5d0c1; }
   .sentence[data-vis="publishing"][data-decided="curator"] { border-left: 3px solid #6da97e; background: #eff5f0; }
   .sentence[data-vis="hidden"]                             { border-left: 3px solid #c5b98a; }
-  /* Task 63: hide-reason differentiation via border colour so curators
-     can distinguish AI-review-block from publishing-level-filter at a
-     glance without needing the ⊗ pill. Red border = AI-review block,
-     mustard = below level, darker red + tint = curator rejection. */
-  .sentence[data-vis="hidden"][data-decided="auto"][data-concern="block"] { border-left: 3px solid #b0797a; }
   .sentence[data-vis="hidden"][data-decided="curator"]     { border-left: 3px solid #b0797a; background: #faf1f1; }
-  /* Concern axis nudges the tint further — a warning-tier concern
-     on an auto-publishing row gets a subtle amber wash. */
-  .sentence[data-vis="publishing"][data-decided="auto"][data-concern="warning"] { background: #fbf7ec; border-left-color: #c9b478; }
-  .sentence[data-vis="publishing"][data-decided="auto"][data-concern="info"]    { border-left-color: #97b5c4; }
 
   /* Task 61: hidden rows get a diagonal hatched background — makes the
      "not on public site" state visually distinct at a glance without
@@ -1548,35 +1159,7 @@
     outline-offset: 2px;
   }
 
-  /* Resolved findings — dimmed by default so the eye lands on pending first. */
-  .finding--resolved { opacity: 0.75; }
-  .finding__concern-body { color: #2a2a2a; font-size: 0.9rem; line-height: 1.5; margin-top: 0.35rem; }
 
-  /* Task 58: prominent per-finding publishing-state chip. Rendered
-     first in the finding header so it dominates the row visually.
-     Solid backgrounds so the state reads at a glance without
-     depending on tone perception. */
-  .finding__status { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.75rem; padding: 0.15rem 0.55rem; border-radius: 3px; font-weight: 600; }
-  .finding__status--positive { background: #dae7dd; color: #1e4a2f; border: 1px solid #6da97e; }
-  .finding__status--caution  { background: #f5e4ba; color: #6c5820; border: 1px solid #c9b478; }
-  .finding__status--danger   { background: #f5cccc; color: #6c1c1c; border: 1px solid #b0797a; }
-  .finding__status--muted    { background: #efece4; color: #646464; border: 1px solid #c5c1b5; }
-
-  /* Divider between pending and resolved in the merged findings panel. */
-  .findings-resolved-divider { margin: 1rem 0 0.5rem 0; padding-top: 0.75rem; border-top: 1px dashed #d5d0c1; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: #7a726a; }
-  .findings-list--resolved .finding { background: #f5f3ec; }
-  /* Stale findings disclosure — sits between Open and Resolved.
-     De-emphasised (grey text, no coloured left border) because
-     these findings can't be acted on directly. */
-  .findings-stale { margin: 1rem 0 0.25rem 0; padding: 0.5rem 0.75rem; background: #f8f7f2; border: 1px dashed #d5d0c1; border-radius: 3px; }
-  .findings-stale__summary { cursor: pointer; font-size: 0.85rem; color: #5e564c; }
-  .findings-list--stale { margin-top: 0.5rem; }
-  .findings-list--stale .finding { background: #efece4; opacity: 0.85; }
-  .findings-list--stale .finding__claim { margin-top: 0.35rem; }
-  .findings-list--stale .finding__concern { margin-top: 0.25rem; }
-  .findings-stale__note { color: #8a827a; font-style: italic; }
-  .findings-overflow { margin-top: 0.5rem; font-size: 0.85rem; }
-  .findings-overflow > summary { cursor: pointer; color: #5e564c; padding: 0.4rem 0; }
 
   /* Task 58: legend collapsed into a details toggle. */
   .claims-legend { margin: 0 0 1rem 0; font-size: 0.8rem; }
@@ -1719,7 +1302,7 @@
 
         1. HOVER a claim row OR prose sentence → highlight both
            sides + populate the hover rail with source / state /
-           chips / finding for that claim (unless the rail is
+           chips for that claim (unless the rail is
            locked, in which case hover only highlights).
         2. CLICK a claim row OR prose sentence → LOCK the rail at
            that claim. Subsequent hovers don't change the rail
@@ -1816,23 +1399,6 @@
         if (origin === 'prose') {
           var vis = metaClone.querySelectorAll('.state-pill');
           for (var i = 0; i < vis.length; i++) vis[i].remove();
-        }
-        // Task 67: rebind smooth-scroll on the cloned concern pill.
-        // The original in Claims list is bound at wireInteractions()
-        // time — this clone is fresh DOM without that binding, so it
-        // would fall back to the browser's default anchor jump (no
-        // flash). Rebind here for consistency.
-        var railConcerns = metaClone.querySelectorAll('.concern-pill--link[href^="#finding-"]');
-        for (var ci = 0; ci < railConcerns.length; ci += 1) {
-          (function (concernEl) {
-            concernEl.addEventListener('click', function (e) {
-              var href = concernEl.getAttribute('href');
-              var target = href && document.querySelector(href);
-              if (!target) return;
-              e.preventDefault();
-              scrollAndFlash(target);
-            });
-          })(railConcerns[ci]);
         }
         railPopulated.appendChild(metaClone);
       }
@@ -1944,48 +1510,10 @@
       }
     }
 
-    // Task 61: concern-pill jump link on each Claims row → smooth-scroll
-    // to the corresponding finding card. Same flash animation as the
-    // existing prose↔claim jumps.
-    function bindConcernJump () {
-      var pills = document.querySelectorAll('.concern-pill--link[href^="#finding-"]');
-      for (var i = 0; i < pills.length; i++) {
-        (function (el) {
-          el.addEventListener('click', function (e) {
-            var href = el.getAttribute('href');
-            if (!href) return;
-            var target = document.querySelector(href);
-            if (!target) return;
-            e.preventDefault();
-            scrollAndFlash(target);
-          });
-        })(pills[i]);
-      }
-    }
-
-    // Task 61: finding "Go to claim ↓" link → smooth-scroll to the
-    // corresponding claim row in the Claims list. Same flash.
-    function bindFindingJump () {
-      var links = document.querySelectorAll('.finding__jump-to-claim');
-      for (var i = 0; i < links.length; i++) {
-        (function (el) {
-          el.addEventListener('click', function (e) {
-            var sig = el.getAttribute('data-affected-signature');
-            if (!sig) return;
-            var target = document.querySelector('.sentence[data-signature="' + sig + '"]');
-            if (!target) return;
-            e.preventDefault();
-            scrollAndFlash(target);
-          });
-        })(links[i]);
-      }
-    }
     bindHover(claims, 'claim');
     bindHover(prose, 'prose');
     bindClickLock(prose, 'prose');
     bindClickLock(claims, 'claim');
-    bindConcernJump();
-    bindFindingJump();
 
     // Task 65 / 66: if a sentence is already selected, repaint
     // the rail + reapply .is-selected on the fresh sentence
@@ -2125,9 +1653,9 @@
 <hr style="border-color: #e4e0d4; margin: 1.5rem 0;">
 
 {{!-- The manual "Run AI review" section (Opus escalation) was retired
-      after Task 54 verification. Auto-review runs per-generation via
-      the source-tagged Sonnet reviewer; findings surface in the Open
-      Findings panel above. --}}
+      after Task 54 verification. Automated per-generation review has
+      also been retired — curator actions on individual sentences
+      (approve / reject / clarify) are the sole review surface. --}}
 
 <div class="detail-section" id="flag">
   <h3>Flag a problem</h3>
@@ -2256,7 +1784,7 @@
   <summary>Verification candidates <span class="text-meta" style="font-weight: normal;">— sentences that could be checked against external sources</span></summary>
   <div class="detail-section">
     <p class="text-meta" style="margin: 0 0 0.5rem 0;">
-      Each row is a count of sentences with one of the three LLM-tagged sources. Curators can trigger external verification (Wikipedia / Wikidata Deep) per sentence via the &ldquo;Verify externally&rdquo; button on the Claims list. These counters are instrumented for future batch verification; not billed until you run a check.
+      Each row is a count of sentences with one of the three LLM-tagged sources. These counters are instrumented for future batch verification; not billed until you run a check.
     </p>
     <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.4rem; font-size: 0.85rem;">
       <li title="Sentences tagged llm:general_knowledge — facts from the model's training data with no source anchor in the museum or Wikidata inputs. Hidden by default at publishing level 3.">

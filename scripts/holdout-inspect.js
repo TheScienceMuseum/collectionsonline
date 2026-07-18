@@ -1,14 +1,13 @@
 'use strict';
 
 // Read-only inspector for the 10 holdout subjects. Reads the persisted
-// BIOGRAPHY items + latest REVIEW# for each and prints a full report.
-// Used to inspect the results of scripts/holdout-report.js without
-// re-running the regen.
+// BIOGRAPHY items for each and prints a full report. Used to inspect
+// the results of scripts/holdout-report.js without re-running the
+// regen.
 
 const config = require('../config');
 const dynamo = require('../lib/ai/dynamo');
 const biographyStore = require('../lib/ai/biography-store');
-const reviewStore = require('../lib/ai/review-store');
 
 const HOLDOUT_SUBJECTS = [
   { id: 'cp37054', label: 'Einstein', cohort: 'carry-over' },
@@ -32,19 +31,6 @@ function tallySources (sentences) {
   return dist;
 }
 
-async function latestReviewFindings (id) {
-  try {
-    const reviews = await reviewStore.listReviews(id);
-    if (!reviews || !reviews.length) return null;
-    const latest = reviews.sort(function (a, b) {
-      return (b.reviewedAt || '').localeCompare(a.reviewedAt || '');
-    })[0];
-    return latest.findings || [];
-  } catch (err) {
-    return null;
-  }
-}
-
 function padRight (s, n) {
   s = String(s || '');
   return s.length >= n ? s.slice(0, n) : s + ' '.repeat(n - s.length);
@@ -57,7 +43,6 @@ async function main () {
   for (let i = 0; i < HOLDOUT_SUBJECTS.length; i += 1) {
     const s = HOLDOUT_SUBJECTS[i];
     const rec = await biographyStore.fetchBiography(s.id);
-    const findings = await latestReviewFindings(s.id);
     if (!rec) {
       results.push({ id: s.id, label: s.label, cohort: s.cohort, missing: true });
       continue;
@@ -72,7 +57,6 @@ async function main () {
       sourceDist: tallySources(rec.sentences),
       contradictions: rec.contradictions || [],
       skipped: (rec.selfReview && rec.selfReview.skipped) || [],
-      reviewFindings: findings,
       inputTokens: rec.inputTokens,
       outputTokens: rec.outputTokens
     });
@@ -92,7 +76,6 @@ async function main () {
     padRight('out', 5),
     padRight('contr', 6),
     padRight('skip', 5),
-    padRight('review', 7),
     padRight('sources', 46)
   ].join(' '));
   console.log(rule);
@@ -124,7 +107,6 @@ async function main () {
       padRight(String(r.outputTokens || 0), 5),
       padRight(String(r.contradictions.length), 6),
       padRight(String(r.skipped.length), 5),
-      padRight(String(r.reviewFindings != null ? r.reviewFindings.length : '-'), 7),
       padRight(sources, 46)
     ].join(' '));
   });
@@ -152,19 +134,6 @@ async function main () {
     r.skipped.forEach(function (s) {
       console.log('    · [' + s.reason + '] "' + (s.desiredText || '').slice(0, 120) + '"');
     });
-  });
-
-  console.log('');
-  console.log('DETAIL — review findings kind × confidence:');
-  results.forEach(function (r) {
-    if (!r.reviewFindings || !r.reviewFindings.length) return;
-    const byKind = {};
-    r.reviewFindings.forEach(function (f) {
-      const key = (f.kind || '?') + ':' + (f.confidence || '?');
-      byKind[key] = (byKind[key] || 0) + 1;
-    });
-    console.log('  [' + r.id + ' ' + r.label + '] ' +
-      Object.keys(byKind).map(function (k) { return k + '=' + byKind[k]; }).join(', '));
   });
 
   process.exit(0);

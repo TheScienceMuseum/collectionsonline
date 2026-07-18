@@ -1,7 +1,6 @@
 'use strict';
 
 const curatorDecisionsStore = require('../lib/ai/curator-decisions-store');
-const reviewStore = require('../lib/ai/review-store');
 const renderBiography = require('../lib/ai/render-biography');
 const biographyStore = require('../lib/ai/biography-store');
 const dynamo = require('../lib/ai/dynamo');
@@ -59,40 +58,15 @@ function publicBiographyRoute (elastic, config) {
               if (existing.status === 'hidden' || existing.status === 'insufficient_data') {
                 return h.response({}).code(204);
               }
-              if (existing.biographyHtml) {
-                // `references` is deliberately NOT surfaced on the public
-                // JSON payload — the public /people/{id} page already
-                // exposes the agent's related objects via ES elsewhere on
-                // the page, and every catalogue item cited by the AI
-                // prose is reachable through inline anchors in the HTML.
-                // Kept internal-only on the biography item so the admin
-                // Claims list can render per-sentence "→ Title" chips
-                // without an ES lookup at render time.
-                return h.response({
-                  biography: existing.biographyHtml,
-                  context: existing.contextHtml,
-                  personName: existing.personName,
-                  sources: existing.sources,
-                  generatedAt: existing.generatedAt,
-                  model: existing.model,
-                  status: existing.status,
-                  suppressExisting: existing.existingDescriptionChars < config.aiBiographySuppressExistingChars,
-                  flagEnabled: !!config.aiBiographyPublicFlagEnabled
-                }).type('application/json').header('Cache-Control', CACHE_CONTROL);
-              }
-              // v2 records store `sentences[]` on the item and intentionally
-              // do NOT persist a rendered `biographyHtml` — the render layer
+              // v2 records store `sentences[]` on the item and do NOT
+              // persist a rendered `biographyHtml` — the render layer
               // composes HTML at read time so subsequent curator actions
               // (approve / reject / clarify) or filter-level tweaks apply
-              // on the next page load without a regen. Prior to this branch
-              // the route only handled the legacy pre-rendered field and
-              // fell through to a fresh Claude regen (~40s wall-clock)
-              // every time a v2 record was loaded publicly. Render inline
-              // from the stored sentences instead — the same shape the
-              // admin detail already builds.
+              // on the next page load without a regen. Records without
+              // sentences[] (legacy pre-v2 shape or a partial write) 204
+              // instead of falling through to a live Claude call.
               if (Array.isArray(existing.sentences) && existing.sentences.length > 0) {
                 const curatorDecisions = await curatorDecisionsStore.get(id).catch(function () { return null; });
-                const openFindings = await reviewStore.openFindings(id).catch(function () { return []; });
                 // `opts.references` is intentionally omitted here — the
                 // renderer uses it only to build per-sentence chip data
                 // consumed by the admin Claims list. The public path
@@ -105,11 +79,8 @@ function publicBiographyRoute (elastic, config) {
                   paragraphBreaks: existing.paragraphBreaks || []
                 }, {
                   decisions: curatorDecisions,
-                  openFindings,
                   publishingLevel: config.aiBiographyPublishingLevel
                 });
-                // References field deliberately not on the public payload
-                // — see comment on the legacy branch above for rationale.
                 return h.response({
                   biography: rendered.biographyHtml,
                   context: rendered.contextHtml,
