@@ -609,7 +609,10 @@ test('parts: empty text or empty source in a part → dropped', function (t) {
   t.end();
 });
 
-test('parts: declared source with no matching part → whole parts array dropped (writer promised a mix that parts don\'t show)', function (t) {
+test('parts: declared source with no matching part → parts survive, uncoveredSources populated', function (t) {
+  // Coverage rule was REMOVED July 2026 — silent-dropping the writer's
+  // real per-clause labels for one sloppy source is worse than
+  // rendering what we have + flagging the uncovered source.
   const out = parse(JSON.stringify({
     sentences: [{
       text: 'A B.',
@@ -621,7 +624,34 @@ test('parts: declared source with no matching part → whole parts array dropped
     }],
     confidence: 8
   }));
-  t.equal(out.sentences[0].parts, null, 'llm:inferred is declared but no part references it — drop');
+  t.equal(out.sentences[0].parts.length, 2, 'parts render even though llm:inferred was never labelled');
+  t.deepEqual(out.sentences[0].uncoveredSources, ['llm:inferred'], 'admin UI can badge the llm:inferred pill');
+  t.end();
+});
+
+test('uncoveredSources: empty when every declared source has a part', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{
+      text: 'A B.',
+      sources: ['museum', 'wikidata'],
+      parts: [
+        { text: 'A ', source: 'museum' },
+        { text: 'B.', source: 'wikidata' }
+      ]
+    }],
+    confidence: 8
+  }));
+  t.deepEqual(out.sentences[0].uncoveredSources, [], 'all sources covered → no warning');
+  t.end();
+});
+
+test('uncoveredSources: empty when parts is null (single-source or dropped)', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{ text: 'Plain.', sources: ['museum'] }],
+    confidence: 8
+  }));
+  t.equal(out.sentences[0].parts, null);
+  t.deepEqual(out.sentences[0].uncoveredSources, [], 'no parts → no coverage report');
   t.end();
 });
 

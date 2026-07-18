@@ -828,9 +828,9 @@
                 pill (visually unchanged). The FIRST pill carries the
                 sourceDetail tooltip; subsequent pills just name their
                 source tag. --}}
-          {{#each this.sources}}
-          <span class="pill sentence__source-pill" data-source="{{this}}" title="{{#if @first}}{{#if ../sourceDetailFormatted}}Source: {{../sourceDetailFormatted}}{{else}}Source tag: {{this}}{{/if}}{{else}}Additional source tag: {{this}}{{/if}}">
-            {{this}}
+          {{#each this.pillData}}
+          <span class="pill sentence__source-pill{{#if this.uncovered}} sentence__source-pill--uncovered{{/if}}" data-source="{{this.source}}" title="{{#if this.uncovered}}⚠ Writer declared this source but didn't attribute any prose clause to it (probably a writer bug — the mix wasn't real). Hover a pill to see which spans came from where.{{else}}{{#if @first}}{{#if ../sourceDetailFormatted}}Source: {{../sourceDetailFormatted}}{{else}}Source tag: {{this.source}}{{/if}}{{else}}Additional source tag: {{this.source}}{{/if}}{{/if}}">
+            {{this.source}}{{#if this.uncovered}} <span class="sentence__source-pill__warn" aria-label="uncovered">⚠</span>{{/if}}
           </span>
           {{/each}}
 
@@ -953,9 +953,9 @@
         <div class="sentence__meta">
           {{!-- Chip stack — see the Publishing block above for the
                 same shape. Single-source sentences render as one pill. --}}
-          {{#each this.sources}}
-          <span class="pill sentence__source-pill" data-source="{{this}}" title="{{#if @first}}{{#if ../sourceDetailFormatted}}Source: {{../sourceDetailFormatted}}{{else}}Source tag: {{this}}{{/if}}{{else}}Additional source tag: {{this}}{{/if}}">
-            {{this}}
+          {{#each this.pillData}}
+          <span class="pill sentence__source-pill{{#if this.uncovered}} sentence__source-pill--uncovered{{/if}}" data-source="{{this.source}}" title="{{#if this.uncovered}}⚠ Writer declared this source but didn't attribute any prose clause to it (probably a writer bug — the mix wasn't real). Hover a pill to see which spans came from where.{{else}}{{#if @first}}{{#if ../sourceDetailFormatted}}Source: {{../sourceDetailFormatted}}{{else}}Source tag: {{this.source}}{{/if}}{{else}}Additional source tag: {{this.source}}{{/if}}{{/if}}">
+            {{this.source}}{{#if this.uncovered}} <span class="sentence__source-pill__warn" aria-label="uncovered">⚠</span>{{/if}}
           </span>
           {{/each}}
 
@@ -1292,6 +1292,13 @@
   .sentence__paragraph-break { border: 0; border-top: 1px dashed #c5c1b5; margin: 0.75rem 0 0.35rem 0; }
 
   .pill--muted { background: #efece4; border: 1px solid #c5c1b5; color: #646464; }
+
+  /* Uncovered-source marker (spec: B option in the Q2 UX review).
+     A pill whose source was declared but never attributed to any
+     prose part gets a warn tint + a ⚠ icon. Signals writer sloppiness
+     to the curator rather than hiding it via silent-drop. */
+  .sentence__source-pill--uncovered { border-style: dashed; opacity: 0.85; }
+  .sentence__source-pill__warn { font-size: 0.85em; margin-left: 0.15rem; color: #b0797a; }
 
   /* Per-clause hover-highlight for mixed-source sentences (spec:
      internal-docs/per-clause-source-highlighting-spec.md). Each part
