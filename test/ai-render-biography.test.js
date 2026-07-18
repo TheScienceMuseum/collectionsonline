@@ -428,3 +428,28 @@ test('multi-source: rendered sentence exposes canonical `sources` array', functi
   t.deepEqual(r.sentences[0].sources, ['museum', 'wikidata'], 'both sources exposed to admin UI');
   t.end();
 });
+
+test('per-clause parts: rendered sentence exposes parts array when present', function (t) {
+  const s = {
+    text: 'A wikidata bit, plus an inferred bit.',
+    source: 'wikidata',
+    sources: ['wikidata', 'llm:inferred'],
+    parts: [
+      { text: 'A wikidata bit,', source: 'wikidata' },
+      { text: ' plus an inferred bit.', source: 'llm:inferred' }
+    ],
+    sourceDetail: null,
+    claimSignature: signature('A wikidata bit, plus an inferred bit.')
+  };
+  const r = render({ sentences: [s], paragraphBreaks: [] }, { publishingLevel: 3 });
+  t.equal(r.sentences[0].parts.length, 2, 'parts propagate to admin UI');
+  t.equal(r.sentences[0].parts[0].source, 'wikidata');
+  t.end();
+});
+
+test('per-clause parts: rendered sentence has parts=null (or absent) for chip-stack-only fallback', function (t) {
+  const s = { text: 'Plain.', source: 'museum', sources: ['museum'], sourceDetail: null, claimSignature: signature('Plain.') };
+  const r = render({ sentences: [s], paragraphBreaks: [] }, { publishingLevel: 3 });
+  t.ok(r.sentences[0].parts == null, 'no parts on the input → falsy on the output; template falls back to chip-stack render');
+  t.end();
+});

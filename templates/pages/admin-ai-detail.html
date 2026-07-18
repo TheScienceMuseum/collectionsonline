@@ -821,7 +821,7 @@
             selectors. The state triple is the source of truth for
             display; publishingState enum is not consulted. --}}
       <li class="sentence" data-source="{{this.bucketSource}}" data-signature="{{this.claimSignature}}" data-vis="publishing" data-decided="{{this.state.decidedBy}}"{{#if this.state.concern}} data-concern="{{this.state.concern}}"{{/if}}>
-        <div class="sentence__text">{{{this.textHtml}}}</div>
+        <div class="sentence__text">{{#if this.partsHtml}}{{#each this.partsHtml}}<span class="sentence-part" data-source="{{this.source}}">{{{this.textHtml}}}</span>{{/each}}{{else}}{{{this.textHtml}}}{{/if}}</div>
         <div class="sentence__meta">
           {{!-- Chip stack: one pill per source in the sentence's
                 `sources` array. Single-source sentences render as one
@@ -949,7 +949,7 @@
       {{#each renderedBiography.sentences}}
       {{#unless this.visible}}
       <li class="sentence sentence--hidden" data-source="{{this.bucketSource}}" data-signature="{{this.claimSignature}}" data-vis="hidden" data-decided="{{this.state.decidedBy}}"{{#if this.state.concern}} data-concern="{{this.state.concern}}"{{/if}}>
-        <div class="sentence__text">{{{this.textHtml}}}</div>
+        <div class="sentence__text">{{#if this.partsHtml}}{{#each this.partsHtml}}<span class="sentence-part" data-source="{{this.source}}">{{{this.textHtml}}}</span>{{/each}}{{else}}{{{this.textHtml}}}{{/if}}</div>
         <div class="sentence__meta">
           {{!-- Chip stack — see the Publishing block above for the
                 same shape. Single-source sentences render as one pill. --}}
@@ -1292,6 +1292,36 @@
   .sentence__paragraph-break { border: 0; border-top: 1px dashed #c5c1b5; margin: 0.75rem 0 0.35rem 0; }
 
   .pill--muted { background: #efece4; border: 1px solid #c5c1b5; color: #646464; }
+
+  /* Per-clause hover-highlight for mixed-source sentences (spec:
+     internal-docs/per-clause-source-highlighting-spec.md). Each part
+     is a span carrying data-source. Base state = invisible (single-
+     source sentences without parts spans render exactly as before).
+     Hovering a pill in the chip stack tints the corresponding
+     .sentence-part span(s) with the source's colour; hovering a span
+     outlines the corresponding pill. Pure CSS via :has() — no JS. */
+  .sentence-part { transition: background-color 0.12s ease; padding: 0 0.1em; border-radius: 2px; }
+  /* pill → span */
+  .sentence:has(.sentence__source-pill[data-source="museum"]:hover)              .sentence-part[data-source="museum"]              { background: rgba(169,195,164,0.45); }
+  .sentence:has(.sentence__source-pill[data-source="wikidata"]:hover)            .sentence-part[data-source="wikidata"]            { background: rgba(151,181,196,0.45); }
+  .sentence:has(.sentence__source-pill[data-source="oxfordDNB"]:hover)           .sentence-part[data-source="oxfordDNB"]           { background: rgba(169,195,164,0.45); }
+  .sentence:has(.sentence__source-pill[data-source="gracesGuide"]:hover)         .sentence-part[data-source="gracesGuide"]         { background: rgba(151,181,196,0.45); }
+  .sentence:has(.sentence__source-pill[data-source="wikipedia"]:hover)           .sentence-part[data-source="wikipedia"]           { background: rgba(151,181,196,0.3); }
+  .sentence:has(.sentence__source-pill[data-source="llm:inferred"]:hover)        .sentence-part[data-source="llm:inferred"]        { background: rgba(197,182,162,0.55); }
+  .sentence:has(.sentence__source-pill[data-source="llm:contextualising"]:hover) .sentence-part[data-source="llm:contextualising"] { background: rgba(201,190,138,0.55); }
+  .sentence:has(.sentence__source-pill[data-source="llm:general_knowledge"]:hover) .sentence-part[data-source="llm:general_knowledge"] { background: rgba(176,121,122,0.4); text-decoration: underline wavy #b0797a; text-underline-offset: 3px; }
+  /* span → pill */
+  .sentence:has(.sentence-part[data-source="museum"]:hover)              .sentence__source-pill[data-source="museum"],
+  .sentence:has(.sentence-part[data-source="wikidata"]:hover)            .sentence__source-pill[data-source="wikidata"],
+  .sentence:has(.sentence-part[data-source="oxfordDNB"]:hover)           .sentence__source-pill[data-source="oxfordDNB"],
+  .sentence:has(.sentence-part[data-source="gracesGuide"]:hover)         .sentence__source-pill[data-source="gracesGuide"],
+  .sentence:has(.sentence-part[data-source="wikipedia"]:hover)           .sentence__source-pill[data-source="wikipedia"],
+  .sentence:has(.sentence-part[data-source="llm:inferred"]:hover)        .sentence__source-pill[data-source="llm:inferred"],
+  .sentence:has(.sentence-part[data-source="llm:contextualising"]:hover) .sentence__source-pill[data-source="llm:contextualising"],
+  .sentence:has(.sentence-part[data-source="llm:general_knowledge"]:hover) .sentence__source-pill[data-source="llm:general_knowledge"] {
+    outline: 2px solid currentColor;
+    outline-offset: 1px;
+  }
 
   /* External-sources strip: shows which adapters were enabled at
      generation time. Green ● = ON, muted grey ○ = OFF. Consistent

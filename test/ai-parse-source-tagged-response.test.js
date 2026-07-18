@@ -496,3 +496,174 @@ test('SOURCE_STRENGTH_ORDER export is stable strongest-first list', function (t)
   t.equal(parse.SOURCE_STRENGTH_ORDER.length, 8, '8 tiers');
   t.end();
 });
+
+// --- Per-clause parts (spec: internal-docs/per-clause-source-highlighting-spec.md)
+
+test('parts: valid two-part sentence passes through', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{
+      text: 'He studied at ETH Zurich, where he received his degree.',
+      sources: ['wikidata', 'llm:inferred'],
+      parts: [
+        { text: 'He studied at ETH Zurich,', source: 'wikidata' },
+        { text: ' where he received his degree.', source: 'llm:inferred' }
+      ]
+    }],
+    confidence: 8
+  }));
+  t.equal(out.sentences[0].parts.length, 2, 'both parts preserved');
+  t.equal(out.sentences[0].parts[0].source, 'wikidata');
+  t.equal(out.sentences[0].parts[1].source, 'llm:inferred');
+  t.end();
+});
+
+test('parts: absent → null', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{ text: 't', sources: ['museum'] }],
+    confidence: 8
+  }));
+  t.equal(out.sentences[0].parts, null, 'parts field absent from writer → null');
+  t.end();
+});
+
+test('parts: single-part array dropped (redundant)', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{
+      text: 'One clause.',
+      sources: ['museum'],
+      parts: [{ text: 'One clause.', source: 'museum' }]
+    }],
+    confidence: 8
+  }));
+  t.equal(out.sentences[0].parts, null, 'chip stack already conveys single source');
+  t.end();
+});
+
+test('parts: concat mismatch → dropped', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{
+      text: 'He studied at ETH Zurich.',
+      sources: ['wikidata', 'llm:inferred'],
+      parts: [
+        { text: 'He studied at ETH', source: 'wikidata' },
+        { text: 'Zurich.', source: 'llm:inferred' }// missing " " between
+      ]
+    }],
+    confidence: 8
+  }));
+  t.equal(out.sentences[0].parts, null, 'silent drop on rebuild mismatch');
+  t.end();
+});
+
+test('parts: unknown source in a part → whole parts array dropped', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{
+      text: 'A B.',
+      sources: ['museum', 'wikidata'],
+      parts: [
+        { text: 'A ', source: 'museum' },
+        { text: 'B.', source: 'oxfordDNB' }// not in sources
+      ]
+    }],
+    confidence: 8
+  }));
+  t.equal(out.sentences[0].parts, null, 'parts referencing a source not in sources[] is invalid');
+  t.end();
+});
+
+test('parts: non-object entry → dropped', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{
+      text: 'A B.',
+      sources: ['museum', 'wikidata'],
+      parts: [
+        { text: 'A ', source: 'museum' },
+        'B.'// bare string, not an object
+      ]
+    }],
+    confidence: 8
+  }));
+  t.equal(out.sentences[0].parts, null);
+  t.end();
+});
+
+test('parts: empty text or empty source in a part → dropped', function (t) {
+  const withEmptyText = parse(JSON.stringify({
+    sentences: [{
+      text: 'A B.',
+      sources: ['museum', 'wikidata'],
+      parts: [{ text: '', source: 'museum' }, { text: 'A B.', source: 'wikidata' }]
+    }],
+    confidence: 8
+  }));
+  t.equal(withEmptyText.sentences[0].parts, null);
+  const withEmptySource = parse(JSON.stringify({
+    sentences: [{
+      text: 'A B.',
+      sources: ['museum', 'wikidata'],
+      parts: [{ text: 'A ', source: 'museum' }, { text: 'B.', source: '' }]
+    }],
+    confidence: 8
+  }));
+  t.equal(withEmptySource.sentences[0].parts, null);
+  t.end();
+});
+
+test('parts: declared source with no matching part → whole parts array dropped (writer promised a mix that parts don\'t show)', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{
+      text: 'A B.',
+      sources: ['wikidata', 'llm:inferred'],
+      parts: [
+        { text: 'A ', source: 'wikidata' },
+        { text: 'B.', source: 'wikidata' }
+      ]
+    }],
+    confidence: 8
+  }));
+  t.equal(out.sentences[0].parts, null, 'llm:inferred is declared but no part references it — drop');
+  t.end();
+});
+
+test('parts: three-part sentence spanning three sources', function (t) {
+  const out = parse(JSON.stringify({
+    sentences: [{
+      text: 'Museum bit; wikidata bit; inferred tail.',
+      sources: ['museum', 'wikidata', 'llm:inferred'],
+      parts: [
+        { text: 'Museum bit;', source: 'museum' },
+        { text: ' wikidata bit;', source: 'wikidata' },
+        { text: ' inferred tail.', source: 'llm:inferred' }
+      ]
+    }],
+    confidence: 8
+  }));
+  t.equal(out.sentences[0].parts.length, 3);
+  t.deepEqual(out.sentences[0].parts.map(function (p) { return p.source; }), ['museum', 'wikidata', 'llm:inferred']);
+  t.end();
+});
+
+test('parts: rebuilt text matches raw (untrimmed) — leading whitespace handled', function (t) {
+  // Writer emits sentence.text with leading whitespace, then parts
+  // that also carry it. Parser trims sentence.text for display but
+  // parts validation uses the raw untrimmed text so the concat check
+  // succeeds. This asserts the fix that swapped `text` (trimmed) for
+  // raw.text in the concat comparison.
+  const out = parse(JSON.stringify({
+    sentences: [{
+      text: '  He studied at ETH.',
+      sources: ['wikidata'],
+      parts: [
+        { text: '  He studied at', source: 'wikidata' },
+        { text: ' ETH.', source: 'wikidata' }
+      ]
+    }],
+    confidence: 8
+  }));
+  // Single-source parts is technically valid schema, and both entries
+  // reference 'wikidata' which IS in sources. Rebuilt = raw.text.
+  // Should PASS (both are wikidata is a valid — if slightly odd — mix).
+  t.equal(out.sentences[0].parts.length, 2, 'parts survived');
+  t.equal(out.sentences[0].text, 'He studied at ETH.', 'display text trimmed');
+  t.end();
+});
