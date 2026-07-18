@@ -29,7 +29,7 @@
 </div>
 <h2 style="margin-bottom: 0.5rem;">Generating biography for {{candidateId}}…</h2>
 <div class="detail-section" style="background: #fbf9f4; border-left: 3px solid #c87a1e; padding: 0.9rem 1.1rem; border-radius: 3px;">
-  <p style="margin: 0 0 0.5rem 0;"><strong>Please wait.</strong> Writer + reviewer usually take 7&ndash;15 seconds. This page refreshes every 5s until the biography lands.</p>
+  <p style="margin: 0 0 0.5rem 0;"><strong>Please wait.</strong> The writer usually takes 60&ndash;90 seconds (Haiku 4.5 with extended thinking). This page refreshes every 5s until the biography lands.</p>
   <p class="text-meta" style="margin: 0;">You can safely close this tab &mdash; generation continues in the background. Return to <code>/admin/ai/{{candidateId}}</code> to see the result.</p>
 </div>
 {{else}}
@@ -38,7 +38,7 @@
 </div>
 <div class="admin-banner">No AI biography for <code>{{candidateId}}</code> yet.</div>
 <div class="detail-section" style="margin-top: 1rem;">
-  <p>This record hasn't been generated. If it's a valid <code>agent</code> record in Elasticsearch, you can seed one now &mdash; the writer + reviewer run in the background and the page refreshes when the result lands.</p>
+  <p>This record hasn't been generated. If it's a valid <code>agent</code> record in Elasticsearch, you can seed one now &mdash; the writer runs in the background and the page refreshes when the result lands.</p>
   <form method="POST" action="/admin/ai/generate" style="display: inline;">
     <input type="hidden" name="input" value="{{candidateId}}">
     <button type="submit" class="btn btn--primary">Generate biography</button>
@@ -762,29 +762,21 @@
       <div class="claims-legend__body">
         <div class="claims-legend__row">
           <span class="claims-legend__label">Sources:</span>
-          <span class="pill sentence__source-pill" data-source="museum" title="Fact directly present in the museum catalogue inputs — personData fields, briefBiography, existingBiography, related-item titles / descriptions. Authoritative.">museum</span>
-          <span class="pill sentence__source-pill" data-source="wikidata" title="Fact directly present in the Wikidata context (a specific claim or property). Trusted structured data; curator may spot-check.">wikidata</span>
-          <span class="pill sentence__source-pill" data-source="llm:inferred" title="Synthesis DERIVED from museum + wikidata inputs — combining or paraphrasing multiple structured facts into new prose. Traceable to inputs, safe by construction.">llm:inferred</span>
+          <span class="pill sentence__source-pill" data-source="museum" title="Fact directly present in the museum catalogue inputs — personData fields (briefBiography, biography) or related-item titles / descriptions. Authoritative.">museum</span>
+          <span class="pill sentence__source-pill" data-source="oxfordDNB" title="Fact from the Oxford Dictionary of National Biography entry included in the ODNB CONTEXT. Peer-reviewed scholarship — tier A. Requires institutional credentials.">oxfordDNB</span>
+          <span class="pill sentence__source-pill" data-source="wikidata" title="Fact directly present in the Wikidata context (a specific claim or property). Trusted structured data.">wikidata</span>
+          <span class="pill sentence__source-pill" data-source="gracesGuide" title="Fact from a Grace's Guide article (UK industrial history wiki — engineers, engineering firms, railways, manufacturers). Community-edited but subject-expert.">gracesGuide</span>
+          <span class="pill sentence__source-pill" data-source="wikipedia" title="Fact from the subject's English Wikipedia article intro. Community-edited prose — less authoritative than the museum / ODNB / Wikidata / Grace's Guide inputs but useful narrative context.">wikipedia</span>
+          <span class="pill sentence__source-pill" data-source="llm:inferred" title="Synthesis DERIVED from museum + wikidata + other inputs — combining or paraphrasing structured facts into new prose. Traceable to inputs.">llm:inferred</span>
           <span class="pill sentence__source-pill" data-source="llm:contextualising" title="Background / era colour without specific claims about the subject (e.g. 'Artificial eye making in early eighteenth-century London was a specialist trade'). Publishes at level 3+.">llm:contextualising</span>
-          <span class="pill sentence__source-pill" data-source="llm:general_knowledge" title="Fact from the LLM's training data, NOT present in museum or wikidata inputs. Hidden until curator approves or external validation promotes to llm:validated.">llm:general_knowledge</span>
+          <span class="pill sentence__source-pill" data-source="llm:general_knowledge" title="Fact from the LLM's training data, NOT present in any input. Hidden until a curator approves or external validation promotes to llm:validated.">llm:general_knowledge</span>
+          <span class="pill sentence__source-pill sentence__source-pill--uncovered" data-source="museum" title="The dashed border + ⚠ marker mean the writer declared this source on the sentence but didn't attribute any specific clause to it — probably a writer bug. See the tooltip on any real ⚠ pill for detail.">example ⚠</span>
         </div>
-        {{!-- Task 61: legend restructured on the 3-axis state model.
-              Visibility is ● / ○ (filled = publishing, hollow = hidden),
-              orthogonal to concern (reviewer flag), orthogonal to
-              decidedBy (curator override). Each row of the legend
-              covers one axis — curators eyeball which axis matters. --}}
         <div class="claims-legend__row">
           <span class="claims-legend__label">Visibility:</span>
-          <span class="pill state-pill" data-vis="publishing" data-decided="auto" title="Auto-publishing. System rule based on source-tag filter + no likely-error concern from the AI review.">● publishing</span>
-          <span class="pill state-pill" data-vis="publishing" data-decided="curator" title="Publishing because a curator explicitly approved this claim, overriding filter or AI-review concern.">● curator override</span>
-          <span class="pill state-pill" data-vis="hidden" data-decided="auto" title="Auto-hidden. Either the source tag is below the current publishing level, or the AI review flagged this as a likely error.">○ hidden</span>
-          <span class="pill state-pill" data-vis="hidden" data-decided="curator" title="Curator explicitly rejected this claim. Excluded from next regeneration.">○ curator rejected</span>
-        </div>
-        <div class="claims-legend__row">
-          <span class="claims-legend__label">Reviewer concern:</span>
-          <span class="pill concern-pill" data-concern="info" title="Contextual note from the AI review — the reviewer thinks the curator might find this useful. Publishes without gating."><span class="concern-pill__icon">ⓘ</span><span class="concern-pill__label">info</span></span>
-          <span class="pill concern-pill" data-concern="warning" title="AI review suspects a possible issue at medium confidence — worth a look but not blocking. Publishes and annotates the claim."><span class="concern-pill__icon">⚠︎</span><span class="concern-pill__label">possible issue</span></span>
-          <span class="pill concern-pill" data-concern="block" title="AI review's high-confidence error — the reviewer thinks this claim is wrong. Auto-hides the sentence unless a curator explicitly overrides."><span class="concern-pill__icon">⊗</span><span class="concern-pill__label">likely error</span></span>
+          <span class="pill state-pill" data-vis="publishing" data-decided="auto" title="Auto-publishing. System rule based on source-tag filter.">● publishing</span>
+          <span class="pill state-pill" data-vis="hidden" data-decided="auto" title="Auto-hidden. The source tag is below the current publishing level.">○ hidden</span>
+          <span class="pill state-pill" data-vis="hidden" data-decided="curator" title="Curator explicitly rejected this claim. Excluded from the next regeneration.">○ curator rejected</span>
         </div>
       </div>
     </div>
@@ -912,15 +904,12 @@
         <details class="sentence__actions">
           <summary>curator actions</summary>
           <div class="sentence__actions-body">
-            {{!-- Visible sentence actions. Reject (hide + drive next
-                  regen) and Add clarification (curator guidance for
-                  next regen) are the two concrete curator moves.
-                  "Mark as reviewed" was removed in July 2026 — it read
-                  as a rubber-stamp on publishing sentences with no
-                  downstream effect on the biography's shape, and the
-                  approve POST handler stays in the route in case we
-                  reintroduce a proper "Publish anyway" action for
-                  below-threshold sentences later. --}}
+            {{!-- Sentence actions: Reject hides the sentence AND
+                  passes the rationale as a constraint for the next
+                  regeneration. Add clarification passes guidance to
+                  the next regeneration without hiding. Both drive
+                  future writer output rather than in-place edits —
+                  regenerating the biography folds them in. --}}
             <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/reject" class="sentence__action-form">
               <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
               <input type="hidden" name="claimText" value="{{this.text}}">
@@ -1299,6 +1288,31 @@
      to the curator rather than hiding it via silent-drop. */
   .sentence__source-pill--uncovered { border-style: dashed; opacity: 0.85; }
   .sentence__source-pill__warn { font-size: 0.85em; margin-left: 0.15rem; color: #b0797a; }
+
+  /* Q2 A — hovering an uncovered pill dims every attributed span in
+     the same sentence. There's no positive span to highlight (that's
+     what "uncovered" means), so we invert: fade the attributed spans
+     so the curator's eye searches the negative space for inference
+     language the writer smuggled inside another source's part. A
+     small floating hint appears below the chip stack pointing to the
+     limitation. */
+  .sentence:has(.sentence__source-pill--uncovered:hover) .sentence-part { opacity: 0.35; }
+  .sentence__source-pill--uncovered::after {
+    content: "";
+    display: none;
+  }
+  .sentence:has(.sentence__source-pill--uncovered:hover) .sentence__meta::after {
+    content: "⚠ No prose span was labelled with this source. If you can guess where the inference lives, check for background phrasing (‘became one of the foremost…’) inside another span.";
+    display: block;
+    margin-top: 0.4rem;
+    padding: 0.3rem 0.5rem;
+    background: #fbf1f1;
+    border-left: 3px solid #b0797a;
+    border-radius: 3px;
+    font-size: 0.72rem;
+    color: #5a2020;
+    max-width: 42rem;
+  }
 
   /* Per-clause hover-highlight for mixed-source sentences (spec:
      internal-docs/per-clause-source-highlighting-spec.md). Each part
@@ -1999,7 +2013,7 @@
     var groups = document.getElementById('claims-groups');
     if (!select || !groups) return;
 
-    var SOURCE_ORDER = ['museum', 'wikidata', 'llm:inferred', 'llm:contextualising', 'llm:validated', 'llm:general_knowledge'];
+    var SOURCE_ORDER = ['museum', 'oxfordDNB', 'wikidata', 'gracesGuide', 'wikipedia', 'llm:inferred', 'llm:contextualising', 'llm:validated', 'llm:general_knowledge'];
     var VISIBILITY_SNAPSHOT = null;
 
     function currentSentences () {
