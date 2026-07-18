@@ -1546,11 +1546,30 @@ module.exports = function (elastic, config) {
               wikidataQCode: (record.wikidata && record.wikidata.qcode) || record.wikidataQCode || null
             };
 
+            // Fetch wikidata live if we have a Q-code, so the GracesGuide
+            // + ODNB verifiers can look up their subject identifiers
+            // (P3074 for GracesGuide, P1415 for ODNB). The cache layer
+            // handles repeat calls for the same subject. Failure is
+            // non-fatal — verifiers that can work without it (Wikipedia
+            // name-search, wikidataDeep by Q-code) still run.
+            let wikidataContext = null;
+            if (subject.wikidataQCode) {
+              try {
+                wikidataContext = await fetchWikidataLive(subject.wikidataQCode);
+              } catch (err) {
+                console.warn('Admin verify: wikidata fetch failed for', id, '-', err && err.message);
+              }
+            }
+
             const verdict = await verifyExternal(claimText, subject, {
               apiKey: config.anthropicApiKey,
+              // Passed through to per-tool query() so ODNB / GracesGuide
+              // can look up their identifiers (P1415, P3074). Wikipedia
+              // + wikidataDeep don't read this field.
+              wikidataContext,
+              config,
               // Task 52 will surface a config toggle for individual tool
-              // enable/disable; MVP uses the full REGISTRY (wikipedia +
-              // wikidataDeep).
+              // enable/disable; MVP uses the full REGISTRY.
               toolNames: null
             });
 
