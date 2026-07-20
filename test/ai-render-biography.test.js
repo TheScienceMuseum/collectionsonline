@@ -371,3 +371,50 @@ test('per-clause parts: rendered sentence has parts=null (or absent) for chip-st
   t.ok(r.sentences[0].parts == null, 'no parts on the input → falsy on the output; template falls back to chip-stack render');
   t.end();
 });
+
+// --- External input sources (regression guard) ---------------------
+//
+// Earlier iterations of PUBLISHING_LEVELS listed only museum + wikidata
+// + llm:*. Sentences the writer tagged wikipedia / oxfordDNB /
+// gracesGuide were then silently hidden by the weakest-source-wins
+// rule, producing empty biographies for well-known subjects whose
+// facts came from Wikipedia. These tests guard against that regression.
+
+test('wikipedia source: publishes at default level', function (t) {
+  const bio = { sentences: [s('Founded 1890 by Sir Thomas Lipton.', 'wikipedia')], paragraphBreaks: [] };
+  const r = render(bio, { publishingLevel: 3 });
+  t.equal(r.visibleCount, 1, 'wikipedia sentence publishes at Level 3');
+  t.end();
+});
+
+test('oxfordDNB source: publishes from level 1', function (t) {
+  const bio = { sentences: [s('Trained as a physician.', 'oxfordDNB')], paragraphBreaks: [] };
+  t.equal(render(bio, { publishingLevel: 1 }).visibleCount, 1, 'ODNB publishes at Level 1');
+  t.equal(render(bio, { publishingLevel: 3 }).visibleCount, 1, 'ODNB still publishes at Level 3');
+  t.equal(render(bio, { publishingLevel: 0 }).visibleCount, 0, 'ODNB hidden at Level 0 (museum only)');
+  t.end();
+});
+
+test('gracesGuide source: publishes at default level', function (t) {
+  const bio = { sentences: [s('Stephenson built locomotives at Killingworth.', 'gracesGuide')], paragraphBreaks: [] };
+  t.equal(render(bio, { publishingLevel: 3 }).visibleCount, 1, 'Grace\'s Guide publishes at Level 3');
+  t.equal(render(bio, { publishingLevel: 1 }).visibleCount, 0, 'Grace\'s Guide hidden at Level 1 (needs Level 2+)');
+  t.end();
+});
+
+test('mixed wikidata + wikipedia sources: publishes at default level (Lipton bug regression)', function (t) {
+  // Exact repro of the shape the reasoning writer emits for Lipton
+  // after Wikipedia was enabled as an input. Weakest source is
+  // wikipedia, which must be in the Level-3 allowed list or every
+  // wikipedia-tagged sentence disappears from the biography.
+  const sentence = {
+    text: 'Lipton is a British food and beverage brand founded in 1890.',
+    source: 'wikidata',
+    sources: ['wikidata', 'wikipedia'],
+    sourceDetail: 'wikidata:P571',
+    claimSignature: signature('Lipton is a British food and beverage brand founded in 1890.')
+  };
+  const r = render({ sentences: [sentence], paragraphBreaks: [] }, { publishingLevel: 3 });
+  t.equal(r.visibleCount, 1, 'mixed wikidata+wikipedia sentence publishes at Level 3');
+  t.end();
+});

@@ -154,29 +154,37 @@ module.exports = require('rc')('co', {
   // draws from Wikipedia must be tagged `wikipedia` and cited via
   // `wikipedia:<article title>` in the sentence's citations[] array.
   //
-  // **Default OFF as of 2026-07-17.** Curator preference is scholarly /
-  // curated sources (ODNB, DNB, Grove) over community-edited Wikipedia.
-  // When enabled, adaptive-fetch logic in fetch-wikipedia-summary.js
-  // fires Wikipedia only for subjects where the other sources are thin
-  // (see aiBiographyWikipediaAdaptiveMinWikidataClaims and
-  // aiBiographyWikipediaAdaptiveMinMuseumChars below). Set
-  // AI_BIOGRAPHY_WIKIPEDIA_ENABLED=true to turn on for a run.
-  aiBiographyWikipediaEnabled: process.env.AI_BIOGRAPHY_WIKIPEDIA_ENABLED === 'true',
+  // **Default ON as of 2026-07-18.** Reversed from the earlier
+  // "scholarly-sources-first" default (2026-07-17) after evaluating
+  // the launch corpus: only 24.5% of agent records carry a Wikidata
+  // Q-code, and even for that slice the OFF default produced flat
+  // biographies that read as bullet-point structured-data summaries.
+  // Wikipedia is community-edited but every fact drawn from it
+  // still gets cited via `wikipedia:<article-title>` with a verbatim
+  // excerpt validated at parse time — the citation trail is the
+  // safety net, not the source's authority tier. Set
+  // AI_BIOGRAPHY_WIKIPEDIA_ENABLED=false to turn off for a run.
+  aiBiographyWikipediaEnabled: process.env.AI_BIOGRAPHY_WIKIPEDIA_ENABLED !== 'false',
 
   // Adaptive-fetch gates for Wikipedia (only consulted when
-  // aiBiographyWikipediaEnabled is true). Wikipedia fires only when
-  // BOTH conditions are met: Wikidata claim count strictly below
-  // aiBiographyWikipediaAdaptiveMinWikidataClaims AND combined
-  // museum biography + briefBiography char count strictly below
-  // aiBiographyWikipediaAdaptiveMinMuseumChars. If either is at or
-  // above threshold, Wikipedia is skipped (the subject has enough
-  // sourcing without it).
+  // aiBiographyWikipediaEnabled is true AND aiBiographyWikipedia-
+  // AdaptiveDisabled is false).
   //
-  // A curator can bypass the gates for a specific run by setting
-  // aiBiographyWikipediaAdaptiveDisabled=true — Wikipedia then fires
-  // for every subject regardless of thresholds (matches the pre-2026-
-  // 07-17 always-on behaviour).
-  aiBiographyWikipediaAdaptiveDisabled: process.env.AI_BIOGRAPHY_WIKIPEDIA_ADAPTIVE_DISABLED === 'true',
+  // **Default: gates DISABLED as of 2026-07-18** (Wikipedia fetches
+  // for every subject that has a Q-code). Earlier tuning skipped
+  // Wikipedia for subjects with plenty of Wikidata + museum content
+  // as a cost saver, but the effect was to strip narrative colour
+  // from exactly the well-known subjects where Wikipedia adds most
+  // (Einstein, Lipton). The cost is a couple of pence per record;
+  // the readability win is large. Set
+  // AI_BIOGRAPHY_WIKIPEDIA_ADAPTIVE_DISABLED=false to re-engage the
+  // gates (useful for cost-sensitive batch runs).
+  //
+  // When re-engaged: Wikipedia fires only when Wikidata claim count
+  // < aiBiographyWikipediaAdaptiveMinWikidataClaims AND combined
+  // museum biography + briefBiography char count <
+  // aiBiographyWikipediaAdaptiveMinMuseumChars.
+  aiBiographyWikipediaAdaptiveDisabled: process.env.AI_BIOGRAPHY_WIKIPEDIA_ADAPTIVE_DISABLED !== 'false',
   aiBiographyWikipediaAdaptiveMinWikidataClaims: parseInt(process.env.AI_BIOGRAPHY_WIKIPEDIA_ADAPTIVE_MIN_WIKIDATA_CLAIMS || '8', 10),
   aiBiographyWikipediaAdaptiveMinMuseumChars: parseInt(process.env.AI_BIOGRAPHY_WIKIPEDIA_ADAPTIVE_MIN_MUSEUM_CHARS || '500', 10),
 
