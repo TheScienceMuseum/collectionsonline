@@ -418,3 +418,59 @@ test('mixed wikidata + wikipedia sources: publishes at default level (Lipton bug
   t.equal(r.visibleCount, 1, 'mixed wikidata+wikipedia sentence publishes at Level 3');
   t.end();
 });
+
+// --- Citation chipType detection (icon-mapping regression guard) ---
+//
+// The admin detail template renders each citation with an SVG icon
+// selected via `#entity-icon-<chipType>`. Wikipedia / Oxford DNB /
+// Grace's Guide sources previously fell through to chipType='unknown'
+// and rendered a broken icon reference. These tests protect the
+// chipType detection so the icons render for every source we ship.
+
+test('citation chipType: wikipedia field maps to chipType=wikipedia', function (t) {
+  const sent = {
+    text: 'A wikipedia-sourced sentence.',
+    source: 'wikipedia',
+    sources: ['wikipedia'],
+    sourceDetail: 'wikipedia:Lipton',
+    claimSignature: signature('A wikipedia-sourced sentence.'),
+    citations: [{ field: 'wikipedia:Lipton', excerpt: 'Lipton is a British brand.' }]
+  };
+  const r = render({ sentences: [sent], paragraphBreaks: [] }, { publishingLevel: 3 });
+  const c = r.sentences[0].citations[0];
+  t.equal(c.chipType, 'wikipedia');
+  t.equal(c.chipLabel, 'wikipedia: Lipton');
+  t.end();
+});
+
+test('citation chipType: oxfordDNB field maps to chipType=oxfordDNB', function (t) {
+  const sent = {
+    text: 'An ODNB-sourced sentence.',
+    source: 'oxfordDNB',
+    sources: ['oxfordDNB'],
+    sourceDetail: 'oxfordDNB:Anderson, Elizabeth Garrett',
+    claimSignature: signature('An ODNB-sourced sentence.'),
+    citations: [{ field: 'oxfordDNB:Anderson, Elizabeth Garrett', excerpt: 'first female doctor to qualify in England.' }]
+  };
+  const r = render({ sentences: [sent], paragraphBreaks: [] }, { publishingLevel: 3 });
+  const c = r.sentences[0].citations[0];
+  t.equal(c.chipType, 'oxfordDNB');
+  t.equal(c.chipLabel, 'oxfordDNB: Anderson, Elizabeth Garrett');
+  t.end();
+});
+
+test('citation chipType: gracesGuide field maps to chipType=gracesGuide', function (t) {
+  const sent = {
+    text: 'A Grace\'s Guide-sourced sentence.',
+    source: 'gracesGuide',
+    sources: ['gracesGuide'],
+    sourceDetail: 'gracesGuide:Robert Stephenson',
+    claimSignature: signature('A Grace\'s Guide-sourced sentence.'),
+    citations: [{ field: 'gracesGuide:Robert Stephenson', excerpt: 'apprenticed at Killingworth colliery.' }]
+  };
+  const r = render({ sentences: [sent], paragraphBreaks: [] }, { publishingLevel: 3 });
+  const c = r.sentences[0].citations[0];
+  t.equal(c.chipType, 'gracesGuide');
+  t.equal(c.chipLabel, 'gracesGuide: Robert Stephenson');
+  t.end();
+});
