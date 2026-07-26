@@ -278,6 +278,41 @@ test('linkifyObjectMarkers: no marker → unchanged', function (t) {
   t.end();
 });
 
+// Regression — 2026-07-27. cp37726 on staging rendered orphan `}`
+// characters after several linkified items ("Lacock Abbey}",
+// "The Pencil of Nature},"). Cause: writer emitted the marker with
+// extra closing braces (e.g. `{coXXXX|Title}}`); the regex only
+// consumed one and left the rest as visible text. Fix: tolerate 1+
+// braces on both ends.
+test('linkifyObjectMarkers: extra trailing brace is consumed (regression)', function (t) {
+  const out = render.linkifyObjectMarkers('the {co4028|Windows from Lacock Abbey}}, the oldest.');
+  t.equal(out.indexOf('}') === -1 || out.indexOf('}') > out.indexOf('</a>'), true, 'no orphan brace before </a>');
+  t.equal(/Abbey<\/a>,/.test(out), true, 'anchor closes cleanly, no trailing } between </a> and ,');
+  t.end();
+});
+
+test('linkifyObjectMarkers: double brace on both sides is consumed (regression)', function (t) {
+  const out = render.linkifyObjectMarkers('the {{co4028|Windows from Lacock Abbey}}, the oldest.');
+  t.equal(/[{}]/.test(out), false, 'no orphan braces remain');
+  t.equal(/Abbey<\/a>,/.test(out), true, 'anchor closes cleanly');
+  t.end();
+});
+
+test('linkifyObjectMarkers: leading extra brace is consumed (regression)', function (t) {
+  const out = render.linkifyObjectMarkers('the {{co4028|Windows}, an item.');
+  t.equal(/[{}]/.test(out), false, 'no orphan braces remain');
+  t.end();
+});
+
+test('linkifyObjectMarkers: prose with unrelated braces is untouched', function (t) {
+  // Braces NOT wrapping a co\d+|title marker (e.g. JSON in prose, or
+  // curator-authored prose that happens to include `{...}`) must not
+  // be consumed by the tolerant regex.
+  const s = 'JSON payload: {"key": "value"} — stays as-is.';
+  t.equal(render.linkifyObjectMarkers(s), s);
+  t.end();
+});
+
 test('render: sentence text with markers produces textHtml with anchor + preserves raw text', function (t) {
   const bio = {
     sentences: [{
