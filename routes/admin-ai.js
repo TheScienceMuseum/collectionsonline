@@ -45,6 +45,7 @@ function classifySkipReason (reason) {
   if (reason.indexOf('Living person') === 0) return 'living';
   if (reason.indexOf('Insufficient data') === 0) return 'insufficient';
   if (reason.indexOf('Low confidence') === 0) return 'low_confidence';
+  if (reason.indexOf('Existing catalogue description') === 0) return 'admin_only';
   return null;
 }
 
@@ -699,7 +700,7 @@ module.exports = function (elastic, config) {
 
           const id = request.params.id;
           const newStatus = request.payload && request.payload.status;
-          const validStatuses = ['live', 'flagged', 'hidden', 'insufficient_data'];
+          const validStatuses = ['live', 'flagged', 'hidden', 'insufficient_data', 'admin_only'];
 
           if (!newStatus || validStatuses.indexOf(newStatus) === -1) {
             return h.redirect('/admin/ai/' + id + '?error=invalid_status');

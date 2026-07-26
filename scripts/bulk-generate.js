@@ -158,7 +158,7 @@ function printUsage () {
   console.log('  --concurrency <N>     Parallel workers (default: 5)');
   console.log('  --min-analytics <N>   For es-threshold: min analytics (default: 500)');
   console.log('  --csv <path>          For csv-file: path to CSV / plaintext ID list');
-  console.log('  --status <status>     For by-status: live / flagged / hidden / insufficient_data');
+  console.log('  --status <status>     For by-status: live / flagged / hidden / insufficient_data / admin_only');
   console.log('  --no-cache            Disable prompt caching');
   console.log('  --force               Regenerate every subject (never skip)');
   console.log('  --skip-if-current     Skip only subjects whose existing biography matches');
@@ -352,7 +352,15 @@ async function main () {
     try {
       const result = await regenerateBiography(elastic, config, id, {
         useCache: opts.useCache,
-        bulkGenerateBatch: batchId
+        bulkGenerateBatch: batchId,
+        // Batch is cost-sensitive — skip generation entirely for
+        // records whose existing catalogue description exceeds
+        // aiBiographyMaxExistingChars. Regenerate.js writes a stub
+        // BIOGRAPHY item with status='admin_only' so the record shows
+        // up in the admin list; a curator can force generation later
+        // via the admin Regenerate button (which does NOT pass this
+        // flag, so it always generates).
+        skipIfExistingPrevails: true
       });
       if (result.skippedByAssessment) counts.skippedByAssessment++;
       else counts.generated++;
@@ -384,10 +392,17 @@ async function main () {
           // Non-fatal — the tally is a diagnostic, not a launch-blocker.
         }
       }
+      // Log outcome by actual persisted status so post-run analysis can
+      // slice on the specific skip category. Three skipped-by-batch
+      // outcomes now possible: 'insufficient_data', 'admin_only', and
+      // 'generated'. Preserve the raw status for full detail.
+      const outcome = result.skippedByAssessment
+        ? (result.status === 'admin_only' ? 'admin_only' : 'insufficient_data')
+        : 'generated';
       log.write({
         ts: new Date().toISOString(),
         id,
-        outcome: result.skippedByAssessment ? 'insufficient_data' : 'generated',
+        outcome,
         status: result.status,
         writer: result.writer,
         reviewer: result.reviewer,

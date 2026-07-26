@@ -19,12 +19,12 @@
 
 const biographyStore = require('../../lib/ai/biography-store');
 
-const VALID_STATUSES = ['live', 'flagged', 'hidden', 'insufficient_data'];
+const VALID_STATUSES = ['live', 'flagged', 'hidden', 'insufficient_data', 'admin_only'];
 const PAGE_SIZE = 1000;
 
 module.exports = async function list (elastic, config, opts) {
   if (!opts.status) {
-    throw new Error('by-status source requires --status <live|flagged|hidden|insufficient_data>');
+    throw new Error('by-status source requires --status <live|flagged|hidden|insufficient_data|admin_only>');
   }
   if (VALID_STATUSES.indexOf(opts.status) === -1) {
     throw new Error('by-status: invalid status "' + opts.status +

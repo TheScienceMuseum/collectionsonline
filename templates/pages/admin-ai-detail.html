@@ -461,6 +461,11 @@
     Claude produced content but self-reported low confidence — we store the attempt but don't surface it publicly. Regenerating occasionally clears this; if it keeps recurring the source data is probably borderline.
   </p>
   {{/isequal}}
+  {{#isequal record.skipCategory "admin_only" this}}
+  <p class="text-meta" style="margin-top: 0.4rem;">
+    The public page shows the existing catalogue biography ({{record.existingDescriptionChars}} chars is above the {{maxThreshold}}-char threshold). The AI biography — if generated — is admin-only: visible on this page for staff review, comparison, or curator use, but never served to visitors. To view an AI biography, click <strong>Regenerate</strong>. To make an AI biography the public version instead, either shorten the catalogue description below the threshold OR switch the record's status to <strong>Live</strong> manually.
+  </p>
+  {{/isequal}}
 </div>
 {{/if}}
 
@@ -1881,6 +1886,7 @@
       <option value="flagged" {{#isequal record.status "flagged" this}}selected{{/isequal}}>Flagged</option>
       <option value="hidden" {{#isequal record.status "hidden" this}}selected{{/isequal}}>Hidden</option>
       <option value="insufficient_data" {{#isequal record.status "insufficient_data" this}}selected{{/isequal}}>Insufficient Data</option>
+      <option value="admin_only" {{#isequal record.status "admin_only" this}}selected{{/isequal}}>Admin Only</option>
     </select>
     <button type="submit" class="btn btn--primary">Update Status</button>
   </form>

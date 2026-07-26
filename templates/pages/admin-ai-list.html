@@ -53,6 +53,7 @@
     <a href="/admin/ai?status=flagged" class="{{#isequal currentStatus "flagged" this}}active{{/isequal}}">Flagged</a>
     <a href="/admin/ai?status=hidden" class="{{#isequal currentStatus "hidden" this}}active{{/isequal}}">Hidden</a>
     <a href="/admin/ai?status=insufficient_data" class="{{#isequal currentStatus "insufficient_data" this}}active{{/isequal}}">Insufficient Data</a>
+    <a href="/admin/ai?status=admin_only" class="{{#isequal currentStatus "admin_only" this}}active{{/isequal}}" title="AI biography generated but public site shows the existing catalogue description (existing prose above threshold). Admin can view + regenerate; public visitors see the catalogue description.">Admin Only</a>
   </div>
   <a href="/admin/ai/export.csv?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}" style="padding: 0.3em 0.7em; border-radius: 3px; background: #e9e5d9; color: #2a2a2a; text-decoration: none; font-size: 0.85rem;" title="Download the current filtered view as CSV — opens in Excel / Sheets.">Export CSV</a>
 </div>

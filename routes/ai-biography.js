@@ -55,7 +55,21 @@ function publicBiographyRoute (elastic, config) {
               if (subjectStatus.isSuppressedOnPublicSite(existing.subjectStatus, config)) {
                 return h.response({}).code(204);
               }
-              if (existing.status === 'hidden' || existing.status === 'insufficient_data') {
+              // 204 for anything not intended for public consumption:
+              //   - hidden: curator explicitly suppressed
+              //   - insufficient_data: pipeline judged the record too
+              //     thin for a decent biography (no signal / low writer
+              //     confidence)
+              //   - admin_only: AI biography exists but public site
+              //     shows the existing catalogue description because
+              //     it's above threshold. Adding admin_only here means
+              //     the public page falls back to the existing
+              //     description exactly as it would if no biography had
+              //     been generated at all — the pipeline's presence is
+              //     transparent to public visitors.
+              if (existing.status === 'hidden' ||
+                  existing.status === 'insufficient_data' ||
+                  existing.status === 'admin_only') {
                 return h.response({}).code(204);
               }
               // v2 records store `sentences[]` on the item and do NOT
