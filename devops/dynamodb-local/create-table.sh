@@ -51,6 +51,10 @@ TABLE="collectionsonline-ai"
 
 echo "Creating table '$TABLE' at $ENDPOINT..."
 
+# --- BEGIN SCHEMA BLOCK — keep in sync with devops/aws/wipe-and-recreate-table.sh
+# Both scripts encode the same table shape (attributes, keys, GSIs, billing).
+# A divergence causes local-vs-AWS drift that only surfaces on GSI queries.
+# If you change one, change the other in the same commit.
 aws dynamodb create-table \
   --table-name "$TABLE" \
   --attribute-definitions \
@@ -72,5 +76,6 @@ aws dynamodb create-table \
   --endpoint-url "$ENDPOINT" \
   --region eu-west-1 \
   --no-cli-pager
+# --- END SCHEMA BLOCK
 
 echo "Done."
