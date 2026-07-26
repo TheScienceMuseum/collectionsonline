@@ -925,19 +925,6 @@
   .sentence__actions > summary { color: #646464; cursor: pointer; }
   .sentence__actions-body { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.4rem; padding: 0.5rem; background: #fbf9f4; border-radius: 3px; }
 
-  /* Regenerate-button spinner. When the form submits, JS (below)
-     swaps the button's label for a spinner + "Regenerating…" text and
-     disables the button so a double-submit can't fire. Spinner is an
-     inline SVG (references #icon-spinner in the sprite at the top of
-     the file) driven by the regen-spin keyframes — one revolution per
-     0.9s, quick enough to feel responsive without being distracting.
-     Applies to any form.regenerate-form on the page: the top banner
-     "Regenerate to apply" AND the action-row "Regenerate (update
-     live)" both hook in. */
-  @keyframes regen-spin { to { transform: rotate(360deg); } }
-  .regenerate-btn[disabled] { opacity: 0.85; cursor: progress; }
-  .regenerate-btn__spinner { display: inline-block; width: 0.9rem; height: 0.9rem; margin-right: 0.35rem; vertical-align: -0.15em; animation: regen-spin 0.9s linear infinite; }
-
   /* Grouped collapsibles container. Default variant (below Notes)
      has hairline top border — separates the audit fields from Notes
      above. Modifier --below-prose flips it: hairline moves to the
@@ -1643,39 +1630,6 @@
     bindClaimsViewToggle();
   }
 
-  // Regenerate-button spinner. Any .regenerate-form on the page (top
-  // banner "Regenerate to apply" AND the action-row "Regenerate
-  // (update live)") shows a spinner + "Regenerating…" text and
-  // disables the button on submit. A regen takes 7–15s and the
-  // curator needs feedback that their click was received. The submit
-  // still fires normally — we just update the UI first. If the form
-  // submit fails (network drop, etc.), the button stays disabled
-  // until page reload — acceptable because a retry would fire
-  // another expensive generation.
-  function bindRegenerateSpinner () {
-    const forms = document.querySelectorAll('form.regenerate-form');
-    forms.forEach(function (form) {
-      form.addEventListener('submit', function () {
-        const btn = form.querySelector('.regenerate-btn');
-        if (!btn || btn.disabled) return;
-        const label = btn.querySelector('.regenerate-btn__label');
-        btn.disabled = true;
-        if (label) label.textContent = 'Regenerating…';
-        if (!btn.querySelector('.regenerate-btn__spinner')) {
-          const spinner = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-          spinner.setAttribute('class', 'regenerate-btn__spinner');
-          spinner.setAttribute('aria-hidden', 'true');
-          spinner.innerHTML = '<use xlink:href="#icon-spinner"></use>';
-          btn.insertBefore(spinner, btn.firstChild);
-        }
-      });
-    });
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', bindRegenerateSpinner);
-  } else {
-    bindRegenerateSpinner();
-  }
 })();
 </script>
 
@@ -1888,6 +1842,66 @@
 {{/if}}
 </div>{{!-- /detail-inputs-group --}}
 {{/if}}{{!-- /hasDiagnostics --}}
+
+{{!-- Regenerate-button feedback. Moved to top level (was inside the
+      sentence-block if) so stubs / insufficient_data records also get
+      the spinner + disable-on-click behaviour. On submit: button
+      disables so a double-click can't fire another expensive
+      generation, label swaps to "Regenerating… (60–90s)", a spinner
+      appears alongside, and a hint appears below explaining that the
+      writer keeps running even if the page hangs or the tab is closed
+      — useful when nginx times out at proxy_read_timeout (staging)
+      before the writer finishes. Covers both the top banner
+      "Regenerate to apply" and the action-row "Regenerate (update
+      live)". --}}
+<style>
+  @keyframes regen-spin { to { transform: rotate(360deg); } }
+  .regenerate-btn[disabled] { opacity: 0.85; cursor: progress; }
+  .regenerate-btn__spinner { display: inline-block; width: 0.9rem; height: 0.9rem; margin-right: 0.35rem; vertical-align: -0.15em; animation: regen-spin 0.9s linear infinite; }
+  .regenerate-form__hint { margin-top: 0.6rem; padding: 0.5rem 0.75rem; background: #fbf9f4; border-left: 3px solid #1f4068; border-radius: 3px; font-size: 0.82rem; color: #4d4d4d; line-height: 1.45; }
+</style>
+<script>
+(function () {
+  function bindRegenerateSpinner () {
+    var forms = document.querySelectorAll('form.regenerate-form');
+    forms.forEach(function (form) {
+      form.addEventListener('submit', function () {
+        var btn = form.querySelector('.regenerate-btn');
+        if (!btn || btn.disabled) return;
+        var label = btn.querySelector('.regenerate-btn__label');
+        btn.disabled = true;
+        if (label) label.textContent = 'Regenerating… (60–90s)';
+        if (!btn.querySelector('.regenerate-btn__spinner')) {
+          var spinner = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          spinner.setAttribute('class', 'regenerate-btn__spinner');
+          spinner.setAttribute('aria-hidden', 'true');
+          spinner.innerHTML = '<use xlink:href="#icon-spinner"></use>';
+          btn.insertBefore(spinner, btn.firstChild);
+        }
+        // Also disable any OTHER regenerate buttons on the page (top
+        // banner + bottom action row can coexist — clicking one
+        // shouldn't leave the other clickable).
+        document.querySelectorAll('.regenerate-btn').forEach(function (b) { b.disabled = true; });
+        // Explanatory hint below the form so the curator knows
+        // this can take a while and what to do if the page hangs.
+        var container = form.parentElement || form;
+        if (!container.querySelector('.regenerate-form__hint')) {
+          var hint = document.createElement('div');
+          hint.className = 'regenerate-form__hint';
+          hint.setAttribute('role', 'status');
+          hint.innerHTML = 'Regeneration usually takes <strong>60–90 seconds</strong> (Haiku 4.5 with extended thinking). Don\'t refresh — the writer keeps running in the background even if you close this tab. If the page still hasn\'t returned after ~3 minutes, refresh manually — the new biography is likely already saved.';
+          container.appendChild(hint);
+        }
+      });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindRegenerateSpinner);
+  } else {
+    bindRegenerateSpinner();
+  }
+})();
+</script>
 
 <hr style="border-color: #e4e0d4; margin: 1.5rem 0;">
 
