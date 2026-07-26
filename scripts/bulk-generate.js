@@ -435,16 +435,28 @@ async function main () {
 
   const totalSec = ((Date.now() - started) / 1000).toFixed(1);
 
-  // Sonnet 4.x pricing per Anthropic list price: $3/1M input, $15/1M
-  // output, cache read at 10% of input, cache write at 125% of input.
-  // Reviewer uses the same model so we apply the same multipliers.
-  // Divide by 1M then × GBP conversion. Extends easily if we ever
-  // introduce mixed-model tiers (Haiku reviewer, etc.).
+  // Pricing lookup keyed by model family. Anthropic list prices per 1M
+  // tokens: cache-read = input × 0.1, cache-write (5-min TTL) = input × 1.25.
+  // Reviewer (when present) uses the same model, so one lookup covers both.
+  // Falls back to Sonnet-tier if the configured model is unrecognised; a
+  // warning is printed so the caller notices.
+  const modelId = config.aiBiographyModel || '';
+  function pricingFor (id) {
+    if (/haiku-4-5/i.test(id)) return { tier: 'haiku-4.5', inputUsdPerM: 0.80, outputUsdPerM: 4.00 };
+    if (/opus/i.test(id)) return { tier: 'opus-4.x/5', inputUsdPerM: 5.00, outputUsdPerM: 25.00 };
+    if (/sonnet/i.test(id)) return { tier: 'sonnet-4.x/5', inputUsdPerM: 3.00, outputUsdPerM: 15.00 };
+    return null;
+  }
+  let pricing = pricingFor(modelId);
+  if (!pricing) {
+    console.warn('bulk-generate: unknown model "' + modelId + '" — using sonnet-tier pricing for the cost estimate; edit scripts/bulk-generate.js pricingFor() to add it.');
+    pricing = { tier: 'sonnet-4.x/5 (fallback)', inputUsdPerM: 3.00, outputUsdPerM: 15.00 };
+  }
   const gbpPerUsd = config.aiBiographyGbpPerUsd || 0.80;
-  const usdInput = 3 / 1e6;
-  const usdOutput = 15 / 1e6;
-  const usdCacheRead = 0.30 / 1e6;
-  const usdCacheWrite = 3.75 / 1e6;
+  const usdInput = pricing.inputUsdPerM / 1e6;
+  const usdOutput = pricing.outputUsdPerM / 1e6;
+  const usdCacheRead = usdInput * 0.1;
+  const usdCacheWrite = usdInput * 1.25;
   const writerCostUsd =
     tokens.writerInput * usdInput +
     tokens.writerOutput * usdOutput +
@@ -482,7 +494,9 @@ async function main () {
   console.log('  reviewer input:      ' + tokens.reviewerInput.toLocaleString());
   console.log('  reviewer output:     ' + tokens.reviewerOutput.toLocaleString());
   console.log('');
-  console.log('=== cost (£) ===');
+  console.log('=== cost (£) — pricing: ' + pricing.tier +
+    ' (input $' + pricing.inputUsdPerM.toFixed(2) +
+    '/M, output $' + pricing.outputUsdPerM.toFixed(2) + '/M) ===');
   console.log('  writer:              £' + (writerCostUsd * gbpPerUsd).toFixed(3));
   console.log('  reviewer:            £' + (reviewerCostUsd * gbpPerUsd).toFixed(3));
   console.log('  TOTAL:               £' + totalCostGbp.toFixed(3));
