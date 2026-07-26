@@ -7,11 +7,17 @@ for AWS-side tasks only.
 
 ## Contents
 
-- `wipe-and-recreate-table.sh` — destructive; deletes + recreates a table
-  with the current AI biographies schema. Used before a fresh deploy when
-  the DDB state needs to start empty (e.g. staging after a pipeline
-  change, or when the shape of persisted items has drifted enough that
-  cleaning existing data is more work than starting fresh).
+- `wipe-and-recreate-table.sh` — **idempotent**. If the table exists,
+  prompts + deletes + recreates. If it doesn't exist, just creates.
+  Same one-liner for both "wipe + recreate" and "create from scratch
+  after a manual delete". Used before a fresh deploy when the DDB
+  state needs to start empty, or when a table has been dropped and
+  needs to come back with the current schema.
+- `backup-table.sh` — read-only; dumps the table's contents to a
+  local JSON file via `aws dynamodb scan`. Use before a wipe if you
+  might want the data back for inspection, or any time you want an
+  offline snapshot for analysis. Not a replacement for PITR /
+  on-demand backups.
 
 ## Environment mapping
 
@@ -57,11 +63,8 @@ aws elasticbeanstalk describe-configuration-settings \
   --region eu-west-1 \
   | jq '.ConfigurationSettings[0].OptionSettings[] | select(.OptionName=="co_dynamodb__tableName")'
 
-# 2. (Optional) Export a backup you might want later
-aws dynamodb scan \
-  --table-name collectionsonline-ai-staging \
-  --region eu-west-1 \
-  > ~/Downloads/staging-backup-$(date +%Y%m%d-%H%M).json
+# 2. (Optional) Back up first if you might want the data back
+./devops/aws/backup-table.sh --table-name collectionsonline-ai-staging
 
 # 3. Wipe + recreate
 ./devops/aws/wipe-and-recreate-table.sh --table-name collectionsonline-ai-staging
@@ -79,6 +82,36 @@ aws dynamodb update-continuous-backups \
 The script prompts you to retype the table name before deleting. That's
 the safety net for typo protection — don't disable with `--yes` unless
 you're driving this from another script that has its own confirmation.
+
+## Recreating a table that's already been deleted
+
+If the table has been manually deleted (via the AWS console, another
+script, or an earlier run of wipe-and-recreate that you didn't follow up
+on), just run the same script — it detects the missing table, skips the
+delete step, and creates fresh. No confirmation prompt in the create-only
+path (nothing destructive to guard against).
+
+```bash
+./devops/aws/wipe-and-recreate-table.sh --table-name collectionsonline-ai-staging
+# → "Table does NOT exist. Skipping delete; creating fresh."
+```
+
+## Taking a snapshot for offline analysis
+
+```bash
+# Default output: ~/Downloads/<table>-YYYYMMDD-HHMM.json
+./devops/aws/backup-table.sh --table-name collectionsonline-ai-staging
+
+# Custom output path
+./devops/aws/backup-table.sh \
+  --table-name collectionsonline-ai-staging \
+  --out /tmp/staging-inspect.json
+```
+
+The output is raw `aws dynamodb scan` JSON — item count + LastEvaluatedKey
+present when the scan paginates. For genuinely large tables, prefer AWS's
+native `export-table-to-point-in-time` — it exports to S3 and doesn't
+consume read capacity.
 
 ## What NOT to do
 

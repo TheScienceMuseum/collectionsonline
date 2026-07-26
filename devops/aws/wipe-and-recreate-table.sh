@@ -1,7 +1,12 @@
 #!/bin/bash
 #
-# Wipe + recreate a DynamoDB table on AWS with the current AI biographies
-# schema. Destructive — see confirmation prompt below.
+# Ensure a DynamoDB table exists on AWS with the current AI biographies
+# schema. Idempotent:
+#   - Table already exists → prompts for confirmation, DELETES, then recreates
+#   - Table doesn't exist  → skips the delete step, just creates
+#
+# Same one-liner covers both "wipe + recreate for a fresh start" and
+# "create from scratch after a manual delete".
 #
 # Usage:
 #   ./devops/aws/wipe-and-recreate-table.sh --table-name <name> [--region <r>] [--yes]
@@ -10,16 +15,16 @@
 #   ./devops/aws/wipe-and-recreate-table.sh --table-name collectionsonline-ai-staging
 #
 # What it does:
-#   1. Prompts for confirmation (retype the table name) unless --yes is passed
-#   2. Deletes the table
-#   3. Waits for the delete to complete
-#   4. Recreates it with the AI-biographies schema (PK/SK + StatusIndex GSI
-#      + CreatedAtIndex GSI + PAY_PER_REQUEST billing)
-#   5. Waits for the new table to reach ACTIVE
+#   1. Checks whether the table exists
+#   2. If it exists: prompts for confirmation (retype the table name)
+#      unless --yes is passed, then deletes + waits for the delete
+#   3. Creates the table with the AI-biographies schema (PK/SK +
+#      StatusIndex GSI + CreatedAtIndex GSI + PAY_PER_REQUEST billing)
+#   4. Waits for the new table to reach ACTIVE
 #
-# Wipes ALL data. Point-in-Time Recovery + on-demand backups are lost with
-# the delete — export a backup first if you might want the data back. See
-# devops/aws/README.md for the recovery workflow.
+# When it deletes, it wipes ALL data. Point-in-Time Recovery + on-demand
+# backups are lost with the delete — run backup-table.sh first if you
+# might want the data back. See devops/aws/README.md for the full workflow.
 #
 # Preflight:
 #   - AWS CLI configured with credentials that have DeleteTable + CreateTable
@@ -68,34 +73,53 @@ echo "  Table:  $TABLE_NAME"
 echo "  Region: $REGION"
 echo ""
 
-# Confirmation — the user must retype the table name. Guards against
-# accidentally hitting production by muscle memory or shell history.
-if [[ "$SKIP_CONFIRM" != "true" ]]; then
-  echo "This will DELETE the table and recreate it empty."
-  echo "All items are lost. Point-in-Time Recovery is lost."
-  echo ""
-  read -r -p "Retype the table name to confirm: " CONFIRM
-  if [[ "$CONFIRM" != "$TABLE_NAME" ]]; then
-    echo "Confirmation did not match. Aborting."
-    exit 1
-  fi
+# Detect whether the table already exists — describe-table exits non-zero
+# with ResourceNotFoundException when it doesn't. Suppress stderr so the
+# "table not found" case doesn't print an alarming-looking error.
+if aws dynamodb describe-table \
+     --table-name "$TABLE_NAME" \
+     --region "$REGION" \
+     --no-cli-pager >/dev/null 2>&1; then
+  TABLE_EXISTS="true"
+else
+  TABLE_EXISTS="false"
 fi
 
-echo ""
-echo "[1/4] Deleting table '$TABLE_NAME'..."
-aws dynamodb delete-table \
-  --table-name "$TABLE_NAME" \
-  --region "$REGION" \
-  --no-cli-pager
+if [[ "$TABLE_EXISTS" == "true" ]]; then
+  # Wipe + recreate path — confirmation required.
+  if [[ "$SKIP_CONFIRM" != "true" ]]; then
+    echo "Table EXISTS. This will DELETE it and recreate it empty."
+    echo "All items are lost. Point-in-Time Recovery is lost."
+    echo ""
+    read -r -p "Retype the table name to confirm: " CONFIRM
+    if [[ "$CONFIRM" != "$TABLE_NAME" ]]; then
+      echo "Confirmation did not match. Aborting."
+      exit 1
+    fi
+  fi
 
-echo ""
-echo "[2/4] Waiting for delete to complete (may take 10-30s)..."
-aws dynamodb wait table-not-exists \
-  --table-name "$TABLE_NAME" \
-  --region "$REGION"
+  echo ""
+  echo "[1/4] Deleting table '$TABLE_NAME'..."
+  aws dynamodb delete-table \
+    --table-name "$TABLE_NAME" \
+    --region "$REGION" \
+    --no-cli-pager
 
-echo ""
-echo "[3/4] Creating table '$TABLE_NAME' with current schema..."
+  echo ""
+  echo "[2/4] Waiting for delete to complete (may take 10-30s)..."
+  aws dynamodb wait table-not-exists \
+    --table-name "$TABLE_NAME" \
+    --region "$REGION"
+
+  echo ""
+  echo "[3/4] Creating table '$TABLE_NAME' with current schema..."
+else
+  # Create-only path — no delete needed. Still print the "will create"
+  # step number so the output structure matches the wipe case.
+  echo "Table does NOT exist. Skipping delete; creating fresh."
+  echo ""
+  echo "[1/2] Creating table '$TABLE_NAME' with current schema..."
+fi
 # --- BEGIN SCHEMA BLOCK — keep in sync with devops/dynamodb-local/create-table.sh
 aws dynamodb create-table \
   --table-name "$TABLE_NAME" \
@@ -120,7 +144,11 @@ aws dynamodb create-table \
 # --- END SCHEMA BLOCK
 
 echo ""
-echo "[4/4] Waiting for the new table to reach ACTIVE..."
+if [[ "$TABLE_EXISTS" == "true" ]]; then
+  echo "[4/4] Waiting for the new table to reach ACTIVE..."
+else
+  echo "[2/2] Waiting for the new table to reach ACTIVE..."
+fi
 aws dynamodb wait table-exists \
   --table-name "$TABLE_NAME" \
   --region "$REGION"
