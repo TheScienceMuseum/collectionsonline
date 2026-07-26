@@ -676,6 +676,20 @@ module.exports = function (elastic, config) {
               cost,
               signalView,
               hasDiagnostics: !!(record.verificationCandidates || signalView || record.systemPrompt || record.prompt),
+              // ?regenerating=1&since=<ms> is set by POST /admin/ai/{id}/regenerate
+              // (the async fire-and-forget branch). While the writer is still
+              // running the biography's generatedAt will be older than `since`;
+              // the template renders a wait banner + meta-refresh until a save
+              // lands. Once record.generatedAt catches up we drop the banner —
+              // the URL query params stay in place (harmless, and next reload
+              // just no-ops).
+              regenerating: (function () {
+                if (request.query.regenerating !== '1') return false;
+                const since = parseInt(request.query.since, 10);
+                if (!since || Number.isNaN(since)) return false;
+                const generatedMs = record.generatedAt ? Date.parse(record.generatedAt) : 0;
+                return generatedMs < since;
+              })(),
               publicReports,
               suppressThreshold,
               maxThreshold,
@@ -766,7 +780,19 @@ module.exports = function (elastic, config) {
       }
     },
 
-    // Regenerate (uses active prompt by default; optional promptVersion payload for A/B)
+    // Regenerate — async, mirroring POST /admin/ai/generate. Runs
+    // regenerateBiography() in the background and redirects immediately
+    // to the detail page with ?regenerating=1&since=<ms>. The detail
+    // handler compares `since` against record.generatedAt to decide
+    // whether the regen has landed yet; while it hasn't, the template
+    // shows a wait banner + meta-refresh. This keeps the request itself
+    // very short (~50ms), so a long writer call never trips the shared
+    // nginx proxy_read_timeout (which is intentionally kept low for
+    // the public site).
+    //
+    // Errors from the writer are logged and surface via the failure-
+    // diagnostics block on the biography record (routes/ai-biography.js
+    // persists writer failures on the record itself).
     {
       method: 'POST',
       path: '/admin/ai/{id}/regenerate',
@@ -777,15 +803,14 @@ module.exports = function (elastic, config) {
           if (authRedirect) return authRedirect;
 
           const id = request.params.id;
-          const redirectTo = '/admin/ai/' + id;
+          const since = Date.now();
 
-          try {
-            await regenerateBiography(elastic, config, id);
-            return h.redirect(redirectTo);
-          } catch (err) {
-            console.error('Admin AI regenerate error:', err.message);
-            return h.redirect(redirectTo + '?error=regenerate_failed');
-          }
+          // Fire-and-forget.
+          regenerateBiography(elastic, config, id).catch(function (err) {
+            console.error('Admin AI regenerate (background) error for', id, '-', err && err.message);
+          });
+
+          return h.redirect('/admin/ai/' + id + '?regenerating=1&since=' + since);
         }
       }
     },

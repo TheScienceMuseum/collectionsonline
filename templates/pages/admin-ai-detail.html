@@ -77,6 +77,27 @@
 <div class="admin-banner admin-banner--warn">Error: {{error}}</div>
 {{/if}}
 
+{{!-- Regeneration-in-progress banner. Set by the detail handler when
+      the URL carries ?regenerating=1&since=<ms> AND the biography's
+      generatedAt is still older than `since` — i.e. the async writer
+      hasn't landed yet. Meta-refresh polls every 5s; on the poll that
+      catches the fresh write, the handler sets regenerating=false and
+      the normal page renders. This mirrors the notFound + generating
+      pattern used by POST /admin/ai/generate, but for records that
+      already exist. --}}
+{{#if regenerating}}
+<meta http-equiv="refresh" content="5">
+<div class="admin-banner admin-banner--warn" style="display: flex; align-items: center; gap: 0.75rem;">
+  <span class="admin-spinner" aria-hidden="true"></span>
+  <div>
+    <strong>Regenerating biography…</strong>
+    Usually 60–90 seconds (Haiku 4.5 with extended thinking). This page
+    refreshes every 5s until the new biography lands. Safe to close the
+    tab — the writer keeps running in the background.
+  </div>
+</div>
+{{/if}}
+
 
 {{#if publicReports}}
 <div id="public-reports" style="background: #fbf9f4; border: 1px solid #c87a1e; border-radius: 6px; padding: 1rem 1.25rem; margin: 0 0 1.25rem 0;">
