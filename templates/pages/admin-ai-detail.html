@@ -1790,12 +1790,6 @@
   {{/if}}
 </div>
 
-{{!-- Generation metadata — verification-candidate counters, signal
-      breakdown, and the prompts sent to the model. Writer notes +
-      Source disagreements used to live here; they moved up beside
-      Claims (see above) so curators see them first. --}}
-<div class="detail-inputs-group">
-
 <style>
   .contradictions-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
   .contradiction-item { padding: 0.6rem 0.8rem; background: #fbf1f1; border-left: 3px solid #d47272; border-radius: 3px; }
@@ -1807,6 +1801,23 @@
   .contradiction-item__winner code { background: rgba(255,255,255,0.7); padding: 0.1rem 0.35rem; border-radius: 2px; }
 </style>
 {{/if}}
+
+{{!-- Generation metadata — verification-candidate counters, signal
+      breakdown, and the prompts sent to the model. Writer notes +
+      Source disagreements used to live here; they moved up beside
+      Claims (see above) so curators see them first.
+
+      The wrapper AND its inner conditionals live behind a single
+      hasDiagnostics gate (computed in routes/admin-ai.js) so records
+      with no diagnostic data (batch-skipped admin_only stubs,
+      insufficient_data records) render neither the wrapper open nor
+      its close. Without this gate the previous structure opened the
+      wrapper inside {{#if renderedBiography.sentences.length}} and
+      closed it outside, unbalancing div depth and closing
+      admin-container prematurely for records with no sentences —
+      dumping the actions form + danger zone to the raw body. --}}
+{{#if hasDiagnostics}}
+<div class="detail-inputs-group">
 
 {{#if record.verificationCandidates}}
 <details class="collapsible">
@@ -1876,6 +1887,7 @@
 </details>
 {{/if}}
 </div>{{!-- /detail-inputs-group --}}
+{{/if}}{{!-- /hasDiagnostics --}}
 
 <hr style="border-color: #e4e0d4; margin: 1.5rem 0;">
 

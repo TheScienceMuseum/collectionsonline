@@ -675,6 +675,7 @@ module.exports = function (elastic, config) {
               displayState,
               cost,
               signalView,
+              hasDiagnostics: !!(record.verificationCandidates || signalView || record.systemPrompt || record.prompt),
               publicReports,
               suppressThreshold,
               maxThreshold,
