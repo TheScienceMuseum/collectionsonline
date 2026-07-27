@@ -305,10 +305,38 @@ test('linkifyObjectMarkers: leading extra brace is consumed (regression)', funct
 });
 
 test('linkifyObjectMarkers: prose with unrelated braces is untouched', function (t) {
-  // Braces NOT wrapping a co\d+|title marker (e.g. JSON in prose, or
-  // curator-authored prose that happens to include `{...}`) must not
-  // be consumed by the tolerant regex.
+  // JSON-shaped content (opens with `"`, contains `:`) must NOT be
+  // stripped by the bare-title fallback pass.
   const s = 'JSON payload: {"key": "value"} — stays as-is.';
+  t.equal(render.linkifyObjectMarkers(s), s);
+  t.end();
+});
+
+// Regression — 2026-07-27. cp60883 (Vickers) rendered visible braces
+// around item titles the writer wrapped without a `coXXXX|` prefix:
+//   "the {M4000 Series Universal Microscope} and the {Vickers M41
+//   photoplan microscope}"
+// The writer knew these were catalogue items but omitted the IDs.
+// Fallback pass strips the braces — no hyperlink (there's no ID to
+// link to) but clean prose.
+test('linkifyObjectMarkers: bare title without co-id has braces stripped (regression)', function (t) {
+  const out = render.linkifyObjectMarkers('the {M4000 Series Universal Microscope} and the {Vickers M41 photoplan microscope}');
+  t.equal(out, 'the M4000 Series Universal Microscope and the Vickers M41 photoplan microscope');
+  t.end();
+});
+
+test('linkifyObjectMarkers: valid marker + bare title mixed in one string', function (t) {
+  const out = render.linkifyObjectMarkers('the {co505729|Patholette} and the {Vickers M41}');
+  t.ok(/href="\/objects\/co505729"/.test(out), 'valid marker still linkified');
+  t.ok(/the Vickers M41(?!<)/.test(out), 'bare title has braces stripped, no anchor');
+  t.equal(/[{}]/.test(out), false, 'no orphan braces remain');
+  t.end();
+});
+
+test('linkifyObjectMarkers: nested braces (JSON-shaped) untouched', function (t) {
+  // A more adversarial case — content that starts with `{` should NOT
+  // be stripped as a bare title.
+  const s = 'Config: {{outer: "value"}}';
   t.equal(render.linkifyObjectMarkers(s), s);
   t.end();
 });
