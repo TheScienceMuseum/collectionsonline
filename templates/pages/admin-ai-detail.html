@@ -340,12 +340,6 @@
     </dd>
   </div>
   {{/if}}
-  <div class="detail-meta__field--secondary">
-    <dt>Prompt playground</dt>
-    <dd>
-      <a href="/admin/ai/{{record.PK}}/playground" title="Try a custom prompt on this subject without touching the live record. Useful for workshops and iterative prompt development." class="text-meta">try a custom prompt ↗</a>
-    </dd>
-  </div>
 </div>
 
 {{!-- Task 63: Biography + In-the-collection rendered prose, moved
@@ -1942,6 +1936,25 @@
     <button type="submit" class="btn btn--secondary regenerate-btn"><span class="regenerate-btn__label">Regenerate (update live)</span></button>
   </form>
 </div>
+
+{{!-- Advanced — links / actions for developer + workshop use that
+      would clutter everyday curator triage. Sits behind a disclosure
+      so it stays out of the way but remains discoverable. Prompt
+      playground moved here 2026-07-27: originally lived as its own
+      cell in the record-header meta grid (a980db2e), but its main
+      audience is workshop / prompt-tuning, not everyday triage — the
+      prominence created an orphan cell in the grid and out-competed
+      more important header data. Add further advanced links here as
+      they appear (e.g. raw JSON dump, model-comparison tools). --}}
+<details class="collapsible" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e4e0d4;">
+  <summary style="color: #1f4068; font-size: 0.85rem;">Advanced</summary>
+  <div style="margin-top: 0.6rem; display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+    <a href="/admin/ai/{{record.PK}}/playground" class="btn btn--secondary" title="Try a custom prompt on this subject without touching the live record. Useful for workshops and iterative prompt development.">Prompt playground ↗</a>
+    <span class="text-meta--sm" style="max-width: 36rem;">
+      Try a custom prompt against this subject's data without touching the live record. Mostly used during workshops or when iterating on the writer prompt.
+    </span>
+  </div>
+</details>
 
 {{!-- Danger zone — Delete sits behind a collapsed disclosure rather
       than in the main action row. In normal use staff should mark
