@@ -218,25 +218,6 @@
       {{/if}}
     </dd>
   </div>
-  {{!-- Score cell — merges the two independent quality signals into one
-        cell to reclaim grid space. They measure different things (inputs
-        vs the model's self-report on its output) so both stay, labelled. --}}
-  <div>
-    <dt>Score</dt>
-    <dd>
-      {{#if signalView}}
-      <div title="Weighted score of source-data signals — the strongest quality proxy. Strong anchors (existing description, related collection items) count 3 each; Wikidata 2 each; supporting fields 1 each. Records below the minimum are skipped as insufficient_data.">
-        <span class="text-meta--sm">signal</span> {{signalView.score}} / {{signalView.maxScore}}
-        <span class="text-meta">· min {{signalView.minScore}}</span>
-      </div>
-      {{/if}}
-      <div title="The model's self-reported confidence in its own output (0 = no data, 10 = rich, well-grounded). LLM self-reporting is a weak signal — we track it to observe calibration over time.">
-        <span class="text-meta--sm">confidence</span>
-        {{#if record.confidence}}{{record.confidence}} / 10{{else}}{{#if record.writerConfidence}}{{record.writerConfidence}} / 10{{else}}—{{/if}}{{/if}}
-        <span class="text-meta">· self-reported</span>
-      </div>
-    </dd>
-  </div>
   <div>
     <dt>Generated</dt>
     <dd title="Biography text last produced at {{record.generatedAt}} · record last touched (any field) at {{record.updatedAt}}">{{formatDate record.generatedAt "auto"}}</dd>
@@ -340,6 +321,29 @@
     </dd>
   </div>
   {{/if}}
+  {{!-- Score cell — merges the two independent quality signals into one
+        cell to reclaim grid space. They measure different things (inputs
+        vs the model's self-report on its output) so both stay, labelled.
+        Placed last (2026-07-27) because signal + confidence render on
+        two lines while sibling cells are one line — moving Score to the
+        trailing edge means its extra height doesn't push adjacent
+        one-line cells around. --}}
+  <div>
+    <dt>Score</dt>
+    <dd>
+      {{#if signalView}}
+      <div title="Weighted score of source-data signals — the strongest quality proxy. Strong anchors (existing description, related collection items) count 3 each; Wikidata 2 each; supporting fields 1 each. Records below the minimum are skipped as insufficient_data.">
+        <span class="text-meta--sm">signal</span> {{signalView.score}} / {{signalView.maxScore}}
+        <span class="text-meta">· min {{signalView.minScore}}</span>
+      </div>
+      {{/if}}
+      <div title="The model's self-reported confidence in its own output (0 = no data, 10 = rich, well-grounded). LLM self-reporting is a weak signal — we track it to observe calibration over time.">
+        <span class="text-meta--sm">confidence</span>
+        {{#if record.confidence}}{{record.confidence}} / 10{{else}}{{#if record.writerConfidence}}{{record.writerConfidence}} / 10{{else}}—{{/if}}{{/if}}
+        <span class="text-meta">· self-reported</span>
+      </div>
+    </dd>
+  </div>
 </div>
 
 {{!-- Task 63: Biography + In-the-collection rendered prose, moved
