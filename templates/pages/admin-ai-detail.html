@@ -1946,7 +1946,11 @@
       prominence created an orphan cell in the grid and out-competed
       more important header data. Add further advanced links here as
       they appear (e.g. raw JSON dump, model-comparison tools). --}}
-<details class="collapsible" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e4e0d4;">
+{{!-- TEMP 2026-07-27: opened by default so curators can find the
+      Prompt playground during the pre-launch workshop window without
+      needing to know about the disclosure. Revert to closed
+      (remove the `open` attribute below) post-launch. --}}
+<details class="collapsible" open style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e4e0d4;">
   <summary style="color: #1f4068; font-size: 0.85rem;">Advanced</summary>
   <div style="margin-top: 0.6rem; display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
     <a href="/admin/ai/{{record.PK}}/playground" class="btn btn--secondary" title="Try a custom prompt on this subject without touching the live record. Useful for workshops and iterative prompt development.">Prompt playground ↗</a>
