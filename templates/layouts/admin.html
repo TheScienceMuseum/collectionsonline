@@ -302,6 +302,36 @@
       .form-group input, .form-group select { padding: 0.4em 0.6em; border: 1px solid #c5c1b5; background: #fdfdfa; color: #2a2a2a; border-radius: 3px; font-size: 0.9rem; }
       .form-group input[type="password"] { width: 300px; }
 
+      /* === Reset public-site bleed inside admin ===
+         admin.html loads /bundle.css (built from client/styles/*.scss)
+         to reuse shared utilities, but a few base rules in that bundle
+         target bare elements — notably `p, li, dt, dd { font-size:
+         rem(18) }` and `h2, h4 { text-transform: uppercase }` from
+         client/styles/base/_general.scss (added 2017 in commit
+         a52cf652). These are appropriate for the public site but bleed
+         into admin pages because element selectors on the actual <p>
+         beat inherited font-size from a parent .prose-body class, and
+         no admin rule was resetting them.
+
+         Symptom (discovered 2026-07-27): AI biography admin detail
+         page rendered <h2>{{record.personName}}</h2> in ALL CAPS and
+         its Biography / In-the-collection <p> prose at 18px instead
+         of the intended 0.98rem Georgia. Only visible on records with
+         a fresh bundle.css build — older cached bundles didn't have
+         these rules yet, which is why dev and staging looked
+         different.
+
+         Fix: reset both properties for all <p> and <h2> inside the
+         admin container. Inherit lets .prose-body's font-size win;
+         text-transform: none restores mixed case. Scoped tightly so
+         we don't disturb anything the public site does. Add more
+         resets here if further leaks surface. */
+      .admin-container p,
+      .admin-container h2 {
+        font-size: inherit;
+        text-transform: none;
+      }
+
       /* Admin-scoped form elements. `appearance: none` on <select> is
          necessary because macOS Safari otherwise ignores background /
          border / padding rules and renders the OS-native chrome. We draw
