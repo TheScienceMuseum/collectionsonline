@@ -32,9 +32,24 @@ module.exports = function formatDate (value, format) {
     return value;
   }
 
-  // Wikidata time values look like "+1955-04-18T00:00:00Z" — valid ISO 8601
-  // with an explicit-positive year prefix that some Date parsers reject.
-  // Strip the leading + so it round-trips through new Date().
+  // Wikidata time values look like "+1955-04-18T00:00:00Z". Two quirks:
+  //   1. Explicit-positive year prefix some Date parsers reject — strip it.
+  //   2. `00` for month/day = precision marker (year-only or year+month),
+  //      not a valid date. `new Date('1927-00-00T00:00:00Z')` → Invalid.
+  //      Short-circuit these to the appropriate coarse-precision string
+  //      before the parser sees them. Fixes the "+1927-00-00T00:00:00Z"
+  //      leak seen on subject-status dissolution dates (cp60883 Vickers).
+  if (typeof value === 'string' && /^[+-]?\d{4}-00-00T/.test(value)) {
+    const m = value.match(/^[+-]?(\d{4})/);
+    return m ? m[1] : value;
+  }
+  if (typeof value === 'string' && /^[+-]?\d{4}-\d{2}-00T/.test(value)) {
+    const m = value.match(/^[+-]?(\d{4})-(\d{2})/);
+    if (m) {
+      const monthDate = new Date(Date.UTC(parseInt(m[1], 10), parseInt(m[2], 10) - 1, 1));
+      return monthDate.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+    }
+  }
   const normalised = (typeof value === 'string' && value.length > 0 && value.charAt(0) === '+')
     ? value.slice(1)
     : value;

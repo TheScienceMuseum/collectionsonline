@@ -675,6 +675,32 @@ module.exports = function (elastic, config) {
               displayState,
               cost,
               signalView,
+              // Three-state external-source badge data.
+              //  - `off`    → adapter disabled at generation
+              //  - `unused` → adapter fired, but the writer produced no sentences
+              //               tagged with that source (usually a mismatched
+              //               entity — e.g. cp60883 Vickers Instruments where
+              //               the Wikipedia article is about the parent Vickers
+              //               Ltd conglomerate; writer correctly rejected it)
+              //  - `used`   → adapter fired AND at least one sentence uses it
+              // Templates render `used` filled, `unused` dashed, `off` grey.
+              externalSourceBadges: (function () {
+                const q = record.externalSourcesQueried || {};
+                const used = new Set();
+                (record.sentences || []).forEach(function (s) {
+                  const srcs = Array.isArray(s.sources) ? s.sources : (s.source ? [s.source] : []);
+                  srcs.forEach(function (src) { used.add(src); });
+                });
+                function stateFor (fired, tag) {
+                  if (!fired) return 'off';
+                  return used.has(tag) ? 'used' : 'unused';
+                }
+                return [
+                  { key: 'wikipedia',   label: 'wikipedia',   state: stateFor(q.wikipedia,   'wikipedia') },
+                  { key: 'odnb',        label: 'oxfordDNB',   state: stateFor(q.odnb,        'oxfordDNB') },
+                  { key: 'gracesGuide', label: 'gracesGuide', state: stateFor(q.gracesGuide, 'gracesGuide') }
+                ];
+              })(),
               hasDiagnostics: !!(record.verificationCandidates || signalView || record.systemPrompt || record.prompt),
               // ?regenerating=1&since=<ms> is set by POST /admin/ai/{id}/regenerate
               // (the async fire-and-forget branch). While the writer is still
