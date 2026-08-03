@@ -598,3 +598,158 @@ test(
     t.end();
   }
 );
+
+// Shared aggregations block so the meta/count builders don't throw.
+function withAggregations (testResult) {
+  testResult.body.aggregations = {
+    total_categories: {
+      doc_count: 1,
+      documents: { doc_count: 0, documents_total: [{ value: 0 }] },
+      objects: { doc_count: 1, objects_total: [{ value: 1 }] },
+      people: { doc_count: 0, people_total: [{ value: 0 }] },
+      group: { doc_count: 0, group_total: [{ value: 0 }] },
+      all: {
+        doc_count: 1,
+        all_total: {
+          doc_count_error_upper_bound: 0,
+          sum_other_doc_count: 0,
+          buckets: [{ key: 'object', doc_count: 1 }]
+        }
+      }
+    }
+  };
+  testResult.body.aggregations.all = aggregationsAll;
+  testResult.body.aggregations.people = aggregationsPeople;
+  testResult.body.aggregations.objects = aggregationsObjects;
+  testResult.body.aggregations.documents = aggregationsDocuments;
+  testResult.body.aggregations.group = aggregationsGroup;
+  return testResult;
+}
+
+const mediaConfig = { mediaPath: 'https://media.test/' };
+
+test(
+  file + 'Should sort multimedia and prepend the media host to card thumbnails',
+  (t) => {
+    t.plan(3);
+
+    const testResult = withAggregations({
+      body: {
+        hits: {
+          total: { value: 1 },
+          max_score: null,
+          hits: [
+            {
+              _id: `smg-object-${Date.now()}`,
+              _source: {
+                '@datatype': { base: 'object' },
+                summary: { title: 'sortable multimedia object' },
+                multimedia: [
+                  {
+                    // First in ES order but position 5 — should sort last
+                    position: { value: '5' },
+                    '@processed': {
+                      upload_sort: '2016-01-01',
+                      large_thumbnail: { location: 'secondary.jpg' }
+                    }
+                  },
+                  {
+                    // Position 1 — the primary display image
+                    position: { value: '1' },
+                    '@processed': {
+                      upload_sort: '2015-01-01',
+                      large_thumbnail: { location: 'primary.jpg' }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    });
+
+    const query = queryParams('html', {
+      query: { q: 'test', 'page[number]': 0, 'page[size]': 1 },
+      params: {}
+    });
+
+    const obj = searchResultsToJsonApi(query, testResult, mediaConfig);
+    const multimedia = obj.data[0].attributes.multimedia;
+
+    t.equal(
+      multimedia[0]['@processed'].large_thumbnail.location,
+      'https://media.test/primary.jpg',
+      'Primary (position 1) image is first, with the media host prepended'
+    );
+    t.equal(
+      multimedia[1]['@processed'].large_thumbnail.location,
+      'secondary.jpg',
+      'Non-card entry keeps its relative Elasticsearch path (host not prepended)'
+    );
+    t.equal(
+      multimedia.length,
+      2,
+      'No multimedia entries were dropped'
+    );
+    t.end();
+  }
+);
+
+test(
+  file +
+    'Should not throw and still resolves a thumbnail when the first ' +
+    'multimedia entry has no processed derivative',
+  (t) => {
+    t.plan(2);
+
+    const testResult = withAggregations({
+      body: {
+        hits: {
+          total: { value: 1 },
+          max_score: null,
+          hits: [
+            {
+              _id: `smg-object-${Date.now()}`,
+              _source: {
+                '@datatype': { base: 'object' },
+                summary: { title: 'partially processed multimedia object' },
+                multimedia: [
+                  {
+                    // Still processing — no @processed block at all
+                    position: { value: '2' }
+                  },
+                  {
+                    position: { value: '1' },
+                    '@processed': {
+                      upload_sort: '2015-01-01',
+                      large_thumbnail: { location: 'ready.jpg' }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    });
+
+    const query = queryParams('html', {
+      query: { q: 'test', 'page[number]': 0, 'page[size]': 1 },
+      params: {}
+    });
+
+    let obj;
+    t.doesNotThrow(() => {
+      obj = searchResultsToJsonApi(query, testResult, mediaConfig);
+    }, 'Transform did not throw on an unprocessed multimedia entry');
+
+    const multimedia = obj.data[0].attributes.multimedia;
+    t.equal(
+      multimedia[0]['@processed'].large_thumbnail.location,
+      'https://media.test/ready.jpg',
+      'The processed image sorts to the front with the media host prepended'
+    );
+    t.end();
+  }
+);
