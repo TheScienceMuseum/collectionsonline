@@ -100,6 +100,35 @@ function loadConfig () {
 }
 
 // -------------------------------------------------------------------
+// Auth-error circuit breaker
+// -------------------------------------------------------------------
+//
+// The existence-check GetItem runs per subject before we call Claude.
+// When it fails with an auth-shaped error (e.g. broken AWS_PROFILE),
+// the DDB write at the end will fail too — so calling Claude just
+// burns tokens on output we can never save. A workshop-prep batch on
+// 2026-08-04 lost ~£0.30 to this before anyone noticed.
+//
+// Two-layer guard:
+//   1. Per-subject:  if the existence-check auth-fails, skip Claude
+//                    for THAT subject (still logs an error).
+//   2. Batch-wide:   after AUTH_ABORT_THRESHOLD consecutive auth-shape
+//                    failures, mark the batch aborted so no further
+//                    subjects even try.
+//
+// Non-auth existence-check failures (transient DDB blip, throttle,
+// etc.) still fall through to a generation attempt — the write may
+// well succeed on retry, and skipping would be over-cautious.
+
+const AUTH_ABORT_THRESHOLD = 3;
+const AUTH_ERROR_PATTERN = /Could not load credentials|security token|AccessDenied|UnrecognizedClientException|ExpiredToken|InvalidClientTokenId|SignatureDoesNotMatch/i;
+
+function looksLikeAuthError (message) {
+  if (!message) return false;
+  return AUTH_ERROR_PATTERN.test(String(message));
+}
+
+// -------------------------------------------------------------------
 // CLI parsing — minimal, matches the restore-from-backup style
 // -------------------------------------------------------------------
 
@@ -290,7 +319,8 @@ async function main () {
   // (task #88) to retire rules that never earn their keep.
   const ruleHitPerSubject = [];
 
-  const counts = { generated: 0, skippedByAssessment: 0, alreadyExists: 0, errors: 0 };
+  const counts = { generated: 0, skippedByAssessment: 0, alreadyExists: 0, errors: 0, abortedBeforeStart: 0 };
+  const circuit = { authFailCount: 0, aborted: false, firstAuthError: null };
   const tokens = {
     writerInput: 0,
     writerOutput: 0,
@@ -317,6 +347,21 @@ async function main () {
   }
 
   await runWithConcurrency(candidateIds, async function (id, index) {
+    // Circuit-breaker gate: once tripped, every remaining subject exits
+    // here without hitting DynamoDB or Claude. Prior in-flight workers
+    // still finish their current subject — no in-flight cancellation.
+    if (circuit.aborted) {
+      counts.abortedBeforeStart++;
+      log.write({
+        ts: new Date().toISOString(),
+        id,
+        outcome: 'aborted_batch',
+        reason: 'auth_circuit_breaker',
+        batchId
+      });
+      return;
+    }
+
     // Idempotence check. Three modes:
     //   default (neither flag):  skip subjects with ANY existing biography
     //     (retry-safe for interrupted 25K launches)
@@ -346,6 +391,30 @@ async function main () {
         }
       } catch (err) {
         console.warn('bulk-generate:', id, '- existence check failed:', err.message);
+        // Auth-shaped failures: skip Claude for this subject (the write
+        // will fail anyway), and trip the batch-wide breaker once we've
+        // seen enough of them. Non-auth failures fall through — a
+        // transient DDB blip shouldn't stop the generation attempt.
+        if (looksLikeAuthError(err.message)) {
+          circuit.authFailCount++;
+          if (!circuit.firstAuthError) circuit.firstAuthError = err.message;
+          if (circuit.authFailCount >= AUTH_ABORT_THRESHOLD && !circuit.aborted) {
+            circuit.aborted = true;
+            console.error('bulk-generate: AUTH CIRCUIT BREAKER TRIPPED after ' +
+              circuit.authFailCount + ' credential errors. Remaining subjects will ' +
+              'be skipped to prevent Claude token waste. First error: ' +
+              circuit.firstAuthError);
+          }
+          counts.errors++;
+          log.write({
+            ts: new Date().toISOString(),
+            id,
+            outcome: 'error',
+            error: 'auth_check_failed: ' + err.message,
+            batchId
+          });
+          return;
+        }
       }
     }
 
@@ -481,6 +550,9 @@ async function main () {
   console.log('  insufficient data:   ' + counts.skippedByAssessment);
   console.log('  already existed:     ' + counts.alreadyExists);
   console.log('  errors:              ' + counts.errors);
+  if (counts.abortedBeforeStart > 0) {
+    console.log('  aborted (breaker):   ' + counts.abortedBeforeStart);
+  }
   console.log('  elapsed:             ' + totalSec + 's');
   console.log('');
   console.log('=== token usage ===');
@@ -539,7 +611,17 @@ async function main () {
   process.exit(counts.errors > 0 ? 1 : 0);
 }
 
-main().catch(function (err) {
-  console.error('Fatal:', err && err.stack ? err.stack : err);
-  process.exit(1);
-});
+// Exports for unit tests. The CLI-entry guard lets test/*.test.js
+// require this file without triggering main().
+module.exports = {
+  looksLikeAuthError,
+  AUTH_ABORT_THRESHOLD,
+  AUTH_ERROR_PATTERN
+};
+
+if (require.main === module) {
+  main().catch(function (err) {
+    console.error('Fatal:', err && err.stack ? err.stack : err);
+    process.exit(1);
+  });
+}
