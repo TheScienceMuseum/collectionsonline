@@ -16,6 +16,13 @@ const test = require('tape');
 
 const fakeItems = new Map();
 const key = function (pk, sk) { return pk + '|' + sk; };
+// The listBiographies pagination tests below drive the GSI stubs via a
+// scripted queue: each entry is the next {items, lastKey} response to
+// return. The scripted mode is only active while `queryScript` is non-
+// empty; unscripted calls (from other tests in this file) fall through
+// to an empty result so they don't crash.
+let queryCalls = [];
+let queryScript = [];
 const fakeDynamo = {
   isReady: function () { return true; },
   get: function (pk, sk) { return Promise.resolve(fakeItems.get(key(pk, sk))); },
@@ -28,6 +35,14 @@ const fakeDynamo = {
       if (ipk === pk && isk.indexOf(prefix) === 0) items.push(v);
     }
     return Promise.resolve({ items });
+  },
+  queryByStatus: function (status, limit, lastKey) {
+    queryCalls.push({ kind: 'status', status, limit, lastKey });
+    return Promise.resolve(queryScript.shift() || { items: [], lastKey: null });
+  },
+  queryByCreatedAt: function (limit, lastKey) {
+    queryCalls.push({ kind: 'createdAt', limit, lastKey });
+    return Promise.resolve(queryScript.shift() || { items: [], lastKey: null });
   }
 };
 const dynamoPath = require.resolve('../lib/ai/dynamo');
@@ -60,6 +75,14 @@ function reset () {
   fakeItems.clear();
   flagStoreCalls.markPendingStale.length = 0;
   flagStoreCalls.deleteFlags.length = 0;
+  queryCalls = [];
+  queryScript = [];
+}
+
+function mkItems (n, prefix) {
+  const out = [];
+  for (let i = 0; i < n; i++) out.push({ PK: (prefix || 'cp') + i, SK: 'BIOGRAPHY' });
+  return out;
 }
 
 // --- saveBiography: v2 field passthrough ---------------------------
@@ -192,5 +215,90 @@ test('deleteBiography: also cascades REVIEW# items', async function (t) {
     'REVIEW# item purged');
   const remaining = Array.from(fakeItems.keys()).filter(function (k) { return k.indexOf('cp1|') === 0; });
   t.equal(remaining.length, 0, 'all cp1 items removed');
+  t.end();
+});
+
+// --- listBiographies: internal pagination fix (2026-08-04) ----------
+//
+// DynamoDB Query returns at most 1 MB per response and stops early with
+// a LastEvaluatedKey when that cap is reached — even if the caller's
+// Limit was higher. Before the fix, listBiographies passed the short
+// page straight back to the admin list, which treated it as "here's
+// the whole page" and silently truncated. The fix loops internally.
+
+test('listBiographies: loops when the first page is short (2026-08-04 regression)', async function (t) {
+  reset();
+  queryScript = [
+    { items: mkItems(13, 'a'), lastKey: { k: 'after-13' } },
+    { items: mkItems(12, 'b'), lastKey: null }
+  ];
+  const result = await store.listBiographies('all', 25, null);
+  t.equal(result.items.length, 25, 'all 25 items returned in one call');
+  t.equal(result.lastKey, null, 'lastKey null after exhausting the GSI');
+  t.equal(queryCalls.length, 2, 'two GSI calls made');
+  t.equal(queryCalls[0].limit, 25, 'first call asks for the full wanted amount');
+  t.equal(queryCalls[1].limit, 12, 'second call asks only for the remaining 12');
+  t.deepEqual(queryCalls[1].lastKey, { k: 'after-13' }, 'second call passes the first page\'s cursor');
+  t.end();
+});
+
+test('listBiographies: single full page → no extra call', async function (t) {
+  reset();
+  queryScript = [
+    { items: mkItems(25, 'a'), lastKey: { k: 'more-available' } }
+  ];
+  const result = await store.listBiographies('all', 25, null);
+  t.equal(result.items.length, 25, '25 items');
+  t.deepEqual(result.lastKey, { k: 'more-available' }, 'cursor preserved for the UI\'s next-page link');
+  t.equal(queryCalls.length, 1, 'no unnecessary second call');
+  t.end();
+});
+
+test('listBiographies: GSI exhausted with fewer items than requested', async function (t) {
+  reset();
+  queryScript = [
+    { items: mkItems(5, 'a'), lastKey: null }
+  ];
+  const result = await store.listBiographies('all', 25, null);
+  t.equal(result.items.length, 5, 'returns only what the GSI had');
+  t.equal(result.lastKey, null, 'no next-page cursor');
+  t.equal(queryCalls.length, 1, 'one call, no wasted retries after empty lastKey');
+  t.end();
+});
+
+test('listBiographies: passes through explicit lastKey for continued pagination', async function (t) {
+  reset();
+  queryScript = [
+    { items: mkItems(10, 'x'), lastKey: null }
+  ];
+  await store.listBiographies('all', 25, { k: 'from-earlier-page' });
+  t.deepEqual(queryCalls[0].lastKey, { k: 'from-earlier-page' },
+    'caller-supplied lastKey passed to the first GSI call');
+  t.end();
+});
+
+test('listBiographies: status filter routes to StatusIndex, not CreatedAtIndex', async function (t) {
+  reset();
+  queryScript = [
+    { items: mkItems(3, 'f'), lastKey: null }
+  ];
+  await store.listBiographies('flagged', 25, null);
+  t.equal(queryCalls.length, 1, 'one call');
+  t.equal(queryCalls[0].kind, 'status', 'uses queryByStatus');
+  t.equal(queryCalls[0].status, 'flagged', 'passes the status filter');
+  t.end();
+});
+
+test('listBiographies: iteration cap prevents runaway loops on tiny pages', async function (t) {
+  reset();
+  // Pathological: every page returns 1 item and always has a next cursor.
+  // The safety cap should kick in at 10 iterations, not chase forever.
+  for (let i = 0; i < 20; i++) {
+    queryScript.push({ items: mkItems(1, 'p' + i), lastKey: { k: 'still-more-' + i } });
+  }
+  const result = await store.listBiographies('all', 100, null);
+  t.equal(queryCalls.length, 10, 'stops at LIST_MAX_ITERATIONS');
+  t.equal(result.items.length, 10, 'returns whatever it accumulated');
+  t.ok(result.lastKey, 'preserves cursor so caller can continue from where we stopped');
   t.end();
 });
