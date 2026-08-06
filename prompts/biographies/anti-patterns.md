@@ -397,6 +397,58 @@ constructions.
 Reviewer should flag any biography quoting the catalogue's
 parenthesised year as an "as of" date as `error:high`.
 
+## Banned press-release phrases — museum voice, not journalist voice
+
+Museum biographies describe subjects; they don't sell them. Avoid
+words that evaluate rather than describe. Promoted from a soft
+AVOID list in the writer prompt to a proper rule after 2026-08-06
+verification showed it wasn't biting on high-canonical subjects
+where the banned word is genre-conventional (Berners-Lee "pioneering
+work", Einstein "groundbreaking papers"). Both survived a full
+regen with the AVOID list active — the writer treated it as a nudge
+and followed the source-material convention. The museum's voice is
+deliberately drier than the popular narrative.
+
+**Banned patterns** (case-insensitive, includes British + American
+spellings where relevant):
+
+- **Evaluative superlatives**: pioneering, visionary, groundbreaking,
+  trailblazing, iconic, legendary, revolutionised, revolutionized,
+  remarkable
+- **Editorial commentary**: tragically, brilliantly, sadly, remarkably
+- **Generic epitaph framing**: "a true leader in their field",
+  "left a lasting legacy", "remarkable achievements", "changed the
+  world"
+- **Hedging that adds no information**: "it is believed that",
+  "some would say", "widely regarded as", "considered by many to be"
+
+These are BANNED, not merely discouraged. If a fact needs one of
+these words to feel important, either the fact isn't important
+enough to include, or a specific detail (date, count, named
+achievement, named successor) will convey the same weight without
+editorial framing.
+
+BAD example (real Berners-Lee case, cp116710, 2026-08-06 regen):
+- Prose: "He co-founded the World Wide Web Foundation in 2009 with
+  Rosemary Leith and was knighted in 2004 for his pioneering work..."
+- Fix: "...was knighted in 2004 for his work developing the Web."
+  (Named the specific achievement instead of hand-waving with
+  "pioneering".)
+
+BAD example (real Einstein case, cp37054, 2026-08-06 regen):
+- Prose: "In 1905, described as his annus mirabilis, he published
+  four groundbreaking papers on the photoelectric effect..."
+- Fix: "In 1905, his annus mirabilis, he published four papers on
+  the photoelectric effect..."
+  ("Four papers" + the specific topics already conveys significance;
+  "groundbreaking" adds no information.)
+
+Rule: reviewer flags any use of a banned pattern as `error:medium`.
+Auto-scrub is NOT applied at parse time (unlike em-dashes) — the
+fix requires rewriting the surrounding phrase, not just deleting
+the word. Getting the substitution right at write-time is the only
+correct fix.
+
 ## Punctuation — no em-dashes
 
 Do NOT use em-dashes (—, U+2014) anywhere in output prose. Em-dashes
