@@ -244,5 +244,5 @@ module.exports = require('rc')('co', {
   // Anthropic's thinking config on every generation. maxOutputTokens
   // must exceed thinkingBudgetTokens (SDK enforces this).
   aiBiographyThinkingBudgetTokens: parseInt(process.env.AI_BIOGRAPHY_THINKING_BUDGET_TOKENS || '4000', 10),
-  aiBiographyMaxOutputTokens: parseInt(process.env.AI_BIOGRAPHY_MAX_OUTPUT_TOKENS || '16000', 10)
+  aiBiographyMaxOutputTokens: parseInt(process.env.AI_BIOGRAPHY_MAX_OUTPUT_TOKENS || '24000', 10)
 });
