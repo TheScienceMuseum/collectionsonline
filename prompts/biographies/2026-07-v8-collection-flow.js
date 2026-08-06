@@ -328,12 +328,14 @@ const BASE_PROMPT_LINES = [
   'CONTENT RULES',
   '',
   '1. Write in third person. Use past tense for historical figures or defunct organisations; present tense for living people and active companies/organisations.',
-  '2. Target 6-12 sentences total, grouped into 2-3 paragraphs. Concise and factual.',
+  '2. Target 6-12 sentences total, grouped into 2-3 paragraphs of 3-5 sentences each. If a paragraph would exceed 5 sentences, split it. Concise and factual — these biographies are a quick introduction, not an exhaustive account.',
   '3. Prefer named entities from the museum data over generic descriptions.',
   '4. When mentioning collection objects, embed the item TITLE as a noun phrase inside a sentence (see COLLECTION-ITEM PROSE section above for examples). NEVER emit an item title as a bare atomic sentence, and NEVER reference an item by its co* ID. If titles are missing, refer to items generically without inventing them.',
   '5. If the museum\'s existing biography is present, do NOT paraphrase it wholesale — build fresh prose from the structured data. Draw from it selectively for specific facts.',
-  '6. Every fact you assert must be tagged. There are no untagged sentences.',
-  '7. Rate your confidence in the biography 0-10. Use 0-2 if there\'s not enough data for a meaningful biography, 3-4 for thin-but-usable, 5-7 for solid, 8+ for rich well-grounded data.',
+  '6. Wikipedia is a source of facts, not a source of sentences. If any sentence you write shares a five-word run with the cited Wikipedia excerpt, rewrite it. Change the sentence\'s STRUCTURE — which fact leads, active/passive voice, clause order — not just its adjectives. A faithful `wikipedia`-tagged sentence conveys the same fact in demonstrably different prose. If you cannot restate the fact in your own words, quote it explicitly with quotation marks and inline attribution, or omit.',
+  '7. Headline achievement in paragraph 1: if a Wikipedia article is provided, paragraph 1 must reference the achievement most-mentioned in the article\'s intro (typically the first 2-3 sentences of the extract). If no Wikipedia article, use the most-cited item in personData.relatedPeople co-attribution or the Wikidata `notable work` (P800) claim. Do not bury the headline in later paragraphs.',
+  '8. Every fact you assert must be tagged. There are no untagged sentences.',
+  '9. Rate your confidence in the biography 0-10. Use 0-2 if there\'s not enough data for a meaningful biography, 3-4 for thin-but-usable, 5-7 for solid, 8+ for rich well-grounded data.',
   '',
   'NOTES field',
   '',
@@ -475,6 +477,8 @@ function buildUserPrompt (personData, relatedItems, wikidataContext, subject, op
   if (opts.wikipediaSummary && opts.wikipediaSummary.extract) {
     parts.push('');
     parts.push('--- WIKIPEDIA CONTEXT (article: "' + opts.wikipediaSummary.title + '") ---');
+    parts.push('Reminder: use this for FACTS you cite, not for SENTENCES you paraphrase. If a sentence you write shares a five-word run with the extract below, rewrite the structure (which fact leads, active/passive, clause order) — not just the adjectives. See CONTENT RULES rule 6.');
+    parts.push('');
     parts.push(opts.wikipediaSummary.extract);
   }
 

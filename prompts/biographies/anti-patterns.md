@@ -52,6 +52,34 @@ Reviewer behaviour:
 Writer: when in doubt, add a short bridging phrase. It's rarely
 wrong and often helps the reader.
 
+## Historical-era focus for companies
+
+The biography's centre of gravity must match the era of the museum's
+collection. Related items date the period we care about; the biography
+should follow their weight, not Wikipedia's.
+
+Rule: if related items date predominantly from period X-Y, at least
+half of the sentences must be about that period. Ownership changes,
+mergers, and modern-era acquisitions are named for continuity but MUST
+NOT crowd out the era the collection documents. When the modern
+successor is more famous than the historical entity — Unilever vs
+Lipton, Kraft vs Cadbury, Ferrari SpA vs the 1940s Ferrari works — the
+pull toward modern-era coverage is especially strong. Resist it.
+
+BAD example (real Lipton Tea case, cp125074):
+- Related items cluster around late-19th and early-20th century tea
+  packaging, adverts, and merchant memorabilia.
+- Biography's second paragraph read like a Unilever press release,
+  taking Wikipedia's modern acquisition-history section near-verbatim.
+- Fix: keep the modern successor named for continuity ("today part of
+  CVC Capital Partners" — one sentence), but bias sentence weight
+  toward the historical company the museum's collection documents.
+
+Rule: for company / organisation subjects, count sentences by era. If
+fewer than half sit in the collection's era, that's a coverage failure
+regardless of whether every individual sentence is accurate. Reviewer
+flags as `error:medium`.
+
 ## Study vs employment / doctorate vs undergraduate
 
 "Studied at X", "worked at X", and "received a doctorate from X" are
@@ -372,3 +400,141 @@ The parser applies a safety-net scrub that replaces any em-dash
 that slips through with a comma. Do NOT rely on the scrub — the
 replacement is mechanical and sometimes reads awkwardly. Get the
 punctuation right in the first place.
+
+## Don't open with cause of death
+
+Do NOT open a biography with the subject's cause of death, or with
+death circumstances more generally. Lead with what the subject is
+known for — the achievement, role, or contribution that makes them
+worth a museum biography.
+
+Death circumstances belong later in the biography (typically the
+final sentence of the last paragraph), and only if they were
+notable or directly relevant to the subject's public significance
+(e.g. a scientist who died in the course of their research).
+
+BAD example (real Frank Whittle case, cp37768):
+- Biography opened with the cause of death.
+- Fix: open with "Sir Frank Whittle was a British aeronautical
+  engineer credited as the inventor of the turbojet engine.", then
+  develop his career, with death circumstances reserved for the
+  closing paragraph (or omitted if not notable).
+
+Rule: sentence 1 must be about the subject's public significance,
+not their death. Reviewer flags `error:medium` when sentence 1
+mentions cause or circumstances of death.
+
+## Name-change clarity
+
+Whenever a name change is stated — anglicisation, marriage,
+adoption, professional rename, corporate rename — both the
+original and adopted forms must appear in the same sentence.
+Saying only that a change happened, without naming the original
+form, tells the reader nothing.
+
+BAD example (real William Herschel case, cp43512):
+- Biography said Herschel anglicised his name after moving to
+  England, but did not name the original German form.
+- Fix: "Friedrich Wilhelm Herschel anglicised his name to Frederick
+  William Herschel after settling in England." (both forms named
+  in the same sentence, with the reason for the change.)
+
+Rule: for every name-change assertion, the sentence must contain
+BOTH the original and adopted forms. Applies to people (birth
+name → professional name, birth name → married name, anglicisation)
+and to organisations (company rename after merger, acquisition-
+driven brand change). Reviewer flags `error:low`.
+
+## Single-genius-inventor trap
+
+Historical achievements were almost never sole efforts. Where the
+provided sources name collaborators, spouses, students, or team
+members who contributed to the subject's work, the biography must
+reference at least one by name if space permits.
+
+Look for these signals in the provided inputs:
+- Wikidata `spouse` (P26) claims where the spouse was a
+  collaborator (common for scientific / photographic partnerships)
+- Wikidata `student` (P802) or `doctoral advisor` (P184) claims
+  where the relationship was substantive
+- Museum `relatedPeople` entries with a co-attribution role
+  (collaborator, business partner, co-author)
+- Wikipedia intro naming a co-inventor, co-author, or co-founder
+- Grace's Guide or ODNB naming a business partner or spouse
+
+BAD example (real William Henry Fox Talbot case, cp37726):
+- Talbot's photographic work was substantially collaborative;
+  his wife Constance was involved in early experiments and
+  contemporaries (Herschel, Brewster, Reade) contributed
+  technical developments.
+- Biography presented Talbot as a solitary inventor with no
+  collaborators named.
+- Fix: at least one sentence should reference a named
+  collaborator supported by the sources — e.g. Constance Talbot
+  where Wikidata / Wikipedia name her, or a contemporary
+  photographer where relatedPeople lists them.
+
+Rule: for subjects associated with famously-collaborative fields
+(early photography, aviation, chemistry, industrial invention),
+default to reviewing whether collaborators appear in the sources.
+If they do and the biography omits them entirely, flag
+`error:medium`. This is not a mandate to invent collaborators the
+sources don't name — the rule only bites when the sources
+name them and the biography ignores them.
+
+## Don't whitewash — include documented issues; avoid litigious and unresolved claims
+
+When cited sources (museum catalogue, ODNB, Wikipedia, Grace's
+Guide) discuss documented ethical, colonial, criminal, or
+reputational issues that are well-established in scholarship and
+publicly acknowledged, include them factually with source-tag.
+Omission is itself an editorial choice — a national museum should
+not whitewash the historical record. Prefer museum-tagged
+sentences when possible — our own catalogue voice is the strongest
+signal that we've publicly acknowledged the topic.
+
+DO NOT include claims that are:
+
+- **Litigious** — cases still contested in court, allegations the
+  cited source hedges with "alleged", "accused", "reportedly",
+  "purported"; claims that don't appear in the cited sources but
+  that you recall from general knowledge; claims that touch on
+  defamation risk. The bar rises sharply for living people and
+  active companies.
+- **Highly charged, unresolved political or cultural disputes** —
+  topics where the cited source itself notes ongoing debate or
+  opposing viewpoints; contested attributions still being argued
+  in academic literature; live culture-war framings.
+
+The include/exclude line is: *documented and settled* → include;
+*contested or actively litigated* → exclude. When in doubt, omit
+and flag for curator review via the notes field.
+
+BAD example (whitewashing, real Lipton Tea case, cp125074):
+- Wikipedia intro and body discuss Thomas Lipton's purchase of
+  Ceylon tea estates in the context of the colonial supply chain.
+  Well-established historical scholarship, not contested.
+- Biography omitted the colonial context entirely.
+- Fix: one sentence, museum-tagged if the catalogue biography
+  covers it, wikipedia-tagged otherwise, naming the Ceylon
+  estate purchase and its colonial-supply-chain context.
+
+BAD example (litigious, hypothetical Pegler-shape case):
+- Some subject has criminal allegations that appear in Wikipedia
+  edit history but were removed from the live article for
+  defamation reasons; or the writer recalls contested criminal
+  claims from general knowledge.
+- Do NOT include. The removal from the live article is itself the
+  signal that the claim is contested.
+
+Rule: reviewer flags `error:medium` when a cited source has
+documented issues that the biography omits without justification
+in the notes field; `error:high` when the biography includes
+litigious or unresolved claims (contested court cases,
+hedge-worded allegations, general-knowledge claims about criminal
+or defamatory behaviour not in the cited sources).
+
+Two honest limitations of this rule: (a) the include/exclude line
+requires judgment, not a mechanical test — the writer reads source
+language cues (hedges, "Controversy" sections, source-noted debate)
+but won't be perfect; (b) curator review remains the safety net.
