@@ -538,3 +538,80 @@ Two honest limitations of this rule: (a) the include/exclude line
 requires judgment, not a mechanical test — the writer reads source
 language cues (hedges, "Controversy" sections, source-noted debate)
 but won't be perfect; (b) curator review remains the safety net.
+
+## Modern-successor distancing from founder's harmful beliefs
+
+Related to the don't-whitewash rule above but distinct in what it
+protects. The don't-whitewash rule guards the historical record.
+This rule guards the MODERN organisation.
+
+When a subject held beliefs or engaged in practices now widely
+rejected as harmful (eugenics, colonial exploitation, discriminatory
+advocacy) AND a modern successor organisation has publicly distanced
+itself from those beliefs, that distancing MUST be stated. Omitting
+it — or naming the successor without the distancing context —
+implies continuity of the founder's harmful views, which:
+
+- misrepresents the modern organisation
+- can deter people from accessing services the modern organisation
+  provides (medical care, education, reproductive health, social
+  services)
+
+Applies especially to healthcare, reproductive rights, education,
+and social service organisations where the modern successor provides
+direct public service. The bar is: source shows the successor
+distanced itself (rebrand, public repudiation, updated mission
+statement), and the biography names the successor.
+
+Signals in the sources that a distancing has happened:
+- Wikipedia notes the organisation has rebranded (e.g. Marie Stopes
+  International → MSI Reproductive Choices in 2020)
+- The rename itself is a signal — modern names that drop the
+  founder's personal name typically indicate distancing
+- Wikipedia "Present-day" / "Current organisation" section
+  explicitly repudiating founder views
+- Grace's Guide or museum catalogue noting mission change
+
+BAD example variant 1 (real Marie Stopes case, cp38898):
+- Biography sentence 9 correctly notes Stopes advocated eugenics
+  ("compulsory sterilization of those deemed unfit for parenthood").
+- Biography sentence 10 then says "Marie Stopes International was
+  established in the 1970s to continue her family planning work
+  and has become the leading provider..." — silent on the 2020
+  rebrand to MSI Reproductive Choices and on the modern org's
+  explicit distancing from Stopes' eugenicist views.
+- Problem: reads as full continuity, including the harmful views.
+- Fix: "In 2020 Marie Stopes International rebranded as MSI
+  Reproductive Choices, explicitly distancing itself from Marie
+  Stopes's eugenicist views while continuing to provide
+  reproductive healthcare services." (Successor named, rebrand
+  named, distancing stated, service continuity clarified.)
+
+BAD example variant 2 (hypothetical, same failure mode):
+- Biography states "MSI has now been rebranded as MSI Reproductive
+  Choices" but does not state why.
+- Problem: reader can't tell whether the rebrand was routine or a
+  repudiation. Ambiguity favours the harm.
+- Fix: same as variant 1 — name the reason for the rebrand.
+
+Rule: for every subject whose harmful beliefs are documented AND
+whose modern successor organisation is named in the biography, the
+biography must state whether/how the successor has distanced itself
+from those beliefs.
+
+If the provided sources do not contain evidence of distancing
+(rebrand, repudiation statement, mission change), DO NOT name the
+modern successor at all — leave the reader to look it up
+themselves. A named successor without distancing context is worse
+than no successor named. This is a hard rule, not a preference:
+naming MSI without noting the distancing implies continuity of
+the founder's eugenics; naming Planned Parenthood without noting
+the modern org's stance on Sanger's eugenics implies the same.
+The named-successor-without-context case actively harms the
+modern organisation.
+
+Reviewer flags `error:high` when the modern successor is named
+without the distancing statement AND the successor provides
+direct public services (healthcare, reproductive rights,
+education, social services). For historic-successor cases where
+no direct public service is at stake, `error:medium`.
