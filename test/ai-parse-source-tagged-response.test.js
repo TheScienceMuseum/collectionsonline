@@ -715,3 +715,72 @@ test('parts: rebuilt text matches raw (untrimmed) — leading whitespace handled
   t.equal(out.sentences[0].text, 'He studied at ETH.', 'display text trimmed');
   t.end();
 });
+
+// --- Contamination robustness (2026-08 hardening) --------------------
+//
+// Maxwell (cp37561) + Marie Stopes (cp38898) both hit repeat parse_failed
+// events during workshop-15 verification. Root cause: writer emits
+// ```json ... ``` fences AND trailing prose, and the old parser only
+// stripped fences at exact end-of-string. Trailing prose defeated both
+// the direct parse AND the "first-'{' to last-'}'" fallback (any '}' in
+// the trailing prose widened the slice past the JSON's true end).
+
+test('parse: fenced JSON with prose after closing fence', function (t) {
+  const payload = JSON.stringify(validPayload());
+  const contaminated = '```json\n' + payload + '\n```\n\nNote: I generated this biography from museum inputs.';
+  const out = parse(contaminated);
+  t.equal(out.sentences.length, 3, 'sentences recovered despite trailing prose');
+  t.equal(out.sentences[0].text, 'Einstein was born in Ulm.');
+  t.end();
+});
+
+test('parse: fenced JSON with prose BEFORE and AFTER fences', function (t) {
+  const payload = JSON.stringify(validPayload());
+  const contaminated = 'Here is the biography you requested:\n\n```json\n' + payload + '\n```\n\nHope this helps!';
+  const out = parse(contaminated);
+  t.equal(out.sentences.length, 3, 'sentences recovered despite bracketing prose');
+  t.end();
+});
+
+test('parse: unlabelled fence (```) rather than ```json', function (t) {
+  const payload = JSON.stringify(validPayload());
+  const contaminated = '```\n' + payload + '\n```';
+  const out = parse(contaminated);
+  t.equal(out.sentences.length, 3, 'unlabelled fence also stripped');
+  t.end();
+});
+
+test('parse: JSON containing "}" character inside a string literal', function (t) {
+  // The balance walker must not treat "}" inside a string literal as
+  // a depth-decrement. If it does, it returns a slice ending too early
+  // and JSON.parse fails.
+  const payload = {
+    sentences: [
+      { text: 'A curly-brace character in prose: } here.', source: 'museum' }
+    ],
+    paragraphBreaks: [],
+    confidence: 6
+  };
+  const contaminated = '```json\n' + JSON.stringify(payload) + '\n```\ntrailing garbage';
+  const out = parse(contaminated);
+  t.equal(out.sentences.length, 1, 'sentence with in-string brace preserved');
+  t.ok(out.sentences[0].text.indexOf('} here') !== -1, 'brace character in text survives round trip');
+  t.end();
+});
+
+test('parse: JSON containing escaped-quote followed by "}" in string literal', function (t) {
+  // Trickier — the escape-aware string walker must not treat \" as
+  // terminating the string. If it does, subsequent "}" characters count
+  // as brace-depth decrements and the extractor slices too early.
+  const payload = {
+    sentences: [
+      { text: 'He said "hello" — and then left.', source: 'museum' }
+    ],
+    paragraphBreaks: [],
+    confidence: 6
+  };
+  const contaminated = '```json\n' + JSON.stringify(payload) + '\n```';
+  const out = parse(contaminated);
+  t.equal(out.sentences.length, 1);
+  t.end();
+});
