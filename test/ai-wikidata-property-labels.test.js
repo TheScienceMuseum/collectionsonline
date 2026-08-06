@@ -18,6 +18,16 @@ test('labelFor: known property → label', function (t) {
   t.end();
 });
 
+test('labelFor: succession chain properties (P155/P156)', function (t) {
+  // These enable the successor-signal override in shouldFetchWikipedia
+  // (fetch-wikipedia-summary.js) to fire on subjects with a rebrand
+  // history — the writer needs the modern name to apply the
+  // anti-patterns.md § Modern-successor distancing rule.
+  t.equal(labelFor('P155'), 'replaces');
+  t.equal(labelFor('P156'), 'replaced by');
+  t.end();
+});
+
 test('labelFor: case-insensitive', function (t) {
   t.equal(labelFor('p106'), 'occupation', 'lowercase');
   t.equal(labelFor('P106'), 'occupation', 'uppercase');
