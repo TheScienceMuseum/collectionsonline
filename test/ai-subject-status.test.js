@@ -207,9 +207,33 @@ test('isSuppressedOnPublicSite: living person served when flag on', function (t)
   t.end();
 });
 
-test('isSuppressedOnPublicSite: active company always served', function (t) {
+test('isSuppressedOnPublicSite: active company suppressed by default (flag off)', function (t) {
+  // Behaviour changed 2026-08 after curator review: active companies
+  // now gated by aiBiographyIncludeActiveCompanies, default off.
   const status = { isLiving: true, subjectType: 'company' };
-  t.equal(subjectStatus.isSuppressedOnPublicSite(status, {}), false);
+  t.equal(subjectStatus.isSuppressedOnPublicSite(status, {}), true);
+  t.end();
+});
+
+test('isSuppressedOnPublicSite: active company served when includeActiveCompanies flag on', function (t) {
+  const status = { isLiving: true, subjectType: 'company' };
+  t.equal(subjectStatus.isSuppressedOnPublicSite(status, { aiBiographyIncludeActiveCompanies: true }), false);
+  t.end();
+});
+
+test('isSuppressedOnPublicSite: includeActiveCompanies does NOT open the person branch', function (t) {
+  // Setting the org flag must not accidentally release living people.
+  const person = { isLiving: true, subjectType: 'person' };
+  t.equal(subjectStatus.isSuppressedOnPublicSite(person, { aiBiographyIncludeActiveCompanies: true }), true,
+    'person still suppressed even when org flag is on');
+  t.end();
+});
+
+test('isSuppressedOnPublicSite: includeLiving does NOT open the org branch', function (t) {
+  // Same axis, reversed — the person flag must not accidentally release orgs.
+  const org = { isLiving: true, subjectType: 'organisation', status: 'active' };
+  t.equal(subjectStatus.isSuppressedOnPublicSite(org, { aiBiographyIncludeLiving: true }), true,
+    'org still suppressed even when person flag is on');
   t.end();
 });
 
@@ -371,27 +395,35 @@ test('org status: person classification path is unaffected by org-status changes
   t.end();
 });
 
-// Public-site policy: orgs are always served, regardless of the new
-// four-state classification. Verify all four cases pass through.
-test('isSuppressedOnPublicSite: org with status=active served', function (t) {
+// Public-site policy for orgs across the four-state classification.
+// Behaviour changed 2026-08: active/unknown orgs now suppressed by
+// default; historical/dissolved orgs are ALWAYS served (isLiving false).
+test('isSuppressedOnPublicSite: org with status=active suppressed by default', function (t) {
   t.equal(subjectStatus.isSuppressedOnPublicSite(
-    { isLiving: true, subjectType: 'organisation', status: 'active' }, {}), false);
+    { isLiving: true, subjectType: 'organisation', status: 'active' }, {}), true);
   t.end();
 });
 
-test('isSuppressedOnPublicSite: org with status=unknown served', function (t) {
+test('isSuppressedOnPublicSite: org with status=active served when flag on', function (t) {
   t.equal(subjectStatus.isSuppressedOnPublicSite(
-    { isLiving: true, subjectType: 'organisation', status: 'unknown' }, {}), false);
+    { isLiving: true, subjectType: 'organisation', status: 'active' },
+    { aiBiographyIncludeActiveCompanies: true }), false);
   t.end();
 });
 
-test('isSuppressedOnPublicSite: org with status=historical served (isLiving=false but org)', function (t) {
+test('isSuppressedOnPublicSite: org with status=unknown suppressed by default', function (t) {
+  t.equal(subjectStatus.isSuppressedOnPublicSite(
+    { isLiving: true, subjectType: 'organisation', status: 'unknown' }, {}), true);
+  t.end();
+});
+
+test('isSuppressedOnPublicSite: org with status=historical served (isLiving=false, flag irrelevant)', function (t) {
   t.equal(subjectStatus.isSuppressedOnPublicSite(
     { isLiving: false, subjectType: 'organisation', status: 'historical' }, {}), false);
   t.end();
 });
 
-test('isSuppressedOnPublicSite: org with status=dissolved served', function (t) {
+test('isSuppressedOnPublicSite: org with status=dissolved served (isLiving=false, flag irrelevant)', function (t) {
   t.equal(subjectStatus.isSuppressedOnPublicSite(
     { isLiving: false, subjectType: 'organisation', status: 'dissolved' }, {}), false);
   t.end();

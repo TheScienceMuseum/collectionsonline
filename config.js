@@ -42,13 +42,24 @@ module.exports = require('rc')('co', {
   aiBiographyMinSignals: parseInt(process.env.AI_BIO_MIN_SIGNALS, 10) || 2,
   // When false (default), the generator skips records for living PEOPLE —
   // subjects with no death date internally AND no death date in Wikidata.
-  // Companies and organisations are always eligible regardless of whether
-  // their dissolution is recorded, because (a) defamation risk is much
-  // lower for corporations and (b) dissolution dates are poorly tracked in
-  // the catalogue, so "active" often means "actually defunct, just not
-  // recorded". Lift this flag only after comms/legal are comfortable with
-  // the surface for contemporary people.
+  // Living-person and active-company suppression flags.
+  //
+  // aiBiographyIncludeLiving: gates BIOGRAPHIES of living PEOPLE. Lift only
+  // after comms/legal are comfortable with the surface for contemporary
+  // named individuals — defamation risk is highest here.
+  //
+  // aiBiographyIncludeActiveCompanies: gates BIOGRAPHIES of active/current
+  // companies and organisations. Added 2026-08 after curator review flagged
+  // the risk is HIGHER for companies than previously modelled — a modern
+  // corporation whose biography implies continuity with a founder's harmful
+  // beliefs can actively deter people from services. Default off; lift
+  // per-flag when comms/legal have reviewed the current-company surface.
+  //
+  // Both default to false. Dissolved companies + deceased people are
+  // always eligible regardless (no suppression); the flags only gate the
+  // "still operating" / "still alive" case.
   aiBiographyIncludeLiving: process.env.AI_BIOGRAPHY_INCLUDE_LIVING === 'true',
+  aiBiographyIncludeActiveCompanies: process.env.AI_BIOGRAPHY_INCLUDE_ACTIVE_COMPANIES === 'true',
   // Kill switch for the public "Report a problem" feature. When false the
   // flag button is not rendered on biography blocks and the flag route
   // returns 404. Default false — enable in .corc / env only when the
