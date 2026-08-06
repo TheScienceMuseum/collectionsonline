@@ -266,3 +266,80 @@ test('dual-keyed Wikidata entries are not double-counted', function (t) {
   t.equal(r.reason, 'adaptive_thin_sources');
   t.end();
 });
+
+// --- Successor-signal override (2026-08) -----------------------------
+//
+// Curator review flagged the modern-successor distancing failure mode
+// (see anti-patterns.md § Modern-successor distancing). Wikipedia is
+// often the only source that discusses a modern org's rebrand /
+// repudiation of a founder's harmful views. Adaptive suppression by
+// museum-chars or wikidata-claim-count denies the writer that context
+// exactly where it's most needed. Fix: any Wikidata claim signalling
+// a founder / parent / subsidiary / succession relationship forces
+// Wikipedia fetch regardless of the adaptive gates.
+
+test('shouldFetchWikipedia: P800 notable work forces fetch over rich museum text', function (t) {
+  const r = shouldFetchWikipedia({
+    aiBiographyWikipediaEnabled: true
+  }, { biography: 'a'.repeat(2000) }, { P800: 'Marie Stopes International' });
+  t.equal(r.fire, true, 'successor signal wins over museum-chars gate');
+  t.equal(r.reason, 'forced_by_successor_signal:P800');
+  t.end();
+});
+
+test('shouldFetchWikipedia: P749 parent org forces fetch over rich Wikidata', function (t) {
+  const ctx = { P749: 'Unilever' };
+  // Pad with unrelated P-codes to push wdClaimCount past the threshold.
+  for (let i = 0; i < 12; i++) ctx['P' + (900 + i)] = 'value ' + i;
+  const r = shouldFetchWikipedia({
+    aiBiographyWikipediaEnabled: true
+  }, {}, ctx);
+  t.equal(r.fire, true, 'successor signal wins over wikidata-claims gate');
+  t.equal(r.reason, 'forced_by_successor_signal:P749');
+  t.end();
+});
+
+test('shouldFetchWikipedia: no successor signal → old adaptive behaviour preserved', function (t) {
+  // No P800/P749/P127/etc. — should fall through to adaptive gates.
+  const r = shouldFetchWikipedia({
+    aiBiographyWikipediaEnabled: true
+  }, { biography: 'a'.repeat(2000) }, { P569: '1900' });
+  t.equal(r.fire, false, 'no override — adaptive gate suppresses');
+  t.ok(r.reason.indexOf('gated_by') === 0, 'reason names the adaptive gate that fired');
+  t.end();
+});
+
+test('shouldFetchWikipedia: successor override still bounded by master + adaptive-disabled flags', function (t) {
+  // Master off — no fetch, override is irrelevant.
+  const off = shouldFetchWikipedia({
+    aiBiographyWikipediaEnabled: false
+  }, {}, { P800: 'foo' });
+  t.equal(off.fire, false);
+  t.equal(off.reason, 'flag_off', 'master-off wins over successor signal');
+
+  // Adaptive disabled — old return path fires first with 'flag_on_adaptive_disabled'.
+  const disabled = shouldFetchWikipedia({
+    aiBiographyWikipediaEnabled: true,
+    aiBiographyWikipediaAdaptiveDisabled: true
+  }, {}, { P800: 'foo' });
+  t.equal(disabled.fire, true);
+  t.equal(disabled.reason, 'flag_on_adaptive_disabled', 'adaptive-disabled wins over successor signal (same outcome anyway)');
+  t.end();
+});
+
+test('shouldFetchWikipedia: each documented successor prop is detected', function (t) {
+  const { SUCCESSOR_SIGNAL_PROPS } = require('../lib/ai/fetch-wikipedia-summary');
+  SUCCESSOR_SIGNAL_PROPS.forEach(function (prop) {
+    const ctx = {};
+    ctx[prop] = 'some value';
+    // Pad with unrelated P-codes to push past the adaptive threshold, so
+    // this fires ONLY because of the successor override.
+    for (let i = 0; i < 12; i++) ctx['P' + (900 + i)] = 'value ' + i;
+    const r = shouldFetchWikipedia({
+      aiBiographyWikipediaEnabled: true
+    }, {}, ctx);
+    t.equal(r.fire, true, prop + ' triggers override');
+    t.equal(r.reason, 'forced_by_successor_signal:' + prop, prop + ' names itself in reason');
+  });
+  t.end();
+});
