@@ -100,3 +100,9 @@ bulk-regen-batch-*.jsonl
 
 # Holdout regen logs — one JSONL per run, written by scripts/holdout-report.js
 holdout-report-*.jsonl
+
+# Parse-failure debug dumps — written by regenerate-biography.js when
+# AI_BIOGRAPHY_DEBUG_PATH is set. Defensive: if someone runs the
+# debug hook without pointing the env var at a scratchpad dir, these
+# land in project root. Local diagnostic artefact, not shared code.
+parse-failed-*.json
