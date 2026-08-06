@@ -52,33 +52,53 @@ Reviewer behaviour:
 Writer: when in doubt, add a short bridging phrase. It's rarely
 wrong and often helps the reader.
 
-## Historical-era focus for companies
+## Modern-era coverage — meaningful shift only, not recency
 
-The biography's centre of gravity must match the era of the museum's
-collection. Related items date the period we care about; the biography
-should follow their weight, not Wikipedia's.
+The biography's centre of gravity is the historical significance —
+typically the era the museum's collection documents. Modern-era
+content earns its place ONLY when it represents a MEANINGFUL SHIFT
+in the entity's character:
 
-Rule: if related items date predominantly from period X-Y, at least
-half of the sentences must be about that period. Ownership changes,
-mergers, and modern-era acquisitions are named for continuity but MUST
-NOT crowd out the era the collection documents. When the modern
-successor is more famous than the historical entity — Unilever vs
-Lipton, Kraft vs Cadbury, Ferrari SpA vs the 1940s Ferrari works — the
-pull toward modern-era coverage is especially strong. Resist it.
+- a rebrand
+- a mission change or formal repudiation of a past position
+- an ownership change that reshaped what the entity does or stands for
+- an acknowledgement of past harm
 
-BAD example (real Lipton Tea case, cp125074):
-- Related items cluster around late-19th and early-20th century tea
-  packaging, adverts, and merchant memorabilia.
-- Biography's second paragraph read like a Unilever press release,
-  taking Wikipedia's modern acquisition-history section near-verbatim.
-- Fix: keep the modern successor named for continuity ("today part of
-  CVC Capital Partners" — one sentence), but bias sentence weight
-  toward the historical company the museum's collection documents.
+State the shift concisely — typically one sentence. Do NOT enumerate
+modern-era events that don't represent character shifts: current
+product ranges, routine partnerships, distribution deals, industry
+awards, sustainability commitments, market reach statistics. These
+belong in trade press, not a museum biography.
 
-Rule: for company / organisation subjects, count sentences by era. If
-fewer than half sit in the collection's era, that's a coverage failure
-regardless of whether every individual sentence is accurate. Reviewer
-flags as `error:medium`.
+Test: does this modern fact help a visitor understand what our
+objects mean today, or how the entity's public position has
+changed? If yes, keep. If it's just "the entity still exists and
+does modern things", omit.
+
+BAD example (real Lipton Tea case, cp125074, 2026-08-06 regen with
+the previous era-count rule):
+- Bio included "Corporate Green Globe Award 2009", "Pepsi Lipton
+  Tea Partnership 1991 for North American markets", "Pepsi Lipton
+  International 2003", "150 countries in formats ranging from
+  traditional tea bags to powders", "Rainforest Alliance
+  certification implementation timeline". All Wikipedia-body
+  content but none represent character shifts — pure recency.
+- Fix: keep the Unilever acquisition (structural shift: independent
+  → conglomerate) as ONE sentence. Keep the 2022 CVC sale + Lipton
+  Teas and Infusions rebrand (structural shift: brand ownership
+  restructure) as ONE sentence. Everything else in the modern era
+  omitted. Colonial-era Ceylon supply chain remains the story.
+
+GOOD example (real Marie Stopes case, cp38898, if written correctly):
+- One sentence naming the 2020 rebrand to MSI Reproductive Choices
+  IS a meaningful shift (formal repudiation of eugenics inheritance).
+- Sentences about MSI's current global reach / current services /
+  current partnerships would NOT be — pure recency.
+
+Rule: reviewer flags `error:medium` when the biography carries
+modern-era content that doesn't represent a character shift. When
+in doubt, cut. Trade press exists; the museum biography is for a
+visitor standing next to an 1890s tea packet.
 
 ## Study vs employment / doctorate vs undergraduate
 

@@ -328,7 +328,7 @@ const BASE_PROMPT_LINES = [
   'CONTENT RULES',
   '',
   '1. Write in third person. Use past tense for historical figures or defunct organisations; present tense for living people and active companies/organisations.',
-  '2. Target 6-12 sentences total, grouped into 2-3 paragraphs of 3-5 sentences each. If a paragraph would exceed 5 sentences, split it. Concise and factual — these biographies are a quick introduction, not an exhaustive account.',
+  '2. Target 6-12 sentences total, grouped into 2-3 paragraphs. No paragraph should exceed 5 sentences — split long ones. Short paragraphs (1-2 sentences) are fine when the content warrants it, especially for closing statements or a single-fact observation. Concise and factual — these biographies are a quick introduction, not an exhaustive account.',
   '3. Prefer named entities from the museum data over generic descriptions.',
   '4. When mentioning collection objects, embed the item TITLE as a noun phrase inside a sentence (see COLLECTION-ITEM PROSE section above for examples). NEVER emit an item title as a bare atomic sentence, and NEVER reference an item by its co* ID. If titles are missing, refer to items generically without inventing them.',
   '5. If the museum\'s existing biography is present, do NOT paraphrase it wholesale — build fresh prose from the structured data. Draw from it selectively for specific facts.',
