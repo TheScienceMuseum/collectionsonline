@@ -187,6 +187,41 @@
 }
 
 //-----------------------------------------------------------------------------
+// .home-cards — "Themes from the collection"
+//-----------------------------------------------------------------------------
+
+// Below the single-column breakpoint the grid gives every theme a full-width
+// 4:3 image, so the pictures dominate the page and push the category links
+// below the fold. Switch to a compact row instead: small thumbnail on the
+// left, title and links on the right.
+.home-cards {
+  @include media('<small') {
+    .resultcard--collection {
+      display: grid;
+      grid-template-columns: 5.5rem 1fr;
+      column-gap: 1rem;
+      align-items: start;
+    }
+
+    .resultcard__figure {
+      // nudged down to sit level with the title's cap height rather than
+      // its line box
+      margin-top: 0.2rem;
+    }
+
+    .resultcard__info {
+      padding-top: 0;
+    }
+
+    // the links carry the section on this layout, so give them a little
+    // more room than the 0.5rem used in the wider grid
+    .resultcard__linklist li {
+      margin-top: 0.6rem;
+    }
+  }
+}
+
+//-----------------------------------------------------------------------------
 // home page variation
 //-----------------------------------------------------------------------------
 
