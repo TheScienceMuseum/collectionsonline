@@ -81,6 +81,23 @@ module.exports = ctx => {
     // can't work out why ctx is not defined on the explore page? but this seems safe to do.
     if (!ctx) ctx = { exploreCarousels: [] };
 
+    // Cells marked mobile-only (the Snap It promo) are dropped on desktop.
+    // Visual search needs a rear-facing camera, so the card would only lead
+    // somewhere unusable. Breakpoint matches the searchbox camera icon in
+    // components/_search.scss.
+    //
+    // Removed from the DOM rather than hidden with CSS: Flickity measures
+    // cells at init, so a display:none cell would still hold a zero-width
+    // slide and give a dead frame when paging with wrapAround. This runs
+    // before init, so Flickity never sees it. The trade-off is that
+    // resizing across the breakpoint won't add or remove the card until
+    // the next render — the SPA re-runs this on every home navigation.
+    if (window.matchMedia('(min-width: 64em)').matches) {
+      exploreCarouselel
+        .querySelectorAll('[data-mobile-only]')
+        .forEach(cell => cell.remove());
+    }
+
     ctx.exploreCarousels[index] = new Flickity(exploreCarouselel, {
       wrapAround: true,
       pageDots: false,

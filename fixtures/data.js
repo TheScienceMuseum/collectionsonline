@@ -182,10 +182,18 @@ module.exports = {
       collection: [
         {
           type: 'collection',
-          title: 'Snap It',
+          // The explanation has to live in the title: .explore-carousel
+          // hides card descriptions at <=580px (components/_carousel.scss),
+          // which is most of the range where this card is shown at all.
+          title: 'Snap It: search by photo',
+          description: 'Point your camera at an object to find something like it',
           alt: 'The Snap It search bar, showing the camera icon used to search by photo',
           figure: '/assets/img/home/collections/snapit.jpg',
-          link: '/scan'
+          link: '/scan',
+          // Camera-driven, so it's only offered where there's a usable
+          // rear-facing camera. Dropped from the carousel on desktop in
+          // client/lib/listeners/carousel.js.
+          mobileOnly: true
         },
         {
           type: 'collection',
