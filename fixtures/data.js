@@ -182,6 +182,13 @@ module.exports = {
       collection: [
         {
           type: 'collection',
+          title: 'Snap It',
+          alt: 'The Snap It search bar, showing the camera icon used to search by photo',
+          figure: '/assets/img/home/collections/snapit.jpg',
+          link: '/scan'
+        },
+        {
+          type: 'collection',
           title: 'Hawking Building Grid',
           figure: '/assets/img/home/collections/hawkins-building-thumb.jpg',
           link: '/group/c83918/hawking-building-freestanding-grid'
