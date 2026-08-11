@@ -156,7 +156,7 @@
       </div>
       <div class="explore-carousel__flickity" aria-label="{{this.title}} carousel">
         {{#each this.collection}}
-        <div class="explore-carousel__cell">
+        <div class="explore-carousel__cell"{{#if this.mobileOnly}} data-mobile-only{{/if}}>
           <a href="{{ this.link }}" aria-label="{{ this.title }}">
             <article class="resultcard resultcard--dark {{#if type}}resultcard--{{ this.type }}{{/if}}">
               <figure class="resultcard__figure">
@@ -164,7 +164,7 @@
               </figure>
               <div class="resultcard__info">
                 <h3 class="resultcard__title">{{ this.title }}</h3>
-                <p class="resultcard__description">{{ this.description }}</p>
+                {{#if this.description}}<p class="resultcard__description">{{ this.description }}</p>{{/if}}
               </div>
             </article>
           </a>
