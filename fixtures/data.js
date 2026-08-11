@@ -185,8 +185,8 @@ module.exports = {
           // The explanation has to live in the title: .explore-carousel
           // hides card descriptions at <=580px (components/_carousel.scss),
           // which is most of the range where this card is shown at all.
-          title: 'Snap It: search by photo',
-          description: 'Point your camera at an object to find something like it',
+          title: 'Snap It: Visual search',
+          description: 'Use your phone’s camera to find similar objects',
           alt: 'The Snap It search bar, showing the camera icon used to search by photo',
           figure: '/assets/img/home/collections/snapit.jpg',
           link: '/scan',
