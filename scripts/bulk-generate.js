@@ -17,7 +17,11 @@
 //   --limit <N>           Cap the number of subjects processed (useful for
 //                         smoke tests before a full run).
 //   --concurrency <N>     Number of parallel workers (default: 5).
-//   --min-analytics <N>   For es-threshold: min analytics count (default: 500).
+//   --min-analytics <N>   For es-threshold + es-thin-with-wikidata: min analytics count.
+//   --max-existing-chars <N>  For es-thin-with-wikidata: post-filter to records where
+//                             existing biography is shorter than N (default 500). Records
+//                             with zero existing content are also excluded (they typically
+//                             trip the insufficient_data gate and generate stubs anyway).
 //   --csv <path>          For csv-file: path to a CSV / plaintext list of IDs.
 //   --status <status>     For by-status: which status to pull (live / flagged
 //                         / hidden / insufficient_data).
@@ -138,6 +142,7 @@ function parseArgs (argv) {
     limit: null,
     concurrency: 5,
     minAnalytics: 500,
+    maxExistingChars: null,
     csvPath: null,
     status: null,
     useCache: true,
@@ -155,6 +160,7 @@ function parseArgs (argv) {
       case '--limit': opts.limit = parseInt(next, 10); i++; break;
       case '--concurrency': opts.concurrency = parseInt(next, 10); i++; break;
       case '--min-analytics': opts.minAnalytics = parseInt(next, 10); i++; break;
+      case '--max-existing-chars': opts.maxExistingChars = parseInt(next, 10); i++; break;
       case '--csv': opts.csvPath = next; i++; break;
       case '--status': opts.status = next; i++; break;
       case '--no-cache': opts.useCache = false; break;
@@ -185,7 +191,8 @@ function printUsage () {
   console.log('  --source <name>       Candidate source (default: es-threshold)');
   console.log('  --limit <N>           Cap subjects processed');
   console.log('  --concurrency <N>     Parallel workers (default: 5)');
-  console.log('  --min-analytics <N>   For es-threshold: min analytics (default: 500)');
+  console.log('  --min-analytics <N>   For es-threshold + es-thin-with-wikidata: min analytics count');
+  console.log('  --max-existing-chars <N>  For es-thin-with-wikidata: keep records where existing biography < N chars (default 500)');
   console.log('  --csv <path>          For csv-file: path to CSV / plaintext ID list');
   console.log('  --status <status>     For by-status: live / flagged / hidden / insufficient_data / admin_only');
   console.log('  --no-cache            Disable prompt caching');
