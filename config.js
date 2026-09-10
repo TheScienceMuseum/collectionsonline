@@ -65,6 +65,21 @@ module.exports = require('rc')('co', {
   // returns 404. Default false — enable in .corc / env only when the
   // feature is intentionally live.
   aiBiographyPublicFlagEnabled: process.env.AI_BIOGRAPHY_PUBLIC_FLAG_ENABLED === 'true',
+  // Kill switch for the public biography DISPLAY. When false, the public
+  // route (GET /ai/biography/:id) returns 204 for every valid ID, hiding
+  // all AI biographies from the site regardless of individual record
+  // status. The admin surface is unaffected (curators keep review access).
+  //
+  // Default TRUE so existing staging behaviour + normal operation are
+  // preserved on deploy. Explicit `false` is the emergency killswitch:
+  //   eb setenv AI_BIOGRAPHY_PUBLIC_DISPLAY_ENABLED=false
+  //
+  // Also useful pre-launch: deploy the code with the flag off, verify
+  // admin review of the batch, then flip the env var to true when
+  // ready to actually go live. Uses the `!== 'false'` idiom so the
+  // env var only kills when explicitly set to the string "false" —
+  // any other value (unset, "true", empty, "1") leaves display on.
+  aiBiographyPublicDisplayEnabled: process.env.AI_BIOGRAPHY_PUBLIC_DISPLAY_ENABLED !== 'false',
   // Named admin users — an object of { username: token } pairs. When
   // set, these take precedence over the shared adminToken for login.
   // Attributed usernames flow through to staff notes / flags / reviews

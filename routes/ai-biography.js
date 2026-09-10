@@ -32,6 +32,17 @@ function publicBiographyRoute (elastic, config) {
           return h.response({ error: 'Invalid ID format' }).code(400);
         }
 
+        // Public display kill switch. When AI_BIOGRAPHY_PUBLIC_DISPLAY_ENABLED
+        // is explicitly set to "false", every valid-ID request returns 204 —
+        // no AI biographies surface publicly regardless of individual record
+        // status. Admin surface is unaffected. Emergency kill:
+        //   eb setenv AI_BIOGRAPHY_PUBLIC_DISPLAY_ENABLED=false
+        // Also used pre-launch: deploy with flag off, review on admin, flip
+        // to unset (or "true") when actually going live. See config.js.
+        if (!config.aiBiographyPublicDisplayEnabled) {
+          return h.response({}).code(204);
+        }
+
         // Look up the cached biography and decide what to return:
         //   - living person AND feature-flag off → 204 (policy suppression)
         //   - hidden / insufficient_data         → 204 (don't show publicly)
