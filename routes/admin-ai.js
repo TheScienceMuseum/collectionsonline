@@ -696,8 +696,8 @@ module.exports = function (elastic, config) {
                   return used.has(tag) ? 'used' : 'unused';
                 }
                 return [
-                  { key: 'wikipedia',   label: 'wikipedia',   state: stateFor(q.wikipedia,   'wikipedia') },
-                  { key: 'odnb',        label: 'oxfordDNB',   state: stateFor(q.odnb,        'oxfordDNB') },
+                  { key: 'wikipedia', label: 'wikipedia', state: stateFor(q.wikipedia, 'wikipedia') },
+                  { key: 'odnb', label: 'oxfordDNB', state: stateFor(q.odnb, 'oxfordDNB') },
                   { key: 'gracesGuide', label: 'gracesGuide', state: stateFor(q.gracesGuide, 'gracesGuide') }
                 ];
               })(),
