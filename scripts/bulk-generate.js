@@ -327,6 +327,15 @@ async function main () {
   const ruleHitPerSubject = [];
 
   const counts = { generated: 0, skippedByAssessment: 0, alreadyExists: 0, errors: 0, abortedBeforeStart: 0 };
+  // Bucket by the ACTUAL persisted status. Independent of which code path
+  // reached the save: pre-flight assessment can save insufficient_data or
+  // admin_only, AND the writer-completed path can also land at
+  // insufficient_data (low writer confidence) or admin_only (existing
+  // catalogue prevails). Bucketing by the outcome field alone undercounts
+  // insufficient_data landings because the writer-completed → low-confidence
+  // crossover is logged as outcome='generated' but persisted as
+  // status='insufficient_data'.
+  const byStatus = { live: 0, insufficient_data: 0, admin_only: 0, other: 0 };
   const circuit = { authFailCount: 0, aborted: false, firstAuthError: null };
   const tokens = {
     writerInput: 0,
@@ -440,6 +449,11 @@ async function main () {
       });
       if (result.skippedByAssessment) counts.skippedByAssessment++;
       else counts.generated++;
+      if (result.status && Object.prototype.hasOwnProperty.call(byStatus, result.status)) {
+        byStatus[result.status]++;
+      } else if (result.status) {
+        byStatus.other++;
+      }
       if (result.writer) {
         tokens.writerInput += result.writer.inputTokens || 0;
         tokens.writerOutput += result.writer.outputTokens || 0;
@@ -553,14 +567,26 @@ async function main () {
   console.log('  batch-id:            ' + batchId);
   console.log('  log:                 ' + logPath);
   console.log('  total candidates:    ' + candidateIds.length);
-  console.log('  generated:           ' + counts.generated);
-  console.log('  insufficient data:   ' + counts.skippedByAssessment);
+  console.log('  writer ran:          ' + counts.generated);
+  console.log('  pre-flight skipped:  ' + counts.skippedByAssessment);
   console.log('  already existed:     ' + counts.alreadyExists);
   console.log('  errors:              ' + counts.errors);
   if (counts.abortedBeforeStart > 0) {
     console.log('  aborted (breaker):   ' + counts.abortedBeforeStart);
   }
   console.log('  elapsed:             ' + totalSec + 's');
+  console.log('');
+  // Persisted-status breakdown. Independent of the writer-ran / pre-flight
+  // split above — a writer-ran subject can still land as insufficient_data
+  // (low writer confidence) or admin_only (existing catalogue prevails).
+  // Sum here == generated + skippedByAssessment when everything reached DDB.
+  console.log('=== persisted status ===');
+  console.log('  live:                ' + byStatus.live);
+  console.log('  insufficient_data:   ' + byStatus.insufficient_data);
+  console.log('  admin_only:          ' + byStatus.admin_only);
+  if (byStatus.other > 0) {
+    console.log('  other:               ' + byStatus.other);
+  }
   console.log('');
   console.log('=== token usage ===');
   console.log('  writer input:        ' + tokens.writerInput.toLocaleString());

@@ -159,14 +159,30 @@ Outcome values:
 
 | Outcome | Meaning |
 |---|---|
-| `generated` | Writer + reviewer succeeded; BIOGRAPHY item saved as `live` or `insufficient_data`. |
-| `insufficient_data` | Pre-flight assessment failed; Claude not called; item saved with skip reason. |
+| `generated` | Writer + reviewer completed; BIOGRAPHY item saved. The final persisted `status` may be `live`, `insufficient_data` (writer self-reported low confidence), or `admin_only` (existing catalogue description prevails). Check the `status` field for the actual landing. |
+| `insufficient_data` | Pre-flight assessment failed; Claude not called; item saved with skip reason and `status: insufficient_data`. |
+| `admin_only` | Pre-flight bailed because the existing catalogue description exceeds the AI-generation threshold; item saved with `status: admin_only`. |
 | `skip_already_exists` | Subject had a BIOGRAPHY item and `--force` was not set. |
 | `error` | Writer or store threw; `error` field carries the message. |
 
 Re-running the script with the same source is safe (idempotent). Point a
 future `--source csv-file --csv failed-ids.csv` at the log's error lines to
 retry just the failures.
+
+### Summary output
+
+At end-of-run the script prints two independent breakdowns:
+
+- **Code-path counters** — `writer ran`, `pre-flight skipped`, `already existed`,
+  `errors`. `writer ran` is the cost-relevant number (writer + reviewer tokens
+  were spent on each of these subjects).
+- **Persisted status** — `live`, `insufficient_data`, `admin_only`. This bucket
+  reflects what actually landed in DynamoDB, and is independent of which code
+  path arrived. A writer-ran subject can still land as `insufficient_data` (low
+  writer confidence) or `admin_only` (existing catalogue prevails), so the two
+  breakdowns will disagree whenever those crossovers happen — that's expected.
+  The persisted-status bucket is authoritative for "how many records ended up
+  as X".
 
 ### Cost expectations
 
