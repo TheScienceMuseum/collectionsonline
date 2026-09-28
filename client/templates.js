@@ -613,8 +613,8 @@ module.exports = {
   about: Handlebars.compile(
     Fs.readFileSync('./templates/pages/about.html', 'utf8')
   ),
-  aboutAi: Handlebars.compile(
-    Fs.readFileSync('./templates/pages/about-ai.html', 'utf8')
+  aiBiographiesPage: Handlebars.compile(
+    Fs.readFileSync('./templates/pages/ai-biographies.html', 'utf8')
   ),
   explore: Handlebars.compile(
     Fs.readFileSync('./templates/pages/explore.html', 'utf8')

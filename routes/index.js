@@ -24,7 +24,7 @@ module.exports = (elastic, config) => [
   require('./embed').rotational(elastic, config),
   require('./embed').rotationalDirect(),
   require('./about')(config),
-  require('./about-ai')(config),
+  require('./ai-biographies-page')(config),
   require('./explore')(config),
   require('./stats')(elastic, config),
   require('./categories')(elastic, config),
