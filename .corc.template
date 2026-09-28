@@ -27,5 +27,25 @@
   "___token_comment": "Secret token for /clearcache/* and /listcache/* admin routes.",
   "___token_generate": "Generate with: node -e \"console.log(require('crypto').randomBytes(16).toString('hex'))\"",
   "___token_envvar": "In production set the CACHE_CLEAR_TOKEN environment variable instead.",
-  "cacheClearToken": ""
+  "cacheClearToken": "",
+
+  "___ai_comment": "AI Biography generation settings. Requires DynamoDB and an Anthropic API key.",
+  "dynamodb": {
+    "region": "eu-west-1",
+    "endpoint": "http://localhost:8100",
+    "tableName": "collectionsonline-ai"
+  },
+  "aiBiographyEnabled": false,
+  "anthropicApiKey": "",
+  "___admin_comment": "Token for /admin/ai routes. Falls back to cacheClearToken if not set.",
+  "adminToken": "",
+  "___bio_thresholds_comment": "Skip generation if existing description > maxExistingChars; suppress original if < suppressExistingChars.",
+  "aiBiographyMaxExistingChars": 500,
+  "aiBiographySuppressExistingChars": 50,
+
+  "___v2_pipeline_comment": "v2 source-tagged pipeline (see lib/ai/generate-source-tagged-biography.js). Publishing level 0-5 filters which source tags publish; 3 is the safe default (museum + wikidata + inferred + contextualising). Per-generation review defaults on (Sonnet, ~£0.001-0.002/record). External validation off by default — enables the on-demand 'Verify externally' button.",
+  "aiBiographyPublishingLevel": 3,
+  "aiBiographyPerGenerationReviewEnabled": true,
+  "aiBiographyExternalValidationEnabled": false,
+  "aiBiographyExternalValidationMaxSources": 3
 }

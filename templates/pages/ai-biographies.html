@@ -1,0 +1,184 @@
+<div id="main-page">
+  {{> global/global-header}}
+  {{> global/search-main reduced="reduced"}}
+
+  <main id="main-content">
+    <div class="o-container o-grid o-grid--3cols@m" style="margin-top: 2rem">
+      <div class="o-grid__span2@m section__content o-blocks">
+        <h1 style="margin-bottom: 1.5rem">AI-GENERATED BIOGRAPHIES</h1>
+
+        <p>
+          Meet our new AI-generated biographies: a pilot exploring how carefully controlled AI can help visitors
+          discover the people, companies and organisations behind the objects in our collection.
+        </p>
+
+        <p>
+          Across Collection Online, thousands of records contain only the barest details about a person or
+          organisation, a date, a role, or a single line. This pilot asks whether AI, used carefully and
+          transparently, can bring together knowledge already held across our object records to give visitors and
+          researchers a clearer starting point: who these people and organisations were, how they connect to the
+          objects we care for, and why those connections matter.
+        </p>
+
+        <p>
+          These biographies are clearly labelled wherever they appear. They sit alongside short curator-written
+          entries when we have enough underlying data to write something meaningful and are not generated or shown
+          where a curator has already written a fuller biography.
+        </p>
+
+        <p>
+          This is a pilot. We are testing it in public, labelling the biographies clearly and listening to feedback
+          so we can learn where AI can responsibly improve access to museum collections, where it falls short, and
+          what role it should, or should not, play in future. By doing this carefully and openly, SMG is helping
+          put the museum sector at the forefront of the discussion about AI, not as a novelty, but as a practical,
+          transparent way to make collections more useful, discoverable and connected.
+        </p>
+
+        <h2>Why we're doing this</h2>
+
+        <p>
+          The SMG collection contains records for more than 25,000 people and organisations. Many are sparse, an
+          occupation, a date, perhaps a birthplace, while much of the richer context we hold about them lives
+          elsewhere on the object pages they are connected to. This means visitors often have to move between
+          individual object records to understand why a person or company appears in the collection at all.
+          Writing a curator-authored biography for every record would take many years of specialist work, so this
+          pilot tests whether AI can bring existing collection knowledge together in a useful, transparent and
+          proportionate way.
+        </p>
+
+        <p>
+          We think an AI-generated biography, grounded in our own data, especially in the information already held
+          on existing records and supplemented by a small number of trusted third party sources such as Wikidata
+          and Wikipedia, can give visitors a more useful starting point. It can explain why a person, company or
+          organisation appears in Collection Online, show how they connect to the objects we hold, and give those
+          objects more context than a sparse name-and-date record can provide.
+        </p>
+
+        <p>
+          For visitors, the benefit is hopefully more routes into the collection, more context for the objects
+          they are looking at and a better chance of discovering connections they might otherwise miss.
+        </p>
+
+        <p>
+          Crucially, we are not simply reproducing biography text held elsewhere. Each biography is shaped around
+          the objects we actually hold. It explains why a particular person, company or organisation matters in
+          the context of our collection, how they connect to the things we care for. The aim is not to simply
+          reproduce a formal biography on our website but to show the specific relationship between that person or
+          organisation and the objects held by the Science Museum Group.
+        </p>
+
+        <h2>How the biographies are generated</h2>
+
+        <p>
+          Each biography is produced by an AI model drawing on:
+        </p>
+
+        <ul>
+          <li>Our own object records (the objects this person or organisation made, owned, or is linked to).</li>
+          <li>The structured biographical data we already hold (dates, places, occupation, nationality).</li>
+          <li>
+            A select number of fields from Wikidata, a publicly editable knowledge base of structured, sourced
+            facts, and Wikipedia. While we acknowledge that Wikipedia is susceptible to editorial concerns, we
+            require that the model itself is also supportive of these claims, which helps act as a guardrail
+            against malicious Wikipedia edits. Wikipedia itself also has extensive measures in place to deal with
+            misinformation.
+          </li>
+          <li>Priority is given to museum data in all cases.</li>
+        </ul>
+
+        <p>
+          The AI is instructed to draw its substantive biographical claims from those sources rather than from its
+          general training data. Where it makes links to other objects in the collection, those links are checked
+          against our catalogue before the biography is saved, and unverifiable links are removed. We keep a
+          record of every biography: which data informed it, which prompt was used, which model produced it, and
+          when it was generated.
+        </p>
+
+        <h2>Safeguards</h2>
+
+        <p>
+          AI-generated text can be wrong. We've built the system with this in mind:
+        </p>
+
+        <ul>
+          <li>
+            <strong>Grounded in our data.</strong> Biographies are built from our own collection records plus
+            additional data from Wikidata and Wikipedia. The model is instructed to rely on those sources for the
+            substantive facts of a person's life and work, rather than drawing freely on its training data.
+          </li>
+          <li>
+            <strong>Link checking.</strong> Any link in the biography to a collection object or person is checked
+            against our catalogue; unverifiable links are removed before publication.
+          </li>
+          <li>
+            <strong>Minimum data threshold.</strong> If the model indicates it doesn't have enough information to
+            write a meaningful summary, nothing is published for that record.
+          </li>
+          <li>
+            <strong>Flagging.</strong> Every AI-generated biography carries a &ldquo;Report an issue with this
+            summary&rdquo; option, so visitors can flag a problem directly.
+          </li>
+          <li>
+            <strong>Transparency.</strong> Every biography is labelled as AI-generated, and we publish this page
+            explaining what we're doing and why.
+          </li>
+          <li>
+            <strong>Curatorial oversight.</strong> Throughout the development of the pilot our senior curators
+            have reviewed a range of generated biographies to help us improve the tone and accuracy of the
+            responses it generates.
+          </li>
+          <li>
+            <strong>Audit trail.</strong> For every biography, we log the prompt and model version used to
+            generate it, alongside the source data it drew on and the date it was produced. This gives us a full
+            audit trail we can revisit if a summary is ever questioned.
+          </li>
+        </ul>
+
+        <h3>What this isn't</h3>
+
+        <ul>
+          <li>
+            <strong>Not a replacement for curatorial work.</strong> Curator-authored biography records remain the
+            primary source of scholarship on our collection. AI summaries are a supplement for biography records
+            that would otherwise have almost nothing.
+          </li>
+          <li>
+            <strong>Not part of our core collection management data.</strong> These biographies are not stored in
+            our core collection management system. This is purely a Collections Online feature that we'll review
+            on a rolling basis and can switch off at any point.
+          </li>
+        </ul>
+
+        <p style="margin-bottom: 2rem">
+          For broader comments on this pilot, contact
+          <a href="mailto:info@sciencemuseumgroup.ac.uk?subject=AI%20Biographies">info@sciencemuseumgroup.ac.uk</a>
+          with &ldquo;AI Biographies&rdquo; in the subject line.
+        </p>
+      </div>
+
+      <aside aria-labelledby="aside-ai-biographies">
+        <div class="panel panel__text">
+          <h2 id="aside-ai-biographies">Report an issue</h2>
+          <p>
+            Every AI-generated biography has a &ldquo;Report an issue with this summary&rdquo; link. Use it to flag
+            inaccuracies, tone or anything else that looks wrong.
+          </p>
+          <p>
+            For broader comments on the pilot, email
+            <a href="mailto:info@sciencemuseumgroup.ac.uk?subject=AI%20Biographies">info@sciencemuseumgroup.ac.uk</a>
+            with &ldquo;AI Biographies&rdquo; in the subject line.
+          </p>
+        </div>
+        <div class="panel panel__text">
+          <h2>Related</h2>
+          <ul class="related-document">
+            <li>{{> global/icon i="external" }} <a href="/about">About the online collection</a></li>
+            <li>{{> global/icon i="external" }} <a href="https://www.sciencemuseumgroup.org.uk/our-work/open-for-all/">Open for All</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  {{> global/global-footer}}
+</div>

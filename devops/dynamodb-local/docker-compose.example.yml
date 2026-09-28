@@ -1,0 +1,54 @@
+# Local DynamoDB — example compose template.
+#
+# This file is the committed template. Copy it into your gitignored
+# development/ folder, then bring it up:
+#
+#   cp devops/dynamodb-local/docker-compose.example.yml development/docker-compose.yml
+#   docker compose -f development/docker-compose.yml up -d
+#
+# Or run directly from this committed location (read-only template, fine
+# for clean defaults):
+#
+#   docker compose -f devops/dynamodb-local/docker-compose.example.yml up -d
+#
+# Tweak the development/ copy as needed (different ports, additional
+# services) — that copy is per-developer and stays out of git.
+#
+# Once the container is running, create the AI biographies table:
+#
+#   AWS_ACCESS_KEY_ID=local AWS_SECRET_ACCESS_KEY=local \
+#     ./devops/dynamodb-local/create-table.sh
+#
+# See devops/dynamodb-local/README.md for full setup notes including the
+# named-volume gotcha that wipes data on docker compose down -v.
+
+# Lock the project name so the named volume stays
+# `collectionsonline_dynamodb-data` regardless of where this file is run
+# from. Compose's default project name comes from the parent directory —
+# moving the file would otherwise spawn a fresh volume and silently lose
+# all data. Set this once, never think about it again.
+name: collectionsonline
+
+services:
+  dynamodb-local:
+    image: amazon/dynamodb-local:latest
+    container_name: collectionsonline-dynamodb
+    # Run as root to avoid a known permission issue: the image's default
+    # user `dynamodblocal` (UID 1000) cannot write SQLite files into
+    # `/home/dynamodblocal/data` because Docker creates the named-volume
+    # mount point as `root:root`. The JVM then fails with "[14] unable to
+    # open database file" and the SQLiteQueue keeps reincarnating.
+    # Running as root sidesteps this — the container is sandboxed anyway,
+    # and this is local-dev infrastructure, not a production surface.
+    # Alternative fixes (init container chown, bind mount with host perms)
+    # are more work for the same outcome.
+    user: root
+    ports:
+      - "8100:8000"
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data"
+    volumes:
+      - dynamodb-data:/home/dynamodblocal/data
+    restart: unless-stopped
+
+volumes:
+  dynamodb-data:

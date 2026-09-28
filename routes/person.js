@@ -37,6 +37,7 @@ module.exports = (elastic, config) => ({
             return Boom.notFound();
           }
 
+          console.error('Person route error for', request.params.id, '-', err && err.stack ? err.stack : err);
           return Boom.serverUnavailable('unavailable');
         }
       } else {

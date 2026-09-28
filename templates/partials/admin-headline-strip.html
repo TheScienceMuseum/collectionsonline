@@ -1,0 +1,24 @@
+{{!-- Four compact metric cards. Used at the top of the admin list + the
+     dashboard page. Each card is a link to the relevant drilldown. --}}
+<div class="headline-strip">
+  <a class="headline-card{{#if stats.flags.pendingReports}} headline-card--attention{{/if}}" href="/admin/ai?status=flagged" title="Inbox — public reports awaiting staff review, scoped to records still visible on the public site. Reports on records that have since been hidden (or are insufficient_data) drop out of this count, but are still visible on the record itself from the Hidden tab.">
+    <div class="headline-card__label">Pending reports</div>
+    <div class="headline-card__value">{{stats.flags.pendingReports}}</div>
+    <div class="headline-card__hint">across {{stats.flags.pendingAcrossRecords}} {{#isequal stats.flags.pendingAcrossRecords 1 this}}record{{else}}records{{/isequal}}</div>
+  </a>
+  <a class="headline-card" href="/admin/ai?status=live" title="Records with status=live that are actually visible on the public site (excludes any suppressed by the living-person policy). Hint below breaks down the two routes to invisibility: manually hidden (status=hidden) vs hidden from view by the living-person policy.">
+    <div class="headline-card__label">Live biographies</div>
+    <div class="headline-card__value">{{stats.totals.livePublic}}</div>
+    <div class="headline-card__hint" title="{{stats.totals.hidden}} record(s) with status=hidden · {{stats.totals.liveSuppressed}} live record(s) hidden by living-person policy">{{#if stats.totals.hidden}}{{stats.totals.hidden}} hidden from site{{/if}}{{#if stats.totals.hidden}}{{#if stats.totals.liveSuppressed}} / {{/if}}{{/if}}{{#if stats.totals.liveSuppressed}}{{stats.totals.liveSuppressed}} hidden from view{{/if}}{{#unless stats.totals.hidden}}{{#unless stats.totals.liveSuppressed}}all publicly visible{{/unless}}{{/unless}}</div>
+  </a>
+  <a class="headline-card" href="/admin/ai/dashboard" title="Sum of per-record costs for biographies generated in the current calendar month">
+    <div class="headline-card__label">Spend this month</div>
+    <div class="headline-card__value">{{stats.costs.thisMonthFormatted}}</div>
+    <div class="headline-card__hint">{{stats.costs.last30DaysFormatted}} last 30 days</div>
+  </a>
+  <a class="headline-card" href="/admin/ai/dashboard" title="New biographies generated in the last 7 days">
+    <div class="headline-card__label">New this week</div>
+    <div class="headline-card__value">+{{stats.activity.thisWeek}}</div>
+    <div class="headline-card__hint">+{{stats.activity.lastWeek}} last week</div>
+  </a>
+</div>

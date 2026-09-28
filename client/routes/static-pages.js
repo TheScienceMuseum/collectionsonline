@@ -28,4 +28,5 @@ function renderStaticPage (templateName, extraData) {
 module.exports = function (page) {
   page('/explore', renderStaticPage('explore', { explore: require('../../fixtures/explore'), titlePage: 'Explore | Science Museum Group Collection' }));
   page('/about', renderStaticPage('about', { titlePage: 'About | Science Museum Group Collection' }));
+  page('/ai-biographies', renderStaticPage('aiBiographiesPage', { titlePage: 'About AI-generated biographies | Science Museum Group Collection' }));
 };

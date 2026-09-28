@@ -545,6 +545,14 @@ Handlebars.registerPartial(
   )
 );
 
+Handlebars.registerPartial(
+  'records/ai-biography',
+  Fs.readFileSync(
+    './templates/partials/records/ai-biography.html',
+    'utf8'
+  )
+);
+
 // Routes
 module.exports = {
   404: Handlebars.compile(
@@ -605,10 +613,16 @@ module.exports = {
   about: Handlebars.compile(
     Fs.readFileSync('./templates/pages/about.html', 'utf8')
   ),
+  aiBiographiesPage: Handlebars.compile(
+    Fs.readFileSync('./templates/pages/ai-biographies.html', 'utf8')
+  ),
   explore: Handlebars.compile(
     Fs.readFileSync('./templates/pages/explore.html', 'utf8')
   ),
   scan: Handlebars.compile(
     Fs.readFileSync('./templates/pages/scan.html', 'utf8')
+  ),
+  aiBiography: Handlebars.compile(
+    Fs.readFileSync('./templates/partials/records/ai-biography.html', 'utf8')
   )
 };

@@ -24,6 +24,7 @@ module.exports = (elastic, config) => [
   require('./embed').rotational(elastic, config),
   require('./embed').rotationalDirect(),
   require('./about')(config),
+  require('./ai-biographies-page')(config),
   require('./explore')(config),
   require('./stats')(elastic, config),
   require('./categories')(elastic, config),
@@ -41,5 +42,7 @@ module.exports = (elastic, config) => [
         require('./scan').health(elastic, config)
       ]
     : []),
-  ...require('./cache-admin')()
+  ...require('./cache-admin')(),
+  ...require('./ai-biography')(elastic, config),
+  ...require('./admin-ai')(elastic, config)
 ];

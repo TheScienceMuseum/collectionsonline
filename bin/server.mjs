@@ -38,6 +38,17 @@ createServer(elastic, config, async (err, ctx) => {
     console.warn('Cache unavailable at startup, running without cache:', err.message);
   }
 
+  // Initialise DynamoDB clients for AI biographies.
+  try {
+    const dynamo = require('../lib/ai/dynamo');
+    const flagStore = require('../lib/ai/flag-store');
+    dynamo.init(config);
+    flagStore.init(config);
+    console.log('DynamoDB connected:', dynamo.isReady(), '· flag-store:', flagStore.isReady());
+  } catch (err) {
+    console.warn('DynamoDB unavailable, AI biographies will not be persisted:', err.message);
+  }
+
   // Pre-warm the feed cache in the background so that article requests are
   // served from Redis rather than triggering live fetches per-request.
   // Runs sequentially (one endpoint at a time) to avoid triggering Cloudflare

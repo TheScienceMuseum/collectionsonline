@@ -2,6 +2,13 @@
 .claude
 CLAUDE.md
 
+# Internal-only docs (not for publication in the public repo).
+# Drop briefing docs, architecture write-ups, curator training
+# material, prompt-tuning notes, etc. here — nothing under this
+# directory is tracked. The `docs/` folder remains for public-safe
+# technical documentation.
+internal-docs/
+
 # OSX
 .DS_Store
 
@@ -63,6 +70,7 @@ public/assets/icons/*
 
 # Project configuration
 .corc
+.corc.batch
 
 #database test
 test/fixtures/elastic-responses/database.json
@@ -75,9 +83,29 @@ test/fixtures/elastic-responses/example-*
 # WAF rules (environment-specific, not deployed with app)
 /waf-rules
 
+# Local DynamoDB compose file — per-developer working copy. The
+# committed template is `devops/dynamodb-local/docker-compose.example.yml`;
+# copy that to `docker-compose.yml` in the same folder and tweak. The
+# generic filename means `cd devops/dynamodb-local && docker compose up
+# -d` just works (compose auto-finds docker-compose.yml in cwd).
+/devops/dynamodb-local/docker-compose.yml
+
 # zips
 builds/*
 !builds/.gitkeep
+
+# Bulk-generate batch logs — one JSONL per run, written to repo root by
+# scripts/bulk-generate.js. Local audit artefact, not shared code.
+bulk-regen-batch-*.jsonl
+
+# Holdout regen logs — one JSONL per run, written by scripts/holdout-report.js
+holdout-report-*.jsonl
+
+# Parse-failure debug dumps — written by regenerate-biography.js when
+# AI_BIOGRAPHY_DEBUG_PATH is set. Defensive: if someone runs the
+# debug hook without pointing the env var at a scratchpad dir, these
+# land in project root. Local diagnostic artefact, not shared code.
+parse-failed-*.json
 
 # Visual search build artefacts (large; uploaded manually to /models/ on the CDN)
 scripts/visual-search-build/out/

@@ -1,0 +1,2004 @@
+{{!-- Entity-chip icon sprite. One inline SVG at the top of the page
+     defines <symbol> paths for each entity category; every citation /
+     related-object chip references them with <use xlink:href="#entity-…">.
+     Paths taken verbatim from public/assets/icons/{people,objects,
+     documents,external}.svg so the admin UI matches the main site's
+     iconography exactly. The personData ("museum field") icon is
+     bespoke — a minimal columned facade in the same 24×24 grid.
+     Sprite is aria-hidden and display:none — never rendered directly. --}}
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;" aria-hidden="true">
+  <symbol id="entity-icon-person" viewBox="0 0 24 24"><path fill="currentColor" d="M8.6,7.585 L8.6,9.415 C8.6,11.037 10.089,12.4 12,12.4 C13.904,12.4 15.4,11.029 15.4,9.415 L15.4,7.585 C15.4,5.963 13.911,4.6 12,4.6 C10.096,4.6 8.6,5.971 8.6,7.585 Z M7,7.585 C7,5.053 9.244,3 12,3 C14.761,3 17,5.043 17,7.585 L17,9.415 C17,11.947 14.756,14 12,14 C9.239,14 7,11.957 7,9.415 L7,7.585 Z M4.111,20 C4.745,17.162 8.036,15 12,15 C15.964,15 19.255,17.162 19.889,20 L18.226,20 C17.564,18.118 15.086,16.6 12,16.6 C8.914,16.6 6.436,18.118 5.774,20 L4.111,20 L4.111,20 Z"/></symbol>
+  <symbol id="entity-icon-object" viewBox="0 0 60 60"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M49.4855 18.75V41.25L30 52.5L10.5144 41.25V18.75L30 7.5L49.4855 18.75ZM43.6506 20L30 12.1188L16.3494 20L30 27.8812L43.6506 20ZM14.5144 23.5594V38.9406L28.014 46.7346V31.3533L14.5144 23.5594ZM32.014 46.7184L45.4855 38.9406V23.2815L32.014 31.0594V46.7184Z"/></symbol>
+  <symbol id="entity-icon-document" viewBox="0 0 24 24"><path fill="currentColor" d="M10.4 7.2v1.6H5.6v9.6h9.6v-4.8h1.6V20H4V7.2h6.4zm8-.469L10.566 14.566 9.434 13.434 17.269 5.6H12V4h8v8h-1.6V6.731z"/></symbol>
+  <symbol id="entity-icon-external" viewBox="0 0 24 24"><path fill="currentColor" d="M10.4 7.2v1.6H5.6v9.6h9.6v-4.8h1.6V20H4V7.2h6.4zm8-.469L10.566 14.566 9.434 13.434 17.269 5.6H12V4h8v8h-1.6V6.731z"/></symbol>
+  <symbol id="entity-icon-personData" viewBox="0 0 24 24"><path fill="currentColor" d="M3 20h18v1.5H3zM3 9.5h18V11H3zM5 12.5h1.5v6H5zm4 0h1.5v6H9zm4 0h1.5v6H13zm4 0h1.5v6H17zM12 3l9 5v1H3V8z"/></symbol>
+  <symbol id="entity-icon-wikidata" viewBox="0 0 24 24"><rect x="3" y="6" width="2" height="12" fill="currentColor"/><rect x="7" y="4" width="2" height="14" fill="currentColor"/><rect x="11" y="8" width="2" height="10" fill="currentColor"/><rect x="15" y="5" width="2" height="13" fill="currentColor"/><rect x="19" y="7" width="2" height="11" fill="currentColor"/></symbol>
+  {{!-- Wikipedia: the "W" mark. Two Vs joined at the middle. --}}
+  <symbol id="entity-icon-wikipedia" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M2.5 5.5 L7 18 L11.5 8.5 L16 18 L20.5 5.5 M6.5 5.5 L8 5.5 M15 5.5 L16.5 5.5 M11 5.5 L12 5.5 M19 5.5 L20.5 5.5"/></symbol>
+  {{!-- Oxford DNB: a book with a "D" mark, hinting at peer-reviewed scholarship. --}}
+  <symbol id="entity-icon-oxfordDNB" viewBox="0 0 24 24"><path fill="currentColor" d="M5 4h11a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2V4zm2 2v12h9V6H7zm2 2h5v1.5H9V8zm0 3h5v1.5H9V11zm0 3h3v1.5H9V14z"/></symbol>
+  {{!-- Grace's Guide: a cog + book, industrial-history wiki. --}}
+  <symbol id="entity-icon-gracesGuide" viewBox="0 0 24 24"><path fill="currentColor" d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 1.6a2.4 2.4 0 1 1 0 4.8 2.4 2.4 0 0 1 0-4.8zM11.2 3h1.6l.4 1.9 1.4.6 1.6-1.1 1.1 1.1-1.1 1.6.6 1.4 1.9.4v1.6l-1.9.4-.6 1.4 1.1 1.6-1.1 1.1-1.6-1.1-1.4.6-.4 1.9h-1.6l-.4-1.9-1.4-.6-1.6 1.1-1.1-1.1 1.1-1.6-.6-1.4L3 12.8v-1.6l1.9-.4.6-1.4-1.1-1.6 1.1-1.1 1.6 1.1 1.4-.6L11.2 3z"/></symbol>
+  {{!-- Loading spinner used on submit-in-flight buttons (Regenerate,
+       Generate for URL). CSS animation rotates the ring; the gap in
+       the arc gives the visual sense of motion. --}}
+  <symbol id="icon-spinner" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" d="M12 3a9 9 0 1 1-6.36 2.64"/></symbol>
+</svg>
+
+{{#if notFound}}
+{{#if generating}}
+{{!-- Redirected here from POST /admin/ai/generate — runRegenerate is running
+     in the background. Meta-refresh polls every 5s; when the BIOGRAPHY item
+     lands in DynamoDB, the reload falls through to the normal detail view. --}}
+<meta http-equiv="refresh" content="5">
+<div style="margin-bottom: 1rem;">
+  <a href="/admin/ai" class="text-meta">&larr; Back to list</a>
+</div>
+<h2 style="margin-bottom: 0.5rem;">Generating biography for {{candidateId}}…</h2>
+<div class="detail-section" style="background: #fbf9f4; border-left: 3px solid #c87a1e; padding: 0.9rem 1.1rem; border-radius: 3px;">
+  <p style="margin: 0 0 0.5rem 0;"><strong>Please wait.</strong> The writer usually takes 60&ndash;90 seconds (Haiku 4.5 with extended thinking). This page refreshes every 5s until the biography lands.</p>
+  <p class="text-meta" style="margin: 0;">You can safely close this tab &mdash; generation continues in the background. Return to <code>/admin/ai/{{candidateId}}</code> to see the result.</p>
+</div>
+{{else}}
+<div style="margin-bottom: 1rem;">
+  <a href="/admin/ai" class="text-meta">&larr; Back to list</a>
+</div>
+<div class="admin-banner">No AI biography for <code>{{candidateId}}</code> yet.</div>
+<div class="detail-section" style="margin-top: 1rem;">
+  <p>This record hasn't been generated. If it's a valid <code>agent</code> record in Elasticsearch, you can seed one now &mdash; the writer runs in the background and the page refreshes when the result lands.</p>
+  <form method="POST" action="/admin/ai/generate" style="display: inline;">
+    <input type="hidden" name="input" value="{{candidateId}}">
+    <button type="submit" class="btn btn--primary">Generate biography</button>
+  </form>
+  <a href="/admin/ai" class="btn btn--secondary" style="margin-left: 0.5rem;">Back to list</a>
+</div>
+{{/if}}
+{{else}}
+
+<div style="margin-bottom: 1rem;">
+  <a href="/admin/ai">&larr; Back to list</a>
+</div>
+
+{{!-- Title + status badge in a flex row so the pill is vertically
+      centred against the heading rather than dropping to its baseline.
+      The .badge classes are kept here (rather than swapping to .pill)
+      because biography status colour mapping is well-established and
+      mirrored in the list view — uniform across the admin. --}}
+<div class="title-with-status">
+  <h2>{{record.personName}}</h2>
+  {{#isequal record.publicVisibility "hidden" this}}
+    <span class="badge badge--{{record.status}} badge--restricted" title="Stored status is {{record.status}} — biography is generated normally, but the public site suppresses it while aiBiographyIncludeLiving is off.">{{record.status}}</span>
+  {{else}}
+    <span class="badge badge--{{record.status}}">{{record.status}}</span>
+  {{/isequal}}
+</div>
+
+{{#if error}}
+<div class="admin-banner admin-banner--warn">Error: {{error}}</div>
+{{/if}}
+
+{{!-- Regeneration-in-progress banner. Set by the detail handler when
+      the URL carries ?regenerating=1&since=<ms> AND the biography's
+      generatedAt is still older than `since` — i.e. the async writer
+      hasn't landed yet. Meta-refresh polls every 5s; on the poll that
+      catches the fresh write, the handler sets regenerating=false and
+      the normal page renders. This mirrors the notFound + generating
+      pattern used by POST /admin/ai/generate, but for records that
+      already exist. --}}
+{{#if regenerating}}
+<meta http-equiv="refresh" content="5">
+<div class="admin-banner admin-banner--warn" style="display: flex; align-items: center; gap: 0.75rem;">
+  <span class="admin-spinner" aria-hidden="true"></span>
+  <div>
+    <strong>Regenerating biography…</strong>
+    Usually 60–90 seconds (Haiku 4.5 with extended thinking). This page
+    refreshes every 5s until the new biography lands. Safe to close the
+    tab — the writer keeps running in the background.
+  </div>
+</div>
+{{/if}}
+
+
+{{#if publicReports}}
+<div id="public-reports" style="background: #fbf9f4; border: 1px solid #c87a1e; border-radius: 6px; padding: 1rem 1.25rem; margin: 0 0 1.25rem 0;">
+  <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap;">
+    <h3 style="margin: 0; font-size: 1rem; color: #2a2a2a;">Public reports</h3>
+    {{#if publicReports.pendingFlags}}
+      <div class="text-meta text-warn"><strong>{{publicReports.pendingFlags}} pending</strong></div>
+    {{else}}
+      <div class="text-meta">no pending reports</div>
+    {{/if}}
+  </div>
+
+  {{#if publicReports.pendingCounts.length}}
+  <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem; flex-wrap: wrap; font-size: 0.85rem;">
+    {{#each publicReports.pendingCounts}}
+      <span style="background: #f5e2e2; border: 1px solid #9c5050; border-radius: 3px; padding: 0.15rem 0.5rem; color: #2a2a2a;">
+        {{this.label}} · <strong>{{this.count}}</strong>
+      </span>
+    {{/each}}
+  </div>
+  {{/if}}
+
+  {{#if publicReports.pendingFromPreviousBio}}
+  <div style="margin-top: 0.75rem; padding: 0.5rem 0.75rem; background: rgba(204, 153, 102, 0.08); border: 1px solid rgba(204, 153, 102, 0.25); border-radius: 3px; font-size: 0.8rem; color: #9c5a16;">
+    ⚠ Some pending reports were submitted against an earlier biography version. The current biography may or may not address them — check the content before marking as reviewed.
+  </div>
+  {{/if}}
+
+  {{#if publicReports.pendingFlags}}
+  <div style="margin-top: 0.75rem;">
+    <form method="POST" action="/admin/ai/{{record.PK}}/flags/reviewed" style="display: inline;">
+      <button type="submit" class="btn btn--secondary">Mark as reviewed</button>
+    </form>
+    <span class="text-meta--sm" style="margin-left: 0.5rem;">
+      Records that you've looked at the pending reports and decided what to do.
+    </span>
+  </div>
+  {{/if}}
+
+  {{#if publicReports.lifetimeCounts.length}}
+  <details class="text-meta--sm" style="margin-top: 0.9rem;">
+    <summary style="cursor: pointer;">
+      {{publicReports.totalFlags}} lifetime reports across all versions
+      {{#if publicReports.lastFlaggedAt}}
+        · last <span title="{{publicReports.lastFlaggedAt}}">{{formatDate publicReports.lastFlaggedAt "short"}}</span>
+      {{/if}}
+    </summary>
+    <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+      {{#each publicReports.lifetimeCounts}}
+        <span style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: 3px; padding: 0.15rem 0.5rem;">
+          {{this.label}} · <strong>{{this.count}}</strong>
+        </span>
+      {{/each}}
+    </div>
+  </details>
+  {{/if}}
+</div>
+{{/if}}
+
+{{!-- Task 63: detail-meta moved BACK to the top of the page (above
+      Biography). Curator preference — record metadata reads as a
+      page header, biography content follows. Biography + In-the-
+      collection blocks remain at their unchanged position further
+      down; they retain the same 2-column grid + hover rail (Task 59). --}}
+<div class="detail-meta">
+  <div>
+    <dt>Record ID</dt>
+    <dd>
+      {{record.PK}}
+      <a href="{{record.pageUrl}}" target="_blank" rel="noopener" title="Open the public page for this record in a new tab" class="text-meta--sm" style="margin-left: 0.3rem;">view on site ↗</a>
+    </dd>
+  </div>
+  <div class="detail-meta__field--secondary">
+    <dt>Model</dt>
+    <dd>{{#if record.model}}{{record.model}}{{else}}<span class="text-meta" title="No AI generation — this record was skipped.">— (skipped)</span>{{/if}}</dd>
+  </div>
+  <div class="detail-meta__field--secondary">
+    <dt>Prompt Version</dt>
+    <dd>
+      {{#if record.promptVersion}}
+        {{record.promptVersion}}
+        {{#isequal record.promptVersion activeVersion this}}
+          <span class="text-meta--sm" style="color: #2e7d4a;" title="This record uses the current default prompt."> · current default</span>
+        {{else}}
+          <span class="text-meta--sm text-warn" title="Default is now {{activeVersion}}. Regenerate to update, or keep this version for comparison."> · older than default ({{activeVersion}})</span>
+        {{/isequal}}
+      {{else}}
+        <span class="text-meta" title="No AI generation — this record was skipped.">— (skipped)</span>
+      {{/if}}
+    </dd>
+  </div>
+  {{!-- External adapters enabled at generation time. Curator hint
+        for "if I turn on ODNB / GracesGuide, would this record
+        benefit from a regen?" — a green ● says the source was ON,
+        a grey ○ says it was OFF. Whether the source actually
+        matched is shown by the citation prefixes on the sentences
+        themselves (wikipedia:*, oxfordDNB:*, gracesGuide:*). --}}
+  {{#if record.externalSourcesQueried}}
+  <div class="detail-meta__field--secondary">
+    <dt>External sources</dt>
+    <dd class="external-sources-strip">
+      {{!-- Three-state badges (route computes state per adapter):
+              used   = adapter fired AND at least one sentence uses it → filled
+              unused = adapter fired but writer produced no sentences using it
+                       → dashed outline (usually mismatched entity — check
+                          writerNotes for why)
+              off    = adapter disabled at generation → grey --}}
+      {{#each externalSourceBadges}}
+      <span class="ext-src-badge ext-src-badge--{{this.state}}"
+            title="{{this.label}} adapter {{#isequal this.state "used" this}}fired and contributed to the biography{{/isequal}}{{#isequal this.state "unused" this}}fired at generation but the writer produced no sentences using it — usually a mismatched entity (e.g. wrong subject with the same name); check writer notes for the reasoning{{/isequal}}{{#isequal this.state "off" this}}was disabled or gated off (config, missing Wikidata property, or adaptive-fetch skipped){{/isequal}}">{{this.label}}</span>
+      {{/each}}
+    </dd>
+  </div>
+  {{/if}}
+  <div class="detail-meta__field--secondary">
+    <dt>Tokens (input / output)</dt>
+    <dd>
+      {{#if record.inputTokens}}
+        {{record.inputTokens}} / {{record.outputTokens}}
+        {{#if cost}}
+          <span class="text-meta" title="Cost for this generation; extrapolated cost shown for 1,000 biographies of the same token shape">· {{cost.perBioFormatted}} ({{cost.per1kBioFormatted}} / 1k)</span>
+        {{/if}}
+      {{else}}
+        <span class="text-meta" title="No AI generation — this record was skipped.">— (skipped)</span>
+      {{/if}}
+    </dd>
+  </div>
+  <div>
+    <dt>Generated</dt>
+    <dd title="Biography text last produced at {{record.generatedAt}} · record last touched (any field) at {{record.updatedAt}}">{{formatDate record.generatedAt "auto"}}</dd>
+  </div>
+  <div class="detail-meta__field--secondary">
+    <dt>Existing Description</dt>
+    <dd>
+      {{record.existingDescriptionChars}} chars
+      {{!-- Render-state pills: how the existing description plays with
+            the AI biography on the public page.
+              suppressed → hidden-on-page (attention)
+              replaced   → AI-skipped    (attention; uses inline red on
+                                          the badge below for stronger
+                                          warning since this is the only
+                                          state where AI work is bypassed)
+              both       → existing + AI (positive) --}}
+      {{#isequal displayState "suppressed" this}}
+        <span class="pill pill--attention" style="margin-left: 0.3rem;" title="Shorter than {{suppressThreshold}} chars — the public page hides the existing description and shows the AI biography only.">hidden on page</span>
+      {{/isequal}}
+      {{#isequal displayState "replaced" this}}
+        <span class="pill" style="margin-left: 0.3rem; background: #f5e2e2; color: #b03030; border-color: #c87878;" title="Longer than {{maxThreshold}} chars — AI generation is skipped; public page shows the existing description only.">AI skipped</span>
+      {{/isequal}}
+      {{#isequal displayState "both" this}}
+        <span class="pill pill--positive" style="margin-left: 0.3rem;" title="Both the existing description and the AI biography are shown on the public page.">existing + AI</span>
+      {{/isequal}}
+    </dd>
+  </div>
+  {{#if record.subjectStatus}}
+  <div>
+    <dt>Subject status</dt>
+    <dd>
+      {{!-- Subject-status pill — single .pill class, semantic --modifier.
+            Colour palette is documented in admin.html. Briefly:
+              positive  = currently operational (LIVING / ACTIVE)
+              attention = uncertain (UNKNOWN org)
+              inactive  = no longer operational (DECEASED / DISSOLVED /
+                          HISTORICAL) --}}
+      {{#isequal record.subjectStatus.status "active" this}}
+        {{#isequal record.subjectStatus.subjectType "person" this}}
+          <span class="pill pill--positive" title="No death date recorded. The public site suppresses the biography for living people while aiBiographyIncludeLiving is off; that visibility status is shown on the biography pill above (with a 'restricted' modifier).">living</span>
+        {{else}}
+          <span class="pill pill--positive" title="No dissolution date recorded — assumed to be an active organisation.">active</span>
+        {{/isequal}}
+      {{/isequal}}
+      {{#isequal record.subjectStatus.status "deceased" this}}
+        <span class="pill pill--inactive" title="Death date recorded.">deceased</span>
+      {{/isequal}}
+      {{#isequal record.subjectStatus.status "dissolved" this}}
+        <span class="pill pill--inactive" title="Organisation dissolution date recorded.">dissolved</span>
+      {{/isequal}}
+      {{#isequal record.subjectStatus.status "unknown" this}}
+        <span class="pill pill--attention" title="{{record.subjectStatus.organisationStatusReasoning}}">unknown</span>
+      {{/isequal}}
+      {{#isequal record.subjectStatus.status "historical" this}}
+        {{#isequal record.subjectStatus.subjectType "person" this}}
+          {{!-- Mythological / fictional subject — the "historical" pill on
+                a person means the mythological detector fired in
+                subject-status.js. Show which text marker matched so the
+                curator can verify the classification. --}}
+          <span class="pill pill--inactive" title="Mythological / fictional subject — {{record.subjectStatus.mythologicalReason}}">historical</span>
+        {{else}}
+          <span class="pill pill--inactive" title="{{record.subjectStatus.organisationStatusReasoning}}">historical</span>
+        {{/isequal}}
+      {{/isequal}}
+      {{#if record.subjectStatus.deathDate}}
+        <span class="text-meta" style="white-space: nowrap;" title="Source: {{record.subjectStatus.deathDateSource}} · raw: {{record.subjectStatus.deathDate}}">· {{formatDate record.subjectStatus.deathDate "date"}}{{#isequal record.subjectStatus.deathDateSource "wikidata" this}}<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 16 16" aria-hidden="true" class="text-warn" style="vertical-align: -1px; margin-left: 0.3rem;"><title>Sourced from Wikidata — not in our collection record</title><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.1"/></svg>{{/isequal}}</span>
+      {{else}}{{#if record.subjectStatus.activityText}}
+        {{!-- Organisation 'unknown' or 'historical' state — show the matched
+              brief-biography activity range inline so staff can see at a
+              glance what the classification was based on (e.g.
+              "unknown · active 1990s" or "historical · 1856-1905"). --}}
+        <span class="text-meta" style="white-space: nowrap;" title="{{record.subjectStatus.organisationStatusReasoning}}">· {{record.subjectStatus.activityText}}</span>
+      {{else}}
+        {{!-- Living person: show "· born YYYY" alongside the pill, mirroring
+              the deceased treatment so staff can see at a glance how recent
+              the subject is without expanding the record details. Only
+              rendered for persons (not active orgs — "founded" / "inception"
+              would need different copy and the inception field isn't
+              stored on the canonical record yet). --}}
+        {{#isequal record.subjectStatus.subjectType "person" this}}
+          {{#if record.subjectStatus.birthDate}}
+            <span class="text-meta" style="white-space: nowrap;" title="Source: {{record.subjectStatus.birthDateSource}} · raw: {{record.subjectStatus.birthDate}}">· born {{formatDate record.subjectStatus.birthDate "date"}}{{#isequal record.subjectStatus.birthDateSource "wikidata" this}}<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 16 16" aria-hidden="true" class="text-warn" style="vertical-align: -1px; margin-left: 0.3rem;"><title>Sourced from Wikidata — not in our collection record</title><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><ellipse cx="8" cy="8" rx="3" ry="6.5" fill="none" stroke="currentColor" stroke-width="1.1"/><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.1"/></svg>{{/isequal}}</span>
+          {{/if}}
+        {{/isequal}}
+      {{/if}}
+      {{/if}}
+    </dd>
+  </div>
+  {{/if}}
+  {{#if renderedBiography.sentences.length}}
+  {{!-- Publishing-level indicator — only populated for v2 (source-tagged)
+        records. Legacy records skip this field because they don't have
+        per-sentence source tags to filter by. --}}
+  <div>
+    <dt>Publishing level</dt>
+    <dd>
+      <strong title="Currently publishing sentences tagged: {{publishingLevelDescription}}. All levels: 0 = museum only · 1 = + wikidata · 2 = + llm:inferred · 3 = + llm:contextualising (default) · 4 = + llm:validated (external verification) · 5 = + llm:general_knowledge. Curators can override per-sentence via Approve.">{{renderedBiography.publishingLevel}}</strong>
+      <span class="text-meta" title="Sentence counts after the publishing-level filter + curator overrides. Hidden includes: source below the current level, and hidden by curator rejection.">·
+        {{renderedBiography.visibleCount}} shown / {{renderedBiography.hiddenCount}} hidden
+      </span>
+    </dd>
+  </div>
+  {{/if}}
+  {{!-- Score cell — merges the two independent quality signals into one
+        cell to reclaim grid space. They measure different things (inputs
+        vs the model's self-report on its output) so both stay, labelled.
+        Placed last (2026-07-27) because signal + confidence render on
+        two lines while sibling cells are one line — moving Score to the
+        trailing edge means its extra height doesn't push adjacent
+        one-line cells around. --}}
+  <div>
+    <dt>Score</dt>
+    <dd>
+      {{#if signalView}}
+      <div title="Weighted score of source-data signals — the strongest quality proxy. Strong anchors (existing description, related collection items) count 3 each; Wikidata 2 each; supporting fields 1 each. Records below the minimum are skipped as insufficient_data.">
+        <span class="text-meta--sm">signal</span> {{signalView.score}} / {{signalView.maxScore}}
+        <span class="text-meta">· min {{signalView.minScore}}</span>
+      </div>
+      {{/if}}
+      <div title="The model's self-reported confidence in its own output (0 = no data, 10 = rich, well-grounded). LLM self-reporting is a weak signal — we track it to observe calibration over time.">
+        <span class="text-meta--sm">confidence</span>
+        {{#if record.confidence}}{{record.confidence}} / 10{{else}}{{#if record.writerConfidence}}{{record.writerConfidence}} / 10{{else}}—{{/if}}{{/if}}
+        <span class="text-meta">· self-reported</span>
+      </div>
+    </dd>
+  </div>
+</div>
+
+{{!-- Task 63: Biography + In-the-collection rendered prose, moved
+      here (below detail-meta) so the record header sits at the top.
+      Same 2-column grid + hover rail as Task 59. --}}
+{{#if renderedBiography.sentences.length}}
+<div class="biography-with-rail">
+  <div class="biography-with-rail__main">
+    <div class="detail-section" id="biography">
+      <h3>Biography</h3>
+      <div class="prose-body ai-rendered-prose" data-block="biography">
+        {{{renderedBiography.biographyHtml}}}
+      </div>
+    </div>
+
+    {{#if renderedBiography.contextHtml}}
+    <div class="detail-section" id="in-the-collection">
+      <h3>In the collection</h3>
+      <div class="prose-body ai-rendered-prose" data-block="context">
+        {{{renderedBiography.contextHtml}}}
+      </div>
+    </div>
+    {{/if}}
+  </div>
+
+  <aside class="biography-with-rail__rail" id="claim-detail-rail" aria-live="polite">
+    <div class="rail-empty text-meta">
+      <em>Hover a sentence to preview its provenance. Click to keep it in view.</em>
+    </div>
+    <div class="rail-populated" hidden>
+    </div>
+  </aside>
+</div>
+{{/if}}
+
+{{!-- Existing catalogue biographies — placed immediately below the AI
+      biography + in-the-collection blocks so a curator can quickly
+      compare the AI output against the source prose it drew from.
+      Uses the --below-prose modifier so the hairline sits BELOW the
+      pair (separating them from the audit blocks that follow)
+      rather than above (which would have visually detached them
+      from the biography they belong with). Generation metadata
+      (writer notes, verification counters, signal breakdown, view
+      prompts) lives at the bottom of the page under Notes. --}}
+{{#if existingDescription}}
+<div class="detail-inputs-group detail-inputs-group--below-prose">
+{{#if existingDescription.briefText}}
+<details class="collapsible">
+  <summary>Existing brief biography ({{existingDescription.briefChars}} chars) <span class="text-meta" style="font-weight: normal;">— terse structured summary; often contains "active YYYY-YYYY" date text</span></summary>
+  <div class="detail-section">
+    <div class="prose-body" style="white-space: pre-wrap;">{{existingDescription.briefText}}</div>
+  </div>
+</details>
+{{/if}}
+
+{{#if existingDescription.text}}
+<details class="collapsible">
+  <summary>Existing biography ({{existingDescription.chars}} chars) <span class="text-meta" style="font-weight: normal;">— freeform curatorial prose from the collection record</span></summary>
+  <div class="detail-section">
+    <div class="prose-body" style="white-space: pre-wrap;">{{existingDescription.text}}</div>
+  </div>
+</details>
+{{/if}}
+</div>{{!-- /detail-inputs-group --}}
+{{/if}}
+
+{{#if record.skipReason}}
+<div class="detail-section">
+  <h3>Skip Reason</h3>
+  <p>{{record.skipReason}}</p>
+  {{!-- A short plain-English explanation below the raw skipReason so
+        staff know at a glance whether this record is genuinely thin on
+        data or whether a billed-but-bad API call parked it here. The
+        prefix match is simple and stable (we write these strings in
+        routes/ai-biography.js and admin-ai.js). --}}
+  {{#isequal record.skipCategory "failed" this}}
+  <p class="text-meta text-warn" style="margin-top: 0.4rem;">
+    Claude was called and billed but returned content we couldn't use (empty / truncated / unparseable). We persist the skip to avoid burning tokens on repeated page loads — but the underlying record may be fine. Click <strong>Regenerate</strong> to try again; if it keeps failing, check the diagnostics block below (or server logs around <span title="{{record.generatedAt}}">{{formatDate record.generatedAt "auto"}}</span>) for the underlying Claude error.
+  </p>
+
+  {{!-- Failure diagnostics — populated by the public route on the
+        billed-but-unusable path in routes/ai-biography.js. Every field is
+        optional (older failed records generated before this feature
+        landed won't have them, and the block just quietly skips) — so
+        the block only surfaces the fields that were actually captured. --}}
+  {{#if record.failureMode}}
+  <div class="failure-diagnostics" style="margin-top: 0.75rem; padding: 0.75rem 1rem; background: #fbf9f4; border: 1px solid #e4e0d4; border-left: 3px solid #c87a1e; border-radius: 3px;">
+    <h4 style="margin: 0 0 0.4rem 0; font-size: 0.9rem; color: #2a2a2a;">Diagnostics</h4>
+    <dl style="margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 0.2rem 0.75rem; font-size: 0.85rem;">
+      <dt style="color: #646464;">Failure mode</dt>
+      <dd style="margin: 0;">
+        <code style="background: rgba(200, 122, 30, 0.08); padding: 0 0.3rem; border-radius: 2px;">{{record.failureMode}}</code>
+        {{#isequal record.failureMode "missing_biography_field" this}}<span class="text-meta--sm" style="margin-left: 0.4rem;">— Claude returned valid JSON but not in the shape the writer expected. Common causes: prompt/writer version mismatch, model responded with a different top-level key.</span>{{/isequal}}
+        {{#isequal record.failureMode "json_parse_failed" this}}<span class="text-meta--sm" style="margin-left: 0.4rem;">— Claude's response wasn't valid JSON. Most common cause: response truncated mid-string (hit max_tokens).</span>{{/isequal}}
+        {{#isequal record.failureMode "empty_response" this}}<span class="text-meta--sm" style="margin-left: 0.4rem;">— Claude returned no content. Rare; usually a transient upstream issue.</span>{{/isequal}}
+        {{#isequal record.failureMode "text_missing" this}}<span class="text-meta--sm" style="margin-left: 0.4rem;">— Response had no text block at all. Likely an SDK / model mismatch.</span>{{/isequal}}
+      </dd>
+      {{#if record.parsedKeys}}
+      <dt style="color: #646464;">Keys returned</dt>
+      <dd style="margin: 0;">
+        <code style="background: rgba(0,0,0,0.03); padding: 0 0.3rem; border-radius: 2px; font-size: 0.8rem;">{{record.parsedKeys}}</code>
+        <span class="text-meta--sm" style="margin-left: 0.4rem;">— the top-level fields Claude actually produced. If this includes <code>sentences</code>, the writer probably picked up the v7 source-tagged prompt against a v1 writer.</span>
+      </dd>
+      {{/if}}
+      {{#if record.parseError}}
+      <dt style="color: #646464;">Parse error</dt>
+      <dd style="margin: 0;"><code style="background: rgba(176, 48, 48, 0.06); padding: 0 0.3rem; border-radius: 2px; font-size: 0.8rem;">{{record.parseError}}</code></dd>
+      {{/if}}
+    </dl>
+    {{#if record.rawResponse}}
+    {{!-- Raw Claude response — collapsed by default because it can be
+          long. Truncated to 4KB at persist time in routes/ai-biography.js
+          (well beyond what you need to eyeball the shape of the failure). --}}
+    <details style="margin-top: 0.6rem;">
+      <summary style="cursor: pointer; font-size: 0.85rem; color: #646464;">Raw Claude response ({{record.rawResponse.length}} chars, truncated at 4000)</summary>
+      <pre style="white-space: pre-wrap; font-size: 0.75rem; color: #2a2a2a; background: #fdfdfa; border: 1px solid #e4e0d4; border-radius: 3px; padding: 0.6rem; max-height: 24rem; overflow-y: auto; margin: 0.4rem 0 0 0;">{{record.rawResponse}}</pre>
+    </details>
+    {{/if}}
+  </div>
+  {{/if}}
+  {{/isequal}}
+  {{#isequal record.skipCategory "living" this}}
+  <p class="text-meta" style="margin-top: 0.4rem;">
+    This record was skipped under the old generation-time living-person policy (since superseded). It should self-resolve on the next regeneration — the current policy generates for everyone and suppresses at render time instead.
+  </p>
+  {{/isequal}}
+  {{#isequal record.skipCategory "insufficient" this}}
+  <p class="text-meta" style="margin-top: 0.4rem;">
+    The record doesn't have enough source signal (dates / occupation / related items / wikidata) for the generator to produce a meaningful biography. Adding more metadata to the underlying catalogue record is the fix — regenerating won't help until the data improves.
+  </p>
+  {{/isequal}}
+  {{#isequal record.skipCategory "low_confidence" this}}
+  <p class="text-meta" style="margin-top: 0.4rem;">
+    Claude produced content but self-reported low confidence — we store the attempt but don't surface it publicly. Regenerating occasionally clears this; if it keeps recurring the source data is probably borderline.
+  </p>
+  {{/isequal}}
+  {{#isequal record.skipCategory "admin_only" this}}
+  <p class="text-meta" style="margin-top: 0.4rem;">
+    The public page shows the existing catalogue biography ({{record.existingDescriptionChars}} chars is above the {{maxThreshold}}-char threshold). The AI biography — if generated — is admin-only: visible on this page for staff review, comparison, or curator use, but never served to visitors. To view an AI biography, click <strong>Regenerate</strong>. To make an AI biography the public version instead, either shorten the catalogue description below the threshold OR switch the record's status to <strong>Live</strong> manually.
+  </p>
+  {{/isequal}}
+</div>
+{{/if}}
+
+{{!-- v2 sentence-level biography — the only supported record shape.
+      Two panels sit above the biography itself:
+
+        (1) regen banner — only shown when curator actions have
+            accumulated since the last generation (rejections /
+            clarifications). Prompts the curator to batch-apply them
+            via one Regenerate call.
+        (2) sentence list — each sentence rendered with its source pill,
+            curator-decision indicators, and per-sentence action forms
+            (approve / reject / clarify). Paragraph breaks are visualised
+            with a slim divider between list items.
+
+      Publishing filter level and visible/hidden counts sit in the
+      detail-meta block above. --}}
+
+{{#if regenRecommended}}
+<div class="regen-banner">
+  {{!-- Amber banner: consistent styling with the "outdated review prompt"
+        marker + skip-category caution paragraphs. Small enough not to
+        dominate the page but distinctive enough that a curator scanning
+        the page knows there's pending work. --}}
+  <div class="regen-banner__body">
+    <strong>{{pendingChangeCount}} pending change{{#unless pendingChangeSingular}}s{{/unless}}</strong>
+    — rejections and clarifications you've added since the last generation.
+    Regenerate to fold them into the biography prose.
+  </div>
+  <form method="POST" action="/admin/ai/{{record.PK}}/regenerate" class="regen-banner__action regenerate-form">
+    <button type="submit" class="btn btn--primary regenerate-btn"><span class="regenerate-btn__label">Regenerate to apply</span></button>
+  </form>
+</div>
+{{/if}}
+
+{{!-- Findings panels retired — reviewer pipeline removed. Curator
+      actions on individual sentences (approve / reject / clarify)
+      remain in the sentence list below. --}}
+
+{{#if renderedBiography.sentences.length}}
+{{!-- Claims section — per-sentence provenance + curator actions.
+      The rendered Biography + In-the-collection prose blocks now
+      live at the TOP of the page (Task 58); this section is the
+      per-claim inspector / action panel that sits below the
+      metadata block. `data-signature` on each row hooks into the
+      hover + click-to-scroll interaction wired by the script at
+      the bottom of the page. --}}
+<details class="detail-section findings-panel" id="claims" open>
+  <summary class="findings-panel__summary">
+    <span class="findings-panel__title">Claims ({{renderedBiography.visibleCount}} publishing, {{renderedBiography.hiddenCount}} hidden)</span>
+    <span class="text-meta findings-panel__hint">— per-sentence provenance + curator actions for the biography above</span>
+  </summary>
+
+  <div class="biography-summary" style="margin-top: 0.5rem;">
+    Publishing level
+    <strong title="Currently publishing sentences tagged: {{publishingLevelDescription}}. Change via the aiBiographyPublishingLevel config key. Level 0 = museum only · 1 = + wikidata · 2 = + llm:inferred · 3 = + llm:contextualising (default) · 4 = + llm:validated (external verification) · 5 = + llm:general_knowledge.">{{renderedBiography.publishingLevel}}</strong> —
+    <strong>{{renderedBiography.visibleCount}}</strong> publishing,
+    <strong title="Includes: source below the current publishing level, and hidden by curator rejection.">{{renderedBiography.hiddenCount}}</strong> hidden
+    (of {{renderedBiography.totalCount}} total)
+  </div>
+
+  {{!-- Two-row legend: source tag colours (top row) + publishing
+        state (bottom row). Task 56 review flagged that curators
+        couldn't distinguish "auto-published" from "explicitly
+        approved" from "hidden by filter" at a glance — this legend
+        + the matching data-attribute-driven backgrounds on each
+        sentence give an at-a-glance key. --}}
+  <div class="sentence-source-legend">
+    {{!-- Legend is always visible — it's the key to the coloured
+          pills below and curators shouldn't have to click to remember
+          what they mean. Three rows: source tag, visibility state,
+          reviewer concern. Every pill carries a title tooltip. --}}
+    <div class="claims-legend claims-legend--flat">
+      <div class="claims-legend__body">
+        <div class="claims-legend__row">
+          <span class="claims-legend__label">Sources:</span>
+          <span class="pill sentence__source-pill" data-source="museum" title="Fact directly present in the museum catalogue inputs — personData fields (briefBiography, biography) or related-item titles / descriptions. Authoritative.">museum</span>
+          <span class="pill sentence__source-pill" data-source="oxfordDNB" title="Fact from the Oxford Dictionary of National Biography entry included in the ODNB CONTEXT. Peer-reviewed scholarship — tier A. Requires institutional credentials.">oxfordDNB</span>
+          <span class="pill sentence__source-pill" data-source="wikidata" title="Fact directly present in the Wikidata context (a specific claim or property). Trusted structured data.">wikidata</span>
+          <span class="pill sentence__source-pill" data-source="gracesGuide" title="Fact from a Grace's Guide article (UK industrial history wiki — engineers, engineering firms, railways, manufacturers). Community-edited but subject-expert.">gracesGuide</span>
+          <span class="pill sentence__source-pill" data-source="wikipedia" title="Fact from the subject's English Wikipedia article intro. Community-edited prose — less authoritative than the museum / ODNB / Wikidata / Grace's Guide inputs but useful narrative context.">wikipedia</span>
+          <span class="pill sentence__source-pill" data-source="llm:inferred" title="Synthesis DERIVED from museum + wikidata + other inputs — combining or paraphrasing structured facts into new prose. Traceable to inputs.">llm:inferred</span>
+          <span class="pill sentence__source-pill" data-source="llm:contextualising" title="Background / era colour without specific claims about the subject (e.g. 'Artificial eye making in early eighteenth-century London was a specialist trade'). Publishes at level 3+.">llm:contextualising</span>
+          <span class="pill sentence__source-pill" data-source="llm:general_knowledge" title="Fact from the LLM's training data, NOT present in any input. Hidden until a curator approves or external validation promotes to llm:validated.">llm:general_knowledge</span>
+          <span class="pill sentence__source-pill sentence__source-pill--uncovered" data-source="museum" title="The dashed border + ⚠ marker mean the writer declared this source on the sentence but didn't attribute any specific clause to it — probably a writer bug. See the tooltip on any real ⚠ pill for detail.">example ⚠</span>
+        </div>
+        <div class="claims-legend__row">
+          <span class="claims-legend__label">Visibility:</span>
+          <span class="pill state-pill" data-vis="publishing" data-decided="auto" title="Auto-publishing. System rule based on source-tag filter.">● publishing</span>
+          <span class="pill state-pill" data-vis="hidden" data-decided="auto" title="Auto-hidden. The source tag is below the current publishing level.">○ hidden</span>
+          <span class="pill state-pill" data-vis="hidden" data-decided="curator" title="Curator explicitly rejected this claim. Excluded from the next regeneration.">○ curator rejected</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{!-- Task 64: view toggle. Default renders claims grouped by
+        visibility (Publishing / Hidden); alt view groups by source
+        type (museum / wikidata / llm:*). The JS at the bottom moves
+        sentence elements between containers so hover-highlight
+        bindings survive the reorganisation. --}}
+  <div class="claims-view-toggle">
+    <label for="claims-group-select" class="text-meta">Group by:</label>
+    <select id="claims-group-select" class="claims-view-toggle__select">
+      <option value="visibility">Visibility (Publishing / Hidden)</option>
+      <option value="source" selected>Source type</option>
+    </select>
+  </div>
+
+  <div class="claims-groups" data-view="visibility" id="claims-groups">
+  {{!-- Publishing group. Iterated over the full sentences[] array
+        and filtered to visible ones — the narrative order is
+        preserved (unlike sorting by state). --}}
+  <div class="claims-group claims-group--publishing" id="claims-publishing">
+    <h4 class="claims-group__title">Publishing <span class="text-meta">({{renderedBiography.visibleCount}})</span></h4>
+    <ol class="sentence-list">
+      {{#each renderedBiography.sentences}}
+      {{#if this.visible}}
+      {{!-- data-publishing-state drives the row's background tint
+            + border via [data-publishing-state="..."] selectors in
+            the <style> block. data-signature is the anchor used by
+            the sentence↔prose hover-link script. --}}
+      {{!-- Task 61: data attributes drive the row's coloured state
+            via [data-vis] / [data-decided]
+            selectors. The state triple is the source of truth for
+            display; publishingState enum is not consulted. --}}
+      <li class="sentence" data-source="{{this.bucketSource}}" data-signature="{{this.claimSignature}}" data-vis="publishing" data-decided="{{this.state.decidedBy}}">
+        <div class="sentence__text">{{#if this.partsHtml}}{{#each this.partsHtml}}<span class="sentence-part" data-source="{{this.source}}">{{{this.textHtml}}}</span>{{/each}}{{else}}{{{this.textHtml}}}{{/if}}</div>
+        <div class="sentence__meta">
+          {{!-- Chip stack: one pill per source in the sentence's
+                `sources` array. Single-source sentences render as one
+                pill (visually unchanged). The FIRST pill carries the
+                sourceDetail tooltip; subsequent pills just name their
+                source tag. --}}
+          {{#each this.pillData}}
+          {{#if this.uncovered}}
+          {{!-- Uncovered pill: no native title= tooltip. The pink CSS
+                panel below (.sentence__meta::after) is the sole hint,
+                so hovering doesn't fire two competing overlays. --}}
+          <span class="pill sentence__source-pill sentence__source-pill--uncovered" data-source="{{this.source}}">
+            {{this.source}} <span class="sentence__source-pill__warn" aria-label="uncovered">⚠</span>
+          </span>
+          {{else}}
+          <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{sourcePillTitle this.source}}">
+            {{this.source}}
+          </span>
+          {{/if}}
+          {{/each}}
+
+          {{!-- State pill only surfaces the SIGNAL — curator override.
+                The default auto-publishing state is implied by being in
+                the Publishing group. --}}
+          {{#isequal this.state.decidedBy "curator" this}}
+          <span class="pill state-pill" data-vis="publishing" data-decided="curator" title="Publishing because a curator explicitly approved this claim, overriding the source-tag filter.">
+            ● curator override
+          </span>
+          {{/isequal}}
+
+          {{#if this.clarification}}
+            <span class="pill pill--attention" title="{{this.clarification}}">📝 clarification</span>
+          {{/if}}
+
+          {{!-- Trailing collection-object chips removed — the Citations
+                block below now shows every cited object with its title
+                (not just its id) and links out, so the trailing chips
+                were pure duplication. Source pill above lost its
+                sourceDetail tail for the same reason. --}}
+        </div>
+
+        {{!-- Citations: per-sentence audit trail. Each entry names the
+              input the writer drew a fact from — either a structured
+              `value` (dates, wikidata claim labels, related-item ids)
+              or a verbatim `excerpt` (short substring of a freetext
+              input field). Every excerpt has been mechanically verified
+              at parse time via indexOf() — the writer cannot confabulate
+              a citation that survives to this display. Only sentences
+              with source ∈ {museum, wikidata, llm:validated:*} carry
+              citations; other sources have an empty array.
+              Admin-only — not on the public JSON payload. --}}
+        {{#if this.citations.length}}
+        <div class="citations" title="Citations grouped by field. Freetext excerpts are verbatim substrings of the input, mechanically verified at parse time — the writer cannot confabulate a quote that survives to display.">
+          <div class="citations__title">Citations</div>
+          {{#each this.citations}}
+          <div class="citations__group" data-chip-type="{{this.chipType}}" data-field="{{this.field}}">
+            {{!-- Header row: icon + label + optional role + optional
+                  single inline value. When the group has multiple
+                  anchors, or a single excerpt, they wrap to their own
+                  lines below (see .citations__anchors). --}}
+            <div class="citations__header">
+              <svg class="citations__icon" aria-hidden="true"><use xlink:href="#entity-icon-{{this.chipType}}"></use></svg>
+              {{#if this.href}}
+                <a class="citations__label" href="{{this.href}}" title="{{this.field}}" target="_blank" rel="noopener">{{this.chipLabel}}</a>
+              {{else}}
+                <span class="citations__label" title="{{this.field}}">{{this.chipLabel}}</span>
+              {{/if}}
+              {{#if this.role}}<span class="citations__role">({{this.role}})</span>{{/if}}
+              {{#if this.soleAnchor}}<span class="citations__inline-value">&rarr; {{this.soleAnchor.text}}</span>{{/if}}
+            </div>
+            {{#unless this.soleAnchor}}
+              {{#if this.anchors.length}}
+              <div class="citations__anchors">
+                {{#each this.anchors}}
+                <div class="citations__anchor" data-kind="{{this.kind}}">{{#isequal this.kind "excerpt" this}}&ldquo;{{this.text}}&rdquo;{{else}}&rarr; {{this.text}}{{/isequal}}</div>
+                {{/each}}
+              </div>
+              {{/if}}
+            {{/unless}}
+          </div>
+          {{/each}}
+        </div>
+        {{/if}}
+
+        <details class="sentence__actions">
+          <summary>curator actions</summary>
+          <div class="sentence__actions-body">
+            {{!-- Sentence actions: Reject hides the sentence AND
+                  passes the rationale as a constraint for the next
+                  regeneration. Add clarification passes guidance to
+                  the next regeneration without hiding. Both drive
+                  future writer output rather than in-place edits —
+                  regenerating the biography folds them in. --}}
+            <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/reject" class="sentence__action-form">
+              <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+              <input type="hidden" name="claimText" value="{{this.text}}">
+              <input type="text" name="rationale" placeholder="Optional rationale (drives next regen)" class="sentence__action-input">
+              <button type="submit" class="btn btn--secondary" title="Reject — hides this sentence AND excludes it from the next regeneration">Reject (hide)</button>
+            </form>
+            <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/clarify" class="sentence__action-form">
+              <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+              <input type="hidden" name="claimText" value="{{this.text}}">
+              <input type="text" name="clarification" placeholder="Guidance for next regen (e.g. 'use ForMemRS not Fellow')" class="sentence__action-input" required>
+              <button type="submit" class="btn btn--secondary" title="Add curator guidance for the next regeneration">Add clarification</button>
+            </form>
+          </div>
+        </details>
+      </li>
+      {{/if}}
+      {{/each}}
+    </ol>
+  </div>
+
+  {{!-- Hidden group — same iteration, opposite filter. --}}
+  {{#if renderedBiography.hiddenCount}}
+  <div class="claims-group claims-group--hidden" id="claims-hidden">
+    <h4 class="claims-group__title">Hidden <span class="text-meta">({{renderedBiography.hiddenCount}})</span></h4>
+    <ol class="sentence-list">
+      {{#each renderedBiography.sentences}}
+      {{#unless this.visible}}
+      <li class="sentence sentence--hidden" data-source="{{this.bucketSource}}" data-signature="{{this.claimSignature}}" data-vis="hidden" data-decided="{{this.state.decidedBy}}">
+        <div class="sentence__text">{{#if this.partsHtml}}{{#each this.partsHtml}}<span class="sentence-part" data-source="{{this.source}}">{{{this.textHtml}}}</span>{{/each}}{{else}}{{{this.textHtml}}}{{/if}}</div>
+        <div class="sentence__meta">
+          {{!-- Chip stack — see the Publishing block above for the
+                same shape. Single-source sentences render as one pill. --}}
+          {{#each this.pillData}}
+          {{#if this.uncovered}}
+          {{!-- Uncovered pill: no native title= tooltip. The pink CSS
+                panel below (.sentence__meta::after) is the sole hint,
+                so hovering doesn't fire two competing overlays. --}}
+          <span class="pill sentence__source-pill sentence__source-pill--uncovered" data-source="{{this.source}}">
+            {{this.source}} <span class="sentence__source-pill__warn" aria-label="uncovered">⚠</span>
+          </span>
+          {{else}}
+          <span class="pill sentence__source-pill" data-source="{{this.source}}" title="{{sourcePillTitle this.source}}">
+            {{this.source}}
+          </span>
+          {{/if}}
+          {{/each}}
+
+          {{!-- State pill only surfaces curator override (rejection).
+                The default auto-hide (source below the current level)
+                is implied by being in the Hidden group. --}}
+          {{#isequal this.state.decidedBy "curator" this}}
+          <span class="pill state-pill" data-vis="hidden" data-decided="curator" title="Curator explicitly rejected this claim. Excluded from the next regeneration.">
+            ○ curator rejected
+          </span>
+          {{/isequal}}
+
+          {{#if this.clarification}}
+            <span class="pill pill--attention" title="{{this.clarification}}">📝 clarification</span>
+          {{/if}}
+
+          {{!-- Trailing chips removed — the Citations block below now
+                shows every cited object with its title (not just its
+                id) and links out, so the chips were pure duplication.
+                Source pill above lost its sourceDetail tail for the
+                same reason. --}}
+        </div>
+
+        {{!-- Same citations block as the Publishing group. Hidden
+              sentences still carry citations — a curator considering
+              an Override needs to see what the writer sourced the
+              claim from. --}}
+        {{#if this.citations.length}}
+        <div class="citations" title="Citations grouped by field. Freetext excerpts are verbatim substrings of the input, mechanically verified at parse time — the writer cannot confabulate a quote that survives to display.">
+          <div class="citations__title">Citations</div>
+          {{#each this.citations}}
+          <div class="citations__group" data-chip-type="{{this.chipType}}" data-field="{{this.field}}">
+            <div class="citations__header">
+              <svg class="citations__icon" aria-hidden="true"><use xlink:href="#entity-icon-{{this.chipType}}"></use></svg>
+              {{#if this.href}}
+                <a class="citations__label" href="{{this.href}}" title="{{this.field}}" target="_blank" rel="noopener">{{this.chipLabel}}</a>
+              {{else}}
+                <span class="citations__label" title="{{this.field}}">{{this.chipLabel}}</span>
+              {{/if}}
+              {{#if this.role}}<span class="citations__role">({{this.role}})</span>{{/if}}
+              {{#if this.soleAnchor}}<span class="citations__inline-value">&rarr; {{this.soleAnchor.text}}</span>{{/if}}
+            </div>
+            {{#unless this.soleAnchor}}
+              {{#if this.anchors.length}}
+              <div class="citations__anchors">
+                {{#each this.anchors}}
+                <div class="citations__anchor" data-kind="{{this.kind}}">{{#isequal this.kind "excerpt" this}}&ldquo;{{this.text}}&rdquo;{{else}}&rarr; {{this.text}}{{/isequal}}</div>
+                {{/each}}
+              </div>
+              {{/if}}
+            {{/unless}}
+          </div>
+          {{/each}}
+        </div>
+        {{/if}}
+
+        <details class="sentence__actions">
+          <summary>curator actions</summary>
+          <div class="sentence__actions-body">
+            {{!-- Hidden-sentence action strip is intentionally minimal:
+                  the default state IS "stay hidden" (the AI already
+                  decided that), so the only meaningful action is
+                  Override. Curators who agree with the hide take no
+                  action. The reason textbox captures either the
+                  override rationale OR a clarification of what the
+                  AI got wrong — both persist as the approval note. --}}
+            {{#isequal this.state.decidedBy "curator" this}}
+              {{!-- Curator-rejected: restore via Un-reject. Under the
+                    hood, /sentences/approve removes the rejection
+                    entry AND adds an approval — otherwise the render
+                    logic keeps the sentence hidden (see the render-
+                    biography.js precedence: rejection is unconditional). --}}
+              <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/approve" class="sentence__action-form">
+                <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+                <input type="hidden" name="claimText" value="{{this.text}}">
+                <input type="text" name="note" placeholder="Optional reason for un-rejecting (why change your mind)" class="sentence__action-input">
+                <button type="submit" class="btn btn--secondary" title="Un-reject — removes the prior rejection AND approves. Publishes despite the earlier hide and any AI-review concern. Optional reason is stored on the approval.">Un-reject — publish anyway</button>
+              </form>
+            {{else}}
+              <form method="POST" action="/admin/ai/{{../record.PK}}/sentences/approve" class="sentence__action-form">
+                <input type="hidden" name="claimSignature" value="{{this.claimSignature}}">
+                <input type="hidden" name="claimText" value="{{this.text}}">
+                <input type="text" name="note" placeholder="Optional reason or clarification (why override, or what the AI got wrong)" class="sentence__action-input">
+                <button type="submit" class="btn btn--secondary" title="Override — publishes this claim despite the filter or AI-review concern. Optional reason is stored on the approval and shown alongside the sentence.">Override — publish anyway</button>
+              </form>
+            {{/isequal}}
+          </div>
+        </details>
+      </li>
+      {{/unless}}
+      {{/each}}
+    </ol>
+  </div>
+  {{/if}}
+  </div>{{!-- /claims-groups (Task 64) --}}
+</details>
+
+{{!-- Writer notes + Source disagreements — moved up beside Claims
+      because both are high-signal for curators sweeping records:
+      the writer's own reasoning about what it chose and skipped,
+      and any cross-source disagreements that had to be resolved by
+      the priority ladder. Open by default. --}}
+{{#if record.writerNotes}}
+<details class="collapsible" open>
+  <summary>Writer notes <span class="text-meta" style="font-weight: normal;">— the model's own editorial reasoning for this generation</span></summary>
+  <div class="detail-section">
+    <div class="prose-body" style="white-space: pre-wrap;">{{record.writerNotes}}</div>
+  </div>
+</details>
+{{/if}}
+
+{{#if record.contradictions.length}}
+<details class="collapsible" open>
+  <summary>Source disagreements <span class="text-meta" style="font-weight: normal;">— {{record.contradictions.length}} fact(s) where two or more sources give different values</span></summary>
+  <div class="detail-section">
+    <p class="text-meta" style="margin: 0 0 0.75rem 0;">
+      The writer was told to use the AUTHORITATIVE value (highest-priority source per the museum &gt; oxfordDNB &gt; wikidata &gt; gracesGuide &gt; wikipedia ladder). Other sources' values are shown here for curator awareness — persistent disagreements may signal cataloguing errors on the museum side.
+    </p>
+    <ul class="contradictions-list">
+      {{#each record.contradictions}}
+      <li class="contradiction-item">
+        <div class="contradiction-item__fact">{{this.factLabel}}</div>
+        <div class="contradiction-item__winner">
+          <span class="contradiction-item__badge">authoritative</span>
+          <code>{{this.winnerValue}}</code>
+          <span class="text-meta">({{this.winner}})</span>
+        </div>
+        <ul class="contradiction-item__others">
+          {{#each this.values}}
+          {{#unless this.isWinner}}
+          <li>
+            <span class="text-meta">{{this.source}} says:</span>
+            <code>{{this.value}}</code>
+            <span class="text-meta"> — {{this.sourceDetail}}</span>
+          </li>
+          {{/unless}}
+          {{/each}}
+        </ul>
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+</details>
+
+{{/if}}
+
+{{#if record.contextHtml}}
+<div class="detail-section">
+  <h3>Collection Context</h3>
+  <div class="prose-body">
+    {{{record.contextHtml}}}
+  </div>
+</div>
+{{/if}}
+
+{{!-- Scoped styling for the sentence-level view. Kept inline (not in
+      the shared Sass bundle) because this whole file is only ever
+      served from /admin/ai/{id} and iterating on the layout here is
+      quicker than a Sass rebuild. Follows the same pattern as
+      .rating-btn below (staff-only admin UI, transient styling). --}}
+<style>
+  .regen-banner { background: #f5efdd; border: 1px solid #c87a1e; border-left-width: 4px; border-radius: 4px; padding: 0.75rem 1rem; margin: 0 0 1.25rem 0; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .regen-banner__body { flex: 1 1 auto; font-size: 0.9rem; color: #2a2a2a; min-width: 0; }
+  .regen-banner__action { flex: 0 0 auto; }
+
+  .findings-panel { background: #fbf9f4; border: 1px solid #e4e0d4; border-radius: 6px; padding: 0.75rem 1rem; margin: 0 0 1.25rem 0; }
+  .findings-panel__summary { cursor: pointer; display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
+  .findings-panel__title { font-weight: 600; color: #2a2a2a; font-size: 1rem; }
+  .findings-panel__hint { font-weight: normal; }
+  .biography-summary { margin-bottom: 0.5rem; font-size: 0.9rem; color: #5e564c; }
+
+  .sentence-source-legend { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; margin: 0 0 1rem 0; font-size: 0.75rem; }
+  .sentence-source-legend__label { color: #646464; margin-right: 0.2rem; }
+
+  .sentence-list { list-style: none; padding: 0; margin: 0; }
+  .sentence { padding: 0.6rem 0.8rem; margin: 0.35rem 0; background: #fdfdfa; border: 1px solid #efece4; border-radius: 3px; }
+  .sentence--hidden { background: #f5f3ec; color: #646464; }
+  .sentence--hidden .sentence__text { color: #7a726a; }
+  .sentence--approved { border-left: 3px solid #2e7d4a; }
+  .sentence--rejected { background: #f7ecec; border-left: 3px solid #b03030; color: #7a2020; }
+  .sentence__text { font-family: Georgia, serif; font-size: 1rem; line-height: 1.55; }
+  .sentence__meta { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: 0.35rem; }
+  .sentence__source-pill { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.72rem; }
+  .sentence__source-pill[data-source="museum"] { background: #e6efe4; border: 1px solid #a9c3a4; color: #2e5a3d; }
+  .sentence__source-pill[data-source="wikidata"] { background: #e2ecef; border: 1px solid #97b5c4; color: #204a5a; }
+  .sentence__source-pill[data-source="llm:inferred"] { background: #f0eae2; border: 1px solid #c5b6a2; color: #5a4a30; }
+  .sentence__source-pill[data-source="llm:contextualising"] { background: #f2eeda; border: 1px solid #c9be8a; color: #5a5020; }
+  .sentence__source-pill[data-source="llm:general_knowledge"] { background: #f5e2e2; border: 1px solid #b0797a; color: #7a2020; }
+  .sentence__source-pill[data-source^="llm:validated"] { background: #d9e8dc; border: 1px solid #6da97e; color: #2e5a3d; }
+
+  .sentence__actions { margin-top: 0.4rem; font-size: 0.8rem; }
+  .sentence__actions > summary { color: #646464; cursor: pointer; }
+  .sentence__actions-body { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.4rem; padding: 0.5rem; background: #fbf9f4; border-radius: 3px; }
+
+  /* Grouped collapsibles container. Default variant (below Notes)
+     has hairline top border — separates the audit fields from Notes
+     above. Modifier --below-prose flips it: hairline moves to the
+     BOTTOM so the group visually attaches to the biography above
+     while the border separates from the audit blocks that follow.
+     Tight interior spacing in both variants keeps the
+     collapsibles reading as one bounded group. */
+  .detail-inputs-group { border-top: 1px solid #e4e0d4; margin-top: 1.25rem; padding-top: 1.25rem; }
+  .detail-inputs-group > details.collapsible { margin-top: 0.25rem; }
+  .detail-inputs-group > details.collapsible:first-of-type { margin-top: 0; }
+  .detail-inputs-group--below-prose { border-top: 0; border-bottom: 1px solid #e4e0d4; margin-top: -0.5rem; margin-bottom: 1.5rem; padding-top: 0; padding-bottom: 1rem; }
+
+  /* Per-sentence citations block — always visible, one row per anchor.
+     Compact: monospace field name, structured value or verbatim excerpt
+     in italics. Sized DOWN (0.68rem, muted colours) so it reads as
+     supporting metadata under the meta row rather than a competing
+     content block against the sentence prose. */
+  /* Per-sentence Citations block. Grouped-by-field layout: one row per
+     unique source, with an optional set of anchor rows underneath. The
+     goal is a curator-friendly "how did this claim come about" list —
+     icons + entity names read like prose (word-spacing, no rigid table
+     columns) and long freetext excerpts stack cleanly below their
+     source rather than trying to fit on one line.
+
+     Structure (per group):
+       .citations__group
+         .citations__header    ← icon + label + role + optional inline value
+         .citations__anchors    ← 0..N stacked rows for multi-anchor cases
+           .citations__anchor
+  */
+  .citations { margin: 0.4rem 0 0 0; padding: 0.35rem 0 0 0; border-top: 1px solid #ede9dd; font-size: 0.75rem; color: #4a4a4a; line-height: 1.5; }
+  .citations__title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: #8a8580; margin-bottom: 0.2rem; }
+  .citations__group { margin-bottom: 0.15rem; }
+  .citations__group:last-child { margin-bottom: 0; }
+
+  /* Header row — flex-baseline so icon, label, role, and inline value
+     hug each other with normal word-spacing rather than sitting in
+     fixed columns with dead space. */
+  .citations__header { display: flex; align-items: baseline; gap: 0.35rem; flex-wrap: wrap; }
+  .citations__icon { width: 0.9rem; height: 0.9rem; flex: 0 0 auto; align-self: center; }
+  .citations__label { color: #2a2a2a; text-decoration: none; }
+  a.citations__label { color: #2c5288; }
+  a.citations__label:hover { text-decoration: underline; }
+  .citations__role { color: #6a6a6a; font-style: italic; }
+  .citations__inline-value { color: #4a4a4a; }
+
+  /* Anchor rows — indented under the header, one per line. Excerpts
+     get italic quote styling; structured values get monospace with a
+     right-arrow prefix (matched to the inline-value styling above so
+     multi-value groups read consistently). */
+  .citations__anchors { margin: 0.1rem 0 0.2rem 1.65rem; }
+  .citations__anchor { color: #5a5a5a; padding: 0.05rem 0; }
+  .citations__anchor[data-kind="excerpt"] { font-style: italic; color: #6a6a6a; }
+  .citations__anchor[data-kind="value"] { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.72rem; color: #4a4a4a; }
+
+  /* Per-type icon tints — match the main site's iconography palette.
+     `personData` and `wikidata` use a neutral museum-slate; person /
+     object / document / external use the main-site colours. */
+  .citations__group[data-chip-type="person"]     .citations__icon { color: #4a5568; }
+  .citations__group[data-chip-type="object"]     .citations__icon { color: #2e5a3d; }
+  .citations__group[data-chip-type="document"]   .citations__icon { color: #7a5a2a; }
+  .citations__group[data-chip-type="wikidata"]   .citations__icon { color: #5a4a7a; }
+  .citations__group[data-chip-type="personData"] .citations__icon { color: #6a5a4a; }
+  .citations__group[data-chip-type="unknown"]    .citations__icon { color: #7a7a7a; }
+  .sentence__action-form { display: flex; gap: 0.3rem; align-items: center; }
+  .sentence__action-input { border: 1px solid #c5c1b5; border-radius: 3px; padding: 0.25rem 0.5rem; font-size: 0.8rem; font-family: inherit; min-width: 14rem; }
+  .sentence__paragraph-break { border: 0; border-top: 1px dashed #c5c1b5; margin: 0.75rem 0 0.35rem 0; }
+
+  .pill--muted { background: #efece4; border: 1px solid #c5c1b5; color: #646464; }
+
+  /* Uncovered-source marker (spec: B option in the Q2 UX review).
+     A pill whose source was declared but never attributed to any
+     prose part gets a warn tint + a ⚠ icon. Signals writer sloppiness
+     to the curator rather than hiding it via silent-drop. */
+  .sentence__source-pill--uncovered { border-style: dashed; opacity: 0.85; }
+  .sentence__source-pill__warn { font-size: 0.85em; margin-left: 0.15rem; color: #b0797a; }
+
+  /* Q2 A — hovering an uncovered pill dims every attributed span in
+     the same sentence. There's no positive span to highlight (that's
+     what "uncovered" means), so we invert: fade the attributed spans
+     so the curator's eye searches the negative space for inference
+     language the writer smuggled inside another source's part. A
+     small floating hint appears below the chip stack pointing to the
+     limitation. */
+  .sentence:has(.sentence__source-pill--uncovered:hover) .sentence-part { opacity: 0.35; }
+  .sentence__source-pill--uncovered::after {
+    content: "";
+    display: none;
+  }
+  .sentence:has(.sentence__source-pill--uncovered:hover) .sentence__meta::after {
+    content: "⚠ The writer tagged this sentence with this source but didn’t attach any prose clause to it. Likely a labelling glitch, not a factual concern — the content is probably folded silently inside another source’s span.";
+    display: block;
+    margin-top: 0.4rem;
+    padding: 0.3rem 0.5rem;
+    background: #fbf1f1;
+    border-left: 3px solid #b0797a;
+    border-radius: 3px;
+    font-size: 0.72rem;
+    color: #5a2020;
+    max-width: 42rem;
+  }
+
+  /* Per-clause hover-highlight for mixed-source sentences (spec:
+     internal-docs/per-clause-source-highlighting-spec.md). Each part
+     is a span carrying data-source. Base state = invisible (single-
+     source sentences without parts spans render exactly as before).
+     Hovering a pill in the chip stack tints the corresponding
+     .sentence-part span(s) with the source's colour; hovering a span
+     outlines the corresponding pill. Pure CSS via :has() — no JS. */
+  .sentence-part { transition: background-color 0.12s ease; padding: 0 0.1em; border-radius: 2px; }
+  /* pill → span */
+  .sentence:has(.sentence__source-pill[data-source="museum"]:hover)              .sentence-part[data-source="museum"]              { background: rgba(169,195,164,0.45); }
+  .sentence:has(.sentence__source-pill[data-source="wikidata"]:hover)            .sentence-part[data-source="wikidata"]            { background: rgba(151,181,196,0.45); }
+  .sentence:has(.sentence__source-pill[data-source="oxfordDNB"]:hover)           .sentence-part[data-source="oxfordDNB"]           { background: rgba(169,195,164,0.45); }
+  .sentence:has(.sentence__source-pill[data-source="gracesGuide"]:hover)         .sentence-part[data-source="gracesGuide"]         { background: rgba(151,181,196,0.45); }
+  .sentence:has(.sentence__source-pill[data-source="wikipedia"]:hover)           .sentence-part[data-source="wikipedia"]           { background: rgba(151,181,196,0.3); }
+  .sentence:has(.sentence__source-pill[data-source="llm:inferred"]:hover)        .sentence-part[data-source="llm:inferred"]        { background: rgba(197,182,162,0.55); }
+  .sentence:has(.sentence__source-pill[data-source="llm:contextualising"]:hover) .sentence-part[data-source="llm:contextualising"] { background: rgba(201,190,138,0.55); }
+  .sentence:has(.sentence__source-pill[data-source="llm:general_knowledge"]:hover) .sentence-part[data-source="llm:general_knowledge"] { background: rgba(176,121,122,0.4); text-decoration: underline wavy #b0797a; text-underline-offset: 3px; }
+  /* span → pill */
+  .sentence:has(.sentence-part[data-source="museum"]:hover)              .sentence__source-pill[data-source="museum"],
+  .sentence:has(.sentence-part[data-source="wikidata"]:hover)            .sentence__source-pill[data-source="wikidata"],
+  .sentence:has(.sentence-part[data-source="oxfordDNB"]:hover)           .sentence__source-pill[data-source="oxfordDNB"],
+  .sentence:has(.sentence-part[data-source="gracesGuide"]:hover)         .sentence__source-pill[data-source="gracesGuide"],
+  .sentence:has(.sentence-part[data-source="wikipedia"]:hover)           .sentence__source-pill[data-source="wikipedia"],
+  .sentence:has(.sentence-part[data-source="llm:inferred"]:hover)        .sentence__source-pill[data-source="llm:inferred"],
+  .sentence:has(.sentence-part[data-source="llm:contextualising"]:hover) .sentence__source-pill[data-source="llm:contextualising"],
+  .sentence:has(.sentence-part[data-source="llm:general_knowledge"]:hover) .sentence__source-pill[data-source="llm:general_knowledge"] {
+    outline: 2px solid currentColor;
+    outline-offset: 1px;
+  }
+
+  /* External-sources strip: shows which adapters were enabled at
+     generation time. Green ● = ON, muted grey ○ = OFF. Consistent
+     with the .pill sizing so the row scans cleanly under Prompt
+     Version. */
+  .external-sources-strip { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+  .ext-src-badge { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.72rem; font-family: ui-monospace, SFMono-Regular, monospace; padding: 0.1rem 0.5rem; border-radius: 3px; border: 1px solid transparent; }
+  .ext-src-badge::before { content: '●'; font-size: 0.7em; }
+  /* Three-state badge: used (filled), unused (dashed outline), off (grey).
+     `used` = adapter fired AND the writer produced sentences tagged with it.
+     `unused` = adapter fired but nothing survived — usually a mismatched
+     entity; hover the badge for the tooltip. `off` = adapter disabled. */
+  .ext-src-badge--used   { background: #e6efe4; border-color: #a9c3a4; color: #2e5a3d; }
+  .ext-src-badge--unused { background: #fbf9f4; border: 1px dashed #a9c3a4; color: #5a7a5f; }
+  .ext-src-badge--unused::before { content: '◐'; }
+  .ext-src-badge--off    { background: #efece4; border-color: #c5c1b5; color: #8b8b8b; }
+  .ext-src-badge--off::before { content: '○'; }
+
+  /* State pill + row tints driven by the two-axis state —
+     [data-vis], [data-decided]. Visibility (● publishing / ○ hidden)
+     and who decided (auto/curator). */
+  .publishing-state-legend { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; margin: 0 0 1rem 0; font-size: 0.75rem; }
+  .state-pill { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 0.7rem; padding: 0.15rem 0.55rem; border-radius: 3px; }
+  .state-pill[data-vis="publishing"][data-decided="auto"]     { background: #eef2ed; border: 1px solid #a9c3a4; color: #2e5a3d; }
+  .state-pill[data-vis="publishing"][data-decided="curator"]  { background: #dae7dd; border: 1px solid #6da97e; color: #1e4a2f; font-weight: 600; }
+  .state-pill[data-vis="hidden"][data-decided="auto"]         { background: #eeeae0; border: 1px solid #c5b98a; color: #6c5c30; }
+  .state-pill[data-vis="hidden"][data-decided="curator"]      { background: #f5e2e2; border: 1px solid #b0797a; color: #7a2020; font-weight: 600; }
+
+  /* Row-level tint driven by the SAME axes so the row background
+     reads at a glance without decoding the pill. */
+  .sentence[data-vis="publishing"][data-decided="auto"]    { border-left: 3px solid #d5d0c1; }
+  .sentence[data-vis="publishing"][data-decided="curator"] { border-left: 3px solid #6da97e; background: #eff5f0; }
+  .sentence[data-vis="hidden"]                             { border-left: 3px solid #c5b98a; }
+  .sentence[data-vis="hidden"][data-decided="curator"]     { border-left: 3px solid #b0797a; background: #faf1f1; }
+
+  /* Task 61: hidden rows get a diagonal hatched background — makes the
+     "not on public site" state visually distinct at a glance without
+     yelling. Repeating-linear-gradient is cheap + widely supported. */
+  .sentence[data-vis="hidden"] {
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent 0,
+      transparent 6px,
+      rgba(0, 0, 0, 0.035) 6px,
+      rgba(0, 0, 0, 0.035) 8px
+    );
+  }
+  .sentence[data-vis="hidden"] .sentence__text { color: #7a726a; }
+
+  /* Rail pill wrapping — the hover rail is narrow; long pills like
+     `wikidata:P1056 (product or material produced)` overflow without
+     word-break. */
+  .biography-with-rail__rail .pill { white-space: normal; word-break: break-word; max-width: 100%; }
+
+  /* Publishing / Hidden group titles */
+  .claims-group { margin-top: 1rem; }
+  .claims-group__title { font-size: 0.85rem; font-weight: 600; color: #5e564c; margin: 0 0 0.4rem 0; text-transform: uppercase; letter-spacing: 0.03em; }
+
+  /* Task 64: view toggle at top of Claims section. Compact,
+     unobtrusive — a small "Group by" select. */
+  .claims-view-toggle { display: flex; align-items: center; gap: 0.5rem; margin: 0 0 0.75rem 0; font-size: 0.85rem; }
+  .claims-view-toggle__select { padding: 0.2rem 0.4rem; font-size: 0.85rem; font-family: inherit; border: 1px solid #c5c1b5; border-radius: 3px; background: #fdfdfa; }
+
+  /* Source-view group container — uses the source-pill colour of the
+     header to hint at which source-tag colour maps to the group. */
+  .claims-group--source { border-left: 3px solid #c5c1b5; padding-left: 0.6rem; }
+  .claims-group--source[data-source="museum"]              { border-left-color: #a9c3a4; }
+  .claims-group--source[data-source="wikidata"]            { border-left-color: #97b5c4; }
+  .claims-group--source[data-source="llm:inferred"]        { border-left-color: #c5b6a2; }
+  .claims-group--source[data-source="llm:contextualising"] { border-left-color: #c9be8a; }
+  .claims-group--source[data-source="llm:general_knowledge"] { border-left-color: #b0797a; }
+  .claims-group--source[data-source="llm:validated"]       { border-left-color: #6da97e; }
+
+  /* Object hyperlink chips — trailing per sentence + inline in rendered prose. */
+  /* .entity-chip--inline CSS removed with the trailing-chips markup —
+     citations block below the meta row now covers the same ground. */
+  /* Task 59: inline collection-object links match the prose font +
+     size — read as natural inline links, not distinct chips. Green
+     underline hints at the museum-object anchor treatment without
+     fighting the reading typography. */
+  /* Inline object links (writer's {coXXXX|Title} markers) — styled as
+     understated hyperlinks so they read as prose, not as pills. */
+  .ai-rendered-prose .ai-object-chip--inline {
+    color: #2e5a3d;
+    text-decoration: underline;
+    text-decoration-color: rgba(46, 90, 61, 0.35);
+    text-underline-offset: 2px;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+  }
+  .ai-rendered-prose .ai-object-chip--inline:hover {
+    text-decoration-color: #2e5a3d;
+    background: rgba(46, 90, 61, 0.06);
+  }
+
+  /* Tertiary button — used for de-emphasised secondary actions
+     ("Mark as reviewed" on an already-publishing sentence, etc.). */
+  .btn--tertiary { background: transparent; border: 1px solid #c5c1b5; color: #5e564c; padding: 0.35rem 0.75rem; border-radius: 3px; font-size: 0.8rem; cursor: pointer; }
+  .btn--tertiary:hover { border-color: #646464; color: #2a2a2a; }
+
+  /* Sentence↔prose hover-highlight — a curator hovering a claim in
+     the Claims list sees the corresponding sentence lit up in the
+     rendered prose block above, and vice versa. Uses a
+     .is-highlighted class applied by the small script at the bottom
+     of the file, hooked on data-signature. */
+  .ai-rendered-prose [data-signature].is-highlighted,
+  .sentence.is-highlighted {
+    background: rgba(200, 122, 30, 0.12) !important;
+    outline: 1px solid rgba(200, 122, 30, 0.35);
+    outline-offset: 2px;
+  }
+  /* Task 66: persistent .is-selected — visually identical to
+     .is-highlighted but survives mouseleave. Keeps the selected
+     sentence anchored in the prose + Claims list so a curator
+     always knows which claim the rail panel is showing. */
+  .ai-rendered-prose [data-signature].is-selected,
+  .sentence.is-selected {
+    background: rgba(200, 122, 30, 0.16) !important;
+    outline: 1px solid rgba(200, 122, 30, 0.55);
+    outline-offset: 2px;
+  }
+
+
+
+  /* Task 58: legend collapsed into a details toggle. */
+  .claims-legend { margin: 0 0 1rem 0; font-size: 0.8rem; }
+  .claims-legend > summary { cursor: pointer; color: #5e564c; padding: 0.2rem 0; display: inline-block; }
+  .claims-legend__body { padding-top: 0.5rem; }
+  .claims-legend__row { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.5rem; font-size: 0.75rem; }
+  .claims-legend__label { color: #646464; margin-right: 0.2rem; }
+
+  /* Prose sentences: cursor pointer + subtle hover so the click-to-scroll
+     interaction is discoverable. Task 58 UX review. */
+  .ai-rendered-prose [data-signature] { cursor: pointer; border-radius: 2px; padding: 0 2px; margin: 0 -2px; transition: background 120ms; }
+  .ai-rendered-prose [data-signature]:hover { background: rgba(200, 122, 30, 0.09); }
+
+  /* Brief flash when scrolled into view — used for both directions:
+     prose-click → claim (Task 58) and claim-click → prose (Task 59).
+     Same animation, applied via a class the JS toggles on. */
+  @keyframes claim-flash {
+    0%   { background: rgba(200, 122, 30, 0.25); }
+    100% { background: transparent; }
+  }
+  .sentence.is-scroll-target,
+  .ai-rendered-prose [data-signature].is-scroll-target {
+    animation: claim-flash 1.4s ease-out;
+  }
+
+  /* Sentence rows are clickable to jump to the corresponding prose
+     sentence — cursor-pointer hints at the interaction. Interactive
+     children (forms, buttons, details) keep their own cursor. */
+  .sentence { cursor: pointer; }
+  .sentence form, .sentence button, .sentence details, .sentence summary,
+  .sentence input, .sentence a { cursor: auto; }
+  .sentence button, .sentence summary, .sentence a { cursor: pointer; }
+
+  /* Task 59: 2-column layout for the biography section — prose on
+     the left (2fr), hover-populated claim-details rail on the right
+     (1fr). Rail is sticky within the section so it stays in view
+     while reading the prose. On narrow viewports (mobile) the rail
+     stacks below the prose instead of squeezing next to it. */
+  .biography-with-rail {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .biography-with-rail__main > .detail-section { margin-bottom: 1rem; }
+  .biography-with-rail__rail {
+    position: sticky;
+    top: 1rem;
+    align-self: start;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    background: #fbf9f4;
+    border: 1px solid #e4e0d4;
+    border-radius: 4px;
+    padding: 0.9rem 1rem;
+    font-size: 0.85rem;
+  }
+  .biography-with-rail__rail .rail-empty { font-size: 0.85rem; line-height: 1.5; }
+  .biography-with-rail__rail .rail-populated .sentence__text {
+    font-family: Georgia, serif;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #2a2a2a;
+    margin-bottom: 0.55rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px dashed #e4e0d4;
+  }
+  .biography-with-rail__rail .rail-populated .sentence__meta { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+
+  /* Cloned links inside the rail — inline object markers in the sentence
+     text AND citation labels. Both use the SAME muted admin navy as the
+     biography + in-the-collection prose above (`.detail-section a` from
+     the layout: color #2c5288, faint underline). The rail sits outside
+     .detail-section so it wouldn't otherwise inherit that treatment;
+     scoping the same values here keeps the rail visually contiguous
+     with the prose the curator just hovered. */
+  .biography-with-rail__rail .rail-populated .ai-object-chip--inline,
+  .biography-with-rail__rail .rail-populated .citations__label,
+  .biography-with-rail__rail .rail-populated .citations a {
+    color: #2c5288;
+    text-decoration: underline;
+    text-decoration-color: rgba(31, 64, 104, 0.32);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2.5px;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+  }
+  .biography-with-rail__rail .rail-populated .ai-object-chip--inline:hover,
+  .biography-with-rail__rail .rail-populated .citations a:hover {
+    color: #1f4068;
+    text-decoration-color: #1f4068;
+    text-decoration-thickness: 1.5px;
+  }
+
+  /* Citations block cloned into the rail. Shrink the type a shade so it
+     reads as supporting detail below the sentence + meta. Drop the
+     `.citations` solid top border here — the sentence__text above
+     already carries a dashed separator, and a second hairline just
+     below the source pill reads as leftover chrome. Link colour is
+     handled by the shared rule above. */
+  .biography-with-rail__rail .rail-populated .citations { margin-top: 0.55rem; border-top: 0; padding-top: 0; }
+  .biography-with-rail__rail .rail-populated .citations__title { font-size: 0.65rem; }
+  .biography-with-rail__rail .rail-jump {
+    display: inline-block;
+    margin-top: 0.7rem;
+    font-size: 0.8rem;
+    color: #2c5288;
+    text-decoration: underline;
+    text-decoration-color: rgba(44, 82, 136, 0.35);
+    text-underline-offset: 2px;
+  }
+  .biography-with-rail__rail .rail-jump:hover { text-decoration-color: #2c5288; }
+
+  /* Task 65 / 66: jump-links row in the rail — both directions
+     side by side. No lock indicator (Task 66 removed it — the
+     .is-selected highlight on the sentence is signal enough). */
+  .biography-with-rail__rail .rail-jumps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.7rem;
+  }
+  .biography-with-rail__rail .rail-jumps .rail-jump { margin-top: 0; }
+
+  @media (max-width: 900px) {
+    .biography-with-rail { grid-template-columns: 1fr; }
+    .biography-with-rail__rail {
+      position: relative;
+      top: 0;
+      max-height: none;
+    }
+  }
+</style>
+
+{{!-- Interaction script.
+      Task 65 rework — hover previews, click LOCKS:
+
+        1. HOVER a claim row OR prose sentence → highlight both
+           sides + populate the hover rail with source / state /
+           chips for that claim (unless the rail is
+           locked, in which case hover only highlights).
+        2. CLICK a claim row OR prose sentence → LOCK the rail at
+           that claim. Subsequent hovers don't change the rail
+           until the same target is clicked again (unlock).
+        3. Rail carries BOTH jump directions ("Jump to prose ↑"
+           and "Jump to claim ↓") so curators navigate deliberately
+           from the panel rather than accidentally-on-hover.
+
+      Removed in this rework: click-on-prose auto-scrolls to
+      claim, click-on-claim auto-scrolls to prose. The
+      hover-preview + auto-jump combination was glitchy — mouse
+      movement during scroll fired other hover events, changing
+      the rail before the scroll completed.
+
+      Registered once on DOMContentLoaded; safe to call multiple
+      times (re-registration is idempotent). --}}
+<script>
+(function () {
+  'use strict';
+  function scrollAndFlash (target) {
+    if (!target) return;
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    target.classList.remove('is-scroll-target');
+    // Force a reflow so the animation restarts on repeat clicks.
+    void target.offsetWidth;
+    target.classList.add('is-scroll-target');
+  }
+
+  // Ignore-list for click-to-jump: we only want to bail if the click
+  // landed on an interactive descendant of the SAME sentence (a form
+  // button, a curator-action <details>, an inline object link, etc).
+  // The previous implementation used `closest(...)` without a scope,
+  // which walked up past the sentence and matched the surrounding
+  // `<details id="claims">` panel wrapper — so every click inside a
+  // claim card was mis-classified as interactive and swallowed the
+  // scroll-to-prose behaviour. Scoping to `container` restores it.
+  function isInteractiveWithin (target, container) {
+    if (!target || !target.closest || !container) return false;
+    var hit = target.closest('button, form, input, textarea, select, details, summary, a');
+    return !!(hit && container.contains(hit));
+  }
+
+  // Rail lock state — module-scoped so it survives across
+  // re-invocations of wireInteractions() (which happen when the
+  // Claims view toggle rebuilds the DOM).
+  var lockedSig = null;
+
+  function wireInteractions () {
+    var claims = document.querySelectorAll('.sentence[data-signature]');
+    var prose = document.querySelectorAll('.ai-rendered-prose [data-signature]');
+    var rail = document.getElementById('claim-detail-rail');
+    var railEmpty = rail ? rail.querySelector('.rail-empty') : null;
+    var railPopulated = rail ? rail.querySelector('.rail-populated') : null;
+
+    function highlight (sig, on) {
+      if (!sig) return;
+      var nodes = document.querySelectorAll('[data-signature="' + sig + '"]');
+      for (var i = 0; i < nodes.length; i++) {
+        nodes[i].classList.toggle('is-highlighted', !!on);
+      }
+    }
+
+    // Task 66: persistent `.is-selected` marker — applied to every
+    // element (prose span + Claims row) matching the currently-
+    // selected sig. Survives mouseleave so the curator can see
+    // which sentence's info is in the panel even after moving the
+    // mouse away.
+    function setSelected (sig) {
+      var prev = document.querySelectorAll('.is-selected');
+      for (var i = 0; i < prev.length; i++) prev[i].classList.remove('is-selected');
+      if (!sig) return;
+      var nodes = document.querySelectorAll('[data-signature="' + sig + '"]');
+      for (var j = 0; j < nodes.length; j++) nodes[j].classList.add('is-selected');
+    }
+
+    // Rail update: clone the sentence text + meta from the matching
+    // Claims row, and append BOTH jump links so a curator can go
+    // to the prose sentence OR the full Claims row without another
+    // hover changing the rail. Does NOT clear on mouseleave.
+    //
+    // origin='prose' → drop the redundant visibility pill (prose
+    // sentences are always publishing by definition).
+    function updateRail (sig, origin) {
+      if (!rail || !sig) return;
+      var claim = document.querySelector('.sentence[data-signature="' + sig + '"]');
+      if (!claim) return;
+      var textNode = claim.querySelector('.sentence__text');
+      var metaNode = claim.querySelector('.sentence__meta');
+      var citationsNode = claim.querySelector('.citations');
+      railPopulated.innerHTML = '';
+      if (textNode) railPopulated.appendChild(textNode.cloneNode(true));
+      if (metaNode) {
+        var metaClone = metaNode.cloneNode(true);
+        if (origin === 'prose') {
+          var vis = metaClone.querySelectorAll('.state-pill');
+          for (var i = 0; i < vis.length; i++) vis[i].remove();
+        }
+        railPopulated.appendChild(metaClone);
+      }
+      // Citations cloned into the rail — the strongest provenance signal
+      // for a claim; putting it in the sticky hover panel means the
+      // curator sees WHERE a fact came from without scrolling down to the
+      // full Claims row. Cloned intact so all the existing markup + CSS
+      // (icon, chip label, freetext excerpt) render identically.
+      if (citationsNode) railPopulated.appendChild(citationsNode.cloneNode(true));
+
+      // Task 66 fix: only jump-to-claim is offered. The prose
+      // sentence sits immediately to the left of the rail and stays
+      // highlighted via .is-selected — a "jump to prose" button
+      // would just point at what the curator is already looking at.
+      var jumps = document.createElement('div');
+      jumps.className = 'rail-jumps';
+      var jumpClaim = document.createElement('a');
+      jumpClaim.href = '#';
+      jumpClaim.className = 'rail-jump';
+      jumpClaim.textContent = 'Jump to full claim ↓';
+      jumpClaim.addEventListener('click', function (e) {
+        e.preventDefault();
+        scrollAndFlash(claim);
+      });
+      jumps.appendChild(jumpClaim);
+      railPopulated.appendChild(jumps);
+
+      if (railEmpty) railEmpty.hidden = true;
+      railPopulated.hidden = false;
+    }
+
+    // Empty the rail back to its "hover a sentence" resting state.
+    // Called on deselect so the info panel doesn't linger on the
+    // just-deselected sentence.
+    function clearRail () {
+      if (!rail) return;
+      if (railPopulated) {
+        railPopulated.innerHTML = '';
+        railPopulated.hidden = true;
+      }
+      if (railEmpty) railEmpty.hidden = false;
+    }
+
+    function bindHover (nodes, origin) {
+      for (var i = 0; i < nodes.length; i++) {
+        (function (el) {
+          el.addEventListener('mouseenter', function () {
+            var sig = el.getAttribute('data-signature');
+            highlight(sig, true);
+            // Task 65: only update rail on hover when NOT locked.
+            if (!lockedSig) updateRail(sig, origin);
+          });
+          el.addEventListener('mouseleave', function () {
+            highlight(el.getAttribute('data-signature'), false);
+          });
+        })(nodes[i]);
+      }
+    }
+
+    // Click SELECTS the sentence — panel stays put + the sentence
+    // stays highlighted in the prose + Claims list until another
+    // sentence is clicked (or the same one is re-clicked to
+    // deselect). Applies to both prose and claim origins — same
+    // behaviour, same signature-driven selection.
+    function bindClickLock (nodes, origin) {
+      for (var i = 0; i < nodes.length; i++) {
+        (function (el) {
+          el.addEventListener('click', function (e) {
+            if (isInteractiveWithin(e.target, el) && e.target !== el) return;
+            var sig = el.getAttribute('data-signature');
+            if (!sig) return;
+            if (lockedSig === sig) {
+              // Deselect — clear ALL references to this sentence:
+              //   .is-selected → removed via setSelected(null) below
+              //   .is-highlighted → force off; the mouse is still on
+              //     the clicked sentence at this point (no mouseleave
+              //     has fired yet), so both the prose sentence AND
+              //     the matching claim would otherwise stay lit up
+              //     via the highlight() sig-fanout.
+              //   rail info panel → clearRail() empties it back to
+              //     the "hover a sentence" resting state. updateRail
+              //     with sig would repaint it; updateRail(null) just
+              //     early-returns without clearing.
+              lockedSig = null;
+              setSelected(null);
+              highlight(sig, false);
+              clearRail();
+            } else {
+              // Select this one
+              lockedSig = sig;
+              setSelected(sig);
+              updateRail(sig, origin);
+              // Task 67: when the click came from a CLAIM row (which
+              // sits far below the biography section), also scroll UP
+              // to the prose sentence. The B.4 hover-glitch is
+              // avoided because the rail is now locked at the
+              // clicked signature — hover events during the scroll
+              // won't repaint it. Prose→claim direction stays
+              // manual via the "Jump to full claim ↓" button in the
+              // rail (the rail is right next to the prose, no need
+              // to auto-scroll).
+              if (origin === 'claim') {
+                var proseEl = document.querySelector('.ai-rendered-prose [data-signature="' + sig + '"]');
+                if (proseEl) scrollAndFlash(proseEl);
+              }
+            }
+          });
+        })(nodes[i]);
+      }
+    }
+
+    bindHover(claims, 'claim');
+    bindHover(prose, 'prose');
+    bindClickLock(prose, 'prose');
+    bindClickLock(claims, 'claim');
+
+    // Task 65 / 66: if a sentence is already selected, repaint
+    // the rail + reapply .is-selected on the fresh sentence
+    // elements (Claims view toggle rebuilds the DOM).
+    if (lockedSig) {
+      setSelected(lockedSig);
+      updateRail(lockedSig, null);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', wireInteractions);
+  } else {
+    wireInteractions();
+  }
+
+  // Task 64: Claims view toggle (Visibility ⇄ Source). Reorganises
+  // sentence elements between group containers on toggle. Elements
+  // are MOVED, not cloned — hover-highlight + click bindings survive.
+  //
+  // Source view is built lazily on the first switch: we snapshot the
+  // original Visibility DOM, then extract sentences and re-group them
+  // by data-source into fresh containers. Switching back restores the
+  // snapshot exactly.
+  function bindClaimsViewToggle () {
+    var select = document.getElementById('claims-group-select');
+    var groups = document.getElementById('claims-groups');
+    if (!select || !groups) return;
+
+    var SOURCE_ORDER = ['museum', 'oxfordDNB', 'wikidata', 'gracesGuide', 'wikipedia', 'llm:inferred', 'llm:contextualising', 'llm:validated', 'llm:general_knowledge'];
+    var VISIBILITY_SNAPSHOT = null;
+
+    function currentSentences () {
+      return Array.prototype.slice.call(groups.querySelectorAll('.sentence'));
+    }
+
+    function toSource () {
+      if (!VISIBILITY_SNAPSHOT) VISIBILITY_SNAPSHOT = groups.innerHTML;
+      var sentences = currentSentences();
+      var bySource = {};
+      sentences.forEach(function (s) {
+        var src = s.getAttribute('data-source') || 'unknown';
+        // Collapse llm:validated:<tool> variants under one group
+        if (src.indexOf('llm:validated:') === 0) src = 'llm:validated';
+        (bySource[src] = bySource[src] || []).push(s);
+      });
+      // Rebuild container with source groups in a stable order
+      groups.innerHTML = '';
+      SOURCE_ORDER.forEach(function (src) { if (bySource[src]) createSourceGroup(src, bySource[src]); });
+      // Any unknown / extra sources appended after the ordered set
+      Object.keys(bySource).forEach(function (src) {
+        if (SOURCE_ORDER.indexOf(src) === -1) createSourceGroup(src, bySource[src]);
+      });
+      groups.setAttribute('data-view', 'source');
+    }
+
+    function createSourceGroup (source, sentences) {
+      var group = document.createElement('div');
+      group.className = 'claims-group claims-group--source';
+      group.setAttribute('data-source', source);
+      var h4 = document.createElement('h4');
+      h4.className = 'claims-group__title';
+      // Multi-source sentences are bucketed by their WEAKEST (riskiest)
+      // source per the spec. Header labels reflect that: a group says
+      // "primarily wikidata" (i.e. this is the highest-risk source in
+      // these sentences), not "wikidata sentences" — because sentences
+      // with a wikidata + llm:inferred mix will sit in the llm:inferred
+      // group, not this one. Wording keeps the count honest.
+      h4.innerHTML = 'primarily <code>' + source + '</code> <span class="text-meta">(' + sentences.length + ')</span>';
+      group.appendChild(h4);
+      var ol = document.createElement('ol');
+      ol.className = 'sentence-list';
+      sentences.forEach(function (s) { ol.appendChild(s); });
+      group.appendChild(ol);
+      groups.appendChild(group);
+    }
+
+    function toVisibility () {
+      if (!VISIBILITY_SNAPSHOT) return;
+      groups.innerHTML = VISIBILITY_SNAPSHOT;
+      groups.setAttribute('data-view', 'visibility');
+      // Re-bind interactions on the restored sentence elements.
+      // The originally-attached listeners were on the removed nodes;
+      // the restored HTML has fresh element instances.
+      wireInteractions();
+    }
+
+    select.addEventListener('change', function (e) {
+      var v = e.target.value;
+      if (v === 'source') toSource(); else toVisibility();
+    });
+
+    // Apply initial view for the pre-selected option (source by default).
+    if (select.value === 'source') toSource();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindClaimsViewToggle);
+  } else {
+    bindClaimsViewToggle();
+  }
+
+})();
+</script>
+
+<hr style="border-color: #e4e0d4; margin: 1.5rem 0;">
+
+{{!-- The manual "Run AI review" section (Opus escalation) was retired
+      after Task 54 verification. Automated per-generation review has
+      also been retired — curator actions on individual sentences
+      (approve / reject / clarify) are the sole review surface. --}}
+
+<div class="detail-section" id="flag">
+  <h3>Flag a problem</h3>
+  <p class="text-meta--sm" style="margin: 0 0 0.5rem 0;">
+    Click an icon to raise a flag (also sets this record's status to <em>flagged</em>). Click it again (or Clear) to remove your flag — but note the record status stays flagged until you change it manually.
+  </p>
+
+  <div style="background: #fbf9f4; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 1rem; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+    <form method="POST" action="/admin/ai/{{record.PK}}/flag" style="display: inline;">
+      <input type="hidden" name="reason" value="{{#isequal myCurrentFlag "inaccurate" this}}{{else}}inaccurate{{/isequal}}">
+      <button type="submit" class="rating-btn{{#isequal myCurrentFlag "inaccurate" this}} rating-btn--active{{/isequal}}" title="{{#isequal myCurrentFlag "inaccurate" this}}Click again to clear{{else}}Flag as inaccurate{{/isequal}}">❌ Inaccurate</button>
+    </form>
+    <form method="POST" action="/admin/ai/{{record.PK}}/flag" style="display: inline;">
+      <input type="hidden" name="reason" value="{{#isequal myCurrentFlag "wrong_tone" this}}{{else}}wrong_tone{{/isequal}}">
+      <button type="submit" class="rating-btn{{#isequal myCurrentFlag "wrong_tone" this}} rating-btn--active{{/isequal}}" title="{{#isequal myCurrentFlag "wrong_tone" this}}Click again to clear{{else}}Flag as wrong tone{{/isequal}}">🎭 Wrong tone</button>
+    </form>
+    <form method="POST" action="/admin/ai/{{record.PK}}/flag" style="display: inline;">
+      <input type="hidden" name="reason" value="{{#isequal myCurrentFlag "wrong_subject" this}}{{else}}wrong_subject{{/isequal}}">
+      <button type="submit" class="rating-btn{{#isequal myCurrentFlag "wrong_subject" this}} rating-btn--active{{/isequal}}" title="{{#isequal myCurrentFlag "wrong_subject" this}}Click again to clear{{else}}Flag: biography describes the wrong person / organisation / company{{/isequal}}">🔀 Wrong subject</button>
+    </form>
+    {{#if myCurrentFlag}}
+      <form method="POST" action="/admin/ai/{{record.PK}}/flag" style="display: inline; margin-left: 0.5rem;">
+        <input type="hidden" name="reason" value="">
+        <button type="submit" class="rating-btn rating-btn--clear" title="Clear your flag">✕ Clear</button>
+      </form>
+    {{/if}}
+  </div>
+
+  <style>
+    .rating-btn { background: #fdfdfa; border: 1px solid #c5c1b5; color: #2a2a2a; border-radius: 4px; padding: 0.4rem 0.75rem; font-size: 0.9rem; cursor: pointer; font-family: inherit; }
+    .rating-btn:hover { border-color: #646464; color: #2a2a2a; }
+    /* Active = amber/red tone because every flag is a "there's a problem" signal. */
+    .rating-btn--active { background: #f3e9da; border-color: #c87a1e; color: #2a2a2a; box-shadow: 0 0 0 1px #c87a1e inset; }
+    .rating-btn--active:hover { background: #f4eada; }
+    .rating-btn--clear { border-color: #c5c1b5; color: #646464; }
+    .rating-btn--clear:hover { border-color: #b03030; color: #a83a3a; }
+  </style>
+
+  {{#if otherFlags.length}}
+  <p class="text-meta--sm" style="margin: 0 0 1rem 0;">
+    Other flags on this record:
+    {{#each otherFlags}}
+      <span style="color: #646464;">{{this.staff}}</span>
+      <span style="color: #c87a1e;">
+        {{#isequal this.reason "inaccurate" this}}❌{{/isequal}}
+        {{#isequal this.reason "wrong_tone" this}}🎭{{/isequal}}
+        {{#isequal this.reason "wrong_subject" this}}🔀{{/isequal}}
+      </span>
+      {{#if this.stale}}<span style="color: #c87a1e; font-size: 0.7rem;" title="For an earlier version of this biography">⚠</span>{{/if}}
+      &nbsp;
+    {{/each}}
+  </p>
+  {{/if}}
+</div>
+
+<div class="detail-section" id="notes">
+  <h3>Notes</h3>
+
+  <form method="POST" action="/admin/ai/{{record.PK}}/notes" style="background: #fbf9f4; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+    <textarea name="text" rows="3" placeholder="Note (e.g. 'wrong that he founded the company, he co-founded it')" style="width: 100%; background: #fdfdfa; color: #2a2a2a; border: 1px solid #c5c1b5; border-radius: 4px; padding: 0.5rem; font-family: inherit;" required></textarea>
+    <div style="margin-top: 0.5rem;">
+      {{!-- "Add note" is a trigger / supporting action, not a primary
+            "do the main thing" CTA — use secondary outlined so it
+            doesn't compete with the navy primary buttons elsewhere on
+            the page (regenerate, update status, run AI review). --}}
+      <button type="submit" class="btn btn--secondary">Add note</button>
+    </div>
+  </form>
+
+  {{#if notes.length}}
+    <ul style="list-style: none; padding: 0; margin: 0;">
+      {{#each notes}}
+      <li style="background: #fbf9f4; padding: 0.75rem 1rem; border-radius: 4px; margin-bottom: 0.5rem; {{#if this.stale}}border-left: 3px solid #c87a1e;{{/if}}">
+        <div style="display: flex; justify-content: space-between; gap: 1rem; font-size: 0.8rem; color: #646464;">
+          <span>
+            <strong style="color: #2a2a2a;">{{this.staff}}</strong> · <span title="{{this.createdAt}}">{{formatDate this.createdAt "short"}}</span>
+          </span>
+          <form method="POST" action="/admin/ai/{{../record.PK}}/notes/delete" style="display: inline;" onsubmit="return confirm('Delete this note?');">
+            <input type="hidden" name="sk" value="{{this.SK}}">
+            <button type="submit" style="background: none; border: none; color: #b03030; cursor: pointer; font-size: 0.75rem;">delete</button>
+          </form>
+        </div>
+        {{#if this.biographyPromptVersion}}
+          <div style="font-size: 0.72rem; color: #646464; margin-top: 0.15rem;">
+            for <code style="color: #646464;">{{this.biographyPromptVersion}}</code>
+            {{#if this.biographyGeneratedAt}} · generated <span title="{{this.biographyGeneratedAt}}">{{formatDate this.biographyGeneratedAt "short"}}</span>{{/if}}
+            {{#if this.biographyModel}} · <code style="color: #646464;">{{this.biographyModel}}</code>{{/if}}
+          </div>
+          {{#if this.stale}}
+            <div style="font-size: 0.75rem; color: #c87a1e; margin-top: 0.35rem;">
+              ⚠ This note was written for an earlier generation of this biography. It may no longer apply to the current output.
+            </div>
+          {{/if}}
+        {{/if}}
+        {{#if this.text}}
+          <p style="margin: 0.5rem 0 0 0; white-space: pre-wrap;">{{this.text}}</p>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ul>
+  {{else}}
+    <p class="text-meta">No notes yet.</p>
+  {{/if}}
+</div>
+
+<style>
+  .contradictions-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+  .contradiction-item { padding: 0.6rem 0.8rem; background: #fbf1f1; border-left: 3px solid #d47272; border-radius: 3px; }
+  .contradiction-item__fact { font-weight: 600; margin-bottom: 0.35rem; color: #2a2a2a; }
+  .contradiction-item__winner { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; margin-bottom: 0.4rem; }
+  .contradiction-item__badge { background: #d47272; color: #fff; padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; }
+  .contradiction-item__others { list-style: none; padding: 0; margin: 0 0 0 1rem; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.2rem; }
+  .contradiction-item__others code { background: rgba(0,0,0,0.05); padding: 0.05rem 0.3rem; border-radius: 2px; font-size: 0.85em; }
+  .contradiction-item__winner code { background: rgba(255,255,255,0.7); padding: 0.1rem 0.35rem; border-radius: 2px; }
+</style>
+{{/if}}
+
+{{!-- Generation metadata — verification-candidate counters, signal
+      breakdown, and the prompts sent to the model. Writer notes +
+      Source disagreements used to live here; they moved up beside
+      Claims (see above) so curators see them first.
+
+      The wrapper AND its inner conditionals live behind a single
+      hasDiagnostics gate (computed in routes/admin-ai.js) so records
+      with no diagnostic data (batch-skipped admin_only stubs,
+      insufficient_data records) render neither the wrapper open nor
+      its close. Without this gate the previous structure opened the
+      wrapper inside {{#if renderedBiography.sentences.length}} and
+      closed it outside, unbalancing div depth and closing
+      admin-container prematurely for records with no sentences —
+      dumping the actions form + danger zone to the raw body. --}}
+{{#if hasDiagnostics}}
+<div class="detail-inputs-group">
+
+{{#if record.verificationCandidates}}
+<details class="collapsible">
+  <summary>Verification candidates <span class="text-meta" style="font-weight: normal;">— sentences that could be checked against external sources</span></summary>
+  <div class="detail-section">
+    <p class="text-meta" style="margin: 0 0 0.5rem 0;">
+      Each row is a count of sentences with one of the three LLM-tagged sources. These counters are instrumented for future batch verification; not billed until you run a check.
+    </p>
+    <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.4rem; font-size: 0.85rem;">
+      <li title="Sentences tagged llm:general_knowledge — facts from the model's training data with no source anchor in the museum or Wikidata inputs. Hidden by default at publishing level 3.">
+        <strong>{{record.verificationCandidates.generalKnowledgeCount}}</strong> <code style="font-size: 0.8em;">llm:general_knowledge</code>
+      </li>
+      <li title="Sentences tagged llm:contextualising — era / background prose, not a specific claim about the subject. Publishes at level 3+.">
+        <strong>{{record.verificationCandidates.contextualisingCount}}</strong> <code style="font-size: 0.8em;">llm:contextualising</code>
+      </li>
+      <li title="Sentences tagged llm:inferred — synthesis derived from museum + Wikidata inputs. Publishes at level 2+.">
+        <strong>{{record.verificationCandidates.inferredCount}}</strong> <code style="font-size: 0.8em;">llm:inferred</code>
+      </li>
+    </ul>
+    {{#if record.verificationCandidates.estimatedExternalValidationCost}}
+    <p class="text-meta" style="margin: 0.5rem 0 0 0;" title="What running batch external verification against every candidate on this record would cost">
+      Est. batch external verification cost: <strong>{{record.verificationCandidates.estimatedExternalValidationCost}}</strong>
+    </p>
+    {{/if}}
+  </div>
+</details>
+{{/if}}
+
+{{#if signalView}}
+<details class="collapsible">
+  <summary>Signal breakdown (score {{signalView.score}} / {{signalView.maxScore}}) <span class="text-meta" style="font-weight: normal;">— which data signals were present at generation time, and their weights</span></summary>
+  <div class="detail-section">
+    <ul style="list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.3rem; font-size: 0.85rem;">
+      {{#each signalView.signals}}
+      <li style="display: flex; gap: 0.5rem; align-items: center; background: #fbf9f4; padding: 0.4rem 0.6rem; border-radius: 3px;">
+        {{#if this.present}}
+          <span style="color: #2e7d4a; font-family: ui-monospace, monospace;">✓</span>
+          <span style="flex: 1;">{{this.label}}</span>
+          <span style="color: #2e7d4a; font-size: 0.75rem;" title="Weight of this signal">+{{this.weight}}</span>
+        {{else}}
+          <span style="color: #646464; font-family: ui-monospace, monospace;">✗</span>
+          <span style="color: #646464; flex: 1;">{{this.label}}</span>
+          <span style="color: #646464; font-size: 0.75rem;" title="Weight of this signal if present">({{this.weight}})</span>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+</details>
+{{/if}}
+
+{{#if record.systemPrompt}}
+<details class="collapsible">
+  <summary>View system prompt <span class="text-meta" style="font-weight: normal;">— the instructions sent to the model</span></summary>
+  <div class="detail-section">
+    <pre style="white-space: pre-wrap; font-size: 0.8rem; color: #646464;">{{record.systemPrompt}}</pre>
+  </div>
+</details>
+{{/if}}
+
+{{#if record.prompt}}
+<details class="collapsible">
+  <summary>View user prompt <span class="text-meta" style="font-weight: normal;">— the record data sent alongside the system prompt</span></summary>
+  <div class="detail-section">
+    <pre style="white-space: pre-wrap; font-size: 0.8rem; color: #646464;">{{record.prompt}}</pre>
+  </div>
+</details>
+{{/if}}
+</div>{{!-- /detail-inputs-group --}}
+{{/if}}{{!-- /hasDiagnostics --}}
+
+{{!-- Regenerate-button feedback. Moved to top level (was inside the
+      sentence-block if) so stubs / insufficient_data records also get
+      the spinner + disable-on-click behaviour. On submit: button
+      disables so a double-click can't fire another expensive
+      generation, label swaps to "Regenerating… (60–90s)", a spinner
+      appears alongside, and a hint appears below explaining that the
+      writer keeps running even if the page hangs or the tab is closed
+      — useful when nginx times out at proxy_read_timeout (staging)
+      before the writer finishes. Covers both the top banner
+      "Regenerate to apply" and the action-row "Regenerate (update
+      live)". --}}
+<style>
+  @keyframes regen-spin { to { transform: rotate(360deg); } }
+  .regenerate-btn[disabled] { opacity: 0.85; cursor: progress; }
+  .regenerate-btn__spinner { display: inline-block; width: 0.9rem; height: 0.9rem; margin-right: 0.35rem; vertical-align: -0.15em; animation: regen-spin 0.9s linear infinite; }
+  .regenerate-form__hint { margin-top: 0.6rem; padding: 0.5rem 0.75rem; background: #fbf9f4; border-left: 3px solid #1f4068; border-radius: 3px; font-size: 0.82rem; color: #4d4d4d; line-height: 1.45; }
+</style>
+<script>
+(function () {
+  function bindRegenerateSpinner () {
+    var forms = document.querySelectorAll('form.regenerate-form');
+    forms.forEach(function (form) {
+      form.addEventListener('submit', function () {
+        var btn = form.querySelector('.regenerate-btn');
+        if (!btn || btn.disabled) return;
+        var label = btn.querySelector('.regenerate-btn__label');
+        btn.disabled = true;
+        if (label) label.textContent = 'Regenerating… (60–90s)';
+        if (!btn.querySelector('.regenerate-btn__spinner')) {
+          var spinner = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          spinner.setAttribute('class', 'regenerate-btn__spinner');
+          spinner.setAttribute('aria-hidden', 'true');
+          spinner.innerHTML = '<use xlink:href="#icon-spinner"></use>';
+          btn.insertBefore(spinner, btn.firstChild);
+        }
+        // Also disable any OTHER regenerate buttons on the page (top
+        // banner + bottom action row can coexist — clicking one
+        // shouldn't leave the other clickable).
+        document.querySelectorAll('.regenerate-btn').forEach(function (b) { b.disabled = true; });
+        // Explanatory hint below the form so the curator knows
+        // this can take a while and what to do if the page hangs.
+        var container = form.parentElement || form;
+        if (!container.querySelector('.regenerate-form__hint')) {
+          var hint = document.createElement('div');
+          hint.className = 'regenerate-form__hint';
+          hint.setAttribute('role', 'status');
+          hint.innerHTML = 'Regeneration usually takes <strong>60–90 seconds</strong> (Haiku 4.5 with extended thinking). Don\'t refresh — the writer keeps running in the background even if you close this tab. If the page still hasn\'t returned after ~3 minutes, refresh manually — the new biography is likely already saved.';
+          container.appendChild(hint);
+        }
+      });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindRegenerateSpinner);
+  } else {
+    bindRegenerateSpinner();
+  }
+})();
+</script>
+
+<hr style="border-color: #e4e0d4; margin: 1.5rem 0;">
+
+<div class="actions" style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+  <form method="POST" action="/admin/ai/{{record.PK}}/status" style="display: flex; gap: 0.5rem; align-items: center;">
+    <select name="status">
+      <option value="live" {{#isequal record.status "live" this}}selected{{/isequal}}>Live</option>
+      <option value="flagged" {{#isequal record.status "flagged" this}}selected{{/isequal}}>Flagged</option>
+      <option value="hidden" {{#isequal record.status "hidden" this}}selected{{/isequal}}>Hidden</option>
+      <option value="insufficient_data" {{#isequal record.status "insufficient_data" this}}selected{{/isequal}}>Insufficient Data</option>
+      <option value="admin_only" {{#isequal record.status "admin_only" this}}selected{{/isequal}}>Admin Only</option>
+    </select>
+    <button type="submit" class="btn btn--primary">Update Status</button>
+  </form>
+
+  <form method="POST" action="/admin/ai/{{record.PK}}/regenerate" class="regenerate-form" style="display: inline;" title="Refresh the live record using the current default prompt ({{activeVersion}}) and model. The public biography is updated immediately.">
+    <button type="submit" class="btn btn--secondary regenerate-btn"><span class="regenerate-btn__label">Regenerate (update live)</span></button>
+  </form>
+</div>
+
+{{!-- Advanced — links / actions for developer + workshop use that
+      would clutter everyday curator triage. Sits behind a disclosure
+      so it stays out of the way but remains discoverable. Prompt
+      playground moved here 2026-07-27: originally lived as its own
+      cell in the record-header meta grid (a980db2e), but its main
+      audience is workshop / prompt-tuning, not everyday triage — the
+      prominence created an orphan cell in the grid and out-competed
+      more important header data. Add further advanced links here as
+      they appear (e.g. raw JSON dump, model-comparison tools). --}}
+{{!-- TEMP 2026-07-27: opened by default so curators can find the
+      Prompt playground during the pre-launch workshop window without
+      needing to know about the disclosure. Revert to closed
+      (remove the `open` attribute below) post-launch. --}}
+<details class="collapsible" open style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e4e0d4;">
+  <summary style="color: #1f4068; font-size: 0.85rem;">Advanced</summary>
+  <div style="margin-top: 0.6rem; display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+    <a href="/admin/ai/{{record.PK}}/playground" class="btn btn--secondary" title="Try a custom prompt on this subject without touching the live record. Useful for workshops and iterative prompt development.">Prompt playground ↗</a>
+    <span class="text-meta--sm" style="max-width: 36rem;">
+      Try a custom prompt against this subject's data without touching the live record. Mostly used during workshops or when iterating on the writer prompt.
+    </span>
+  </div>
+</details>
+
+{{!-- Danger zone — Delete sits behind a collapsed disclosure rather
+      than in the main action row. In normal use staff should mark
+      records as "hidden" instead of deleting them; deleted records
+      will be regenerated next time the page is hit. The disclosure
+      adds one click of friction so Delete can't be hit by muscle
+      memory next to Update Status / Regenerate. (When the auth
+      system grows roles, this is also the natural place to gate the
+      action behind an admin role.) --}}
+<details class="collapsible" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e4e0d4;">
+  <summary style="color: #b03030; font-size: 0.85rem;">Danger zone</summary>
+  <div style="margin-top: 0.6rem; display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+    <form method="POST" action="/admin/ai/{{record.PK}}/delete" onsubmit="return confirm('Delete this biography record? This cannot be undone — the record may be regenerated next time the page is hit. In most cases you want to set the status to Hidden instead.');">
+      <button type="submit" class="btn btn--danger">Delete record</button>
+    </form>
+    <span class="text-meta--sm" style="max-width: 36rem;">
+      Deleting a biography removes the row from DynamoDB. If the underlying catalogue record is still eligible, the next page view will regenerate it — so deletion is rarely what you want. To suppress a biography permanently, set the status to <strong>Hidden</strong> above.
+    </span>
+  </div>
+</details>
+
+<div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e4e0d4;">
+  <a href="/admin/ai">&larr; Back to list</a>
+</div>
+
+{{/if}}

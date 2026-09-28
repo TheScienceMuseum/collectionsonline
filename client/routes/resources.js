@@ -13,6 +13,7 @@ const getWikiData = require('../lib/listeners/get-wiki-data');
 const searchListener = require('../lib/listeners/search-listener');
 const downloadImageListener = require('../lib/listeners/download-image');
 const archiveListeners = require('../lib/listeners/archive-listeners');
+const getAiBiography = require('../lib/listeners/get-ai-biography');
 const initComp = require('../lib/listeners/init-components.js');
 // var internalHeader = require('../lib/listeners/internal-header');
 
@@ -98,6 +99,7 @@ function listeners (ctx, next, type) {
   } else if (type === 'people') {
     // funcs.push(getWikiData, internalHeader);
     funcs.push(getWikiData);
+    funcs.push(getAiBiography);
   }
 
   funcs.forEach(function (el) {

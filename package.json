@@ -1,6 +1,9 @@
 {
   "name": "collectionsonline",
   "version": "1.0.1",
+  "engines": {
+    "node": ">=18"
+  },
   "pre-commit": [
     "test:lint"
   ],
@@ -10,6 +13,9 @@
     "test": "test"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.88.0",
+    "@aws-sdk/client-dynamodb": "^3.1029.0",
+    "@aws-sdk/lib-dynamodb": "^3.1029.0",
     "@elastic/elasticsearch": "^7.17.13",
     "@hapi/boom": "^10.0.1",
     "@hapi/catbox": "^10.2.1",
@@ -38,6 +44,7 @@
     "page": "^1.11.6",
     "plyr": "^3.7.8",
     "promise": "^8.3.0",
+    "punycode": "^2.3.1",
     "rc": "^1.2.8",
     "slugg": "^1.2.1",
     "smg-web-design-system": "github:TheScienceMuseum/web-design-system#0.11.8",

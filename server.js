@@ -5,8 +5,16 @@ const Joi = require('joi');
 const Vision = require('@hapi/vision');
 const routes = require('./routes');
 const auth = require('./auth');
+const checkBundleFreshness = require('./lib/check-bundle-freshness');
 
 module.exports = async (elastic, config, cb) => {
+  // Boot-time sanity check — warns loudly if public/bundle.js is older
+  // than the source files baked into it. Catches the "I edited a partial
+  // but forgot to rebuild" failure mode before visitors notice. No-op in
+  // production where postinstall keeps the bundle current. See module
+  // header for context.
+  checkBundleFreshness();
+
   const server = new Hapi.Server({ port: config.port, routes: { cors: { origin: 'ignore' }, log: { collect: true } } });
   server.validator(Joi);
   server.route(routes(elastic, config));
@@ -33,6 +41,17 @@ module.exports = async (elastic, config, cb) => {
     return cb(err);
   }
 
+  // Register admin cookie for AI biography admin interface
+  server.state('adminToken', {
+    ttl: 24 * 60 * 60 * 1000,
+    isSecure: config.NODE_ENV === 'production',
+    isHttpOnly: true,
+    isSameSite: 'Strict',
+    path: '/admin',
+    encoding: 'none',
+    strictHeader: false
+  });
+
   server.views({
     engines: { html: { module: require('handlebars'), compileMode: 'sync' } },
     relativeTo: __dirname,
@@ -40,7 +59,16 @@ module.exports = async (elastic, config, cb) => {
     layout: 'default',
     layoutPath: './templates/layouts',
     partialsPath: './templates/partials',
-    helpersPath: './templates/helpers'
+    helpersPath: './templates/helpers',
+    // Global view context — merged into every h.view() render. Exposes
+    // the logged-in admin username (if any) so layouts can surface it
+    // in the header without every admin-route handler having to pass
+    // it individually. Empty string for unauthenticated / non-admin
+    // requests.
+    context: function (request) {
+      const cookieUser = request && request.state && request.state.adminUser;
+      return { loggedInUser: cookieUser || '' };
+    }
   });
 
   // Inject visualSearchEnabled into every view-typed response just
