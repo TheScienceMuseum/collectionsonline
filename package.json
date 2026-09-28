@@ -13,7 +13,7 @@
     "test": "test"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.88.0",
+    "@anthropic-ai/sdk": "^0.91.1",
     "@aws-sdk/client-dynamodb": "^3.1029.0",
     "@aws-sdk/lib-dynamodb": "^3.1029.0",
     "@elastic/elasticsearch": "^7.17.13",
