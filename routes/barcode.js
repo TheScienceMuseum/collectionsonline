@@ -1,5 +1,25 @@
 const slug = require('slugg');
 const Boom = require('@hapi/boom');
+const sortImages = require('../lib/helpers/jsonapi-response/sort-images');
+
+// Pick the first usable derivative for a preview thumbnail. Falls back through
+// sizes because some records' first image has only a subset of derivatives.
+// Returns null if nothing usable was found.
+function firstImageLocation (source) {
+  const raw = Array.isArray(source?.multimedia)
+    ? source.multimedia.filter(m => m && m['@processed'])
+    : [];
+  if (!raw.length) return null;
+  const sorted = sortImages(raw);
+  const p = sorted[0]?.['@processed'];
+  return (
+    p?.medium?.location ||
+    p?.large_thumbnail?.location ||
+    p?.large?.location ||
+    p?.small_thumbnail?.location ||
+    null
+  );
+}
 
 module.exports = (elastic, config) => ({
   method: 'GET',
@@ -32,9 +52,10 @@ module.exports = (elastic, config) => ({
 
             const title = obj?._source?.summary?.title;
 
-            const image =
-              config.mediaPath +
-              obj?._source?.multimedia?.[0]?.['@processed']?.medium?.location;
+            // Match the sort order the object page uses (lib/jsonapi-response.js
+            // → sortImages: position asc, upload_sort desc) so the preview
+            // thumbnail aligns with what the user sees on /objects/{id}.
+            let imageLocation = firstImageLocation(obj?._source);
 
             const uid = obj?._id;
             slugValue = slugValue ? '/' + slugValue : '';
@@ -78,6 +99,25 @@ module.exports = (elastic, config) => ({
             } else {
               path = '/objects/' + obj?._id + slugValue;
             }
+
+            // Parts often have no multimedia of their own (e.g. SMG00420385,
+            // a lens cap). Since the sheet's "View record" links to the parent
+            // anyway, fall back to the parent's first sorted image so the
+            // preview matches what the user will see after clicking through.
+            if (!imageLocation && isPart && parentUid) {
+              try {
+                const parentRes = await elastic.get(
+                  { index: config.elasticIndex, id: parentUid },
+                  { requestTimeout: 5000 }
+                );
+                imageLocation = firstImageLocation(parentRes?.body?._source);
+              } catch (e) {
+                // Swallow — a missing/unreachable parent shouldn't break the
+                // primary scan response. The UI handles a null image.
+              }
+            }
+
+            const image = imageLocation ? config.mediaPath + imageLocation : null;
 
             return h.response({
               path,

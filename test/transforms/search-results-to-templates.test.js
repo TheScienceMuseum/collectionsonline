@@ -138,6 +138,60 @@ test(file + 'Object template data is correctly built', (t) => {
   t.end();
 });
 
+test(
+  file + 'Object figure uses the first multimedia entry that has a thumbnail',
+  (t) => {
+    t.plan(1);
+
+    const figureTestResult = {
+      body: {
+        hits: {
+          total: 1,
+          max_score: null,
+          hits: [
+            {
+              _id: `smg-object-${Date.now()}`,
+              _source: {
+                '@datatype': { base: 'object' },
+                summary: { title: 'object with an unprocessed lead image' },
+                multimedia: [
+                  {
+                    // Primary image, still processing — no thumbnail yet
+                    position: { value: '1' }
+                  },
+                  {
+                    position: { value: '2' },
+                    '@processed': {
+                      upload_sort: '2015-01-01',
+                      large_thumbnail: { location: 'ready.jpg' }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        aggregations: testResult.body.aggregations
+      }
+    };
+
+    const figureJsonData = searchResultsToJsonApi(query, figureTestResult, {
+      mediaPath: 'https://media.test/'
+    });
+    const templateData = searchToTemplate(query, figureJsonData);
+    const objectResult = templateData.results.find(
+      (el) => el.type === 'objects'
+    );
+
+    t.equal(
+      objectResult.figure,
+      'https://media.test/ready.jpg',
+      'figure falls back to the first image that has a card thumbnail'
+    );
+    t.end();
+  }
+);
+
 // test(file + 'Group template data is correctly built', (t) => {
 //   t.plan(4);
 //   t.doesNotThrow(() => {

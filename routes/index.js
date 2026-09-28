@@ -33,6 +33,14 @@ module.exports = (elastic, config) => [
   require('./barcode')(elastic, config),
   require('./group')(elastic, config),
   require('./wiki')(elastic, config),
+  ...(config.visualSearchEnabled
+    ? [
+        require('./redirects').snap(),
+        require('./scan').page(elastic, config),
+        require('./scan').search(elastic, config),
+        require('./scan').health(elastic, config)
+      ]
+    : []),
   ...require('./cache-admin')(),
   ...require('./ai-biography')(elastic, config),
   ...require('./admin-ai')(elastic, config)

@@ -78,6 +78,50 @@ testWithServer(file + 'Return json if both json and html header are defined at t
   t.end();
 });
 
+testWithServer(file + 'Return json when ?ajax=true even if Accept header is missing or HTML', {}, async (t, ctx) => {
+  t.plan(2);
+
+  const noAcceptHeader = await ctx.server.inject({
+    method: 'GET',
+    url: '/search?q=test&ajax=true'
+  });
+  t.ok(noAcceptHeader.headers['content-type'].indexOf('application/vnd.api+json') > -1, '?ajax=true with no Accept header should return JSON');
+
+  const htmlAcceptHeader = await ctx.server.inject({
+    method: 'GET',
+    url: '/search?q=test&ajax=true',
+    headers: { Accept: 'text/html' }
+  });
+  t.ok(htmlAcceptHeader.headers['content-type'].indexOf('application/vnd.api+json') > -1, '?ajax=true should override Accept: text/html');
+
+  t.end();
+});
+
+testWithServer(file + 'Resource responses include Vary, ETag, and Last-Modified headers', {}, async (t, ctx) => {
+  t.plan(8);
+
+  const jsonRes = await ctx.server.inject({
+    method: 'GET',
+    url: '/objects/co8245103?ajax=true'
+  });
+  t.equal(jsonRes.statusCode, 200, 'JSON request returns 200');
+  t.ok(/Accept/i.test(jsonRes.headers.vary || ''), 'JSON response has Vary: Accept');
+  t.ok(jsonRes.headers.etag, 'JSON response has ETag');
+  t.ok(jsonRes.headers['last-modified'], 'JSON response has Last-Modified');
+
+  const htmlRes = await ctx.server.inject({
+    method: 'GET',
+    url: '/objects/co8245103',
+    headers: { Accept: 'text/html' }
+  });
+  t.equal(htmlRes.statusCode, 200, 'HTML request returns 200');
+  t.ok(/Accept/i.test(htmlRes.headers.vary || ''), 'HTML response has Vary: Accept');
+  t.ok(htmlRes.headers.etag, 'HTML response has ETag');
+  t.notEqual(htmlRes.headers.etag, jsonRes.headers.etag, 'HTML and JSON ETags differ for the same record');
+
+  t.end();
+});
+
 testWithServer(file + 'Return html if user agent is twitter bot', {}, async (t, ctx) => {
   t.plan(1);
 

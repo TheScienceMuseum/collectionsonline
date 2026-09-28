@@ -106,3 +106,22 @@ holdout-report-*.jsonl
 # debug hook without pointing the env var at a scratchpad dir, these
 # land in project root. Local diagnostic artefact, not shared code.
 parse-failed-*.json
+
+# Visual search build artefacts (large; uploaded manually to /models/ on the CDN)
+scripts/visual-search-build/out/
+scripts/visual-search-build/out-*/
+scripts/visual-search-build/image-cache/
+scripts/visual-search-build/.venv/
+scripts/visual-search-build/__pycache__/
+scripts/visual-search-build/**/__pycache__/
+scripts/visual-search-build/*.checkpoint
+scripts/visual-search-build/build*.log
+public/scan.js
+public/scan.js.map
+public/scan-*.js
+public/scan-*.js.map
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

@@ -24,3 +24,18 @@ test('Sorting Nested Objects', function (t) {
   t.deepEqual(sorted.children[1].children.length, 2, 'sorting');
   t.end();
 });
+
+test('Flat input builds the full tree and drops orphans', function (t) {
+  t.plan(3);
+  const flat = [
+    { id: 'fonds-1' },
+    { id: 'series-1', identifier: 'S1', parent: [{ '@admin': { uid: 'fonds-1' } }] },
+    { id: 'item-1', identifier: 'I1', parent: [{ '@admin': { uid: 'series-1' } }] },
+    { id: 'orphan-1', identifier: 'O1', parent: [{ '@admin': { uid: 'missing-parent' } }] }
+  ];
+  const sorted = archiveTree.sortChildren(flat);
+  t.equal(sorted.children.length, 1, 'one series attached to the fonds');
+  t.equal(sorted.children[0].children[0].id, 'item-1', 'item attached under its series');
+  t.notOk(JSON.stringify(sorted).includes('orphan-1'), 'node with a missing parent is dropped');
+  t.end();
+});

@@ -9,9 +9,14 @@
   {{/if}}
 </a>
 {{/isResourcePage}}
-<form class="searchbox" id="searchbox" action="/search" role="search">
+<form class="searchbox{{#if visualSearchEnabled}} searchbox--has-visual{{/if}}" id="searchbox" action="/search" role="search">
   <input type="search" class="searchbox__search" aria-label="Search the collection" placeholder="Search objects, people, categories, object numbers etc."
     name="q" value="{{q}}">
+  {{#if visualSearchEnabled}}
+  <a href="/scan" class="searchbox__visual" aria-label="Find an object by photo" title="Find an object by photo">
+    {{> global/icon i="camera" size="32" }}
+  </a>
+  {{/if}}
   <button aria-label="search" class="searchbox__submit">
     {{> global/icon i="search" size="32" }}
   </button>

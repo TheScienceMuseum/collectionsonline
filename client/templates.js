@@ -616,7 +616,9 @@ module.exports = {
   explore: Handlebars.compile(
     Fs.readFileSync('./templates/pages/explore.html', 'utf8')
   ),
-
+  scan: Handlebars.compile(
+    Fs.readFileSync('./templates/pages/scan.html', 'utf8')
+  ),
   aiBiography: Handlebars.compile(
     Fs.readFileSync('./templates/partials/records/ai-biography.html', 'utf8')
   )

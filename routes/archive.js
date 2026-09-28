@@ -29,7 +29,16 @@ module.exports = (elastic, config) => ({
 
           const JSONData = Object.assign(buildJSONResponse(result.body, config), { tree: data });
 
-          return response(h, JSONData, 'archive', responseType);
+          const res = response(h, JSONData, 'archive', responseType);
+
+          // A degraded page (hierarchy fetch failed or was truncated) must not
+          // be pinned by CloudFront for the route's 24h TTL — send no-cache so
+          // it is retried until a complete tree renders.
+          if (data && data.incomplete) {
+            res.ttl(0);
+          }
+
+          return res;
         } catch (err) {
           return elasticError(err);
         }

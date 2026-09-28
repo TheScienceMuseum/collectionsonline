@@ -1,4 +1,14 @@
 module.exports = {
+  // Defined as a getter so SPA-rendered pages pick up the visual-search
+  // feature flag set on `window.__visualSearchEnabled` by client/main.js
+  // at boot. Server-rendered pages get the same value via the global
+  // view context in server.js — both paths converge on the same source
+  // of truth (the meta tag in templates/layouts/default.html), so the
+  // camera entry-point in the searchbox is consistent across direct
+  // hits and client-side navigation.
+  get visualSearchEnabled () {
+    return typeof window !== 'undefined' && window.__visualSearchEnabled === true;
+  },
   title: 'Science Museum Group Collection',
   titlePage: 'Science Museum Group Collection',
   metaDescription: 'Explore over 500,000 objects and archives from the Science Museum, Science and Industry Museum, National Science and Media Museum, National Railway Museum and Locomotion.',
@@ -170,6 +180,21 @@ module.exports = {
     {
       title: 'Highlights',
       collection: [
+        {
+          type: 'collection',
+          // The explanation has to live in the title: .explore-carousel
+          // hides card descriptions at <=580px (components/_carousel.scss),
+          // which is most of the range where this card is shown at all.
+          title: 'Snap It: Visual search',
+          description: 'Use your phone’s camera to find similar objects',
+          alt: 'The Snap It search bar, showing the camera icon used to search by photo',
+          figure: '/assets/img/home/collections/snapit.jpg',
+          link: '/scan',
+          // Camera-driven, so it's only offered where there's a usable
+          // rear-facing camera. Dropped from the carousel on desktop in
+          // client/lib/listeners/carousel.js.
+          mobileOnly: true
+        },
         {
           type: 'collection',
           title: 'Hawking Building Grid',
