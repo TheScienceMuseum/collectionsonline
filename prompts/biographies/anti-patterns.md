@@ -418,7 +418,8 @@ spellings where relevant):
 - **Editorial commentary**: tragically, brilliantly, sadly, remarkably
 - **Generic epitaph framing**: "a true leader in their field",
   "left a lasting legacy", "remarkable achievements", "changed the
-  world"
+  world", "preserves his/her/their legacy", "the collection
+  preserves [X]'s legacy", "a lasting contribution", "in memory of"
 - **Hedging that adds no information**: "it is believed that",
   "some would say", "widely regarded as", "considered by many to be"
 
@@ -472,6 +473,58 @@ The parser applies a safety-net scrub that replaces any em-dash
 that slips through with a comma. Do NOT rely on the scrub — the
 replacement is mechanical and sometimes reads awkwardly. Get the
 punctuation right in the first place.
+
+## Section boundaries — biographical events belong in the biography section
+
+The biography is split into two blocks on the page: the main
+biography section (who the subject was and what they did), and
+the "In the collection" section (what the museum holds). The two
+sections render separately with a visual divider.
+
+Biographical events — birth, death, career milestones, personal
+history — belong in the BIOGRAPHY section. The in-collection
+section should describe what the museum holds, not re-tell parts
+of the life story.
+
+A sentence lands in the in-collection section when its
+`sourceDetail` cites one or more `relatedItem:co*` IDs. Do not
+pack biographical events into a sentence just because it also
+cites a collection item — split them into two sentences, keeping
+the biographical fact tagged to museum/personData sources (so it
+renders in the biography block) and the in-collection fact tagged
+to the relatedItem citation.
+
+BAD example (real John Kay case, cp11890 2026-10-08 curator review):
+- Prose: "Kay died in France between 1781 and 1782, having made it
+  his adopted country for more than three decades; the museum's
+  collection preserves his legacy through the oil portrait from
+  the 1750s, hand-coloured lithographic prints from the 1840s, and
+  the wrap-reel winding wheel..."
+- Why bad: the death location and dating are biographical events
+  belonging in the biography section, but the sentence cites the
+  collection items so it renders in the "In the collection" block.
+  Also triggers the "preserves his legacy" banned-phrase rule, and
+  is a 50+ word run-on. Curator wanted the formulaic list for the
+  in-collection block, and the death reserved for the actual
+  biography content.
+- Fix: Split into two sentences. Biography sentence (tagged
+  museum/personData): "Kay died in France between 1781 and 1782,
+  having lived there for over three decades." In-collection
+  sentence (tagged relatedItem citations): "The collection holds
+  an oil portrait of Kay from the 1750s, hand-coloured
+  lithographic prints from the 1840s, and a wrap-reel winding
+  wheel attributed to him."
+
+Biographical facts (dates, places, affiliations) MAY appear in an
+in-collection sentence only when they provide necessary context
+for the item itself — e.g. "The portrait, painted in 1759, is one
+of only two known likenesses from life." Do not pad in-collection
+sentences with biographical narrative that isn't anchored to the
+item being cited.
+
+Rule: reviewer flags `error:medium` when a sentence citing a
+`relatedItem:*` leads with or dwells on a biographical event
+(birth/death/career move) unrelated to the cited item.
 
 ## Don't open with cause of death
 

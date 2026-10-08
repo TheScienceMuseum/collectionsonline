@@ -331,6 +331,9 @@ const BASE_PROMPT_LINES = [
   '7. Headline achievement in paragraph 1: if a Wikipedia article is provided, paragraph 1 must reference the achievement most-mentioned in the article\'s intro (typically the first 2-3 sentences of the extract). If no Wikipedia article, use the most-cited item in personData.relatedPeople co-attribution or the Wikidata `notable work` (P800) claim. Do not bury the headline in later paragraphs.',
   '8. Every fact you assert must be tagged. There are no untagged sentences.',
   '9. Rate your confidence in the biography 0-10. Use 0-2 if there\'s not enough data for a meaningful biography, 3-4 for thin-but-usable, 5-7 for solid, 8+ for rich well-grounded data.',
+  '10. British English only. Use colour (not color), organisation (not organization), programme (not program), catalogue (not catalog), metre (not meter), centre (not center), analyse (not analyze), -ise/-isation endings (not -ize/-ization), aeroplane (not airplane). This is a UK national museum; American spellings are a visible out-of-house-style tell. Applies to prose; verbatim quoted excerpts from sources keep the source\'s original spelling.',
+  '11. Prefer sentences under ~30 words. A sentence packing three facts separated by semicolons or multiple sub-clauses is almost always clearer as two or three sentences. Break at natural clause boundaries. This is a guideline, not a hard cap — one longer sentence is fine when the construction genuinely holds together, but a run-on with "and" / ", including" / ", as well as" chains is a smell.',
+  '12. If the MUSEUM COLLECTION ITEMS block above lists one or more items, make sure at least one of your sentences cites a specific item via `citations: [{ field: "relatedItem:co<id>", ... }]`. Rendering mechanics: the public biography page and admin review UI split your sentences into two blocks — the "Biography" block (sentences without any relatedItem citation) and the "In the collection" block (sentences with at least one). A biography that cites zero items has no in-collection block at all, which is a visible gap on the page. This is especially easy to miss for organisations and companies where the biography can read as complete on Wikipedia / Wikidata alone — reach for a representative item from the list even then. Where volume is substantial (see the Volume note above), one sentence that opens with volume and names 1-2 highlights is usually enough; don\'t enumerate exhaustively.',
   '',
   'NOTES field',
   '',
@@ -410,6 +413,31 @@ function buildUserPrompt (personData, relatedItems, wikidataContext, subject, op
 
   parts.push('');
   parts.push('MUSEUM COLLECTION ITEMS (sentences referencing these are tagged "museum" with sourceDetail="relatedItem:coXXXXX"):');
+  // Volume signal — the model only ever sees up to 20 items here, but the
+  // collection may hold many more. Surfacing the real match count lets the
+  // writer phrase scale accurately ("the collection holds over 300 items by X"
+  // vs mis-reading 20 as the whole set). Only mentioned when the full count
+  // meaningfully exceeds what we hand over, and framed as approximate because
+  // not every object is necessarily linked to the subject record. Thresholds:
+  // 20 is the per-prompt cap, so <= 20 means we handed over everything; above
+  // that, round down to the nearest useful bucket.
+  if (opts.relatedItemsTotalHits && opts.relatedItemsTotalHits > 20) {
+    const n = opts.relatedItemsTotalHits;
+    // Round down to the nearest 100 above 100, nearest 10 between 50-99,
+    // and exact below 50 — keeps the number recognisable but visibly
+    // approximate, so the model won't echo it as a hard figure. Format
+    // >=1000 with a thousands comma for readability.
+    let bucket;
+    if (n >= 100) {
+      const rounded = Math.floor(n / 100) * 100;
+      bucket = 'over ' + rounded.toLocaleString('en-GB');
+    } else if (n >= 50) {
+      bucket = 'approximately ' + Math.round(n / 10) * 10;
+    } else {
+      bucket = 'approximately ' + n;
+    }
+    parts.push('(Volume: the full collection holds ' + bucket + ' items related to this ' + noun + ' — the list below is the top 20 by relevance. The full count is approximate; linking is not exhaustive. If the holdings are substantial, use the bucketed phrase above (e.g. "' + bucket + '") directly in your prose — it IS the approximation, grounded in the museum\'s own index, and safe to echo verbatim. Do not invent a more precise figure than what\'s provided here, and do not shrink it to vague wording like "several" when a figure is available.)');
+  }
   if (relatedItems && relatedItems.length > 0) {
     relatedItems.slice(0, 20).forEach(function (item, i) {
       const role = item.role ? ' (Role: ' + item.role + ')' : '';
