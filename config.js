@@ -24,7 +24,7 @@ module.exports = require('rc')('co', {
     tableName: process.env.DYNAMODB_TABLE || 'collectionsonline-ai'
   },
   aiBiographyEnabled: process.env.AI_BIOGRAPHY_ENABLED === 'true',
-  aiBiographyModel: process.env.AI_BIOGRAPHY_MODEL || 'claude-haiku-4-5-20251001',
+  aiBiographyModel: process.env.AI_BIOGRAPHY_MODEL || 'claude-haiku-5-5',
   // Which prompt version to use by default when generating biographies.
   // See prompts/biographies/README.md for the authoring workflow.
   // If unset, the system picks the latest version by filename sort order.
