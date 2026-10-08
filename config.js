@@ -257,9 +257,12 @@ module.exports = require('rc')('co', {
 
   // Extended-thinking tuning knobs for the writer. Passed through to
   // Anthropic's thinking config on every generation. maxOutputTokens
-  // must exceed thinkingBudgetTokens (SDK enforces this).
+  // must exceed thinkingBudgetTokens (SDK enforces this). The budget
+  // applies to Haiku 4.5; Haiku 5.5+ use adaptive thinking with effort
+  // (low | medium | high | xhigh | max) instead.
   aiBiographyThinkingBudgetTokens: parseInt(process.env.AI_BIOGRAPHY_THINKING_BUDGET_TOKENS || '4000', 10),
-  aiBiographyMaxOutputTokens: parseInt(process.env.AI_BIOGRAPHY_MAX_OUTPUT_TOKENS || '24000', 10),
+  aiBiographyEffort: process.env.AI_BIOGRAPHY_EFFORT || 'medium',
+  aiBiographyMaxOutputTokens: parseInt(process.env.AI_BIOGRAPHY_MAX_OUTPUT_TOKENS || '32000', 10),
 
   // --- Visual search (from master) ---
   // Image-to-image catalogue retrieval at /scan.

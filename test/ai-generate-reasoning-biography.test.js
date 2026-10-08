@@ -127,6 +127,64 @@ test('always passes thinking config (extended thinking on)', async function (t) 
   t.end();
 });
 
+test('Haiku 5.5 gets adaptive thinking at medium effort, no budget_tokens', async function (t) {
+  const client = makeStubClient(validResponse(VALID_PARSED_JSON));
+  await generateReasoningBiography(
+    { name: 'x' }, [], null,
+    { client, apiKey: 'x', model: 'claude-haiku-5-5', budgetTokens: 4000, maxTokens: 24000 }
+  );
+  const params = client._capturedParams[0];
+  t.deepEqual(params.thinking, { type: 'adaptive' });
+  t.deepEqual(params.output_config, { effort: 'medium' });
+  t.equal(params.max_tokens, 24000);
+  t.end();
+});
+
+test('honours opts.effort on adaptive models', async function (t) {
+  const client = makeStubClient(validResponse(VALID_PARSED_JSON));
+  await generateReasoningBiography(
+    { name: 'x' }, [], null,
+    { client, apiKey: 'x', model: 'claude-haiku-5-5', effort: 'high' }
+  );
+  t.deepEqual(client._capturedParams[0].output_config, { effort: 'high' });
+  t.end();
+});
+
+test('4.5-era models get budget thinking and no output_config', async function (t) {
+  const client = makeStubClient(validResponse(VALID_PARSED_JSON));
+  await generateReasoningBiography(
+    { name: 'x' }, [], null,
+    { client, apiKey: 'x', model: 'claude-haiku-4-5-20251001', effort: 'high' }
+  );
+  const params = client._capturedParams[0];
+  t.equal(params.thinking.type, 'enabled');
+  t.equal(params.output_config, undefined);
+  t.end();
+});
+
+test('throws on an unknown effort for adaptive models', async function (t) {
+  try {
+    await generateReasoningBiography(
+      { name: 'x' }, [], null,
+      { apiKey: 'x', model: 'claude-haiku-5-5', effort: 'extreme' }
+    );
+    t.fail('should have thrown');
+  } catch (err) {
+    t.ok(/effort "extreme"/.test(err.message), 'names the bad value');
+  }
+  t.end();
+});
+
+test('budgetTokens >= maxTokens is not an error on adaptive models', async function (t) {
+  const client = makeStubClient(validResponse(VALID_PARSED_JSON));
+  const result = await generateReasoningBiography(
+    { name: 'x' }, [], null,
+    { client, apiKey: 'x', model: 'claude-haiku-5-5', budgetTokens: 16000, maxTokens: 16000 }
+  );
+  t.ok(result);
+  t.end();
+});
+
 test('defaults to Haiku 4.5 when opts.model not specified', async function (t) {
   const client = makeStubClient(validResponse(VALID_PARSED_JSON));
   await generateReasoningBiography(
@@ -192,6 +250,37 @@ test('returns null + populates diagnostics on unparseable response', async funct
   t.equal(diagnostics.failureMode, 'parse_failed');
   t.ok(diagnostics.parseError);
   t.ok(diagnostics.rawResponse);
+  t.end();
+});
+
+test('returns null + failureMode=max_tokens when truncated JSON hits the cap', async function (t) {
+  const truncated = validResponse(VALID_PARSED_JSON.slice(0, 60));
+  truncated.stop_reason = 'max_tokens';
+  const client = makeStubClient(truncated);
+  const diagnostics = {};
+  const result = await generateReasoningBiography(
+    { name: 'x' }, [], null, { client, apiKey: 'x', diagnostics }
+  );
+  t.equal(result, null);
+  t.equal(diagnostics.failureMode, 'max_tokens');
+  t.equal(diagnostics.stopReason, 'max_tokens');
+  t.ok(diagnostics.rawResponse, 'keeps the truncated text for post-mortem');
+  t.end();
+});
+
+test('returns null + failureMode=refusal when the model declines', async function (t) {
+  const refused = validResponse(VALID_PARSED_JSON);
+  refused.stop_reason = 'refusal';
+  refused.stop_details = { type: 'refusal', category: 'general_harms', explanation: '' };
+  const client = makeStubClient(refused);
+  const diagnostics = {};
+  const result = await generateReasoningBiography(
+    { name: 'x' }, [], null,
+    { client, apiKey: 'x', model: 'claude-haiku-5-5', diagnostics }
+  );
+  t.equal(result, null, 'does not persist a declined response even if it parses');
+  t.equal(diagnostics.failureMode, 'refusal');
+  t.equal(diagnostics.refusalCategory, 'general_harms');
   t.end();
 });
 

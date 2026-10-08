@@ -124,6 +124,7 @@ function loadConfig () {
 // etc.) still fall through to a generation attempt — the write may
 // well succeed on retry, and skipping would be over-cautious.
 
+const LONG_PROMPT_TOKENS = 100000;
 const AUTH_ABORT_THRESHOLD = 3;
 const AUTH_ERROR_PATTERN = /Could not load credentials|security token|AccessDenied|UnrecognizedClientException|ExpiredToken|InvalidClientTokenId|SignatureDoesNotMatch/i;
 
@@ -345,7 +346,8 @@ async function main () {
     reviewerInput: 0,
     reviewerOutput: 0,
     reviewerCacheCreation: 0,
-    reviewerCacheRead: 0
+    reviewerCacheRead: 0,
+    writerLongPromptCalls: 0
   };
   const started = Date.now();
 
@@ -459,6 +461,10 @@ async function main () {
         tokens.writerOutput += result.writer.outputTokens || 0;
         tokens.writerCacheCreation += result.writer.cacheCreationTokens || 0;
         tokens.writerCacheRead += result.writer.cacheReadTokens || 0;
+        const promptTokens = (result.writer.inputTokens || 0) +
+          (result.writer.cacheReadTokens || 0) +
+          (result.writer.cacheCreationTokens || 0);
+        if (promptTokens > LONG_PROMPT_TOKENS) tokens.writerLongPromptCalls++;
       }
       if (result.reviewer) {
         tokens.reviewerInput += result.reviewer.inputTokens || 0;
@@ -531,8 +537,13 @@ async function main () {
   // Falls back to Sonnet-tier if the configured model is unrecognised; a
   // warning is printed so the caller notices.
   const modelId = config.aiBiographyModel || '';
+  // Haiku 5.5 bills a request at 5× (input $0.50, output $2.50) when its
+  // prompt exceeds LONG_PROMPT_TOKENS. Biography prompts sit far below
+  // that, so the estimate uses the standard card and warns if any call
+  // crossed the line.
   function pricingFor (id) {
-    if (/haiku-4-5/i.test(id)) return { tier: 'haiku-4.5', inputUsdPerM: 0.80, outputUsdPerM: 4.00 };
+    if (/haiku-5-5/i.test(id)) return { tier: 'haiku-5.5', inputUsdPerM: 0.10, outputUsdPerM: 0.50, hasLongPromptCard: true };
+    if (/haiku-4-5/i.test(id)) return { tier: 'haiku-4.5', inputUsdPerM: 1.00, outputUsdPerM: 5.00 };
     if (/opus/i.test(id)) return { tier: 'opus-4.x/5', inputUsdPerM: 5.00, outputUsdPerM: 25.00 };
     if (/sonnet/i.test(id)) return { tier: 'sonnet-4.x/5', inputUsdPerM: 3.00, outputUsdPerM: 15.00 };
     return null;
@@ -605,6 +616,10 @@ async function main () {
   console.log('  writer:              £' + (writerCostUsd * gbpPerUsd).toFixed(3));
   console.log('  reviewer:            £' + (reviewerCostUsd * gbpPerUsd).toFixed(3));
   console.log('  TOTAL:               £' + totalCostGbp.toFixed(3));
+  if (pricing.hasLongPromptCard && tokens.writerLongPromptCalls > 0) {
+    console.warn('  WARNING: ' + tokens.writerLongPromptCalls + ' writer call(s) had prompts over ' +
+      LONG_PROMPT_TOKENS.toLocaleString() + ' tokens, billed at 5× the rates above — TOTAL is understated.');
+  }
   if (counts.generated > 0) {
     console.log('  per-subject average: £' + avgCostGbpPerGenerated.toFixed(4));
     console.log('  project to 25K:      £' + (avgCostGbpPerGenerated * 25000).toFixed(0));
