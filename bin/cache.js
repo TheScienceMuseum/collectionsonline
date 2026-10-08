@@ -1,7 +1,7 @@
 'use strict';
 
 const Catbox = require('@hapi/catbox');
-const CatboxRedis = require('@hapi/catbox-redis');
+const CatboxRedis = require('@hapi/catbox-redis').Engine;
 const config = require('../config');
 
 let host, port;
