@@ -1,5 +1,9 @@
 {
   "entities": {
+    "Q484876": {
+      "id": "Q484876",
+      "labels": { "en": { "language": "en", "value": "chief executive officer" } }
+    },
     "Q312": {
       "id": "Q312",
       "labels": { "en": { "language": "en", "value": "Apple Inc." } }

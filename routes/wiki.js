@@ -2,7 +2,7 @@
 
 const cache = require('../bin/cache');
 const wbk = require('../lib/wikibase');
-const { processPropertyValues } = require('../lib/wikiPropertySort');
+const { processPropertyValues, parseYearRange } = require('../lib/wikiPropertySort');
 const wikidataCircuitBreaker = require('../lib/wikidata-circuit-breaker');
 
 // Deduplicates concurrent fetches for the same Wikidata ID.
@@ -45,29 +45,44 @@ function hasPropertyAction (property, action) {
 // has 50+ separate P166 claims all resolving to "Peabody Awards"). We show each
 // distinct label once.
 // For context properties (e.g. employers, positions) items carry a clean `label` field
-// alongside a `value` that includes date ranges. We key by `label` when present so that
-// two claims for the same entity — one with dates, one without — collapse to one entry,
-// keeping whichever has the richer (longer) value.
+// alongside a `value` that may include a date range. We group by `label` when present so
+// that a dated claim and an undated claim for the same entity collapse to the dated one.
+// Distinct date ranges for the same label (e.g. Steve Jobs' four separate "chief executive
+// officer" tenures) are kept; wikiPropertySort later merges any that overlap.
 function dedupeValueArray (items) {
   if (!Array.isArray(items)) return items;
-  const seen = new Map(); // key → index in result
+  const groups = new Map(); // key → indices in result
   const result = [];
+  const isDated = (item) => parseYearRange(item.value) !== null;
   for (const item of items) {
     const key = item.label
       ? String(item.label)
       : (item.value !== null && typeof item.value === 'object')
           ? JSON.stringify(item.value)
           : String(item.value ?? '');
-    if (seen.has(key)) {
-      // Prefer the entry with more context (e.g. one that includes a date range)
-      const existingIdx = seen.get(key);
-      if (String(item.value ?? '').length > String(result[existingIdx].value ?? '').length) {
-        result[existingIdx] = item;
-      }
-    } else {
-      seen.set(key, result.length);
+    const indices = groups.get(key);
+    if (!indices) {
+      groups.set(key, [result.length]);
       result.push(item);
+      continue;
     }
+    // Exact duplicate of an existing entry — drop it.
+    if (indices.some(i => String(result[i].value ?? '') === String(item.value ?? ''))) continue;
+    const undatedIdx = indices.find(i => !isDated(result[i]));
+    if (isDated(item)) {
+      // A dated entry supersedes an undated one; otherwise it is a separate tenure.
+      if (undatedIdx !== undefined) {
+        result[undatedIdx] = item;
+      } else {
+        indices.push(result.length);
+        result.push(item);
+      }
+    } else if (undatedIdx !== undefined &&
+      String(item.value ?? '').length > String(result[undatedIdx].value ?? '').length) {
+      // Two undated entries for the same label — keep the richer one.
+      result[undatedIdx] = item;
+    }
+    // Otherwise an undated entry adds nothing over the existing (dated) ones.
   }
   return result;
 }

@@ -8,7 +8,7 @@ module.exports = {
       .waitForElementVisible('#wikiInfo h2', 20000)
       .assert.containsText(
         '#wikiInfo',
-        'chief executive officer (1997-2011)'
+        'Chief executive officer (1977-2011)'
       )
       .end();
   }

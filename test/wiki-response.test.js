@@ -33,6 +33,7 @@ const steveJobsFixture = require('./fixtures/wikidata/steve-jobs-Q19837.json');
 const appleFixture = require('./fixtures/wikidata/apple-Q312.json');
 const batchLabelsFixture = require('./fixtures/wikidata/batch-labels.json');
 const duplicateEmployerFixture = require('./fixtures/wikidata/duplicate-employer-Q99001.json');
+const multiTenureFixture = require('./fixtures/wikidata/multi-tenure-position-Q99002.json');
 
 // Point global.fetch at a persistent fetch-mock sandbox so the wiki route
 // never makes real HTTP calls. Matchers are registered in specificity order
@@ -45,6 +46,8 @@ global.fetch = sandboxFetch;
 sandboxFetch.get(/ids=Q19837/, steveJobsFixture);
 // Q99001 duplicate-employer fixture (two P108 claims for the same employer)
 sandboxFetch.get(/ids=Q99001/, duplicateEmployerFixture);
+// Q99002 multi-tenure fixture (several dated P39 claims for the same position)
+sandboxFetch.get(/ids=Q99002/, multiTenureFixture);
 // Q312 primary entity fetch — 'ids=Q312&' identifies a single-ID request.
 // Batch calls use pipe-separated IDs encoded as %7C, e.g. 'ids=Q312%7CQ24740'.
 sandboxFetch.get((url) => url.includes('ids=Q312&'), appleFixture);
@@ -428,6 +431,28 @@ testWithServer('wiki Q99001: duplicate P108 claims for same employer collapse to
   t.equal(body.P108.value.length, 1, 'deduplicated to exactly one entry');
   const val = body.P108.value[0] && body.P108.value[0].value;
   t.ok(val && val.includes('1997') && val.includes('2011'), `surviving entry includes date range: "${val}"`);
+  t.end();
+});
+
+// Regression: distinct dated claims for the same position are separate tenures and
+// must not collapse (Steve Jobs holds four P39 "chief executive officer" claims).
+// Only the undated claim and the exact duplicate should be dropped.
+
+testWithServer('wiki Q99002: distinct dated P39 claims for same position are kept', { config: testConfig }, async (t, ctx) => {
+  t.plan(2);
+  const restore = stubCacheMiss();
+  t.teardown(restore);
+  sinon.stub(ctx.elastic, 'search').resolves({ body: { hits: { hits: [] } } });
+
+  const res = await ctx.server.inject({ method: 'GET', url: '/wiki/Q99002' });
+  const body = JSON.parse(res.payload);
+
+  t.ok(body.P39 && Array.isArray(body.P39.value), 'P39 is present');
+  t.deepEqual(
+    body.P39.value.map(v => v.value),
+    ['chief executive officer (1977-1985)', 'chief executive officer (1997-2011)'],
+    'each tenure kept once; undated and duplicate claims dropped'
+  );
   t.end();
 });
 
