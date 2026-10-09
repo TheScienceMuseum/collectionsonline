@@ -4,12 +4,12 @@ const map = require('./map');
 const hashLinks = require('./hash-links');
 const bannerSlides = require('./banner-slides');
 const moreButton = require('./more-button');
-const moreCordion = require('smg-web-design-system/dist/js/accordion');
+const moreCordion = require('../../vendor/wds/accordion');
 const carousel = require('./carousel');
-const audioplayer = require('smg-web-design-system/dist/js/audioplayer');
+const audioplayer = require('../../vendor/wds/audioplayer');
 const mediaplayer = require('./mediaplayer');
-const headerMenu = require('smg-web-design-system/dist/js/menu');
-const illuminate = require('smg-web-design-system/dist/js/illuminate');
+const headerMenu = require('../../vendor/wds/menu');
+const illuminate = require('../../vendor/wds/illuminate');
 const osd = require('./osd');
 const lightbox = require('./lightbox');
 
