@@ -153,6 +153,7 @@
     ],
     "ignore": [
       "client/lib/polyfills.js",
+      "client/vendor/wds/",
       "public/vendor/object2vr/skin.js",
       "public/vendor/object2vr/object2vr_player.js",
       "backstop_data"
