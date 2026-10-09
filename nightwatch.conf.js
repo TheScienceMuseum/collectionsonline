@@ -1,4 +1,3 @@
-const chromedriver = require('chromedriver');
 const TRAVIS_JOB_NUMBER = process.env.TRAVIS_JOB_NUMBER;
 const SELENIUM_PORT = process.env.NW_ENV === 'travis' ? 4445 : 9515;
 
@@ -12,8 +11,22 @@ module.exports = {
 
   webdriver: {
     start_process: true,
-    server_path: chromedriver.path,
-    port: SELENIUM_PORT
+    port: SELENIUM_PORT,
+    // Selenium Manager downloads (and caches) a chromedriver matching the
+    // installed Chrome. Resolved here rather than left unset because
+    // Nightwatch would otherwise fall back to require('chromedriver'), and
+    // Selenium Manager by default prefers any chromedriver on PATH (npm adds
+    // every ancestor node_modules/.bin) even when its version doesn't match.
+    // A getter so `node nightwatch.conf.js` in postinstall doesn't download.
+    get server_path () {
+      const { binaryPaths } = require('selenium-webdriver/common/seleniumManager');
+      return binaryPaths([
+        '--browser', 'chrome',
+        '--language-binding', 'javascript',
+        '--output', 'json',
+        '--skip-driver-in-path'
+      ]).driverPath;
+    }
   },
 
   test_settings: {
