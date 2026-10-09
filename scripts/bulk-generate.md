@@ -149,9 +149,9 @@ Every processed subject produces one JSONL line:
 ```json
 {"ts":"2026-07-08T09:14:22Z","id":"cp37054","outcome":"generated","status":"live",
  "writer":{"inputTokens":300,"outputTokens":900,"cacheCreationTokens":0,"cacheReadTokens":5200,
-   "model":"claude-sonnet-4-20250514","promptVersion":"2026-07-v8-collection-flow","confidence":7},
+   "model":"claude-haiku-5-5","promptVersion":"2026-07-v8-collection-flow","confidence":7},
  "reviewer":{"inputTokens":180,"outputTokens":220,"cacheCreationTokens":0,"cacheReadTokens":1400,
-   "model":"claude-sonnet-4-20250514","findingsCount":1,"spend":0.0013},
+   "model":"claude-haiku-5-5","findingsCount":1,"spend":0.0003},
  "batchId":"batch-2026-07-08T09-14-01Z"}
 ```
 
@@ -186,17 +186,27 @@ At end-of-run the script prints two independent breakdowns:
 
 ### Cost expectations
 
-Typical per-subject cost with caching on (`~15s wall clock`):
+Default model is **`claude-haiku-5-5`** (switched 2026-10-08 via PR #2215;
+previously `claude-haiku-4-5-20251001`). Haiku 5.5 is ~10× cheaper per token
+than 4.5 across input, output, cache-read, and cache-write.
 
-- Writer: ~£0.010–£0.020 uncached; ~£0.001–£0.003 for cache hits (subject #2
-  onwards within the 5-min TTL).
-- Reviewer: ~£0.001–£0.002 uncached; ~£0.0001–£0.0003 cached.
-- Combined uncached (`--no-cache`): ~£0.011–£0.022 per record.
-- Combined cached (default in batch): ~£0.0015–£0.004 per record after the
-  first (~90% savings).
+Measured per-subject costs on real batches:
+- Haiku 5.5 with caching, writer-only: **~£0.005–£0.006 per record** at 84–88%
+  cache-read ratio (observed on the 2026-10-09 108-record curator-feedback
+  regen pass against prod: £0.585 total ÷ 104 subjects = £0.0056/subject;
+  concurrency 1 and 3 land within ±10% of each other)
+- Haiku 4.5 (previous default): ~£0.03/subject for comparison
 
-At 5,000 records with caching on: **~£8–£20** for the whole batch. Without
-caching (`--no-cache`): ~£55–£110.
+Batch projections at Haiku 5.5 rates:
+- 500 records: **~£3**
+- 5,000 records: **~£25–£30**
+- 25,000 records (full agent catalogue): **~£125–£150**
+
+The cost summary at the end of each run reports Anthropic list pricing based on
+the model it just used — trust that over this doc for the exact figure.
+`bulk-generate.js::pricingFor()` falls back to Sonnet-tier numbers for any
+model it doesn't recognise, so if the summary looks 10× too high after a model
+bump, that's the signal to add the new model to the table.
 
 ### Safety
 
