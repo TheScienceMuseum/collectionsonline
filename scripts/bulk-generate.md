@@ -144,7 +144,10 @@ GetItem-based idempotence check — belt + braces.
 
 ### Progress log
 
-Every processed subject produces one JSONL line:
+Written to `logs/bulk-regen-<batch-id>.jsonl` under the repo root (the
+`logs/` directory is auto-created on first run and gitignored). Override
+the path with `--log <path>` on the CLI. Every processed subject produces
+one JSONL line:
 
 ```json
 {"ts":"2026-07-08T09:14:22Z","id":"cp37054","outcome":"generated","status":"live",

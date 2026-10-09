@@ -257,7 +257,12 @@ function openLog (logPath) {
 async function main () {
   const opts = parseArgs(process.argv.slice(2));
   const batchId = opts.batchId || 'batch-' + new Date().toISOString().replace(/[:.]/g, '-');
-  const logPath = opts.logPath || path.join(process.cwd(), 'bulk-regen-' + batchId + '.jsonl');
+  // Default log location is logs/bulk-regen-<batchId>.jsonl under the repo
+  // root — keeps batch audit artefacts out of the git root (where they
+  // used to accumulate and clutter `ls`). --log <path> still overrides.
+  // mkdir -p is idempotent and cheap.
+  const logPath = opts.logPath || path.join(process.cwd(), 'logs', 'bulk-regen-' + batchId + '.jsonl');
+  fs.mkdirSync(path.dirname(logPath), { recursive: true });
 
   console.log('bulk-generate: batch-id=' + batchId);
   console.log('bulk-generate: log=' + logPath);

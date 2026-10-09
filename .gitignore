@@ -97,6 +97,10 @@ builds/*
 # Bulk-generate batch logs — one JSONL per run, written to repo root by
 # scripts/bulk-generate.js. Local audit artefact, not shared code.
 bulk-regen-batch-*.jsonl
+# bulk-generate now writes to logs/ by default (see scripts/bulk-generate.js);
+# the pattern above still covers any pre-existing root-level logs from before
+# the subdir migration.
+logs/
 
 # Holdout regen logs — one JSONL per run, written by scripts/holdout-report.js
 holdout-report-*.jsonl
