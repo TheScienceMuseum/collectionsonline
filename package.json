@@ -2,7 +2,7 @@
   "name": "collectionsonline",
   "version": "1.0.1",
   "engines": {
-    "node": ">=18"
+    "node": ">=24"
   },
   "pre-commit": [
     "test:lint"
