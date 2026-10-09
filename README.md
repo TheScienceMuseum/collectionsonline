@@ -4,7 +4,7 @@
 
 ## Getting started
 
-1. Install [Node.js](https://nodejs.org/en/) version 18 or 20. If you have `nvm`, you can run `nvm install` to automatically install and/or use an appropriate node version.
+1. Install [Node.js](https://nodejs.org/en/) version 24 (matches the production Elastic Beanstalk platform). If you have `nvm`, you can run `nvm install` and `nvm use` to automatically install and switch to the version pinned in `.nvmrc`.
 2. Install dependencies: `npm install`
 3. Copy `.corc.template` to `.corc` in the project route
 4. Add required config values to `.corc`
