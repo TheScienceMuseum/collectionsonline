@@ -106,7 +106,6 @@
     "build:css:sass": "sass --quiet-deps --silence-deprecation=global-builtin --silence-deprecation=import --load-path=node_modules --load-path=node_modules/smg-web-design-system/node_modules client/styles/main.scss public/bundle.css",
     "build:css:prefix": "postcss public/bundle.css -r -u autoprefixer",
     "build:img": "cp -R client/icons/* public/assets/icons",
-    "build:wds": "cp -R node_modules/smg-web-design-system/dist/assets/logos public/assets/logos",
     "build:svg": "svg-sprite --view --vscss --view-sprite=svg/sprite.view.svg --symbol --symbol-example --symbol-sprite=svg/sprite.symbol.svg --dest=public/assets/icons client/icons/*.svg",
     "minify": "run-p minify:*",
     "minify:js": "uglifyjs public/bundle.js -o public/bundle.js",
