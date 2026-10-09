@@ -1,0 +1,148 @@
+{
+  "entities": {
+    "Q99002": {
+      "id": "Q99002",
+      "type": "item",
+      "labels": {
+        "en": {
+          "language": "en",
+          "value": "Test Multi-Tenure Person"
+        }
+      },
+      "claims": {
+        "P39": [
+          {
+            "mainsnak": {
+              "snaktype": "value",
+              "property": "P39",
+              "datavalue": {
+                "value": {
+                  "entity-type": "item",
+                  "id": "Q484876"
+                },
+                "type": "wikibase-entityid"
+              }
+            },
+            "qualifiers": {
+              "P580": [
+                {
+                  "snaktype": "value",
+                  "property": "P580",
+                  "datavalue": {
+                    "value": {
+                      "time": "+1977-01-01T00:00:00Z"
+                    },
+                    "type": "time"
+                  }
+                }
+              ],
+              "P582": [
+                {
+                  "snaktype": "value",
+                  "property": "P582",
+                  "datavalue": {
+                    "value": {
+                      "time": "+1985-01-01T00:00:00Z"
+                    },
+                    "type": "time"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "mainsnak": {
+              "snaktype": "value",
+              "property": "P39",
+              "datavalue": {
+                "value": {
+                  "entity-type": "item",
+                  "id": "Q484876"
+                },
+                "type": "wikibase-entityid"
+              }
+            },
+            "qualifiers": {
+              "P580": [
+                {
+                  "snaktype": "value",
+                  "property": "P580",
+                  "datavalue": {
+                    "value": {
+                      "time": "+1997-01-01T00:00:00Z"
+                    },
+                    "type": "time"
+                  }
+                }
+              ],
+              "P582": [
+                {
+                  "snaktype": "value",
+                  "property": "P582",
+                  "datavalue": {
+                    "value": {
+                      "time": "+2011-01-01T00:00:00Z"
+                    },
+                    "type": "time"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "mainsnak": {
+              "snaktype": "value",
+              "property": "P39",
+              "datavalue": {
+                "value": {
+                  "entity-type": "item",
+                  "id": "Q484876"
+                },
+                "type": "wikibase-entityid"
+              }
+            }
+          },
+          {
+            "mainsnak": {
+              "snaktype": "value",
+              "property": "P39",
+              "datavalue": {
+                "value": {
+                  "entity-type": "item",
+                  "id": "Q484876"
+                },
+                "type": "wikibase-entityid"
+              }
+            },
+            "qualifiers": {
+              "P580": [
+                {
+                  "snaktype": "value",
+                  "property": "P580",
+                  "datavalue": {
+                    "value": {
+                      "time": "+1997-01-01T00:00:00Z"
+                    },
+                    "type": "time"
+                  }
+                }
+              ],
+              "P582": [
+                {
+                  "snaktype": "value",
+                  "property": "P582",
+                  "datavalue": {
+                    "value": {
+                      "time": "+2011-01-01T00:00:00Z"
+                    },
+                    "type": "time"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}
