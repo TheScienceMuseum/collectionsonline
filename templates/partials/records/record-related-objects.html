@@ -29,7 +29,7 @@
       {{#seemore related.objects}}
 
       {{#ifcreator related.objects}}
-      <a href="/search/objects/makers/{{this.title}}" aria-labelledby="seemore-label">
+      <a href="/search/objects/makers/{{@root.makerFilterValue}}" aria-labelledby="seemore-label">
         {{else}}
         <a href="/search/objects?q=%22{{this.title}}%22" aria-labelledby="seemore-label">
           {{/ifcreator}}
