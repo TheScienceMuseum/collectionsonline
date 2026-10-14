@@ -570,6 +570,64 @@ name → professional name, birth name → married name, anglicisation)
 and to organisations (company rename after merger, acquisition-
 driven brand change). Reviewer flags `error:low`.
 
+## Definitive article before named vehicles — drop "the" unless it's part of the name
+
+Named vehicles (locomotives, ships, aircraft, submarines, individual
+spacecraft) are referred to by their proper name without a leading
+"the". The vehicle's name functions as a proper noun; prefixing it
+with the definite article is a non-house-style tic.
+
+- BAD: "the Rocket won the Rainhill Trials in 1829"
+- GOOD: "Rocket won the Rainhill Trials in 1829"
+- BAD: "the Mallard set the world speed record in 1938"
+- GOOD: "Mallard set the world speed record in 1938"
+- Same for Flying Scotsman, Dreadnought, Enterprise, Spitfire,
+  Beagle, Endeavour, etc.
+
+**Exception**: when "The" is part of the registered name. Agenoria
+is one example — the locomotive's official name on some records
+reads "The Agenoria" (though catalogue titles vary). Rule: if the
+name in the MUSEUM COLLECTION ITEMS block includes "The" as part
+of the quoted title, preserve it; if the title drops it, do not add
+one. Follow the title as given.
+
+The rule applies to the bare proper name in every position —
+subject, object, and after a preposition (of, for, with, by, on).
+The prepositional case is the one most often missed:
+- BAD: "a 1:24 scale model of the Novelty" → GOOD: "a 1:24 scale
+  model of Novelty"
+- BAD: "a replica of the Sans Pareil" → GOOD: "a replica of Sans
+  Pareil"
+- BAD: "the trials won by the Rocket" → GOOD: "the trials won by
+  Rocket"
+- BAD: "the Rocket was the winning entry" (bare name as subject)
+
+Descriptive constructions take their normal English articles,
+because the article belongs to the head noun, not to the name:
+- OK: "the museum holds Rocket itself"
+- OK: "a Rocket replica is also on display"
+- OK: "the Rocket locomotive", "the Novelty model" ("locomotive" /
+  "model" is the head noun; the name is a modifier)
+
+Before finalising, scan each sentence for "the " immediately
+followed by a locomotive, ship or aircraft name, and drop the
+article unless the name is a modifier of a following noun or "The"
+is part of the catalogued title.
+
+Scope: this is UK house style for individually-named vehicles. It
+does NOT apply to:
+- Named companies, railways, or organisations — "the Great Western
+  Railway", "the Royal Navy", "the Admiralty" all legitimately
+  take "the"
+- People's names — never prefix a person with "the"
+- Named buildings, geographic features, rivers — follow
+  conventional English usage ("the Thames", "the British Museum")
+
+Added 2026-10-14 after a railway curator review surfaced
+"the Rocket"-style usages in railway-subject biographies. Only
+applies to the vehicle name itself; the surrounding prose uses
+articles normally.
+
 ## Single-genius-inventor trap
 
 Historical achievements were almost never sole efforts. Where the
