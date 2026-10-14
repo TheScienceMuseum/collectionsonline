@@ -591,15 +591,28 @@ name in the MUSEUM COLLECTION ITEMS block includes "The" as part
 of the quoted title, preserve it; if the title drops it, do not add
 one. Follow the title as given.
 
-The rule applies only to the bare proper name as a subject or
-object noun. Descriptive constructions take their normal English
-articles:
+The rule applies to the bare proper name in every position —
+subject, object, and after a preposition (of, for, with, by, on).
+The prepositional case is the one most often missed:
+- BAD: "a 1:24 scale model of the Novelty" → GOOD: "a 1:24 scale
+  model of Novelty"
+- BAD: "a replica of the Sans Pareil" → GOOD: "a replica of Sans
+  Pareil"
+- BAD: "the trials won by the Rocket" → GOOD: "the trials won by
+  Rocket"
+- BAD: "the Rocket was the winning entry" (bare name as subject)
+
+Descriptive constructions take their normal English articles,
+because the article belongs to the head noun, not to the name:
 - OK: "the museum holds Rocket itself"
 - OK: "a Rocket replica is also on display"
-- OK: "the Rocket locomotive" (where "locomotive" is the head noun
-  and "Rocket" is modifier — article belongs to the noun phrase,
-  not to the name)
-- BAD: "the Rocket was the winning entry" (bare name as subject)
+- OK: "the Rocket locomotive", "the Novelty model" ("locomotive" /
+  "model" is the head noun; the name is a modifier)
+
+Before finalising, scan each sentence for "the " immediately
+followed by a locomotive, ship or aircraft name, and drop the
+article unless the name is a modifier of a following noun or "The"
+is part of the catalogued title.
 
 Scope: this is UK house style for individually-named vehicles. It
 does NOT apply to:
