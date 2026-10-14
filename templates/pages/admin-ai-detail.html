@@ -36,7 +36,7 @@
 </div>
 <h2 style="margin-bottom: 0.5rem;">Generating biography for {{candidateId}}…</h2>
 <div class="detail-section" style="background: #fbf9f4; border-left: 3px solid #c87a1e; padding: 0.9rem 1.1rem; border-radius: 3px;">
-  <p style="margin: 0 0 0.5rem 0;"><strong>Please wait.</strong> The writer usually takes 60&ndash;90 seconds (Haiku 4.5 with extended thinking). This page refreshes every 5s until the biography lands.</p>
+  <p style="margin: 0 0 0.5rem 0;"><strong>Please wait.</strong> The writer usually takes 60&ndash;90 seconds (Haiku 5.5 with adaptive thinking). This page refreshes every 5s until the biography lands.</p>
   <p class="text-meta" style="margin: 0;">You can safely close this tab &mdash; generation continues in the background. Return to <code>/admin/ai/{{candidateId}}</code> to see the result.</p>
 </div>
 {{else}}
@@ -91,7 +91,7 @@
   <span class="admin-spinner" aria-hidden="true"></span>
   <div>
     <strong>Regenerating biography…</strong>
-    Usually 60–90 seconds (Haiku 4.5 with extended thinking). This page
+    Usually 60–90 seconds (Haiku 5.5 with adaptive thinking). This page
     refreshes every 5s until the new biography lands. Safe to close the
     tab — the writer keeps running in the background.
   </div>
@@ -1921,7 +1921,7 @@
           var hint = document.createElement('div');
           hint.className = 'regenerate-form__hint';
           hint.setAttribute('role', 'status');
-          hint.innerHTML = 'Regeneration usually takes <strong>60–90 seconds</strong> (Haiku 4.5 with extended thinking). Don\'t refresh — the writer keeps running in the background even if you close this tab. If the page still hasn\'t returned after ~3 minutes, refresh manually — the new biography is likely already saved.';
+          hint.innerHTML = 'Regeneration usually takes <strong>60–90 seconds</strong> (Haiku 5.5 with adaptive thinking). Don\'t refresh — the writer keeps running in the background even if you close this tab. If the page still hasn\'t returned after ~3 minutes, refresh manually — the new biography is likely already saved.';
           container.appendChild(hint);
         }
       });
