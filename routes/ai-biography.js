@@ -110,7 +110,9 @@ function publicBiographyRoute (elastic, config) {
                   biography: rendered.biographyHtml,
                   context: rendered.contextHtml,
                   personName: existing.personName,
-                  sources: existing.sources,
+                  // v2 records don't persist an item-level `sources`
+                  // field; derive it from the sentences actually shown.
+                  sources: rendered.sources,
                   generatedAt: existing.generatedAt,
                   model: existing.model,
                   status: existing.status,

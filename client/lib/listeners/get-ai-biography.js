@@ -19,13 +19,22 @@ module.exports = function () {
       return;
     }
 
-    const hasWikidata = data.sources && data.sources.indexOf('wikidata') !== -1;
+    // Name the external sources behind the visible sentences, counting
+    // externally validated claims (llm:validated:<source>) as that source.
+    const sources = data.sources || [];
+    const uses = name => sources.some(s => s === name || s === 'llm:validated:' + name);
+    const sourceNames = ['our collection records'];
+    if (uses('wikidata')) sourceNames.push('Wikidata');
+    if (uses('wikipedia')) sourceNames.push('Wikipedia');
+    const sourcesText = sourceNames.length > 1
+      ? sourceNames.slice(0, -1).join(', ') + ' and ' + sourceNames[sourceNames.length - 1]
+      : sourceNames[0];
 
     el.innerHTML = Templates.aiBiography({
       biography: data.biography,
       context: data.context || '',
       personName: data.personName || 'this person',
-      hasWikidata,
+      sourcesText,
       flagEnabled: !!data.flagEnabled,
       personId
     });

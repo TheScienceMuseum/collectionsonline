@@ -58,6 +58,23 @@ test('render: level 2 publishes museum + wikidata + inferred (default range)', f
   t.end();
 });
 
+test('render: sources lists tags from visible sentences only, deduped', function (t) {
+  const bio = {
+    sentences: [
+      s('Museum fact.', 'museum'),
+      { text: 'Mixed fact.', sources: ['museum', 'wikipedia'], claimSignature: signature('Mixed fact.') },
+      s('Wikidata fact.', 'wikidata'),
+      s('Training-data fact.', 'llm:general_knowledge')
+    ],
+    paragraphBreaks: []
+  };
+  t.deepEqual(render(bio, { publishingLevel: 2 }).sources, ['museum', 'wikipedia', 'wikidata'],
+    'filtered-out sentence source omitted');
+  t.deepEqual(render(bio, { publishingLevel: 0 }).sources, ['museum'],
+    'level 0 hides wikidata + wikipedia sentences');
+  t.end();
+});
+
 test('render: level 3 adds llm:contextualising', function (t) {
   const bio = {
     sentences: [
