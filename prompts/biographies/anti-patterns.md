@@ -570,6 +570,51 @@ name → professional name, birth name → married name, anglicisation)
 and to organisations (company rename after merger, acquisition-
 driven brand change). Reviewer flags `error:low`.
 
+## Definitive article before named vehicles — drop "the" unless it's part of the name
+
+Named vehicles (locomotives, ships, aircraft, submarines, individual
+spacecraft) are referred to by their proper name without a leading
+"the". The vehicle's name functions as a proper noun; prefixing it
+with the definite article is a non-house-style tic.
+
+- BAD: "the Rocket won the Rainhill Trials in 1829"
+- GOOD: "Rocket won the Rainhill Trials in 1829"
+- BAD: "the Mallard set the world speed record in 1938"
+- GOOD: "Mallard set the world speed record in 1938"
+- Same for Flying Scotsman, Dreadnought, Enterprise, Spitfire,
+  Beagle, Endeavour, etc.
+
+**Exception**: when "The" is part of the registered name. Agenoria
+is one example — the locomotive's official name on some records
+reads "The Agenoria" (though catalogue titles vary). Rule: if the
+name in the MUSEUM COLLECTION ITEMS block includes "The" as part
+of the quoted title, preserve it; if the title drops it, do not add
+one. Follow the title as given.
+
+The rule applies only to the bare proper name as a subject or
+object noun. Descriptive constructions take their normal English
+articles:
+- OK: "the museum holds Rocket itself"
+- OK: "a Rocket replica is also on display"
+- OK: "the Rocket locomotive" (where "locomotive" is the head noun
+  and "Rocket" is modifier — article belongs to the noun phrase,
+  not to the name)
+- BAD: "the Rocket was the winning entry" (bare name as subject)
+
+Scope: this is UK house style for individually-named vehicles. It
+does NOT apply to:
+- Named companies, railways, or organisations — "the Great Western
+  Railway", "the Royal Navy", "the Admiralty" all legitimately
+  take "the"
+- People's names — never prefix a person with "the"
+- Named buildings, geographic features, rivers — follow
+  conventional English usage ("the Thames", "the British Museum")
+
+Added 2026-10-14 after a railway curator review surfaced
+"the Rocket"-style usages in railway-subject biographies. Only
+applies to the vehicle name itself; the surrounding prose uses
+articles normally.
+
 ## Single-genius-inventor trap
 
 Historical achievements were almost never sole efforts. Where the
