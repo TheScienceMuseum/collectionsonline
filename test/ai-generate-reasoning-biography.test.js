@@ -115,14 +115,14 @@ test('thinkingChars sums length of all thinking blocks in response', async funct
 
 // --- API-call shape --------------------------------------------------
 
-test('always passes thinking config (extended thinking on)', async function (t) {
+test('always passes thinking config (adaptive on the default model)', async function (t) {
   const client = makeStubClient(validResponse(VALID_PARSED_JSON));
   await generateReasoningBiography(
     { name: 'x' }, [], null,
-    { client, apiKey: 'x', budgetTokens: 4000, maxTokens: 16000 }
+    { client, apiKey: 'x', maxTokens: 16000 }
   );
   const params = client._capturedParams[0];
-  t.deepEqual(params.thinking, { type: 'enabled', budget_tokens: 4000 });
+  t.deepEqual(params.thinking, { type: 'adaptive' });
   t.equal(params.max_tokens, 16000);
   t.end();
 });
@@ -154,24 +154,34 @@ test('4.5-era models get budget thinking and no output_config', async function (
   const client = makeStubClient(validResponse(VALID_PARSED_JSON));
   await generateReasoningBiography(
     { name: 'x' }, [], null,
-    { client, apiKey: 'x', model: 'claude-haiku-4-5-20251001', effort: 'high' }
+    {
+      client,
+      apiKey: 'x',
+      model: 'claude-haiku-4-5-20251001',
+      effort: 'high',
+      budgetTokens: 4000,
+      maxTokens: 16000
+    }
   );
   const params = client._capturedParams[0];
-  t.equal(params.thinking.type, 'enabled');
+  t.deepEqual(params.thinking, { type: 'enabled', budget_tokens: 4000 });
+  t.equal(params.max_tokens, 16000);
   t.equal(params.output_config, undefined);
   t.end();
 });
 
 test('throws on an unknown effort for adaptive models', async function (t) {
+  const client = makeStubClient(validResponse(VALID_PARSED_JSON));
   try {
     await generateReasoningBiography(
       { name: 'x' }, [], null,
-      { apiKey: 'x', model: 'claude-haiku-5-5', effort: 'extreme' }
+      { client, apiKey: 'x', model: 'claude-haiku-5-5', effort: 'extreme' }
     );
     t.fail('should have thrown');
   } catch (err) {
     t.ok(/effort "extreme"/.test(err.message), 'names the bad value');
   }
+  t.equal(client._capturedParams.length, 0, 'fails before calling the API');
   t.end();
 });
 
@@ -185,12 +195,13 @@ test('budgetTokens >= maxTokens is not an error on adaptive models', async funct
   t.end();
 });
 
-test('defaults to Haiku 4.5 when opts.model not specified', async function (t) {
+test('defaults to Haiku 5.5 when opts.model not specified', async function (t) {
   const client = makeStubClient(validResponse(VALID_PARSED_JSON));
   await generateReasoningBiography(
     { name: 'x' }, [], null, { client, apiKey: 'x' }
   );
-  t.equal(client._capturedParams[0].model, 'claude-haiku-4-5-20251001');
+  t.equal(client._capturedParams[0].model, 'claude-haiku-5-5');
+  t.equal(generateReasoningBiography.DEFAULT_MODEL, 'claude-haiku-5-5', 'exported DEFAULT_MODEL agrees');
   t.end();
 });
 
@@ -296,15 +307,20 @@ test('returns null + failureMode=no_api_key when neither client nor key supplied
 
 // --- config validation ----------------------------------------------
 
-test('throws if budgetTokens >= maxTokens (Anthropic constraint)', async function (t) {
+// The budget_tokens < max_tokens rule only exists for the budget-style
+// thinking shape, so pin a 4.5-era model — the default (Haiku 5.5) is
+// adaptive and skips the check (see the adaptive-model test above).
+test('throws if budgetTokens >= maxTokens on 4.5-era models (Anthropic constraint)', async function (t) {
+  const client = makeStubClient(validResponse(VALID_PARSED_JSON));
   try {
     await generateReasoningBiography(
       { name: 'x' }, [], null,
-      { apiKey: 'x', budgetTokens: 16000, maxTokens: 16000 }
+      { client, apiKey: 'x', model: 'claude-haiku-4-5-20251001', budgetTokens: 16000, maxTokens: 16000 }
     );
     t.fail('should have thrown');
   } catch (err) {
     t.ok(/must be strictly less than/.test(err.message), 'clear error message');
   }
+  t.equal(client._capturedParams.length, 0, 'fails before calling the API');
   t.end();
 });
