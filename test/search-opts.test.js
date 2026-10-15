@@ -55,3 +55,14 @@ test(file + 'MCP options override aggregations, post_filter, totals, sort, sourc
   t.deepEqual(withAggs.params.body.aggs, { scoped: { filter: postFilter } });
   t.end();
 });
+
+test(file + 'includeComponentParts lifts only the SPH exclusion', async (t) => {
+  const sph = '"grouping.@link.type"';
+  const hidden = await capture();
+  t.ok(JSON.stringify(hidden.params.body.query).includes(sph), 'website search hides component parts');
+
+  const shown = await capture({ includeComponentParts: true });
+  t.notOk(JSON.stringify(shown.params.body.query).includes(sph), 'parts no longer excluded');
+  t.ok(shown.params.body.query.function_score.query.bool.should.length, 'text clauses untouched');
+  t.end();
+});
