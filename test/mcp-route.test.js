@@ -179,26 +179,64 @@ test(file + 'works when the site-wide JWT auth is switched on', async (t) => {
   t.end();
 });
 
-test(file + 'SDK-level errors are logged with request context, never the token', async (t) => {
-  const ctx = await withServer(mcpConfig(), { search: sinon.stub() });
-  const logged = [];
-  const stub = sinon.stub(console, 'error').callsFake((...args) => { logged.push(args.join(' ')); });
-  let res;
+// Captures console.error and console.warn while fn runs.
+const captureLogs = async (fn) => {
+  const logged = { error: [], warn: [] };
+  const errorStub = sinon.stub(console, 'error').callsFake((...args) => { logged.error.push(args.join(' ')); });
+  const warnStub = sinon.stub(console, 'warn').callsFake((...args) => { logged.warn.push(args.join(' ')); });
   try {
-    res = await rpc(ctx.server, { jsonrpc: '2.0', id: 1, method: 'tools/list' }, Object.assign({ 'mcp-protocol-version': '2099-01-01' }, auth));
+    return { result: await fn(), logged };
   } finally {
-    stub.restore();
+    errorStub.restore();
+    warnStub.restore();
   }
+};
+
+test(file + 'malformed requests the SDK rejects are logged as one short line, never the token', async (t) => {
+  const ctx = await withServer(mcpConfig(), { search: sinon.stub() });
+  const { result: res, logged } = await captureLogs(() => rpc(ctx.server, { jsonrpc: '2.0', id: 1, method: 'tools/list' },
+    Object.assign({ 'mcp-protocol-version': '2099-01-01' }, auth)));
   t.equal(res.statusCode, 400, 'unknown protocol revision rejected by the SDK');
-  const line = logged.find((l) => l.includes('"evt":"mcp_error"'));
-  t.ok(line, 'mcp_error logged');
-  const entry = JSON.parse(line);
-  t.equal(entry.label, 'sdk');
+  t.equal(logged.warn.length, 1, 'exactly one line');
+  t.equal(logged.error.length, 0, 'nothing logged as an error, so no stack trace');
+  const entry = JSON.parse(logged.warn[0]);
+  t.equal(entry.evt, 'mcp_rejected');
+  t.equal(entry.status, 400);
   t.equal(entry.rpc, 'tools/list');
   t.equal(entry.protocol, '2099-01-01');
   t.equal(entry.client, 'tests');
   t.ok(entry.ref, 'has a reference id');
-  t.notOk(logged.join('\n').includes(TOKEN), 'token never logged');
+  t.notOk(logged.warn.concat(logged.error).join('\n').includes(TOKEN), 'token never logged');
+  await ctx.server.stop();
+  t.end();
+});
+
+test(file + 'junk tokens are rejected without logging anything', async (t) => {
+  const ctx = await withServer(mcpConfig(), { search: sinon.stub() });
+  const { result: res, logged } = await captureLogs(() => rpc(ctx.server, { jsonrpc: '2.0', id: 1, method: 'tools/list' },
+    { authorization: 'Bearer junk-token-junk-token-junk-token-junk' }));
+  t.equal(res.statusCode, 401);
+  t.equal(logged.warn.length + logged.error.length, 0, 'nothing logged');
+  await ctx.server.stop();
+  t.end();
+});
+
+test(file + 'server errors are logged with a stack trace and a reference the caller sees', async (t) => {
+  const ctx = await withServer(mcpConfig(), { search: sinon.stub() });
+  // A header value the web Request can't hold makes the bridge itself throw.
+  const { result: res, logged } = await captureLogs(() => rpc(ctx.server, { jsonrpc: '2.0', id: 1, method: 'tools/list' },
+    Object.assign({ 'x-test': 'bad\u0100value' }, auth)));
+  t.equal(res.statusCode, 500);
+  const body = JSON.parse(res.payload);
+  const match = /ref ([0-9a-f-]{36})/.exec(body.error.message);
+  t.ok(match, 'response carries a reference id');
+  const line = logged.error.find((l) => l.includes('"evt":"mcp_error"'));
+  t.ok(line, 'mcp_error logged');
+  const entry = JSON.parse(line);
+  t.equal(entry.label, 'bridge');
+  t.equal(entry.ref, match[1], 'log and response share the reference');
+  t.ok(logged.error.some((l) => l.includes('    at ')), 'stack trace logged');
+  t.notOk(logged.error.join('\n').includes(TOKEN), 'token never logged');
   await ctx.server.stop();
   t.end();
 });
