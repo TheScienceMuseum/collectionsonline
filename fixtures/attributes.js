@@ -36,7 +36,6 @@ module.exports = [
   'hierarchy',
   'translation',
   'access',
-  'web',
   'date_of_birth',
   'date_of_death',
   'death_date',
