@@ -178,3 +178,27 @@ test(file + 'works when the site-wide JWT auth is switched on', async (t) => {
   await ctx.server.stop();
   t.end();
 });
+
+test(file + 'SDK-level errors are logged with request context, never the token', async (t) => {
+  const ctx = await withServer(mcpConfig(), { search: sinon.stub() });
+  const logged = [];
+  const stub = sinon.stub(console, 'error').callsFake((...args) => { logged.push(args.join(' ')); });
+  let res;
+  try {
+    res = await rpc(ctx.server, { jsonrpc: '2.0', id: 1, method: 'tools/list' }, Object.assign({ 'mcp-protocol-version': '2099-01-01' }, auth));
+  } finally {
+    stub.restore();
+  }
+  t.equal(res.statusCode, 400, 'unknown protocol revision rejected by the SDK');
+  const line = logged.find((l) => l.includes('"evt":"mcp_error"'));
+  t.ok(line, 'mcp_error logged');
+  const entry = JSON.parse(line);
+  t.equal(entry.label, 'sdk');
+  t.equal(entry.rpc, 'tools/list');
+  t.equal(entry.protocol, '2099-01-01');
+  t.equal(entry.client, 'tests');
+  t.ok(entry.ref, 'has a reference id');
+  t.notOk(logged.join('\n').includes(TOKEN), 'token never logged');
+  await ctx.server.stop();
+  t.end();
+});
