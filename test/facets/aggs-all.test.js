@@ -31,3 +31,13 @@ test(file + 'No sampler wrapper when browsing without a free-text query', (t) =>
   t.ok(aggregation.aggs.category, 'category facet is directly under aggs');
   t.end();
 });
+
+test(file + 'Group tab image facets filter on the indexed group base type', (t) => {
+  const queryParams = createQueryParams('html', { query: {}, params: { type: 'group' } });
+  const aggregation = aggregationAll(queryParams, false);
+  const typeTerms = (filter) => filter.filter(f => f.term && f.term['@datatype.base']).map(f => f.term['@datatype.base']);
+  t.plan(2);
+  t.deepEqual(typeTerms(aggregation.aggs.has_image.filter.bool.filter), ['group'], 'has_image scoped to group');
+  t.deepEqual(typeTerms(aggregation.aggs.image_license.filter.bool.filter), ['group'], 'image_license scoped to group');
+  t.end();
+});

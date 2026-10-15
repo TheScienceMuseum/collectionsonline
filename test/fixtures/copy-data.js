@@ -9,7 +9,6 @@ const dirData = Path.join(__dirname, 'elastic-responses');
 const copyEsDocs = require('./copy-es-docs');
 const copyEsSearches = require('./copy-es-searches');
 const copyEsrelated = require('./copy-es-related');
-const copyEsChildren = require('./copy-es-children');
 const copyEsAutocompletes = require('./copy-es-autocompletes');
 const search = require('../../lib/search');
 const createQueryParams = require('../../lib/query-params/query-params');
@@ -144,14 +143,6 @@ Async.parallel(
 
       const related = [{ id: 'cp36993' }, { id: 'cp17351' }, { id: 'cp2735' }];
 
-      const children = [
-        { id: 'aa110000003' },
-        { id: 'aa110000316' },
-        { id: 'aa110000036' },
-        { id: 'aa110066453' },
-        { id: 'aa110000009' }
-      ];
-
       const autocompletes = [{ q: 'babb' }];
 
       const database = {};
@@ -161,7 +152,6 @@ Async.parallel(
           (cb) => copyEsDocs(elastic, dataToCopy, database, cb),
           (cb) => copyEsSearches(elastic, searchToCopy, database, cb),
           (cb) => copyEsrelated(elastic, related, database, cb),
-          (cb) => copyEsChildren(elastic, children, database, cb),
           (cb) => copyEsAutocompletes(elastic, autocompletes, database, cb)
         ],
         (err) => {
