@@ -265,6 +265,30 @@ module.exports = require('rc')('co', {
   aiBiographyEffort: process.env.AI_BIOGRAPHY_EFFORT || 'medium',
   aiBiographyMaxOutputTokens: parseInt(process.env.AI_BIOGRAPHY_MAX_OUTPUT_TOKENS || '32000', 10),
 
+  // --- MCP server (/mcp, see docs/mcp.md) ---
+  // Off by default: /mcp returns 404 until enabled.
+  mcpEnabled: process.env.MCP_ENABLED === 'true',
+  // 'token' = every call needs a token; 'open' = anyone can call (public
+  // tier), and a valid token still gets its own tier. Switch back to 'token'
+  // with an env var change + restart if open access is ever abused.
+  mcpAccess: process.env.MCP_ACCESS === 'open' ? 'open' : 'token',
+  // Named clients: { name: { token, tier: 'internal' | 'public' } }, tokens
+  // of 32+ chars. Never commit tokens; set them in .corc or as env vars:
+  //   co_mcpClients__copilot__token=<token>
+  //   co_mcpClients__copilot__tier=internal
+  // Generate with: node -e "console.log(require('crypto').randomBytes(24).toString('hex'))"
+  mcpClients: {},
+  // Accept ?key=<token> for clients that can't send headers (Claude.ai
+  // connectors). URL tokens end up in access logs, so give such clients
+  // their own token.
+  mcpAllowQueryKey: process.env.MCP_ALLOW_QUERY_KEY === 'true',
+  // Heavy aggregation queries allowed at once per instance (others wait up
+  // to 2s, then get a "busy" answer). Rate limiting itself is CloudFront WAF.
+  mcpMaxConcurrentAggregations: parseInt(process.env.MCP_MAX_CONCURRENT_AGGREGATIONS, 10) || 3,
+  // GA4 Measurement Protocol for agent-traffic analytics (optional).
+  mcpGa4MeasurementId: process.env.MCP_GA4_MEASUREMENT_ID || '',
+  mcpGa4ApiSecret: process.env.MCP_GA4_API_SECRET || '',
+
   // --- Visual search (from master) ---
   // Image-to-image catalogue retrieval at /scan.
   // Disabled by default so an absent index doesn't surface a broken page.

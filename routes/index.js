@@ -43,6 +43,7 @@ module.exports = (elastic, config) => [
       ]
     : []),
   ...require('./cache-admin')(),
+  ...require('./mcp')(elastic, config),
   ...require('./ai-biography')(elastic, config),
   ...require('./admin-ai')(elastic, config)
 ];

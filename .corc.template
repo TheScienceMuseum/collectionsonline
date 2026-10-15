@@ -47,5 +47,15 @@
   "aiBiographyPublishingLevel": 3,
   "aiBiographyPerGenerationReviewEnabled": true,
   "aiBiographyExternalValidationEnabled": false,
-  "aiBiographyExternalValidationMaxSources": 3
+  "aiBiographyExternalValidationMaxSources": 3,
+
+  "___mcp_comment": "MCP server at /mcp for AI agents (see docs/mcp.md). Tokens: 32+ chars, never commit them.",
+  "mcpEnabled": false,
+  "mcpAccess": "token",
+  "mcpClients": {
+    "dev": { "token": "", "tier": "internal" }
+  },
+  "mcpAllowQueryKey": false,
+  "mcpGa4MeasurementId": "",
+  "mcpGa4ApiSecret": ""
 }
