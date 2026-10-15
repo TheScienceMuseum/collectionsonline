@@ -26,3 +26,13 @@ test('Should leave unknown intact', (t) => {
   t.equal(TypeMapping.toInternal('FOOBAR'), 'FOOBAR');
   t.end();
 });
+
+test('Should convert external types to @datatype.base values', (t) => {
+  t.plan(5);
+  t.equal(TypeMapping.toDatatypeBase('people'), 'agent');
+  t.equal(TypeMapping.toDatatypeBase('objects'), 'object');
+  t.equal(TypeMapping.toDatatypeBase('documents'), 'archive');
+  t.equal(TypeMapping.toDatatypeBase('group'), 'group', 'group is indexed as group, not mgroup');
+  t.equal(TypeMapping.toDatatypeBase('all'), undefined, 'no base for the all tab');
+  t.end();
+});

@@ -2,7 +2,9 @@ const test = require('tape');
 const config = require('../../config');
 const buildJSONResponse = require('../../lib/jsonapi-response');
 const sortRelated = require('../../lib/sort-related-items');
-const children = sortRelated(require('../fixtures/elastic-responses/database.json').children.aa110000003.response.hits.hits);
+// The old children fixture sync queried a non-existent field and always
+// returned no hits, so pass an empty list explicitly (#2239).
+const children = sortRelated([]);
 const JSONAPIResponse = buildJSONResponse(require('../fixtures/elastic-responses/example-get-response-document.json'), config, children);
 const buildHTMLData = require('../../lib/transforms/json-to-html-data');
 let HTMLData;
