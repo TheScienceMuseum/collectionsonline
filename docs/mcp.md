@@ -44,6 +44,7 @@ These are also sent to agents in the server instructions and in `get_collection_
 - **Has image:** at least one image is published (`multimedia.@admin.source`).
 - **Licence:** a record counts for a licence when at least one of its images carries it.
 - **On display:** an `ondisplay` entry exists. Gallery breakdowns use the "Museum, Gallery" composite, so same-named galleries at different museums stay apart.
+- **Decade and century breakdowns** group each record by the start year of its date range. Year filters (`made_from`/`made_to`) only count records whose whole range falls inside, so the two can differ.
 - **Added:** first published online (`@admin.added`).
 - **Republished:** last re-published online (`@admin.processed`). This follows catalogue edits but also bulk reprocessing, so it is not strictly the last edit date. The index has no source-system edit date.
 - **Page views:** lifetime website page views since Aug 2015 (`enhancement.analytics.current.cumulative_views`).
