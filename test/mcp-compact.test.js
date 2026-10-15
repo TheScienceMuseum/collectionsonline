@@ -162,3 +162,30 @@ test(file + 'upward: archive path keeps levels and the fonds', (t) => {
   t.deepEqual(up.archive, { id: 'aa1', title: 'Babbage Papers' });
   t.end();
 });
+
+test(file + 'values that end in their own separator are not doubled', (t) => {
+  const entries = flattenEntries([
+    { key: 'occupation', value: [{ value: 'Computer pioneer,', link: '/x' }, { value: 'Mathematician' }] },
+    { key: 'Nationality', value: 'English; British' }
+  ]);
+  t.deepEqual(entries, [
+    { label: 'occupation', value: 'Computer pioneer, Mathematician' },
+    { label: 'Nationality', value: 'English; British' }
+  ]);
+  t.end();
+});
+
+test(file + 'long descriptions such as full biographies are returned whole', (t) => {
+  const text = 'Babbage '.repeat(625).trim();
+  const record = compactRecord({
+    uid: 'cp1',
+    type: 'people',
+    title: 'Charles Babbage',
+    links: { self: 'https://collection.example/people/cp1' },
+    description: { primary: { initialDescription: [text] } }
+  }, {});
+  t.ok(text.length > 4000, 'longer than the old 4,000 character limit');
+  t.equal(record.description, text);
+  t.notOk(record.description_truncated);
+  t.end();
+});
