@@ -27,7 +27,8 @@ const SKIP_RESPONSE_HEADERS = new Set(['content-length', 'connection', 'keep-ali
 const isOn = (v) => v === true || v === 'true';
 
 // Lets SDK-level errors (reported through onerror, outside our handler) be
-// logged with the request they belong to.
+// tied to the request they belong to. The handler decides how to log them
+// once it knows the response status.
 const requestContext = new AsyncLocalStorage();
 
 // What was asked for, without credentials or body content, for error logs.
@@ -50,9 +51,16 @@ const describe = (request, caller) => {
   };
 };
 
+// Server errors: full detail and stack trace.
 const logFailure = (label, ref, details, error) => {
   console.error(JSON.stringify({ evt: 'mcp_error', label, ref, ...details, message: error && error.message }));
   if (error && error.stack) console.error(error.stack);
+};
+
+// Requests the SDK rejected as malformed (4xx): one short line, no stack, so
+// a caller sending junk can't flood the logs.
+const logRejection = (ref, details, error) => {
+  console.warn(JSON.stringify({ evt: 'mcp_rejected', ref, ...details, message: error && error.message }));
 };
 
 const rpcError = (h, status, message) => h.response({
@@ -72,6 +80,11 @@ module.exports = (elastic, config) => {
   }), {
     onerror: (error) => {
       const ctx = requestContext.getStore();
+      if (ctx && !ctx.done) {
+        ctx.errors.push(error);
+        return;
+      }
+      // Reported after the response was sent: no status to judge it by.
       logFailure('sdk', ctx && ctx.ref, ctx && ctx.details, error);
     }
   });
@@ -99,6 +112,7 @@ module.exports = (elastic, config) => {
 
           const ref = crypto.randomUUID();
           const details = describe(request, caller);
+          const ctx = { ref, details, errors: [], done: false };
           let res;
           try {
             const headers = new Headers();
@@ -111,16 +125,22 @@ module.exports = (elastic, config) => {
               headers,
               body
             });
-            res = await requestContext.run({ ref, details }, () => mcp.fetch(webRequest, {
+            res = await requestContext.run(ctx, () => mcp.fetch(webRequest, {
               authInfo: { token: '', clientId: caller.client, scopes: [caller.tier], extra: { tier: caller.tier } }
             }));
           } catch (error) {
+            ctx.done = true;
             logFailure('bridge', ref, details, error);
             return rpcError(h, 500, `Internal error (ref ${ref})`);
           }
 
           const text = await res.text();
-          if (res.status >= 500) logFailure('response', ref, { ...details, status: res.status, body: text.slice(0, 500) });
+          ctx.done = true;
+          if (res.status >= 500) {
+            logFailure('response', ref, { ...details, status: res.status, body: text.slice(0, 500) }, ctx.errors[0]);
+          } else if (ctx.errors.length) {
+            logRejection(ref, { ...details, status: res.status }, ctx.errors[0]);
+          }
           const response = h.response(text || null).code(res.status);
           res.headers.forEach((value, name) => {
             if (!SKIP_RESPONSE_HEADERS.has(name)) response.header(name, value);
