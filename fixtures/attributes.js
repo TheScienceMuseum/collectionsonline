@@ -36,7 +36,8 @@ module.exports = [
   'hierarchy',
   'translation',
   'access',
-  'web',
+  // 'web' is deliberately not exposed: on archive records it holds internal
+  // file locations rather than public URLs (#2241).
   'date_of_birth',
   'date_of_death',
   'death_date',

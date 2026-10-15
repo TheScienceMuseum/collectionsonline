@@ -67,7 +67,7 @@ testWithServer(file + 'Should disallow < 3 characters', {}, async (t, ctx) => {
 });
 
 testWithServer(file + 'Autocomplete with type people', {}, async (t, ctx) => {
-  t.plan(1);
+  t.plan(4);
 
   const request = {
     method: 'GET',
@@ -76,7 +76,14 @@ testWithServer(file + 'Autocomplete with type people', {}, async (t, ctx) => {
   };
 
   const res = await ctx.server.inject(request);
+  const data = res.result.data;
   t.equal(res.statusCode, 200, 'Status was OK');
+  t.ok(data.length > 0, 'Returned suggestions');
+  t.ok(data.every((d) => d.type === 'people'), 'Every suggestion has type people');
+  t.ok(
+    data.every((d) => d.links.self.includes(`/people/${d.id}`)),
+    'Every self link points at a people page'
+  );
   t.end();
 });
 
