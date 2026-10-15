@@ -14,6 +14,10 @@ exports.plugin = {
       // Only interested in errors
       if (!(request.response instanceof Error)) return h.continue;
 
+      // /mcp clients are agents, not browsers: keep Hapi's JSON errors (no
+      // HTML error page, no /login redirect).
+      if (request.path === '/mcp') return h.continue;
+
       const error = new Boom.Boom(request.response);
       const accept = request.headers.accept || '';
       const wants = contentType(request);
