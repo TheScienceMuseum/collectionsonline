@@ -342,6 +342,18 @@ test('linkifyObjectMarkers: bare title without co-id has braces stripped (regres
   t.end();
 });
 
+// --- House style (lib/ai/house-style.js) at render time ---------------
+
+test('render: house style applies to rendered HTML, stored text stays canonical', function (t) {
+  const raw = 'The museum holds a reconstruction of {co207720|Reconstruction of Novelty Locomotive}, built for the airplane age.';
+  const r = render({ sentences: [s(raw, 'museum', 'relatedItem:co207720')], paragraphBreaks: [] }, { publishingLevel: 3 });
+  const expected = 'The museum holds a <a class="ai-object-chip ai-object-chip--inline" href="/objects/co207720" title="View this object in the collection">reconstruction of Novelty Locomotive</a>, built for the aeroplane age.';
+  t.equal(stripSpans(r.contextHtml), '<p>' + expected + '</p>', 'contextHtml folded + British spelling');
+  t.equal(r.sentences[0].textHtml, expected, 'admin textHtml matches public prose');
+  t.equal(r.sentences[0].text, raw, 'stored text untouched (claim signatures key off it)');
+  t.end();
+});
+
 test('linkifyObjectMarkers: valid marker + bare title mixed in one string', function (t) {
   const out = render.linkifyObjectMarkers('the {co505729|Patholette} and the {Vickers M41}');
   t.ok(/href="\/objects\/co505729"/.test(out), 'valid marker still linkified');

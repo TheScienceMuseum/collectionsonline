@@ -628,6 +628,32 @@ Added 2026-10-14 after a railway curator review surfaced
 applies to the vehicle name itself; the surrounding prose uses
 articles normally.
 
+## Repeating a catalogue title's opening noun
+
+Many catalogue titles open with a descriptive noun: "Model of …",
+"Print of …", "Reconstruction of …", "Reproduction of …",
+"Engraving '…'", "Box containing …". When such a title is linked
+inline, do not write the same noun again immediately before the
+marker — the reader sees the noun twice.
+
+- BAD: "a reconstruction of {co207720|Reconstruction of Novelty
+  Locomotive}" (reads "a reconstruction of Reconstruction of …")
+- GOOD: "a {co207720|reconstruction of Novelty Locomotive}"
+- BAD: "a working model of {co146940|Model of Jenning's patent
+  water closet}"
+- GOOD: "a working {co146940|model of Jenning's patent water
+  closet}"
+- BAD: "a framed print, {co50905|Print of Henry Beighton's
+  Engraving of a Newcomen Engine}"
+- GOOD: "a framed {co50905|print of Henry Beighton's Engraving of
+  a Newcomen Engine}"
+
+Fold the noun into the link text and lower-case only that opening
+word. Keep the rest of the title exactly as catalogued — this is
+not licence to paraphrase titles generally. When the word before
+the marker is a different noun ("a 1:24 scale model, {co…|Novelty
+locomotive}"), nothing is repeated and nothing needs changing.
+
 ## Single-genius-inventor trap
 
 Historical achievements were almost never sole efforts. Where the
