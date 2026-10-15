@@ -9,6 +9,8 @@
 // Hapi response; lifecycle, timeouts and server.inject all keep working.
 // Rate limiting is CloudFront WAF's job; see docs/mcp.md.
 
+const crypto = require('crypto');
+const { AsyncLocalStorage } = require('async_hooks');
 const { createMcpHandler } = require('@modelcontextprotocol/server');
 const buildServer = require('../lib/mcp/server');
 const { authenticate } = require('../lib/mcp/auth');
@@ -23,6 +25,35 @@ const SKIP_REQUEST_HEADERS = new Set([
 const SKIP_RESPONSE_HEADERS = new Set(['content-length', 'connection', 'keep-alive', 'transfer-encoding']);
 
 const isOn = (v) => v === true || v === 'true';
+
+// Lets SDK-level errors (reported through onerror, outside our handler) be
+// logged with the request they belong to.
+const requestContext = new AsyncLocalStorage();
+
+// What was asked for, without credentials or body content, for error logs.
+const describe = (request, caller) => {
+  let rpc;
+  try {
+    const body = JSON.parse(String(request.payload || ''));
+    rpc = (Array.isArray(body) ? body : [body]).map((m) => m && m.method).join(',');
+  } catch (_) {
+    rpc = 'unparseable';
+  }
+  return {
+    client: caller && caller.client,
+    rpc,
+    protocol: request.headers['mcp-protocol-version'],
+    contentType: request.headers['content-type'],
+    accept: request.headers.accept,
+    userAgent: request.headers['user-agent'],
+    bytes: request.payload ? request.payload.length : 0
+  };
+};
+
+const logFailure = (label, ref, details, error) => {
+  console.error(JSON.stringify({ evt: 'mcp_error', label, ref, ...details, message: error && error.message }));
+  if (error && error.stack) console.error(error.stack);
+};
 
 const rpcError = (h, status, message) => h.response({
   jsonrpc: '2.0',
@@ -39,7 +70,10 @@ module.exports = (elastic, config) => {
       tier: (authInfo && authInfo.extra && authInfo.extra.tier) || 'public'
     }
   }), {
-    onerror: (error) => console.error('MCP handler error:', error.message)
+    onerror: (error) => {
+      const ctx = requestContext.getStore();
+      logFailure('sdk', ctx && ctx.ref, ctx && ctx.details, error);
+    }
   });
 
   const common = {
@@ -63,22 +97,30 @@ module.exports = (elastic, config) => {
               .header('www-authenticate', 'Bearer realm="smg-collection"');
           }
 
-          const headers = new Headers();
-          Object.keys(request.headers).forEach((name) => {
-            if (!SKIP_REQUEST_HEADERS.has(name)) headers.set(name, request.headers[name]);
-          });
-          const body = request.payload && request.payload.length ? request.payload : undefined;
-          const webRequest = new Request(`http://${request.info.host || 'localhost'}${PATH}`, {
-            method: 'POST',
-            headers,
-            body
-          });
-
-          const res = await mcp.fetch(webRequest, {
-            authInfo: { token: '', clientId: caller.client, scopes: [caller.tier], extra: { tier: caller.tier } }
-          });
+          const ref = crypto.randomUUID();
+          const details = describe(request, caller);
+          let res;
+          try {
+            const headers = new Headers();
+            Object.keys(request.headers).forEach((name) => {
+              if (!SKIP_REQUEST_HEADERS.has(name)) headers.set(name, request.headers[name]);
+            });
+            const body = request.payload && request.payload.length ? request.payload : undefined;
+            const webRequest = new Request(`http://${request.info.host || 'localhost'}${PATH}`, {
+              method: 'POST',
+              headers,
+              body
+            });
+            res = await requestContext.run({ ref, details }, () => mcp.fetch(webRequest, {
+              authInfo: { token: '', clientId: caller.client, scopes: [caller.tier], extra: { tier: caller.tier } }
+            }));
+          } catch (error) {
+            logFailure('bridge', ref, details, error);
+            return rpcError(h, 500, `Internal error (ref ${ref})`);
+          }
 
           const text = await res.text();
+          if (res.status >= 500) logFailure('response', ref, { ...details, status: res.status, body: text.slice(0, 500) });
           const response = h.response(text || null).code(res.status);
           res.headers.forEach((value, name) => {
             if (!SKIP_RESPONSE_HEADERS.has(name)) response.header(name, value);

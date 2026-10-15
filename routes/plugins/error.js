@@ -15,8 +15,12 @@ exports.plugin = {
       if (!(request.response instanceof Error)) return h.continue;
 
       // /mcp clients are agents, not browsers: keep Hapi's JSON errors (no
-      // HTML error page, no /login redirect).
-      if (request.path === '/mcp') return h.continue;
+      // HTML error page, no /login redirect), but still log server errors.
+      if (request.path === '/mcp') {
+        const status = request.response.output ? request.response.output.statusCode : 500;
+        if (status >= 500) console.error('MCP request failed:', request.response.stack);
+        return h.continue;
+      }
 
       const error = new Boom.Boom(request.response);
       const accept = request.headers.accept || '';
