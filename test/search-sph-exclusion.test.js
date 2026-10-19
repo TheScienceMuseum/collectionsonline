@@ -43,3 +43,25 @@ test(file + 'Random excludes SPH parts', async (t) => {
   t.deepEqual(bool.must_not, [SPH_EXCLUSION], 'must_not excludes SPH parts');
   t.end();
 });
+
+// With parts excluded, a query that only matches a part's title must still find
+// the part's SPH parent through the child titles CIIM copies onto it.
+const isPartTitleClause = (c) => !!(c.bool && c.bool.must &&
+  c.bool.must.some(m => m.match_phrase && m.match_phrase['child.summary.title']));
+
+test(file + 'Text query matches part titles on SPH parents only', async (t) => {
+  const { should } = (await searchBody({ q: 'coley avenue' }, 'all')).query.function_score.query.bool;
+  const clauses = should.filter(isPartTitleClause);
+  t.plan(3);
+  t.equal(clauses.length, 1, 'one part-title clause');
+  t.deepEqual(clauses[0].bool.filter, [{ term: { '@datatype.grouping': 'SPH' } }], 'restricted to SPH parents');
+  t.equal(clauses[0].bool.must[0].match_phrase['child.summary.title'].query, 'coley avenue', 'phrase is the query');
+  t.end();
+});
+
+test(file + 'Browse (no q) has no part-title clause', async (t) => {
+  const { bool } = (await searchBody({}, 'objects')).query.function_score.query;
+  t.plan(1);
+  t.notOk((bool.should || []).some(isPartTitleClause), 'no part-title clause');
+  t.end();
+});
