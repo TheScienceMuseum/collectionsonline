@@ -61,15 +61,18 @@ module.exports = (elastic, config) => ({
 
         const queryParams = createQueryParams(responseType, { query, params });
 
-        // Only set a Cache-Control if we don't have a freetext query string and aren't running on production
-        let cacheResponse = false;
-        if (
+        // Random picks must never be cached (by CloudFront or the browser), or every
+        // visitor gets the same "random" result. Otherwise cache for 12 hours if we
+        // don't have a freetext query string and are running on production.
+        let cacheControl = 'public, max-age=60';
+        if (result.query.random) {
+          cacheControl = 'no-store';
+        } else if (
           !result.query.q &&
-          !result.query.random &&
           config &&
           config.NODE_ENV === 'production'
         ) {
-          cacheResponse = true;
+          cacheControl = 'max-age=43200, must-revalidate';
         }
 
         if (responseType === 'html') {
@@ -171,14 +174,7 @@ module.exports = (elastic, config) => ({
           );
 
           const response = h.view('search', tplData);
-          if (cacheResponse) {
-            response.header(
-              'Cache-Control',
-              'max-age=43200, must-revalidate'
-            );
-          } else {
-            response.header('Cache-Control', 'public, max-age=60');
-          }
+          response.header('Cache-Control', cacheControl);
           return response;
         } else if (responseType === 'json') {
           const mphcParent = await parentCollection(elastic, queryParams);
@@ -193,14 +189,7 @@ module.exports = (elastic, config) => ({
             )
           );
 
-          if (cacheResponse) {
-            response.header(
-              'Cache-Control',
-              'max-age=43200, must-revalidate'
-            );
-          } else {
-            response.header('Cache-Control', 'public, max-age=60');
-          }
+          response.header('Cache-Control', cacheControl);
           return response.header('content-type', 'application/vnd.api+json');
         }
       } catch (err) {
