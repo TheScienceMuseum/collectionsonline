@@ -58,15 +58,14 @@
     <a href="/admin/ai?status=admin_only{{pendingQs}}" class="{{#isequal currentStatus "admin_only" this}}active{{/isequal}}" title="AI biography generated but public site shows the existing catalogue description (existing prose above threshold). Admin can view + regenerate; public visitors see the catalogue description.">Admin Only</a>
     {{!-- Toggle, not a status: stacks with whichever tab is selected. --}}
     <span aria-hidden="true" style="align-self: stretch; border-left: 1px solid #c5c1b5; margin: 0 0.15rem;"></span>
-    <a href="/admin/ai?status={{currentStatus}}{{#unless pendingOnly}}&pending=1{{/unless}}" class="{{#if pendingOnly}}active{{/if}}" title="Only records with public reports that haven't been marked as reviewed — any status, including hidden. Click again to turn off.">Pending reports{{#if pendingSummary}} · {{pendingSummary.total}}{{/if}}</a>
+    <a href="/admin/ai?status={{currentStatus}}{{#unless pendingOnly}}&pending=1{{/unless}}" class="{{#if pendingOnly}}active{{/if}}" title="Only records with public reports that haven't been marked as reviewed — any status, including hidden. Click again to turn off.">Unreviewed reports{{#if pendingSummary}} · {{pendingSummary.total}}{{/if}}</a>
   </div>
   <a href="/admin/ai/export.csv?status={{currentStatus}}{{pendingQs}}{{#if search}}&search={{search}}{{/if}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}" style="padding: 0.3em 0.7em; border-radius: 3px; background: #e9e5d9; color: #2a2a2a; text-decoration: none; font-size: 0.85rem;" title="Download the current filtered view as CSV — opens in Excel / Sheets.">Export CSV</a>
 </div>
 
 {{#if pendingOnly}}
 <p class="text-meta" style="margin: -0.25rem 0 1rem;">
-  Records with public reports not yet marked as reviewed{{#if includeStaffFlags}}, or with an open staff flag{{/if}}, whatever their status.
-  {{#if pendingSummary.hidden}}<a href="/admin/ai?status=hidden{{pendingQs}}" style="color: #b03030; font-weight: 600;">{{pendingSummary.hidden}} hidden</a> &mdash; not counted in the Pending reports card above.{{/if}}
+  Public reports not yet marked as reviewed{{#if includeStaffFlags}}, or open staff flags{{/if}}, on records of any status.
   {{#if includeStaffFlags}}<a href="/admin/ai?status={{currentStatus}}&pending=1">Public reports only</a>{{else}}<a href="/admin/ai?status={{currentStatus}}&pending=1&staff=1" title="Staff flags have no reviewed state — they stay until the staff member who set them clears them.">Include staff flags</a>{{/if}}
 </p>
 {{/if}}
