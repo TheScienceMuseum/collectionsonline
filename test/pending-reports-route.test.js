@@ -100,6 +100,8 @@ testWithServer('Admin AI list: ?pending=1 lists records with pending reports, an
   t.equal(res.payload.indexOf('/admin/ai/cp3"'), -1, 'hidden record with reviewed reports left out');
   t.equal(res.payload.indexOf('/admin/ai/cp4"'), -1, 'record without reports left out');
   t.ok(res.payload.indexOf('reports not reviewed') !== -1, 'hidden + pending row is marked');
+  t.ok(/>Unreviewed reports · 2</.test(res.payload), 'toggle counts both records');
+  t.ok(res.payload.indexOf('across 1 record · 1 more on hidden') !== -1, 'Pending reports card points at the hidden one');
   t.end();
 });
 

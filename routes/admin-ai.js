@@ -254,8 +254,7 @@ module.exports = function (elastic, config) {
             // through its unresolvedIndex.
             const headlineStats = await dashboardStats.getStats(dynamo, config);
             const pendingSummary = {
-              total: unresolvedReports.filterIndex(headlineStats.unresolvedIndex, { includeStaffFlags }).length,
-              hidden: unresolvedReports.filterIndex(headlineStats.unresolvedIndex, { status: 'hidden', includeStaffFlags }).length
+              total: unresolvedReports.filterIndex(headlineStats.unresolvedIndex, { includeStaffFlags }).length
             };
 
             if (parsedSearch && parsedSearch.kind === 'id') {

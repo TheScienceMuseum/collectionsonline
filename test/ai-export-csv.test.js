@@ -104,6 +104,6 @@ test('export-csv: summary includes hidden-with-unresolved-reports rows', functio
   const body = exportCsv.buildSummaryCsv(stats).body;
   t.ok(body.indexOf('Hidden with unresolved reports (records),3') !== -1);
   t.ok(body.indexOf('Hidden with unresolved reports (reports),5') !== -1);
-  t.ok(body.indexOf('Records with pending reports — any status,4') !== -1);
+  t.ok(body.indexOf('Records with unreviewed reports — any status,4') !== -1);
   t.end();
 });
