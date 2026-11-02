@@ -63,6 +63,20 @@ test('subject-status: birth date inside lifespan cap → still living unless oth
   t.end();
 });
 
+test('subject-status: day-first birth dates read the four-digit year (regression)', function (t) {
+  // "28 January 1949" and "8/12/1936" were read as the years 28 and 8,
+  // landing past the lifespan cap and marking living people deceased.
+  ['28 January 1949', '15 May 1948', '8/12/1936', '29/11/1982'].forEach(function (birthDate) {
+    const r = subjectStatus.inspect({ birthDate }, null, 'person');
+    t.equal(r.isLiving, true, birthDate + ' → still living without a death signal');
+    t.equal(r.deathDateInferred, null, birthDate + ' → no inferred death');
+  });
+  const old = subjectStatus.inspect({ birthDate: '12 March ' + (CUTOFF_YEAR - 5) }, null, 'person');
+  t.equal(old.isLiving, false, 'day-first date past the cap still infers deceased');
+  t.equal(old.deathDateInferred, String(CUTOFF_YEAR - 5 + CAP));
+  t.end();
+});
+
 test('subject-status: brief bio "active 1990s" within lifespan → still living', function (t) {
   const personData = {
     birthDate: '',
