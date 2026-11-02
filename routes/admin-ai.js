@@ -17,6 +17,7 @@ const classifySubject = require('../lib/ai/classify-subject');
 const subjectStatus = require('../lib/ai/subject-status');
 const flagStore = require('../lib/ai/flag-store');
 const dashboardStats = require('../lib/ai/dashboard-stats');
+const unresolvedReports = require('../lib/ai/unresolved-reports');
 const exportCsv = require('../lib/ai/export-csv');
 const curatorDecisionsStore = require('../lib/ai/curator-decisions-store');
 const renderBiography = require('../lib/ai/render-biography');
@@ -199,6 +200,16 @@ module.exports = function (elastic, config) {
           const lastKey = request.query.lastKey
             ? JSON.parse(decodeURIComponent(request.query.lastKey))
             : null;
+          // Pending reports view — records with unresolved public reports
+          // (plus, with &staff=1, open staff flags) whatever their status.
+          // Stacks with the status tab, so ?pending=1&status=hidden is
+          // "hidden but still not reviewed". Paged by offset rather than a
+          // DynamoDB cursor; see the dispatch below.
+          const pendingOnly = request.query.pending === '1';
+          const includeStaffFlags = pendingOnly && request.query.staff === '1';
+          const offset = Math.max(0, parseInt(request.query.offset, 10) || 0);
+          // Appended to tab / filter / export links so they keep the view on.
+          const pendingQs = pendingOnly ? '&pending=1' + (includeStaffFlags ? '&staff=1' : '') : '';
           const availableVersions = prompts.listVersions();
           const availableModels = modelsRegistry.listModels();
 
@@ -213,6 +224,9 @@ module.exports = function (elastic, config) {
               availableVersions,
               availableModels,
               nextKey: null,
+              pendingOnly,
+              includeStaffFlags,
+              pendingQs,
               generateError
             }, { layout: 'admin' });
           }
@@ -230,6 +244,19 @@ module.exports = function (elastic, config) {
           try {
             let records;
             let nextKey = null;
+            let nextOffset = null;
+
+            // Headline strip stats — four top-level numbers (pending reports,
+            // live count, spend this month, new this week). Cheap to fetch:
+            // read from the in-process dashboard cache (short TTL, one scan
+            // amortised across both the main list and the dashboard page).
+            // Fetched up front because the Pending reports view pages
+            // through its unresolvedIndex.
+            const headlineStats = await dashboardStats.getStats(dynamo, config);
+            const pendingSummary = {
+              total: unresolvedReports.filterIndex(headlineStats.unresolvedIndex, { includeStaffFlags }).length,
+              hidden: unresolvedReports.filterIndex(headlineStats.unresolvedIndex, { status: 'hidden', includeStaffFlags }).length
+            };
 
             if (parsedSearch && parsedSearch.kind === 'id') {
               // Direct ID / URL lookup — ignores status + pagination on
@@ -243,6 +270,17 @@ module.exports = function (elastic, config) {
               // name match isn't hidden by the currently-selected filter.
               const result = await biographyStore.searchByName(parsedSearch.q, limit);
               records = result.items;
+            } else if (pendingOnly) {
+              // Candidates come from the dashboard-stats index (built from
+              // the FLAGS + STAFF_FLAG items its cached scan already reads),
+              // so only this page's biographies are fetched — one GetItem
+              // each, no extra scan.
+              const matches = unresolvedReports.filterIndex(headlineStats.unresolvedIndex, { status, includeStaffFlags });
+              const fetched = await Promise.all(matches.slice(offset, offset + limit).map(function (e) {
+                return biographyStore.fetchBiography(e.pk).catch(function () { return null; });
+              }));
+              records = fetched.filter(Boolean);
+              nextOffset = offset + limit < matches.length ? offset + limit : null;
             } else {
               const result = await biographyStore.listBiographies(status, limit, lastKey);
               records = result.items;
@@ -290,13 +328,23 @@ module.exports = function (elastic, config) {
               // near the top of this file. Signals "this record is live but
               // suppressed on the public site by the living-person policy".
               const publicVisibility = publicVisibilityFor(r, config);
-              return Object.assign({}, r, { publicReports, flagSeverity, staffSummary, publicVisibility });
+              // Off the public site but reports never marked as reviewed —
+              // the row the Pending reports view exists to surface.
+              const hiddenWithPendingReports = r.status === 'hidden' && flagSeverity !== null;
+              return Object.assign({}, r, { publicReports, flagSeverity, staffSummary, publicVisibility, hiddenWithPendingReports });
             }));
-            // Headline strip stats — four top-level numbers (pending reports,
-            // live count, spend this month, new this week). Cheap to fetch:
-            // read from the in-process dashboard cache (5-min TTL, one scan
-            // amortised across both the main list and the dashboard page).
-            const headlineStats = await dashboardStats.getStats(dynamo, config);
+            // The index can be up to one stats-cache TTL old. Re-check each
+            // row against the fresh reads above so a record marked as
+            // reviewed (or moved to another status) a moment ago drops out.
+            if (pendingOnly && !parsedSearch) {
+              records = records.filter(function (r) {
+                if (status !== 'all' && r.status !== status) return false;
+                return unresolvedReports.hasUnresolved({
+                  pendingReports: r.publicReports ? r.publicReports.pendingFlags : 0,
+                  staffFlags: r.staffSummary.flagCount
+                }, { includeStaffFlags });
+              });
+            }
             return h.view('admin-ai-list', {
               records,
               dynamoUnavailable: false,
@@ -307,6 +355,11 @@ module.exports = function (elastic, config) {
               availableVersions,
               availableModels,
               nextKey,
+              nextOffset,
+              pendingOnly,
+              includeStaffFlags,
+              pendingQs,
+              pendingSummary,
               headlineStats,
               generateError
             }, { layout: 'admin' });
@@ -322,6 +375,9 @@ module.exports = function (elastic, config) {
               availableVersions,
               availableModels,
               nextKey: null,
+              pendingOnly,
+              includeStaffFlags,
+              pendingQs,
               generateError,
               error: err.message
             }, { layout: 'admin' });
@@ -362,7 +418,8 @@ module.exports = function (elastic, config) {
 
     // CSV export of records — one row per biography. Filter semantics match
     // the list page, so clicking "Export CSV" on the Flagged tab exports
-    // flagged records only. UTF-8 BOM + CRLF for Excel-friendliness.
+    // flagged records only, and on the Pending reports view only records
+    // with unresolved reports. UTF-8 BOM + CRLF for Excel-friendliness.
     {
       method: 'GET',
       path: '/admin/ai/export.csv',
@@ -376,7 +433,9 @@ module.exports = function (elastic, config) {
               status: request.query.status || 'all',
               search: request.query.search || '',
               promptVersion: request.query.promptVersion || '',
-              model: request.query.model || ''
+              model: request.query.model || '',
+              pending: request.query.pending === '1',
+              includeStaffFlags: request.query.staff === '1'
             });
             return h.response(csv.body)
               .type('text/csv; charset=utf-8')

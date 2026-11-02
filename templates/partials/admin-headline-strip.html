@@ -1,7 +1,7 @@
 {{!-- Four compact metric cards. Used at the top of the admin list + the
      dashboard page. Each card is a link to the relevant drilldown. --}}
 <div class="headline-strip">
-  <a class="headline-card{{#if stats.flags.pendingReports}} headline-card--attention{{/if}}" href="/admin/ai?status=flagged" title="Inbox — public reports awaiting staff review, scoped to records still visible on the public site. Reports on records that have since been hidden (or are insufficient_data) drop out of this count, but are still visible on the record itself from the Hidden tab.">
+  <a class="headline-card{{#if stats.flags.pendingReports}} headline-card--attention{{/if}}" href="/admin/ai?status=flagged" title="Inbox — public reports awaiting staff review, scoped to records still visible on the public site. Reports on records that have since been hidden (or are insufficient_data) drop out of this count — use the Pending reports filter on the list to see them.">
     <div class="headline-card__label">Pending reports</div>
     <div class="headline-card__value">{{stats.flags.pendingReports}}</div>
     <div class="headline-card__hint">across {{stats.flags.pendingAcrossRecords}} {{#isequal stats.flags.pendingAcrossRecords 1 this}}record{{else}}records{{/isequal}}</div>
