@@ -44,6 +44,9 @@ require('./routes/scan')(page);
 // Anniversary widget analytics tracking
 require('./lib/anniversary-tracking')();
 
+// AI biography panel analytics tracking
+require('./lib/ai-biography-tracking')();
+
 // Post-route middleware for all pages
 require('./middleware/error-404')(page);
 // do not decode the url received by page.js
