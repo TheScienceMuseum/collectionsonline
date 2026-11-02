@@ -40,23 +40,36 @@
     {{/each}}
   </select>
   <input type="hidden" name="status" value="{{currentStatus}}">
+  {{#if pendingOnly}}<input type="hidden" name="pending" value="1">{{/if}}
+  {{#if includeStaffFlags}}<input type="hidden" name="staff" value="1">{{/if}}
   <button type="submit" class="btn btn--secondary">Apply</button>
-  {{#if search}}<a class="text-meta" href="/admin/ai?status={{currentStatus}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}">Clear search</a>{{/if}}
-  {{#if promptVersionFilter}}<a class="text-meta" href="/admin/ai?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}">Clear version filter</a>{{/if}}
-  {{#if modelFilter}}<a class="text-meta" href="/admin/ai?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}">Clear model filter</a>{{/if}}
+  {{#if search}}<a class="text-meta" href="/admin/ai?status={{currentStatus}}{{pendingQs}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}">Clear search</a>{{/if}}
+  {{#if promptVersionFilter}}<a class="text-meta" href="/admin/ai?status={{currentStatus}}{{pendingQs}}{{#if search}}&search={{search}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}">Clear version filter</a>{{/if}}
+  {{#if modelFilter}}<a class="text-meta" href="/admin/ai?status={{currentStatus}}{{pendingQs}}{{#if search}}&search={{search}}{{/if}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}">Clear model filter</a>{{/if}}
 </form>
 
 <div class="filter-tabs" style="justify-content: space-between;">
-  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-    <a href="/admin/ai?status=all" class="{{#isequal currentStatus "all" this}}active{{/isequal}}">All</a>
-    <a href="/admin/ai?status=live" class="{{#isequal currentStatus "live" this}}active{{/isequal}}">Live</a>
-    <a href="/admin/ai?status=flagged" class="{{#isequal currentStatus "flagged" this}}active{{/isequal}}">Flagged</a>
-    <a href="/admin/ai?status=hidden" class="{{#isequal currentStatus "hidden" this}}active{{/isequal}}">Hidden</a>
-    <a href="/admin/ai?status=insufficient_data" class="{{#isequal currentStatus "insufficient_data" this}}active{{/isequal}}">Insufficient Data</a>
-    <a href="/admin/ai?status=admin_only" class="{{#isequal currentStatus "admin_only" this}}active{{/isequal}}" title="AI biography generated but public site shows the existing catalogue description (existing prose above threshold). Admin can view + regenerate; public visitors see the catalogue description.">Admin Only</a>
+  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+    <a href="/admin/ai?status=all{{pendingQs}}" class="{{#isequal currentStatus "all" this}}active{{/isequal}}">All</a>
+    <a href="/admin/ai?status=live{{pendingQs}}" class="{{#isequal currentStatus "live" this}}active{{/isequal}}">Live</a>
+    <a href="/admin/ai?status=flagged{{pendingQs}}" class="{{#isequal currentStatus "flagged" this}}active{{/isequal}}">Flagged</a>
+    <a href="/admin/ai?status=hidden{{pendingQs}}" class="{{#isequal currentStatus "hidden" this}}active{{/isequal}}">Hidden</a>
+    <a href="/admin/ai?status=insufficient_data{{pendingQs}}" class="{{#isequal currentStatus "insufficient_data" this}}active{{/isequal}}">Insufficient Data</a>
+    <a href="/admin/ai?status=admin_only{{pendingQs}}" class="{{#isequal currentStatus "admin_only" this}}active{{/isequal}}" title="AI biography generated but public site shows the existing catalogue description (existing prose above threshold). Admin can view + regenerate; public visitors see the catalogue description.">Admin Only</a>
+    {{!-- Toggle, not a status: stacks with whichever tab is selected. --}}
+    <span aria-hidden="true" style="align-self: stretch; border-left: 1px solid #c5c1b5; margin: 0 0.15rem;"></span>
+    <a href="/admin/ai?status={{currentStatus}}{{#unless pendingOnly}}&pending=1{{/unless}}" class="{{#if pendingOnly}}active{{/if}}" title="Only records with public reports that haven't been marked as reviewed — any status, including hidden. Click again to turn off.">Pending reports{{#if pendingSummary}} · {{pendingSummary.total}}{{/if}}</a>
   </div>
-  <a href="/admin/ai/export.csv?status={{currentStatus}}{{#if search}}&search={{search}}{{/if}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}" style="padding: 0.3em 0.7em; border-radius: 3px; background: #e9e5d9; color: #2a2a2a; text-decoration: none; font-size: 0.85rem;" title="Download the current filtered view as CSV — opens in Excel / Sheets.">Export CSV</a>
+  <a href="/admin/ai/export.csv?status={{currentStatus}}{{pendingQs}}{{#if search}}&search={{search}}{{/if}}{{#if promptVersionFilter}}&promptVersion={{promptVersionFilter}}{{/if}}{{#if modelFilter}}&model={{modelFilter}}{{/if}}" style="padding: 0.3em 0.7em; border-radius: 3px; background: #e9e5d9; color: #2a2a2a; text-decoration: none; font-size: 0.85rem;" title="Download the current filtered view as CSV — opens in Excel / Sheets.">Export CSV</a>
 </div>
+
+{{#if pendingOnly}}
+<p class="text-meta" style="margin: -0.25rem 0 1rem;">
+  Records with public reports not yet marked as reviewed{{#if includeStaffFlags}}, or with an open staff flag{{/if}}, whatever their status.
+  {{#if pendingSummary.hidden}}<a href="/admin/ai?status=hidden{{pendingQs}}" style="color: #b03030; font-weight: 600;">{{pendingSummary.hidden}} hidden</a> &mdash; not counted in the Pending reports card above.{{/if}}
+  {{#if includeStaffFlags}}<a href="/admin/ai?status={{currentStatus}}&pending=1">Public reports only</a>{{else}}<a href="/admin/ai?status={{currentStatus}}&pending=1&staff=1" title="Staff flags have no reviewed state — they stay until the staff member who set them clears them.">Include staff flags</a>{{/if}}
+</p>
+{{/if}}
 
 {{#if records.length}}
 <table>
@@ -75,7 +88,7 @@
   </thead>
   <tbody>
     {{#each records}}
-    <tr>
+    <tr{{#if this.hiddenWithPendingReports}} style="background: rgba(176, 48, 48, 0.05);"{{/if}}>
       <td>
         <a href="/admin/ai/{{this.PK}}">{{this.personName}}</a>
         <br><small><a href="{{this.pageUrl}}" target="_blank">{{this.PK}}</a></small>
@@ -86,6 +99,9 @@
         {{else}}
         <span class="badge badge--{{this.status}}">{{this.status}}</span>
         {{/isequal}}
+        {{#if this.hiddenWithPendingReports}}
+        <br><small style="color: #b03030;" title="Off the public site, but the public reports haven't been marked as reviewed. Open the record to review them.">reports not reviewed</small>
+        {{/if}}
       </td>
       <td>
         {{#if this.publicReports}}
@@ -126,9 +142,17 @@
   <a href="/admin/ai?status={{currentStatus}}&lastKey={{nextKey}}" class="btn btn--secondary">Load more</a>
 </div>
 {{/if}}
+{{#if nextOffset}}
+<div style="margin-top: 1rem; text-align: center;">
+  <a href="/admin/ai?status={{currentStatus}}{{pendingQs}}&offset={{nextOffset}}" class="btn btn--secondary">Load more</a>
+</div>
+{{/if}}
 
 {{else}}
 {{#unless dynamoUnavailable}}
-<p class="text-meta" style="margin-top: 2rem;">No biography records found{{#isequal currentStatus "all" this}}{{else}} with status "{{currentStatus}}"{{/isequal}}.</p>
+<p class="text-meta" style="margin-top: 2rem;">{{#if pendingOnly}}No records with unresolved reports{{else}}No biography records found{{/if}}{{#isequal currentStatus "all" this}}{{else}} with status "{{currentStatus}}"{{/isequal}}.</p>
+{{#if nextOffset}}
+<p class="text-meta"><a href="/admin/ai?status={{currentStatus}}{{pendingQs}}&offset={{nextOffset}}">Next page</a></p>
+{{/if}}
 {{/unless}}
 {{/if}}

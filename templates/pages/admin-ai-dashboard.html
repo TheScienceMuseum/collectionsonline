@@ -207,6 +207,8 @@
     <h3>Public reports</h3>
     <dl class="dashboard-meta">
       <dt>Pending</dt><dd>{{stats.flags.pendingReports}}{{#if stats.flags.pendingAcrossRecords}} <small style="color:#646464;">across {{stats.flags.pendingAcrossRecords}} {{#isequal stats.flags.pendingAcrossRecords 1 this}}record{{else}}records{{/isequal}}</small>{{/if}}</dd>
+      <dt title="Records with status=hidden whose public reports haven't been marked as reviewed. Hiding takes a record off the site but doesn't clear its reports, so these aren't counted in Pending above.">Hidden with unresolved reports</dt><dd>{{#if stats.flags.hiddenWithPendingReports}}<a href="/admin/ai?status=hidden&amp;pending=1" style="color: #b03030;">{{stats.flags.hiddenWithPendingReports}}</a> <small style="color:#646464;">{{stats.flags.hiddenPendingReports}} {{#isequal stats.flags.hiddenPendingReports 1 this}}report{{else}}reports{{/isequal}}</small>{{else}}0{{/if}}</dd>
+      <dt title="Every record with public reports awaiting review, whatever its status.">All records with pending reports</dt><dd>{{#if stats.flags.pendingAllStatusesRecords}}<a href="/admin/ai?pending=1">{{stats.flags.pendingAllStatusesRecords}}</a>{{else}}0{{/if}}</dd>
       <dt>Lifetime</dt><dd>{{stats.flags.lifetimeReports}}</dd>
     </dl>
     {{#if stats.flags.topReasons.length}}
@@ -248,6 +250,10 @@
     <li>
       <span class="dashboard-list__label"><a href="/admin/ai/export.csv?status=flagged">Export flagged records (CSV)</a></span>
       <span class="dashboard-list__count">one row per flagged record</span>
+    </li>
+    <li>
+      <span class="dashboard-list__label"><a href="/admin/ai/export.csv?status=all&amp;pending=1">Export records with pending reports (CSV)</a></span>
+      <span class="dashboard-list__count">any status, including hidden</span>
     </li>
     <li>
       <span class="dashboard-list__label"><a href="/admin/ai/export.csv?status=all">Export all records (CSV)</a></span>
