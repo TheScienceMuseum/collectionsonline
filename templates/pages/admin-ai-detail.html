@@ -120,13 +120,34 @@
   </div>
   {{/if}}
 
+  {{!-- Visitor notes. Cleaned to plain text on the way in
+        (lib/ai/clean-report-message.js), but still visitor input: always
+        {{ }} (escaped), never {{{ }}}, and never turned into links. --}}
+  {{#if publicReports.messages.length}}
+  <div style="margin-top: 0.75rem;">
+    <div style="font-size: 0.85rem; font-weight: 600; color: #2a2a2a;">Notes from visitors</div>
+    <ul style="margin: 0.35rem 0 0 0; padding-left: 1.1rem; font-size: 0.9rem; color: #2a2a2a;">
+      {{#each publicReports.messages}}
+      <li style="margin: 0.25rem 0; overflow-wrap: anywhere;">
+        <span dir="auto">&ldquo;{{this.text}}&rdquo;</span>
+        <span class="text-meta--sm">{{#if this.reasonLabel}}· {{this.reasonLabel}}{{/if}}{{#if this.at}} · <span title="{{this.at}}">{{formatDate this.at "short"}}</span>{{/if}}</span>
+      </li>
+      {{/each}}
+    </ul>
+    {{#if publicReports.droppedMessages}}
+    <div class="text-meta--sm" style="margin-top: 0.25rem;">{{publicReports.droppedMessages}} later {{#isequal publicReports.droppedMessages 1 this}}note wasn't{{else}}notes weren't{{/isequal}} kept &mdash; only the first {{publicReports.maxMessages}} are kept between reviews.</div>
+    {{/if}}
+    <div class="text-meta--sm" style="margin-top: 0.25rem;">Links show the website name only; emails and phone numbers are removed. Notes are deleted when you mark the reports as reviewed.</div>
+  </div>
+  {{/if}}
+
   {{#if publicReports.pendingFromPreviousBio}}
   <div style="margin-top: 0.75rem; padding: 0.5rem 0.75rem; background: rgba(204, 153, 102, 0.08); border: 1px solid rgba(204, 153, 102, 0.25); border-radius: 3px; font-size: 0.8rem; color: #9c5a16;">
     ⚠ Some pending reports were submitted against an earlier biography version. The current biography may or may not address them — check the content before marking as reviewed.
   </div>
   {{/if}}
 
-  {{#if publicReports.pendingFlags}}
+  {{#if publicReports.canMarkReviewed}}
   <div style="margin-top: 0.75rem;">
     <form method="POST" action="/admin/ai/{{record.PK}}/flags/reviewed" style="display: inline;">
       <button type="submit" class="btn btn--secondary">Mark as reviewed</button>

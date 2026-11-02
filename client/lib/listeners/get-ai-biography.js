@@ -36,6 +36,7 @@ module.exports = function () {
       personName: data.personName || 'this person',
       sourcesText,
       flagEnabled: !!data.flagEnabled,
+      flagMessageEnabled: !!data.flagMessageEnabled,
       personId
     });
 
@@ -74,6 +75,7 @@ function attachFlagWidget (container, personId) {
   const thanks = widget.querySelector('.ai-biography-flag__thanks');
   const errorMsg = widget.querySelector('.ai-biography-flag__error');
   const reasonSelect = widget.querySelector('.ai-biography-flag__reason');
+  const messageInput = widget.querySelector('.ai-biography-flag__message');
   const submitBtn = widget.querySelector('.ai-biography-flag__submit');
 
   if (!trigger || !form) return;
@@ -108,6 +110,10 @@ function attachFlagWidget (container, personId) {
     const reason = reasonSelect ? reasonSelect.value : '';
     if (!reason) return;
 
+    // Optional note — sent as typed; the server cleans it.
+    const message = messageInput ? messageInput.value.trim() : '';
+    const body = message ? { reason, message } : { reason };
+
     submitBtn.disabled = true;
 
     try {
@@ -118,7 +124,7 @@ function attachFlagWidget (container, personId) {
           'Content-Type': 'application/json',
           Accept: 'application/json'
         },
-        body: JSON.stringify({ reason })
+        body: JSON.stringify(body)
       });
 
       if (!res.ok) throw new Error('HTTP ' + res.status);

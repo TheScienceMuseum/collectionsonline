@@ -6,6 +6,7 @@ const biographyStore = require('../lib/ai/biography-store');
 const dynamo = require('../lib/ai/dynamo');
 const subjectStatus = require('../lib/ai/subject-status');
 const flagStore = require('../lib/ai/flag-store');
+const cleanReportMessage = require('../lib/ai/clean-report-message');
 
 const CACHE_CONTROL = process.env.NODE_ENV === 'production'
   ? 'public, max-age=3600, stale-while-revalidate=86400'
@@ -117,7 +118,8 @@ function publicBiographyRoute (elastic, config) {
                   model: existing.model,
                   status: existing.status,
                   suppressExisting: existing.existingDescriptionChars < config.aiBiographySuppressExistingChars,
-                  flagEnabled: !!config.aiBiographyPublicFlagEnabled
+                  flagEnabled: !!config.aiBiographyPublicFlagEnabled,
+                  flagMessageEnabled: !!(config.aiBiographyPublicFlagEnabled && config.aiBiographyPublicFlagMessageEnabled)
                 }).type('application/json').header('Cache-Control', CACHE_CONTROL);
               }
             }
@@ -152,10 +154,17 @@ function publicBiographyRoute (elastic, config) {
 // Design decisions (see plan section 14):
 //   - Feature-flagged via config.aiBiographyPublicFlagEnabled (kill switch).
 //     404 when disabled.
-//   - Structured reason only — no free-text field. Honeypot input catches
-//     dumb bots. WAF rate limit handles the real abuse surface.
-//   - Aggregate counters only (see lib/ai/flag-store.js). No individual
-//     flag records, no IPs in DynamoDB.
+//   - Structured reason, plus an optional short note when
+//     config.aiBiographyPublicFlagMessageEnabled is on. The note is cleaned
+//     to plain text by lib/ai/clean-report-message.js (links reduced to
+//     hostnames, emails / phone numbers redacted, markup stripped) and is
+//     shown to staff only — never sent to the AI writer. Honeypot input
+//     catches dumb bots. WAF rate limit handles the real abuse surface.
+//   - Aggregate counters plus at most a handful of cleaned notes per
+//     record, deleted on Mark as reviewed (see lib/ai/flag-store.js). No
+//     IPs or other identifiers in DynamoDB.
+//   - Payload capped at 4 KB — the largest legitimate body is a reason
+//     code and a 200-character note.
 //   - First flag on a `live` record auto-promotes status to `flagged`.
 //     Matches the staff-flag behaviour for a unified triage queue.
 //   - Cookie is set on successful submission so the button hides in-browser
@@ -169,7 +178,8 @@ function publicFlagRoute (config) {
       payload: {
         output: 'data',
         parse: true,
-        allow: ['application/json', 'application/x-www-form-urlencoded']
+        allow: ['application/json', 'application/x-www-form-urlencoded'],
+        maxBytes: 4096
       },
       handler: async function (request, h) {
         if (!config.aiBiographyEnabled || !config.aiBiographyPublicFlagEnabled) {
@@ -194,6 +204,19 @@ function publicFlagRoute (config) {
           return h.response({ error: 'Invalid reason' }).code(400);
         }
 
+        // Optional note. With the switch off it's ignored rather than
+        // rejected, so a page rendered before the switch flipped still
+        // submits cleanly. Link spam comes back as message=null: the report
+        // still counts, the note is dropped.
+        let message = null;
+        if (config.aiBiographyPublicFlagMessageEnabled) {
+          const cleaned = cleanReportMessage(payload.message);
+          if (!cleaned.ok) {
+            return h.response({ error: 'Message too long' }).code(400);
+          }
+          message = cleaned.message;
+        }
+
         if (!flagStore.isReady()) {
           return h.response({ error: 'Storage unavailable' }).code(503);
         }
@@ -208,7 +231,7 @@ function publicFlagRoute (config) {
             return h.response({ error: 'No biography for this record' }).code(404);
           }
 
-          await flagStore.submitFlag(id, reason, record.generatedAt);
+          await flagStore.submitFlag(id, reason, record.generatedAt, message);
 
           // Auto-promote status on first actionable flag. Only from 'live';
           // stronger states (hidden, insufficient_data) stay intact.

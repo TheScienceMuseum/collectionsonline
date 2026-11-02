@@ -35,8 +35,22 @@
             <option value="doesnt_match">Doesn't match the person / organisation</option>
             <option value="other">Other</option>
           </select>
+          {{#unless flagMessageEnabled}}
+          <button type="submit" class="ai-biography-flag__submit">Submit</button>
+          {{/unless}}
+        </div>
+        {{#if flagMessageEnabled}}
+        {{!-- Optional note. maxlength is UX only; the server re-checks the
+             length and cleans the text (lib/ai/clean-report-message.js). --}}
+        <div class="ai-biography-flag__note">
+          <label class="ai-biography-flag__note-label" for="ai-biography-flag-message">What's wrong? <span class="ai-biography-flag__optional">(optional)</span></label>
+          <textarea id="ai-biography-flag-message" name="message" class="ai-biography-flag__message" rows="2" maxlength="200" autocomplete="off" aria-describedby="ai-biography-flag-message-hint"></textarea>
+          <p id="ai-biography-flag-message-hint" class="ai-biography-flag__hint">Up to 200 characters. Please don't include your name, email address or phone number. Links are shortened to the website name.</p>
+        </div>
+        <div class="ai-biography-flag__row">
           <button type="submit" class="ai-biography-flag__submit">Submit</button>
         </div>
+        {{/if}}
       </form>
       <p class="ai-biography-flag__thanks" hidden>
         Thank you. We'll review this.

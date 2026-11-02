@@ -65,6 +65,12 @@ module.exports = require('rc')('co', {
   // returns 404. Default false — enable in .corc / env only when the
   // feature is intentionally live.
   aiBiographyPublicFlagEnabled: process.env.AI_BIOGRAPHY_PUBLIC_FLAG_ENABLED === 'true',
+  // Optional short note (up to 200 characters) on a public report, cleaned
+  // to plain text before storage — see lib/ai/clean-report-message.js.
+  // Only has an effect while aiBiographyPublicFlagEnabled is also on.
+  // Default false. When false the note box isn't rendered and the flag
+  // route ignores any note sent, so turning it off mid-session is safe.
+  aiBiographyPublicFlagMessageEnabled: process.env.AI_BIOGRAPHY_PUBLIC_FLAG_MESSAGE_ENABLED === 'true',
   // Kill switch for the public biography DISPLAY. When false, the public
   // route (GET /ai/biography/:id) returns 204 for every valid ID, hiding
   // all AI biographies from the site regardless of individual record

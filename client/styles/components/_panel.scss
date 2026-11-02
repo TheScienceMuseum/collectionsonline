@@ -315,6 +315,47 @@
     }
 
 
+    // Optional note (aiBiographyPublicFlagMessageEnabled). Same dark-field
+    // treatment as the reason select.
+    &__note {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    &__note-label {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    &__optional {
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    &__message {
+      font: inherit;
+      font-size: 0.9rem;
+      padding: 0.5rem 0.75rem;
+      background-color: rgba(0, 0, 0, 0.3);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 3px;
+      resize: vertical;
+      transition: border-color 0.15s ease;
+
+      &:hover { border-color: rgba(255, 255, 255, 0.4); }
+      &:focus {
+        outline: none;
+        box-shadow: none;
+        border-color: rgba(255, 255, 255, 0.65);
+      }
+    }
+
+    &__hint {
+      margin: 0;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
     // Visually hidden but present for bots to fill. Off-screen rather than
     // display:none, because some bots skip display:none fields.
     &__honeypot {
