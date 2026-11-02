@@ -102,6 +102,7 @@ testWithServer('Admin AI list: ?pending=1 lists records with pending reports, an
   t.ok(res.payload.indexOf('reports not reviewed') !== -1, 'hidden + pending row is marked');
   t.ok(/>Unreviewed reports · 2</.test(res.payload), 'toggle counts both records');
   t.ok(res.payload.indexOf('across 1 record · 1 more on hidden') !== -1, 'Pending reports card points at the hidden one');
+  t.ok(/class="headline-card[^"]*" href="\/admin\/ai\?pending=1"/.test(res.payload), 'Pending reports card opens the Unreviewed reports list');
   t.end();
 });
 
