@@ -388,6 +388,54 @@ test('render: sentence text with markers produces textHtml with anchor + preserv
   t.end();
 });
 
+// --- Malformed markers (seen on prod after the 2026-11-03 re-run) ----
+
+test('render: {relatedItem:coXXXX|Title} marker renders as a link (cp5165 regression)', function (t) {
+  const raw = 'The museum holds approximately 35 items related to the company, including a {relatedItem:co223632|Fishplate profile made by United Steel Companies Ltd.} for the Nigerian Railway, dated 1922.';
+  const r = render({ sentences: [s(raw, 'museum', 'relatedItem:co223632')], paragraphBreaks: [] }, { publishingLevel: 3 });
+  t.ok(r.contextHtml.indexOf('href="/objects/co223632"') !== -1, 'anchor emitted');
+  t.ok(r.contextHtml.indexOf('>Fishplate profile made by United Steel Companies Ltd.</a> for the Nigerian Railway') !== -1, 'link text intact');
+  t.equal(/relatedItem|[{}]/.test(r.contextHtml), false, 'no marker syntax left');
+  t.equal(r.sentences[0].text, raw, 'stored text untouched');
+  t.end();
+});
+
+test('render: quoted title with escaped quotes and a bare ID becomes a link (cp159544 regression)', function (t) {
+  const raw = 'The collection includes "Great Western Railway model, \\"Majestic\\"" (co27568), a 1:12 scale model of a 4-2-2 locomotive dated 1894.';
+  const r = render({ sentences: [s(raw, 'museum', 'relatedItem:co27568')], paragraphBreaks: [] }, { publishingLevel: 3 });
+  t.ok(r.contextHtml.indexOf('href="/objects/co27568"') !== -1, 'anchor emitted');
+  t.ok(r.contextHtml.indexOf('>Great Western Railway model, &quot;Majestic&quot;</a>, a 1:12 scale model') !== -1, 'title keeps its inner quotes, outer quotes and ID gone');
+  t.equal(/\\|\(co\d+\)/.test(r.contextHtml), false, 'no backslashes or bare ID left');
+  t.end();
+});
+
+test('normaliseMarkers: quoted title + ID, curly quotes, and stray bare IDs', function (t) {
+  t.equal(render.normaliseMarkers('the "Rocket" (co123) and more'), 'the {co123|Rocket} and more');
+  t.equal(render.normaliseMarkers('the “Rocket” (co123) and more'), 'the {co123|Rocket} and more');
+  t.equal(render.normaliseMarkers('a print (co456), dated 1850'), 'a print, dated 1850', 'bare ID removed');
+  t.equal(render.normaliseMarkers('{{relatedItem:co1|Title}}'), '{{co1|Title}}', 'brace tolerance kept for the linkifier');
+  t.end();
+});
+
+test('normaliseMarkers: two quoted phrases in one sentence are not merged into one link', function (t) {
+  const out = render.normaliseMarkers('He wrote "On Heat", and the "Model" (co123) survives.');
+  t.equal(out, 'He wrote "On Heat", and the {co123|Model} survives.');
+  t.end();
+});
+
+test('normaliseMarkers: well-formed text is unchanged', function (t) {
+  const raw = 'is captured in {co66081|Einstein in Norfolk}, a photograph "signed" by him.';
+  t.equal(render.normaliseMarkers(raw), raw);
+  t.end();
+});
+
+test('linkifyObjectMarkers: tolerates a relatedItem: prefix (template helper path)', function (t) {
+  const out = render.linkifyObjectMarkers('a {relatedItem:co9|Thing}.');
+  t.ok(out.indexOf('href="/objects/co9"') !== -1);
+  t.equal(/relatedItem/.test(out), false);
+  t.end();
+});
+
 // --- Multi-source publishing filter (spec: internal-docs/multi-source-sentence-tagging-spec.md)
 
 function sm (text, sources) {

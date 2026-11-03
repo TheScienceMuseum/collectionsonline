@@ -218,6 +218,107 @@ test('handles wikidata entry as bare string (legacy shape)', function (t) {
   t.end();
 });
 
+// --- Wikidata date precision and multiple values -------------------
+
+test('year-precision Wikidata date (stored as 1 January) agrees with an exact museum date', function (t) {
+  const out = detect({
+    personData: { birthDate: '1876-03-06' },
+    wikidataContext: {
+      P569: {
+        label: 'date of birth',
+        value: '+1876-01-01T00:00:00Z',
+        claims: [{ value: '+1876-01-01T00:00:00Z', precision: 9 }]
+      }
+    }
+  });
+  t.equal(out.length, 0, 'precision 9 compares on the year only');
+  t.end();
+});
+
+test('day-precision 1 January still contradicts a different day', function (t) {
+  const out = detect({
+    personData: { birthDate: '1876-03-06' },
+    wikidataContext: {
+      P569: {
+        label: 'date of birth',
+        value: '+1876-01-01T00:00:00Z',
+        claims: [{ value: '+1876-01-01T00:00:00Z', precision: 11 }]
+      }
+    }
+  });
+  t.equal(out.length, 1, 'a real 1 January date is compared in full');
+  t.end();
+});
+
+test('month-precision Wikidata date compares year and month', function (t) {
+  const agree = detect({
+    personData: { deathDate: '1930-02-19' },
+    wikidataContext: { P570: { label: 'date of death', claims: [{ value: '+1930-02-01T00:00:00Z', precision: 10 }] } }
+  });
+  const differ = detect({
+    personData: { deathDate: '1930-03-19' },
+    wikidataContext: { P570: { label: 'date of death', claims: [{ value: '+1930-02-01T00:00:00Z', precision: 10 }] } }
+  });
+  t.equal(agree.length, 0, 'same month agrees');
+  t.equal(differ.length, 1, 'different month contradicts');
+  t.end();
+});
+
+test('decade-precision Wikidata date is too coarse to contradict', function (t) {
+  const out = detect({
+    personData: { birthDate: '1935-05-01' },
+    wikidataContext: { P569: { label: 'date of birth', claims: [{ value: '+1930-01-01T00:00:00Z', precision: 8 }] } }
+  });
+  t.equal(out.length, 0);
+  t.end();
+});
+
+test('two Wikidata values that both fit the museum date are not a contradiction', function (t) {
+  const out = detect({
+    personData: { deathDate: '1930-02-19' },
+    wikidataContext: {
+      P570: {
+        label: 'date of death',
+        value: '+1930-01-01T00:00:00Z, +1930-02-19T00:00:00Z',
+        claims: [
+          { value: '+1930-01-01T00:00:00Z', precision: 9 },
+          { value: '+1930-02-19T00:00:00Z', precision: 11 }
+        ]
+      }
+    }
+  });
+  t.equal(out.length, 0, 'year-only value plus the matching exact value');
+  t.end();
+});
+
+test('a second Wikidata value that fits nothing is still a contradiction', function (t) {
+  const out = detect({
+    personData: { birthDate: '1787-11-18' },
+    wikidataContext: {
+      P569: {
+        label: 'date of birth',
+        value: '+1787-11-18T00:00:00Z, +1787-07-10T00:00:00Z',
+        claims: [
+          { value: '+1787-11-18T00:00:00Z', precision: 11 },
+          { value: '+1787-07-10T00:00:00Z', precision: 11 }
+        ]
+      }
+    }
+  });
+  t.equal(out.length, 1);
+  t.equal(out[0].winner, 'museum');
+  t.equal(out[0].values[1].value, '+1787-11-18T00:00:00Z, +1787-07-10T00:00:00Z');
+  t.end();
+});
+
+test('compareDates: comma-joined values split only before a signed value', function (t) {
+  t.true(detect.compareDates('March 14, 1879', '+1879-03-14T00:00:00Z'), 'freetext comma is not a value separator');
+  t.true(detect.compareDates('1930-02-19', '+1930, +1930-02-19T00:00:00Z'));
+  t.false(detect.compareDates('1930-02-19', '+1930-02-19T00:00:00Z, +1931'));
+  t.deepEqual(detect.parseDateParts('+1930-02'), { year: 1930, month: 2, day: null });
+  t.end();
+});
+
 // --- Missing values are never contradictions ------------------------
 
 test('missing museum value: no contradiction', function (t) {
