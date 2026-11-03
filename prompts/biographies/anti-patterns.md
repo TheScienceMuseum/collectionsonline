@@ -348,8 +348,16 @@ BAD example (real De L'Isle case, cp100532, stage-1 spot-check
 
 Mention a later item only as what its own description says it is (a
 later model or replica, an instrument made to the subject's pattern,
-a later strike from their dies, a commemorative piece), never as
-part of their life.
+material made by their process, a later strike from their dies, a
+commemorative piece), never as part of their life.
+
+Don't over-correct. When the description names the connection, use
+the item. Real case from the re-run recheck (2026-11-03): Sidney
+Gilchrist Thomas died in 1885; the museum holds a series of 1887
+"Specimen of steel produced by the Basic or Thomas-Gilchrist process".
+The biography left them all out. GOOD: "The collection holds
+specimens of steel made by his basic process in 1887, two years after
+his death."
 
 ## Unsupported institutional affiliation
 
@@ -731,7 +739,22 @@ Real cases from the stage-1 spot-check (2026-11-03):
 
 This covers disagreements inside free text and between museum
 inputs. Structured dates and places listed under CONTRADICTIONS
-DETECTED keep that block's instruction.
+DETECTED keep that block's instruction: write the authoritative value.
+
+Over-correcting is the opposite failure. Real cases from the re-run
+recheck (2026-11-03):
+- Museum: died 19 February 1930. Wikidata: "+1930-01-01T00:00:00Z,
+  +1930-02-19T00:00:00Z" (a year-only value stored as 1 January, plus
+  the exact date). The biography dropped the birth and death dates
+  altogether, though every source agrees on them. GOOD: "born in
+  Edinburgh on 18 October 1863 … died in London on 19 February 1930".
+- Museum: partnership with Niépce from 1826; Wikipedia: 1829. The
+  biography left the partnership out entirely. GOOD: keep the
+  partnership and drop only the year ("in the late 1820s"), with the
+  conflict in notes.
+A less precise value that fits a more precise one (a year and a full
+date in that year, a region and a town inside it) is agreement. Drop
+only the detail that is actually disputed, never the facts around it.
 
 ## Single-genius-inventor trap
 
