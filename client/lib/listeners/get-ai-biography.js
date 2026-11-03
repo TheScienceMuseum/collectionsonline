@@ -1,5 +1,6 @@
 const getData = require('../get-data');
 const Templates = require('../../templates');
+const aiBiographyTracking = require('../ai-biography-tracking');
 
 module.exports = function () {
   const el = document.getElementById('aiBiography');
@@ -39,6 +40,7 @@ module.exports = function () {
       flagMessageEnabled: !!data.flagMessageEnabled,
       personId
     });
+    aiBiographyTracking.trackShown(el);
 
     // If existing description is very short, suppress it
     if (data.suppressExisting) {
