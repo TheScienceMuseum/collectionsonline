@@ -1,12 +1,10 @@
 'use strict';
 
-// Tests for the shouldFetchWikipedia decision helper.
-//
-// The actual fetch logic (title resolution, MediaWiki API call, truncation)
-// isn't exercised here — it's straightforward HTTP-plumbing that would need
-// network mocks to test meaningfully. What we do test is the gating logic
-// added 2026-07-17, which decides whether to fire Wikipedia at all given
-// the config flags + the sources already gathered.
+// Tests for the shouldFetchWikipedia decision helper, the section
+// assembly helpers, and title resolution (sitelink first, then a name
+// search whose hit must name the subject) via an injected fake fetch.
+// The gating logic added 2026-07-17 decides whether to fire Wikipedia at
+// all given the config flags + the sources already gathered.
 
 const test = require('tape');
 const { shouldFetchWikipedia } = require('../lib/ai/fetch-wikipedia-summary');
@@ -341,5 +339,76 @@ test('shouldFetchWikipedia: each documented successor prop is detected', functio
     t.equal(r.fire, true, prop + ' triggers override');
     t.equal(r.reason, 'forced_by_successor_signal:' + prop, prop + ' names itself in reason');
   });
+  t.end();
+});
+
+// --- name-search fallback: accept only a title that names the subject ---
+// Stage-1 spot-check (2026-11-03): the unchecked top search hit gave the
+// writer the father's article for his son, a town named after the subject
+// and "List of medallists".
+
+const fetchWikipediaSummary = require('../lib/ai/fetch-wikipedia-summary');
+const { titleMatchesName } = fetchWikipediaSummary;
+
+test('titleMatchesName: same name, catalogue variants', function (t) {
+  t.ok(titleMatchesName('Christopher Pinchbeck', 'Christopher Pinchbeck'), 'exact');
+  t.ok(titleMatchesName('Alexander Nasmyth', 'Nasmyth, Alexander'), 'inverted catalogue name');
+  t.ok(titleMatchesName('Enrico Fermi', 'Enrico Fermi (1901-1954)'), 'catalogue dates ignored');
+  t.ok(titleMatchesName('R. A. Young', 'Sir Robert Arthur Young'), 'initials and honorific');
+  t.ok(titleMatchesName('Geoffrey T. R. Hill', 'Geoffrey Terence Roland Hill'), 'middle initials');
+  t.ok(titleMatchesName('Pyrex', 'Pyrex ®'), 'registered mark ignored');
+  t.ok(titleMatchesName('Wrexham, Mold and Connah\'s Quay Railway', 'Wrexham, Mold & Connah\'s Quay Railway'), '& vs and');
+  t.ok(titleMatchesName('Anders Ångström', 'Anders Angstrom'), 'accents ignored');
+  t.end();
+});
+
+test('titleMatchesName: relatives, namesakes and topics are rejected', function (t) {
+  t.notOk(titleMatchesName('John Arnold (watchmaker)', 'John Roger Arnold'), 'father, not the son');
+  t.notOk(titleMatchesName('Edith Durham', 'Arthur Edward Durham'), 'daughter');
+  t.notOk(titleMatchesName('Acworth, Georgia', 'Acworth, Sir Jacob'), 'town named after him');
+  t.notOk(titleMatchesName('List of medallists', 'Alfred Borrel'), 'list article');
+  t.notOk(titleMatchesName('Wilhelm I', 'Wilhelm Friedrich Ludwig'), 'different form of name');
+  t.notOk(titleMatchesName('Isaac Dodds and Son', 'Isaac Dodds'), 'firm named after him');
+  t.notOk(titleMatchesName('', 'Isaac Dodds'), 'empty title');
+  t.end();
+});
+
+function fakeFetch (routes) {
+  const calls = [];
+  const impl = async function (url) {
+    calls.push(url);
+    const u = new URL(url);
+    const p = u.searchParams;
+    let body = null;
+    if (u.hostname === 'www.wikidata.org') body = routes.sitelink;
+    else if (p.get('list') === 'search') body = { query: { search: routes.searchTitle ? [{ title: routes.searchTitle }] : [] } };
+    else if (p.get('prop') === 'extracts') body = { query: { pages: { 1: { title: p.get('titles'), extract: 'Intro about ' + p.get('titles') + '.' } } } };
+    return { ok: body !== null, json: async function () { return body; } };
+  };
+  impl.calls = calls;
+  return impl;
+}
+
+test('fetchWikipediaSummary: Wikidata sitelink is used as is', async function (t) {
+  const f = fakeFetch({ sitelink: { entities: { Q1: { sitelinks: { enwiki: { title: 'Enrico Fermi' } } } } } });
+  const r = await fetchWikipediaSummary({ qCode: 'Q1', subjectName: 'Enrico Fermi (1901-1954)', fetch: f });
+  t.equal(r && r.title, 'Enrico Fermi', 'sitelink title');
+  t.notOk(f.calls.some(function (u) { return u.indexOf('list=search') !== -1; }), 'no name search');
+  t.end();
+});
+
+test('fetchWikipediaSummary: search hit naming someone else is discarded', async function (t) {
+  const f = fakeFetch({ sitelink: { entities: { Q2: { sitelinks: {} } } }, searchTitle: 'John Arnold (watchmaker)' });
+  const r = await fetchWikipediaSummary({ qCode: 'Q2', subjectName: 'John Roger Arnold', fetch: f });
+  t.equal(r, null, 'no article');
+  t.notOk(f.calls.some(function (u) { return u.indexOf('prop=extracts') !== -1; }), 'article never fetched');
+  t.end();
+});
+
+test('fetchWikipediaSummary: search hit naming the subject is used', async function (t) {
+  const f = fakeFetch({ sitelink: { entities: { Q3: { sitelinks: {} } } }, searchTitle: 'Alexander Nasmyth' });
+  const r = await fetchWikipediaSummary({ qCode: 'Q3', subjectName: 'Nasmyth, Alexander', fetch: f });
+  t.equal(r && r.title, 'Alexander Nasmyth', 'matching search hit');
+  t.ok(r && /Intro about Alexander Nasmyth/.test(r.extract), 'extract fetched');
   t.end();
 });
