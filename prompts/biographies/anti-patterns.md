@@ -330,6 +330,27 @@ the source is silent on death date, prefer past-tense construction
 `error:high` when the biography places a person at an event after
 their known death.
 
+The same check applies to collection items. An item dated after the
+subject's death (or a firm's closure) was not their work in their
+lifetime, whatever role the catalogue gives it.
+
+BAD example (real De L'Isle case, cp100532, stage-1 spot-check
+2026-11-03):
+- Museum: Joseph Nicolas De L'Isle died 1768; item co53158 "De Lisle
+  reflecting clinometer, British, 1900-21", role designer
+- Biography wrote: "The museum's collection also holds two
+  instruments connected with his scale: the De Lisle reflecting
+  clinometer…"
+- Problem: a clinometer measures slope, not temperature, and it was
+  made 130 years after his death. The catalogue link is wrong; the
+  sentence turned it into a false claim.
+- Fix: leave the item out and note the date mismatch for curators.
+
+Mention a later item only as what its own description says it is (a
+later model or replica, an instrument made to the subject's pattern,
+a later strike from their dies, a commemorative piece), never as
+part of their life.
+
 ## Unsupported institutional affiliation
 
 Do NOT assert a subject's affiliation with any institution
@@ -653,6 +674,64 @@ word. Keep the rest of the title exactly as catalogued — this is
 not licence to paraphrase titles generally. When the word before
 the marker is a different noun ("a 1:24 scale model, {co…|Novelty
 locomotive}"), nothing is repeated and nothing needs changing.
+
+## Narrating the sources
+
+The source tags and citations record where every fact came from.
+The text a visitor reads states the facts; it does not describe the
+museum record, the catalogue, Wikidata or Wikipedia. In the stage-1
+batch (2026-11-03) 45% of live biographies did this at least once.
+
+- BAD: "Wikidata dates the company's inception to 1837 and lists its
+  country as the United Kingdom."
+- GOOD: drop it — 1837 is already in the opening sentence. Otherwise
+  "The company was founded in 1837."
+- BAD: "Henry Graves, one of the three original partners, is recorded
+  with the dates 1806 to 1892."
+- GOOD: "Henry Graves (1806–1892), one of the three original partners…"
+- BAD: "The New Hampshire town of Acworth was named for him,
+  according to the Wikipedia article on Acworth, Georgia."
+- GOOD: "The town of Acworth in New Hampshire is named after him."
+- BAD: "The museum's records for him are limited to these catalogue
+  items and a short summary, so this biography rests on catalogue
+  data rather than fuller biographical sources."
+- GOOD: nothing in the prose. Say it in notes.
+
+Other phrasings to avoid: "the catalogue gives", "the catalogue
+records", "the catalogue biography also records", "is recorded as",
+"described in the catalogue as", "the item's cataloguer describes",
+"Wikidata records / lists", "Wikipedia gives / calls".
+
+Not affected: describing the holdings ("The museum holds over 200
+items related to him"), and a quotation with attribution where the
+wording itself matters (CONTENT RULES rule 6). Where the record marks
+a detail as uncertain, say "probably" or "possibly" instead of "the
+catalogue suggests".
+
+## Settling a source conflict by priority alone
+
+Museum outranks every other source, so when the catalogue text is
+wrong and another input contradicts it, priority alone publishes the
+error. When two inputs disagree on a name, a date, who did something
+or the order of events, write only what they agree on or leave the
+detail out, and describe the disagreement in notes.
+
+Real cases from the stage-1 spot-check (2026-11-03):
+- Museum biography: founded by "William and Edward Douglas";
+  Wikipedia in the same pack: "Edwin". The biography wrote "Edward".
+  GOOD: "founded in Bristol by the Douglas brothers", with the
+  Edward/Edwin conflict in notes.
+- Person record: born 1834; the museum's own plaque description in
+  the pack: "(1833-1895)". The biography wrote 1834.
+  GOOD: "born in Northampton in the early 1830s", or leave the year
+  out, and note the conflict.
+- Museum biography: "After leaving St Petersburg in 1737…";
+  Wikipedia in the same pack: set out from St Petersburg in 1740,
+  returned to Paris in 1747. GOOD: leave the departure date out.
+
+This covers disagreements inside free text and between museum
+inputs. Structured dates and places listed under CONTRADICTIONS
+DETECTED keep that block's instruction.
 
 ## Single-genius-inventor trap
 
