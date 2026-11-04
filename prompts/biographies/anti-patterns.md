@@ -359,6 +359,43 @@ The biography left them all out. GOOD: "The collection holds
 specimens of steel made by his basic process in 1887, two years after
 his death."
 
+The catalogue link is itself the connection: an item does not need a
+description that names the subject. Real cases from the full re-run
+(2026-11-04), where about 50 biographies lost their whole "In the
+collection" block:
+- Thomas Thomson, Francis Baily, John Playfair and five others are
+  each linked to co66188, "Distinguished Men of Science of Great
+  Britain 1807-8 … London, 1862", with no role. The biographies left
+  it out because the description does not list the sitters. GOOD:
+  "The collection holds an 1862 proof of the engraving Distinguished
+  Men of Science of Great Britain 1807–8, drawn by F. Skill and W.
+  Walker." (It describes the print and claims nothing about the
+  subject's part in it.)
+- Jan Steven van Calcar (d. 1546) is linked to the 1555 second
+  edition of Vesalius's De humani corporis fabrica. It is a later
+  edition of a work he illustrated, so use it as one.
+- John Deere (d. 1886) is linked as maker to a "John Deere 36 Combine
+  Harvester". It is a later product of the firm that bears his name,
+  not his own work: "The collection holds a John Deere 36 combine
+  harvester, built by the company that carries his name."
+
+Leave an item out only when the link cannot be right: the catalogue
+says the subject made it but it is dated before they were born (a
+medal of 1862 credited to a medallist born in 1906), its own
+description names a different maker in place of the subject (an
+engraving signed "Woolnoth sculp." linked to another engraver), it is
+plainly about something else (the De L'Isle clinometer above), or it
+is a later item that is none of the legacy kinds listed above (an
+instrument made seven years after the subject died, with nothing to
+tie it to them). Note each one in notes for curators.
+
+Two things are not reasons to leave an item out. An item made before
+the subject was born can still be one they owned, used or collected
+(an analytical balance from the 1880s linked to a conservator born in
+1898). A title that names one collaborator does not rule out another:
+"Replica of Lavoisier's Calorimeter" belongs on the page of Laplace,
+who designed the ice calorimeter with Lavoisier.
+
 ## Unsupported institutional affiliation
 
 Do NOT assert a subject's affiliation with any institution
