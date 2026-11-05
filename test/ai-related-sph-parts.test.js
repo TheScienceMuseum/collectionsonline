@@ -249,3 +249,11 @@ test('parent-keyed items resolve through validation, references and inline marke
     'inline marker links to the parent page');
   t.end();
 });
+
+test('a part linked through agent (not creation.maker) carries its agent-link role', function (t) {
+  const hit = partHit('co77', { title: 'Lamp part', description: 'Part of a lamp.', parentUid: 'co70', role: null, makerUid: 'cp-other' });
+  hit._source.agent = [{ summary: { title: 'Murray, Sons and Company Limited' }, '@admin': { uid: PERSON }, '@link': { role: [{ value: 'association details' }, { value: 'owner' }] } }];
+  const out = collapseSphParts([hit], PERSON);
+  t.equal(out[0].role, 'owner', 'generic role dropped, owner kept');
+  t.end();
+});

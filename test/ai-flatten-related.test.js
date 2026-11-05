@@ -122,3 +122,48 @@ test('re-exported unchanged from regenerate-biography.js', function (t) {
     'regenerate-biography.js re-exports the same function (routes/admin-ai.js depends on this)');
   t.end();
 });
+
+// --- writer role + catalogue text naming the subject (2026-11-05) -------
+// sort-related-items attaches linkRole / linkName / otherDescriptions
+// when called with { forWriter: true }.
+
+test('role: maker role and agent-link role are merged, duplicates dropped', function (t) {
+  const { writerRole } = flattenRelated;
+  t.equal(writerRole({ role: 'maker' }), 'maker');
+  t.equal(writerRole({ linkRole: 'sponsor' }), 'sponsor', 'agent-link role used when there is no maker role');
+  t.equal(writerRole({ role: 'maker', linkRole: 'owner, user' }), 'maker, owner, user');
+  t.equal(writerRole({ role: 'Inventor', linkRole: 'inventor' }), 'Inventor', 'case-insensitive de-dup');
+  t.equal(writerRole({}), '');
+  t.end();
+});
+
+test('agent-linked item: role + catalogue text naming the subject reach the writer', function (t) {
+  const raw = objItem('co440959', 'Jumper knitted from the first fleece of Dolly.');
+  raw.linkRole = 'sponsor';
+  raw.linkName = 'Portman Building Society';
+  raw.otherDescriptions = ['Dolly was cloned at the Roslin Institute. The competition was supported by Portman Building Society.'];
+  const out = flattenRelated({ relatedObjects: [raw] })[0];
+  t.equal(out.role, 'sponsor');
+  t.deepEqual(out.catalogueMentions, ['The competition was supported by Portman Building Society.']);
+  t.end();
+});
+
+test('no catalogueMentions key when nothing names the subject', function (t) {
+  const raw = objItem('co1', 'A lamp.');
+  raw.linkName = 'Humphry Davy';
+  raw.otherDescriptions = ['A miner\'s lamp from Newcastle.'];
+  const out = flattenRelated({ relatedObjects: [raw] })[0];
+  t.notOk('catalogueMentions' in out);
+  t.end();
+});
+
+test('prompt lists the role and the catalogue text under the item', function (t) {
+  const prompt = require('../prompts/biographies/2026-07-v8-collection-flow');
+  const text = prompt.buildUserPrompt(
+    { name: 'Portman Building Society' },
+    [{ id: 'co440959', title: 'Wool jumper', type: 'object', role: 'sponsor', description: 'Jumper knitted from Dolly.', catalogueMentions: ['Supported by Portman Building Society.'] }],
+    null, { type: 'company' }, {}
+  );
+  t.ok(text.indexOf('1. "Wool jumper" (ID: co440959, Type: object) (Role: sponsor)\n    Description: Jumper knitted from Dolly.\n    Catalogue text naming the subject: Supported by Portman Building Society.') !== -1);
+  t.end();
+});
