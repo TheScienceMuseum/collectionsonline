@@ -1344,7 +1344,7 @@ async function gatherPlaygroundInputs (elastic, config, id) {
   let sortedRelated = { relatedObjects: [], relatedDocuments: [] };
   try {
     const relatedItems = await getRelatedItems(elastic, id);
-    sortedRelated = sortRelated(relatedItems, id);
+    sortedRelated = sortRelated(relatedItems, id, { forWriter: true });
   } catch (err) {
     console.debug('Admin playground: Could not fetch related items:', err.message);
   }

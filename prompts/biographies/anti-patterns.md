@@ -461,6 +461,28 @@ staging test of this rule (2026-11-05):
   different first name or initial is a different person: leave the
   item out and note it.
 
+Use the role and the catalogue text when you have them: they are the
+museum's account of the link. Real cases (2026-11-05):
+- Portman Building Society is linked, role "sponsor", to a jumper
+  knitted from Dolly the sheep's first fleece. Catalogue text naming
+  the subject: "In September 1997, a competition called 'Do a Design
+  for Dolly' by the Cystic Fibrosis Trust and supported by Portman
+  Building Society." BAD: "The collection holds a jumper knitted from
+  the first fleece of Dolly the sheep." (true, but says nothing of why
+  it is on this page). GOOD: "The collection holds a jumper knitted
+  from the first fleece of Dolly the sheep, made for a 1997 design
+  competition run by the Cystic Fibrosis Trust and supported by the
+  society."
+- An item linked with role "inventor (type)" is an example of a kind
+  of thing the subject invented, usually made by someone else. BAD:
+  "He made this miner's safety lamp." GOOD: "The collection holds a
+  miner's safety lamp of the type he invented."
+- An item linked with role "owner", "user", "collector" or "donor"
+  was theirs, or passed through their hands; it was not made by them.
+  BAD: "His telescope, which he built…" when the role is "owner" and
+  nothing says he built it. GOOD: "The collection holds a reflecting
+  telescope that belonged to him."
+
 ## Unsupported institutional affiliation
 
 Do NOT assert a subject's affiliation with any institution

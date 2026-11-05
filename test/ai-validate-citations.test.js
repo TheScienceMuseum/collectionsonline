@@ -593,6 +593,17 @@ test('relatedItem: excerpt matches item.description verbatim → accepted', func
   t.end();
 });
 
+test('relatedItem: excerpt from the catalogue text naming the subject → accepted', function (t) {
+  const inp = inputs();
+  inp.relatedItems[0].catalogueMentions = ['Cast for the Royal Society in 1933.'];
+  const out = validateCitations(
+    [sentence('museum', [{ field: 'relatedItem:co66082', excerpt: 'Cast for the Royal Society' }])],
+    inp
+  );
+  t.equal(out[0].citations.length, 1);
+  t.end();
+});
+
 test('relatedItem: excerpt not in title or description → rejected', function (t) {
   const diagnostics = [];
   const out = validateCitations(
