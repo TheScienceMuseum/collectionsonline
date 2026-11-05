@@ -383,18 +383,83 @@ Leave an item out only when the link cannot be right: the catalogue
 says the subject made it but it is dated before they were born (a
 medal of 1862 credited to a medallist born in 1906), its own
 description names a different maker in place of the subject (an
-engraving signed "Woolnoth sculp." linked to another engraver), it is
-plainly about something else (the De L'Isle clinometer above), or it
-is a later item that is none of the legacy kinds listed above (an
-instrument made seven years after the subject died, with nothing to
-tie it to them). Note each one in notes for curators.
+engraving signed "Woolnoth sculp." linked to another engraver), its
+description names someone else as its subject (a portrait of a Derby
+surgeon linked to a Roman playwright), its role makes the subject the
+author of something in a field plainly unrelated to them (a hotel
+booklet "made" by an aviator), or its role makes them its maker or
+designer and it is a later item that is none of the legacy kinds
+listed above (the De L'Isle clinometer, made 130 years after his
+death). Note each one in notes for curators.
 
-Two things are not reasons to leave an item out. An item made before
-the subject was born can still be one they owned, used or collected
-(an analytical balance from the 1880s linked to a conservator born in
-1898). A title that names one collaborator does not rule out another:
-"Replica of Lavoisier's Calorimeter" belongs on the page of Laplace,
-who designed the ice calorimeter with Lavoisier.
+Several things are not reasons to leave an item out. An item made
+before the subject was born can still be one they owned, used,
+inherited or collected (an analytical balance from the 1880s linked
+to a conservator born in 1898). A title that names one collaborator
+does not rule out another: "Replica of Lavoisier's Calorimeter"
+belongs on the page of Laplace, who designed the ice calorimeter with
+Lavoisier. A manufacturer named beside a modeller or designer is a
+joint credit, not a conflict. And an item with no role, or a role
+that does not make the subject its author, is never left out for its
+date alone.
+
+More over-corrections, from stage 2 (2026-11-05), where about 30
+biographies dropped their only item:
+- Charles Cecil Cope Jenkinson (born 1784) is linked, with no role,
+  to the refracting telescope Sir George Shuckburgh commissioned from
+  Jesse Ramsden in 1781. The description says it was given to the
+  Royal Observatory in 1811 by "Charles Jenkinson Shuckburgh's heir".
+  The biography left it out as dated before his birth. Read the
+  description for the subject's name. GOOD: "The collection holds the
+  refracting telescope that Sir George Shuckburgh commissioned from
+  Jesse Ramsden in 1781; as Shuckburgh's heir, Jenkinson gave it to
+  the Royal Observatory in 1811."
+- Friedrich Wöhler (d. 1882) is linked, with no role, to an
+  early-20th-century set of models illustrating clathrate compounds.
+  Herbert Hoover is linked, with no role, to a model of a 16th-century
+  glass furnace as described by Agricola. Neither description says
+  why. Both biographies left the item out. GOOD: describe the item
+  and nothing more: "The collection holds a set of models and
+  specimens illustrating clathrate compounds, made in the early
+  twentieth century."
+- Andrew Huxley is linked, role "modifier", to part of a
+  spectrophotometer "developed by Glenn Millikan at Cambridge 1938-9".
+  A developer beside a modifier is not a conflict. GOOD: "The
+  collection holds part of a spectrophotometer developed by Glenn
+  Millikan at Cambridge in 1938–39, which Huxley modified."
+- Ignatius of Loyola, Bernardino of Siena and Francis Solanus are
+  linked, with no role, to an 18th-century Italian pharmacy jar and a
+  Bavarian plague amulet. For saints, popes and rulers, objects
+  bearing their image, name or emblem, or made for devotion to them,
+  are expected centuries after their deaths. When the description
+  does not say which it is, describe the item itself: "The collection
+  holds a tin-glazed syrup jar for oil of earthworms, made in Italy
+  between 1731 and 1770."
+- Universum Film-Aktien Gesellschaft (UFA), the Sunday Pictorial and
+  MNA Media are each linked as maker to Daily Herald Archive
+  photographic prints of industry and housing. A role on a print
+  credits whoever supplied or published the picture; what it shows
+  need not match their business. GOOD: "The collection holds a
+  photographic print of steel casting and moulding from the Daily
+  Herald Archive, credited to the company."
+
+Keeping an item is not licence to explain it. Real cases from the
+staging test of this rule (2026-11-05):
+- Charles Alexander MacMunn (d. 1911) is linked, with no role, to a
+  Hilger spectroscope made in 1918–20. BAD: "…made by A. Hilger in
+  London between 1918 and 1920, after MacMunn's death in 1911, and a
+  later instrument of the kind he used in spectroscopic work." The
+  description says none of that. GOOD: "The collection holds a Hilger
+  wavelength spectroscope with camera, made in London around 1919."
+  The date mismatch goes in notes.
+- The Kriegsmarine (formed 1935) is linked, with no role, to First
+  World War items. BAD: "Their dates place them before the navy was
+  formed in 1935." A doubt about a link belongs in notes, never in
+  the text a visitor reads.
+- Colonel Henry Yule is linked as maker to a drawing signed "R. Yule
+  Col fecit". BAD: "…made by him in 1861." The same surname with a
+  different first name or initial is a different person: leave the
+  item out and note it.
 
 ## Unsupported institutional affiliation
 
