@@ -20,6 +20,7 @@ module.exports = (elastic, config) => [
   require('./iiif')(elastic, config),
   require('./object-id')(elastic, config),
   require('./robot')(config),
+  require('./healthz')(),
   require('./articles')(config),
   require('./embed').rotational(elastic, config),
   require('./embed').rotationalDirect(),
