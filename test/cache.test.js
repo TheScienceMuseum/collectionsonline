@@ -1,5 +1,5 @@
 const cachedDocument = require('../lib/cached-document');
-const stub = require('sinon').stub;
+const { stub, useFakeTimers } = require('sinon');
 const test = require('tape');
 const cache = require('../bin/cache.js');
 const elastic = require('./helpers/mock-database')();
@@ -164,6 +164,8 @@ test('Elasticsearch search error returns incomplete tree instead of throwing', a
   elasticGet.restore();
   elasticSearch.restore();
   archiveTreeSort.restore();
+  // Clear the failure back-off so later tests on this fondsId do a real fetch.
+  cachedDocument._reset();
 });
 
 test('Cache unavailable: falls back to Elasticsearch without error', async function (t) {
@@ -226,6 +228,10 @@ test('Truncated archive fetch is returned but never cached', async function (t) 
   t.ok(data, 'partial data still returned to the user');
   t.ok(data.incomplete, 'tree is flagged incomplete for the route');
   t.notOk(cacheSet.called, 'incomplete tree is not cached');
+
+  // The failure starts a back-off for this fonds; clear it so later tests
+  // using the same fondsId still exercise a full fetch.
+  cachedDocument._reset();
 
   cacheIsReady.restore();
   cacheGet.restore();
@@ -293,4 +299,104 @@ test('Fresh cache entry (record processed before caching) is served without hitt
   cacheIsReady.restore();
   cacheGet.restore();
   elasticSearch.restore();
+});
+
+test('Concurrent cache misses for one fonds share a single archive rebuild', async function (t) {
+  t.plan(4);
+  cachedDocument._reset();
+  const cacheIsReady = stub(cache, 'isReady').returns(true);
+  const cacheGet = stub(cache, 'get').resolves(null);
+  const cacheSet = stub(cache, 'set').resolves();
+
+  let releaseSearch;
+  const searchGate = new Promise((resolve) => { releaseSearch = resolve; });
+  const elasticSearch = stub(elastic, 'search').callsFake(async () => {
+    await searchGate;
+    return scrollPage([
+      { _source: { '@admin': { uid: 'doc-1' }, parent: [{ '@admin': { uid: 'smga-documents-110000003' } }], summary: { title: 'one' } } }
+    ], 1);
+  });
+  const elasticClearScroll = stub(elastic, 'clearScroll').resolves({});
+
+  const fondsBody = {
+    _source: {
+      level: { value: 'fonds' },
+      summary: { title: 'fonds' },
+      identifier: [{ value: 'BAB' }]
+    }
+  };
+  const childBody = {
+    _source: {
+      level: { value: 'document' },
+      fonds: [{ '@admin': { uid: 'smga-documents-110000003' }, summary: { title: 'fonds' } }],
+      summary: { title: 'child' }
+    }
+  };
+
+  const pending = [
+    cachedDocument(elastic, 'smga-documents-110000003', 'smga-documents-110000003', fondsBody),
+    cachedDocument(elastic, 'doc-1', 'smga-documents-110000003', childBody),
+    cachedDocument(elastic, 'doc-2', 'smga-documents-110000003', childBody)
+  ];
+  // Let all three reach the in-flight check before the scroll completes.
+  await new Promise((resolve) => setImmediate(resolve));
+  releaseSearch();
+  const [a, b, c] = await Promise.all(pending);
+
+  t.equal(elasticSearch.callCount, 1, 'archive scrolled once for three concurrent requests');
+  t.ok(a === b && b === c, 'every request gets the same tree');
+  t.equal(cacheSet.callCount, 1, 'tree cached once');
+
+  // Once the rebuild settles a new miss starts a fresh one.
+  await cachedDocument(elastic, 'doc-1', 'smga-documents-110000003', childBody);
+  t.equal(elasticSearch.callCount, 2, 'a later miss rebuilds again');
+
+  cacheIsReady.restore();
+  cacheGet.restore();
+  cacheSet.restore();
+  elasticSearch.restore();
+  elasticClearScroll.restore();
+  cachedDocument._reset();
+});
+
+test('After a failed archive fetch the fonds is not re-scrolled until the back-off passes', async function (t) {
+  t.plan(6);
+  cachedDocument._reset();
+  const clock = useFakeTimers({ now: 1700000000000, toFake: ['Date'] });
+  const cacheIsReady = stub(cache, 'isReady').returns(true);
+  const cacheGet = stub(cache, 'get').resolves(null);
+  const cacheSet = stub(cache, 'set').resolves();
+  const elasticSearch = stub(elastic, 'search').rejects(new Error('Request timed out'));
+  const elasticClearScroll = stub(elastic, 'clearScroll').resolves({});
+
+  const childBody = {
+    _source: {
+      level: { value: 'document' },
+      fonds: [{ '@admin': { uid: 'smga-documents-110000003' }, summary: { title: 'fonds' } }],
+      summary: { title: 'child' }
+    }
+  };
+
+  const first = await cachedDocument(elastic, 'doc-1', 'smga-documents-110000003', childBody);
+  t.ok(first.incomplete, 'failed fetch returns the minimal tree');
+  t.equal(elasticSearch.callCount, 1, 'first request tried Elasticsearch');
+
+  clock.tick(30 * 1000);
+  const second = await cachedDocument(elastic, 'doc-2', 'smga-documents-110000003', childBody);
+  t.ok(second.incomplete, 'request during the back-off still gets the minimal tree');
+  t.equal(elasticSearch.callCount, 1, 'and does not re-scroll the archive');
+
+  clock.tick(31 * 1000);
+  elasticSearch.resolves(scrollPage([], 0));
+  const third = await cachedDocument(elastic, 'doc-3', 'smga-documents-110000003', childBody);
+  t.equal(elasticSearch.callCount, 2, 'after the back-off the archive is fetched again');
+  t.notOk(third.incomplete, 'and a successful fetch clears the incomplete flag');
+
+  clock.restore();
+  cacheIsReady.restore();
+  cacheGet.restore();
+  cacheSet.restore();
+  elasticSearch.restore();
+  elasticClearScroll.restore();
+  cachedDocument._reset();
 });
