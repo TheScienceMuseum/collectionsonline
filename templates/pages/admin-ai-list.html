@@ -136,6 +136,10 @@
   </tbody>
 </table>
 
+{{#if nameSearchCapped}}
+<p class="text-meta" style="margin-top: 1rem;">Showing the {{records.length}} newest of {{nameSearchTotal}} records whose name contains "{{search}}". Add more of the name to narrow it down.</p>
+{{/if}}
+
 {{#if nextKey}}
 <div style="margin-top: 1rem; text-align: center;">
   <a href="/admin/ai?status={{currentStatus}}&lastKey={{nextKey}}" class="btn btn--secondary">Load more</a>
@@ -149,9 +153,13 @@
 
 {{else}}
 {{#unless dynamoUnavailable}}
+{{#if nameSearch}}
+<p class="text-meta" style="margin-top: 2rem;">No biography records have a name containing "{{search}}". A record generated in the last minute or two can't be found by name yet: search by its ID.</p>
+{{else}}
 <p class="text-meta" style="margin-top: 2rem;">{{#if pendingOnly}}No records with unresolved reports{{else}}No biography records found{{/if}}{{#isequal currentStatus "all" this}}{{else}} with status "{{currentStatus}}"{{/isequal}}.</p>
 {{#if nextOffset}}
 <p class="text-meta"><a href="/admin/ai?status={{currentStatus}}{{pendingQs}}&offset={{nextOffset}}">Next page</a></p>
+{{/if}}
 {{/if}}
 {{/unless}}
 {{/if}}

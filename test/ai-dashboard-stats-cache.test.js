@@ -264,3 +264,25 @@ test('dashboard-stats cache: a scan started before invalidate() does not fill th
   dashboardStats.invalidate();
   t.end();
 });
+
+// --- name index (admin name search) ----------------------------------------
+
+test('dashboard-stats nameIndex: every biography, newest first, from trimmed items', async function (t) {
+  dashboardStats.invalidate();
+  const items = richItems().concat([
+    bio('cp20', { personName: 'Royal Raymond Rife', generatedAt: '2025-12-01T00:00:00Z' }),
+    bio('cp21', { personName: 'Newest Person', generatedAt: '2099-01-01T00:00:00Z' })
+  ]);
+  const stats = await dashboardStats.getStats(makeFakeStatsDynamo(items), CONFIG);
+  const bios = items.filter(function (i) { return i.entityType === 'BIOGRAPHY'; });
+  t.equal(stats.nameIndex.length, bios.length, 'one entry per biography, across segments and pages');
+  t.deepEqual(stats.nameIndex[0], { pk: 'cp21', name: 'Newest Person' }, 'newest first');
+  t.ok(stats.nameIndex.some(function (e) { return e.pk === 'cp20' && e.name === 'Royal Raymond Rife'; }),
+    'personName survives the projection');
+  const dates = stats.nameIndex.map(function (e) {
+    return bios.find(function (b) { return b.PK === e.pk; }).generatedAt || '';
+  });
+  t.deepEqual(dates, dates.slice().sort().reverse(), 'sorted by generatedAt, descending');
+  dashboardStats.invalidate();
+  t.end();
+});
