@@ -18,6 +18,7 @@ const subjectStatus = require('../lib/ai/subject-status');
 const flagStore = require('../lib/ai/flag-store');
 const dashboardStats = require('../lib/ai/dashboard-stats');
 const unresolvedReports = require('../lib/ai/unresolved-reports');
+const nameIndex = require('../lib/ai/name-index');
 const exportCsv = require('../lib/ai/export-csv');
 const curatorDecisionsStore = require('../lib/ai/curator-decisions-store');
 const renderBiography = require('../lib/ai/render-biography');
@@ -252,11 +253,14 @@ module.exports = function (elastic, config) {
             // in the background, so this only waits on the first request
             // after a restart (see lib/ai/dashboard-stats.js). Fetched up
             // front because the Pending reports view pages through its
-            // unresolvedIndex.
+            // unresolvedIndex, and name search matches against nameIndex.
             const headlineStats = await dashboardStats.getStats(dynamo, config);
             const pendingSummary = {
               total: unresolvedReports.filterIndex(headlineStats.unresolvedIndex, { includeStaffFlags }).length
             };
+            // Set for a name search: how many records matched in all, so the
+            // page can say when only the first `limit` are shown.
+            let nameSearchTotal = null;
 
             if (parsedSearch && parsedSearch.kind === 'id') {
               // Direct ID / URL lookup — ignores status + pagination on
@@ -265,11 +269,18 @@ module.exports = function (elastic, config) {
               const record = await biographyStore.fetchBiography(parsedSearch.id);
               records = record ? [record] : [];
             } else if (parsedSearch && parsedSearch.kind === 'name') {
-              // Name search — case-insensitive substring over personName.
-              // Like ID lookup, deliberately ignores the status tab so a
-              // name match isn't hidden by the currently-selected filter.
-              const result = await biographyStore.searchByName(parsedSearch.q, limit);
-              records = result.items;
+              // Name search — case-insensitive substring over personName,
+              // across every record (the stats name index, see
+              // lib/ai/name-index.js), newest first. Only the first `limit`
+              // matches are read, one GetItem each; no paging, so a longer
+              // name narrows it. Like ID lookup, deliberately ignores the
+              // status tab so a match isn't hidden by the current filter.
+              const matches = nameIndex.match(headlineStats.nameIndex, parsedSearch.q);
+              const fetched = await Promise.all(matches.slice(0, limit).map(function (e) {
+                return biographyStore.fetchBiography(e.pk).catch(function () { return null; });
+              }));
+              records = fetched.filter(Boolean);
+              nameSearchTotal = matches.length;
             } else if (pendingOnly) {
               // Candidates come from the dashboard-stats index (built from
               // the FLAGS + STAFF_FLAG items its cached scan already reads),
@@ -363,6 +374,9 @@ module.exports = function (elastic, config) {
               pendingQs,
               pendingSummary,
               headlineStats,
+              nameSearch: nameSearchTotal !== null,
+              nameSearchTotal,
+              nameSearchCapped: nameSearchTotal !== null && nameSearchTotal > limit,
               generateError
             }, { layout: 'admin' });
           } catch (err) {
