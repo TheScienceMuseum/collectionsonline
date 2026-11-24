@@ -18,6 +18,7 @@ const dynamo = require('../lib/ai/dynamo');
 const flagStore = require('../lib/ai/flag-store');
 const biographyStore = require('../lib/ai/biography-store');
 const dashboardStats = require('../lib/ai/dashboard-stats');
+const makeFakeStatsDynamo = require('./helpers/fake-stats-dynamo').makeFakeStatsDynamo;
 
 // The real flag-store, loaded past any fake in require.cache — the list
 // route needs its (pure) buildView, which the fakes don't provide.
@@ -69,12 +70,7 @@ function stubStores (t, freshFlags) {
   dashboardStats.invalidate();
   t.teardown(function () { dashboardStats.invalidate(); });
   const getStats = dashboardStats.getStats;
-  const fakeDynamo = {
-    isReady: function () { return true; },
-    scan: function () {
-      return Promise.resolve({ items: Object.values(BIOS).concat(Object.values(FLAGS)), lastKey: null });
-    }
-  };
+  const fakeDynamo = makeFakeStatsDynamo(Object.values(BIOS).concat(Object.values(FLAGS)));
   patch(t, adminAuth, 'validateAdminToken', function () { return true; });
   patch(t, dynamo, 'isReady', function () { return true; });
   patch(t, dashboardStats, 'getStats', function (d, config) { return getStats(fakeDynamo, config); });
