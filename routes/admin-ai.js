@@ -247,11 +247,12 @@ module.exports = function (elastic, config) {
             let nextOffset = null;
 
             // Headline strip stats — four top-level numbers (pending reports,
-            // live count, spend this month, new this week). Cheap to fetch:
-            // read from the in-process dashboard cache (short TTL, one scan
-            // amortised across both the main list and the dashboard page).
-            // Fetched up front because the Pending reports view pages
-            // through its unresolvedIndex.
+            // live count, spend this month, new this week). From the
+            // in-process dashboard cache: the full-table scan behind it runs
+            // in the background, so this only waits on the first request
+            // after a restart (see lib/ai/dashboard-stats.js). Fetched up
+            // front because the Pending reports view pages through its
+            // unresolvedIndex.
             const headlineStats = await dashboardStats.getStats(dynamo, config);
             const pendingSummary = {
               total: unresolvedReports.filterIndex(headlineStats.unresolvedIndex, { includeStaffFlags }).length
@@ -332,9 +333,11 @@ module.exports = function (elastic, config) {
               const hiddenWithPendingReports = r.status === 'hidden' && flagSeverity !== null;
               return Object.assign({}, r, { publicReports, flagSeverity, staffSummary, publicVisibility, hiddenWithPendingReports });
             }));
-            // The index can be up to one stats-cache TTL old. Re-check each
-            // row against the fresh reads above so a record marked as
-            // reviewed (or moved to another status) a moment ago drops out.
+            // The index can be a minute or two old (one fresh window plus a
+            // background scan), so new reports can take that long to appear
+            // here. Re-check each row against the fresh reads above so a
+            // record marked as reviewed (or moved to another status) a
+            // moment ago drops out.
             if (pendingOnly && !parsedSearch) {
               records = records.filter(function (r) {
                 if (status !== 'all' && r.status !== status) return false;

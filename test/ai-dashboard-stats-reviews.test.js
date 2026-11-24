@@ -10,18 +10,10 @@
 const test = require('tape');
 const dashboardStats = require('../lib/ai/dashboard-stats');
 
-// Minimal fake DynamoDB. `scan()` returns one page containing all items
-// the test set up. `isReady()` is true so compute() runs (the empty-stats
-// shortcut is skipped). Mirrors the real shape returned by the dynamo
-// wrapper without pulling in AWS SDK.
-function makeFakeDynamo (items) {
-  return {
-    isReady: function () { return true; },
-    scan: function () {
-      return Promise.resolve({ items: items.slice(), lastKey: null });
-    }
-  };
-}
+// Fake DynamoDB that segments, pages and projects like the real scan, so
+// these figures are checked on the attributes the stats actually fetch.
+// See test/helpers/fake-stats-dynamo.js.
+const makeFakeDynamo = require('./helpers/fake-stats-dynamo').makeFakeStatsDynamo;
 
 const CONFIG = { aiBiographyGbpPerUsd: 0.8 };
 

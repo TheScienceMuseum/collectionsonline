@@ -10,14 +10,8 @@ const test = require('tape');
 const unresolvedReports = require('../lib/ai/unresolved-reports');
 const dashboardStats = require('../lib/ai/dashboard-stats');
 
-function makeFakeDynamo (items) {
-  return {
-    isReady: function () { return true; },
-    scan: function () {
-      return Promise.resolve({ items: items.slice(), lastKey: null });
-    }
-  };
-}
+// Segments, pages and projects like the real scan; see the helper.
+const makeFakeDynamo = require('./helpers/fake-stats-dynamo').makeFakeStatsDynamo;
 
 const CONFIG = { aiBiographyGbpPerUsd: 0.8 };
 
